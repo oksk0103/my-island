@@ -1443,6 +1443,8 @@ body .qscreen>.cta.autoq.hot:not(:disabled){background:linear-gradient(#ffb36b,#
 .vtask.trailp small{font-size:.68rem;line-height:1;color:#8a96a3;letter-spacing:.02em}
 .vtask.trailp b{font-weight:400;line-height:1.15;white-space:nowrap}
 @media (max-width:359px){.vtask.trailp small{display:none}.vtask.trailp b{white-space:normal}}
+.spr img.fflip{transform:scaleX(-1)}
+.spr img.fhalf{position:absolute;bottom:0;left:50%;translate:-50% 0}
 </style>
 
 <div id="app"></div>
@@ -3170,6 +3172,19 @@ function drawGround(cv,CS,bx0,by0,cells){
   var n=0;ks.forEach(function(k){var im=TIMG[k];if(im.complete&&im.naturalWidth)n++;else im.addEventListener('load',function(){if(++n===ks.length)go()},{once:true})});
   if(n===ks.length)go();
 }
+
+// 울타리: 옆 칸 울타리를 보고 방향을 정해요 (모서리는 ㄱ자로)
+var FENCE={d_fence:1,d_gate:1};
+function fenceOrient(sp,cr){
+  function f(a,b){var v=S.gd.cells[a+','+b];return !!(v&&FENCE[v])}
+  var cP=f(cr[0]+1,cr[1]),cM=f(cr[0]-1,cr[1]),rP=f(cr[0],cr[1]+1),rM=f(cr[0],cr[1]-1),hasC=cP||cM,hasR=rP||rM;
+  var im=sp.querySelector('img');if(!im||(!hasR))return;
+  if(!hasC){im.classList.add('fflip');return}
+  // 모서리: 두 방향 반쪽씩
+  var im2=im.cloneNode();im2.classList.add('fflip','fhalf');sp.appendChild(im2);
+  if(!(cP&&cM))im.style.clipPath=cP?'inset(0 0 0 49%)':'inset(0 49% 0 0)';
+  if(!(rP&&rM))im2.style.clipPath=rP?'inset(0 0 0 49%)':'inset(0 49% 0 0)';
+}
 function iCtr(c,r){return [IMX+IN*ITW/2+(c-r)*ITW/2,ITOP+(c+r)*ITH/2+ITH/2]}
 var CAM=null,ZOOM=.7,UNDO=[],TRAYCAT='all';
 var ZOUT_SVG='<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="#1d2631" stroke-width="2.2"/><path d="M13 13l5 5M5.5 8.5h6" stroke="#1d2631" stroke-width="2.2" stroke-linecap="round"/></svg>';
@@ -3213,6 +3228,7 @@ function buildWorld(edit,onLm){
     var cr=k.split(',').map(Number),nz=SZ(S.gd.cells[k]),big=nz>1,hf=(nz-1)/2,p=iCtr(cr[0]+hf,cr[1]+hf),sp=itemSprite(S.gd.cells[k],ITW*.8);
     var sh=el('i','gshadow iso');sh.style.left=p[0]+'px';sh.style.top=(p[1]+ITH*.12)+'px';sh.style.width=(ITW*(big?.65*nz:.5))+'px';sh.style.zIndex=cr[0]+cr[1]+(big?nz+1:1);sh.setAttribute('data-sk',k);world.appendChild(sh);
     sp.style.left=p[0]+'px';sp.style.top=(p[1]+ITH*(big?.55:.3))+'px';sp.style.zIndex=cr[0]+cr[1]+(big?2*nz:2);sp.setAttribute('data-k',k);if(big)sp.className+=' big';
+    if(FENCE[S.gd.cells[k]])fenceOrient(sp,cr);
     world.appendChild(sp);
   });
   return {world:world,W:W,H:H};
