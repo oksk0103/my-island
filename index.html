@@ -1429,6 +1429,14 @@ button.dexc{border:0;font:inherit;color:inherit}
 .qscreen>.cta.autoq:after{content:'';position:absolute;left:0;bottom:0;height:5px;width:0;background:rgba(255,255,255,.6);animation:autoq var(--t,1.2s) linear forwards}
 body .qscreen>.cta.autoq.hot:not(:disabled){background:linear-gradient(#ffb36b,#ff7a3d);box-shadow:inset 0 2px 0 rgba(255,255,255,.3),0 4px 0 #d0531c,0 6px 12px rgba(160,60,0,.2)}
 @keyframes autoq{to{width:100%}}
+
+.evchip small{position:relative;top:-1.69px;padding:2.77px 6px 3.23px}
+.enspeak{line-height:1}.enspeak span{position:relative;top:.9px}
+.etwrap{position:relative;width:100%;max-width:300px}
+.etwrap .etype{max-width:none;display:block;padding:1.84px 4px 1px}
+.etph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--game);font-size:1.6rem;line-height:1;color:#9aa1a9;pointer-events:none;padding-top:4.45px}
+.etwrap.has .etph{display:none}
+.hchip>b{top:1.55px}
 </style>
 
 <div id="app"></div>
@@ -2595,10 +2603,10 @@ function play(){
     check.onclick=function(){if(done||check.disabled)return;var v=picked.map(function(j){return LT[j]}).join('');if(v===pz.answer){slots.className='etslots right';finish(true)}else{slots.className='etslots wrong';wrong()}};
   }else if(pz.mode==='type'){
     pz.render(body);
-    var inp=document.createElement('input');inp.type='text';inp.className='etype';inp.setAttribute('autocapitalize','off');inp.setAttribute('autocomplete','off');inp.setAttribute('autocorrect','off');inp.spellcheck=false;inp.placeholder='들은 단어를 써요';
-    body.appendChild(inp);
-    inp.oninput=function(){check.disabled=!inp.value.trim()};
-    retry=function(){inp.value='';inp.className='etype';check.disabled=true};
+    var inp=document.createElement('input');inp.type='text';inp.className='etype';inp.setAttribute('autocapitalize','off');inp.setAttribute('autocomplete','off');inp.setAttribute('autocorrect','off');inp.spellcheck=false;inp.placeholder='';
+    var etw=el('div','etwrap');etw.appendChild(inp);etw.appendChild(el('span','etph','들은 단어를 써요'));body.appendChild(etw);
+    inp.oninput=function(){check.disabled=!inp.value.trim();etw.classList.toggle('has',!!inp.value)};
+    retry=function(){inp.value='';etw.classList.remove('has');inp.className='etype';check.disabled=true};
     check.onclick=function(){if(done||!inp.value.trim())return;if(inp.value.trim().toLowerCase()===pz.answer.toLowerCase()){inp.className='etype right slot';finish(true)}else{inp.className='etype wrong';wrong()}};
     inp.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();if(sheet.className.indexOf('show')>=0)return;check.onclick()}};
   }else if(pz.mode==='choice'){
