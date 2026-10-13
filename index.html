@@ -1423,6 +1423,12 @@ button.dexc{border:0;font:inherit;color:inherit}
 .dvrem .unit.dots{letter-spacing:0;margin:0 -2px}
 .dvrem .unit{white-space:nowrap}
 @media (max-width:359px){.dvrem .unit{font-size:1.2rem}.dvrem{gap:4px}.dvrem .slot{min-width:40px;padding:0 2px}.dvgrid{gap:6px;padding:10px}.dvgrid i{width:15px;height:15px}.dvpile i{width:14px;height:14px}.dvplates{gap:6px}.dvplate{width:54px;height:40px;padding:4px 6px}.dvpile{max-width:230px;gap:5px}}
+
+.qscreen>.cta.autoq{position:relative;overflow:hidden;gap:6px}
+.qscreen>.cta.autoq img{width:24px;height:24px;margin-top:-3px}
+.qscreen>.cta.autoq:after{content:'';position:absolute;left:0;bottom:0;height:5px;width:0;background:rgba(255,255,255,.6);animation:autoq var(--t,1.2s) linear forwards}
+body .qscreen>.cta.autoq.hot:not(:disabled){background:linear-gradient(#ffb36b,#ff7a3d);box-shadow:inset 0 2px 0 rgba(255,255,255,.3),0 4px 0 #d0531c,0 6px 12px rgba(160,60,0,.2)}
+@keyframes autoq{to{width:100%}}
 </style>
 
 <div id="app"></div>
@@ -2546,7 +2552,12 @@ function play(){
         if(G.combo>=3&&!G.ch){var bn=el('div','combobig');bn.appendChild(img('fire'));bn.appendChild(el('b',null,G.combo+'연속 정답'));bn.appendChild(el('small',null,'보상 2배!'));document.body.appendChild(bn);setTimeout(function(){bn.remove()},1300)}})();
       var src=body.querySelector('.choice.right,.slot,.goal')||body,r=src.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,G.gain===2?26:18,G.gain===2);
       var gain=G.gain;if(!G.ch)flyTo(sub.key==='math'?'droplet':'sun',src,wallet,gain,function(k){if(!G||!document.body.contains(wN))return;wN.textContent=G.drops-gain+k;wallet.className='qwallet pop';void wallet.offsetWidth;wallet.className='qwallet pop'});
-      setTimeout(function(){if(!sc.isConnected||!G)return;showSheet('good','check_mark_button',G.ch?'도전 문제 '+(G.idx+1)+' / '+G.n+' 정답!':(function(u){return G.gain===2?G.combo+'연속 정답! '+u+' +2':(G.combo===2?u+' +1, 한 번 더 맞히면 2배':u+' +1')})(sub.key==='math'?'물방울':'햇살'),['정답이에요','맞았어요','정확해요','최고예요'][R(0,3)],pz.explain,'계속',next)},G.combo>=3?950:520)}
+      setTimeout(function(){if(!sc.isConnected||!G)return;
+        var u=sub.key==='math'?'물방울':'햇살',txt=G.ch?'도전 문제 '+(G.idx+1)+' / '+G.n+' 정답!':G.gain===2?G.combo+'연속 정답! '+u+' +2':G.combo===2?'맞았어요! 한 번 더 맞히면 2배':(tries?'해냈어요! ':['맞았어요! ','정답이에요! ','최고예요! '][R(0,2)])+u+' +1';
+        var went=false,ms=G.combo>=3?1000:1200;function go(){if(went||!sc.isConnected||!G)return;went=true;clearTimeout(tm);sc.removeEventListener('pointerdown',tap,true);next()}
+        function tap(e){if(e.target.closest('.x')||(e.target.closest('.scrcv')&&body.classList.contains('scron')))return;e.preventDefault();e.stopPropagation();go()}
+        check.className='cta autoq'+(G.gain===2?' hot':'');check.disabled=false;check.textContent='';if(G.gain===2)check.appendChild(img('fire'));check.appendChild(el('span',null,txt));check.style.setProperty('--t',ms+'ms');check.onclick=go;
+        var tm=setTimeout(go,ms);setTimeout(function(){if(!went)sc.addEventListener('pointerdown',tap,true)},200)},G.combo>=3?950:420)}
     else {palSay('hmm');revealAll(body,pz);showSheet('bad','light_bulb','풀이를 확인해요',(pz.mode==='pad'||pz.mode==='tiles'||pz.mode==='type')?'정답은 '+pz.answer:pz.mode==='choice'?'정답은 '+pz.choices[pz.answer]:'이렇게 만들 수 있어요',pz.explain,'계속',next)}
   }
   function wrong(){
