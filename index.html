@@ -1378,6 +1378,25 @@ body.big .fishscr{min-height:calc(100dvh / var(--z))}
 .dexrwi small{font-size:.7rem;color:var(--sub);white-space:nowrap;line-height:1.2}
 button.dexc{border:0;font:inherit;color:inherit}
 .bkcode{font-size:16px!important}
+
+.scrcv{position:absolute;inset:0;width:100%;height:100%;border-radius:24px;z-index:6;pointer-events:none;touch-action:auto}
+.qbody.scron .scrcv{pointer-events:auto;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;background-image:linear-gradient(rgba(70,140,210,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(70,140,210,.09) 1px,transparent 1px);background-size:28px 28px;background-position:-1px -1px}
+.qscreen .qbody.scron{border-color:#ffd25e;box-shadow:0 6px 0 rgba(200,150,20,.18),0 10px 24px rgba(0,40,80,.08)}
+.scrbar{position:absolute;left:10px;top:8px;z-index:7;display:flex;gap:6px;align-items:center}
+.scrbar button{font:inherit;font-family:var(--game);border:0;cursor:pointer;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;color:#3c4a5a}
+.scrtog{height:34px;padding:2px 13px 0 10px;gap:5px;border-radius:17px;background:#fff6d6;box-shadow:0 2px 0 #f1d27c;font-size:.98rem;line-height:1}
+.scrtog svg{flex:none;margin-top:-2px}
+.scrtog.nudge{animation:scrnudge 1s ease-in-out 3}
+@keyframes scrnudge{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.scrbar .st{width:36px;height:36px;border-radius:50%;background:#f2f4f6;box-shadow:0 2px 0 #dfe3e8}
+.scrbar .st.on{background:#ffd25e;box-shadow:0 2px 0 #e0a82e;color:#5a3d00}
+.qbody:not(.scron) .scrbar .st{display:none}
+.qbody.scron .scrtog{display:none}
+.scrtip{position:absolute;left:8px;top:50px;z-index:8;background:#26313d;color:#fff;font-family:var(--game);font-size:.95rem;line-height:1;padding:9px 12px 7px;border-radius:12px;white-space:nowrap;pointer-events:none;animation:scrtip 4.6s ease forwards}
+.scrtip:before{content:'';position:absolute;left:22px;top:-6px;border:6px solid transparent;border-top:0;border-bottom-color:#26313d}
+@keyframes scrtip{0%{opacity:0;transform:translateY(4px)}8%,85%{opacity:1;transform:none}100%{opacity:0}}
+.qscreen .qpal{z-index:8}
+@media (max-width:359px){.qscreen.q-math .qbody{padding-top:46px!important}}
 </style>
 
 <div id="app"></div>
@@ -2439,7 +2458,7 @@ function play(){
   var cb0=null;if(G.combo>=2&&!G.ch){var cb=el('em','combo qcombo');cb.appendChild(img('fire'));cb.appendChild(document.createTextNode(G.combo+'연속'+(G.combo>=3?' · 2배':'')));cb0=cb}
   var qh=el('div','qhead');var tag=el('small','qtag',sub.types[type]);if(sub.key==='math'){var lvb=el('em','qlv','Lv.'+lv);tag.appendChild(lvb)}if(G.ch){tag.insertBefore(el('em','qch','도전'),tag.firstChild)}if(G.re&&G.re.indexOf(type)>=0){tag.appendChild(el('em','qre','다시 도전'))}if(cb0)tag.appendChild(cb0);qh.appendChild(tag);qh.appendChild(el('h2',null,pz.q));sc.appendChild(qh);
   var body=el('div','qbody');sc.appendChild(body);
-  var pal=el('div','qpal');var pim=avImg(S.path.char||'rabbit');pal.appendChild(pim);body.appendChild(pal);
+  var pal=el('div','qpal');var pim=avImg(S.path.char||'rabbit');pal.appendChild(pim);body.appendChild(pal);if(sub.key==='math')scratchPad(body);
   function palSay(c){pal.className='qpal '+c;void pal.offsetWidth}
   var check=el('button','cta','확인');check.disabled=true;
   var retry=function(){};
@@ -3521,6 +3540,35 @@ function fishDex(back){clear();var f=fishS(),sc=el('div','screen fishdex'),top=e
   app.appendChild(sc);zMark&&zMark()}
 
 // ================= 처음 안내(기능이 처음 열릴 때) =================
+
+var SCR_I={pen:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 17l1-4 9-9 3 3-9 9z" fill="#ffd25e" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M11.5 5.5l3 3" stroke="currentColor" stroke-width="1.8"/></svg>',
+ er:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M8 17L3 12l8-8 6 6-7 7z" fill="#ff9fb2" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M6 9l5 5M8 17h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+ all:'<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6h12M8 6V4h4v2M5.5 6l1 11h7l1-11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ x:'<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>'};
+function scratchPad(body){
+  var cv=document.createElement('canvas');cv.className='scrcv';var cx=cv.getContext('2d'),dpr=Math.min(3,window.devicePixelRatio||1),W=0,H=0,tool='pen',cur=null,last=null,penSeen=false,used=false;
+  function fit(){var r=body.getBoundingClientRect(),w=Math.round(r.width),h=Math.round(r.height);if(!w||!h||(w===W&&h===H))return;var keep=null;if(W&&H&&used){keep=document.createElement('canvas');keep.width=cv.width;keep.height=cv.height;keep.getContext('2d').drawImage(cv,0,0)}
+    W=w;H=h;cv.width=w*dpr;cv.height=h*dpr;cx.setTransform(1,0,0,1,0,0);if(keep)cx.drawImage(keep,0,0);cx.setTransform(dpr,0,0,dpr,0,0);cx.lineCap='round';cx.lineJoin='round'}
+  function pt(e){var r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*(W/(r.width||1)),y:(e.clientY-r.top)*(H/(r.height||1))}}
+  function seg(a,b,m){cx.globalCompositeOperation=tool==='er'?'destination-out':'source-over';cx.strokeStyle='#2f3d4f';cx.lineWidth=tool==='er'?26:3.4;cx.beginPath();cx.moveTo(m.x,m.y);cx.quadraticCurveTo(a.x,a.y,(a.x+b.x)/2,(a.y+b.y)/2);cx.stroke()}
+  function dot(p){if(tool==='er')return;cx.globalCompositeOperation='source-over';cx.fillStyle='#2f3d4f';cx.beginPath();cx.arc(p.x,p.y,1.7,0,7);cx.fill()}
+  cv.addEventListener('pointerdown',function(e){if(!body.classList.contains('scron'))return;if(e.pointerType==='pen')penSeen=true;else if(penSeen&&e.pointerType==='touch')return;if(cur!=null)return;e.preventDefault();fit();cur=e.pointerId;try{cv.setPointerCapture(e.pointerId)}catch(_){}var p=pt(e);last={p:p,m:p};used=true;dot(p)});
+  cv.addEventListener('pointermove',function(e){if(e.pointerId!==cur)return;e.preventDefault();var es=e.getCoalescedEvents?e.getCoalescedEvents():[];if(!es.length)es=[e];es.forEach(function(ev){var p=pt(ev),m={x:(last.p.x+p.x)/2,y:(last.p.y+p.y)/2};seg(last.p,p,last.m);last={p:p,m:m}})});
+  function up(e){if(e.pointerId!==cur)return;cur=null;last=null}
+  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+  cv.addEventListener('touchstart',function(e){if(body.classList.contains('scron'))e.preventDefault()},{passive:false});
+  var bar=el('div','scrbar'),tog=el('button','scrtog');tog.innerHTML=SCR_I.pen;tog.appendChild(el('span',null,'연습장'));tog.setAttribute('aria-label','연습장 열기');
+  function tb(k,lab){var b=el('button','st'+(k===tool?' on':''));b.innerHTML=SCR_I[k];b.setAttribute('aria-label',lab);bar.appendChild(b);return b}
+  bar.appendChild(tog);var bp=tb('pen','펜'),be=tb('er','지우개'),ba=tb('all','모두 지우기'),bx=tb('x','연습장 닫기');
+  function setT(k){tool=k;bp.className='st'+(k==='pen'?' on':'');be.className='st'+(k==='er'?' on':'')}
+  tog.onclick=function(){fit();body.classList.add('scron');setT('pen');tone([660,880],'sine');var t=body.querySelector('.scrtip');if(t)t.remove()};
+  bp.onclick=function(){setT('pen')};be.onclick=function(){setT('er')};
+  ba.onclick=function(){cx.save();cx.setTransform(1,0,0,1,0,0);cx.globalCompositeOperation='source-over';cx.clearRect(0,0,cv.width,cv.height);cx.restore();used=false};
+  bx.onclick=function(){body.classList.remove('scron');cur=null};
+  body.appendChild(cv);body.appendChild(bar);
+  requestAnimationFrame(fit);if(window.ResizeObserver){var ro=new ResizeObserver(function(){if(!body.isConnected){ro.disconnect();return}fit()});ro.observe(body)}
+  var it=introS();if(!it.scr){setTimeout(function(){if(!body.isConnected||body.classList.contains('scron')||it!==introS())return;it.scr=1;save();tog.classList.add('nudge');body.appendChild(el('div','scrtip','계산이 어려우면 여기에 써 봐요'));setTimeout(function(){var t=body.querySelector('.scrtip');if(t)t.remove()},4800)},700)}
+}
 function introS(){if(!S.intro)S.intro={};return S.intro}
 function coachRun(steps,done){if(document.querySelector('.guide'))return;var me=S.path.char||'rabbit',i=0;
   var lay=el('div','guide coach'),hole=el('div','tg-hole'),card=el('div','tg-card'),pic=avImg(me,'tg-pic'),txt=el('p','tg-txt'),row=el('div','tg-row');
@@ -4059,6 +4107,3 @@ function trail(){missionCheck();
 
 home();
 </script>
-
-</body>
-</html>
