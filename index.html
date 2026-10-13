@@ -1397,6 +1397,32 @@ button.dexc{border:0;font:inherit;color:inherit}
 @keyframes scrtip{0%{opacity:0;transform:translateY(4px)}8%,85%{opacity:1;transform:none}100%{opacity:0}}
 .qscreen .qpal{z-index:8}
 @media (max-width:359px){.qscreen.q-math .qbody{padding-top:46px!important}}
+
+.qtag>em{margin:0!important;position:relative;top:-.75px}
+.qtag .qcombo>span{position:relative;top:2.5px}
+.qtag .qch{padding:1.1px 9px .9px}
+@media (max-width:340px){.qtag .qcombo>span{top:1.4px}}
+.qtag .qre{padding:1.65px 8px .35px}
+.qnew{padding:1.65px 8px .35px;border-radius:999px;background:#3b9cf0;color:#fff;font-style:normal;font-size:.72rem;width:max-content}
+.dvpile{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:250px;padding:10px 12px;border-radius:18px;background:#fff6e0;box-shadow:inset 0 0 0 2px #ffe2a1}
+.dvpile i,.dvplate i,.dvgrid i{width:16px;height:16px;border-radius:50%;background:#ff8a3d;box-shadow:inset 0 -3px 0 rgba(0,0,0,.12)}
+.dvpile i:nth-child(3n+2),.dvplate i:nth-child(3n+2){background:#ff6b9a}.dvpile i:nth-child(3n),.dvplate i:nth-child(3n){background:#4dabf7}
+.dvplates{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:4px}
+.dvplate{position:relative;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:3px;width:64px;height:44px;padding:4px 8px;border-radius:50%;background:#f1f4f8;box-shadow:inset 0 0 0 3px #dfe5ec,0 3px 0 #cfd7e0}
+.dvplate i{width:11px;height:11px;visibility:hidden}
+.revealed .dvplate i{visibility:visible;animation:rvbin .4s cubic-bezier(.3,1.8,.5,1) both}
+.dvplate.hasbd>.rvb{top:-12px;right:-6px}
+.dvgrid{display:grid;gap:8px;justify-content:center;padding:12px;border-radius:18px;background:#f4f8fc;box-shadow:inset 0 0 0 2px #e1e9f2}
+.dvgrid i{width:20px;height:20px;background:#9aa5b1;transition:background .3s}
+.revealed .dvgrid i.g0{background:#ff8a3d}.revealed .dvgrid i.g1{background:#4dabf7}
+.ldiv{display:inline-grid;grid-template-columns:auto auto;font-family:var(--game);font-size:2.2rem;line-height:1.25;color:#26313d;letter-spacing:.12em}
+.ldiv .lq{grid-column:2;justify-self:end;margin:0 0 8px}
+.ldiv .lq .slot{min-width:96px}
+.ldiv .ld{grid-row:2;grid-column:1;padding:6px 12px 0 0}
+.ldiv .ln{grid-row:2;grid-column:2;padding:6px 8px 0 16px;border-top:3px solid #26313d;border-left:3px solid #26313d;border-top-left-radius:18px 34px}
+.dvrem .unit.dots{letter-spacing:0;margin:0 -2px}
+.dvrem .unit{white-space:nowrap}
+@media (max-width:359px){.dvrem .unit{font-size:1.2rem}.dvrem{gap:4px}.dvrem .slot{min-width:40px;padding:0 2px}.dvgrid{gap:6px;padding:10px}.dvgrid i{width:15px;height:15px}.dvpile i{width:14px;height:14px}.dvplates{gap:6px}.dvplate{width:54px;height:40px;padding:4px 6px}.dvpile{max-width:230px;gap:5px}}
 </style>
 
 <div id="app"></div>
@@ -1974,7 +2000,7 @@ function stkSheet(){var I=stkInfo(),n=I.n,gt=(S.stk&&S.stk.got)||[],nx=STK.filte
 // ================= 과목 =================
 var SUBJ={
   math:{key:'math',tab:'수학',pot:'꽃 화분',noun:'꽃',rareNoun:'희귀 꽃',bloomed:'피었어요',items:FLOWERS,rare:RARE_FLOWERS,
-    types:{gugu:'곱셈구구',num4:'네 자리 수',graph:'표와 그래프',seq:'규칙 찾기',pyr:'수 피라미드',sym:'그림 암호',card:'카드 맞추기',clock:'시계 보기',len:'길이 재기',money:'돈 계산',mul:'곱셈'},
+    types:{gugu:'곱셈구구',num4:'네 자리 수',graph:'표와 그래프',seq:'규칙 찾기',pyr:'수 피라미드',sym:'그림 암호',card:'카드 맞추기',clock:'시계 보기',len:'길이 재기',money:'돈 계산',mul:'곱셈',div:'나눗셈'},
     stage:['씨앗을 심었어요','새싹이 올라왔어요','새싹이 자라고 있어요','잎이 나기 시작했어요','잎이 무성해졌어요','곧 꽃이 필 것 같아요']},
   hz:{key:'hz',tab:'한자',pot:'열매 바구니',noun:'열매',rareNoun:'희귀 열매',bloomed:'열렸어요',items:FRUITS,rare:RARE_FRUITS,
     types:{mean:'뜻 고르기',sound:'음 고르기',find:'한자 찾기',word:'한자어 읽기'},
@@ -2210,6 +2236,40 @@ function genMul(lv){
     render:function(box,P){var w=el('div','vmul');w.appendChild(el('div','vr',String(a)));var r2=el('div','vr');r2.appendChild(el('span','op','×'));r2.appendChild(document.createTextNode(String(b)));w.appendChild(r2);w.appendChild(el('div','vline'));var r3=el('div','vr ans');r3.appendChild(P.slot);w.appendChild(r3);box.appendChild(w)}};
 }
 
+
+// ----- 나눗셈 -----
+function genDiv(lv){
+  if(lv===1){
+    var k=R(2,4),per=R(2,5),N=k*per,T=[['사탕 '+N+'개를 '+k+'명이 똑같이 나누면 몇\u00a0개씩일까요?','친구'],['딸기 '+N+'개를 접시 '+k+'개에 똑같이 담으면 몇\u00a0개씩일까요?','접시'],['쿠키 '+N+'개를 봉지 '+k+'개에 똑같이 담으면 몇\u00a0개씩일까요?','봉지']][R(0,2)];
+    var q=T[0];
+    return {mode:'pad',q:q,answer:per,hint:'하나씩 번갈아 나누어 놓아 봐요. 연습장에 '+T[1]+'를 그려도 좋아요.',explain:N+'개를 '+k+'곳에 똑같이 나누면 '+per+'개씩이에요. '+N+' ÷ '+k+' = '+per,
+      render:function(box,P){var p=el('div','dvpile');for(var i=0;i<N;i++)p.appendChild(el('i'));box.appendChild(p);var ps=el('div','dvplates');for(var j=0;j<k;j++){var pl=el('div','dvplate');pl.setAttribute('data-bd',per+'개');for(var t=0;t<per;t++)pl.appendChild(el('i'));ps.appendChild(pl)}box.appendChild(ps);var r=el('div','ansrow');r.appendChild(el('span','unit',N+' ÷ '+k+' ='));r.appendChild(P.slot);box.appendChild(r)}};
+  }
+  if(lv===2){
+    var a=R(2,5),g=R(2,6),N2=a*g,cols=[5,6,7].filter(function(c){return c%a&&Math.ceil(N2/c)<=5})[0]||6,obj=['구슬','단추','조개'][R(0,2)];
+    return {mode:'pad',q:obj+' '+N2+'개를 '+a+'개씩 묶으면 몇 묶음일까요?',answer:g,hint:'연습장을 열고 '+a+'개씩 동그라미로 묶어 봐요.',explain:a+'개씩 묶으면 '+g+'묶음이에요. '+N2+' ÷ '+a+' = '+g,
+      render:function(box,P){var w=el('div','dvgrid');w.style.gridTemplateColumns='repeat('+cols+',auto)';for(var i=0;i<N2;i++)w.appendChild(el('i','g'+(Math.floor(i/a)%2)));box.appendChild(w);var r=el('div','ansrow');r.appendChild(el('span','unit',N2+' ÷ '+a+' ='));r.appendChild(P.slot);box.appendChild(r)}};
+  }
+  if(lv===3){
+    var d=R(2,9),b=R(2,9),N3=d*b;
+    var ex=d+' × '+b+' = '+N3+'이니까 '+N3+' ÷ '+d+' = '+b;
+    if(Math.random()<.5)return {mode:'pad',q:'빈칸에 알맞은 수는?',answer:b,hint:d+' × □ = '+N3+', '+d+'단에서 '+josa(String(N3),'을','를')+' 찾아봐요.',explain:ex,
+      render:function(box,P){var r=el('div','ansrow big');r.appendChild(el('span','unit',N3+' ÷ '+d+' ='));r.appendChild(P.slot);box.appendChild(r)}};
+    var W=[['귤 '+N3+'개를 '+d+'명이 똑같이 나누어 먹으면, 한 명이 몇 개씩 먹을까요?','개'],['연필 '+N3+'자루를 '+d+'자루씩 필통에 넣으면, 필통은 몇 개 필요할까요?','개'],['학생 '+N3+'명이 '+d+'명씩 모둠을 만들면, 모둠은 몇 개일까요?','개']][R(0,2)];
+    return {mode:'pad',q:W[0],answer:b,hint:'나눗셈식으로 써 봐요. '+N3+' ÷ '+d+' = □',explain:ex+W[1],render:function(box,P){unitPad(box,P,N3+' ÷ '+d+' =',W[1])}};
+  }
+  if(lv===4){
+    var dd=R(2,6),qq=R(11,Math.floor(99/dd)),N4=dd*qq,t=Math.floor(N4/10),u=N4%10,q1=Math.floor(t/dd),r1=t-q1*dd,rest=r1*10+u;
+    var ex4=r1?'십의 자리: '+t+' ÷ '+dd+' = '+q1+' … '+r1+'. 남은 '+josa(String(r1),'과','와')+' 일의 자리 '+josa(String(u),'을','를')+' 합친 '+rest+' ÷ '+dd+' = '+(rest/dd)+'. 그래서 '+N4+' ÷ '+dd+' = '+qq+'이에요.':'십의 자리: '+t+' ÷ '+dd+' = '+q1+', 일의 자리: '+u+' ÷ '+dd+' = '+(u/dd)+'. 그래서 '+N4+' ÷ '+dd+' = '+qq+'이에요.';
+    return {mode:'pad',q:'나눗셈을 해 볼까요?',answer:qq,hint:'십의 자리 '+t+'부터 '+dd+'로 나누고, 남은 수는 일의 자리와 합쳐서 다시 나눠요.',explain:ex4,
+      render:function(box,P){var w=el('div','ldiv');var lq=el('span','lq');lq.appendChild(P.slot);w.appendChild(lq);w.appendChild(el('span','ld',String(dd)));w.appendChild(el('span','ln',String(N4)));box.appendChild(w)}};
+  }
+  var d5=R(3,9),q5=R(3,9),r5=R(1,d5-1),N5=d5*q5+r5,askR=Math.random()<.5,ex5=d5+' × '+q5+' = '+(d5*q5)+', '+N5+' − '+(d5*q5)+' = '+r5+'. 그래서 '+N5+' ÷ '+d5+' = '+q5+' … '+r5+'이에요.',hint5=d5+'단에서 '+N5+'보다 크지 않은 가장 큰 수를 찾아봐요. 나머지는 '+d5+'보다 작아요.';
+  if(Math.random()<.6)return {mode:'pad',q:askR?'나머지는 얼마일까요?':'몫은 얼마일까요?',answer:askR?r5:q5,hint:hint5,explain:ex5,
+    render:function(box,P){var r=el('div','ansrow big dvrem');r.appendChild(el('span','unit',N5+' ÷ '+d5+' ='));if(askR)r.appendChild(el('span','unit',String(q5)));else r.appendChild(P.slot);r.appendChild(el('span','unit dots','…'));if(askR)r.appendChild(P.slot);else r.appendChild(el('span','unit',String(r5)));box.appendChild(r)}};
+  return {mode:'pad',q:askR?'쿠키 '+N5+'개를 한 봉지에 '+d5+'개씩 담아요. 봉지에 담고 남는 쿠키는 몇 개일까요?':'쿠키 '+N5+'개를 한 봉지에 '+d5+'개씩 담아요. 몇 봉지를 꽉 채울 수 있을까요?',answer:askR?r5:q5,hint:hint5,explain:ex5,
+    render:function(box,P){unitPad(box,P,'',askR?'개':'봉지')}};
+}
 // ----- 곱셈구구 -----
 function genGugu(lv){
   var DAN=[[2,5],[3,4],[6,7],[8,9],[2,3,4,5,6,7,8,9]][lv-1],a=DAN[R(0,DAN.length-1)],b=R(2,9),ans=a*b;
@@ -2273,7 +2333,7 @@ function genGraph(lv){
   if(lv===4)return {mode:'pad',q:'표를 보고, 조사한 친구는 모두 몇 명인지 구해요.',answer:tot,hint:'네 과일의 친구 수를 모두 더해요.',explain:cnt.join(' + ')+' = '+tot+'명이에요.',render:function(box,P){table(box,-1);unitPad(box,P,'합계','명')}};
   return {mode:'pad',q:josa(items[i][0],'을','를')+' 좋아하는 친구는 몇 명일까요?',answer:cnt[i],hint:'합계에서 나머지 과일의 친구 수를 빼요.',explain:tot+' − '+cnt.filter(function(c,k){return k!==i}).join(' − ')+' = '+cnt[i]+'명이에요.',render:function(box,P){table(box,i);unitPad(box,P,'','명')}};
 }
-var GEN={seq:genSeq,pyr:genPyr,sym:genSym,card:genCard,clock:genClock,len:genLen,money:genMoney,mul:genMul,gugu:genGugu,num4:genNum4,graph:genGraph};
+var GEN={seq:genSeq,pyr:genPyr,sym:genSym,card:genCard,clock:genClock,len:genLen,money:genMoney,mul:genMul,div:genDiv,gugu:genGugu,num4:genNum4,graph:genGraph};
 
 SUBJ.math.gen=GEN;
 
@@ -2455,8 +2515,8 @@ function play(){
     var NQ=G.n||ROUND;var dots=el('div','qdots');for(var di=0;di<NQ;di++){var dd=el('i',di<G.idx?'done':di===G.idx?'now':'');dots.appendChild(dd)}
   var wallet=el('div','qwallet');wallet.appendChild(img(sub.key==='math'?'droplet':'sun'));var wN=el('b','tnum',sub.key==='math'?G.drops:G.drops);wallet.appendChild(wN);
   top.appendChild(x);top.appendChild(dots);top.appendChild(wallet);sc.appendChild(top);if(ADV&&ADV.q[ADV.i]===G.sub.key&&!G.ch)sc.appendChild(advStrip());
-  var cb0=null;if(G.combo>=2&&!G.ch){var cb=el('em','combo qcombo');cb.appendChild(img('fire'));cb.appendChild(document.createTextNode(G.combo+'연속'+(G.combo>=3?' · 2배':'')));cb0=cb}
-  var qh=el('div','qhead');var tag=el('small','qtag',sub.types[type]);if(sub.key==='math'){var lvb=el('em','qlv','Lv.'+lv);tag.appendChild(lvb)}if(G.ch){tag.insertBefore(el('em','qch','도전'),tag.firstChild)}if(G.re&&G.re.indexOf(type)>=0){tag.appendChild(el('em','qre','다시 도전'))}if(cb0)tag.appendChild(cb0);qh.appendChild(tag);qh.appendChild(el('h2',null,pz.q));sc.appendChild(qh);
+  var cb0=null;if(G.combo>=2&&!G.ch){var cb=el('em','combo qcombo');cb.appendChild(img('fire'));cb.appendChild(el('span',null,G.combo+'연속'+(G.combo>=3?' · 2배':'')));cb0=cb}
+  var qh=el('div','qhead');var tag=el('small','qtag',sub.types[type]);if(sub.key==='math'){var lvb=el('em','qlv','Lv.'+lv);tag.appendChild(lvb)}if(G.ch){tag.insertBefore(el('em','qch','도전'),tag.firstChild)}if(G.re&&G.re.indexOf(type)>=0){tag.appendChild(el('em','qre','다시 도전'))}else if(type==='div'&&!introS().div){introS().div=1;save();tag.appendChild(el('em','qnew','새 문제'))}if(cb0)tag.appendChild(cb0);qh.appendChild(tag);qh.appendChild(el('h2',null,pz.q));sc.appendChild(qh);
   var body=el('div','qbody');sc.appendChild(body);
   var pal=el('div','qpal');var pim=avImg(S.path.char||'rabbit');pal.appendChild(pim);body.appendChild(pal);if(sub.key==='math')scratchPad(body);
   function palSay(c){pal.className='qpal '+c;void pal.offsetWidth}
