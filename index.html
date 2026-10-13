@@ -2005,7 +2005,7 @@ function stkShow(tries){if(!S.stk||!S.stk.pend.length)return;if(!document.queryS
 // 불 아이콘을 누르면
 function sunSheet(){var inn=sheet.firstChild;inn.innerHTML='';
   var hd=el('div','hd');hd.appendChild(img('sun'));var t=el('div');t.appendChild(el('small',null,'햇살'));t.appendChild(el('h3',null,'햇살 '+S.sun+'개'));hd.appendChild(t);inn.appendChild(hd);
-  inn.appendChild(el('p',null,'퍼즐을 풀면 모여요. 상점에서 소품을 사거나 섬을 넓힐 때 써요.'));
+  inn.appendChild(el('p',null,'수학·한자·영어 문제를 맞히면 모여요. 상점에서 소품을 사거나 섬을 넓힐 때 써요.'));
   var row=el('div','stkrow');[['check_mark_button','정답','+1'],['blossom','꽃·열매','+5'],['sparkles','도전','+10'],['fire','연속 기록','선물']].forEach(function(x){var c=el('div','stkm ok sunm');c.appendChild(img(x[0]));c.appendChild(el('b',null,x[2]));c.appendChild(el('small',null,x[1]));row.appendChild(c)});inn.appendChild(row);
   var go=el('button','cta','상점 가기');go.onclick=function(){hideSheet();shop('decor')};inn.appendChild(go);
   var c=el('button','cta light','닫기');c.onclick=hideSheet;inn.appendChild(c);
@@ -2474,7 +2474,7 @@ function shop(tab){
       card.appendChild(el('b',null,d.name));
       var tag=el('small','tag');tag.appendChild(img('sun'));tag.appendChild(document.createTextNode(d.price+(have?'  ·  '+have+'개':'')));card.appendChild(tag);if(d.sz>1){card.appendChild(el('em','bigtag','큰 소품 '+d.sz+'×'+d.sz));card.className+=' bigc'}
       card.onclick=function(){
-        if(S.sun<d.price){msg.textContent='햇살이 '+(d.price-S.sun)+'개 더 필요해요. 퍼즐을 풀면 햇살이 모여요.';msg.className='sum warn';return}
+        if(S.sun<d.price){msg.textContent='햇살이 '+(d.price-S.sun)+'개 더 필요해요. 문제를 풀면 햇살이 모여요.';msg.className='sum warn';return}
         S.sun-=d.price;S.gd.bought[d.id]=(S.gd.bought[d.id]||0)+1;save();tone([659,880,1175],'sine',.08);
         showSheet('good','shopping_bags','보관함에 넣었어요',josa(d.name,'을','를')+' 샀어요','섬 꾸미기에서 원하는 칸에 놓아 보세요.','지금 놓으러 가기',function(){gardenScreen(true,d.id)});(function(){var mo=el('button','cta light','계속 구경하기');mo.onclick=function(){hideSheet();var y=scrollY;shop('decor');scrollTo(0,y)};sheet.firstChild.appendChild(mo)})();
       };
@@ -2493,7 +2493,7 @@ function shop(tab){
       card.onclick=function(){
         if(!own&&it.price==null){msg.textContent=josa(it.name,'은','는')+' 오솔길 보물상자에서 만날 수 있어요.';msg.className='sum';return}
         if(!own){
-          if(S.sun<it.price){msg.textContent='햇살이 '+(it.price-S.sun)+'개 더 필요해요. 퍼즐을 풀면 햇살이 모여요.';msg.className='sum warn';return}
+          if(S.sun<it.price){msg.textContent='햇살이 '+(it.price-S.sun)+'개 더 필요해요. 문제를 풀면 햇살이 모여요.';msg.className='sum warn';return}
           S.sun-=it.price;S.own[it.id]=1;tone([659,880,1175],'sine',.08);
         }
         if(tab==='pot')S.equip.pot=it.id;else S.equip.friend=(S.equip.friend===it.id&&own)?'':it.id;
@@ -2695,7 +2695,7 @@ function evGain(n){var e=evNow();if(!e||!n)return 0;S.ev.tok+=n;save();return n}
 function evToast(n){var e=evNow();if(!e||!n)return;var t=el('div','evtoast');t.appendChild(img(e.tok));t.appendChild(el('b',null,e.tokName+' +'+n));document.body.appendChild(t);setTimeout(function(){t.remove()},2600)}
 function evSheet(){var e=evNow();if(!e)return;var inn=sheet.firstChild;inn.innerHTML='';
   var hd=el('div','hd');hd.appendChild(img(e.tok));var t=el('div');t.appendChild(el('small',null,e.name+' · '+(e.left?e.left+'일 남음':'오늘이 마지막 날')));t.appendChild(el('h3',null,e.tokName+' '+S.ev.tok+'개'));hd.appendChild(t);inn.appendChild(hd);
-  inn.appendChild(el('p',null,'퍼즐 한 판마다 1개, 다 맞히면 2개! 오늘의 모험을 끝내면 2개 더 받아요.'));
+  inn.appendChild(el('p',null,'문제 한 판마다 1개, 다 맞히면 2개! 오늘의 모험을 끝내면 2개 더 받아요.'));
   var g=el('div','evgrid');e.items.forEach(function(it){var got=!!S.ev.got[it.id],ok=S.ev.tok>=it.cost,c=el('button','evit'+(got?' got':ok?' ok':''));c.appendChild(img(it.id));c.appendChild(el('b',null,itemName(it.kind==='friend'?'a:'+it.id:it.id)));
     var tg=el('small');if(got)tg.textContent='받았어요';else{tg.appendChild(img(e.tok));tg.appendChild(document.createTextNode(it.cost))}c.appendChild(tg);
     c.onclick=function(){if(S.ev.got[it.id])return;if(S.ev.tok<it.cost){tone([330],'triangle');c.className='evit no';setTimeout(function(){c.className='evit'},400);return}
@@ -2792,7 +2792,7 @@ function waterScene(sub,fromRound){
     bagN.textContent=st.water;
     var left=PER-stage(sub);
     if(st.water>0){info.innerHTML='';info.appendChild(el('b',null,'구름을 꾹 누르고 있으면 비가 내려요'));info.appendChild(document.createElement('br'));info.appendChild(document.createTextNode(josa(sub.noun,'이','가')+' '+(sub.key==='math'?'피려면':'열리려면')+' 비가 '+left+'번 더 필요해요.'))}
-    else{info.textContent='물방울을 다 썼어요. 퍼즐을 풀면 또 모을 수 있어요.';cloud.className='cloudbtn empty';btn.className='cta'+(ADV?' green':'');btn.textContent=advNextLabel()||'확인'}
+    else{info.textContent='물방울을 다 썼어요. 문제를 풀면 또 모을 수 있어요.';cloud.className='cloudbtn empty';btn.className='cta'+(ADV?' green':'');btn.textContent=advNextLabel()||'확인'}
   }
   render(false);
 
@@ -3098,7 +3098,7 @@ function treeScreen(fromRound){
     c.appendChild(el('div','eyebrow','한자 나무'));
     c.appendChild(el('h2',null,n?GRADES[tg]+' 한자 '+n+'자가 열렸어요':'아직 열매가 없어요'));
     var wn=wiltedList().length;
-    c.appendChild(el('p','sub',n?(wn?'시든 열매가 '+wn+'개 있어요. 한자 퍼즐에서 맞히면 다시 싱싱해져요.':'열매를 누르면 뜻과 음을 볼 수 있어요.'):'한자 퍼즐에서 같은 한자를 두 번 한 번에 맞히면 열매가 열려요.'));
+    c.appendChild(el('p','sub',n?(wn?'시든 열매가 '+wn+'개 있어요. 한자 문제에서 맞히면 다시 싱싱해져요.':'열매를 누르면 뜻과 음을 볼 수 있어요.'):'한자 문제에서 같은 한자를 두 번 한 번에 맞히면 열매가 열려요.'));
   }
   var info=el('p','fruitinfo');info.hidden=true;
   var zz=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z'))||1;var tw=Math.max(170,Math.min((app.clientWidth||375)-40,320,(innerHeight/(document.body.classList.contains('big')?zz:1)-(fromRound?380:330))/TREE_AR));
@@ -3111,7 +3111,7 @@ function treeScreen(fromRound){
   sc.appendChild(c);
   var d=el('div','dock');
   if(fromRound){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;d.appendChild(ok)}
-  else{var go=el('button','cta','한자 퍼즐 풀기');go.onclick=function(){startRound(SUBJ.hz)};d.appendChild(go)}
+  else{var go=el('button','cta','한자 문제 풀기');go.onclick=function(){startRound(SUBJ.hz)};d.appendChild(go)}
   sc.appendChild(d);
   app.appendChild(sc);
 }
@@ -3445,12 +3445,12 @@ var LMACT={
     var m=SUBJ.math,st=stage(m),inn=sheet.firstChild;inn.innerHTML='';
     var hd=el('div','hd');var pv=el('div','sheetpot');pv.appendChild(potBox(null,st,64,potKey(m)));hd.appendChild(pv);
     var t=el('div');t.appendChild(el('small',null,'수학 화분 · '+st+' / '+PER));t.appendChild(el('h3',null,m.stage[st]));hd.appendChild(t);inn.appendChild(hd);
-    inn.appendChild(el('p',null,S.math.water>0?'물방울 '+S.math.water+'개가 있어요. 구름을 꾹 눌러 비를 내려 주세요.':'수학 퍼즐을 풀면 물방울을 모을 수 있어요.'));
+    inn.appendChild(el('p',null,S.math.water>0?'물방울 '+S.math.water+'개가 있어요. 구름을 꾹 눌러 비를 내려 주세요.':'수학 문제를 풀면 물방울을 모을 수 있어요.'));
     var row=el('div','dockrow');
     var a=el('button','cta light','닫기');a.onclick=hideSheet;
-    var b=el('button','cta '+(S.math.water>0?'green':''),S.math.water>0?'비 내리기 ('+S.math.water+')':'수학 퍼즐 풀기');b.onclick=function(){hideSheet();S.math.water>0?waterScene(m,false):startRound(m)};
+    var b=el('button','cta '+(S.math.water>0?'green':''),S.math.water>0?'비 내리기 ('+S.math.water+')':'수학 문제 풀기');b.onclick=function(){hideSheet();S.math.water>0?waterScene(m,false):startRound(m)};
     row.appendChild(a);row.appendChild(b);inn.appendChild(row);
-    if(S.math.water>0){var c=el('button','linkbtn','수학 퍼즐 풀기');c.onclick=function(){hideSheet();startRound(m)};inn.appendChild(c)}
+    if(S.math.water>0){var c=el('button','linkbtn','수학 문제 풀기');c.onclick=function(){hideSheet();startRound(m)};inn.appendChild(c)}
     sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;
     requestAnimationFrame(function(){sheet.className='sheet good show'});
   }
@@ -3471,7 +3471,7 @@ function beeScreen(fromRound){
   EN.words.slice().sort(function(a,b){return (jarIn[b.w]?1:0)-(jarIn[a.w]?1:0)}).forEach(function(x){var p=enBits(x.w),b=el('button','enw'+(p===7?' full':'')+(jarIn[x.w]?' injar':''));b.appendChild(el('b',null,x.w));b.appendChild(el('span',null,x.k));var d=el('i','dots3');[1,2,4].forEach(function(k){d.appendChild(el('em',p&k?'on':''))});b.appendChild(d);b.onclick=function(){sayEn(x.w)};ul.appendChild(b)});
   det.appendChild(ul);c.appendChild(det);
   sc.appendChild(c);
-  var dk=el('div','dock');if(fromRound){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;dk.appendChild(ok)}else{var go=el('button','cta','영어 퍼즐 풀기');go.onclick=function(){startRound(SUBJ.en)};dk.appendChild(go)}
+  var dk=el('div','dock');if(fromRound){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;dk.appendChild(ok)}else{var go=el('button','cta','영어 문제 풀기');go.onclick=function(){startRound(SUBJ.en)};dk.appendChild(go)}
   sc.appendChild(dk);app.appendChild(sc);
 }
 
@@ -3533,7 +3533,7 @@ function avScreen(keep){
     card.appendChild(el('b',null,it.name));card.appendChild(avStars(t));
     var bs=el('div','avbtns');
     if(!t){var buy=el('button','avbtn buy');buy.appendChild(img('sun'));buy.appendChild(document.createTextNode(it.price));buy.setAttribute('aria-label',it.name+' 햇살 '+it.price+'개로 사기');
-      buy.onclick=function(){if(avLock())return;if(S.sun<it.price){msg.textContent='햇살이 '+(it.price-S.sun)+'개 더 필요해요. 퍼즐을 풀면 햇살이 모여요.';msg.className='sum warn';tone([330],'triangle');return}
+      buy.onclick=function(){if(avLock())return;if(S.sun<it.price){msg.textContent='햇살이 '+(it.price-S.sun)+'개 더 필요해요. 문제를 풀면 햇살이 모여요.';msg.className='sum warn';tone([330],'triangle');return}
         S.sun-=it.price;a.own[it.id]=1;E_[it.slot]=it.id;save();tone([659,880,1175],'sine',.08);avScreen(1);var r=document.querySelector('.avbig');if(r){var rc=r.getBoundingClientRect();burst(rc.left+rc.width/2,rc.top+rc.height*.3,30,true)}};bs.appendChild(buy)}
     else{var w=el('button','avbtn '+(on?'off':'wear'),on?'벗기':'입기');w.onclick=function(){if(avLock())return;if(on)delete E_[it.slot];else E_[it.slot]=it.id;save();tone(on?[523]:[659,784],'sine',.06);avScreen(1)};bs.appendChild(w);
       if(t<3){var cost=AV_UP[t],up=el('button','avbtn up');up.appendChild(img('gem'));up.appendChild(document.createTextNode(cost+' 강화'));up.setAttribute('aria-label','보석 '+cost+'개로 강화');if(a.gem<cost)up.className+=' need';
@@ -3826,8 +3826,8 @@ function nbSheet(){
     var cl=el('button','cta light','닫기');cl.onclick=hideSheet;row.appendChild(cl);
     var need=q.n-p,go;
     if(q.t==='decor'&&avail(q.k)<need){go=el('button','cta','상점 가기');go.onclick=function(){hideSheet();shop('decor')}}
-    else if((q.t==='kind'&&avail('f'+q.k)+avail('fr'+q.k)<need)||(q.t==='flower'&&countAvail(/^f(\d+|r\d+)$/)<need)){go=el('button','cta','수학 퍼즐 풀기');go.onclick=function(){hideSheet();startRound(SUBJ.math)}}
-    else if(q.t==='fruit'&&countAvail(/^z(\d+|r\d+)$/)<need){go=el('button','cta','한자 퍼즐 풀기');go.onclick=function(){hideSheet();startRound(SUBJ.hz)}}
+    else if((q.t==='kind'&&avail('f'+q.k)+avail('fr'+q.k)<need)||(q.t==='flower'&&countAvail(/^f(\d+|r\d+)$/)<need)){go=el('button','cta','수학 문제 풀기');go.onclick=function(){hideSheet();startRound(SUBJ.math)}}
+    else if(q.t==='fruit'&&countAvail(/^z(\d+|r\d+)$/)<need){go=el('button','cta','한자 문제 풀기');go.onclick=function(){hideSheet();startRound(SUBJ.hz)}}
     else{go=el('button','cta','섬 꾸미러 가기');go.onclick=function(){hideSheet();islandScreen(true)}}
     row.appendChild(go);
   }
@@ -4001,9 +4001,9 @@ function startGuide(){
   var me=S.path.char||'rabbit',nm=ANIMALS[me]||'토끼';
   var steps=[
     [null,'안녕! 나는 '+nm+(batchim(nm)?'이야':'야')+'. 오늘부터 같이 섬을 꾸며 보자!'],
-    ['.vtask','수학 퍼즐을 풀면 물방울이 생겨. 연속으로 맞히면 두 배야!'],
+    ['.vtask','수학 문제를 풀면 물방울이 생겨. 연속으로 맞히면 두 배야!'],
     ['.lm-pot .v3art','물방울로 수학 화분에 비를 내리면 꽃이 피어.'],
-    ['.lm-tree .v3art','한자 퍼즐을 풀면 한자 나무에 열매가 열려.'],
+    ['.lm-tree .v3art','한자 문제를 풀면 한자 나무에 열매가 열려.'],
     ['.lm-boat .v3art','꽃과 열매는 배를 타고 내 섬에 가서 마음대로 놓을 수 있어. 오솔길에선 나랑 도전 문제를 풀면서 여행해!'],
     ['.lm-shop .v3art','햇살을 모으면 상점에서 소품을 살 수 있어.'],
     ['.lm-fish .v3art','오늘의 모험을 마치면 낚시터가 열리고, 보석을 모으면 나를 꾸밀 수도 있어. 그럼 오늘의 할 일부터 시작해 볼까?']
@@ -4044,9 +4044,9 @@ function todayLabel(){var d=new Date();return (d.getMonth()+1)+'월 '+d.getDate(
 // ================= 오솔길 =================
 var CHARS=[{id:'rabbit',name:'토끼'},{id:'cat',name:'고양이'},{id:'penguin',name:'펭귄'},{id:'chipmunk',name:'다람쥐'}];
 var MISSIONS=[
- {t:'round',sub:'math',icon:'blossom',text:'수학 퍼즐 한 판 풀기'},
+ {t:'round',sub:'math',icon:'blossom',text:'수학 문제 한 판 풀기'},
  {t:'water',n:6,icon:'droplet',text:'화분에 물 6번 주기'},
- {t:'round',sub:'hz',icon:'red_apple',text:'한자 퍼즐 한 판 풀기'},
+ {t:'round',sub:'hz',icon:'red_apple',text:'한자 문제 한 판 풀기'},
  {t:'combo',n:3,icon:'fire',text:'한 판에서 3연속 정답 만들기'},
  {t:'bloom',icon:'seedling',text:'꽃 한 송이 피우기'},
  {t:'correct',n:10,icon:'check_mark_button',text:'정답 10개 맞히기'},
