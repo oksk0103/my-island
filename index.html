@@ -1885,7 +1885,7 @@ function cloudPush(){
   CLOUD.busy=true;
   CLOUD.ref.get().then(function(snap){var rem=snap&&snap.exists?snap.data():null,rt=rem&&rem.ts||0;
     if(rem&&rem.s&&rt>(CLOUD.seen||0)&&rt>(S.ts||0)){var o=null;try{o=JSON.parse(rem.s)}catch(e){}
-      if(o&&o.math){if(document.querySelector('.qscreen,.fishscr,.daydone')){CLOUD.later=1;return}CLOUD.seen=rt;CLOUD.dirty=false;applySave(o);home();return}}
+      if(o&&o.math){CLOUD.seen=rt;CLOUD.dirty=false;var busy_=!!document.querySelector('.qscreen,.fishscr,.daydone,.guide');applySave(o);if(!busy_)home();return}}
     var body={s:JSON.stringify(S),ts:S.ts||Date.now(),v:1};CLOUD.dirty=false;
     return CLOUD.ref.set(body).then(function(){CLOUD.seen=body.ts})})
   .then(function(){CLOUD.state='ok';CLOUD.at=Date.now()},function(e){CLOUD.state=(e&&e.code==='invalid_argument')?'local':'retry';if(e&&e.code==='unavailable')setTimeout(cloudLater,4000)})
@@ -2375,7 +2375,7 @@ function shop(tab){
       card.onclick=function(){
         if(S.sun<d.price){msg.textContent='햇살이 '+(d.price-S.sun)+'개 더 필요해요. 퍼즐을 풀면 햇살이 모여요.';msg.className='sum warn';return}
         S.sun-=d.price;S.gd.bought[d.id]=(S.gd.bought[d.id]||0)+1;save();tone([659,880,1175],'sine',.08);
-        showSheet('good','shopping_bags','보관함에 넣었어요',josa(d.name,'을','를')+' 샀어요','섬 꾸미기에서 원하는 칸에 놓아 보세요.','지금 놓으러 가기',function(){gardenScreen(true,d.id)});
+        showSheet('good','shopping_bags','보관함에 넣었어요',josa(d.name,'을','를')+' 샀어요','섬 꾸미기에서 원하는 칸에 놓아 보세요.','지금 놓으러 가기',function(){gardenScreen(true,d.id)});(function(){var mo=el('button','cta light','계속 구경하기');mo.onclick=function(){hideSheet();var y=scrollY;shop('decor');scrollTo(0,y)};sheet.firstChild.appendChild(mo)})();
       };
       g.appendChild(card);
     });
@@ -2435,8 +2435,8 @@ function play(){
   var tr=el('div','track'),fill=el('i');fill.style.width=(G.idx/(G.n||ROUND)*100)+'%';tr.appendChild(fill);
     var NQ=G.n||ROUND;var dots=el('div','qdots');for(var di=0;di<NQ;di++){var dd=el('i',di<G.idx?'done':di===G.idx?'now':'');dots.appendChild(dd)}
   var wallet=el('div','qwallet');wallet.appendChild(img(sub.key==='math'?'droplet':'sun'));var wN=el('b','tnum',sub.key==='math'?G.drops:G.drops);wallet.appendChild(wN);
-  top.appendChild(x);top.appendChild(dots);top.appendChild(wallet);sc.appendChild(top);if(ADV)sc.appendChild(advStrip());
-  var cb0=null;if(G.combo>=2){var cb=el('em','combo qcombo');cb.appendChild(img('fire'));cb.appendChild(document.createTextNode(G.combo+'연속'+(G.combo>=3?' · 2배':'')));cb0=cb}
+  top.appendChild(x);top.appendChild(dots);top.appendChild(wallet);sc.appendChild(top);if(ADV&&ADV.q[ADV.i]===G.sub.key&&!G.ch)sc.appendChild(advStrip());
+  var cb0=null;if(G.combo>=2&&!G.ch){var cb=el('em','combo qcombo');cb.appendChild(img('fire'));cb.appendChild(document.createTextNode(G.combo+'연속'+(G.combo>=3?' · 2배':'')));cb0=cb}
   var qh=el('div','qhead');var tag=el('small','qtag',sub.types[type]);if(sub.key==='math'){var lvb=el('em','qlv','Lv.'+lv);tag.appendChild(lvb)}if(G.ch){tag.insertBefore(el('em','qch','도전'),tag.firstChild)}if(G.re&&G.re.indexOf(type)>=0){tag.appendChild(el('em','qre','다시 도전'))}if(cb0)tag.appendChild(cb0);qh.appendChild(tag);qh.appendChild(el('h2',null,pz.q));sc.appendChild(qh);
   var body=el('div','qbody');sc.appendChild(body);
   var pal=el('div','qpal');var pim=avImg(S.path.char||'rabbit');pal.appendChild(pim);body.appendChild(pal);
@@ -2464,9 +2464,9 @@ function play(){
       (function(){var dd=dots.children[G.idx];if(dd){dd.className='done pop'}
         var t=G.combo>=3?G.combo+'연속!':G.combo===2?'2연속!':tries?'해냈다!':['좋아!','맞았어!','멋져!','대단해!'][R(0,3)];
         var bub=el('div','palbub'+(G.combo>=2?' hot':''));if(G.combo>=2)bub.appendChild(img('fire'));bub.appendChild(document.createTextNode(t));pal.appendChild(bub);setTimeout(function(){bub.remove()},1400);
-        if(G.combo>=3){var bn=el('div','combobig');bn.appendChild(img('fire'));bn.appendChild(el('b',null,G.combo+'연속 정답'));bn.appendChild(el('small',null,'보상 2배!'));document.body.appendChild(bn);setTimeout(function(){bn.remove()},1300)}})();
+        if(G.combo>=3&&!G.ch){var bn=el('div','combobig');bn.appendChild(img('fire'));bn.appendChild(el('b',null,G.combo+'연속 정답'));bn.appendChild(el('small',null,'보상 2배!'));document.body.appendChild(bn);setTimeout(function(){bn.remove()},1300)}})();
       var src=body.querySelector('.choice.right,.slot,.goal')||body,r=src.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,G.gain===2?26:18,G.gain===2);
-      var gain=G.gain;flyTo(sub.key==='math'?'droplet':'sun',src,wallet,gain,function(k){if(!G||!document.body.contains(wN))return;wN.textContent=G.drops-gain+k;wallet.className='qwallet pop';void wallet.offsetWidth;wallet.className='qwallet pop'});
+      var gain=G.gain;if(!G.ch)flyTo(sub.key==='math'?'droplet':'sun',src,wallet,gain,function(k){if(!G||!document.body.contains(wN))return;wN.textContent=G.drops-gain+k;wallet.className='qwallet pop';void wallet.offsetWidth;wallet.className='qwallet pop'});
       setTimeout(function(){if(!sc.isConnected||!G)return;showSheet('good','check_mark_button',G.ch?'도전 문제 '+(G.idx+1)+' / '+G.n+' 정답!':(function(u){return G.gain===2?G.combo+'연속 정답! '+u+' +2':(G.combo===2?u+' +1, 한 번 더 맞히면 2배':u+' +1')})(sub.key==='math'?'물방울':'햇살'),['정답이에요','맞았어요','정확해요','최고예요'][R(0,3)],pz.explain,'계속',next)},G.combo>=3?950:520)}
     else {palSay('hmm');revealAll(body,pz);showSheet('bad','light_bulb','풀이를 확인해요',(pz.mode==='pad'||pz.mode==='tiles'||pz.mode==='type')?'정답은 '+pz.answer:pz.mode==='choice'?'정답은 '+pz.choices[pz.answer]:'이렇게 만들 수 있어요',pz.explain,'계속',next)}
   }
@@ -2604,9 +2604,9 @@ function chTypes(k){if(k==='hz')return shuffle(['word','find','sound']);if(k==='
   var st=S.math,ts=Object.keys(SUBJ.math.types).filter(function(t){return (st.lv[t]||1)<5});if(ts.length<3)ts=Object.keys(SUBJ.math.types);
   ts.sort(function(a,b){return (st.lv[b]||1)-(st.lv[a]||1)+Math.random()-.5});return shuffle(ts.slice(0,5)).slice(0,3)}
 function chStart(){var c=chInfo();if(c.tries>=CH_MAX){showSheet('good','sparkles','도전','오늘 도전은 다 했어요','내일 새 도전 문제가 기다려요.','좋아요',function(){});return}
-  c.tries++;save();var k=chSub(),sub=SUBJ[k];tone([392,523,659,784],'sine',.08);
+  var k=chSub(),sub=SUBJ[k];tone([392,523,659,784],'sine',.08);
   G={sub:sub,ch:true,n:3,re:[],q:chTypes(k),idx:0,got:0,first:0,startPieces:stOf(sub).pieces,ups:[],unlocked:false,combo:0,drops:0,gain:1,newFruits:[],sunGot:0};
-  showSheet('good','sparkles',ADVK[k][0]+' 도전 · 3문제','평소보다 어려운 문제예요!','3문제 중 2문제를 맞히면 성공! 힌트는 한 번 볼 수 있어요.','도전 시작',function(){play()})}
+  showSheet('good','sparkles',ADVK[k][0]+' 도전 · 3문제','평소보다 어려운 문제예요!','3문제 중 2문제를 맞히면 성공! 힌트는 한 번 볼 수 있어요.','도전 시작',function(){if(!document.body.contains(sheet)||lt_used)return;G=g_;c.tries++;save();play()});var g_=G,lt_used=false;(function(){var lt=el('button','cta light','나중에 할게요');lt.onclick=function(){if(lt_used)return;lt_used=true;hideSheet();G=null;home()};sheet.firstChild.appendChild(lt)})()}
 function chEnd(){var c=chInfo(),k=G.sub.key,ok=G.got>=2,all=G.first===G.n,gain=ok?CH_SUN+(all?5:0):0,t=dayKey();
   c.log.push([dnum(),k,G.got,G.first]);if(c.log.length>60)c.log=c.log.slice(-60);
   if(S.days.indexOf(t)<0)S.days.push(t);stkAward();
@@ -2950,7 +2950,7 @@ var FRUIT_POS=(function(){var C=K3.canopy,pts=[],sx=.08,sy=.044;
   for(var row=-14;row<=14;row++)for(var col=-14;col<=14;col++){var x=C[0]+col*sx+(row%2?sx/2:0),y=C[1]+row*sy,dx=(x-C[0])/C[2],dy=(y-C[1])/C[3];if(dx*dx+dy*dy<=1.2)pts.push([x,y,dx*dx+dy*dy])}
   pts.sort(function(a,b){return a[2]-b[2]});return pts.slice(0,50)})();
 function treeEl(w,opts){
-  opts=opts||{};var gg=opts.grade!=null?opts.grade:curGrade(),LIST=hzOrder().filter(function(c){return gradeOf(c)===gg}),n=LIST.length,box=el('div','treebox');
+  opts=opts||{};var gg=opts.grade!=null?opts.grade:(curGrade()===1&&!hzOrder().some(function(c){return gradeOf(c)===1})?0:curGrade()),LIST=hzOrder().filter(function(c){return gradeOf(c)===gg}),n=LIST.length,box=el('div','treebox');
   var sc=n===0?0:(opts.labels||opts.full?1:Math.min(1,.55+.45*n/50));
   box.style.width=w+'px';box.style.height=(w*TREE_AR)+'px';
   if(n===0){var sp=img('sprout','tsprout');sp.style.width=(w*.38)+'px';box.appendChild(sp);return box}
@@ -3004,7 +3004,7 @@ function treeScreen(fromRound){
   var bar=el('div','prog'),b2=el('div','bar'),fi=el('i');fi.style.width=(n/50*100)+'%';b2.appendChild(fi);bar.appendChild(b2);bar.appendChild(el('span','tnum',GRADES[tg]+' '+n+' / 50'));bar.style.width='100%';c.appendChild(bar);
   sc.appendChild(c);
   var d=el('div','dock');
-  if(fromRound||ADV){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;d.appendChild(ok)}
+  if(fromRound){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;d.appendChild(ok)}
   else{var go=el('button','cta','한자 퍼즐 풀기');go.onclick=function(){startRound(SUBJ.hz)};d.appendChild(go)}
   sc.appendChild(d);
   app.appendChild(sc);
@@ -3351,7 +3351,7 @@ function beeScreen(fromRound){
   EN.words.slice().sort(function(a,b){return (jarIn[b.w]?1:0)-(jarIn[a.w]?1:0)}).forEach(function(x){var p=enBits(x.w),b=el('button','enw'+(p===7?' full':'')+(jarIn[x.w]?' injar':''));b.appendChild(el('b',null,x.w));b.appendChild(el('span',null,x.k));var d=el('i','dots3');[1,2,4].forEach(function(k){d.appendChild(el('em',p&k?'on':''))});b.appendChild(d);b.onclick=function(){sayEn(x.w)};ul.appendChild(b)});
   det.appendChild(ul);c.appendChild(det);
   sc.appendChild(c);
-  var dk=el('div','dock');if(fromRound||ADV){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;dk.appendChild(ok)}else{var go=el('button','cta','영어 퍼즐 풀기');go.onclick=function(){startRound(SUBJ.en)};dk.appendChild(go)}
+  var dk=el('div','dock');if(fromRound){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;dk.appendChild(ok)}else{var go=el('button','cta','영어 퍼즐 풀기');go.onclick=function(){startRound(SUBJ.en)};dk.appendChild(go)}
   sc.appendChild(dk);app.appendChild(sc);
 }
 
@@ -3646,7 +3646,7 @@ function reqFilter(q){
 function reqProg(q){return Math.max(0,Math.min(q.n,placedMatch(reqFilter(q))-q.base))}
 function makeReq(first){
   var opts=['flower','flower','kind','decor'],t=first?'flower':opts[Math.floor(Math.random()*opts.length)],q={t:t};
-  var tz=totals();for(var k in tz)if(/^z/.test(k)&&!first){opts.push('fruit');break}
+  var tz=totals(),zn=0;for(var k in tz)if(/^z/.test(k))zn+=tz[k];if(!first&&zn>=2)opts.push('fruit');
   if(!first&&opts.indexOf('fruit')>=0&&Math.random()<.2)q.t=t='fruit';
   if(t==='flower'){q.n=first?2:R(2,3);q.text='내 섬에 꽃 '+q.n+'송이를 더 심어 줄래? 꽃이 많은 곳에 살고 싶어.'}
   else if(t==='kind'){var c=counts(SUBJ.math),ks=Object.keys(c).filter(function(x){return !isNaN(+x)});var i=ks.length?+ks[Math.floor(Math.random()*ks.length)]:R(0,FLOWERS.length-1);q.k=i;q.n=R(1,2);var nm=FLOWERS[i].name;q.text=nm+' '+q.n+'송이를 섬에 심어 줄래? '+josa(nm,'이','가')+' 제일 좋아.'}
@@ -3677,7 +3677,8 @@ function nbSheet(){
     var cl=el('button','cta light','닫기');cl.onclick=hideSheet;row.appendChild(cl);
     var need=q.n-p,go;
     if(q.t==='decor'&&avail(q.k)<need){go=el('button','cta','상점 가기');go.onclick=function(){hideSheet();shop('decor')}}
-    else if((q.t==='flower'||q.t==='kind')&&avail(q.t==='kind'?'f'+q.k:'')<need&&countAvail(/^f(\d+|r\d+)$/)<need){go=el('button','cta','수학 퍼즐 풀기');go.onclick=function(){hideSheet();startRound(SUBJ.math)}}
+    else if((q.t==='kind'&&avail('f'+q.k)+avail('fr'+q.k)<need)||(q.t==='flower'&&countAvail(/^f(\d+|r\d+)$/)<need)){go=el('button','cta','수학 퍼즐 풀기');go.onclick=function(){hideSheet();startRound(SUBJ.math)}}
+    else if(q.t==='fruit'&&countAvail(/^z(\d+|r\d+)$/)<need){go=el('button','cta','한자 퍼즐 풀기');go.onclick=function(){hideSheet();startRound(SUBJ.hz)}}
     else{go=el('button','cta','섬 꾸미러 가기');go.onclick=function(){hideSheet();islandScreen(true)}}
     row.appendChild(go);
   }
@@ -3723,7 +3724,7 @@ function gardenScreen(edit,hand){islandScreen(!!edit,hand)}
 // ================= 마을 (첫 화면) =================
 // 칸 없는 한 장면. 건물을 누르면 들어가고, 배를 타면 꾸미는 섬으로 가요.
 var HUB='village';
-function home(){if(CLOUD.later&&CLOUD.ref){CLOUD.later=0;setTimeout(cloudPush,300)}HUB==='island'?islandScreen(false):villageScreen()}
+function home(){HUB==='island'?islandScreen(false):villageScreen()}
 function lobby(){villageScreen()}
 var VW=440,VH=560,VTW=80,VTH=40,VN=7,VY0=180;
 function vC(c,r){return [VW/2+(c-r)*VTW/2,VY0+(c+r)*VTH/2+VTH/2]}
@@ -3829,7 +3830,7 @@ function villageScreen(){
   fit();requestAnimationFrame(fit);window.onresize=fit;try{if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);if(window.ResizeObserver){var ro=new ResizeObserver(function(){if(!document.body.contains(bottom)){ro.disconnect();return}fit()});ro.observe(bottom)}}catch(e){}setTimeout(fit,600);
   var vis=nbTick();
   if(vis){var vb=el('button','nbvis v');vb.style.left='180.5px';vb.style.top='452px';vb.style.zIndex=452;var vi=img(vis.id);vb.appendChild(vi);var bub=el('span','nbbub'+(nbReady()?' ok':''),nbReady()?'♥':'!');vb.appendChild(bub);vb.setAttribute('aria-label',NBI[vis.id].name+'의 부탁');vb.onclick=nbSheet;scene.appendChild(vb)}
-  dayInit();if(S.day.pending&&S.tut&&!advDone_){S.day.pending=false;save();setTimeout(dayDoneScene,500)}
+  dayInit();if(S.day.pending&&S.tut&&!advDone_){setTimeout(function(){if(!document.querySelector('.village')||!S.day.pending)return;S.day.pending=false;save();dayDoneScene()},500)}
   if(!S.tut&&!document.querySelector('.guide'))setTimeout(function(){if(!S.tut&&!document.querySelector('.guide')&&HUB==='village'&&document.querySelector('.lm-pot'))startGuide()},700);
 }
 function cloudWipe(cb){
@@ -4038,7 +4039,7 @@ function trail(){missionCheck();
     var c=chestAt(p.step);S.sun+=c.sun;var got=c.item&&!S.own[c.item];if(c.item)S.own[c.item]=1;p.step++;p.walk=(p.walk||0)+1;save();
     tone([523,784,1047,1568],'sine',.1);balN.textContent=S.sun;
     var nm=got?(SHOP.filter(function(s){return s.id===c.item})[0]||{}).name:'';
-    showSheet('good','wrapped_gift','보물상자',got?josa(nm,'을','를')+' 만났어요!':'햇살 '+c.sun+'개를 얻었어요',got?'햇살 '+c.sun+'개도 함께 얻었어요. 꾸미기 상점의 친구 칸에서 화분에 데려올 수 있어요.':'다음 상자까지 도전 '+(CHEST_EVERY-1)+'번이 남았어요.','계속',function(){trail()});
+    showSheet('good','wrapped_gift','보물상자',got?josa(nm,'을','를')+' 만났어요!':'햇살 '+c.sun+'개를 얻었어요',got?'햇살 '+c.sun+'개도 함께 얻었어요. 꾸미기 상점의 친구 칸에서 화분에 데려올 수 있어요.':(function(){var k=p.step,n=0;do{k++;n++}while(!(isChest(k)&&!isDest(k))&&n<40);return '다음 상자까지 도전 '+n+'번이 남았어요.'})(),'계속',function(){trail()});
   }
   app.appendChild(sc);
   // 지나온 칸이 보이게 스크롤하고, 밀린 걸음을 한 칸씩 걸어요
