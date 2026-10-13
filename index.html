@@ -1437,6 +1437,12 @@ body .qscreen>.cta.autoq.hot:not(:disabled){background:linear-gradient(#ffb36b,#
 .etph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--game);font-size:1.6rem;line-height:1;color:#9aa1a9;pointer-events:none;padding-top:4.45px}
 .etwrap.has .etph{display:none}
 .hchip>b{top:1.55px}
+
+.vtask{justify-content:center}
+.vtask.trailp span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.vtask.trailp small{font-size:.68rem;line-height:1;color:#8a96a3;letter-spacing:.02em}
+.vtask.trailp b{font-weight:400;line-height:1.15;white-space:nowrap}
+@media (max-width:359px){.vtask.trailp small{display:none}.vtask.trailp b{white-space:normal}}
 </style>
 
 <div id="app"></div>
@@ -3929,7 +3935,7 @@ function villageScreen(){
   // 아래: 오늘의 할 일
   var bottom=el('div','vtoday');
   var md=S.math.today===today,hd=S.hz.today===today;
-  function pill(icon,txt,done,act){var b=el('button','vtask'+(done?' done':''));b.appendChild(img(icon));b.appendChild(el('span',null,txt));if(done){var c=el('i','vok');c.innerHTML=CHECK_SVG;b.appendChild(c)}b.onclick=act;return b}
+  function pill(icon,txt,done,act,sub){if(sub&&txt.replace(/\s/g,'').length>4)sub=null;var b=el('button','vtask'+(done?' done':'')+(sub?' trailp':''));b.appendChild(img(icon));var sp=el('span',null,txt);if(sub){sp.textContent='';sp.appendChild(el('small',null,sub));sp.appendChild(el('b',null,txt))}b.appendChild(sp);if(done){var c=el('i','vok');c.innerHTML=CHECK_SVG;b.appendChild(c)}b.onclick=act;return b}
   bottom.appendChild(el('p','vtitle',todayLabel()+' · 오늘의 할 일'));
   (function(){var left=advLeft();
     if(ADV||left.length){var b=el('button','advbtn'+(ADV?' cont':''));var ic=el('span','advic');ic.appendChild(avImg(S.path.char||'cat'));b.appendChild(ic);
@@ -3943,7 +3949,7 @@ function villageScreen(){
   row.appendChild(pill('books','한자',hd,function(){startRound(SUBJ.hz)}));
   row.appendChild(pill('k3_hive','영어',S.en.today===today,function(){startRound(SUBJ.en)}));
   var m=S.path.char?curMission():null;
-  row.appendChild(pill(S.path.char||'footprints',!S.path.char?'친구 고르기':S.path.walk?'한 칸 가기':m?(mshort(m)+(need(m)>1?' '+S.path.prog+'/'+need(m):'')):'보물상자',false,function(){S.path.char?trail():chooseFriend()}));
+  row.appendChild(pill(S.path.char||'footprints',!S.path.char?'친구 고르기':S.path.walk?'한 칸 가기':m?(mshort(m)+(need(m)>1?' '+S.path.prog+'/'+need(m):'')):'보물상자',false,function(){S.path.char?trail():chooseFriend()},S.path.char?'오솔길':null));
   bottom.appendChild(row);
   root.appendChild(bottom);
   app.appendChild(root);
