@@ -2659,7 +2659,7 @@ function play(){
 }
 
 // ================= 한 판 끝 =================
-var ADV=null,ADVK={math:['수학','blossom'],hz:['한자','books'],en:['영어','k3_hive']};
+var ADV=null,ADVK={math:['수학','blossom'],hz:['한자','red_apple'],en:['영어','k3_hive']};
 function advLeft(){var t=dayKey();return ['math','hz','en'].filter(function(k){return !S[k]||S[k].today!==t})}
 function advStart(){var q=advLeft();if(!q.length)q=['math','hz','en'];ADV={q:q,i:0,log:[],day:dayKey()};tone([523,659,784],'sine',.09);advGo()}
 function advGo(){if(!ADV||ADV.day!==dayKey()){ADV=null;advStart();return}if(ADV.i>=ADV.q.length){advFinish();return}startRound(SUBJ[ADV.q[ADV.i]])}
@@ -3680,7 +3680,7 @@ function houseScreen(){
   var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=BACK_SVG;back.onclick=home;top.appendChild(back);sc.appendChild(top);
   var hd=el('div','qhead');hd.appendChild(el('small',null,'우리 집'));hd.appendChild(el('h2',null,'나의 기록'));sc.appendChild(hd);var avc_=avCard();if(avc_)sc.appendChild(avc_);
   var stats=el('div','stats three');
-  [['fire','연속 기록',streak()+'일'],['blossom','피운 꽃',S.math.hist.length+'송이'],['books','익힌 한자',hzOrder().length+'자']].forEach(function(x){var s=el('div','stat');s.appendChild(img(x[0]));var d=el('div');d.appendChild(el('small',null,x[1]));d.appendChild(el('b','tnum',x[2]));s.appendChild(d);stats.appendChild(s)});
+  [['fire','연속 기록',streak()+'일'],['blossom','피운 꽃',S.math.hist.length+'송이'],['red_apple','익힌 한자',hzOrder().length+'자']].forEach(function(x){var s=el('div','stat');s.appendChild(img(x[0]));var d=el('div');d.appendChild(el('small',null,x[1]));d.appendChild(el('b','tnum',x[2]));s.appendChild(d);stats.appendChild(s)});
   sc.appendChild(stats);
   var sk=el('section','card skills');sk.appendChild(el('h3',null,'나의 실력'));
   [SUBJ.math,SUBJ.hz].forEach(function(sub){
@@ -3946,7 +3946,7 @@ function villageScreen(){
     else{var dn=el('div','advdone0');dn.appendChild(img('check_mark_button'));var dt=el('span');dt.appendChild(el('b',null,'오늘의 모험 완료!'));dt.appendChild(el('small',null,'더 하고 싶으면 아래에서 골라요'));dn.appendChild(dt);bottom.appendChild(dn)}})();
   var row=el('div','vtasks');
   row.appendChild(pill('blossom','수학',md,function(){startRound(SUBJ.math)}));
-  row.appendChild(pill('books','한자',hd,function(){startRound(SUBJ.hz)}));
+  row.appendChild(pill('red_apple','한자',hd,function(){startRound(SUBJ.hz)}));
   row.appendChild(pill('k3_hive','영어',S.en.today===today,function(){startRound(SUBJ.en)}));
   var m=S.path.char?curMission():null;
   row.appendChild(pill(S.path.char||'footprints',!S.path.char?'친구 고르기':S.path.walk?'한 칸 가기':m?(mshort(m)+(need(m)>1?' '+S.path.prog+'/'+need(m):'')):'보물상자',false,function(){S.path.char?trail():chooseFriend()},S.path.char?'오솔길':null));
@@ -4030,7 +4030,7 @@ var CHARS=[{id:'rabbit',name:'토끼'},{id:'cat',name:'고양이'},{id:'penguin'
 var MISSIONS=[
  {t:'round',sub:'math',icon:'blossom',text:'수학 퍼즐 한 판 풀기'},
  {t:'water',n:6,icon:'droplet',text:'화분에 물 6번 주기'},
- {t:'round',sub:'hz',icon:'books',text:'한자 퍼즐 한 판 풀기'},
+ {t:'round',sub:'hz',icon:'red_apple',text:'한자 퍼즐 한 판 풀기'},
  {t:'combo',n:3,icon:'fire',text:'한 판에서 3연속 정답 만들기'},
  {t:'bloom',icon:'seedling',text:'꽃 한 송이 피우기'},
  {t:'correct',n:10,icon:'check_mark_button',text:'정답 10개 맞히기'},
