@@ -1620,6 +1620,19 @@ body:has(.libscr){background:linear-gradient(#f3ead9 0%,#efe2c8 60%,#d8c29a 100%
 .wschip.on{background:linear-gradient(#e9fbe1,#c9efb6);box-shadow:inset 0 0 0 1.5px #9bd77f,0 3px 0 #86c56a;color:#2f6b2a}
 .wschip .vok{position:static;width:16px;height:16px;margin-left:2px}
 .wschip:active{transform:translateY(2px)}
+
+.lcovf{flex-direction:row;align-items:center;gap:12px}
+.lcovbtn{flex:none;width:64px;height:84px;border-radius:8px;border:2px dashed #e0c99c;background:#fffaf0;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:0}
+.lcovbtn:has(img){border:0;box-shadow:0 2px 6px rgba(80,50,20,.25)}
+.lcovim{width:100%;height:100%;object-fit:cover}
+.lcovtx{display:flex;flex-direction:column;gap:2px;cursor:pointer}
+.lcovtx b{font-family:var(--game);font-weight:400;font-size:1rem;color:#5b3d1e}
+.lcovtx small{font-size:.8rem;font-weight:700;color:#a08766}
+.lface{gap:10px;justify-content:center;align-items:flex-end;padding:8px 6px 0}
+.lfbook{flex:none;height:96px;max-width:72px;padding:0;border-radius:3px;overflow:hidden;box-shadow:0 3px 6px rgba(0,0,0,.35);background:#fff}
+.lfbook img{display:block;height:96px;width:auto;max-width:72px;object-fit:cover}
+.lcovshow{display:flex;justify-content:center;margin:2px 0 4px}
+.lcovshow img{max-height:180px;max-width:70%;border-radius:6px;box-shadow:0 4px 12px rgba(60,40,20,.25)}
 </style>
 
 <div id="app"></div>
@@ -2206,7 +2219,7 @@ function cloudInit(){
     var db=r[0],u=r[1];if(!db||!u)return null;
     return u.id().then(function(id){
       if(!id)return null;
-      var ref=db.doc('data/users/'+id+'/save');
+      var ref=db.doc('data/users/'+id+'/save');CLOUD.db=db;CLOUD.uid=id;setTimeout(covFlush,1500);
       db.doc('data/users/'+id+'/english').get().then(function(sn){if(sn.exists){var d=sn.data();if(d&&d.words&&d.words.length>=4)setEnWords(d)}}).catch(function(){});
       return ref.get().then(function(snap){
         CLOUD.ref=ref;
@@ -4101,13 +4114,15 @@ var LIB_START=['I liked this book because','My favorite part was when','The main
 var LIB_CAT=["Magic Tree House: Dinosaurs Before Dark","Magic Tree House: The Knight at Dawn","Magic Tree House: Mummies in the Morning","Frog and Toad Are Friends","Frog and Toad Together","Nate the Great","Henry and Mudge","Mercy Watson to the Rescue","Junie B. Jones and the Stupid Smelly Bus","Cam Jansen","Elephant and Piggie: We Are in a Book!","Fly Guy","Pete the Cat","Arthur's Nose","The Magic School Bus","Amelia Bedelia","Biscuit","Fancy Nancy","Pinkalicious","Charlotte's Web","Stuart Little","Charlie and the Chocolate Factory","Matilda","The BFG","Fantastic Mr Fox","Dog Man","Captain Underpants","The Bad Guys","Diary of a Wimpy Kid","Ivy and Bean","Owl Diaries","Dragon Masters","Princess in Black","Geronimo Stilton","A to Z Mysteries","Flat Stanley","Horrible Harry","Rainbow Magic","Zoey and Sassafras","The Cat in the Hat","Green Eggs and Ham","Oh, the Places You'll Go!","The Very Hungry Caterpillar","Where the Wild Things Are","The Gruffalo","Winnie-the-Pooh","Paddington","The Tale of Peter Rabbit","Wonder","Marvin Redpost","Nancy Drew Clue Book","Bad Kitty","Mr. Putter and Tabby","Poppleton"];
 function libS(){if(!S.lib)S.lib={books:[],day:{d:-1,n:0}};if(!S.lib.day)S.lib.day={d:-1,n:0};return S.lib}
 function libRead(t){ttsEn(t)}
-function libScreen(back){clear();var L=libS(),sc=el('div','screen libscr'),top=el('div','qtop');
+var LIB_BACK=null;
+function libScreen(back){LIB_BACK=back;clear();var L=libS(),sc=el('div','screen libscr'),top=el('div','qtop');
   var b=el('button','x');b.setAttribute('aria-label','나가기');b.innerHTML=BACK_SVG;b.onclick=function(){(back||villageScreen)()};top.appendChild(b);top.appendChild(el('h2','mtitle','섬 도서관'));top.appendChild(el('div','spacer'));var cnt=el('div','balance');cnt.appendChild(el('b','tnum',L.books.length+'권'));top.appendChild(cnt);sc.appendChild(top);
   var cur=el('div','mcur');cur.appendChild(img('hedgehog'));cur.appendChild(el('p',null,L.books.length?['오늘은 어떤 책을 읽었니?','책장이 점점 채워지고 있어!','책을 누르면 네가 쓴 문장을 읽어 줄게.'][R(0,2)]:'학원에서 읽은 영어책을 여기 꽂아 보자!'));sc.appendChild(cur);
   var add=el('button','cta green','읽은 책 꽂기');add.onclick=function(){libAdd(back)};sc.appendChild(add);
   var rwr=el('div','dexrw');LIB_RW.forEach(function(r){var on=L.books.length>=r.n,c=el('div','dexrwi'+(on?' on':''));c.appendChild(img('gem'));c.appendChild(el('b',null,r.n+'권'));c.appendChild(el('small',null,on?'달성!':'보석 '+r.gem+'개'));rwr.appendChild(c)});sc.appendChild(rwr);
   var case_=el('div','lcase'),rows=Math.max(3,Math.ceil(L.books.length/9)+1),bi=0,BK=L.books.slice().reverse();
   for(var r=0;r<rows;r++){var sh=el('div','lshelf');for(var i=0;i<9&&bi<BK.length;i++,bi++)(function(bk){var sp=el('button','lbook');sp.style.background=bk.c;sp.style.height=(78+((bk.t.length*7)%26))+'px';sp.appendChild(el('span',null,bk.t));sp.setAttribute('aria-label',bk.t);sp.onclick=function(){libShow(bk)};sh.appendChild(sp)})(BK[bi]);case_.appendChild(sh)}
+  var CV=L.books.filter(function(x){return x.cv}).slice(-4).reverse();if(CV.length){var fr=el('div','lshelf lface');CV.forEach(function(bk){var bt=el('button','lfbook');bt.appendChild(covImg(bk.cv));bt.setAttribute('aria-label',bk.t);bt.onclick=function(){libShow(bk)};fr.appendChild(bt)});case_.insertBefore(fr,case_.firstChild)}
   sc.appendChild(case_);
   var imp=el('button','cta light limp','학원 사이트 목록 붙여넣기');imp.onclick=function(){libImport(back)};sc.appendChild(imp);
   app.appendChild(sc);zMark&&zMark()}
@@ -4163,10 +4178,30 @@ function wsDone(){var W=wsS();if(!W.cur)return;wsPause();var sid=W.cur.s||WS_SEL
       else showSheet('good',sb.img,sb.name+' 학습지 '+mn+'분',rew?sb.name+' 학습지 끝! 햇살 '+sun+'개':'오늘 '+sb.name+(batchim(sb.name)?'은':'는')+' 이미 했어요',rew?(left.length?'남은 학습지: '+left.join(', ')+'. 국어·수학·한자 다 하면 나무 선물이 있어요.':'국어·수학·한자를 다 끝냈어요!'):'기록에 남겨 뒀어요. 그래도 정말 잘했어요!','좋아요',function(){})},350)});
   var lt=el('button','cta light','아직이야');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)}
 function wsOpen(back){WS_BACK=back||villageScreen;WS_SEL=null;wsScreen(WS_BACK)}
-function libShow(bk){showSheet('good','books',bk.d!=null?'읽은 책':'책',bk.t,(bk.s?'★★★★★'.slice(0,bk.s)+'☆☆☆☆☆'.slice(0,5-bk.s)+'  ':'')+(bk.w||'아직 한마디를 쓰지 않았어요.'),bk.w?'영어로 듣기':'좋아요',function(){if(bk.w)libRead(bk.w)})}
+
+// ----- 책 표지 사진: 저장 파일과 따로 보관해요 (이 기기 + 클라우드) -----
+var COV_SVG='<svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3v11H4z" fill="#fff" stroke="#8a6a45" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="13.2" r="3.4" fill="none" stroke="#8a6a45" stroke-width="1.8"/></svg>',COVC={};
+function covKey(c){return 'pot-cov-'+c}
+function covPut(cid,data){COVC[cid]=data;try{localStorage.setItem(covKey(cid),data)}catch(e){}var p=[];try{p=JSON.parse(localStorage.getItem('pot-cov-pend')||'[]')}catch(e){}if(p.indexOf(cid)<0)p.push(cid);try{localStorage.setItem('pot-cov-pend',JSON.stringify(p))}catch(e){}covFlush()}
+function covFlush(){if(!CLOUD.db||!CLOUD.uid)return;var p=[];try{p=JSON.parse(localStorage.getItem('pot-cov-pend')||'[]')}catch(e){}p.forEach(function(cid){var d=COVC[cid];if(!d){try{d=localStorage.getItem(covKey(cid))}catch(e){}}if(!d)return;CLOUD.db.doc('data/users/'+CLOUD.uid+'/cov_'+cid).set({d:d,ts:Date.now()}).then(function(){var q=[];try{q=JSON.parse(localStorage.getItem('pot-cov-pend')||'[]')}catch(e){}q=q.filter(function(x){return x!==cid});try{localStorage.setItem('pot-cov-pend',JSON.stringify(q))}catch(e){}}).catch(function(){})})}
+function covGet(cid,cb){if(!cid)return;if(COVC[cid])return cb(COVC[cid]);var d=null;try{d=localStorage.getItem(covKey(cid))}catch(e){}if(d){COVC[cid]=d;return cb(d)}
+  if(CLOUD.db&&CLOUD.uid)CLOUD.db.doc('data/users/'+CLOUD.uid+'/cov_'+cid).get().then(function(sn){if(sn&&sn.exists){var x=sn.data().d;if(x){COVC[cid]=x;try{localStorage.setItem(covKey(cid),x)}catch(e){}cb(x)}}}).catch(function(){})}
+function covImg(cid,cls){var im=document.createElement('img');im.className=cls||'';im.alt='';im.style.visibility='hidden';covGet(cid,function(d){im.src=d;im.style.visibility=''});return im}
+// 사진 고르기 → 작게 줄여서 data URL로
+function covPick(cb){var inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.setAttribute('capture','environment');inp.style.display='none';document.body.appendChild(inp);
+  inp.onchange=function(){var f=inp.files&&inp.files[0];inp.remove();if(!f)return;var url=URL.createObjectURL(f),im=new Image();
+    im.onload=function(){var W=im.naturalWidth,H=im.naturalHeight,k=Math.min(1,320/Math.max(W,H)),cv=document.createElement('canvas');cv.width=Math.max(1,Math.round(W*k));cv.height=Math.max(1,Math.round(H*k));var cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(url);var d=cv.toDataURL('image/jpeg',.76);cb(d)};
+    im.onerror=function(){URL.revokeObjectURL(url);showSheet('bad','books','표지 사진','사진을 열 수 없어요','다른 사진으로 다시 해 볼까요?','좋아요',function(){})};im.src=url};
+  setTimeout(function(){inp.click()},0)}
+function covNew(d){var cid='c'+Date.now().toString(36)+Math.floor(Math.random()*1e4).toString(36);covPut(cid,d);return cid}
+function libShow(bk){libShow0(bk);var inn=sheet.firstChild,hd=inn.querySelector('.hd');if(bk.cv){var w=el('div','lcovshow');w.appendChild(covImg(bk.cv));inn.insertBefore(w,hd.nextSibling)}var lt=el('button','cta light',bk.cv?'표지 다시 찍기':'표지 사진 넣기');lt.onclick=function(){covPick(function(d){bk.cv=covNew(d);save();hideSheet();if(document.querySelector('.libscr:not(.libadd)'))libScreen(LIB_BACK);setTimeout(function(){libShow(bk)},350)})};inn.appendChild(lt)}
+function libShow0(bk){showSheet('good','books',bk.d!=null?'읽은 책':'책',bk.t,(bk.s?'★★★★★'.slice(0,bk.s)+'☆☆☆☆☆'.slice(0,5-bk.s)+'  ':'')+(bk.w||'아직 한마디를 쓰지 않았어요.'),bk.w?'영어로 듣기':'좋아요',function(){if(bk.w)libRead(bk.w)})}
 function libAdd(back){clear();var sc=el('div','screen libscr libadd'),top=el('div','qtop');var b=el('button','x');b.innerHTML=BACK_SVG;b.setAttribute('aria-label','돌아가기');b.onclick=function(){libScreen(back)};top.appendChild(b);top.appendChild(el('h2','mtitle','읽은 책 꽂기'));sc.appendChild(top);
   var st={t:'',c:LIB_COL[R(0,5)],s:0,st:0};
   var f1=el('div','lfield');f1.appendChild(el('small',null,'책 제목'));var ti=document.createElement('input');ti.className='linp';ti.placeholder='예: Magic Tree House';ti.setAttribute('autocapitalize','words');ti.setAttribute('autocorrect','off');ti.spellcheck=false;f1.appendChild(ti);var sug=el('div','lsug');f1.appendChild(sug);sc.appendChild(f1);
+  var fc=el('div','lfield lcovf'),cb_=el('button','lcovbtn'),ct=el('div','lcovtx');fc.appendChild(cb_);fc.appendChild(ct);sc.appendChild(fc);
+  function drawCov(){cb_.innerHTML='';ct.innerHTML='';if(st.cv){cb_.appendChild(covImg(st.cv,'lcovim'));ct.appendChild(el('b',null,'표지 사진을 넣었어요'));ct.appendChild(el('small',null,'다시 찍으려면 사진을 눌러요'))}else{cb_.innerHTML=COV_SVG;ct.appendChild(el('b',null,'표지 사진 찍기'));ct.appendChild(el('small',null,'안 찍어도 괜찮아요'))}}
+  cb_.setAttribute('aria-label','표지 사진 찍기');cb_.onclick=function(){covPick(function(d){st.cv=covNew(d);drawCov()})};ct.onclick=function(){cb_.click()};drawCov();
   function drawSug(){sug.innerHTML='';var q=ti.value.trim().toLowerCase();if(q.length<2)return;LIB_CAT.filter(function(x){return x.toLowerCase().indexOf(q)>=0}).slice(0,4).forEach(function(x){var c=el('button','lsg',x);c.onclick=function(){ti.value=x;sug.innerHTML='';upd()};sug.appendChild(c)})}
   var f2=el('div','lfield');f2.appendChild(el('small',null,'책 색깔'));var cr=el('div','lcols');LIB_COL.forEach(function(c){var d=el('button','lcol'+(c===st.c?' on':''));d.style.background=c;d.onclick=function(){st.c=c;[].forEach.call(cr.children,function(x){x.classList.remove('on')});d.classList.add('on')};cr.appendChild(d)});f2.appendChild(cr);sc.appendChild(f2);
   var f3=el('div','lfield');f3.appendChild(el('small',null,'얼마나 재미있었어?'));var sr=el('div','lstars');for(var i=1;i<=5;i++)(function(i){var s_=el('button','lstar','★');s_.onclick=function(){st.s=i;[].forEach.call(sr.children,function(x,j){x.classList.toggle('on',j<i)})};sr.appendChild(s_)})(i);f3.appendChild(sr);sc.appendChild(f3);
@@ -4178,7 +4213,7 @@ function libAdd(back){clear();var sc=el('div','screen libscr libadd'),top=el('di
   function upd(){var n=words(),tot=n+LIB_START[st.st].split(' ').length;wc.textContent=n?('지금 '+tot+'단어'+(tot>=8?' · 보석 받을 수 있어요!':' · 8단어가 넘으면 보석 1개')):'';if(words2()>=5)wc.textContent+=' · 한 문장 더 써서 보석 +1!';go.disabled=!ti.value.trim()}
   ti.oninput=function(){drawSug();upd()};ta.oninput=upd;ta2.oninput=upd;
   go.onclick=function(){var t=ti.value.trim();if(!t)return;var L=libS(),dn=dnum();if(L.day.d!==dn)L.day={d:dn,n:0};var n=words(),line=n?(LIB_START[st.st]+' '+ta.value.trim().replace(/\s+/g,' ')):'';if(line&&!/[.!?]$/.test(line))line+='.';var l2=ta2.value.trim().replace(/\s+/g,' ');if(l2){l2=l2.charAt(0).toUpperCase()+l2.slice(1);if(!/[.!?]$/.test(l2))l2+='.';line=line?line+' '+l2:l2}
-    var tot=n+LIB_START[st.st].split(' ').length,rew=L.day.n<LIB_DAY,before=L.books.length;L.books.push({t:t,c:st.c,s:st.s,w:line,d:dn});var sun=0,gem=0;
+    var tot=n+LIB_START[st.st].split(' ').length,rew=L.day.n<LIB_DAY,before=L.books.length;L.books.push({t:t,c:st.c,s:st.s,w:line,d:dn});if(st.cv)L.books[L.books.length-1].cv=st.cv;var sun=0,gem=0;
     if(rew){L.day.n++;sun=20;S.sun+=sun;if(n&&tot>=8)gem=1;if(words2()>=5)gem+=1}var ms=LIB_RW.filter(function(r){return r.n===before+1})[0];if(ms)gem+=ms.gem;save();if(gem)gemGain(gem);
     libScreen(back);SND.bloom();var last=document.querySelector('.lshelf .lbook');if(last){last.classList.add('new');var r_=last.getBoundingClientRect();burst(r_.left+r_.width/2,r_.top+r_.height/2,24,false)}
     setTimeout(function(){showSheet('good','books','책장에 꽂았어요',t,(rew?'햇살 '+sun+'개'+(gem?', 보석 '+gem+'개':'')+'를 받았어요. ':'오늘 보상은 다 받았어요. 책은 책장에 잘 꽂았어요! ')+(ms?'책 '+ms.n+'권을 모았어요! ':'')+(line?'네가 쓴 문장을 읽어 줄게.':''),'좋아요',function(){});if(line)setTimeout(function(){libRead(line)},400)},500)};
