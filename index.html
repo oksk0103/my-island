@@ -1698,6 +1698,9 @@ label.cta{cursor:pointer;user-select:none;-webkit-user-select:none}
 .awc:not(.on) .awmd img{filter:grayscale(1);opacity:.45}
 .awc b{font-family:var(--game);font-weight:400;font-size:.95rem;line-height:1.1}
 .awc small{font-size:.66rem;font-weight:700;line-height:1.2;text-align:center}
+body{text-wrap:pretty}
+.mcur p,.wshint,.ihint,.mtip,.rtalk p,.sheet p,.sum{text-wrap:pretty}
+.wshint,.ihint{text-wrap:balance}
 </style>
 
 <div id="app"></div>
@@ -3934,7 +3937,7 @@ function fishCatchUp(){if(!advLeft().length&&!ADV)fishTicket()}
 function fishGate(){fishCatchUp();var f=fishS();if(f.tk>0){fishScreen();return}
   var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('f_red'));var t=el('div');t.appendChild(el('small',null,'섬 낚시터'));t.appendChild(el('h3',null,'낚시 티켓이 없어요'));hd.appendChild(t);inn.appendChild(hd);
   inn.appendChild(el('p',null,'오늘의 모험을 끝내면 낚시 티켓을 1장 받아요. 그동안 헷갈린 단어와 한자가 물고기가 되어 헤엄쳐요.'));
-  var dx=el('button','cta','물고기 도감 보기');dx.onclick=function(){hideSheet();fishDex(villageScreen)};inn.appendChild(dx);
+  var dx=el('button','cta','물고기 도감 보기 (박물관)');dx.onclick=function(){hideSheet();fishDex(villageScreen)};inn.appendChild(dx);
   var c=el('button','cta light','닫기');c.onclick=hideSheet;inn.appendChild(c);
   sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;requestAnimationFrame(function(){sheet.className='sheet good show'})}
 function fishScreen(){
@@ -3980,16 +3983,7 @@ function fishScreen(){
     lay.appendChild(cd);document.body.appendChild(lay);SND.bloom()}
   ask();
 }
-function fishDex(back){clear();var f=fishS(),sc=el('div','screen fishdex'),top=el('div','qtop');
-  var b=el('button','x');b.setAttribute('aria-label','돌아가기');b.innerHTML=BACK_SVG;b.onclick=function(){(back||villageScreen)()};top.appendChild(b);top.appendChild(el('div','spacer'));
-  var tk=el('div','balance');tk.appendChild(img('f_red'));tk.appendChild(el('b','tnum','티켓 '+f.tk));top.appendChild(tk);sc.appendChild(top);
-  var got=FISH_SP.filter(function(x){return f.dex[x.id]}).length;
-  var hd=el('div','qhead');hd.appendChild(el('small',null,'섬 낚시터'));hd.appendChild(el('h2',null,'물고기 도감 '+got+' / '+FISH_SP.length));sc.appendChild(hd);
-  sc.appendChild(el('p','sum','처음 보는 물고기를 낚을 때마다 보석 1개를 받아요. 노란 테두리 물고기는 아주 가끔 나타나요.'));
-  fishRewards();var rwr=el('div','dexrw');FISH_RW.forEach(function(r){var on=f.rw&&f.rw[r.id],c=el('div','dexrwi'+(on?' on':''));c.appendChild(img(r.id));c.appendChild(el('b',null,r.n+'종'));c.appendChild(el('small',null,on?'받았어요':itemName(r.id)));rwr.appendChild(c)});sc.appendChild(rwr);
-  var g=el('div','gh gh3 dexgrid');FISH_SP.forEach(function(x){var n=f.dex[x.id]||0,c=el('button','ghc dexc'+(n?'':' lock')+(x.rare?' rare':''));if(n)c.onclick=function(){showSheet('good',x.id,'물고기 도감 · '+n+'마리',x.name,FISH_FACT[x.id]||'','좋아요',function(){})};var pv=el('div','fprev');pv.appendChild(img(x.id));c.appendChild(pv);
-    c.appendChild(el('b',null,n?x.name:'???'));c.appendChild(el('small',null,n?n+'마리':(x.rare?'아주 귀한 물고기':x.un?'가끔 나와요':'아직 못 만났어요')));g.appendChild(c)});sc.appendChild(g);
-  app.appendChild(sc);zMark&&zMark()}
+function fishDex(back){MUSE_TAB='fish';museumScreen(back||villageScreen)}
 
 // ================= 처음 안내(기능이 처음 열릴 때) =================
 
@@ -4120,13 +4114,7 @@ function digEnd(){var win=G.got>0,key=G.digKey,ups=G.ups.slice(),s=digS(),t=dayK
   var b=el('button','cta green','좋아요');b.onclick=function(){lay.remove()};card.appendChild(b);
   var b2=el('button','cta light','화석 도감');b2.onclick=function(){lay.remove();fossilDex(function(){islandScreen(false)})};card.appendChild(b2);
   lay.appendChild(card);document.body.appendChild(lay);tone([392,330,262],'square',.06);setTimeout(function(){pw.classList.add('open');SND.bloom();var r=pw.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,f.rare?44:26,!!f.rare)},650)}
-function fossilDex(back){clear();var g=digS().got,sc=el('div','screen fishdex fossildex'),top=el('div','qtop');
-  var b=el('button','x');b.setAttribute('aria-label','돌아가기');b.innerHTML=BACK_SVG;b.onclick=function(){(back||villageScreen)()};top.appendChild(b);top.appendChild(el('div','spacer'));sc.appendChild(top);
-  var got=fossilCount();var hd=el('div','qhead');hd.appendChild(el('small',null,'섬 화석 발굴'));hd.appendChild(el('h2',null,'화석 도감 '+got+' / '+FOSSILS.length));sc.appendChild(hd);
-  sc.appendChild(el('p','sum','섬에 생기는 반짝이는 땅을 눌러서 화석을 캐요. 처음 보는 화석은 보석 1개! 많이 모으면 보석을 더 받아요.'));var rwr=el('div','dexrw');FO_RW.forEach(function(r){var on=got>=r.n,c=el('div','dexrwi'+(on?' on':''));c.appendChild(img('gem'));c.appendChild(el('b',null,r.n+'종'));c.appendChild(el('small',null,on?'받았어요':'보석 '+r.gem+'개'));rwr.appendChild(c)});sc.appendChild(rwr);
-  var gr=el('div','gh gh3 dexgrid');FOSSILS.forEach(function(x){var n=g[x.id]||0,c=el('button','ghc dexc'+(n?'':' lock')+(x.rare?' rare':''));if(n)c.onclick=function(){showSheet('good',x.id,'화석 도감 · '+n+'개',x.name,x.fact,'좋아요',function(){})};var pv=el('div','fprev');pv.appendChild(img(x.id));c.appendChild(pv);
-    var nb_=el('b',null,n?x.name:'???');if(n&&x.name.length>=8)nb_.style.fontSize='.86em';c.appendChild(nb_);c.appendChild(el('small',null,n?n+'개':(x.w<=.5?'전설의 화석':x.rare?'아주 귀한 화석':x.w<3?'가끔 나와요':'아직 못 찾았어요')));gr.appendChild(c)});sc.appendChild(gr);
-  app.appendChild(sc);zMark&&zMark()}
+function fossilDex(back){MUSE_TAB='fossil';museumScreen(back||villageScreen)}
 
 // ================= 섬 건물(정해진 자리) =================
 var BLDS=[{id:'museum',name:'섬 박물관',img:'museum',side:-1,front:'c',open:function(){museumScreen(function(){islandScreen(false)})}},{id:'library',name:'섬 도서관',img:'library',side:1,front:'r',open:function(){libScreen(function(){islandScreen(false)})}},{id:'school',name:'섬 학교',img:'school',top:1,front:'d',open:function(){schoolScreen(function(){islandScreen(false)})}}];
@@ -4181,6 +4169,8 @@ function museumScreen(back){clear();var sc=el('div','screen museumscr'),top=el('
   if(MUSE_TAB==='fish')FISH_SP.forEach(function(x){var n=f.dex[x.id]||0;cas(n,x.id,x.name,n?n+'마리':'',function(){showSheet('good',x.id,'물고기관',x.name,FISH_FACT[x.id]||'','좋아요',function(){})},x.rare)});
   else if(MUSE_TAB==='fossil')FOSSILS.forEach(function(x){var n=dg[x.id]||0;cas(n,x.id,x.name,'',function(){showSheet('good',x.id,'화석관',x.name,x.fact,'좋아요',function(){})},x.rare)});
   else BOSSES.forEach(function(B){var ok=bw.indexOf(B.id)>=0;cas(ok,B.id,B.name,'',function(){showSheet('good',B.id,'인형관',B.name+' 인형','주말 보스 '+B.name+'를 물리치고 받은 인형이에요. "'+B.say+'"','좋아요',function(){})})});
+  if(MUSE_TAB==='fish'){fishRewards();var rw1=el('div','dexrw');FISH_RW.forEach(function(r){var on=f.rw&&f.rw[r.id],c=el('div','dexrwi'+(on?' on':''));c.appendChild(img(r.id));c.appendChild(el('b',null,r.n+'종'));c.appendChild(el('small',null,on?'받았어요':itemName(r.id)));rw1.appendChild(c)});sc.appendChild(rw1)}
+  else if(MUSE_TAB==='fossil'){var rw2=el('div','dexrw');FO_RW.forEach(function(r){var on=m.fossil>=r.n,c=el('div','dexrwi'+(on?' on':''));c.appendChild(img('gem'));c.appendChild(el('b',null,r.n+'종'));c.appendChild(el('small',null,on?'받았어요':'보석 '+r.gem+'개'));rw2.appendChild(c)});sc.appendChild(rw2)}
   sc.appendChild(g);
   var tip={fish:'낚시터에서 새 물고기를 낚으면 전시돼요.',fossil:'섬의 반짝이는 땅에서 화석을 캐면 전시돼요.',doll:'주말 보스를 물리치면 인형이 전시돼요.'}[MUSE_TAB];sc.appendChild(el('p','mtip',tip));
   app.appendChild(sc);zMark&&zMark()}
@@ -4360,7 +4350,7 @@ function schoolScreen(back){SCH_BACK=back=back||SCH_BACK||villageScreen;clear();
     var cm=!tot?'이번 주 성적표를 적기 시작했어요. 문제를 풀면 여기에 쌓여요!':best&&worst&&best[0]!==worst[0]?NM[best[0]]+(batchim(NM[best[0]])?'을':'를')+' 정말 잘했어요! '+NM[worst[0]]+'는 오답 교실에서 조금 더 연습해 봐요.':days>=5?'이번 주도 꾸준히 공부했어요. 정말 멋져요!':'조금씩 꾸준히 하면 금방 늘어요. 화이팅!';
     var tc=el('div','rtalk');tc.appendChild(img('panda'));tc.appendChild(el('p',null,cm));card.appendChild(tc);sc.appendChild(card)}
   else{var g=el('div','awgrid'),have={};awGot().forEach(function(k){have[k]=1});
-    AWARDS.forEach(function(A){A.t.forEach(function(n,i){var ok=have[A.id+i],c=el('button','awc'+(ok?' on':'')+(nw.indexOf(A.id+i)>=0?' new':''));var md=el('i','awmd');md.style.background=ok?AW_COL[i]:'#d9dee3';md.appendChild(img(A.img));c.appendChild(md);c.appendChild(el('b',null,A.name));c.appendChild(el('small',null,AW_LV[i]+' · '+n+A.unit));c.onclick=function(){awShow(A,i,ok)};g.appendChild(c)})});sc.appendChild(g);
+    AWARDS.forEach(function(A){A.t.forEach(function(n,i){var ok=have[A.id+i],c=el('button','awc'+(ok?' on':'')+(nw.indexOf(A.id+i)>=0?' new':''));var md=el('i','awmd');md.style.background=ok?AW_COL[i]:'#d9dee3';md.appendChild(img(A.img));c.appendChild(md);c.appendChild(el('b',null,A.name));c.appendChild(el('small',null,AW_LV[i]+' · '+n+({stk:'일 연속',book:'권',grad:'개 졸업',ws:'그루',q:'문제',fo:'개'}[A.id]||A.unit)));c.onclick=function(){awShow(A,i,ok)};g.appendChild(c)})});sc.appendChild(g);
     sc.appendChild(el('p','mtip','상장을 받으면 보석 1개! 상장을 누르면 내용을 볼 수 있어요.'))}
   app.appendChild(sc);zMark&&zMark();
   if(nw.length&&SCH_TAB!=='award')setTimeout(function(){if(document.querySelector('.sheet.show'))return;var k=nw[0],A=AWARDS.filter(function(x){return x.id===k.slice(0,-1)})[0],i=+k.slice(-1);showSheet('good',A.img,'새 상장!',A.name+' ('+AW_LV[i]+')를 받았어요','위 어린이는 '+A.say(A.t[i])+' 이 상장을 줍니다.'+(nw.length>1?' 상장이 '+nw.length+'개 나왔어요!':''),'상장 보러 가기',function(){SCH_TAB='award';schoolScreen(back)})},500)}
@@ -4446,31 +4436,12 @@ function houseScreen(){
   var links=el('div','dockrow');
   var g=el('button','cta light','꽃 도감');g.onclick=function(){greenhouse('math')};
   var p=el('button','cta light','화분 꾸미기');p.onclick=function(){shop('pot')};
-  links.appendChild(g);links.appendChild(p);sc.appendChild(links);var fdx=el('button','cta light fdxbtn','화석 도감 '+fossilCount()+' / '+FOSSILS.length);fdx.onclick=function(){fossilDex(houseScreen)};sc.appendChild(fdx);
+  links.appendChild(g);links.appendChild(p);sc.appendChild(links);var fdx=el('button','cta light fdxbtn','섬 학교 · 오답 교실과 성적표');fdx.onclick=function(){SCH_TAB='wrong';schoolScreen(houseScreen)};sc.appendChild(fdx);
   (function(){var ids={};for(var k in S.gd.cells){var v=S.gd.cells[k];if(v.indexOf('a:')===0)ids[v.slice(2)]=1}if(S.path.char)ids[S.path.char]=1;for(var f in (S.fr||{}))ids[f]=1;
     var L=Object.keys(ids).filter(function(i){return ANIMALS[i]});if(!L.length)return;
     var fc=el('section','card frcard');fc.appendChild(el('h3',null,'섬 친구들'));fc.appendChild(el('p','sum','하루에 한 번 말을 걸면 ♥가 하나씩 쌓여요. 친구의 영어 질문에 답해도 ♥를 받아요. ♥ '+FR_MID+'개면 햇살 선물, ♥ '+FR_MAX+'개면 친구가 집을 선물해요.'));
     L.sort(function(a,b){return frOf(b).h-frOf(a).h}).forEach(function(i){var r=el('div','frrow');r.appendChild(img(i));var nm=el('div');nm.appendChild(el('b',null,ANIMALS[i]));var hb=el('span','frhb');var tr_=el('span','frtr');var hf_=el('i');hf_.style.width=Math.min(100,frOf(i).h/FR_MAX*100)+'%';tr_.appendChild(hf_);hb.appendChild(tr_);hb.appendChild(el('em',null,'♥ '+Math.min(frOf(i).h,FR_MAX)+'/'+FR_MAX));nm.appendChild(hb);r.appendChild(nm);
       r.appendChild(el('small',null,frOf(i).g?'단짝 ♥':frOf(i).d===dayKey()?'오늘 인사함':'인사하러 가요'));fc.appendChild(r)});sc.appendChild(fc)})();
-  // 요즘 어려워하는 것
-  var wk=el('section','card weak');wk.appendChild(el('h3',null,'요즘 어려워하는 것'));
-  var dn=dnum(),mh={},mm={};(S.mx||[]).forEach(function(x){if(dn-x[0]<14){if(x[1]==='h')mh[x[2]]=(mh[x[2]]||0)+1;else mm[x[2]]=(mm[x[2]]||0)+1}});
-  var hs=Object.keys(mh).filter(function(c){return mh[c]>=2}).sort(function(a,b){return mh[b]-mh[a]}).slice(0,6);
-  wk.appendChild(el('p','lvline','한자 (최근 2주 동안 2번 이상 틀린 한자)'));
-  if(hs.length){var hw=el('div','weakchips');hs.forEach(function(c){var h=H8[HIDX[c]];var ch=el('span','wchip');ch.appendChild(el('b','hz',c));ch.appendChild(el('span',null,hzName(h)+' · '+mh[c]+'번'));hw.appendChild(ch)});wk.appendChild(hw)}
-  else wk.appendChild(el('p','sum','자주 틀리는 한자가 없어요.'));
-  var ms=Object.keys(mm).filter(function(t){return SUBJ.math.types[t]}).sort(function(a,b){return mm[b]-mm[a]}).slice(0,3);
-  wk.appendChild(el('p','lvline','수학 (최근 2주 동안 틀린 횟수)'));
-  if(ms.length){ms.forEach(function(t){var r=el('div','skill');r.appendChild(el('span',null,SUBJ.math.types[t]+' · '+(S.math.lv[t]||1)+'단계'));r.appendChild(el('b','tnum',mm[t]+'번'));wk.appendChild(r)})}
-  else wk.appendChild(el('p','sum','최근에 틀린 수학 문제가 없어요.'));
-  var me={};(S.mx||[]).forEach(function(x){if(dn-x[0]<14&&x[1]==='e')me[x[2]]=(me[x[2]]||0)+1});var es=Object.keys(me).filter(function(w){return me[w]>=2}).sort(function(a,b){return me[b]-me[a]}).slice(0,6);
-  wk.appendChild(el('p','lvline','영어 (최근 2주 동안 2번 이상 틀린 단어)'));
-  if(es.length){var ew=el('div','weakchips');es.forEach(function(w){var o=EN.words.filter(function(x){return x.w===w})[0];var ch=el('span','wchip');ch.appendChild(el('b','enw2',w));ch.appendChild(el('span',null,(o?o.k+' · ':'')+me[w]+'번'));ew.appendChild(ch)});wk.appendChild(ew)}
-  else wk.appendChild(el('p','sum','자주 틀리는 단어가 없어요.'));
-  wk.appendChild(el('p','lvline','최근 2주에 한 날'));
-  var cal=el('div','cal14'),set={};S.days.forEach(function(d){set[d]=1});
-  for(var di=13;di>=0;di--){var dd=new Date(Date.now()-di*864e5),k=dayKey(dd),cell=el('span','cd'+(set[k]?' on':'')+(di===0?' today':''));cell.appendChild(el('i',null,['일','월','화','수','목','금','토'][dd.getDay()]));cell.appendChild(el('b',null,String(dd.getDate())));cal.appendChild(cell)}
-  wk.appendChild(cal);sc.appendChild(wk);
   // 기록 지키기
   var bk=el('section','card backup');bk.appendChild(el('h3',null,'기록 지키기'));
   var stt=el('p','bkstate');
