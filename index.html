@@ -1559,7 +1559,7 @@ body:has(.libscr){background:linear-gradient(#f3ead9 0%,#efe2c8 60%,#d8c29a 100%
 .limp{font-size:.95rem}
 .lfield{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:16px;background:#fff;box-shadow:0 3px 0 rgba(120,80,30,.1)}
 .lfield>small{font-family:var(--game);font-size:.95rem;color:#8a6a45}
-.linp{height:48px;border-radius:12px;border:2px solid #e8dcc4;padding:0 12px;font:600 1.1rem Fredoka,Jua,sans-serif;color:#26313d;outline:none}
+.linp{height:48px;border-radius:12px;border:2px solid #e8dcc4;padding:0 12px;background:#fff;-webkit-text-fill-color:#26313d;color-scheme:light;font:600 1.1rem Fredoka,Jua,sans-serif;color:#26313d;outline:none}
 .linp:focus,.lta:focus{border-color:#ffc93c}
 .lsug{display:flex;flex-wrap:wrap;gap:6px}
 .lsg{padding:6px 10px 5px;border-radius:999px;background:#f6efe2;color:#5b3d1e;font:600 .85rem Fredoka,Jua,sans-serif}
@@ -1572,7 +1572,7 @@ body:has(.libscr){background:linear-gradient(#f3ead9 0%,#efe2c8 60%,#d8c29a 100%
 .lstarts{display:flex;flex-direction:column;gap:6px}
 .lst{text-align:left;padding:9px 12px 7px;border-radius:12px;background:#f6efe2;color:#5b3d1e;font:600 .98rem Fredoka,Jua,sans-serif}
 .lst.on{background:#fff3c4;box-shadow:inset 0 0 0 2px #ffc93c}
-.lta{border-radius:12px;border:2px solid #e8dcc4;padding:10px 12px;font:600 1.05rem/1.4 Fredoka,Jua,sans-serif;color:#26313d;outline:none;resize:none}
+.lta{border-radius:12px;border:2px solid #e8dcc4;padding:10px 12px;background:#fff;-webkit-text-fill-color:#26313d;color-scheme:light;font:600 1.05rem/1.4 Fredoka,Jua,sans-serif;color:#26313d;outline:none;resize:none}
 .lta.big{min-height:220px}
 .lwc{margin:0;font-family:var(--game);font-size:.88rem;color:#2f9e44;min-height:1em}
 
@@ -1621,7 +1621,8 @@ body:has(.libscr){background:linear-gradient(#f3ead9 0%,#efe2c8 60%,#d8c29a 100%
 .wschip .vok{position:static;width:16px;height:16px;margin-left:2px}
 .wschip:active{transform:translateY(2px)}
 
-.lcovf{flex-direction:row;align-items:center;gap:12px}
+.lcovf{display:block}
+.lcovrow{display:flex;align-items:center;gap:12px}
 .lcovbtn{flex:none;width:64px;height:84px;border-radius:8px;border:2px dashed #e0c99c;background:#fffaf0;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:0}
 .lcovbtn:has(img){border:0;box-shadow:0 2px 6px rgba(80,50,20,.25)}
 .lcovim{width:100%;height:100%;object-fit:cover}
@@ -1648,6 +1649,11 @@ body:has(.libscr){background:linear-gradient(#f3ead9 0%,#efe2c8 60%,#d8c29a 100%
 .wswpi img{width:64px;height:84px;object-fit:cover;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.18);background:#fff}
 .wswpi small{font-size:.7rem;font-weight:700;color:var(--sub)}
 .wsbig img{max-height:300px;max-width:92%}
+input,textarea,select{color-scheme:light}
+input:-webkit-autofill{-webkit-box-shadow:0 0 0 40px #fff inset;-webkit-text-fill-color:#26313d}
+.covlb{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.covinp{position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+label.cta{cursor:pointer;user-select:none;-webkit-user-select:none}
 </style>
 
 <div id="app"></div>
@@ -4211,7 +4217,7 @@ function wsDone(){var W=wsS();if(!W.cur)return;wsPause();var sid=W.cur.s||WS_SEL
     setTimeout(function(){
       if(R_.tree)wsTreeSheet(R_.tree,R_.sun,'국어·수학·한자 모두 끝!');
       else if(sid==='er'){showSheet('good','books','리딩 숙제 '+mn+'분',R_.rew?'리딩 숙제 끝! 햇살 '+R_.sun+'개':'오늘 리딩은 이미 했어요','오늘 읽은 영어책을 도서관 책장에 꽂아요. 표지 사진도 찍을 수 있어요.','도서관에 책 꽂기',function(){libAdd(function(){wsScreen(WS_BACK)})});var l2=el('button','cta light','다음에');l2.onclick=function(){hideSheet()};sheet.firstChild.appendChild(l2)}
-      else if(sid==='ew'){showSheet('good','pencil','라이팅 숙제 '+mn+'분',R_.rew?'라이팅 숙제 끝! 햇살 '+R_.sun+'개':'오늘 라이팅은 이미 했어요','오늘 쓴 공책을 사진으로 남겨 둘까요? 나중에 얼마나 늘었는지 볼 수 있어요.','공책 사진 찍기',function(){covPick(function(d){W.wp.push({d:dnum(),cid:covNew(d)});save();wsScreen(WS_BACK);setTimeout(function(){showSheet('good','pencil','라이팅 공책','사진을 남겼어요!','숙제 시간 화면 아래 라이팅 공책에서 볼 수 있어요.','좋아요',function(){})},300)})});var l3=el('button','cta light','다음에');l3.onclick=function(){hideSheet()};sheet.firstChild.appendChild(l3)}
+      else if(sid==='ew'){showSheet('good','pencil','라이팅 숙제 '+mn+'분',R_.rew?'라이팅 숙제 끝! 햇살 '+R_.sun+'개':'오늘 라이팅은 이미 했어요','오늘 쓴 공책을 사진으로 남겨 둘까요? 나중에 얼마나 늘었는지 볼 수 있어요.','공책 사진 찍기',function(){});(function(){var g=sheet.firstChild.querySelector('.cta.green');var lb=covLabel('cta green','공책 사진 찍기',function(d){hideSheet();W.wp.push({d:dnum(),cid:covNew(d)});save();wsScreen(WS_BACK);setTimeout(function(){showSheet('good','pencil','라이팅 공책','사진을 남겼어요!','숙제 시간 화면 아래 라이팅 공책에서 볼 수 있어요.','좋아요',function(){})},300)});g.replaceWith(lb)})();var l3=el('button','cta light','다음에');l3.onclick=function(){hideSheet()};sheet.firstChild.appendChild(l3)}
       else showSheet('good',sb.img,sb.name+' 학습지 '+mn+'분',R_.rew?sb.name+' 학습지 끝! 햇살 '+R_.sun+'개':'오늘 '+sb.name+(batchim(sb.name)?'은':'는')+' 이미 했어요',R_.rew?(left.length?'남은 학습지: '+left.join(', ')+'. 세 과목 다 하면 나무 선물이 있어요.':'국어·수학·한자를 다 끝냈어요!'):'기록에 남겨 뒀어요. 그래도 정말 잘했어요!','좋아요',function(){})},350)});
   var lt=el('button','cta light','아직이야');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)}
 function wsOpen(back){WS_BACK=back||villageScreen;WS_SEL=null;wsScreen(WS_BACK)}
@@ -4225,20 +4231,22 @@ function covGet(cid,cb){if(!cid)return;if(COVC[cid])return cb(COVC[cid]);var d=n
   if(CLOUD.db&&CLOUD.uid)CLOUD.db.doc('data/users/'+CLOUD.uid+'/cov_'+cid).get().then(function(sn){if(sn&&sn.exists){var x=sn.data().d;if(x){COVC[cid]=x;try{localStorage.setItem(covKey(cid),x)}catch(e){}cb(x)}}}).catch(function(){})}
 function covImg(cid,cls){var im=document.createElement('img');im.className=cls||'';im.alt='';im.style.visibility='hidden';covGet(cid,function(d){im.src=d;im.style.visibility=''});return im}
 // 사진 고르기 → 작게 줄여서 data URL로
-function covPick(cb){var inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.setAttribute('capture','environment');inp.style.display='none';document.body.appendChild(inp);
-  inp.onchange=function(){var f=inp.files&&inp.files[0];inp.remove();if(!f)return;var url=URL.createObjectURL(f),im=new Image();
-    im.onload=function(){var W=im.naturalWidth,H=im.naturalHeight,k=Math.min(1,320/Math.max(W,H)),cv=document.createElement('canvas');cv.width=Math.max(1,Math.round(W*k));cv.height=Math.max(1,Math.round(H*k));var cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(url);var d=cv.toDataURL('image/jpeg',.76);cb(d)};
-    im.onerror=function(){URL.revokeObjectURL(url);showSheet('bad','books','표지 사진','사진을 열 수 없어요','다른 사진으로 다시 해 볼까요?','좋아요',function(){})};im.src=url};
-  setTimeout(function(){inp.click()},0)}
+function covFile(f,cb){var url=URL.createObjectURL(f),im=new Image();
+  im.onload=function(){var W=im.naturalWidth,H=im.naturalHeight,k=Math.min(1,320/Math.max(W,H)),cv=document.createElement('canvas');cv.width=Math.max(1,Math.round(W*k));cv.height=Math.max(1,Math.round(H*k));var cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(url);var d='';try{d=cv.toDataURL('image/jpeg',.76)}catch(e){}if(d.length>100)cb(d);else covErr()};
+  im.onerror=function(){URL.revokeObjectURL(url);covErr()};im.src=url}
+function covErr(){showSheet('bad','books','사진','사진을 열 수 없어요','다른 사진으로 다시 해 볼까요?','좋아요',function(){})}
+function covLabel(cls,inner,cb){var lb=document.createElement('label');lb.className=(cls||'')+' covlb';if(typeof inner==='string')lb.appendChild(el('span',null,inner));else if(inner)lb.appendChild(inner);
+  var inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.className='covinp';inp.tabIndex=-1;inp.setAttribute('aria-hidden','true');
+  inp.onchange=function(){var f=inp.files&&inp.files[0];if(f)covFile(f,function(d){try{inp.value=''}catch(e){}cb(d)})};lb.appendChild(inp);return lb}
 function covNew(d){var cid='c'+Date.now().toString(36)+Math.floor(Math.random()*1e4).toString(36);covPut(cid,d);return cid}
-function libShow(bk){libShow0(bk);var inn=sheet.firstChild,hd=inn.querySelector('.hd');if(bk.cv){var w=el('div','lcovshow');w.appendChild(covImg(bk.cv));inn.insertBefore(w,hd.nextSibling)}var lt=el('button','cta light',bk.cv?'표지 다시 찍기':'표지 사진 넣기');lt.onclick=function(){covPick(function(d){bk.cv=covNew(d);save();hideSheet();if(document.querySelector('.libscr:not(.libadd)'))libScreen(LIB_BACK);setTimeout(function(){libShow(bk)},350)})};inn.appendChild(lt)}
+function libShow(bk){libShow0(bk);var inn=sheet.firstChild,hd=inn.querySelector('.hd');if(bk.cv){var w=el('div','lcovshow');w.appendChild(covImg(bk.cv));inn.insertBefore(w,hd.nextSibling)}var lt=covLabel('cta light',bk.cv?'표지 다시 찍기':'표지 사진 넣기',function(d){bk.cv=covNew(d);save();hideSheet();if(document.querySelector('.libscr:not(.libadd)'))libScreen(LIB_BACK);setTimeout(function(){libShow(bk)},350)});inn.appendChild(lt)}
 function libShow0(bk){showSheet('good','books',bk.d!=null?'읽은 책':'책',bk.t,(bk.s?'★★★★★'.slice(0,bk.s)+'☆☆☆☆☆'.slice(0,5-bk.s)+'  ':'')+(bk.w||'아직 한마디를 쓰지 않았어요.'),bk.w?'영어로 듣기':'좋아요',function(){if(bk.w)libRead(bk.w)})}
 function libAdd(back){clear();var sc=el('div','screen libscr libadd'),top=el('div','qtop');var b=el('button','x');b.innerHTML=BACK_SVG;b.setAttribute('aria-label','돌아가기');b.onclick=function(){libScreen(back)};top.appendChild(b);top.appendChild(el('h2','mtitle','읽은 책 꽂기'));sc.appendChild(top);
   var st={t:'',c:LIB_COL[R(0,5)],s:0,st:0};
   var f1=el('div','lfield');f1.appendChild(el('small',null,'책 제목'));var ti=document.createElement('input');ti.className='linp';ti.placeholder='예: Magic Tree House';ti.setAttribute('autocapitalize','words');ti.setAttribute('autocorrect','off');ti.spellcheck=false;f1.appendChild(ti);var sug=el('div','lsug');f1.appendChild(sug);sc.appendChild(f1);
-  var fc=el('div','lfield lcovf'),cb_=el('button','lcovbtn'),ct=el('div','lcovtx');fc.appendChild(cb_);fc.appendChild(ct);sc.appendChild(fc);
+  var cb_=el('div','lcovbtn'),ct=el('div','lcovtx'),fw=el('div');fw.appendChild(cb_);fw.appendChild(ct);fw.className='lcovrow';var fc=covLabel('lfield lcovf',fw,function(d){st.cv=covNew(d);drawCov()});sc.appendChild(fc);
   function drawCov(){cb_.innerHTML='';ct.innerHTML='';if(st.cv){cb_.appendChild(covImg(st.cv,'lcovim'));ct.appendChild(el('b',null,'표지 사진을 넣었어요'));ct.appendChild(el('small',null,'다시 찍으려면 사진을 눌러요'))}else{cb_.innerHTML=COV_SVG;ct.appendChild(el('b',null,'표지 사진 찍기'));ct.appendChild(el('small',null,'안 찍어도 괜찮아요'))}}
-  cb_.setAttribute('aria-label','표지 사진 찍기');cb_.onclick=function(){covPick(function(d){st.cv=covNew(d);drawCov()})};ct.onclick=function(){cb_.click()};drawCov();
+  fc.setAttribute('aria-label','표지 사진 찍기');drawCov();
   function drawSug(){sug.innerHTML='';var q=ti.value.trim().toLowerCase();if(q.length<2)return;LIB_CAT.filter(function(x){return x.toLowerCase().indexOf(q)>=0}).slice(0,4).forEach(function(x){var c=el('button','lsg',x);c.onclick=function(){ti.value=x;sug.innerHTML='';upd()};sug.appendChild(c)})}
   var f2=el('div','lfield');f2.appendChild(el('small',null,'책 색깔'));var cr=el('div','lcols');LIB_COL.forEach(function(c){var d=el('button','lcol'+(c===st.c?' on':''));d.style.background=c;d.onclick=function(){st.c=c;[].forEach.call(cr.children,function(x){x.classList.remove('on')});d.classList.add('on')};cr.appendChild(d)});f2.appendChild(cr);sc.appendChild(f2);
   var f3=el('div','lfield');f3.appendChild(el('small',null,'얼마나 재미있었어?'));var sr=el('div','lstars');for(var i=1;i<=5;i++)(function(i){var s_=el('button','lstar','★');s_.onclick=function(){st.s=i;[].forEach.call(sr.children,function(x,j){x.classList.toggle('on',j<i)})};sr.appendChild(s_)})(i);f3.appendChild(sr);sc.appendChild(f3);
