@@ -1575,6 +1575,42 @@ body:has(.libscr){background:linear-gradient(#f3ead9 0%,#efe2c8 60%,#d8c29a 100%
 .lta{border-radius:12px;border:2px solid #e8dcc4;padding:10px 12px;font:600 1.05rem/1.4 Fredoka,Jua,sans-serif;color:#26313d;outline:none;resize:none}
 .lta.big{min-height:220px}
 .lwc{margin:0;font-family:var(--game);font-size:.88rem;color:#2f9e44;min-height:1em}
+
+.wsscr{gap:12px}
+.wsbox{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 16px 16px;border-radius:24px;background:linear-gradient(#e7f7ff,#f4fbef);box-shadow:inset 0 0 0 2px #fff,0 4px 0 #d5e6d2}
+.wsstage{position:relative;width:220px;height:214px}
+.wsground{position:absolute;left:50%;bottom:6px;width:170px;height:56px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(#9b6a3d 0 52%,#7fc25a 54% 100%);box-shadow:0 6px 0 #5f9b3f}
+.wstree{position:absolute;left:50%;bottom:30px;height:calc(180px * var(--sz,.5));transform:translateX(-50%);transform-origin:50% 100%}
+.wstree img{display:block;height:100%;width:auto;max-width:none}
+.wstree.grow{animation:wsgrow .7s cubic-bezier(.3,1.6,.5,1)}
+@keyframes wsgrow{0%{transform:translateX(-50%) scale(.6)}100%{transform:translateX(-50%) scale(1)}}
+.wsscr.run .wstree{animation:wssway 3.2s ease-in-out infinite}
+@keyframes wssway{0%,100%{transform:translateX(-50%) rotate(-1.5deg)}50%{transform:translateX(-50%) rotate(1.5deg)}}
+.wsname{font-family:var(--game);font-weight:400;font-size:1.05rem;color:#2f6b2a}
+.wstime{font-family:var(--game);font-size:3rem;line-height:1;color:var(--ink)}
+.wsbar{width:min(240px,80%);height:12px;border-radius:6px;background:#dbe8d6;overflow:hidden}
+.wsbar i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(#7ad35b,#3fae2e);transition:width .8s}
+.wscap{font-size:.85rem;font-weight:700;color:var(--sub)}
+.wshint{margin:0;text-align:center;font-size:.9rem;font-weight:700;color:var(--sub);line-height:1.4;min-height:2.8em;display:flex;align-items:center;justify-content:center}
+.wsbtns{display:flex;flex-direction:column;gap:8px}
+.wsbtns .cta:disabled{opacity:.55}
+.wsh2{margin:4px 0 0;font-family:var(--game);font-size:.95rem;color:var(--ink-2)}
+.wsweek{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.wsday{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:12px;background:var(--fill-2,#f1f3f5)}
+.wsday i{display:flex;align-items:flex-end;justify-content:center;width:26px;height:26px}
+.wsday i img{width:26px;height:26px;object-fit:contain}
+.wsday b{font-size:.72rem;line-height:1.2;color:var(--ink)}
+.wsday small{font-size:.68rem;color:var(--sub);line-height:1.2}
+.wsday.on{background:#e6f6dc}
+.wsday.today{box-shadow:inset 0 0 0 2px #7ad35b}
+.vthead{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:32px}
+.vthead .vtitle{margin-top:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+@media (max-width:359px){.vtl2{display:none}}
+.wschip{flex:none;display:flex;align-items:center;gap:4px;height:32px;padding:0 12px 0 8px;border-radius:999px;background:linear-gradient(#fff8e6,#ffefc2);box-shadow:inset 0 0 0 1.5px #f3d58a,0 3px 0 #e8c46a;font-family:var(--game);font-size:.9rem;color:#7a5410;position:relative;line-height:1}
+.wschip img{width:20px;height:20px}
+.wschip.on{background:linear-gradient(#e9fbe1,#c9efb6);box-shadow:inset 0 0 0 1.5px #9bd77f,0 3px 0 #86c56a;color:#2f6b2a}
+.wschip .vok{position:static;width:16px;height:16px;margin-left:2px}
+.wschip:active{transform:translateY(2px)}
 </style>
 
 <div id="app"></div>
@@ -4066,6 +4102,49 @@ function libScreen(back){clear();var L=libS(),sc=el('div','screen libscr'),top=e
   sc.appendChild(case_);
   var imp=el('button','cta light limp','학원 사이트 목록 붙여넣기');imp.onclick=function(){libImport(back)};sc.appendChild(imp);
   app.appendChild(sc);zMark&&zMark()}
+
+// ================= 학습지 타이머: 종이 학습지를 하는 동안 나무가 자라요 =================
+var WS_ST=[{m:0,img:'sprout',name:'아기 싹',sz:.26},{m:5,img:'sprout',name:'새싹',sz:.42,sun:10},{m:10,img:'d_round',name:'동글나무',sz:.7,sun:20,tree:'d_round'},{m:15,img:'d_oak',name:'떡갈나무',sz:.87,sun:30,tree:'d_oak'},{m:20,img:'d_cherry',name:'벚나무',sz:1,sun:40,tree:'d_cherry'}];
+var WS_DAY=2,WS_MAX=60,WS_UI=null,WS_LOCK=null;
+function wsS(){if(!S.ws)S.ws={cur:null,log:[],day:{d:-1,n:0}};if(S.ws.day.d!==dnum())S.ws.day={d:dnum(),n:0};return S.ws}
+function wsMs(){var c=wsS().cur;if(!c)return 0;return Math.min(WS_MAX*6e4,c.acc+(c.t0?Math.max(0,Date.now()-c.t0):0))}
+function wsStage(ms){var m=ms/6e4,i=0;WS_ST.forEach(function(x,j){if(m>=x.m)i=j});return i}
+function wsWake(on){try{if(on){if(navigator.wakeLock&&!WS_LOCK)navigator.wakeLock.request('screen').then(function(l){WS_LOCK=l}).catch(function(){})}else if(WS_LOCK){WS_LOCK.release();WS_LOCK=null}}catch(e){}}
+function wsPause(){var c=wsS().cur;if(!c||!c.t0)return;c.acc=wsMs();c.t0=null;save();wsWake(false);if(WS_UI)WS_UI()}
+function wsRun(){var W=wsS();if(!W.cur)W.cur={acc:0,t0:null};W.cur.t0=Date.now();save();wsWake(true);if(WS_UI)WS_UI()}
+document.addEventListener('visibilitychange',function(){if(document.hidden)wsPause()});
+function wsMMSS(ms){var t=Math.floor(ms/1000);return (t/60<10?'0':'')+Math.floor(t/60)+':'+(t%60<10?'0':'')+(t%60)}
+function wsWeek(){var L=wsS().log,d0=dnum(),out=[];for(var i=6;i>=0;i--){var d=d0-i,m=0,n=0;L.forEach(function(x){if(x.d===d){m+=x.m;n++}});out.push({d:d,m:m,n:n})}return out}
+function wsScreen(back){clear();var W=wsS(),sc=el('div','screen wsscr'),top=el('div','qtop');back=back||villageScreen;
+  var b=el('button','x');b.setAttribute('aria-label','나가기');b.innerHTML=BACK_SVG;b.onclick=function(){wsPause();WS_UI=null;back()};top.appendChild(b);top.appendChild(el('h2','mtitle','학습지 시간'));top.appendChild(el('div','spacer'));
+  var wk=wsWeek(),wn=wk.reduce(function(a,x){return a+x.n},0),cnt=el('div','balance');cnt.appendChild(img('pencil'));cnt.appendChild(el('b','tnum',wn+'번'));cnt.setAttribute('aria-label','최근 7일 학습지 '+wn+'번');top.appendChild(cnt);sc.appendChild(top);
+  var box=el('div','wsbox'),stg=el('div','wsstage'),gr=el('i','wsground'),tr=el('div','wstree'),nm=el('b','wsname'),tm=el('div','wstime tnum'),bar=el('div','wsbar'),fill=el('i'),cap=el('small','wscap');
+  stg.appendChild(gr);stg.appendChild(tr);box.appendChild(stg);box.appendChild(nm);box.appendChild(tm);bar.appendChild(fill);box.appendChild(bar);box.appendChild(cap);sc.appendChild(box);
+  var hint=el('p','wshint');sc.appendChild(hint);var btns=el('div','wsbtns');sc.appendChild(btns);
+  // 최근 7일
+  var wkr=el('div','wsweek'),DN=['일','월','화','수','목','금','토'];wk.forEach(function(x){var c=el('div','wsday'+(x.n?' on':'')+(x.d===dnum()?' today':''));var ic=el('i');if(x.n)ic.appendChild(img(WS_ST[wsStage(x.m/x.n*6e4)].img));c.appendChild(ic);c.appendChild(el('b',null,x.n?x.m+'분':'-'));c.appendChild(el('small',null,DN[new Date(x.d*864e5).getUTCDay()]));wkr.appendChild(c)});
+  sc.appendChild(el('p','wsh2','최근 7일'));sc.appendChild(wkr);
+  var lastI=-1;
+  function draw(){var c=W.cur,ms=wsMs(),i=wsStage(ms),S_=WS_ST[i],nx=WS_ST[i+1];
+    if(i!==lastI){tr.innerHTML='';var im=img(S_.img);tr.appendChild(im);tr.style.setProperty('--sz',S_.sz);if(lastI>=0&&i>lastI){tr.classList.remove('grow');void tr.offsetWidth;tr.classList.add('grow');SND.bloom();var r=tr.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,18,false)}lastI=i}
+    nm.textContent=S_.name;tm.textContent=wsMMSS(ms);
+    if(nx){var a=S_.m*6e4,z=nx.m*6e4;fill.style.width=Math.round((ms-a)/(z-a)*100)+'%';var left=Math.ceil((z-ms)/6e4);cap.textContent=nx.name+'까지 '+left+'분'}else{fill.style.width='100%';cap.textContent=ms>=WS_MAX*6e4?'오늘은 여기까지! 잘했어요':'다 자랐어요!'}
+    if(c&&c.t0&&ms>=WS_MAX*6e4)wsPause()}
+  function ui(){if(!document.body.contains(sc)){WS_UI=null;return}var c=W.cur,ms=wsMs(),run=!!(c&&c.t0);btns.innerHTML='';sc.classList.toggle('run',run);
+    if(!c){hint.textContent=W.day.n>=WS_DAY?'오늘 보상은 다 받았어요. 그래도 나무는 자라요!':'학습지를 펴고 시작을 눌러요. 오래 할수록 나무가 크게 자라요.';var go=el('button','cta green','학습지 시작');go.onclick=function(){SND.good(0);wsRun()};btns.appendChild(go)}
+    else if(run){hint.textContent='학습지를 하는 동안 나무가 자라요. 다른 화면으로 가면 잠깐 멈춰요.';var dn=el('button','cta green',ms<5*6e4?'5분이 지나면 끝낼 수 있어요':'학습지 다 했어요!');dn.disabled=ms<5*6e4;dn.onclick=wsDone;btns.appendChild(dn);var ps=el('button','cta light','잠깐 쉬기');ps.onclick=wsPause;btns.appendChild(ps)}
+    else{hint.textContent='잠깐 쉬는 중이에요. 다시 하려면 계속하기를 눌러요.';var go2=el('button','cta green','계속하기');go2.onclick=function(){wsRun()};btns.appendChild(go2);var e2=el('button','cta light',ms<5*6e4?'처음부터 다시':'학습지 다 했어요!');e2.onclick=ms<5*6e4?function(){W.cur=null;save();ui()}:wsDone;btns.appendChild(e2)}
+    draw()}
+  var tk=setInterval(function(){if(!document.body.contains(sc)){clearInterval(tk);return}var c=W.cur;if(!c||!c.t0)return;var was=btns.firstChild&&btns.firstChild.disabled;draw();if(was&&wsMs()>=5*6e4)ui();if(Date.now()-c.t0>15e3){c.acc=wsMs();c.t0=Date.now();save()}},1000);
+  app.appendChild(sc);WS_UI=ui;ui();zMark&&zMark()}
+function wsDone(){var W=wsS();if(!W.cur)return;wsPause();
+  showSheet('good','pencil','학습지 확인','학습지를 끝까지 다 했나요?',(function(){var st=WS_ST[wsStage(wsMs())];return W.day.n>=WS_DAY?'다 했으면 오늘 기록에 남겨 둘게요.':(W.day.n===0&&st.tree)?'다 했으면 '+st.name+'를 섬으로 옮겨 줄게요.':'다 했으면 햇살을 줄게요.'})(),'응, 다 했어!',function(){var ms=wsMs(),i=wsStage(ms),st=WS_ST[i],mn=Math.max(1,Math.round(ms/6e4)),rew=W.day.n<WS_DAY,tree=rew&&W.day.n===0&&st.tree;
+    W.log.push({d:dnum(),m:mn});if(W.log.length>200)W.log=W.log.slice(-200);W.cur=null;var sun=0;if(rew){W.day.n++;sun=st.sun||0;S.sun+=sun;if(tree)S.gd.bought[tree]=(S.gd.bought[tree]||0)+1}save();
+    wsScreen(WS_BACK);SND.bloom();
+    setTimeout(function(){showSheet('good',st.img,'학습지 '+mn+'분',(tree?st.name+'를 섬에 심을 수 있어요!':st.name+(batchim(st.name)?'이':'가')+' 자랐어요!'),rew?('햇살 '+sun+'개를 받았어요.'+(tree?' '+st.name+'는 섬 꾸미기 보관함에 넣어 뒀어요.':'')):'오늘 보상은 다 받았어요. 그래도 정말 잘했어요!','좋아요',function(){})},350)});
+  var lt=el('button','cta light','아직이야');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)}
+var WS_BACK=null;
+function wsOpen(back){WS_BACK=back||villageScreen;wsScreen(WS_BACK)}
 function libShow(bk){showSheet('good','books',bk.d!=null?'읽은 책':'책',bk.t,(bk.s?'★★★★★'.slice(0,bk.s)+'☆☆☆☆☆'.slice(0,5-bk.s)+'  ':'')+(bk.w||'아직 한마디를 쓰지 않았어요.'),bk.w?'영어로 듣기':'좋아요',function(){if(bk.w)libRead(bk.w)})}
 function libAdd(back){clear();var sc=el('div','screen libscr libadd'),top=el('div','qtop');var b=el('button','x');b.innerHTML=BACK_SVG;b.setAttribute('aria-label','돌아가기');b.onclick=function(){libScreen(back)};top.appendChild(b);top.appendChild(el('h2','mtitle','읽은 책 꽂기'));sc.appendChild(top);
   var st={t:'',c:LIB_COL[R(0,5)],s:0,st:0};
@@ -4375,7 +4454,7 @@ function villageScreen(){
   var bottom=el('div','vtoday');
   var md=S.math.today===today,hd=S.hz.today===today;
   function pill(icon,txt,done,act,sub){if(sub&&txt.replace(/\s/g,'').length>4)sub=null;var b=el('button','vtask'+(done?' done':'')+(sub?' trailp':''));b.appendChild(img(icon));var sp=el('span',null,txt);if(sub){sp.textContent='';sp.appendChild(el('small',null,sub));sp.appendChild(el('b',null,txt))}b.appendChild(sp);if(done){var c=el('i','vok');c.innerHTML=CHECK_SVG;b.appendChild(c)}b.onclick=act;return b}
-  bottom.appendChild(el('p','vtitle',todayLabel()+' · 오늘의 할 일'));
+  (function(){var hd_=el('div','vthead');var vt_=el('p','vtitle',todayLabel());vt_.appendChild(el('span','vtl2',' · 오늘의 할 일'));hd_.appendChild(vt_);var W=wsS(),wc=el('button','wschip'+(W.cur?' on':''));wc.appendChild(img(W.cur?'sprout':'pencil'));wc.appendChild(el('span',null,W.cur?'학습지 이어서':'학습지'));if(!W.cur&&W.day.n){var ok=el('i','vok');ok.innerHTML=CHECK_SVG;wc.appendChild(ok)}wc.setAttribute('aria-label','학습지 타이머');wc.onclick=function(){wsOpen(villageScreen)};hd_.appendChild(wc);bottom.appendChild(hd_)})();
   (function(){var left=advLeft();
     if(ADV||left.length){var b=el('button','advbtn'+(ADV?' cont':''));var ic=el('span','advic');ic.appendChild(avImg(S.path.char||'cat'));b.appendChild(ic);
       var tx=el('span','advtx');tx.appendChild(el('b',null,ADV?'모험 이어서 하기':'오늘의 모험 시작'));
