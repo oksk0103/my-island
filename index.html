@@ -2010,6 +2010,19 @@ body .cta{height:56px;border-radius:18px;font-size:1.2rem}
 body .choices{gap:10px}body .keys{gap:8px}
 body .vtasks{gap:8px}
 body .dock{gap:12px}
+
+body .village .advdone0,body .advdone0{background:none!important;background-image:none!important;box-shadow:none!important;border-radius:0;padding:6px 4px 10px;min-height:0;gap:12px;position:relative;isolation:auto}
+body .advdone0::before{display:none!important;content:none!important}
+body .advdone0 img{width:36px;height:36px;filter:var(--ico)}
+body .advdone0 span{flex:1;gap:3px}
+body .advdone0 b{font-family:var(--title);font-weight:400;font-size:1.3rem;color:#fff;text-shadow:var(--stroke);letter-spacing:.01em}
+body .advdone0 small{font-family:var(--game);font-size:.86rem;color:#fff;text-shadow:0 1.5px 0 var(--o),1px 0 0 var(--o),-1px 0 0 var(--o),0 -1px 0 var(--o);opacity:1}
+body .advdone0 .advstars{flex:none;font-style:normal;font-size:1.1rem;letter-spacing:.08em;color:#ffd23f;text-shadow:0 1.5px 0 var(--o),1px 0 0 var(--o),-1px 0 0 var(--o),0 -1px 0 var(--o)}
+body .village .vtoday{gap:12px}
+/* 저녁·밤 하늘은 그대로 두고 물빛 일렁임만 겹쳐요 */
+body .island.tod-eve{background:radial-gradient(130% 90% at 50% 48%,#ffd9b0 0%,#a9cfe0 48%,#5f9fc8 100%)}
+body .island.tod-night{background:radial-gradient(130% 90% at 50% 48%,#2f5a8e 0%,#243c74 50%,#182350 100%)}
+body .island.tod-night::before{opacity:.18}
 </style>
 
 <div id="app"></div>
@@ -4986,7 +4999,7 @@ function villageScreen(){
       var ks=ADV?ADV.q.slice(ADV.i):left;tx.appendChild(el('small',null,ks.map(function(k){return ADVK[k][0]}).join(' → ')+' 한 판씩'));b.appendChild(tx);
       var go=el('span','advgo');go.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l8 7-8 7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';b.appendChild(go);
       b.onclick=function(){if(ADV)advGo();else advStart()};bottom.appendChild(b)}
-    else{var dn=el('div','advdone0');dn.appendChild(img('check_mark_button'));var dt=el('span');dt.appendChild(el('b',null,'오늘의 모험 완료!'));dt.appendChild(el('small',null,'더 하고 싶으면 아래에서 골라요'));dn.appendChild(dt);bottom.appendChild(dn)}})();
+    else{var dn=el('div','advdone0');dn.appendChild(img('check_mark_button'));var dt=el('span');dt.appendChild(el('b',null,'오늘의 모험 완료!'));dt.appendChild(el('small',null,'더 하고 싶으면 아래에서 골라요'));dn.appendChild(dt);var st_=el('i','advstars');st_.textContent='★ ★ ★';dn.appendChild(st_);bottom.appendChild(dn)}})();
   var row=el('div','vtasks');
   row.appendChild(pill('blossom','수학',md,function(){startRound(SUBJ.math)}));
   row.appendChild(pill('red_apple','한자',hd,function(){startRound(SUBJ.hz)}));
