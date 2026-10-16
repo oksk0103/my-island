@@ -2107,6 +2107,45 @@ body .dockrow .cta,body .dockrow .cta.light,body .tacts .cta,body .row2 .cta{hei
 .vshallow{position:absolute;left:220px;top:392px;width:560px;height:280px;margin:-140px 0 0 -280px;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,rgba(255,255,255,.34),rgba(255,255,255,.18) 62%,rgba(255,255,255,0) 100%);transform:translate(0,0)}
 .village.tod-eve .vshallow{background:radial-gradient(closest-side,rgba(255,240,220,.3),rgba(255,240,220,.14) 62%,rgba(255,240,220,0) 100%)}
 .village.tod-night .vshallow{background:radial-gradient(closest-side,rgba(120,170,230,.22),rgba(120,170,230,.1) 62%,rgba(120,170,230,0) 100%)}
+
+/* ===== 글씨 무게 낮추기: Black Han Sans → Jua, 테두리 글자는 큰 버튼에만 ===== */
+:root{--title:"Jua","Noto Sans KR",sans-serif;--stroke:0 1.5px 0 var(--o),1px 0 0 var(--o),-1px 0 0 var(--o),0 -1px 0 var(--o),1px 1px 0 var(--o),-1px 1px 0 var(--o),1px -1px 0 var(--o),-1px -1px 0 var(--o),0 2.5px 0 var(--o)}
+/* 숫자·라벨: 테두리 없이 보통 글자 */
+body .hchip b,body .qwallet b,body .balance b,body .qwallet,body .hchip,body .balance{font-size:1.05rem;letter-spacing:0}
+body .village .vtitle,body .village .vthead .vtitle{font-size:.95rem;text-shadow:0 1px 0 rgba(40,56,90,.6),0 0 6px rgba(20,40,80,.5);font-weight:400}
+body .village .lmlabel{font-size:.92rem;letter-spacing:0;padding:3px 12px 4px}
+body .village .vtask,body .qscreen .choice,body .ghc b,body .catchip,body .wssub,body .wssg,body .awc b,body .cta.light,body .seg button,body .mseg button,body .qscreen .keys button{letter-spacing:0}
+body .qhead h2{font-size:1.4rem;letter-spacing:0;text-shadow:none}
+body .mtitle{font-size:1.35rem;letter-spacing:0}
+body .sheet h3{font-size:1.3rem;letter-spacing:0}
+body .card h3,body .rcard h3,body .frcard h3{font-size:1.15rem;letter-spacing:0}
+body .stat b{font-size:1.2rem}
+body .qhead small,body .qhead .qtag,body .qscreen .qtag{font-size:.85rem;letter-spacing:0;padding:4px 10px 3px}
+/* 큰 버튼 글자: Jua + 얇은 테두리 */
+body .cta,body .sheet .cta,body .qscreen>.cta,body .village .advbtn .advtx b{font-size:1.2rem;letter-spacing:0}
+body .village .advtx b{font-size:1.3rem}
+body .village .advtx small{text-shadow:0 1px 0 rgba(40,56,90,.7)}
+body .advdone0 b{font-size:1.2rem;letter-spacing:0}
+body .advdone0 small{text-shadow:0 1px 0 rgba(40,56,90,.7)}
+body .ibig{font-size:1.1rem;letter-spacing:0}
+/* 선택된 타일·완료 칸 글자: 테두리 대신 얇은 그림자 */
+body .qscreen .choice.on,body .qscreen .choice.right,body .qscreen .choice.wrong,body .wssub.on,body .wssg.on,body .village .vtask.done,body .village .wschip.on,body .village .lm-boat .lmlabel{text-shadow:0 1px 0 rgba(0,0,0,.25)}
+/* 섬 안내말: Jua, 밝은 반투명 남색 */
+body .ihint{font-family:var(--game);font-size:.9rem;letter-spacing:0;background:rgba(40,56,90,.86)!important;box-shadow:none!important;padding:8px 16px;line-height:1.35}
+/* 섬 위쪽 칩 겹침: 레벨 칩이 줄어들 수 있게 */
+body .island .hud{gap:8px}
+body .island .hudl{flex:1;min-width:0;gap:8px}
+body .island .islv{flex:1;min-width:0;max-width:200px;overflow:hidden}
+body .island .islv b{white-space:nowrap}
+body .island .islbar{flex:1;min-width:30px}
+body .island .hudr{flex:none}
+/* 숙제 연필 칩: 아이콘이 칩 안에 들어가게 */
+body .village .wschip{padding:0 14px 0 10px;gap:6px;height:36px;overflow:visible}
+body .village .wschip img{position:static;width:22px;height:22px;transform:none;filter:var(--ico-s)}
+body .wsscr .balance img{position:static;width:22px;height:22px}
+/* 전체 글자 무게 */
+body{font-weight:500}
+b,strong{font-weight:700}
 </style>
 
 <div id="app"></div>
