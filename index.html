@@ -2325,6 +2325,34 @@ html body .awc:not(.on) small{color:#5b6b85}
 /* 상점 칩 더 있음 페이드 */
 .catchips{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),rgba(0,0,0,.15));mask-image:linear-gradient(90deg,#000 calc(100% - 36px),rgba(0,0,0,.15))}
 .catchips.end{-webkit-mask-image:none;mask-image:none}
+
+/* 이번 주 요약 */
+.wkcard{display:flex;flex-direction:column;gap:12px}
+.wkhd{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.wkhd h3{margin:0}
+.wkhd small{font-size:.76rem;color:#7a8597}
+.wkdays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.wkd{display:flex;flex-direction:column;align-items:center;gap:4px}
+.wkd i{width:26px;height:26px;border-radius:50%;background:#e9eef3;display:block}
+.wkd.on i{background:#4fc957;box-shadow:inset 0 0 0 3px #d9f5dc}
+.wkd.today i{box-shadow:0 0 0 2px #ffd43b}
+.wkd.fut i{opacity:.45}
+.wkd small{font-size:.72rem;color:#7a8597}
+.wkgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.wks{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.6)}
+.wks small{font-size:.76rem;color:#7a8597}
+.wks b{font-family:var(--game);font-weight:400;font-size:1.25rem;color:var(--o)}
+.wks em{font-style:normal;font-size:.72rem;color:#5b8a63}
+.wksub{display:flex;flex-direction:column;gap:6px}
+.wkrow{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:8px;font-size:.84rem}
+.wkrow span{color:var(--o);font-weight:600}
+.wkrow .wkbar{display:block;height:8px;border-radius:4px;background:#e9eef3;overflow:hidden}
+.wkrow .wkbar b{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#8ce99a,#4fc957)}
+.wkrow em{font-style:normal;color:#5b6b85;font-size:.78rem;white-space:nowrap}
+.wkrow.ws{grid-template-columns:40px 1fr}
+.wkrow.ws em{white-space:normal}
+.dbgchip{position:absolute;left:50%;top:calc(58px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:60;padding:4px 10px;border-radius:999px;background:#e8453c;color:#fff;font-family:var(--game);font-size:.78rem;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.wktip{margin:0;padding:10px 12px;border-radius:12px;background:#fff7e0;color:#6b4e16;font-size:.86rem;line-height:1.45}
 </style>
 
 <div id="app"></div>
@@ -2768,7 +2796,7 @@ function fixKo(t){if(typeof t!=='string'||t.indexOf('요')<0)return t;
 function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=fixKo(txt);return e}
 function img(key,cls,alt){var i=new Image();i.src=A[key];if(cls)i.className=cls;i.alt=alt||'';return i}
 function fmt(cm){var m=Math.floor(cm/100),r=cm%100;return m?(r?m+'m '+r+'cm':m+'m'):r+'cm'}
-function dayKey(d){d=d||new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+function dayKey(d){d=d||(typeof dbgNow==='function'?dbgNow():new Date());return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
 function batchim(w){w=String(w).replace(/[\s)\]’'"]+$/,'');var l=w.charAt(w.length-1);if(/[0-9]/.test(l)){if(l==='0')return true;return '13678'.indexOf(l)>=0}var c=w.charCodeAt(w.length-1)-44032;return c>=0&&c%28>0}
 function josa(w,a,b){return w+(batchim(w)?a:b)}
 var KNUM=['첫','두','세','네','다섯','여섯','일곱','여덟','아홉','열'];
@@ -2938,7 +2966,7 @@ function cloudInit(){
 setTimeout(cloudInit,0);
 function stkInfo(){
   var set={};S.days.forEach(function(d){set[d]=1});
-  var d=new Date(),n=0,i=0,lastRest=-99;
+  var d=dbgNow(),n=0,i=0,lastRest=-99;
   if(!set[dayKey(d)])d.setDate(d.getDate()-1);
   for(;i<400;i++){
     if(set[dayKey(d)])n++;
@@ -4116,7 +4144,9 @@ var NATURE={},POND={},STAGES=[{R:0},{lv:5,cost:100,R:13},{lv:8,cost:200,R:15.7},
 var NAT0=[['3,8','d_oak'],['2,10','d_round'],['3,11','d_bush_large'],['8,2','d_fat'],['10,1','evergreen_tree'],['11,2','d_bush'],['9,18','d_oak'],['11,17','d_round'],['17,13','d_fat'],['16,15','d_bush_large'],['3,14','d_stones'],['14,3','rock'],['16,4','palm_tree'],['4,16','d_palm_bend'],['18,8','rock'],['16,11','d_flowers_yellow'],['15,9','d_flowers_purple'],['17,11','d_flowers_red'],['2,9','d_flowers_red'],['9,2','d_flowers_yellow']];
 var NATPICK=['d_oak','d_round','d_bush','d_fat','evergreen_tree','d_bush_large','rock','d_flowers_red','d_flowers_yellow','d_pine_round','d_flowers_purple','d_mushrooms'];
 function hsh(c,r){var x=Math.sin(c*127.1+r*311.7)*43758.5453;return x-Math.floor(x)}
-function dnum(){var d=new Date();return Math.floor((d.getTime()-d.getTimezoneOffset()*6e4)/864e5)}
+var DBG={off:0,hour:null};try{var _dbg=JSON.parse(localStorage.getItem('pot-dbg')||'null');if(_dbg&&typeof _dbg==='object')DBG=_dbg}catch(e){}
+function dbgNow(){var d=new Date();if(DBG.off)d.setDate(d.getDate()+DBG.off);return d}
+function dnum(){var d=dbgNow();return Math.floor((d.getTime()-d.getTimezoneOffset()*6e4)/864e5)}
 function islStage(){return Math.min((S.isl&&S.isl.stage)||0,STAGES.length-1)}
 function rebuildLand(){
   LAND={};SAND={};NATURE={};POND={};var st=islStage();
@@ -5171,14 +5201,54 @@ function introVillage(){var I=introS();if(!S.tut||document.querySelector('.guide
   if(!I.av&&S.path.char&&avS().gem>0&&document.querySelector('.hbtn.avbtn2')){I.av=1;save();
     coachRun([['.hbtn.avbtn2','보석을 받았어! 이 버튼을 누르면 나를 꾸밀 수 있어. 모자도 쓰고 날개도 달아 볼래?','좋아!']],function(){});return true}
   return false}
+
+// ================= 이번 주 요약 (부모용) =================
+function weekRange(back){var d=dbgNow();var wd=(d.getDay()+6)%7;var mon=new Date(d.getFullYear(),d.getMonth(),d.getDate()-wd-7*(back||0));var out=[];for(var i=0;i<7;i++){var x=new Date(mon.getFullYear(),mon.getMonth(),mon.getDate()+i);out.push(x)}return out}
+function dnumOf(d){return Math.floor((d.getTime()-d.getTimezoneOffset()*6e4)/864e5)}
+function weekStats(back){var days=weekRange(back),d0=dnumOf(days[0]),d1=dnumOf(days[6]),set={};S.days.forEach(function(k){set[k]=1});
+  var study=days.map(function(d){return !!set[dayKey(d)]}),rs=repSum(d0,d1),q=0,c=0;['math','hz','en'].forEach(function(k){q+=rs[k][0];c+=rs[k][1]});
+  var wl=((S.ws&&S.ws.log)||[]).filter(function(x){return x.d>=d0&&x.d<=d1}),wmin={},wdays={};wl.forEach(function(x){if(x.s==='cls'){wdays[x.d]=1;return}wmin[x.s]=(wmin[x.s]||0)+(x.m||0);wdays[x.d]=1});
+  var books=libS().books.filter(function(b){return b.d>=d0&&b.d<=d1}).length;var m=S.mail&&S.mail.rep||{},mails=0;Object.keys(m).forEach(function(k){if(m[k].d>=d0&&m[k].d<=d1)mails++});
+  return {days:days,study:study,n:study.filter(Boolean).length,rs:rs,q:q,c:c,wmin:wmin,wdays:Object.keys(wdays).length,books:books,mails:mails,wl:wl}}
+function weekCard(){var W=weekStats(0),P=weekStats(1),card=el('section','card wkcard');var hd=el('div','wkhd');hd.appendChild(el('h3',null,'이번 주 요약'));var sm=el('small',null,(W.days[0].getMonth()+1)+'/'+W.days[0].getDate()+' ~ '+(W.days[6].getMonth()+1)+'/'+W.days[6].getDate()+' · 부모님 보기');hd.appendChild(sm);card.appendChild(hd);
+  var row=el('div','wkdays');var tdk=dayKey();W.days.forEach(function(d,i){var c=el('div','wkd'+(W.study[i]?' on':'')+(dayKey(d)===tdk?' today':'')+(d>dbgNow()?' fut':''));c.appendChild(el('i'));c.appendChild(el('small',null,['월','화','수','목','금','토','일'][i]));row.appendChild(c)});card.appendChild(row);
+  function stat(lab,val,sub){var d=el('div','wks');d.appendChild(el('small',null,lab));d.appendChild(el('b','tnum',val));if(sub)d.appendChild(el('em',null,sub));return d}
+  function diff(a,b,unit){var x=a-b;return x===0?'지난주와 같아요':(x>0?'▲ ':'▼ ')+Math.abs(x)+unit+' (지난주 '+b+unit+')'}
+  var g=el('div','wkgrid');
+  g.appendChild(stat('공부한 날',W.n+'일',diff(W.n,P.n,'일')));
+  g.appendChild(stat('푼 문제',W.q+'개',W.q?'정답률 '+Math.round(W.c/W.q*100)+'%':diff(W.q,P.q,'개')));
+  g.appendChild(stat('숙제한 날',W.wdays+'일',diff(W.wdays,P.wdays,'일')));
+  g.appendChild(stat('읽은 책 · 편지',W.books+'권 · '+W.mails+'통',diff(W.books,P.books,'권')));
+  card.appendChild(g);
+  var sub=el('div','wksub');[['math','수학'],['hz','한자'],['en','영어']].forEach(function(k){var r=W.rs[k[0]]||[0,0];var li=el('div','wkrow');li.appendChild(el('span',null,k[1]));var bar=el('i','wkbar');var f=el('b');f.style.width=(r[0]?Math.round(r[1]/r[0]*100):0)+'%';bar.appendChild(f);li.appendChild(bar);li.appendChild(el('em',null,r[0]?r[0]+'문제 · '+Math.round(r[1]/r[0]*100)+'%':'아직 없어요'));sub.appendChild(li)});
+  var ws=Object.keys(W.wmin);if(ws.length){var li2=el('div','wkrow ws');li2.appendChild(el('span',null,'숙제'));li2.appendChild(el('em','wsmin',ws.map(function(k){var o=wsSub(k);return (o.sh||o.name)+' '+W.wmin[k]+'분'}).join(' · ')));sub.appendChild(li2)}
+  card.appendChild(sub);
+  var tip=el('p','wktip');var best=['math','hz','en'].filter(function(k){return W.rs[k]&&W.rs[k][0]>=5}).sort(function(a,b){return W.rs[a][1]/W.rs[a][0]-W.rs[b][1]/W.rs[b][0]})[0];
+  tip.textContent=!W.q?'이번 주는 아직 문제를 풀지 않았어요.':best&&W.rs[best][1]/W.rs[best][0]<.7?({math:'수학',hz:'한자',en:'영어'}[best])+'이(가) 조금 어려웠어요. 섬 학교 오답 교실에서 같이 봐 주세요.':W.n>=5?'이번 주 꾸준히 잘했어요. 칭찬 한마디 부탁해요!':'아직 이번 주가 남았어요. 하루 한 판이면 충분해요.';
+  card.appendChild(tip);return card}
+// ================= 숨김 디버그 메뉴: '나의 기록' 제목을 7번 누르면 =================
+function dbgSave(){try{localStorage.setItem('pot-dbg',JSON.stringify(DBG))}catch(e){}}
+function dbgSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('light_bulb'));var t=el('div');t.appendChild(el('small',null,'개발자 메뉴'));t.appendChild(el('h3',null,'테스트용 (아이는 쓰지 않아요)'));hd.appendChild(t);inn.appendChild(hd);
+  var st=el('p',null,'날짜 이동 '+(DBG.off>0?'+':'')+DBG.off+'일 · 시각 '+(DBG.hour==null?'실제':DBG.hour+'시')+' · 햇살 '+S.sun+' · 보석 '+avS().gem);inn.appendChild(st);
+  function row(items){var r=el('div','dockrow');items.forEach(function(x){var b=el('button','cta light',x[0]);b.onclick=function(){x[1]();save();dbgSheet()};r.appendChild(b)});inn.appendChild(r)}
+  row([['햇살 +100',function(){S.sun+=100}],['보석 +3',function(){avS().gem+=3}]]);
+  row([['날짜 +1일',function(){DBG.off++;dbgSave()}],['날짜 +7일',function(){DBG.off+=7;dbgSave()}]]);
+  row([['날짜 원래대로',function(){DBG.off=0;dbgSave()}],['시각: 낮/저녁/밤',function(){DBG.hour=DBG.hour==null?18:DBG.hour===18?21:DBG.hour===21?11:null;dbgSave()}]]);
+  row([['낚시 티켓 +1',function(){fishS().tk++}],['물방울 +5',function(){S.math.water=(S.math.water||0)+5}]]);
+  row([['안내 다시 보기',function(){S.intro={}}],['오늘 기록 지우기',function(){var k=dayKey();S.days=S.days.filter(function(d){return d!==k});S.math.today=S.hz.today=S.en.today='';ADV=null}]]);
+  inn.appendChild(el('p','mtip','날짜·시각을 옮겼으면 테스트가 끝난 뒤 꼭 원래대로 돌려 주세요. 켜져 있는 동안 마을에 "테스트 모드" 표시가 떠요.'));
+  var c=el('button','cta','닫고 마을로');c.onclick=function(){hideSheet();villageScreen()};inn.appendChild(c);
+  sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;requestAnimationFrame(function(){sheet.className='sheet good show'})}
+
 function houseScreen(){
   clear();
   var sc=el('div','screen'),top=el('div','qtop');
   var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=BACK_SVG;back.onclick=home;top.appendChild(back);sc.appendChild(top);
-  var hd=el('div','qhead');hd.appendChild(el('small',null,'우리 집'));hd.appendChild(el('h2',null,'나의 기록'));sc.appendChild(hd);var avc_=avCard();if(avc_)sc.appendChild(avc_);
+  var hd=el('div','qhead');hd.appendChild(el('small',null,'우리 집'));var h2_=el('h2',null,'나의 기록');var tapN=0,tapT=0;h2_.onclick=function(){var now=Date.now();tapN=now-tapT<1200?tapN+1:1;tapT=now;if(tapN>=7){tapN=0;dbgSheet()}};hd.appendChild(h2_);sc.appendChild(hd);var avc_=avCard();if(avc_)sc.appendChild(avc_);
   var stats=el('div','stats three');
   [['fire','연속 기록',streak()+'일'],['blossom','피운 꽃',S.math.hist.length+'송이'],['red_apple','익힌 한자',hzOrder().length+'자']].forEach(function(x){var s=el('div','stat');s.appendChild(img(x[0]));var d=el('div');d.appendChild(el('small',null,x[1]));d.appendChild(el('b','tnum',x[2]));s.appendChild(d);stats.appendChild(s)});
   sc.appendChild(stats);
+  try{sc.appendChild(weekCard())}catch(e){}
   var sk=el('section','card skills');sk.appendChild(el('h3',null,'나의 실력'));
   [SUBJ.math,SUBJ.hz].forEach(function(sub){
     sk.appendChild(el('p','lvline',sub.key==='math'?'수학':'한자 · 연습 중인 한자 '+S.hz.unlocked+'자'));
@@ -5346,7 +5416,7 @@ var FISH_XY=[404.2,519.2],MAILP_XY=[156,519.2];var VB=['tree','home','shop','mai
 var VLABEL={bee:'영어 벌집',tree:'한자 나무',home:'우리 집',pot:'수학 화분',mail:'오솔길',shop:'상점',boat:'내 섬 가기',fish:'낚시터',mailp:'우체통'};
 function villageScreen(){
   HUB='village';clear();gdInit();if(ADV&&ADV.day!==dayKey())ADV=null;var advDone_=ADV&&ADV.i>=ADV.q.length;if(advDone_)setTimeout(advFinish,0);else fishCatchUp();
-  var root=el('div','village');skyFx(root);
+  var root=el('div','village');skyFx(root);if(typeof DBG!=='undefined'&&(DBG.off||DBG.hour!=null)){var dc=el('button','dbgchip','테스트 모드'+(DBG.off?' · 날짜 '+(DBG.off>0?'+':'')+DBG.off+'일':'')+(DBG.hour!=null?' · '+DBG.hour+'시':''));dc.onclick=dbgSheet;root.appendChild(dc)}
   var stg=el('div','vstage');root.appendChild(stg);
   var scene=el('div','vscene');scene.style.width=VW+'px';scene.style.height=VH+'px';stg.appendChild(scene);
   var sh_=el('i','vshallow');scene.appendChild(sh_);var bg=img('k3_village','vbg');bg.draggable=false;scene.appendChild(bg);
@@ -5491,7 +5561,7 @@ function startGuide(){
   skip.onclick=end;
   show();
 }
-function skyPhase(){var h=window.__hour!=null?window.__hour:new Date().getHours();return h>=20||h<6?'night':(h>=17?'eve':'day')}
+function skyPhase(){var h=window.__hour!=null?window.__hour:(typeof DBG!=='undefined'&&DBG.hour!=null?DBG.hour:new Date().getHours());return h>=20||h<6?'night':(h>=17?'eve':'day')}
 function season(){var m=window.__month!=null?window.__month:new Date().getMonth()+1;return m>=3&&m<=5?'spring':m<=8&&m>=6?'summer':m>=9&&m<=11?'autumn':'winter'}
 function skyFx(root){
   var ph=skyPhase(),se=season();root.classList.add('tod-'+ph);
@@ -5505,7 +5575,7 @@ function skyFx(root){
     if(kind==='firefly')p.style.top=(35+Math.random()*50)+'%';
     if(kind==='leaf')p.style.background=['#e8590c','#f08c00','#c92a2a','#e67700'][j%4];fx.appendChild(p)}
 }
-function todayLabel(){var d=new Date();return (d.getMonth()+1)+'월 '+d.getDate()+'일 '+['일','월','화','수','목','금','토'][d.getDay()]+'요일'}
+function todayLabel(){var d=dbgNow();return (d.getMonth()+1)+'월 '+d.getDate()+'일 '+['일','월','화','수','목','금','토'][d.getDay()]+'요일'}
 
 // ================= 오솔길 =================
 var CHARS=[{id:'rabbit',name:'토끼'},{id:'cat',name:'고양이'},{id:'penguin',name:'펭귄'},{id:'chipmunk',name:'다람쥐'}];
