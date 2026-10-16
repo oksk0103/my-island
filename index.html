@@ -2090,6 +2090,18 @@ body .lcase,body .chalk{box-shadow:0 4px 0 rgba(60,35,15,.35)!important;margin-b
 body .wsbox{padding:20px 16px 18px}
 /* 화면 전체 여백 */
 body .screen{gap:18px}
+
+/* 큰 버튼: 높이 키우고 안쪽 여백 확보 */
+body .cta,body .sheet .cta,body .dock .cta,body .screen>.cta,body .qscreen>.cta{height:64px;min-height:64px;font-size:1.25rem;margin-bottom:8px}
+body .cta.light{height:56px;min-height:56px}
+body .village .advbtn{min-height:76px;padding:10px 12px 10px 10px}
+body .ibig{height:58px}
+body .cta:not(.light):not(.warn):not(:disabled)::before,body .village .advbtn::before,body .qscreen>.cta:not(:disabled)::before,body .sheet .cta.green::before,body .cta.warn:not(:disabled)::before,body .cta:disabled::before,body .qscreen>.cta:disabled::before,body .village .advbtn.cont::before,body .ibig::before{border-width:14px 18px 20px 18px!important}
+body .cta:not(.light):not(.warn):not(:disabled):active:not(:disabled)::before,body .village .advbtn:active:not(:disabled)::before,body .qscreen>.cta:not(:disabled):active:not(:disabled)::before,body .sheet .cta.green:active:not(:disabled)::before,body .cta.warn:not(:disabled):active:not(:disabled)::before,body .village .advbtn.cont:active:not(:disabled)::before,body .ibig:active:not(:disabled)::before{border-width:14px 18px 16px 18px!important}
+/* 보기·과목 타일도 조금 넉넉하게 */
+body .qscreen .choice{min-height:60px}
+body .village .vtask{height:56px}
+body .qscreen .keys button{height:50px}
 </style>
 
 <div id="app"></div>
