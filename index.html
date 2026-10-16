@@ -2038,6 +2038,58 @@ body .village .vtasks{gap:10px}
 body .village .advbtn{margin-bottom:0}
 body .village .vtask{margin-bottom:0}
 body .advdone0{padding:4px 4px 6px}
+
+/* ===== 위계 정리: 테두리는 '누르는 큰 버튼'에만. 선택 칸은 얇게, 정보 카드는 테두리 없이 ===== */
+/* 2단계: 선택 칸(보기·소품·상장·숙제 과목·칩·탭) — 그림 테두리 제거, 흰 타일 + 얇은 선 + 작은 받침 */
+body .qscreen .choice,body .qscreen .keys button,body .village .vtask,body .ghc,body .catchip,body .wssub,body .wssg,body .awc,body .titem,body .dexrwi,body .wsday,body .seg button.on,body .mseg button.on,body .stkm,body .evit,body .avcard,body .cta.light,body .mcase .mglass,body .lsg,body .wswpi img,body .lfbook{background:#fff!important;background-image:none!important;box-shadow:inset 0 0 0 1.5px #d6dfe8,0 3px 0 #cfd9e3!important;border-radius:14px;isolation:auto}
+body .qscreen .choice::before,body .qscreen .keys button::before,body .village .vtask::before,body .ghc::before,body .catchip::before,body .wssub::before,body .wssg::before,body .awc::before,body .titem::before,body .dexrwi::before,body .wsday::before,body .seg button.on::before,body .mseg button.on::before,body .stkm::before,body .evit::before,body .avcard::before,body .cta.light::before,body .qscreen .choice.on::before,body .qscreen .choice.right::before,body .qscreen .choice.wrong::before,body .village .vtask.done::before,body .wssub.on::before,body .wssg.on::before,body .village .wschip.on::before{display:none!important;content:none!important}
+body .qscreen .choice:active,body .qscreen .keys button:active,body .village .vtask:active,body .ghc:active,body .catchip:active,body .wssub:active,body .awc:active,body .titem:active,body .cta.light:active{transform:translateY(2px);box-shadow:inset 0 0 0 1.5px #d6dfe8,0 1px 0 #cfd9e3!important}
+body .qscreen .choice.on{background:linear-gradient(#8fd4ff,#3aa6f5)!important;box-shadow:inset 0 0 0 1.5px #1f86d6,0 3px 0 #1a6fb5!important;color:#fff;text-shadow:0 1.5px 0 rgba(20,60,110,.5)}
+body .qscreen .choice.right,body .village .vtask.done,body .wssub.on,body .wssg.on,body .village .wschip.on{background:linear-gradient(#a6ef8f,#4fc957)!important;box-shadow:inset 0 0 0 1.5px #2ea645,0 3px 0 #268a3a!important;color:#fff;text-shadow:0 1.5px 0 rgba(20,80,30,.5)}
+body .qscreen .choice.wrong{background:linear-gradient(#ffb3a7,#ff6b5b)!important;box-shadow:inset 0 0 0 1.5px #e8503f,0 3px 0 #c43f30!important;color:#fff;text-shadow:0 1.5px 0 rgba(120,20,0,.5)}
+body .catchip.on{background:var(--o)!important;color:#fff;box-shadow:0 3px 0 #1d2a46!important}
+body .catchip.on::before{display:none!important}
+body .village .wschip{box-shadow:inset 0 0 0 1.5px #d9a600,0 3px 0 #c98f00!important}
+body .village .wschip::before{display:none!important}body .village .wschip{background:linear-gradient(#ffe28a,#ffc53d)!important;background-image:linear-gradient(#ffe28a,#ffc53d)!important}
+body .wsday.today{box-shadow:inset 0 0 0 2px #3fbe4c,0 3px 0 #cfd9e3!important}
+body .wsday.on{background:#eafbe0!important}
+/* 글자: 선택 칸은 테두리 글자 대신 남색 보통 글자 */
+body .qscreen .choice,body .village .vtask,body .ghc b,body .catchip,body .wssub,body .wssg,body .awc b,body .cta.light{color:var(--o);text-shadow:none}
+/* 3단계: 정보 카드 — 테두리·받침 없음, 연한 바탕만 */
+body .card,body .rcard,body .wsbox,body .stat,body .trailcard,body .mcur p,body .rtalk p,body .advrow,body .lfield,body .evnote,body .sheet p{background:rgba(255,255,255,.72)!important;background-image:none!important;box-shadow:none!important;border:0!important;border-radius:18px;isolation:auto}
+body .card::before,body .rcard::before,body .wsbox::before,body .stat::before,body .trailcard::before,body .advdone0::before{display:none!important;content:none!important}
+body .card{padding:18px 18px 14px}
+/* 정보 카드 안의 작은 칸들: 상자 대신 구분선 */
+body .stats{gap:10px}
+body .stat{background:rgba(255,255,255,.55)!important;border-radius:14px;padding:12px 14px}
+body .skill,body .frrow,body .rrow{border-top:1.5px solid rgba(40,56,90,.1)}
+body .skill:first-of-type,body .frrow:first-of-type{border-top:0}
+/* 팝업·문제 카드(큰 패널)만 그림 테두리 유지, 두께는 줄여요 */
+body .sheet .in::before,body .ddcard::before,body .qscreen:not(.thm) .qbody::before{border-width:12px 12px 16px 12px!important}
+/* 상점·박물관·상장 격자: 칸 사이 여백 늘리기 */
+body .gh,body .mgrid,body .awgrid{gap:12px}
+body .ghc{padding:14px 10px 12px}
+body .mcase .mglass{border-radius:12px 12px 4px 4px}
+body .mplate{box-shadow:none;background:linear-gradient(#a5774a,#8a5f37);border-radius:0 0 10px 10px;margin-bottom:0}
+/* 위쪽 칩: 그림 테두리 대신 얇은 선 */
+body .hchip,body .balance,body .qwallet,body .x,body .hbtn{background:#fff!important;background-image:none!important;box-shadow:inset 0 0 0 1.5px #d6dfe8,0 3px 0 #cfd9e3!important;isolation:auto}
+body .hchip::before,body .balance::before,body .qwallet::before,body .x::before,body .hbtn::before{display:none!important;content:none!important}
+body .village .hchip,body .village .hbtn{background:rgba(255,255,255,.92)!important}
+/* 과목 꼬리표·안내: 남색 알약은 유지하되 받침 없이 */
+body .qhead small,body .qhead .qtag,body .qscreen .qtag,body .ihint{background:var(--o)!important;box-shadow:0 2px 0 rgba(40,56,90,.35)!important;isolation:auto}
+body .qhead small::before,body .qhead .qtag::before,body .qscreen .qtag::before,body .ihint::before{display:none!important;content:none!important}
+/* 마을 이름표: 흰 알약 + 얇은 선 */
+body .village .lmlabel{background:#fff!important;box-shadow:inset 0 0 0 1.5px #d6dfe8,0 3px 0 #cfd9e3!important}
+body .village .lm-boat .lmlabel{background:linear-gradient(#8fd4ff,#3aa6f5)!important;box-shadow:inset 0 0 0 1.5px #1f86d6,0 3px 0 #1a6fb5!important;color:#fff;text-shadow:0 1.5px 0 rgba(20,60,110,.5)}
+/* 탭 묶음: 얇은 트랙 */
+body .seg,body .mseg{background:rgba(40,56,90,.08);box-shadow:none;padding:4px}
+body .seg button.on,body .mseg button.on{box-shadow:inset 0 0 0 1.5px #d6dfe8,0 2px 0 #cfd9e3!important}
+/* 도서관 책장·학교 칠판: 두꺼운 남색 테두리 대신 재질 자체 테두리 */
+body .lcase,body .chalk{box-shadow:0 4px 0 rgba(60,35,15,.35)!important;margin-bottom:4px}
+/* 숙제: 나무 상자 안 쪽 여백 */
+body .wsbox{padding:20px 16px 18px}
+/* 화면 전체 여백 */
+body .screen{gap:18px}
 </style>
 
 <div id="app"></div>
