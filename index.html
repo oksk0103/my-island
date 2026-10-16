@@ -2023,6 +2023,21 @@ body .village .vtoday{gap:12px}
 body .island.tod-eve{background:radial-gradient(130% 90% at 50% 48%,#ffd9b0 0%,#a9cfe0 48%,#5f9fc8 100%)}
 body .island.tod-night{background:radial-gradient(130% 90% at 50% 48%,#2f5a8e 0%,#243c74 50%,#182350 100%)}
 body .island.tod-night::before{opacity:.18}
+
+/* ===== 아래 판 제거: 버튼들이 장면 위에 바로 떠요 ===== */
+body .village .vtoday{background:none!important;background-image:none!important;box-shadow:none!important;border:0;border-radius:0;padding:10px 16px calc(16px + env(safe-area-inset-bottom,0px));gap:12px;isolation:auto}
+body .village .vtoday::before,body .village .vtoday::after{display:none!important;content:none!important}
+/* 장면과 버튼 사이를 부드럽게 (아래쪽만 살짝 어둡게) */
+body .village .vtoday{background:linear-gradient(rgba(20,40,80,0),rgba(20,40,80,.22) 40%,rgba(20,40,80,.32))!important}
+body .village .vthead .vtitle{color:#fff;text-shadow:var(--stroke)}
+body .village .vtitle{font-size:1rem}
+/* 날짜 줄: 칩처럼 */
+body .village .vthead{min-height:36px}
+/* 버튼 간격 */
+body .village .vtasks{gap:10px}
+body .village .advbtn{margin-bottom:0}
+body .village .vtask{margin-bottom:0}
+body .advdone0{padding:4px 4px 6px}
 </style>
 
 <div id="app"></div>
