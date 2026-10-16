@@ -2239,6 +2239,19 @@ html body .village .vtask{gap:6px}
 html body .village .lmlabel{box-shadow:0 2px 6px rgba(20,40,80,.16)!important;padding:4px 12px 4px}
 html body .village .lm-boat .lmlabel{box-shadow:0 2px 6px rgba(20,40,80,.25)!important}
 html body .village.tod-night .lmlabel{box-shadow:0 0 0 1.5px rgba(255,255,255,.3),0 3px 10px rgba(0,0,0,.3)!important}
+
+/* 숙제 칩: 위 HUD 칩과 같은 흰 알약 (노란 3D 버튼이 혼자 떠 보이지 않게) */
+html body .village .wschip{background:rgba(255,255,255,.94)!important;background-image:none!important;color:var(--o);box-shadow:0 2px 6px rgba(20,40,80,.18)!important;height:34px;padding:0 13px 0 9px;gap:5px;font-size:.92rem}
+html body .village .wschip img{width:20px;height:20px}
+html body .village .wschip.on{background:#4fc957!important;color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.25);box-shadow:0 2px 6px rgba(20,40,80,.18)!important}
+html body .village .wschip:active{transform:translateY(1px)}
+html body .village .vthead{align-items:center}
+/* 과목 칸의 체크: 칸 안 오른쪽 위 모서리에 고정 (좁은 폰에서 밖으로 밀려나지 않게) */
+html body .village .vtask{position:relative;overflow:visible}
+html body .village .vtask .vok{position:absolute;top:5px;right:5px;width:14px;height:14px;margin:0}
+html body .village .vtask .vok svg{width:9px;height:9px}
+html body .village .vtask span{font-size:.9rem}
+@media (max-width:379px){html body .village .vtask{padding:0 6px;gap:4px}html body .village .vtask img{width:22px;height:22px}html body .village .vtask span{font-size:.86rem}}
 </style>
 
 <div id="app"></div>
