@@ -2401,6 +2401,14 @@ body .tacts .trot{background:none!important;box-shadow:none!important}
 .vboss .vbossex{position:absolute;left:14px;top:-104px;width:28px;height:28px;border-radius:50%;background:#ff3b5c;color:#fff;font-family:var(--game);font-style:normal;font-size:1.2rem;line-height:28px;text-align:center;box-shadow:0 2px 0 #b91c3c,0 4px 10px rgba(0,0,0,.25);animation:bossex 1s ease-in-out infinite}
 @keyframes bossex{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.12)}}
 .v3lab.bosslab{top:14px}
+
+/* 붓으로 칠하는 중 */
+.itile.pt-on{fill:rgba(255,235,120,.55)!important;stroke:#fff!important;stroke-dasharray:none!important}
+.itile.pt-erase{fill:rgba(255,120,120,.45)!important;stroke:#fff!important;stroke-dasharray:none!important}
+.island.edit .iview{touch-action:none}
+
+.spr.pet.look img{animation:petlook 1.4s ease-in-out}
+@keyframes petlook{0%,100%{transform:scaleX(1)}30%{transform:scaleX(-1)}60%{transform:scaleX(1)}}
 </style>
 
 <div id="app"></div>
@@ -4689,19 +4697,28 @@ function frQuiz(id){var f=frOf(id),W=(EN&&EN.words)||[];if(W.length<4)return fal
 function petTap(host,id,zHost){var f=frOf(id),t=dayKey();
   if(f.q!==t&&f.d===t&&Math.random()<.6&&frQuiz(id))return;
   petBubble(host,id,zHost);if(f.d!==t){f.d=t;frGain(id,host)}}
+var WALKG={path:1,dirt:1,sand:1};
+function isWalk(k){var g=(S.gd.ground||{})[k];return !!(g&&WALKG[GROUND[g]]&&LAND[k])}
 function petsLive(world){var occ=occMap(),claim={};
   [].forEach.call(world.querySelectorAll('.spr.pet[data-k]'),function(sp,n){var home=sp.getAttribute('data-k'),id=(S.gd.cells[home]||'').slice(2),sh=world.querySelector('.gshadow[data-sk="'+home+'"]'),cur=home,im=sp.querySelector('img');
     sp.classList.add('walk');claim[home]=1;
     sp.addEventListener('click',function(e){e.stopPropagation();petTap(sp,id,sp)});
     function go(){if(!document.body.contains(sp))return;
-      if(!sp.querySelector('.petbub')){var h=home.split(',').map(Number),c0=cur.split(',').map(Number),opts=[];
-        for(var dr=-1;dr<=1;dr++)for(var dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;var nc=c0[0]+dc,nr=c0[1]+dr,k=nc+','+nr;if(Math.abs(nc-h[0])>2||Math.abs(nr-h[1])>2)continue;if(!placeable(k)||(occ[k]&&k!==home)||claim[k])continue;opts.push(k)}
-        if(opts.length&&Math.random()<.75){var to=opts[Math.floor(Math.random()*opts.length)],p0=iCtr(c0[0],c0[1]),q=to.split(',').map(Number),p=iCtr(q[0],q[1]);
+      var wait=2600+Math.random()*3200;
+      if(!sp.querySelector('.petbub')){var h=home.split(',').map(Number),c0=cur.split(',').map(Number),opts=[],onP=isWalk(cur);
+        // 길 위: 길로 이어진 옆 칸만 (왔던 길은 피하고, 집에서 너무 멀면 돌아와요)
+        if(onP){var pn=[],far=Math.abs(c0[0]-h[0])+Math.abs(c0[1]-h[1]);[[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){var k=(c0[0]+d[0])+','+(c0[1]+d[1]);if(!isWalk(k)||(occ[k]&&k!==home)||claim[k])return;pn.push(k)});
+          var fwd=pn.filter(function(k){return k!==prev});if(far>9)fwd=pn.filter(function(k){var q=k.split(',').map(Number);return Math.abs(q[0]-h[0])+Math.abs(q[1]-h[1])<far});
+          if(fwd.length)opts=fwd;else if(pn.length){opts=pn;sp.classList.add('look');setTimeout(function(){sp.classList.remove('look')},1500);wait+=1400}
+          if(opts.length)wait=1500+Math.random()*700}
+        if(!opts.length){for(var dr=-1;dr<=1;dr++)for(var dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;var nc=c0[0]+dc,nr=c0[1]+dr,k=nc+','+nr;if(Math.abs(nc-h[0])>2||Math.abs(nr-h[1])>2)continue;if(!placeable(k)||(occ[k]&&k!==home)||claim[k])continue;opts.push(k)}
+          var onto=opts.filter(isWalk);if(onto.length&&Math.random()<.7)opts=onto}
+        if(opts.length&&(onP||Math.random()<.75)){var to=opts[Math.floor(Math.random()*opts.length)],p0=iCtr(c0[0],c0[1]),q=to.split(',').map(Number),p=iCtr(q[0],q[1]);prev=cur;
           delete claim[cur];claim[to]=1;cur=to;if(im)im.style.transform=p[0]<p0[0]?'':'scaleX(-1)';
           sp.classList.add('go');sp.style.left=p[0]+'px';sp.style.top=(p[1]+ITH*.3)+'px';setTimeout(function(){sp.style.zIndex=q[0]+q[1]+2;sp.classList.remove('go')},900);
           if(sh){sh.style.left=p[0]+'px';sh.style.top=(p[1]+ITH*.12)+'px';sh.style.zIndex=q[0]+q[1]+1}}}
-      setTimeout(go,2600+Math.random()*3200)}
-    setTimeout(go,800+n*700+Math.random()*1500)})}
+      setTimeout(go,wait)}
+    var prev=null;setTimeout(go,800+n*700+Math.random()*1500)})}
 // 마을에서 걷는 친구도 누르면 이야기해요
 function villagePetTap(wk,id){var im=wk.querySelector('img');if(!im)return;im.style.pointerEvents='auto';im.style.cursor='pointer';im.__tap=1;im.addEventListener('click',function(e){e.stopPropagation();petTap(wk,id,wk)})}
 function islandScreen(edit,hand){
@@ -4749,7 +4766,7 @@ function islandScreen(edit,hand){
   app.appendChild(root);
 
   // 꾸미기
-  function setHint(){if(state.hand&&GROUND[state.hand]){hint.textContent=josa(itemName(state.hand),'을','를')+' 깔 칸을 눌러요. 같은 바닥을 다시 누르면 걷어요.';return}hint.textContent=state.hand?josa(itemName(state.hand),'을','를')+' 놓을 칸을 눌러요. 놓인 물건을 누르면 다시 집어요.':'아래에서 놓을 물건을 고르거나, 섬의 물건을 눌러 옮겨요.'}
+  function setHint(){if(state.hand&&GROUND[state.hand]){hint.textContent=josa(itemName(state.hand),'을','를')+' 깔 칸을 누르거나 손가락으로 쭉 그어요. 같은 바닥을 다시 누르면 걷어요.';return}hint.textContent=state.hand?josa(itemName(state.hand),'을','를')+' 놓을 칸을 눌러요.'+(SZ(state.hand)>1?'':' 쭉 그으면 줄줄이 놓여요.')+' 놓인 물건을 누르면 다시 집어요.':'아래에서 놓을 물건을 고르거나, 섬의 물건을 눌러 옮겨요.'}
   function catOf(k){if(/^f/.test(k))return 'f';if(/^z/.test(k))return 'z';if(k.indexOf('a:')===0)return 'a';return (DECOR_BY[k]&&DECOR_BY[k].cat)||'etc'}
   var CATNM={f:'꽃',z:'열매',a:'친구'};CATS.forEach(function(c){CATNM[c[0]]=c[1]});
   function pushUndo(){UNDO.push(JSON.stringify({c:S.gd.cells,r:gdRot(),g:gdGround()}));if(UNDO.length>30)UNDO.shift()}
@@ -4801,9 +4818,30 @@ function islandScreen(edit,hand){
   function startDrag(k){k=occMap()[k]||k;var it=S.gd.cells[k];if(!it)return;moved=true;var orig=world.querySelector('.spr[data-k="'+k+'"]');if(orig)orig.style.opacity='.25';
     var gh=itemSprite(it,ITW*.8,gdRot()[k]);gh.className+=' ghost';world.appendChild(gh);drag={from:k,to:k,item:it,gh:gh,orig:orig};placeGhost(k);tone([700],'sine');hint.textContent='원하는 칸으로 끌어서 놓아요.'}
   function placeGhost(k){var q=k.split(',').map(Number),nz=SZ(drag.item),big=nz>1,p=iCtr(q[0]+(nz-1)/2,q[1]+(nz-1)/2);var m32=SPR3[drag.item];drag.gh.style.left=p[0]+'px';drag.gh.style.top=(m32?p[1]+m32[1]:p[1]+ITH*(big?.55:.3))+'px';drag.gh.style.zIndex=999;drag.to=k;drag.gh.classList.toggle('bad',!!(big&&fits(k,drag.item,drag.from)))}
+  // 붓: 바닥은 누르자마자, 소품은 두 번째 칸부터 줄줄이
+  var paint=null,lineStart=null;
+  function tileEl(k){return world.querySelector('.itile[data-k="'+k+'"]')}
+  function paintCell(k){if(!LAND[k]||LMCELL[k]||bldCells()[k]||paint.set[k])return;var G_=gdGround();paint.set[k]=1;
+    if(paint.mode==='erase'){if(G_[k]===paint.item){delete G_[k];paint.n++;var t0=tileEl(k);if(t0)t0.classList.add('pt-erase');tone([520],'sine',.04)}return}
+    if(occMap()[k]&&GROUND[paint.item]!=='hedge')return;
+    if(avail(paint.item)-paint.n<=0){if(!paint.out){paint.out=1;hint.textContent='남은 '+itemName(paint.item)+'이 없어요. 상점에서 더 살 수 있어요.'}return}
+    if(G_[k]===paint.item)return;G_[k]=paint.item;paint.n++;var t1=tileEl(k);if(t1)t1.classList.add('pt-on');tone([660+Math.min(6,paint.n)*20],'sine',.04)}
+  function lineCell(k){if(!placeable(k)||occMap()[k]||paint.set[k])return;paint.set[k]=1;if(avail(paint.item)-paint.n<=0){if(!paint.out){paint.out=1;hint.textContent='남은 '+itemName(paint.item)+'이 없어요.'}return}
+    S.gd.cells[k]=paint.item;if(state.rot&&ROT_OK[paint.item])gdRot()[k]=state.rot;paint.n++;var t1=tileEl(k);if(t1)t1.classList.add('pt-on');tone([660+Math.min(6,paint.n)*20],'sine',.04)}
+  function endPaint(){if(!paint)return;var p=paint;paint=null;lineStart=null;if(p.n){save();var msg=p.mode==='erase'?itemName(p.item)+' '+p.n+'칸을 걷었어요.':itemName(p.item)+' '+p.n+'개를 '+(GROUND[p.item]?'깔았어요.':'놓았어요.')+(avail(p.item)-0>0?'':' 다 썼어요!');setTimeout(function(){islandScreen(true,avail(p.item)>0?p.item:null);var h=document.querySelector('.ihint');if(h)h.textContent=msg},60)}else{UNDO.pop();world.querySelectorAll('.pt-on,.pt-erase').forEach(function(t){t.classList.remove('pt-on','pt-erase')})}}
   if(edit){
-    view.addEventListener('pointerdown',function(e){var k=cellAt(e.clientX,e.clientY);clearTimeout(holdT);if(!k||!occMap()[k])return;holdT=setTimeout(function(){if(!moved)startDrag(k)},280)},true);
-    view.addEventListener('pointermove',function(e){if(drag){e.stopPropagation();var k=cellAt(e.clientX,e.clientY);if(k&&k!==drag.to)placeGhost(k)}else if(moved)clearTimeout(holdT)},true);
+    view.addEventListener('pointerdown',function(e){var k=cellAt(e.clientX,e.clientY);clearTimeout(holdT);
+      if(k&&state.hand&&GROUND[state.hand]&&LAND[k]&&!LMCELL[k]&&!bldCells()[k]){e.stopPropagation();moved=true;pushUndo();paint={item:state.hand,mode:gdGround()[k]===state.hand?'erase':'paint',set:{},n:0};paintCell(k);return}
+      if(k&&state.hand&&!GROUND[state.hand]&&SZ(state.hand)===1&&placeable(k)&&!occMap()[k]&&avail(state.hand)>0){lineStart=k;return}
+      if(!k||!occMap()[k])return;holdT=setTimeout(function(){if(!moved)startDrag(k)},280)},true);
+    view.addEventListener('pointermove',function(e){if(paint){e.stopPropagation();var k=cellAt(e.clientX,e.clientY);if(k){if(GROUND[paint.item])paintCell(k);else lineCell(k)}return}
+      if(lineStart){e.stopPropagation();var k2=cellAt(e.clientX,e.clientY);if(k2&&k2!==lineStart){moved=true;pushUndo();paint={item:state.hand,mode:'line',set:{},n:0};lineCell(lineStart);lineCell(k2);lineStart=null}return}
+      if(drag){e.stopPropagation();var k=cellAt(e.clientX,e.clientY);if(k&&k!==drag.to)placeGhost(k)}else if(moved)clearTimeout(holdT)},true);
+    // 손을 떼는 곳이 보관함 위여도 붓질이 끝나게 문서 전체에서 들어요
+    if(window.__paintUp)['pointerup','pointercancel'].forEach(function(ev){document.removeEventListener(ev,window.__paintUp,true)});
+    window.__paintUp=function(e){lineStart=null;if(paint){e.stopPropagation();down=false;endPaint();setTimeout(function(){moved=false},0)}};
+    ['pointerup','pointercancel'].forEach(function(ev){document.addEventListener(ev,window.__paintUp,true)});
+    // 보관함 위로 손가락이 가도 칠해지지 않게 (view 밖이면 cellAt이 null)
     ['pointerup','pointercancel'].forEach(function(ev){view.addEventListener(ev,function(e){clearTimeout(holdT);if(!drag)return;e.stopPropagation();down=false;var d=drag;drag=null;
       var OC2=occMap(),tAnchor=OC2[d.to],other=tAnchor&&tAnchor!==d.from?S.gd.cells[tAnchor]:null,ok_=d.to!==d.from&&placeable(d.to);
       if(ok_&&(SZ(d.item)>1||(other&&SZ(other)>1))){ok_=SZ(d.item)>1?!fits(d.to,d.item,d.from):false;other=null;if(!ok_)hint.textContent='큰 소품은 2×2칸이 비어 있는 곳으로 옮겨요.'}
