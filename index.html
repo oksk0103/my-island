@@ -1392,7 +1392,7 @@ button.dexc{border:0;font:inherit;color:inherit}
 .scrbar .st.on{background:#ffd25e;box-shadow:0 2px 0 #e0a82e;color:#5a3d00}
 .qbody:not(.scron) .scrbar .st{display:none}
 .qbody.scron .scrtog{display:none}
-.scrtip{position:absolute;left:8px;top:50px;z-index:8;background:#26313d;color:#fff;font-family:var(--game);font-size:.95rem;line-height:1;padding:9px 12px 7px;border-radius:12px;white-space:nowrap;pointer-events:none;animation:scrtip 4.6s ease forwards}
+.scrtip{position:absolute;left:8px;top:50px;z-index:40;background:#26313d;color:#fff;font-family:var(--game);font-size:.95rem;line-height:1;padding:9px 12px 7px;border-radius:12px;white-space:nowrap;pointer-events:none;animation:scrtip 4.6s ease forwards}
 .scrtip:before{content:'';position:absolute;left:22px;top:-6px;border:6px solid transparent;border-top:0;border-bottom-color:#26313d}
 @keyframes scrtip{0%{opacity:0;transform:translateY(4px)}8%,85%{opacity:1;transform:none}100%{opacity:0}}
 .qscreen .qpal{z-index:8}
@@ -2455,6 +2455,11 @@ html body .qscreen.q-en .qbody::after{content:"";position:absolute;left:18px;rig
   background:radial-gradient(circle at 50% 50%,#dfe7f1 0 2.6px,transparent 3.2px) 0 0/24px 8px repeat-x}
 body .qscreen.q-en .choice{background:linear-gradient(#f4f8ff,#e3edfb)!important;box-shadow:inset 0 0 0 1.5px #bdd1ea,0 3px 0 #afc4de!important;color:#2b3f5c}
 html body .qscreen.q-en .choice:active{box-shadow:inset 0 0 0 1.5px #bdd1ea,0 1px 0 #afc4de!important}
+
+.mlet .mltx b{display:flex;align-items:center;gap:6px;white-space:nowrap;min-width:0}
+.mlet .mltx b>span{overflow:hidden;text-overflow:ellipsis;min-width:0}
+@media (max-width:359px){.mlet .mltx b{font-size:.9rem;gap:4px}.mlet .mltx b .mln{font-size:.66rem;padding:2px 5px 1px}.mlet .mlst{padding:5px 8px;font-size:.74rem}.mlet .mlav{width:42px;height:42px}}
+.mlet .mltx b .mln{flex:none;font-style:normal;font-size:.72rem;padding:2px 6px 1px;border-radius:999px;background:#e9eef5;color:#5b6b85}
 </style>
 
 <div id="app"></div>
@@ -5105,7 +5110,7 @@ function mailScreen(tab){
   var seg=el('div','mseg two');[['letters','편지',mailList().length+'통'],['stamps','우표 앨범',(m.stamps||0)+'장']].forEach(function(t){var bt=el('button',MAIL_TAB===t[0]?'on':null);bt.appendChild(el('b',null,t[1]));bt.appendChild(el('small',null,t[2]));bt.onclick=function(){mailScreen(t[0])};seg.appendChild(bt)});sc.appendChild(seg);
   if(MAIL_TAB==='letters'){
     var ls=el('div','mlist');
-    mailList().forEach(function(x){var c=el('button','mlet'+(x.rep?' done':''));var av=avImg(x.L.from,'mlav');c.appendChild(av);var t=el('div','mltx');t.appendChild(el('b',null,MAIL_KO[x.L.from]+'의 편지 · '+(x.n+1)+'번째'));t.appendChild(el('small',null,x.L.en[0]));c.appendChild(t);
+    mailList().forEach(function(x){var c=el('button','mlet'+(x.rep?' done':''));var av=avImg(x.L.from,'mlav');c.appendChild(av);var t=el('div','mltx');var tb_=el('b');tb_.appendChild(el('span',null,MAIL_KO[x.L.from]+'의 편지'));tb_.appendChild(el('em','mln',(x.n+1)+'번째'));t.appendChild(tb_);t.appendChild(el('small',null,x.L.en[0]));c.appendChild(t);
       c.appendChild(el('em','mlst',x.rep?'답장 완료':'답장 쓰기'));c.onclick=function(){mailRead(x)};ls.appendChild(c)});
     sc.appendChild(ls);
   } else {
