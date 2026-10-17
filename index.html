@@ -2534,6 +2534,38 @@ html body .qscreen .choice.pic{min-height:96px;padding:8px}
 .ensent{font-family:var(--game);font-size:1.5rem;color:#26313d;text-align:center;letter-spacing:.02em}
 .entracks{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:10px 0 4px}
 .entracks .lvlbtn{background:#fff4d6!important;color:#8a5a00!important}
+
+/* ===== 3·4학년 틀 ===== */
+.slot.act{box-shadow:inset 0 0 0 3px #ffb020,0 0 0 3px rgba(255,176,32,.25)}
+.keys.dec{grid-template-columns:repeat(6,1fr)}
+.keys button.dot{font-size:1.6rem;line-height:1}
+.fracbox{display:inline-flex;align-items:center;gap:6px}
+.fracbox .fw{font-family:var(--game);font-size:1.6rem;color:#26313d}
+.fracbox .fst{display:inline-flex;flex-direction:column;align-items:center;gap:3px}
+.fracbox .fst i{font-style:normal;font-family:var(--game);font-size:1.35rem;color:#26313d;min-width:28px;text-align:center}
+.fracbox .fst em{display:block;width:100%;min-width:40px;height:3px;background:#26313d;border-radius:2px}
+.fracbox .fst .slot{min-width:44px;height:44px}
+.fr2{gap:14px}
+.vdiv{display:inline-flex;flex-direction:column;align-items:flex-end;padding:8px 14px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 2px #dfe7ef}
+.vdiv .vdq{display:flex;justify-content:flex-end;width:100%;padding-left:40px}
+.vdiv .vdr{display:flex;align-items:center;gap:8px}
+.vdiv .dvs{font-family:var(--game);font-size:1.9rem;color:#26313d;padding-right:6px}
+.vdiv .vdbr{display:inline-block;padding:4px 10px 0;border-left:3px solid #26313d;border-top:3px solid #26313d;border-radius:8px 0 0 0}
+.vdiv .vdbr b{font-family:var(--game);font-size:1.9rem;color:#26313d;letter-spacing:.06em}
+.vdiv .vdrem{display:flex;align-items:center;gap:6px;margin-top:8px}
+.vdiv .vdrem small{font-size:.8rem;color:#6b7a90}
+.picto{display:flex;flex-direction:column;gap:4px;padding:8px 10px;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 2px #dfe7ef;max-width:320px}
+.picto .prow{display:flex;align-items:center;gap:8px}
+.picto .prow b{min-width:48px;font-size:.9rem;color:#26313d}
+.picto .prow span{display:flex;flex-wrap:wrap;gap:2px;align-items:center}
+.picto img.pbig{width:24px;height:24px}.picto img.psm{width:14px;height:14px}
+.picto .plegend{display:flex;align-items:center;gap:4px;font-size:.72rem;color:#6b7a90;margin-top:4px}
+.ngrid{display:grid;grid-template-columns:repeat(4,auto);gap:4px;justify-content:center}
+.tile.sm{min-width:40px;height:44px;font-size:1rem;padding:0 6px}
+.shp.graph svg{max-width:100%;height:auto}
+.shp.prot svg{max-width:100%;height:auto}
+.mvtxt{font-family:var(--game);font-size:1rem;color:#26313d;font-weight:400;white-space:normal;line-height:1.3}
+.eqs .eq{font-family:var(--game);font-size:1.3rem;color:#26313d;display:flex;gap:8px;align-items:center}
 </style>
 
 <div id="app"></div>
@@ -4019,9 +4051,250 @@ var GEN1={n9:genN9,shape3d:genShape3d,add9:genAdd9,cmp:genCmp,n50:genN50,n100:ge
 var TYPE_NAMES1={n9:'9까지의 수',shape3d:'여러 가지 모양',add9:'덧셈과 뺄셈',cmp:'비교하기',n50:'50까지의 수',n100:'100까지의 수',shape2d:'여러 가지 모양',add10:'10 만들기',clock1:'시계 보기',add20:'받아올림·내림',n3:'세 자리 수',addc:'덧셈과 뺄셈',shape2:'여러 가지 도형',sort:'분류하기'};
 Object.assign(GEN,GEN1);Object.assign(SUBJ.math.types,TYPE_NAMES1);
 
+// ================= 3·4학년 수학 =================
+UNITS.push(
+ {id:'3a1',g:3,s:1,name:'덧셈과 뺄셈',code:'4수01-02',types:['add3']},
+ {id:'3a2',g:3,s:1,name:'평면도형',code:'4수03-01',types:['plane']},
+ {id:'3a3',g:3,s:1,name:'나눗셈',code:'4수01-05',types:['div']},
+ {id:'3a4',g:3,s:1,name:'곱셈',code:'4수01-04',types:['mul2']},
+ {id:'3a5',g:3,s:1,name:'길이와 시간',code:'4수03-13',types:['lentime']},
+ {id:'3a6',g:3,s:1,name:'분수와 소수',code:'4수01-09',types:['frac1']},
+ {id:'3b1',g:3,s:2,name:'곱셈',code:'4수01-04',types:['mul3']},
+ {id:'3b2',g:3,s:2,name:'나눗셈',code:'4수01-06',types:['div2']},
+ {id:'3b3',g:3,s:2,name:'원',code:'4수03-06',types:['circ']},
+ {id:'3b4',g:3,s:2,name:'분수',code:'4수01-10',types:['frac2']},
+ {id:'3b5',g:3,s:2,name:'들이와 무게',code:'4수03-17',types:['capw']},
+ {id:'3b6',g:3,s:2,name:'자료의 정리',code:'4수04-01',types:['data3']},
+ {id:'4a1',g:4,s:1,name:'큰 수',code:'4수01-01',types:['bignum']},
+ {id:'4a2',g:4,s:1,name:'각도',code:'4수03-14',types:['angle']},
+ {id:'4a3',g:4,s:1,name:'곱셈과 나눗셈',code:'4수01-07',types:['muldiv4']},
+ {id:'4a4',g:4,s:1,name:'평면도형의 이동',code:'4수03-04',types:['move']},
+ {id:'4a5',g:4,s:1,name:'막대그래프',code:'4수04-02',types:['bargraph']},
+ {id:'4a6',g:4,s:1,name:'규칙 찾기',code:'4수02-01',types:['seq','rule4']},
+ {id:'4b1',g:4,s:2,name:'분수의 덧셈과 뺄셈',code:'4수01-15',types:['fracadd']},
+ {id:'4b2',g:4,s:2,name:'삼각형',code:'4수03-08',types:['tri4']},
+ {id:'4b3',g:4,s:2,name:'소수의 덧셈과 뺄셈',code:'4수01-14',types:['decadd']},
+ {id:'4b4',g:4,s:2,name:'사각형',code:'4수03-10',types:['quad4']},
+ {id:'4b5',g:4,s:2,name:'꺾은선그래프',code:'4수04-03',types:['linegraph']},
+ {id:'4b6',g:4,s:2,name:'다각형',code:'4수03-11',types:['polygon']});
+
+// ---------- 그리기 도우미 ----------
+function gcd(a,b){return b?gcd(b,a%b):a}
+function fracStr(n,d){return n+'/'+d}
+function mixStr(w,n,d){return w+' '+n+'/'+d}
+// 분수 그림: 원(pie) 또는 막대, n/d 색칠
+function fracSVG(n,d,kind,sz){sz=sz||110;var inner='';
+  if(kind==='bar'){var W=200,H=44,cw=W/d;for(var i=0;i<d;i++)inner+='<rect x="'+(4+i*cw)+'" y="4" width="'+cw+'" height="'+H+'" fill="'+(i<n?'#4dabf7':'#fff')+'" stroke="#2b3f5c" stroke-width="2"/>';return svgEl(W+8,H+8,inner,'shp frac')}
+  var c=sz/2,r=sz/2-4;for(var k=0;k<d;k++){var a0=-Math.PI/2+k*2*Math.PI/d,a1=a0+2*Math.PI/d,x0=c+r*Math.cos(a0),y0=c+r*Math.sin(a0),x1=c+r*Math.cos(a1),y1=c+r*Math.sin(a1);
+    inner+=d===1?'<circle cx="'+c+'" cy="'+c+'" r="'+r+'" fill="'+(n>=1?'#4dabf7':'#fff')+'" stroke="#2b3f5c" stroke-width="2"/>':'<path d="M'+c+' '+c+' L'+x0.toFixed(1)+' '+y0.toFixed(1)+' A'+r+' '+r+' 0 '+(2*Math.PI/d>Math.PI?1:0)+' 1 '+x1.toFixed(1)+' '+y1.toFixed(1)+' Z" fill="'+(k<n?'#4dabf7':'#fff')+'" stroke="#2b3f5c" stroke-width="2"/>'}
+  return svgEl(sz,sz,inner,'shp frac')}
+// 분수 입력/표시: P.slots[0]/P.slots[1] 또는 숫자
+function fracBox(n,d,whole){var w=el('span','fracbox');if(whole!=null){if(typeof whole==='object')w.appendChild(whole);else w.appendChild(el('b','fw',String(whole)))}var st=el('span','fst');st.appendChild(typeof n==='object'?n:el('i',null,String(n)));st.appendChild(el('em'));st.appendChild(typeof d==='object'?d:el('i',null,String(d)));w.appendChild(st);return w}
+// 각도기
+function protractorSVG(deg,sz){sz=sz||260;var cx=sz/2,cy=sz*.58,r=sz*.44,inner='<path d="M'+(cx-r)+' '+cy+' A'+r+' '+r+' 0 0 1 '+(cx+r)+' '+cy+' Z" fill="#eef5ff" stroke="#2b3f5c" stroke-width="2"/>';
+  for(var a=0;a<=180;a+=10){var rad=Math.PI-a*Math.PI/180,x1=cx+r*Math.cos(rad),y1=cy-r*Math.sin(rad),x2=cx+(r-(a%30?8:14))*Math.cos(rad),y2=cy-(r-(a%30?8:14))*Math.sin(rad);inner+='<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="#2b3f5c" stroke-width="1.2"/>';if(a%30===0){var tx=cx+(r-24)*Math.cos(rad),ty=cy-(r-24)*Math.sin(rad)+4;inner+='<text x="'+tx.toFixed(1)+'" y="'+ty.toFixed(1)+'" font-size="10" text-anchor="middle" fill="#2b3f5c">'+a+'</text>'}}
+  var ra=Math.PI-deg*Math.PI/180,ex=cx+(r+6)*Math.cos(ra),ey=cy-(r+6)*Math.sin(ra);
+  inner+='<line x1="'+(cx-r-6)+'" y1="'+cy+'" x2="'+cx+'" y2="'+cy+'" stroke="#ff6b6b" stroke-width="3.5" stroke-linecap="round"/><line x1="'+cx+'" y1="'+cy+'" x2="'+ex.toFixed(1)+'" y2="'+ey.toFixed(1)+'" stroke="#ff6b6b" stroke-width="3.5" stroke-linecap="round"/><circle cx="'+cx+'" cy="'+cy+'" r="3" fill="#2b3f5c"/>';
+  return svgEl(sz,sz*.66,inner,'shp prot')}
+// 각 그림 (각도기 없이)
+function angleSVG(deg,sz){sz=sz||140;var cx=sz*.2,cy=sz*.8,L=sz*.7,ra=-deg*Math.PI/180,ex=cx+L*Math.cos(ra),ey=cy+L*Math.sin(ra);var arcR=24,ax=cx+arcR,ay=cy,bx=cx+arcR*Math.cos(ra),by=cy+arcR*Math.sin(ra);
+  var inner='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+L)+'" y2="'+cy+'" stroke="#2b3f5c" stroke-width="3" stroke-linecap="round"/><line x1="'+cx+'" y1="'+cy+'" x2="'+ex.toFixed(1)+'" y2="'+ey.toFixed(1)+'" stroke="#2b3f5c" stroke-width="3" stroke-linecap="round"/>';
+  inner+=deg===90?'<path d="M'+(cx+18)+' '+cy+'v-18h-18" fill="none" stroke="#ff6b6b" stroke-width="2"/>':'<path d="M'+ax+' '+ay+' A'+arcR+' '+arcR+' 0 '+(deg>180?1:0)+' 0 '+bx.toFixed(1)+' '+by.toFixed(1)+'" fill="none" stroke="#ff6b6b" stroke-width="2"/>';
+  return svgEl(sz,sz,inner)}
+// 변 길이 표시된 삼각형 (kind: iso/equi/scalene, right/acute/obtuse)
+function triSVG(pts,labels,sz,atV){sz=sz||150;var inner='<polygon points="'+pts.map(function(p){return p[0]+','+p[1]}).join(' ')+'" fill="#ffe8a3" stroke="#2b3f5c" stroke-width="2.5" stroke-linejoin="round"/>';
+  if(labels&&atV){var cx=(pts[0][0]+pts[1][0]+pts[2][0])/3,cy=(pts[0][1]+pts[1][1]+pts[2][1])/3;labels.forEach(function(l,i){if(!l)return;var v=pts[i],dx=cx-v[0],dy=cy-v[1],n=Math.hypot(dx,dy)||1;inner+='<text x="'+(v[0]+dx/n*22).toFixed(1)+'" y="'+(v[1]+dy/n*22+4).toFixed(1)+'" font-size="12" text-anchor="middle" fill="#c0392b" font-weight="700">'+l+'</text>'});return svgEl(sz,sz,inner)}
+  if(labels)labels.forEach(function(l,i){var a=pts[i],b=pts[(i+1)%3],mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,cx=(pts[0][0]+pts[1][0]+pts[2][0])/3,cy=(pts[0][1]+pts[1][1]+pts[2][1])/3,dx=mx-cx,dy=my-cy,n=Math.hypot(dx,dy)||1;inner+='<text x="'+(mx+dx/n*14).toFixed(1)+'" y="'+(my+dy/n*14+4).toFixed(1)+'" font-size="13" text-anchor="middle" fill="#2b3f5c" font-weight="700">'+l+'</text>'});
+  return svgEl(sz,sz,inner)}
+function quadSVG(kind,sz){sz=sz||120;var p;
+  if(kind==='trap')p=[[20,90],[100,90],[80,30],[40,30]];else if(kind==='para')p=[[12,90],[86,90],[108,30],[34,30]];else if(kind==='rhom')p=[[60,8],[108,60],[60,112],[12,60]];else if(kind==='rect')p=[[14,34],[106,34],[106,86],[14,86]];else if(kind==='square')p=[[24,24],[96,24],[96,96],[24,96]];else p=[[18,96],[104,80],[84,22],[30,36]];
+  var inner='<polygon points="'+p.map(function(q){return q.join(',')}).join(' ')+'" fill="#d3f9d8" stroke="#2b3f5c" stroke-width="2.5" stroke-linejoin="round"/>';return svgEl(sz,sz,inner)}
+function polySVG(n,sz){sz=sz||120;var c=sz/2,r=sz*.42,pts=[];for(var i=0;i<n;i++){var a=-Math.PI/2+i*2*Math.PI/n;pts.push([(c+r*Math.cos(a)).toFixed(1),(c+r*Math.sin(a)).toFixed(1)])}return svgEl(sz,sz,'<polygon points="'+pts.map(function(p){return p.join(',')}).join(' ')+'" fill="#e5dbff" stroke="#2b3f5c" stroke-width="2.5" stroke-linejoin="round"/>')}
+// 막대그래프 / 꺾은선그래프 / 그림그래프
+function barGraphSVG(labels,vals,unit){var W=280,H=170,n=labels.length,mx=Math.max.apply(null,vals),step=mx<=10?1:mx<=20?2:mx<=50?5:10,top=Math.ceil(mx/step)*step,bw=(W-50)/n,inner='';
+  for(var v=0;v<=top;v+=step){var y=H-30-(v/top)*(H-50);inner+='<line x1="40" y1="'+y.toFixed(1)+'" x2="'+(W-6)+'" y2="'+y.toFixed(1)+'" stroke="#cfd8e3" stroke-width="1"/><text x="34" y="'+(y+4).toFixed(1)+'" font-size="10" text-anchor="end" fill="#5b6b85">'+v+'</text>'}
+  vals.forEach(function(v,i){var h=(v/top)*(H-50),x=44+i*bw+bw*.2;inner+='<rect x="'+x.toFixed(1)+'" y="'+(H-30-h).toFixed(1)+'" width="'+(bw*.6).toFixed(1)+'" height="'+h.toFixed(1)+'" fill="'+SHP_COL[i%SHP_COL.length]+'" stroke="#2b3f5c" stroke-width="1.5"/><text x="'+(x+bw*.3).toFixed(1)+'" y="'+(H-14)+'" font-size="11" text-anchor="middle" fill="#2b3f5c">'+labels[i]+'</text>'});
+  inner+='<line x1="40" y1="20" x2="40" y2="'+(H-30)+'" stroke="#2b3f5c" stroke-width="1.5"/><line x1="40" y1="'+(H-30)+'" x2="'+(W-6)+'" y2="'+(H-30)+'" stroke="#2b3f5c" stroke-width="1.5"/>'+(unit?'<text x="40" y="12" font-size="10" fill="#5b6b85">('+unit+')</text>':'');
+  return svgEl(W,H,inner,'shp graph')}
+function lineGraphSVG(labels,vals,unit){var W=280,H=170,n=labels.length,mx=Math.max.apply(null,vals),mn=Math.min.apply(null,vals),step=mx-mn<=10?1:mx-mn<=20?2:5,lo=Math.floor(mn/step)*step-step,top=Math.ceil(mx/step)*step+step,inner='',pts=[];
+  for(var v=lo;v<=top;v+=step){var y=H-30-((v-lo)/(top-lo))*(H-50);inner+='<line x1="40" y1="'+y.toFixed(1)+'" x2="'+(W-6)+'" y2="'+y.toFixed(1)+'" stroke="#cfd8e3" stroke-width="1"/><text x="34" y="'+(y+4).toFixed(1)+'" font-size="10" text-anchor="end" fill="#5b6b85">'+v+'</text>'}
+  vals.forEach(function(v,i){var x=56+i*(W-80)/(n-1),y=H-30-((v-lo)/(top-lo))*(H-50);pts.push(x.toFixed(1)+','+y.toFixed(1));inner+='<text x="'+x.toFixed(1)+'" y="'+(H-14)+'" font-size="11" text-anchor="middle" fill="#2b3f5c">'+labels[i]+'</text>'});
+  inner+='<polyline points="'+pts.join(' ')+'" fill="none" stroke="#ff6b6b" stroke-width="2.5"/>';pts.forEach(function(p){var q=p.split(',');inner+='<circle cx="'+q[0]+'" cy="'+q[1]+'" r="4" fill="#fff" stroke="#ff6b6b" stroke-width="2"/>'});
+  inner+='<line x1="40" y1="20" x2="40" y2="'+(H-30)+'" stroke="#2b3f5c" stroke-width="1.5"/><line x1="40" y1="'+(H-30)+'" x2="'+(W-6)+'" y2="'+(H-30)+'" stroke="#2b3f5c" stroke-width="1.5"/>'+(unit?'<text x="40" y="12" font-size="10" fill="#5b6b85">('+unit+')</text>':'');
+  return svgEl(W,H,inner,'shp graph')}
+function pictoTable(labels,vals,key){var w=el('div','picto');labels.forEach(function(l,i){var r=el('div','prow');r.appendChild(el('b',null,l));var c=el('span');var tens=Math.floor(vals[i]/10),ones=vals[i]%10;for(var t=0;t<tens;t++)c.appendChild(img(key,'pbig'));for(var o=0;o<ones;o++)c.appendChild(img(key,'psm'));r.appendChild(c);w.appendChild(r)});var lg=el('div','plegend');lg.appendChild(img(key,'pbig'));lg.appendChild(el('span',null,'10개'));lg.appendChild(img(key,'psm'));lg.appendChild(el('span',null,'1개'));w.appendChild(lg);return w}
+// 세로 나눗셈 틀: 몫 칸(P.slots[0]) 위, 나머지(P.slots[1]) 아래
+function vertDiv(box,P,a,b){var w=el('div','vdiv');var top=el('div','vdq');top.appendChild(P.slots[0]);w.appendChild(top);var row=el('div','vdr');row.appendChild(el('b','dvs',String(b)));var br=el('span','vdbr');br.appendChild(el('b',null,String(a)));row.appendChild(br);w.appendChild(row);if(P.slots[1]){var rr=el('div','vdrem');rr.appendChild(el('small',null,'나머지'));rr.appendChild(P.slots[1]);w.appendChild(rr)}box.appendChild(w)}
+function pad2(q,a,b,hint,ex){return {mode:'pad',q:q,answers:[Math.floor(a/b),a%b],answer:Math.floor(a/b)+' … '+(a%b),hint:hint,explain:ex,render:function(box,P){vertDiv(box,P,a,b)}}}
+
+// ---------- 3-1 ----------
+function genAdd3(lv){function pz(a,b,op,h,carry){var ans=op==='+'?a+b:a-b;return {mode:'pad',q:op==='+'?'덧셈을 해 볼까요?':'뺄셈을 해 볼까요?',answer:ans,hint:h,explain:a+(op==='+'?' + ':' − ')+b+' = '+ans+'이에요.',render:function(box,P){vertCalc(box,P,[a,b],op==='+'?'+':'−',{ans:ans,carry:carry})}}}
+  if(lv===1){var a,b;do{a=R(111,888);b=R(111,888)}while(a+b>999||(a%10)+(b%10)>9||(Math.floor(a/10)%10)+(Math.floor(b/10)%10)>9);return pz(a,b,'+','일의 자리부터 자리끼리 더해요.')}
+  if(lv===2){var a2,b2;do{a2=R(111,888);b2=R(111,888)}while(a2+b2>999||((a2%10)+(b2%10)<10&&(Math.floor(a2/10)%10)+(Math.floor(b2/10)%10)<10));return pz(a2,b2,'+','10이 넘으면 윗자리로 1을 올려요.',true)}
+  if(lv===3){var a3,b3;do{a3=R(200,999);b3=R(111,a3-1)}while((a3%10)>=(b3%10)&&(Math.floor(a3/10)%10)>=(Math.floor(b3/10)%10));return pz(a3,b3,'-','뺄 수 없으면 윗자리에서 10을 빌려 와요.',true)}
+  if(lv===4){var s=R(300,999),p=R(100,s-100);return {mode:'pad',q:'빈칸에 알맞은 수는?',answer:s-p,hint:s+' − '+p+'를 계산하면 빈칸이에요.',explain:p+' + '+(s-p)+' = '+s+'이니까 '+(s-p)+'이에요.',render:function(box,P){var r=el('div','ansrow big');r.appendChild(el('span','unit',p+' +'));r.appendChild(P.slot);r.appendChild(el('span','unit','= '+s));box.appendChild(r)}}}
+  var x=R(150,480),y=R(120,480),z=R(100,x+y-50),pl=Math.random()<.5,T=pl?['동화책이 '+x+'권, 과학책이 '+y+'권 있어요. 책은 모두 몇 권일까요?','권',x+y]:['사탕 '+(x+y)+'개 중 '+z+'개를 나누어 주었어요. 몇 개 남았을까요?','개',x+y-z];
+  return {mode:'pad',q:T[0],answer:T[2],hint:pl?'모두 몇 개 → 더하기':'남은 것 → 빼기',explain:(pl?x+' + '+y:(x+y)+' − '+z)+' = '+T[2]+T[1]+'이에요.',render:function(box,P){unitPad(box,P,'',T[1])}}}
+function lineSVG(kind){var inner='';if(kind==='seg')inner='<circle cx="20" cy="30" r="4" fill="#2b3f5c"/><circle cx="130" cy="30" r="4" fill="#2b3f5c"/><line x1="20" y1="30" x2="130" y2="30" stroke="#2b3f5c" stroke-width="3"/>';
+  else if(kind==='line')inner='<line x1="4" y1="30" x2="146" y2="30" stroke="#2b3f5c" stroke-width="3"/><circle cx="40" cy="30" r="4" fill="#2b3f5c"/><circle cx="110" cy="30" r="4" fill="#2b3f5c"/>';
+  else inner='<circle cx="20" cy="30" r="4" fill="#2b3f5c"/><line x1="20" y1="30" x2="146" y2="30" stroke="#2b3f5c" stroke-width="3"/><polygon points="146,30 136,24 136,36" fill="#2b3f5c"/>';return svgEl(150,60,inner)}
+function genPlane(lv){var LN={seg:'선분',line:'직선',ray:'반직선'};
+  if(lv===1){var ks=['seg','line','ray'],t=ks[R(0,2)],o=shuffle(ks);return pickPz(LN[t]+'은 어느 것일까요?',null,o.map(function(k){return function(){return lineSVG(k)}}),o.map(function(k){return LN[k]}),o.indexOf(t),t==='seg'?'두 점 사이를 곧게 이은 선이에요.':t==='line'?'양쪽으로 끝없이 늘인 곧은 선이에요.':'한 점에서 시작해 한쪽으로만 끝없이 늘인 선이에요.',LN[t]+'은 이거예요.')}
+  if(lv===2){var degs=shuffle([90,R(30,70),R(110,150),R(35,80)]),o2=degs.map(function(d){return function(){return angleSVG(d,110)}});return pickPz('직각은 어느 것일까요?',null,o2,degs.map(function(d){return d===90?'직각':d+'°'}),degs.indexOf(90),'종이를 반듯하게 두 번 접은 각이 직각이에요. 네모 표시가 있는 각을 찾아요.','네모 표시가 있는 각이 직각이에요.')}
+  if(lv===3){var KN={rtri:'직각삼각형',rect:'직사각형',square:'정사각형'},ks3=['rtri','rect','square'],t3=ks3[R(0,2)],o3=shuffle(ks3);return choicePz('이 도형의 이름은?',function(b){b.appendChild(shapeSVG(t3,120,null,false,{mark:true}))},o3.map(function(k){return KN[k]}),o3.indexOf(t3),t3==='rtri'?'직각이 한 개 있는 삼각형이에요.':t3==='rect'?'네 각이 모두 직각이에요.':'네 각이 직각이고 네 변의 길이가 같아요.',KN[t3]+'이에요.')}
+  if(lv===4){var sh=['rtri','rect','square','tri'][R(0,3)],n={rtri:1,rect:4,square:4,tri:0}[sh],KN4={rtri:'직각삼각형',rect:'직사각형',square:'정사각형',tri:'삼각형'};return {mode:'pad',q:'이 도형에서 직각은 몇 개일까요?',answer:n,hint:'네모 표시를 할 수 있는 각을 세어요.',explain:KN4[sh]+'의 직각은 '+n+'개예요.',render:function(box,P){box.appendChild(shapeSVG(sh,120,null,sh==='tri',{mark:true}));unitPad(box,P,'','개')}}}
+  var Q=[['네 변의 길이가 모두 같고 네 각이 모두 직각인 사각형은?','square'],['네 각이 모두 직각이지만 변의 길이가 다를 수 있는 사각형은?','rect'],['한 각이 직각인 삼각형은?','rtri']][R(0,2)],o5=shuffle(['square','rect','rtri']),KN5={rtri:'직각삼각형',rect:'직사각형',square:'정사각형'};
+  return pickPz(Q[0],null,o5.map(function(k){return function(){return shapeSVG(k,90,null,false,{mark:true})}}),o5.map(function(k){return KN5[k]}),o5.indexOf(Q[1]),'직각 표시와 변의 길이를 비교해요.',KN5[Q[1]]+'이에요.')}
+function genMul2(lv){function pz(a,b,h,carry){return {mode:'pad',q:'곱셈을 해 볼까요?',answer:a*b,hint:h,explain:a+' × '+b+' = '+(a*b)+'이에요.',render:function(box,P){vertCalc(box,P,[a,b],'×',{ans:a*b,carry:carry})}}}
+  if(lv===1){var a=R(11,44),b=R(2,4);while((a%10)*b>9||Math.floor(a/10)*b>9){a=R(11,44);b=R(2,4)}return pz(a,b,'일의 자리부터 곱하고, 십의 자리를 곱해요.')}
+  if(lv===2){var a2=R(12,49),b2=R(2,9);while((a2%10)*b2<10||a2*b2>99){a2=R(12,49);b2=R(2,9)}return pz(a2,b2,'일의 자리 곱에서 올림한 수를 십의 자리에 더해요.',true)}
+  if(lv===3){var a3=R(12,99),b3=R(2,9);while(a3*b3<100){a3=R(12,99);b3=R(2,9)}return pz(a3,b3,'십의 자리 곱이 100을 넘으면 백의 자리로 올려요.',true)}
+  if(lv===4){var a4=R(10,60),b4=R(2,9),s=a4*b4;return {mode:'pad',q:'빈칸에 알맞은 수는?',answer:b4,hint:a4+'에 몇을 곱해야 '+josa(String(s),'이','가')+' 될까요? '+a4+'단처럼 세어 봐요.',explain:a4+' × '+b4+' = '+s+'이니까 '+b4+'예요.',render:function(box,P){var r=el('div','ansrow big');r.appendChild(el('span','unit',a4+' ×'));r.appendChild(P.slot);r.appendChild(el('span','unit','= '+s));box.appendChild(r)}}}
+  var x=R(12,48),y=R(3,9),T=[['한 상자에 귤이 '+x+'개씩 들어 있어요. '+y+'상자에는 모두 몇 개일까요?','개'],['버스 한 대에 '+x+'명이 탈 수 있어요. 버스 '+y+'대에는 모두 몇 명이 탈 수 있을까요?','명'],['색종이를 한 명에게 '+x+'장씩 '+y+'명에게 나누어 주려면 모두 몇 장이 필요할까요?','장']][R(0,2)];
+  return {mode:'pad',q:T[0],answer:x*y,hint:'같은 수를 여러 번 더할 때는 곱셈!',explain:x+' × '+y+' = '+(x*y)+T[1]+'이에요.',render:function(box,P){unitPad(box,P,'',T[1])}}}
+function genLenTime(lv){
+  if(lv===1){var cm=R(2,9),mm=R(1,9);return Math.random()<.5?{mode:'pad',q:cm+' cm '+mm+' mm는 몇 mm일까요?',answer:cm*10+mm,hint:'1 cm = 10 mm예요.',explain:cm+' cm = '+(cm*10)+' mm, 여기에 '+mm+' mm를 더하면 '+(cm*10+mm)+' mm예요.',render:function(box,P){unitPad(box,P,'','mm')}}:{mode:'pad',q:(cm*10+mm)+' mm는 몇 cm 몇 mm일까요? (cm만 써요)',answer:cm,hint:'10 mm가 1 cm예요.',explain:(cm*10+mm)+' mm = '+cm+' cm '+mm+' mm예요.',render:function(box,P){unitPad(box,P,'','cm')}}}
+  if(lv===2){var km=R(1,9),m=R(1,9)*100;return {mode:'pad',q:km+' km '+m+' m는 몇 m일까요?',answer:km*1000+m,hint:'1 km = 1000 m예요.',explain:km+' km = '+(km*1000)+' m, 더하면 '+(km*1000+m)+' m예요.',render:function(box,P){unitPad(box,P,'','m')}}}
+  if(lv===3){var mn=R(1,5),sc=R(1,59);return Math.random()<.5?{mode:'pad',q:mn+'분 '+sc+'초는 몇 초일까요?',answer:mn*60+sc,hint:'1분 = 60초예요.',explain:mn+'분 = '+(mn*60)+'초, 더하면 '+(mn*60+sc)+'초예요.',render:function(box,P){unitPad(box,P,'','초')}}:{mode:'pad',q:(mn*60+sc)+'초는 몇 분 몇 초일까요? (초만 써요)',answer:sc,hint:'60초씩 묶어 분으로 바꿔요.',explain:(mn*60+sc)+'초 = '+mn+'분 '+sc+'초예요.',render:function(box,P){unitPad(box,P,'','초')}}}
+  if(lv===4){var h1=R(1,9),m1=R(5,55),dh=R(0,2),dm=R(5,55),tm=h1*60+m1+dh*60+dm,H2=Math.floor(tm/60),M2=tm%60;return {mode:'pad',q:h1+'시 '+m1+'분에서 '+(dh?dh+'시간 ':'')+dm+'분 뒤는 몇 시 몇 분일까요?',answers:[H2,M2],answer:H2+'시 '+M2+'분',hint:'분끼리 더해 60분이 넘으면 1시간으로 올려요.',explain:h1+'시 '+m1+'분 + '+(dh?dh+'시간 ':'')+dm+'분 = '+H2+'시 '+M2+'분이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(P.slots[0]);r.appendChild(el('span','unit','시'));r.appendChild(P.slots[1]);r.appendChild(el('span','unit','분'));box.appendChild(r)}}}
+  var s1=R(1,9)*60+R(0,11)*5,dur=R(25,170),s2=s1+dur,hh=Math.floor(dur/60),mm2=dur%60;
+  return {mode:'pad',q:tstr(Math.floor(s1/60),s1%60)+'에 시작해서 '+tstr(Math.floor(s2/60),s2%60)+'에 끝났어요. 걸린 시간은 몇 시간 몇 분일까요?',answers:[hh,mm2],answer:hh+'시간 '+mm2+'분',hint:'끝난 시각에서 시작 시각을 빼요. 분이 모자라면 1시간을 60분으로 바꿔요.',explain:'걸린 시간은 '+hh+'시간 '+mm2+'분이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(P.slots[0]);r.appendChild(el('span','unit','시간'));r.appendChild(P.slots[1]);r.appendChild(el('span','unit','분'));box.appendChild(r)}}}
+function genFrac1(lv){
+  if(lv===1){var d=[2,3,4,5,6,8][R(0,5)],n=R(1,d-1),kind=Math.random()<.5?'pie':'bar';return {mode:'pad',q:'색칠한 부분은 전체의 얼마일까요?',answers:[n,d],answer:fracStr(n,d),hint:'전체를 똑같이 '+d+'로 나눴고, 그중 색칠한 조각 수를 세어요.',explain:'전체 '+d+'조각 중 '+n+'조각이니까 '+n+'/'+d+'이에요.',render:function(box,P){box.appendChild(fracSVG(n,d,kind));var r=el('div','ansrow');r.appendChild(fracBox(P.slots[0],P.slots[1]));box.appendChild(r)}}}
+  if(lv===2){var a=R(2,9),b=R(2,9);while(b===a)b=R(2,9);var big=Math.random()<.5,ans=big?Math.min(a,b):Math.max(a,b);return choicePz('더 '+(big?'큰':'작은')+' 분수는?',function(box){var w=el('div','ansrow fr2');w.appendChild(fracSVG(1,a,'bar'));w.appendChild(fracSVG(1,b,'bar'));box.appendChild(w)},['1/'+a,'1/'+b],ans===a?0:1,'단위분수는 분모가 작을수록 커요. 조각이 적을수록 한 조각이 크니까요.','1/'+a+'과 1/'+b+' 중 더 '+(big?'큰':'작은')+' 것은 1/'+ans+'이에요.')}
+  if(lv===3){var d3=R(4,9),p=R(1,d3-1),q=R(1,d3-1);while(q===p)q=R(1,d3-1);var bg=Math.random()<.5,an=bg?Math.max(p,q):Math.min(p,q);return choicePz('더 '+(bg?'큰':'작은')+' 분수는?',function(box){var w=el('div','ansrow fr2');w.appendChild(fracSVG(p,d3,'bar'));w.appendChild(fracSVG(q,d3,'bar'));box.appendChild(w)},[p+'/'+d3,q+'/'+d3],an===p?0:1,'분모가 같으면 분자가 클수록 커요.',an+'/'+d3+'이에요.')}
+  if(lv===4){var n4=R(1,9);return {mode:'pad',dec:true,q:n4+'/10을 소수로 쓰면?',answer:n4/10,hint:'1/10 = 0.1이에요. 0.1이 '+n4+'개!',explain:n4+'/10 = 0.'+n4+'이에요.',render:function(box,P){box.appendChild(fracSVG(n4,10,'bar'));var r=el('div','ansrow');r.appendChild(P.slot);box.appendChild(r)}}}
+  var x=R(1,9)+R(0,3)*10,y=R(1,9)+R(0,3)*10;while(y===x)y=R(1,9)+R(0,3)*10;var bg5=Math.random()<.5,an5=bg5?Math.max(x,y):Math.min(x,y);
+  return choicePz('더 '+(bg5?'큰':'작은')+' 소수는?',function(box){twoNums(box,(x/10).toFixed(1),(y/10).toFixed(1))},[(x/10).toFixed(1),(y/10).toFixed(1)],an5===x?0:1,'자연수 부분부터 비교하고, 같으면 소수점 아래를 비교해요.',(an5/10).toFixed(1)+'이에요.')}
+// ---------- 3-2 ----------
+function genMul3(lv){function pz(a,b,h){return {mode:'pad',q:'곱셈을 해 볼까요?',answer:a*b,hint:h,explain:a+' × '+b+' = '+(a*b)+'이에요.',render:function(box,P){vertCalc(box,P,[a,b],'×',{ans:a*b,carry:true})}}}
+  if(lv===1){var a=R(111,333),b=R(2,3);while(String(a).split('').some(function(c){return +c*b>9})){a=R(111,333)}return pz(a,b,'일·십·백의 자리를 차례로 곱해요.')}
+  if(lv===2)return pz(R(123,987),R(2,9),'올림한 수를 윗자리 곱에 더해요.');
+  if(lv===3){var a3=R(12,49),b3=R(11,19);return pz(a3,b3,'일의 자리 수와 먼저 곱하고, 십의 자리 수와 곱한 것을 한 칸 왼쪽에 써서 더해요.')}
+  if(lv===4){var a4=R(21,99),b4=R(21,99);return pz(a4,b4,b4%10+'과 먼저 곱하고 '+(Math.floor(b4/10)*10)+'과 곱해서 더해요.')}
+  var x=R(12,45),y=R(12,30),T=[['한 반에 '+x+'명씩 '+y+'반이 있어요. 학생은 모두 몇 명일까요?','명'],['하루에 줄넘기를 '+x+'번씩 '+y+'일 동안 했어요. 모두 몇 번 했을까요?','번']][R(0,1)];
+  return {mode:'pad',q:T[0],answer:x*y,hint:'곱셈으로 한 번에 구해요.',explain:x+' × '+y+' = '+(x*y)+T[1]+'이에요.',render:function(box,P){unitPad(box,P,'',T[1])}}}
+function genDiv2(lv){
+  if(lv===1){var b=R(2,9),q=R(2,9),r=R(1,b-1),a=b*q+r;return pad2(a+' ÷ '+b+'의 몫과 나머지는?',a,b,b+'단에서 '+a+'보다 작으면서 가장 가까운 수를 찾아요.',b+' × '+q+' = '+(b*q)+', '+a+' − '+(b*q)+' = '+r+'. 몫 '+q+', 나머지 '+r+'이에요.')}
+  if(lv===2){var b2=R(2,9),q2=R(10,19),a2=b2*q2;return {mode:'pad',q:a2+' ÷ '+b2+'의 몫은?',answer:q2,hint:'십의 자리부터 나누고, 남은 수를 내려서 다시 나눠요.',explain:b2+' × '+q2+' = '+a2+'이니까 몫은 '+q2+'이에요.',render:function(box,P){vertDiv(box,P,a2,b2)}}}
+  if(lv===3){var b3=R(2,9),q3=R(10,33),r3=R(1,b3-1),a3=b3*q3+r3;if(a3>99){q3=R(10,Math.floor(99/b3));a3=b3*q3+r3}return pad2(a3+' ÷ '+b3+'의 몫과 나머지는?',a3,b3,'십의 자리부터 나누고 남은 수를 내려 다시 나눠요. 나머지는 '+b3+'보다 작아야 해요.',b3+' × '+q3+' = '+(b3*q3)+', 나머지 '+r3+'이에요.')}
+  if(lv===4){var b4=R(3,9),q4=R(20,99),a4=b4*q4,ok=Math.random()<.5,shown=ok?q4:q4+R(1,2);return choicePz(a4+' ÷ '+b4+' = '+shown+' 이 계산은 맞을까요?',function(box){bigText(box,b4+' × '+shown+' = ?')},['맞아요','틀려요'],ok?0:1,'나누는 수 × 몫 = 나누어지는 수 인지 확인해요.',b4+' × '+shown+' = '+(b4*shown)+(ok?' 이니까 맞아요.':' 이라서 '+a4+'이 아니에요. 몫은 '+q4+'이에요.'))}
+  var b5=R(3,8),q5=R(5,12),r5=R(1,b5-1),a5=b5*q5+r5;return {mode:'pad',q:'사탕 '+a5+'개를 '+b5+'명이 똑같이 나누면 한 명이 몇 개씩 갖고, 몇 개가 남을까요?',answers:[q5,r5],answer:q5+'개씩, '+r5+'개 남음',hint:a5+' ÷ '+b5+'의 몫과 나머지를 구해요.',explain:a5+' ÷ '+b5+' = '+q5+' … '+r5+'. '+q5+'개씩 갖고 '+r5+'개가 남아요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(P.slots[0]);r.appendChild(el('span','unit','개씩,'));r.appendChild(P.slots[1]);r.appendChild(el('span','unit','개 남음'));box.appendChild(r)}}}
+function circleSVG(r,label,sz){sz=sz||150;var c=sz/2,R_=sz*.4,inner='<circle cx="'+c+'" cy="'+c+'" r="'+R_+'" fill="#fff4d6" stroke="#2b3f5c" stroke-width="2.5"/><circle cx="'+c+'" cy="'+c+'" r="3" fill="#2b3f5c"/>';
+  if(label==='r')inner+='<line x1="'+c+'" y1="'+c+'" x2="'+(c+R_)+'" y2="'+c+'" stroke="#ff6b6b" stroke-width="3"/><text x="'+(c+R_/2)+'" y="'+(c-8)+'" font-size="13" text-anchor="middle" fill="#ff6b6b" font-weight="700">'+r+' cm</text>';
+  else inner+='<line x1="'+(c-R_)+'" y1="'+c+'" x2="'+(c+R_)+'" y2="'+c+'" stroke="#ff6b6b" stroke-width="3"/><text x="'+c+'" y="'+(c-8)+'" font-size="13" text-anchor="middle" fill="#ff6b6b" font-weight="700">'+r+' cm</text>';return svgEl(sz,sz,inner)}
+function genCirc(lv){
+  if(lv===1){var r=R(2,9);return {mode:'pad',q:'반지름이 '+r+' cm인 원의 지름은 몇 cm일까요?',answer:2*r,hint:'지름은 반지름의 2배예요.',explain:r+' × 2 = '+(2*r)+' cm예요.',render:function(box,P){box.appendChild(circleSVG(r,'r'));unitPad(box,P,'','cm')}}}
+  if(lv===2){var d=R(2,9)*2;return {mode:'pad',q:'지름이 '+d+' cm인 원의 반지름은 몇 cm일까요?',answer:d/2,hint:'반지름은 지름의 절반이에요.',explain:d+' ÷ 2 = '+(d/2)+' cm예요.',render:function(box,P){box.appendChild(circleSVG(d,'d'));unitPad(box,P,'','cm')}}}
+  if(lv===3){var Q=[['원의 중심을 지나는 가장 긴 선분을 무엇이라고 할까요?','지름'],['원의 중심과 원 위의 한 점을 이은 선분을 무엇이라고 할까요?','반지름'],['컴퍼스의 침을 꽂는 점을 무엇이라고 할까요?','원의 중심']][R(0,2)],o=shuffle(['지름','반지름','원의 중심']);return choicePz(Q[0],function(b){b.appendChild(circleSVG(4,'d'))},o,o.indexOf(Q[1]),'지름은 중심을 지나 양쪽 끝까지, 반지름은 중심에서 한쪽까지예요.',Q[1]+'이에요.')}
+  if(lv===4){var r4=R(2,8),n=R(2,4);return {mode:'pad',q:'반지름이 '+r4+' cm인 원 '+n+'개를 나란히 붙여 그렸어요. 전체 길이는 몇 cm일까요?',answer:2*r4*n,hint:'원 하나의 지름은 '+(2*r4)+' cm. 그게 '+n+'개!',explain:(2*r4)+' × '+n+' = '+(2*r4*n)+' cm예요.',render:function(box,P){var w=el('div','ansrow');for(var i=0;i<n;i++)w.appendChild(circleSVG(r4,'d',70));box.appendChild(w);unitPad(box,P,'','cm')}}}
+  var r5=R(3,9),k=Math.random()<.5;return {mode:'pad',q:k?'지름이 '+(2*r5)+' cm인 원을 그리려면 컴퍼스를 몇 cm만큼 벌려야 할까요?':'한 변이 '+(2*r5)+' cm인 정사각형 안에 꼭 맞는 원을 그렸어요. 원의 반지름은 몇 cm일까요?',answer:r5,hint:'컴퍼스를 벌린 길이가 반지름이에요. 반지름 = 지름 ÷ 2',explain:(2*r5)+' ÷ 2 = '+r5+' cm예요.',render:function(box,P){unitPad(box,P,'','cm')}}}
+function genFrac2(lv){
+  if(lv===1){var d=[2,3,4,5,6][R(0,4)],n=R(1,d-1),tot=d*R(2,6);return {mode:'pad',q:tot+'의 '+n+'/'+d+'은 얼마일까요?',answer:tot/d*n,hint:tot+'을 '+d+'묶음으로 나누면 한 묶음이 '+(tot/d)+'. 그중 '+n+'묶음!',explain:tot+' ÷ '+d+' = '+(tot/d)+', '+(tot/d)+' × '+n+' = '+(tot/d*n)+'이에요.',render:function(box,P){box.appendChild(objRow(tot,'droplet',0,true));var r=el('div','ansrow');r.appendChild(P.slot);box.appendChild(r)}}}
+  if(lv===2){var d2=R(2,9),kind=R(0,2),n2=kind===0?R(1,d2-1):kind===1?R(d2,d2*2):0,w=kind===2?R(1,4):0,txt=kind===2?mixStr(w,R(1,d2-1),d2):fracStr(n2,d2),KN=['진분수','가분수','대분수'],o=shuffle(KN);return choicePz('이 분수는 어떤 분수일까요?',function(b){bigText(b,txt)},o,o.indexOf(KN[kind]),'분자가 분모보다 작으면 진분수, 크거나 같으면 가분수, 자연수와 진분수가 함께 있으면 대분수예요.',txt+'은 '+KN[kind]+'예요.')}
+  if(lv===3){var d3=R(2,6),w3=R(1,4),n3=R(1,d3-1),imp=w3*d3+n3;return {mode:'pad',q:'대분수 '+mixStr(w3,n3,d3)+'를 가분수로 나타내면?',answers:[imp,d3],answer:fracStr(imp,d3),hint:'자연수 '+w3+'은 '+d3+'/'+d3+'이 '+w3+'개 → '+(w3*d3)+'/'+d3+'. 여기에 '+n3+'/'+d3+'을 더해요.',explain:w3+' × '+d3+' + '+n3+' = '+imp+'이니까 '+imp+'/'+d3+'이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(el('span','unit',mixStr(w3,n3,d3)+' ='));r.appendChild(fracBox(P.slots[0],P.slots[1]));box.appendChild(r)}}}
+  if(lv===4){var d4=R(2,6),w4=R(1,4),n4=R(1,d4-1),imp4=w4*d4+n4;return {mode:'pad',q:'가분수 '+fracStr(imp4,d4)+'를 대분수로 나타내면? (자연수, 분자, 분모 순서로 써요)',answers:[w4,n4,d4],answer:mixStr(w4,n4,d4),hint:imp4+' ÷ '+d4+'의 몫이 자연수, 나머지가 분자예요.',explain:imp4+' ÷ '+d4+' = '+w4+' … '+n4+'이니까 '+mixStr(w4,n4,d4)+'이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(el('span','unit',fracStr(imp4,d4)+' ='));r.appendChild(fracBox(P.slots[1],P.slots[2],P.slots[0]));box.appendChild(r)}}}
+  var d5=R(3,9),p=R(d5+1,d5*3),q=R(d5+1,d5*3);while(q===p)q=R(d5+1,d5*3);var bg=Math.random()<.5,an=bg?Math.max(p,q):Math.min(p,q);
+  return choicePz('더 '+(bg?'큰':'작은')+' 분수는?',function(b){twoNums(b,fracStr(p,d5),fracStr(q,d5))},[fracStr(p,d5),fracStr(q,d5)],an===p?0:1,'분모가 같으면 분자가 큰 쪽이 커요.',fracStr(an,d5)+'이에요.')}
+function genCapw(lv){
+  if(lv===1){var L=R(1,9),ml=R(1,9)*100;return {mode:'pad',q:L+' L '+ml+' mL는 몇 mL일까요?',answer:L*1000+ml,hint:'1 L = 1000 mL예요.',explain:L+' L = '+(L*1000)+' mL, 더하면 '+(L*1000+ml)+' mL예요.',render:function(box,P){unitPad(box,P,'','mL')}}}
+  if(lv===2){var kg=R(1,9),g=R(1,9)*100;return Math.random()<.5?{mode:'pad',q:kg+' kg '+g+' g은 몇 g일까요?',answer:kg*1000+g,hint:'1 kg = 1000 g이에요.',explain:kg+' kg = '+(kg*1000)+' g, 더하면 '+(kg*1000+g)+' g이에요.',render:function(box,P){unitPad(box,P,'','g')}}:{mode:'pad',q:(kg*1000+g)+' g은 몇 kg 몇 g일까요? (kg만 써요)',answer:kg,hint:'1000 g이 1 kg이에요.',explain:(kg*1000+g)+' g = '+kg+' kg '+g+' g이에요.',render:function(box,P){unitPad(box,P,'','kg')}}}
+  if(lv===3){var a=R(1,5),am=R(1,9)*100,b=R(1,3),bm=R(1,9)*100,tot=a*1000+am+b*1000+bm,TL=Math.floor(tot/1000),TM=tot%1000;return {mode:'pad',q:a+' L '+am+' mL + '+b+' L '+bm+' mL = ? (L와 mL)',answers:[TL,TM],answer:TL+' L '+TM+' mL',hint:'mL끼리 더해 1000이 넘으면 1 L로 올려요.',explain:'mL: '+am+' + '+bm+' = '+(am+bm)+', L: '+a+' + '+b+'. 정리하면 '+TL+' L '+TM+' mL예요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(P.slots[0]);r.appendChild(el('span','unit','L'));r.appendChild(P.slots[1]);r.appendChild(el('span','unit','mL'));box.appendChild(r)}}}
+  if(lv===4){var k1=R(2,9),g1=R(1,9)*100,k2=R(1,k1-1),g2=R(1,9)*100,d=(k1*1000+g1)-(k2*1000+g2),DK=Math.floor(d/1000),DG=d%1000;return {mode:'pad',q:k1+' kg '+g1+' g − '+k2+' kg '+g2+' g = ? (kg과 g)',answers:[DK,DG],answer:DK+' kg '+DG+' g',hint:'g끼리 뺄 수 없으면 1 kg을 1000 g으로 바꿔요.',explain:'정리하면 '+DK+' kg '+DG+' g이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(P.slots[0]);r.appendChild(el('span','unit','kg'));r.appendChild(P.slots[1]);r.appendChild(el('span','unit','g'));box.appendChild(r)}}}
+  var x=R(1,9)*250,y=R(1,9)*250;while(y===x)y=R(1,9)*250;var mo=Math.random()<.5,an=mo?Math.max(x,y):Math.min(x,y);return choicePz('더 '+(mo?'많은':'적은')+' 양은?',function(b){twoNums(b,x>=1000?Math.floor(x/1000)+' L '+(x%1000)+' mL':x+' mL',y>=1000?Math.floor(y/1000)+' L '+(y%1000)+' mL':y+' mL')},[x>=1000?Math.floor(x/1000)+' L '+(x%1000)+' mL':x+' mL',y>=1000?Math.floor(y/1000)+' L '+(y%1000)+' mL':y+' mL'],an===x?0:1,'둘 다 mL로 바꿔서 비교해요.',(an===x?'왼쪽':'오른쪽')+'이 '+an+' mL로 더 '+(mo?'많아요.':'적어요.'))}
+function genData3(lv){var NM=[['사과','배','포도','귤'],['강아지','고양이','햄스터','물고기'],['빨강','파랑','노랑','초록']][R(0,2)],vals=NM.map(function(){return R(2,9)*(lv>=3?10:1)+(lv>=3?R(0,9):0)});
+  if(lv<=2){var i=R(0,3),sum=vals.reduce(function(a,b){return a+b},0);var ask=lv===1;return {mode:'pad',q:ask?NM[i]+'을 좋아하는 학생은 몇 명일까요?':'조사한 학생은 모두 몇 명일까요?',answer:ask?vals[i]:sum,hint:ask?'표에서 '+NM[i]+' 칸을 찾아요.':'표의 수를 모두 더해요.',explain:ask?NM[i]+'은 '+vals[i]+'명이에요.':vals.join(' + ')+' = '+sum+'명이에요.',render:function(box,P){var t=el('div','stbl');NM.forEach(function(n,j){var c=el('div','stc');c.appendChild(el('small',null,n));c.appendChild(el('b',null,String(vals[j])));t.appendChild(c)});box.appendChild(t);unitPad(box,P,'','명')}}}
+  if(lv<=4){var k=R(0,3),mx=vals.indexOf(Math.max.apply(null,vals));return lv===3?{mode:'pad',q:'그림그래프에서 '+NM[k]+'은 몇 개일까요?',answer:vals[k],hint:'큰 그림은 10개, 작은 그림은 1개예요.',explain:'큰 그림 '+Math.floor(vals[k]/10)+'개, 작은 그림 '+(vals[k]%10)+'개 → '+vals[k]+'개예요.',render:function(box,P){box.appendChild(pictoTable(NM,vals,'red_apple'));unitPad(box,P,'','개')}}:choicePz('가장 많은 것은 무엇일까요?',function(b){b.appendChild(pictoTable(NM,vals,'red_apple'))},NM,mx,'큰 그림 수를 먼저 비교하고, 같으면 작은 그림을 비교해요.',NM[mx]+'이 '+vals[mx]+'개로 가장 많아요.')}
+  var a=R(0,3),b=R(0,3);while(b===a)b=R(0,3);var diff=Math.abs(vals[a]-vals[b]);return {mode:'pad',q:NM[a]+'과 '+NM[b]+'의 차이는 몇 개일까요?',answer:diff,hint:'두 수를 그림에서 읽고 큰 수에서 작은 수를 빼요.',explain:vals[a]+'과 '+vals[b]+'의 차이는 '+diff+'이에요.',render:function(box,P){box.appendChild(pictoTable(NM,vals,'red_apple'));unitPad(box,P,'','개')}}}
+// ---------- 4-1 ----------
+function koNum(n){var u=['','만','억','조'],s='',i=0;while(n>0){var p=n%10000;if(p)s=p+u[i]+(s?' '+s:'');n=Math.floor(n/10000);i++}return s}
+function genBignum(lv){
+  if(lv===1){var n=R(1,9)*10000+R(0,9999);var o1=shuffle([koNum(n),koNum(n+10000),koNum(Math.floor(n/10)),koNum(n*10)]).filter(function(x,i,a){return a.indexOf(x)===i}).slice(0,4);return choicePz(n.toLocaleString()+'을 읽으면?',function(b){bigText(b,n.toLocaleString())},o1,o1.indexOf(koNum(n)),'네 자리씩 끊어서 만 단위로 읽어요.',koNum(n)+'이에요.')}
+  if(lv===2){var n2=R(10000,99999999),pos=R(4,7),pv=Math.pow(10,pos),dg=Math.floor(n2/pv)%10;if(!dg){n2+=pv*3;dg=Math.floor(n2/pv)%10}var o2=shuffle([dg*pv,dg*pv*10,dg*pv/10,dg*pv*100]).map(function(v){return v.toLocaleString()});return choicePz(n2.toLocaleString()+'에서 숫자 '+dg+'이 나타내는 값은?',function(b){bigText(b,n2.toLocaleString())},o2,o2.indexOf((dg*pv).toLocaleString()),'오른쪽에서 네 자리씩 끊어 일·만·억 자리를 확인해요.',dg+'이 '+['','','','','만','십만','백만','천만'][pos]+'의 자리니까 '+(dg*pv).toLocaleString()+'이에요.')}
+  if(lv===3){var st=[10000,100000,1000000][R(0,2)],s=R(1,9)*st+R(1,9)*(st/10),seq=[];for(var i=0;i<5;i++)seq.push(s+i*st);var miss=R(2,4);return {mode:'pad',maxlen:9,q:st.toLocaleString()+'씩 뛰어 세었어요. 빈칸은? (숫자만)',answer:seq[miss],hint:st.toLocaleString()+'씩 뛰면 '+['','','','','만','십만','백만'][String(st).length-1]+'의 자리만 1씩 커져요.',explain:seq.map(function(v){return v.toLocaleString()}).join(', ')+'이니까 '+seq[miss].toLocaleString()+'이에요.',render:function(box,P){var r=el('div','ansrow seqrow');seq.forEach(function(v,i){if(i===miss)r.appendChild(P.slot);else r.appendChild(el('span','tile sm',v.toLocaleString()))});box.appendChild(r)}}}
+  if(lv===4){var a=R(100000,9999999),b=R(100000,9999999);while(a===b)b=R(100000,9999999);var bg=Math.random()<.5,an=bg?Math.max(a,b):Math.min(a,b);return choicePz('더 '+(bg?'큰':'작은')+' 수는?',function(box){twoNums(box,a.toLocaleString(),b.toLocaleString())},[a.toLocaleString(),b.toLocaleString()],an===a?0:1,'자릿수가 다르면 자릿수가 많은 쪽이 커요. 같으면 높은 자리부터 비교해요.',an.toLocaleString()+'이에요.')}
+  var uk=R(1,9),man=R(1,9999),n5=uk*100000000+man*10000;var o5=shuffle([n5,n5*10,n5/10,n5+10000]).map(function(v){return v.toLocaleString()});return choicePz(koNum(n5)+'을 숫자로 쓰면?',function(b){bigText(b,koNum(n5))},o5,o5.indexOf(n5.toLocaleString()),'억은 1 뒤에 0이 8개예요. 만 단위로 네 자리씩 써요.',n5.toLocaleString()+'이에요.')}
+function fixAns(pz,correct){if(pz.answer==null)pz.answer=pz.choices.indexOf(correct);return pz}
+function genAngle(lv){
+  if(lv===1){var d=R(2,16)*10;return {mode:'pad',q:'각도기로 잰 각의 크기는 몇 도일까요?',answer:d,hint:'한 변을 0에 맞추고 다른 변이 가리키는 눈금을 읽어요.',explain:'각의 크기는 '+d+'°예요.',render:function(box,P){box.appendChild(protractorSVG(d));unitPad(box,P,'','°')}}}
+  if(lv===2){var d2=[R(20,80),90,R(100,170)][R(0,2)],kind=d2<90?'예각':d2===90?'직각':'둔각',o=shuffle(['예각','직각','둔각']);return choicePz('이 각은 어떤 각일까요?',function(b){b.appendChild(angleSVG(d2,140))},o,o.indexOf(kind),'직각(90°)보다 작으면 예각, 크면 둔각이에요.',d2+'°니까 '+kind+'이에요.')}
+  if(lv===3){var a=R(20,80)*(Math.random()<.5?1:2)%180||40,b=R(10,90),pl=Math.random()<.5,an=pl?a+b:Math.abs(a-b);return {mode:'pad',q:a+'° '+(pl?'+':'−')+' '+b+'° = ?',answer:an,hint:'각도도 자연수처럼 더하고 빼요.',explain:a+(pl?' + ':' − ')+b+' = '+an+'°예요.',render:function(box,P){unitPad(box,P,'','°')}}}
+  if(lv===4){var x=R(30,80),y=R(30,80),z=180-x-y;if(z<10){x=40;y=50;z=90}return {mode:'pad',q:'삼각형의 두 각이 '+x+'°, '+y+'°일 때 나머지 한 각은?',answer:z,hint:'삼각형 세 각의 크기의 합은 180°예요.',explain:'180 − '+x+' − '+y+' = '+z+'°예요.',render:function(box,P){box.appendChild(triSVG([[20,130],[130,130],[75,30]],[x+'°',y+'°','?'],150,true));unitPad(box,P,'','°')}}}
+  var p=R(60,120),q=R(60,120),r=R(50,100),s=360-p-q-r;if(s<20||s>170){p=90;q=80;r=100;s=90}
+  return {mode:'pad',q:'사각형의 세 각이 '+p+'°, '+q+'°, '+r+'°일 때 나머지 한 각은?',answer:s,hint:'사각형 네 각의 크기의 합은 360°예요.',explain:'360 − '+p+' − '+q+' − '+r+' = '+s+'°예요.',render:function(box,P){box.appendChild(quadSVG('any',130));unitPad(box,P,'','°')}}}
+function genMuldiv4(lv){
+  if(lv===1){var a=R(123,789),b=R(11,39);return {mode:'pad',q:'곱셈을 해 볼까요?',answer:a*b,hint:b%10+'과 곱한 것, '+(Math.floor(b/10)*10)+'과 곱한 것을 더해요.',explain:a+' × '+b+' = '+(a*b)+'이에요.',render:function(box,P){vertCalc(box,P,[a,b],'×',{ans:a*b,carry:true})}}}
+  if(lv===2){var b2=R(11,29),q2=R(2,9),a2=b2*q2;return {mode:'pad',q:a2+' ÷ '+b2+'의 몫은?',answer:q2,hint:b2+'을 '+Math.round(b2/10)*10+'쯤으로 어림해서 몫을 짐작해요.',explain:b2+' × '+q2+' = '+a2+'이니까 몫은 '+q2+'이에요.',render:function(box,P){vertDiv(box,P,a2,b2)}}}
+  if(lv===3){var b3=R(12,39),q3=R(3,9),r3=R(1,b3-1),a3=b3*q3+r3;return pad2(a3+' ÷ '+b3+'의 몫과 나머지는?',a3,b3,'몫을 어림해서 곱해 보고, 나머지가 '+b3+'보다 작은지 확인해요.',b3+' × '+q3+' = '+(b3*q3)+', '+a3+' − '+(b3*q3)+' = '+r3+'. 몫 '+q3+', 나머지 '+r3+'이에요.')}
+  if(lv===4){var b4=R(12,34),q4=R(10,29),r4=R(0,b4-1),a4=b4*q4+r4;return pad2(a4+' ÷ '+b4+'의 몫과 나머지는?',a4,b4,'몫이 두 자리! 앞의 두 자리부터 나누고, 남은 수를 내려 다시 나눠요.',b4+' × '+q4+' = '+(b4*q4)+', 나머지 '+r4+'이에요.')}
+  var x=R(120,480),y=R(12,25),T=[['연필 '+x+'자루를 한 명에게 '+y+'자루씩 나누어 주면 몇 명에게 줄 수 있고 몇 자루가 남을까요?','명','자루']][0],q5=Math.floor(x/y),r5=x%y;
+  return {mode:'pad',q:T[0],answers:[q5,r5],answer:q5+'명, '+r5+'자루 남음',hint:x+' ÷ '+y+'의 몫과 나머지를 구해요.',explain:x+' ÷ '+y+' = '+q5+' … '+r5+'. '+q5+'명에게 주고 '+r5+'자루가 남아요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(P.slots[0]);r.appendChild(el('span','unit',T[1]+','));r.appendChild(P.slots[1]);r.appendChild(el('span','unit',T[2]+' 남음'));box.appendChild(r)}}}
+function moveShape(tr,sz){sz=sz||96;var inner='<g transform="'+tr+'"><polygon points="20,76 76,76 76,20 48,20 48,48 20,48" fill="#4dabf7" stroke="#2b3f5c" stroke-width="2.5" stroke-linejoin="round"/><circle cx="64" cy="64" r="5" fill="#ffd43b"/></g>';return svgEl(sz,sz,inner)}
+function genMove(lv){var MV=[['오른쪽으로 뒤집은','translate(96,0) scale(-1,1)'],['아래쪽으로 뒤집은','translate(0,96) scale(1,-1)'],['시계 방향으로 90° 돌린','rotate(90 48 48)'],['시계 방향으로 180° 돌린','rotate(180 48 48)'],['시계 반대 방향으로 90° 돌린','rotate(-90 48 48)']];
+  if(lv===1){return pickPz('오른쪽으로 밀었을 때의 모양은?',function(b){b.appendChild(moveShape('',110))},[function(){return moveShape('')},function(){return moveShape(MV[0][1])},function(){return moveShape(MV[1][1])}],['그대로','뒤집힘','위아래 뒤집힘'],0,'밀기는 모양이 바뀌지 않고 자리만 옮겨요.','밀면 모양이 그대로예요.')}
+  var set=lv===2?[0,1]:lv===3?[2,3]:lv===4?[2,4]:[0,1,2,3,4],mi=set[R(0,set.length-1)],others=shuffle(MV.map(function(m,i){return i}).filter(function(i){return i!==mi&&MV[i][1]!==MV[mi][1]})).slice(0,2),cands=shuffle([mi].concat(others));
+  if(lv===5)return pickPz('어떻게 움직인 모양일까요?',function(b){var w=el('div','ansrow');w.appendChild(moveShape('',100));w.appendChild(el('span','unit','→'));w.appendChild(moveShape(MV[mi][1],100));b.appendChild(w)},[function(){return el('b','mvtxt',MV[mi][0])},function(){return el('b','mvtxt',MV[others[0]][0])},function(){return el('b','mvtxt',MV[others[1]][0])}],[MV[mi][0],MV[others[0]][0],MV[others[1]][0]],0,'뒤집기는 거울처럼, 돌리기는 바람개비처럼 움직여요.',MV[mi][0]+' 모양이에요.');
+  return pickPz(MV[mi][0]+' 모양은?',function(b){b.appendChild(moveShape('',110))},cands.map(function(i){return function(){return moveShape(MV[i][1])}}),cands.map(function(i){return MV[i][0]}),cands.indexOf(mi),mi<2?'뒤집기는 거울에 비친 것처럼 좌우(또는 위아래)가 바뀌어요.':'돌리기는 한 점을 중심으로 빙글 돌아요. 노란 점의 위치를 따라가 봐요.',MV[mi][0]+' 모양은 이거예요.')}
+function genBargraph(lv){var NM=[['월','화','수','목','금'],['사과','배','포도','귤'],['1반','2반','3반','4반']][R(0,2)],vals=NM.map(function(){return R(1,lv>=3?24:9)});
+  if(lv<=2){var i=R(0,NM.length-1);return {mode:'pad',q:NM[i]+'의 막대는 얼마를 나타낼까요?',answer:vals[i],hint:'막대 끝이 가리키는 눈금을 읽어요.',explain:NM[i]+'은 '+vals[i]+'이에요.',render:function(box,P){box.appendChild(barGraphSVG(NM,vals));var r=el('div','ansrow');r.appendChild(P.slot);box.appendChild(r)}}}
+  if(lv===3){var mx=vals.indexOf(Math.max.apply(null,vals));return choicePz('막대가 가장 긴 것은?',function(b){b.appendChild(barGraphSVG(NM,vals))},NM,mx,'막대의 높이를 비교해요.',NM[mx]+'이 '+vals[mx]+'로 가장 커요.')}
+  if(lv===4){var a=R(0,NM.length-1),b=R(0,NM.length-1);while(b===a)b=R(0,NM.length-1);return {mode:'pad',q:NM[a]+'과 '+NM[b]+'의 차이는?',answer:Math.abs(vals[a]-vals[b]),hint:'두 막대의 값을 읽고 빼요.',explain:vals[a]+'과 '+vals[b]+'의 차이는 '+Math.abs(vals[a]-vals[b])+'이에요.',render:function(box,P){box.appendChild(barGraphSVG(NM,vals));var r=el('div','ansrow');r.appendChild(P.slot);box.appendChild(r)}}}
+  var sum=vals.reduce(function(a,b){return a+b},0);return {mode:'pad',q:'그래프의 값을 모두 더하면?',answer:sum,hint:'막대마다 값을 읽어 전부 더해요.',explain:vals.join(' + ')+' = '+sum+'이에요.',render:function(box,P){box.appendChild(barGraphSVG(NM,vals));var r=el('div','ansrow');r.appendChild(P.slot);box.appendChild(r)}}}
+function genRule4(lv){
+  if(lv<=2){var a=R(1,5),k=R(2,4),rows=[];for(var i=0;i<4;i++)rows.push(a+i+' × '+k+' = '+((a+i)*k));var miss=3;return {mode:'pad',q:'계산식의 규칙을 찾아 빈칸을 채워요.',answer:(a+3)*k,hint:'곱하는 수는 그대로, 앞의 수가 1씩 커져요. 결과는 '+k+'씩 커져요.',explain:rows[3]+'이에요.',render:function(box,P){var w=el('div','eqs');rows.forEach(function(r,i){if(i===miss){var row=el('div','eq');row.appendChild(el('span','o',(a+3)+' × '+k+' ='));row.appendChild(P.slot);w.appendChild(row)}else w.appendChild(el('div','eq',r))});box.appendChild(w)}}}
+  if(lv===3){var s=R(2,9),rows3=[];for(var j=1;j<=4;j++)rows3.push(s+' × '+(j*11)+' = '+(s*j*11));return {mode:'pad',q:'규칙을 찾아 빈칸을 채워요.',answer:s*44,hint:'곱하는 수가 11, 22, 33… 으로 11씩 커지면 결과도 '+(s*11)+'씩 커져요.',explain:rows3[3]+'이에요.',render:function(box,P){var w=el('div','eqs');rows3.forEach(function(r,i){if(i===3){var row=el('div','eq');row.appendChild(el('span','o',s+' × 44 ='));row.appendChild(P.slot);w.appendChild(row)}else w.appendChild(el('div','eq',r))});box.appendChild(w)}}}
+  if(lv===4){var n=R(2,5),grid=[],st=R(1,20);for(var r=0;r<3;r++){var row=[];for(var c=0;c<4;c++)row.push(st+r*10+c*n);grid.push(row)}var mr=R(0,2),mc=R(1,3);return {mode:'pad',q:'수 배열표의 규칙을 찾아 빈칸을 채워요.',answer:grid[mr][mc],hint:'오른쪽으로 '+n+'씩, 아래로 10씩 커져요.',explain:'빈칸은 '+grid[mr][mc]+'이에요.',render:function(box,P){var t=el('div','ngrid');grid.forEach(function(row,r){row.forEach(function(v,c){if(r===mr&&c===mc)t.appendChild(P.slot);else t.appendChild(el('span','tile sm',String(v)))})});box.appendChild(t)}}}
+  var d=R(2,5),seq=[1];for(var q=1;q<6;q++)seq.push(seq[q-1]+d*q);return {mode:'pad',q:'규칙을 찾아 다음 수를 구해요.',answer:seq[5],hint:'더하는 수가 '+d+', '+(2*d)+', '+(3*d)+'… 로 '+d+'씩 커져요.',explain:seq.join(', ')+'이에요.',render:function(box,P){var r2=el('div','ansrow seqrow');seq.slice(0,5).forEach(function(v){r2.appendChild(el('span','tile',String(v)))});r2.appendChild(P.slot);box.appendChild(r2)}}}
+// ---------- 4-2 ----------
+function genFracadd(lv){
+  if(lv<=2){var d=R(3,9),a=R(1,d-2),b=R(1,d-1-a),pl=lv===1||Math.random()<.5,x=pl?a:a+b,y=b,ans=pl?a+b:a;return {mode:'pad',q:'계산해 볼까요?',answers:[ans,d],answer:fracStr(ans,d),fracEq:false,hint:'분모가 같으면 분모는 그대로 두고 분자끼리 '+(pl?'더해요.':'빼요.'),explain:fracStr(x,d)+(pl?' + ':' − ')+fracStr(y,d)+' = '+fracStr(ans,d)+'이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(fracBox(x,d));r.appendChild(el('span','unit',pl?'+':'−'));r.appendChild(fracBox(y,d));r.appendChild(el('span','unit','='));r.appendChild(fracBox(P.slots[0],P.slots[1]));box.appendChild(r)}}}
+  if(lv===3){var d3=R(3,8),a3=R(1,d3-1),b3=R(d3-a3,d3-1),s3=a3+b3,w3=Math.floor(s3/d3),n3=s3%d3;return {mode:'pad',q:'계산해 볼까요? (자연수, 분자, 분모)',answers:[w3,n3,d3],answer:mixStr(w3,n3,d3),hint:'분자끼리 더한 뒤, 분모보다 크면 대분수로 바꿔요.',explain:fracStr(a3,d3)+' + '+fracStr(b3,d3)+' = '+fracStr(s3,d3)+' = '+mixStr(w3,n3,d3)+'이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(fracBox(a3,d3));r.appendChild(el('span','unit','+'));r.appendChild(fracBox(b3,d3));r.appendChild(el('span','unit','='));r.appendChild(fracBox(P.slots[1],P.slots[2],P.slots[0]));box.appendChild(r)}}}
+  if(lv===4){var d4=R(3,8),w1=R(1,3),n1=R(1,d4-1),w2=R(1,2),n2=R(1,d4-1),tot=(w1*d4+n1)+(w2*d4+n2),W=Math.floor(tot/d4),N=tot%d4;return {mode:'pad',q:'대분수의 덧셈 (자연수, 분자, 분모)',answers:[W,N,d4],answer:mixStr(W,N,d4),hint:'자연수끼리, 분자끼리 더하고 분자가 분모보다 크면 1을 올려요.',explain:mixStr(w1,n1,d4)+' + '+mixStr(w2,n2,d4)+' = '+mixStr(W,N,d4)+'이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(fracBox(n1,d4,w1));r.appendChild(el('span','unit','+'));r.appendChild(fracBox(n2,d4,w2));r.appendChild(el('span','unit','='));r.appendChild(fracBox(P.slots[1],P.slots[2],P.slots[0]));box.appendChild(r)}}}
+  var d5=R(3,8),wa=R(2,4),na=R(1,d5-1),wb=R(1,wa-1),nb=R(1,d5-1),diff=(wa*d5+na)-(wb*d5+nb);if(diff<=0){nb=1;na=2;diff=(wa*d5+na)-(wb*d5+nb)}var W5=Math.floor(diff/d5),N5=diff%d5;
+  return {mode:'pad',q:'대분수의 뺄셈 (자연수, 분자, 분모)',answers:[W5,N5,d5],answer:mixStr(W5,N5,d5),hint:'분자끼리 뺄 수 없으면 자연수에서 1을 '+d5+'/'+d5+'로 바꿔 내려요.',explain:mixStr(wa,na,d5)+' − '+mixStr(wb,nb,d5)+' = '+mixStr(W5,N5,d5)+'이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(fracBox(na,d5,wa));r.appendChild(el('span','unit','−'));r.appendChild(fracBox(nb,d5,wb));r.appendChild(el('span','unit','='));r.appendChild(fracBox(P.slots[1],P.slots[2],P.slots[0]));box.appendChild(r)}}}
+function genTri4(lv){var ISO=[[75,25],[25,125],[125,125]],EQ=[[75,22],[16,124],[134,124]],SC=[[30,120],[135,125],[110,30]],RT=[[25,125],[125,125],[25,35]],OB=[[20,120],[140,120],[120,40]];
+  if(lv===1){var kind=['iso','equi','scal'][R(0,2)],P_=kind==='iso'?ISO:kind==='equi'?EQ:SC,a=R(4,9),L=kind==='iso'?[a,a,R(3,a*2-1)]:kind==='equi'?[a,a,a]:[a,a+R(1,3),a+R(4,6)],lab=kind==='iso'?[L[0],L[2],L[1]]:[L[1],L[2],L[0]],KN={iso:'이등변삼각형',equi:'정삼각형',scal:'세 변의 길이가 다른 삼각형'},o=shuffle(['이등변삼각형','정삼각형','세 변의 길이가 다른 삼각형']);return choicePz('이 삼각형의 이름은?',function(b){b.appendChild(triSVG(P_,lab.map(function(x){return x+'cm'})))},o,o.indexOf(KN[kind]),'두 변이 같으면 이등변삼각형, 세 변이 모두 같으면 정삼각형이에요.',KN[kind]+'이에요.')}
+  if(lv===2){var k2=['acute','right','obtuse'][R(0,2)],P2=k2==='acute'?EQ:k2==='right'?RT:OB,KN2={acute:'예각삼각형',right:'직각삼각형',obtuse:'둔각삼각형'},o2=shuffle(['예각삼각형','직각삼각형','둔각삼각형']);return choicePz('이 삼각형은 어떤 삼각형일까요?',function(b){b.appendChild(triSVG(P2))},o2,o2.indexOf(KN2[k2]),'세 각이 모두 예각이면 예각삼각형, 직각이 있으면 직각삼각형, 둔각이 있으면 둔각삼각형이에요.',KN2[k2]+'이에요.')}
+  if(lv===3){var x=R(20,80);return {mode:'pad',q:'이등변삼각형에서 한 밑각이 '+x+'°예요. 다른 밑각은?',answer:x,hint:'이등변삼각형은 두 밑각의 크기가 같아요.',explain:'두 밑각이 같으니까 '+x+'°예요.',render:function(box,P){box.appendChild(triSVG(ISO,['',x+'°','?'],150,true));unitPad(box,P,'','°')}}}
+  if(lv===4){var y=R(20,80);return {mode:'pad',q:'이등변삼각형의 두 밑각이 각각 '+y+'°예요. 꼭지각은?',answer:180-2*y,hint:'세 각의 합 180°에서 두 밑각을 빼요.',explain:'180 − '+y+' − '+y+' = '+(180-2*y)+'°예요.',render:function(box,P){box.appendChild(triSVG(ISO,['?',y+'°',y+'°'],150,true));unitPad(box,P,'','°')}}}
+  var s=R(3,12);return {mode:'pad',q:'한 변이 '+s+' cm인 정삼각형의 세 변의 길이의 합은?',answer:3*s,hint:'정삼각형은 세 변의 길이가 모두 같아요.',explain:s+' × 3 = '+(3*s)+' cm예요.',render:function(box,P){box.appendChild(triSVG(EQ,[s+'cm',s+'cm',s+'cm']));unitPad(box,P,'','cm')}}}
+function decStr(x){return (Math.round(x*100)/100).toString()}
+function genDecadd(lv){
+  if(lv===1){var a=R(1,9)/10,b=R(1,9)/10;return {mode:'pad',dec:true,q:'소수의 덧셈: '+decStr(a)+' + '+decStr(b)+' = ?',answer:Math.round((a+b)*10)/10,hint:'0.1이 몇 개인지로 생각해요. '+(a*10)+'개 + '+(b*10)+'개!',explain:decStr(a)+' + '+decStr(b)+' = '+decStr(a+b)+'이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(P.slot);box.appendChild(r)}}}
+  if(lv===2){var a2=R(11,99)/100,b2=R(11,99)/100;return {mode:'pad',dec:true,q:'소수의 덧셈: '+decStr(a2)+' + '+decStr(b2)+' = ?',answer:Math.round((a2+b2)*100)/100,hint:'소수점끼리 맞추고 같은 자리끼리 더해요.',explain:decStr(a2)+' + '+decStr(b2)+' = '+decStr(a2+b2)+'이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(P.slot);box.appendChild(r)}}}
+  if(lv===3){var a3=R(21,99)/10,b3=R(11,Math.floor(a3*10)-1)/10;return {mode:'pad',dec:true,q:'소수의 뺄셈: '+decStr(a3)+' − '+decStr(b3)+' = ?',answer:Math.round((a3-b3)*10)/10,hint:'소수점을 맞추고 같은 자리끼리 빼요. 받아내림을 조심!',explain:decStr(a3)+' − '+decStr(b3)+' = '+decStr(a3-b3)+'이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(P.slot);box.appendChild(r)}}}
+  if(lv===4){var a4=R(101,999)/100,b4=R(11,Math.floor(a4*100)-1)/100;return {mode:'pad',dec:true,q:'소수의 뺄셈: '+decStr(a4)+' − '+decStr(b4)+' = ?',answer:Math.round((a4-b4)*100)/100,hint:'소수 둘째 자리부터 차례로 빼요.',explain:decStr(a4)+' − '+decStr(b4)+' = '+decStr(a4-b4)+'이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(P.slot);box.appendChild(r)}}}
+  var x=R(12,45)/10,y=R(5,Math.floor(x*10)-1)/10,T=['물 '+decStr(x)+' L 중 '+decStr(y)+' L를 마셨어요. 남은 물은 몇 L일까요?','L'];return {mode:'pad',dec:true,q:T[0],answer:Math.round((x-y)*10)/10,hint:'남은 양 = 처음 양 − 마신 양',explain:decStr(x)+' − '+decStr(y)+' = '+decStr(x-y)+' L예요.',render:function(box,P){unitPad(box,P,'','L')}}}
+function genQuad4(lv){var KN={trap:'사다리꼴',para:'평행사변형',rhom:'마름모',rect:'직사각형',square:'정사각형'};
+  if(lv===1){var k=['trap','para','rhom'][R(0,2)],o=shuffle(['사다리꼴','평행사변형','마름모']);return choicePz('이 사각형의 이름은?',function(b){b.appendChild(quadSVG(k,130))},o,o.indexOf(KN[k]),'평행한 변이 한 쌍이면 사다리꼴, 두 쌍이면 평행사변형, 네 변이 같으면 마름모예요.',KN[k]+'이에요.')}
+  if(lv===2){var par=Math.random()<.5;return pickPz(par?'서로 평행한 두 직선은?':'서로 수직인 두 직선은?',null,[function(){return svgEl(120,80,'<line x1="10" y1="25" x2="110" y2="25" stroke="#2b3f5c" stroke-width="3"/><line x1="10" y1="60" x2="110" y2="60" stroke="#2b3f5c" stroke-width="3"/>')},function(){return svgEl(120,80,'<line x1="10" y1="70" x2="110" y2="70" stroke="#2b3f5c" stroke-width="3"/><line x1="60" y1="8" x2="60" y2="70" stroke="#2b3f5c" stroke-width="3"/><path d="M60 58h12v12" fill="none" stroke="#ff6b6b" stroke-width="2"/>')},function(){return svgEl(120,80,'<line x1="10" y1="65" x2="110" y2="20" stroke="#2b3f5c" stroke-width="3"/><line x1="10" y1="15" x2="110" y2="60" stroke="#2b3f5c" stroke-width="3"/>')}],['평행','수직','기울어짐'],par?0:1,par?'아무리 늘여도 만나지 않는 두 직선이 평행해요.':'두 직선이 만나서 직각을 이루면 수직이에요.',par?'서로 만나지 않는 두 직선이 평행이에요.':'직각으로 만나는 두 직선이 수직이에요.')}
+  if(lv===3){var Q=[['네 변의 길이가 모두 같은 사각형은?','rhom'],['평행한 변이 두 쌍인 사각형은?','para'],['평행한 변이 한 쌍만 있는 사각형은?','trap']][R(0,2)],o3=shuffle(['trap','para','rhom']);return pickPz(Q[0],null,o3.map(function(k){return function(){return quadSVG(k,100)}}),o3.map(function(k){return KN[k]}),o3.indexOf(Q[1]),'변의 길이와 평행한 변의 수를 봐요.',KN[Q[1]]+'이에요.')}
+  if(lv===4){var a=R(3,9),b=R(3,9);while(b===a)b=R(3,9);return {mode:'pad',q:'평행사변형의 이웃한 두 변이 '+a+' cm, '+b+' cm예요. 네 변의 길이의 합은?',answer:2*(a+b),hint:'평행사변형은 마주 보는 변의 길이가 같아요.',explain:'('+a+' + '+b+') × 2 = '+(2*(a+b))+' cm예요.',render:function(box,P){box.appendChild(quadSVG('para',130));unitPad(box,P,'','cm')}}}
+  var ang=R(40,140);return {mode:'pad',q:'평행사변형의 한 각이 '+ang+'°일 때 이웃한 각은?',answer:180-ang,hint:'평행사변형에서 이웃한 두 각의 합은 180°예요.',explain:'180 − '+ang+' = '+(180-ang)+'°예요.',render:function(box,P){box.appendChild(quadSVG('para',130));unitPad(box,P,'','°')}}}
+function genLinegraph(lv){var NM=[['1일','2일','3일','4일','5일'],['3월','4월','5월','6월','7월'],['9시','10시','11시','12시','1시']][R(0,2)],base=R(5,20),vals=[base];for(var i=1;i<5;i++)vals.push(Math.max(1,vals[i-1]+R(-3,4)));var unit=['°C','cm','명'][R(0,2)];
+  if(lv<=2){var k=R(0,4);return {mode:'pad',q:NM[k]+'의 값은 얼마일까요?',answer:vals[k],hint:'점의 높이를 왼쪽 눈금에서 읽어요.',explain:NM[k]+'은 '+vals[k]+unit+'이에요.',render:function(box,P){box.appendChild(lineGraphSVG(NM,vals,unit));unitPad(box,P,'',unit)}}}
+  if(lv===3){var mx=vals.indexOf(Math.max.apply(null,vals));return choicePz('값이 가장 큰 때는?',function(b){b.appendChild(lineGraphSVG(NM,vals,unit))},NM,mx,'선이 가장 높이 올라간 점을 찾아요.',NM[mx]+'에 '+vals[mx]+unit+'로 가장 커요.')}
+  if(lv===4){var dif=[],bi=0;for(var j=1;j<5;j++){dif.push(Math.abs(vals[j]-vals[j-1]));if(dif[j-1]>dif[bi])bi=j-1}return choicePz('값이 가장 많이 변한 때는?',function(b){b.appendChild(lineGraphSVG(NM,vals,unit))},NM.slice(1).map(function(n,i){return NM[i]+'→'+n}),bi,'선이 가장 가파른 곳을 찾아요.',NM[bi]+'→'+NM[bi+1]+'에 '+dif[bi]+unit+' 변해서 가장 커요.')}
+  var a=R(0,4),b=R(0,4);while(b===a)b=R(0,4);return {mode:'pad',q:NM[a]+'과 '+NM[b]+'의 차이는?',answer:Math.abs(vals[a]-vals[b]),hint:'두 점의 값을 읽고 빼요.',explain:vals[a]+'과 '+vals[b]+'의 차이는 '+Math.abs(vals[a]-vals[b])+unit+'이에요.',render:function(box,P){box.appendChild(lineGraphSVG(NM,vals,unit));unitPad(box,P,'',unit)}}}
+function genPolygon(lv){var KN={3:'정삼각형',4:'정사각형',5:'정오각형',6:'정육각형',8:'정팔각형'};
+  if(lv===1){var n=[5,6,8][R(0,2)],o=shuffle(['정오각형','정육각형','정팔각형']);return choicePz('이 도형의 이름은?',function(b){b.appendChild(polySVG(n,130))},o,o.indexOf(KN[n]),'변의 수를 세어요. 변과 각이 모두 같으면 정다각형이에요.',KN[n]+'이에요.')}
+  if(lv===2){var n2=[5,6,7,8][R(0,3)];return {mode:'pad',q:'이 다각형의 꼭짓점은 몇 개일까요?',answer:n2,hint:'변의 수와 꼭짓점의 수는 같아요.',explain:n2+'각형이니까 꼭짓점은 '+n2+'개예요.',render:function(box,P){box.appendChild(polySVG(n2,130));unitPad(box,P,'','개')}}}
+  if(lv===3){var n3=[4,5,6][R(0,2)],dg=n3*(n3-3)/2;return {mode:'pad',q:{4:'사각형',5:'오각형',6:'육각형'}[n3]+'의 대각선은 모두 몇 개일까요?',answer:dg,hint:'한 꼭짓점에서 그을 수 있는 대각선은 '+(n3-3)+'개. 꼭짓점 '+n3+'개 × '+(n3-3)+' ÷ 2',explain:n3+' × '+(n3-3)+' ÷ 2 = '+dg+'개예요.',render:function(box,P){box.appendChild(polySVG(n3,130));unitPad(box,P,'','개')}}}
+  if(lv===4){var n4=[5,6,8][R(0,2)],s=R(2,9);return {mode:'pad',q:'한 변이 '+s+' cm인 '+KN[n4]+'의 모든 변의 길이의 합은?',answer:n4*s,hint:'정다각형은 모든 변의 길이가 같아요.',explain:s+' × '+n4+' = '+(n4*s)+' cm예요.',render:function(box,P){box.appendChild(polySVG(n4,130));unitPad(box,P,'','cm')}}}
+  var Q=[['모든 변의 길이가 같고 모든 각의 크기가 같은 다각형을 무엇이라고 할까요?','정다각형'],['다각형에서 이웃하지 않는 두 꼭짓점을 이은 선분은?','대각선'],['선분으로만 둘러싸인 도형은?','다각형']][R(0,2)],o5=shuffle(['정다각형','대각선','다각형']);
+  return choicePz(Q[0],function(b){b.appendChild(polySVG(6,110))},o5,o5.indexOf(Q[1]),'이름의 뜻을 생각해 봐요.',Q[1]+'이에요.')}
+var GEN3={add3:genAdd3,plane:genPlane,mul2:genMul2,lentime:genLenTime,frac1:genFrac1,mul3:genMul3,div2:genDiv2,circ:genCirc,frac2:genFrac2,capw:genCapw,data3:genData3,bignum:genBignum,angle:genAngle,muldiv4:genMuldiv4,move:genMove,bargraph:genBargraph,rule4:genRule4,fracadd:genFracadd,tri4:genTri4,decadd:genDecadd,quad4:genQuad4,linegraph:genLinegraph,polygon:genPolygon};
+var TYPE_NAMES3={add3:'세 자리 덧뺄셈',plane:'평면도형',mul2:'곱셈',lentime:'길이와 시간',frac1:'분수와 소수',mul3:'큰 수 곱셈',div2:'나눗셈',circ:'원',frac2:'분수',capw:'들이와 무게',data3:'자료의 정리',bignum:'큰 수',angle:'각도',muldiv4:'곱셈과 나눗셈',move:'도형의 이동',bargraph:'막대그래프',rule4:'규칙 찾기',fracadd:'분수 덧뺄셈',tri4:'삼각형',decadd:'소수 덧뺄셈',quad4:'사각형',linegraph:'꺾은선그래프',polygon:'다각형'};
+Object.assign(GEN,GEN3);Object.assign(SUBJ.math.types,TYPE_NAMES3);
+// 수학 실력 알아보기: 현재 학년 유형 10개를 Lv2로 풀어 시작 단계를 정해요
+function mathLevelTest(){var act=shuffle(activeTypes()).slice(0,10);if(!act.length)return;tone([523,659],'sine',.1);var st=stOf(SUBJ.math);act.forEach(function(t){st.lv[t]=2});
+  G={sub:SUBJ.math,re:[],q:act,n:act.length,idx:0,got:0,first:0,startPieces:0,ups:[],combo:0,drops:0,gain:1,newFruits:[],sunGot:0,quiet:true,lvl:true,lvlm:true,lres:[]};play()}
+function mathLvlEnd(){document.body.classList.remove('qmode');var st=stOf(SUBJ.math),r=G.lres,q=G.q,up=0,dn=0;q.forEach(function(t,i){st.lv[t]=r[i]?3:1;if(r[i])up++;else dn++});G=null;save();
+  showSheet('good','blossom','실력 알아보기 끝','잘하는 단원 '+up+'개 · 차근차근 할 단원 '+dn+'개','잘하는 단원은 조금 어렵게, 나머지는 쉬운 단계부터 시작해요. 풀면서 저절로 맞춰져요.','좋아요',function(){home()})}
+
 // 부모님 설정: 학년 · 단원 켜기/끄기
 function unitSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('school'));var t=el('div');t.appendChild(el('small',null,'부모님 설정'));t.appendChild(el('h3',null,'학년과 단원'));hd.appendChild(t);inn.appendChild(hd);
-  var g=curGrade(),gr=el('div','gradechips');[1,2,3,4,5,6].forEach(function(n){var ok=UNITS.some(function(u){return u.g===n});var b=el('button','catchip'+(n===g?' on':''),GRADE_NAMES[n]+(ok?'':' (준비 중)'));b.disabled=!ok;b.onclick=function(){S.grade=n;save();unitSheet()};gr.appendChild(b)});inn.appendChild(gr);
+  var g=curGrade(),gr=el('div','gradechips');[1,2,3,4,5,6].forEach(function(n){var ok=UNITS.some(function(u){return u.g===n});var b=el('button','catchip'+(n===g?' on':''),GRADE_NAMES[n]+(ok?'':' (준비 중)'));b.disabled=!ok;b.onclick=function(){var was=curGrade();S.grade=n;S.uoff={};save();if(n!==was){hideSheet();showSheet('good','blossom',GRADE_NAMES[n]+' 시작','실력 알아보기를 할까요?','이 학년 단원 문제 10개를 풀어 시작 단계를 정해요. 틀려도 괜찮아요. 건너뛰면 모두 쉬운 단계부터 시작해요.','알아보기',mathLevelTest);var sk=el('button','cta light','건너뛰기');sk.onclick=function(){hideSheet();unitSheet()};sheet.firstChild.appendChild(sk)}else unitSheet()};gr.appendChild(b)});inn.appendChild(gr);
   var off=unitsOff(),list=el('div','unitlist');[1,2].forEach(function(sem){var us=UNITS.filter(function(u){return u.g===g&&u.s===sem});if(!us.length)return;list.appendChild(el('h4',null,g+'학년 '+sem+'학기'));us.forEach(function(u){var row=el('label','unitrow'+(off[u.id]?' off':''));var cb=document.createElement('input');cb.type='checkbox';cb.checked=!off[u.id];cb.onchange=function(){if(cb.checked)delete off[u.id];else off[u.id]=1;row.classList.toggle('off',!cb.checked);save()};row.appendChild(cb);var tx=el('span');tx.appendChild(el('b',null,u.name));tx.appendChild(el('small',null,u.code));row.appendChild(tx);list.appendChild(row)})});inn.appendChild(list);
   inn.appendChild(el('p','sub','꺼진 단원의 문제는 나오지 않아요. 학교 진도에 맞춰 켜고 끄세요. 문제 난이도는 풀면서 저절로 맞춰져요.'));
   var c=el('button','cta','닫기');c.onclick=hideSheet;inn.appendChild(c);sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;requestAnimationFrame(function(){sheet.className='sheet good show'})}
@@ -4274,7 +4547,7 @@ function play(){
   var check=el('button','cta','확인');check.disabled=true;
   var retry=function(){};
 
-  function next(){if(G.boss&&G.hp<=0){bossEnd();return}G.idx++;if(G.idx<(G.n||ROUND))play();else if(G.boss)bossEnd();else if(G.dig)digEnd();else if(G.lvl)lvlEnd();else if(G.sch)schEnd();else if(G.ch)chEnd();else roundEnd()}
+  function next(){if(G.boss&&G.hp<=0){bossEnd();return}G.idx++;if(G.idx<(G.n||ROUND))play();else if(G.boss)bossEnd();else if(G.dig)digEnd();else if(G.lvl){if(G.lvlm)mathLvlEnd();else lvlEnd()}else if(G.sch)schEnd();else if(G.ch)chEnd();else roundEnd()}
   function finish(ok){
     done=true;if(G.sch)G.sres[G.idx]=!!(ok&&tries===0);if(G.lvl)G.lres[G.idx]=!!(ok&&tries===0);repLog(sub.key,ok&&tries===0);
     if(ok){
@@ -4312,22 +4585,26 @@ function play(){
   }
 
   if(pz.mode==='pad'){
-    var P={slot:el('span','slot empty')},value='';
+    // 여러 칸(몫·나머지, 분자·분모) · 소수점 지원
+    var ANS=pz.answers||[pz.answer],NS=ANS.length,vals=[],act=0,P={slots:[]};for(var si=0;si<NS;si++){vals.push('');var sl_=el('span','slot empty');(function(i){sl_.onclick=function(){if(done)return;act=i;show()}})(si);P.slots.push(sl_)}P.slot=P.slots[0];
     pz.render(body,P);
-    function show(){P.slot.textContent=value;P.slot.className='slot'+(value?'':' empty');check.disabled=!value}
-    retry=function(){value='';show()};
-    function press(k){if(done)return;if(k==='del')value=value.slice(0,-1);else if(value.length<5)value=(value==='0'?'':value)+k;show()}
+    function show(){P.slots.forEach(function(s,i){s.textContent=vals[i];s.className='slot'+(vals[i]?'':' empty')+(NS>1&&i===act?' act':'')});check.disabled=vals.some(function(v){return !v})}
+    retry=function(){vals=vals.map(function(){return ''});act=0;show()};
+    function press(k){if(done)return;var v=vals[act];if(k==='del'){if(!v&&act>0)act--;else vals[act]=v.slice(0,-1)}else if(k==='.'){if(pz.dec&&v&&v.indexOf('.')<0)vals[act]=v+'.'}else if(v.length<(pz.maxlen||(pz.dec?7:5)))vals[act]=(v==='0'?'':v)+k;show()}
+    function numOk(v,a){var n=Number(v);if(!isFinite(n))return false;return pz.dec?Math.abs(n-a)<1e-9:n===a}
     check.onclick=function(){
-      if(done||!value)return;
-      if(Number(value)===pz.answer){P.slot.className='slot right';finish(true)}
-      else{P.slot.className='slot wrong';if(tries>=1)P.slot.textContent=pz.answer;wrong()}
+      if(done||check.disabled)return;
+      var ok=ANS.every(function(a,i){return numOk(vals[i],a)});
+      if(pz.fracEq&&!ok){var n=Number(vals[0]),d=Number(vals[1]);ok=d>0&&Math.abs(n/d-ANS[0]/ANS[1])<1e-9}
+      if(ok){P.slots.forEach(function(s){s.className='slot right'});finish(true)}
+      else{P.slots.forEach(function(s,i){s.className='slot'+(numOk(vals[i],ANS[i])?' right':' wrong');if(tries>=1)s.textContent=ANS[i]});wrong()}
     };
-    var keys=el('div','keys');
-    ['1','2','3','4','5','6','7','8','9','0','del'].forEach(function(k){var b=el('button',k==='del'?'del':null,k==='del'?'지우기':k);b.onclick=function(){press(k)};keys.appendChild(b)});
+    var keys=el('div','keys'+(pz.dec?' dec':''));
+    (pz.dec?['1','2','3','4','5','6','7','8','9','.','0','del']:['1','2','3','4','5','6','7','8','9','0','del']).forEach(function(k){var b=el('button',k==='del'?'del':(k==='.'?'dot':null),k==='del'?'지우기':k);b.onclick=function(){press(k)};keys.appendChild(b)});
     sc.appendChild(keys);
     document.onkeydown=function(e){
       if(sheet.className.indexOf('show')>=0)return;
-      if(/^[0-9]$/.test(e.key))press(e.key);else if(e.key==='Backspace')press('del');else if(e.key==='Enter'){e.preventDefault();check.onclick()}
+      if(/^[0-9]$/.test(e.key))press(e.key);else if(e.key==='.')press('.');else if(e.key==='Backspace')press('del');else if(e.key==='Tab'&&NS>1){e.preventDefault();act=(act+1)%NS;show()}else if(e.key==='Enter'){e.preventDefault();if(NS>1&&vals[act]&&act<NS-1){act++;show()}else check.onclick()}
     };
   }else if(pz.mode==='tiles'){
     pz.render(body);
