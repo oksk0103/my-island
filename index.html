@@ -2584,6 +2584,17 @@ html body .qscreen .choice.pic{min-height:96px;padding:8px}
 .ansrow.sp{gap:14px;flex-wrap:wrap}
 .ngrid5{flex-wrap:wrap;gap:6px}
 .shp.solid svg,.shp.iso svg{max-width:100%;height:auto}
+
+/* ===== 영어 문장·대화 ===== */
+.entalk{display:flex;flex-direction:column;gap:8px;width:min(320px,80vw);margin:0 auto;align-self:center}
+.entalk .tb{width:max-content}
+.entalk .tb{max-width:86%;padding:9px 13px;border-radius:16px;display:flex;flex-direction:column;gap:2px;box-shadow:0 2px 0 rgba(43,63,92,.12)}
+.entalk .tb b{font-family:var(--game);font-weight:400;font-size:1.2rem;color:#26313d;line-height:1.3}
+.entalk .tb small{font-size:.78rem;color:#6b7a90}
+.entalk .tq{align-self:flex-start;background:#fff;border-bottom-left-radius:5px}
+.entalk .ta{align-self:flex-end;background:#fff4c2;border-bottom-right-radius:5px}
+.entalk .ta .wrgap{display:inline-block;min-width:46px;text-align:center;border-bottom:3px solid #ffb020;color:#ffb020;margin:0 2px}
+.enstem .entalk+.enspeak{margin-top:8px}
 </style>
 
 <div id="app"></div>
@@ -4677,15 +4688,113 @@ function genSight(lv){var it=SIGHT[R(0,SIGHT.length-1)],o=enObj(it[0],it[1]);
 function genLvlWord(set){return function(){var ws=EN_SETS[set].words,w=ws[R(0,ws.length-1)],others=shuffle(ws.filter(function(x){return x.k!==w.k})).slice(0,3),opts=shuffle([w].concat(others));var o=enObj(w.w,w.k);return choicePz('이 단어의 뜻은 무엇일까요?',phStem(o,true),opts.map(function(x){return x.k}),opts.indexOf(w),'모르면 찍어도 괜찮아요. 수준을 알아보는 중이에요.',w.w+' = '+w.k)}}
 Object.assign(SUBJ.en.gen,{abc:genAbc,cvc:genCvc,sight:genSight,lva:genLvlWord('a'),lvb:genLvlWord('b')});
 Object.assign(SUBJ.en.types,{abc:'알파벳',cvc:'소리 단어',sight:'사이트 워드'});
-function enTrack(){return S.en.track==='ph'?'ph':'w'}
-function enSetUse(key){if(key==='ph'){S.en.track='ph';save();return}S.en.track='w';if(EN_SETS[key]){setEnWords(EN_SETS[key]);S.en.set=key}save()}
+// ================= 영어 문장·대화 트랙 (초등 의사소통 핵심 표현) =================
+// g: 학년, f: 대답 종류(같은 종류끼리는 오답 보기로 쓰지 않아요), b: [빈칸 단어, 오답, 오답]
+var SENT=[
+ {g:3,f:'greet',q:'How are you?',qk:'어떻게 지내?',a:"I'm fine, thank you.",ak:'잘 지내, 고마워.',b:['fine','five','fish']},
+ {g:3,f:'name',q:"What's your name?",qk:'이름이 뭐야?',a:'My name is Mina.',ak:'내 이름은 미나야.',b:['name','nose','nine']},
+ {g:3,f:'thing',q:"What's this?",qk:'이것은 뭐야?',a:"It's a pencil.",ak:'그것은 연필이야.',b:['pencil','sing','happy']},
+ {g:3,f:'meet',q:'Nice to meet you.',qk:'만나서 반가워.',a:'Nice to meet you, too.',ak:'나도 만나서 반가워.',b:['too','ten','cat']},
+ {g:3,f:'do',q:'Do you like apples?',qk:'너는 사과를 좋아하니?',a:'Yes, I do.',ak:'응, 좋아해.',b:['do','am','can']},
+ {g:3,f:'can',q:'Can you swim?',qk:'너는 수영할 수 있니?',a:"No, I can't.",ak:'아니, 못 해.',b:["can't","don't","isn't"]},
+ {g:3,f:'color',q:'What color is it?',qk:'그것은 무슨 색이야?',a:"It's blue.",ak:'파란색이야.',b:['blue','big','book']},
+ {g:3,f:'count',q:'How many cats?',qk:'고양이가 몇 마리야?',a:'Three cats.',ak:'고양이 세 마리.',b:['Three','Red','Big']},
+ {g:3,f:'age',q:'How old are you?',qk:'너는 몇 살이니?',a:"I'm ten years old.",ak:'나는 열 살이야.',b:['ten','tall','tea']},
+ {g:3,f:'be',q:'Are you happy?',qk:'너는 행복하니?',a:'Yes, I am.',ak:'응, 행복해.',b:['am','do','can']},
+ {g:3,f:'who',q:'Who is she?',qk:'그녀는 누구니?',a:'She is my sister.',ak:'그녀는 내 여동생이야.',b:['sister','pencil','sunny']},
+ {g:3,f:'bye',q:'Goodbye!',qk:'잘 가!',a:'See you later.',ak:'나중에 봐.',b:['later','apple','under']},
+ {g:3,f:'thanks',q:'Thank you.',qk:'고마워.',a:"You're welcome.",ak:'천만에.',b:['welcome','window','water']},
+ {g:3,f:'sorry',q:"I'm sorry.",qk:'미안해.',a:"That's okay.",ak:'괜찮아.',b:['okay','orange','open']},
+ {g:3,f:'thing',q:"What's that?",qk:'저것은 뭐야?',a:"It's a bird.",ak:'그것은 새야.',b:['bird','run','pretty']},
+ {g:3,f:'be',q:'Is it a dog?',qk:'그것은 개니?',a:"No, it isn't.",ak:'아니, 개가 아니야.',b:["isn't","don't","can't"]},
+ {g:3,f:'weather',q:"How's the weather?",qk:'날씨가 어때?',a:"It's sunny.",ak:'화창해.',b:['sunny','sister','seven']},
+ {g:3,f:'can',q:'Can you jump?',qk:'너는 점프할 수 있니?',a:'Yes, I can.',ak:'응, 할 수 있어.',b:['can','am','do']},
+ {g:4,f:'time',q:'What time is it?',qk:'몇 시야?',a:"It's seven o'clock.",ak:'일곱 시야.',b:["o'clock",'old','okay']},
+ {g:4,f:'where',q:'Where is my cap?',qk:'내 모자 어디 있어?',a:"It's on the desk.",ak:'책상 위에 있어.',b:['on','am','do']},
+ {g:4,f:'day',q:'What day is it today?',qk:'오늘 무슨 요일이야?',a:"It's Monday.",ak:'월요일이야.',b:['Monday','March','Mother']},
+ {g:4,f:'want',q:'What do you want?',qk:'너는 뭘 원하니?',a:'I want some milk.',ak:'우유를 좀 원해.',b:['want','am','is']},
+ {g:4,f:'do',q:'Do you have a ruler?',qk:'너 자 있니?',a:"Sorry, I don't.",ak:'미안, 없어.',b:["don't","can't","isn't"]},
+ {g:4,f:'price',q:'How much is it?',qk:'그거 얼마예요?',a:"It's two thousand won.",ak:'이천 원이에요.',b:['thousand','thirsty','Thursday']},
+ {g:4,f:'doing',q:'What are you doing?',qk:'너 뭐 하고 있어?',a:"I'm reading a book.",ak:'책을 읽고 있어.',b:['reading','read','reads']},
+ {g:4,f:'sugg',q:"Let's play soccer.",qk:'축구 하자.',a:'Sounds good!',ak:'좋아!',b:['good','goes','girl']},
+ {g:4,f:'look',q:'What does she look like?',qk:'그녀는 어떻게 생겼니?',a:'She has long hair.',ak:'그녀는 머리가 길어.',b:['long','loud','late']},
+ {g:4,f:'can',q:'Can I come in?',qk:'들어가도 돼요?',a:'Sure. Come in.',ak:'물론이지. 들어와.',b:['Sure','Sunday','Sugar']},
+ {g:4,f:'offer',q:'May I help you?',qk:'도와 드릴까요?',a:'Yes, please.',ak:'네, 부탁해요.',b:['please','plays','pink']},
+ {g:4,f:'ill',q:"What's wrong?",qk:'무슨 일이야?',a:'I have a cold.',ak:'감기에 걸렸어.',b:['cold','cool','coat']},
+ {g:4,f:'pref',q:"What's your favorite subject?",qk:'가장 좋아하는 과목이 뭐야?',a:'I like music.',ak:'나는 음악을 좋아해.',b:['music','monkey','Monday']},
+ {g:4,f:'from',q:'Where are you from?',qk:'너는 어디에서 왔니?',a:"I'm from Korea.",ak:'나는 한국에서 왔어.',b:['from','for','four']},
+ {g:4,f:'howgo',q:'How do you go to school?',qk:'학교에 어떻게 가니?',a:'I go by bus.',ak:'버스를 타고 가.',b:['by','buy','bye']},
+ {g:4,f:'offer',q:'Do you want some water?',qk:'물 좀 마실래?',a:'No, thanks.',ak:'아니, 괜찮아.',b:['thanks','thinks','three']},
+ {g:4,f:'whose',q:'Whose bag is this?',qk:'이거 누구 가방이야?',a:"It's Tom's.",ak:'톰의 것이야.'},
+ {g:4,f:'be',q:'Is this your eraser?',qk:'이거 네 지우개니?',a:"Yes, it's mine.",ak:'응, 내 거야.',b:['mine','my','me']},
+ {g:5,f:'past',q:'What did you do yesterday?',qk:'어제 뭐 했어?',a:'I played baseball.',ak:'야구를 했어.',b:['played','play','playing']},
+ {g:5,f:'future',q:'What will you do this weekend?',qk:'이번 주말에 뭐 할 거야?',a:'I will visit my grandma.',ak:'할머니 댁에 갈 거야.',b:['visit','visited','visiting']},
+ {g:5,f:'dir',q:'Where is the bank?',qk:'은행이 어디에 있어요?',a:'Go straight and turn left.',ak:'곧장 가서 왼쪽으로 도세요.',b:['left','late','let']},
+ {g:5,f:'job',q:'What do you want to be?',qk:'너는 뭐가 되고 싶니?',a:'I want to be a doctor.',ak:'나는 의사가 되고 싶어.',b:['be','do','is']},
+ {g:5,f:'often',q:'How often do you exercise?',qk:'얼마나 자주 운동하니?',a:'Twice a week.',ak:'일주일에 두 번.',b:['week','weak','wake']},
+ {g:5,f:'why',q:'Why are you happy?',qk:'왜 기분이 좋아?',a:'Because I got a present.',ak:'선물을 받았기 때문이야.',b:['Because','But','Before']},
+ {g:5,f:'ill',q:"What's the matter?",qk:'무슨 문제 있어?',a:'I have a headache.',ak:'머리가 아파.',b:['headache','hat','hello']},
+ {g:5,f:'can',q:'Can you help me?',qk:'나 좀 도와줄래?',a:'Of course!',ak:'물론이지!',b:['course','cousin','color']},
+ {g:5,f:'how',q:'How was your trip?',qk:'여행 어땠어?',a:'It was great.',ak:'정말 좋았어.',b:['was','is','were']},
+ {g:5,f:'date',q:'When is your birthday?',qk:'네 생일은 언제야?',a:"It's May fifth.",ak:'5월 5일이야.',b:['fifth','five','fish']},
+ {g:5,f:'tall',q:'How tall are you?',qk:'너는 키가 몇이니?',a:"I'm 150 centimeters tall.",ak:'나는 150센티미터야.',b:['tall','long','old']},
+ {g:5,f:'sugg',q:"Why don't we go hiking?",qk:'우리 등산 가는 게 어때?',a:"That's a good idea.",ak:'좋은 생각이야.',b:['idea','ideal','island']},
+ {g:5,f:'offer',q:'Would you like some cookies?',qk:'쿠키 좀 먹을래?',a:"No, thank you. I'm full.",ak:'아니, 고마워. 배불러.',b:['full','fool','fall']},
+ {g:5,f:'timedo',q:'What time do you get up?',qk:'너는 몇 시에 일어나니?',a:'I get up at seven.',ak:'일곱 시에 일어나.',b:['at','in','on']},
+ {g:5,f:'can',q:'Can I use your phone?',qk:'네 전화기 써도 돼?',a:'Sure, go ahead.',ak:'그럼, 써.',b:['ahead','head','behind']},
+ {g:5,f:'past',q:'What did you eat for lunch?',qk:'점심으로 뭐 먹었어?',a:'I ate pizza.',ak:'피자를 먹었어.',b:['ate','eat','eating']},
+ {g:5,f:'wherewas',q:'Where were you?',qk:'너 어디 있었어?',a:'I was at the library.',ak:'도서관에 있었어.',b:['was','were','am']},
+ {g:6,f:'comp',q:'Who is taller, Tom or Jack?',qk:'톰과 잭 중 누가 더 키가 크니?',a:'Tom is taller than Jack.',ak:'톰이 잭보다 키가 더 커.',b:['taller','tall','tallest']},
+ {g:6,f:'should',q:'What should I do?',qk:'나는 어떻게 해야 할까?',a:'You should go to bed early.',ak:'일찍 자야 해.',b:['should','shoulder','showed']},
+ {g:6,f:'pref',q:'Which season do you like best?',qk:'어느 계절을 가장 좋아하니?',a:'I like winter best.',ak:'나는 겨울을 가장 좋아해.',b:['best','better','good']},
+ {g:6,f:'think',q:'What do you think about it?',qk:'그것에 대해 어떻게 생각해?',a:"I think it's interesting.",ak:'재미있다고 생각해.',b:['think','thing','thank']},
+ {g:6,f:'future',q:'What are you going to do?',qk:'너는 무엇을 할 거니?',a:"I'm going to learn the piano.",ak:'피아노를 배울 거야.',b:['going','go','goes']},
+ {g:6,f:'ever',q:'Have you ever been to Jeju?',qk:'제주도에 가 본 적 있니?',a:'Yes, I have.',ak:'응, 가 봤어.',b:['have','did','do']},
+ {g:6,f:'can',q:'Can I take pictures here?',qk:'여기서 사진 찍어도 돼요?',a:"No, you can't. It's not allowed.",ak:'아니요, 안 돼요. 허용되지 않아요.',b:['allowed','aloud','alone']},
+ {g:6,f:'long',q:'How long does it take?',qk:'시간이 얼마나 걸려?',a:'It takes ten minutes.',ak:'10분 걸려.',b:['takes','took','taking']},
+ {g:6,f:'jobof',q:'What does your dad do?',qk:'너희 아빠는 무슨 일을 하시니?',a:'He is a cook.',ak:'요리사이셔.',b:['cook','cookie','cool']},
+ {g:6,f:'why',q:'Why do you like spring?',qk:'봄을 왜 좋아해?',a:"Because it's warm.",ak:'따뜻하기 때문이야.',b:['warm','worm','word']},
+ {g:6,f:'should',q:'I have a toothache.',qk:'이가 아파.',a:'You should see a dentist.',ak:'치과에 가 봐야 해.',b:['dentist','dancer','desk']},
+ {g:6,f:'howgo',q:'How did you go there?',qk:'거기 어떻게 갔어?',a:'I went there by subway.',ak:'지하철을 타고 갔어.',b:['went','go','goes']},
+ {g:6,f:'pref',q:'Which do you prefer, cats or dogs?',qk:'고양이와 개 중 어느 쪽이 더 좋아?',a:'I prefer dogs.',ak:'나는 개가 더 좋아.',b:['prefer','prepare','present']},
+ {g:6,f:'super',q:"What's the biggest animal?",qk:'가장 큰 동물은 뭐야?',a:'The blue whale is the biggest.',ak:'흰긴수염고래가 가장 커.',b:['biggest','bigger','big']},
+ {g:6,f:'start',q:'When does the movie start?',qk:'영화는 언제 시작해?',a:'It starts at six.',ak:'여섯 시에 시작해.',b:['starts','start','started']},
+ {g:6,f:'want',q:'What would you like to eat?',qk:'무엇을 먹고 싶니?',a:"I'd like a sandwich.",ak:'샌드위치를 먹고 싶어.',b:["I'd","I'm","I've"]},
+ {g:6,f:'sad',q:'I lost my dog.',qk:'강아지를 잃어버렸어.',a:"That's too bad.",ak:'정말 안됐다.',b:['bad','bed','bat']},
+ {g:6,f:'future',q:'Where will you go this summer?',qk:'이번 여름에 어디 갈 거야?',a:'I will go to the beach.',ak:'바닷가에 갈 거야.',b:['beach','peach','bench']}
+];
+var SENT_LV={1:[3],2:[3,4],3:[4],4:[5],5:[6]};
+var SENT_GN={3:'3학년 표현',4:'4학년 표현',5:'5학년 표현',6:'6학년 표현'};
+function sentPool(lv,need){var gs=SENT_LV[lv]||[3],L=SENT.filter(function(x){return gs.indexOf(x.g)>=0&&(!need||need(x))});var used=(G&&G.usedS)||{},fr=L.filter(function(x){return !used[x.q]});var p=(fr.length?fr:L)[R(0,(fr.length?fr:L).length-1)];if(G){G.usedS=G.usedS||{};G.usedS[p.q]=1}return p}
+function sentNear(it,n,key){var L=shuffle(SENT.filter(function(x){return x!==it&&Math.abs(x.g-it.g)<=1&&x.f!==it.f})),out=[],seen={};seen[it[key]]=1;L.forEach(function(x){if(out.length<n&&!seen[x[key]]){seen[x[key]]=1;out.push(x[key])}});return out}
+var SPEAK_SVG='<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>듣기</span>';
+function speakBtn(t){var sp=el('button','enspeak');sp.innerHTML=SPEAK_SVG;sp.onclick=function(){ttsEn(t)};return sp}
+// 대화 말풍선: 묻는 사람(왼쪽) · 대답(오른쪽, 빈칸 가능)
+function talkBox(it,opt){opt=opt||{};var w=el('div','entalk');var q=el('div','tb tq');q.appendChild(el('b',null,it.q));if(opt.qk)q.appendChild(el('small',null,it.qk));w.appendChild(q);
+  if(opt.a!==false){var a=el('div','tb ta');if(opt.blank){var p=el('b');it.a.split(' ').forEach(function(t,i){if(i)p.appendChild(document.createTextNode(' '));var core=t.replace(/[.,!?]+$/,''),tail=t.slice(core.length);if(core===opt.blank){p.appendChild(el('span','wrgap','?'));if(tail)p.appendChild(document.createTextNode(tail))}else p.appendChild(document.createTextNode(t))});a.appendChild(p)}else a.appendChild(el('b',null,opt.aText||'?'));w.appendChild(a)}
+  return w}
+// 듣고 뜻 고르기
+function genSx(lv){var it=sentPool(lv),useA=Math.random()<.5,en=useA?it.a:it.q,ko=useA?it.ak:it.qk,o=shuffle([ko].concat(sentNear(it,3,useA?'ak':'qk'))),listen=lv===2||lv===5;
+  return choicePz(listen?'잘 듣고 알맞은 뜻을 골라요.':'이 문장의 뜻은?',function(b){var box=el('div','enstem');if(!listen)box.appendChild(el('div','ensent',en));else box.appendChild(el('div','enko','소리를 잘 들어 봐요'));box.appendChild(speakBtn(en));b.appendChild(box);setTimeout(function(){ttsEn(en)},300)},o,o.indexOf(ko),listen?'한 번 더 들어 봐요. 아는 단어부터 잡아요.':'아는 단어를 먼저 찾고 전체 뜻을 떠올려요.',en+' = '+ko)}
+// 알맞은 대답 고르기
+function genSr(lv){var it=sentPool(lv),o=shuffle([it.a].concat(sentNear(it,lv<=2?2:3,'a')));var pz=choicePz('알맞은 대답을 골라요.',function(b){var box=el('div','enstem');box.appendChild(talkBox(it,{qk:lv<=3}));box.appendChild(speakBtn(it.q));b.appendChild(box);setTimeout(function(){ttsEn(it.q)},300)},o,o.indexOf(it.a),'묻는 말의 첫 단어(What, Where, Can, Do …)를 보면 어떤 대답이 올지 알 수 있어요.',it.q+' → '+it.a+' ('+it.ak+')');pz.say=it.a;return pz}
+// 문장 순서 맞추기
+function genSo(lv){var it=sentPool(lv,function(x){return x.a.split(' ').length>=3||x.q.split(' ').length>=3}),useA=it.a.split(' ').length>=3&&(it.q.split(' ').length<3||Math.random()<.6),en=useA?it.a:it.q,ko=useA?it.ak:it.qk,tk=en.split(' '),extra=lv>=4&&useA&&it.b?[it.b[1]]:[];
+  return {mode:'order',q:'우리말에 맞게 문장을 만들어요.',answer:en,say:en,need:tk.length,tiles:shuffle(tk.concat(extra)),hint:extra.length?'대문자로 시작하는 단어가 맨 앞이에요. 쓰지 않는 단어가 하나 있어요.':'대문자로 시작하는 단어가 맨 앞, 마침표나 물음표가 붙은 단어가 맨 끝이에요.',explain:en+' = '+ko,render:wrStem(ko,useA?function(box){box.appendChild(talkBox(it,{a:false}))}:null)}}
+// 대답의 빈칸 채우기
+function genSb(lv){var it=sentPool(lv,function(x){return x.b}),o=shuffle(it.b.slice());var full=it.a;var pz=choicePz('대답의 빈칸에 알맞은 말은?',function(b){var box=el('div','enstem');box.appendChild(talkBox(it,{blank:it.b[0],qk:lv<=2}));box.appendChild(speakBtn(it.q));b.appendChild(box);setTimeout(function(){ttsEn(it.q)},300)},o,o.indexOf(it.b[0]),'묻는 말과 짝이 되는 말을 찾아요. 소리가 비슷한 단어에 속지 마세요.',it.q+' → '+full+' ('+it.ak+')');pz.say=full;return pz}
+Object.assign(SUBJ.en.gen,{sx:genSx,sr:genSr,so:genSo,sb:genSb});
+Object.assign(SUBJ.en.types,{sx:'문장 뜻',sr:'알맞은 대답',so:'문장 순서',sb:'빈칸 채우기'});
+
+function enTrack(){return S.en.track==='ph'?'ph':S.en.track==='s'?'s':'w'}
+function enSetUse(key){if(key==='ph'||key==='s'){S.en.track=key;save();return}S.en.track='w';if(EN_SETS[key]){setEnWords(EN_SETS[key]);S.en.set=key}save()}
 // 수준 알아보기: 알파벳 4 + 3~4학년 단어 4 + 5~6학년 단어 4
 function enLevelTest(){tone([523,659],'sine',.1);G={sub:SUBJ.en,re:[],q:shuffle(['abc','abc','abc','abc']).concat(shuffle(['lva','lva','lva','lva'])).concat(shuffle(['lvb','lvb','lvb','lvb'])),n:12,idx:0,got:0,first:0,startPieces:0,ups:[],combo:0,drops:0,gain:1,newFruits:[],sunGot:0,quiet:true,lvl:true,lres:[]};var st=stOf(SUBJ.en);st.lv.abc=2;play()}
 function lvlEnd(){document.body.classList.remove('qmode');var r=G.lres,q=G.q,c={abc:0,lva:0,lvb:0};q.forEach(function(t,i){if(r[i])c[t]++});G=null;
   var key,msg;if(c.abc<3){key='ph';msg='알파벳부터 차근차근 시작하는 게 좋겠어요. 파닉스 트랙으로 시작해요.'}else if(c.lva>=3&&c.lvb>=3){key='b';msg='단어를 많이 알고 있어요! 5~6학년 단어장으로 시작해요.'}else{key='a';msg='3~4학년 단어장으로 시작하면 딱 좋아요.'}
   enSetUse(key);showSheet('good','k3_hive','영어 수준 알아보기','알파벳 '+c.abc+'/4 · 3~4학년 단어 '+c.lva+'/4 · 5~6학년 단어 '+c.lvb+'/4',msg+' 벌집 화면에서 언제든 바꿀 수 있어요.','좋아요',function(){beeScreen(false)})}
-function enTrackBar(){var w=el('div','entracks');var cur=enTrack()==='ph'?'ph':(S.en.set||'custom');
-  [['ph','파닉스'],['a','3~4학년 단어'],['b','5~6학년 단어']].forEach(function(x){var b=el('button','catchip'+(cur===x[0]?' on':''),x[1]);b.onclick=function(){enSetUse(x[0]);beeScreen(false)};w.appendChild(b)});
+function enTrackBar(){var w=el('div','entracks');var cur=enTrack()!=='w'?enTrack():(S.en.set||'custom');
+  [['ph','파닉스'],['s','문장·대화'],['a','3~4학년 단어'],['b','5~6학년 단어']].forEach(function(x){var b=el('button','catchip'+(cur===x[0]?' on':''),x[1]);b.onclick=function(){enSetUse(x[0]);beeScreen(false)};w.appendChild(b)});
   if(cur==='custom'){w.appendChild(el('button','catchip on',EN.title||'학원 단어장'))}
   var t=el('button','catchip lvlbtn','수준 알아보기');t.onclick=function(){showSheet('good','k3_hive','영어','수준을 알아볼까요?','알파벳·단어 문제 12개를 풀어요. 틀려도 괜찮아요, 시작점을 정하는 거예요.','시작',enLevelTest)};w.appendChild(t);return w}
 
@@ -4810,7 +4919,7 @@ function _startRound(sub){
     var act=activeTypes();re=re.filter(function(k){return act.indexOf(k)>=0}).slice(0,2);
     var core=shuffle(act.filter(function(k){return re.indexOf(k)<0})).slice(0,2),pick=re.concat(core);
     q0=shuffle(pick.concat(shuffle(act.filter(function(k){return pick.indexOf(k)<0})).slice(0,ROUND-pick.length)));while(q0.length<ROUND)q0.push(act[R(0,act.length-1)])}
-  if(sub.key==='en'){if(S.en.wrv!==2){S.en.wrv=2;S.en.lv.write=1}}if(sub.key==='en')q0=enTrack()==='ph'?shuffle(['abc','abc','cvc','cvc','sight','sight']):shuffle(['mean','tiles','spell',['mean','tiles','spell'][R(0,2)]]).concat(['write','write']);
+  if(sub.key==='en'){if(S.en.wrv!==2){S.en.wrv=2;S.en.lv.write=1}}if(sub.key==='en')q0=enTrack()==='ph'?shuffle(['abc','abc','cvc','cvc','sight','sight']):enTrack()==='s'?shuffle(['sx','sx','sr','sr','so','sb']):shuffle(['mean','tiles','spell',['mean','tiles','spell'][R(0,2)]]).concat(['write','write']);
   G={sub:sub,re:re,q:q0||(types.length>=ROUND?shuffle(types).slice(0,ROUND):shuffle(shuffle(types).concat(shuffle(types).slice(0,ROUND-types.length)))),idx:0,got:0,first:0,startPieces:stOf(sub).pieces,ups:[],unlocked:false,combo:0,drops:0,gain:1,newFruits:[],sunGot:0};
   play();
 }
@@ -5837,10 +5946,10 @@ function beeScreen(fromRound){
   var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=BACK_SVG;back.onclick=home;top.appendChild(back);sc.appendChild(top);
   var N=EN.words.length,st=enStats(),c=el('div','center beecenter');
   if(fromRound&&G){c.appendChild(el('div','eyebrow',G.got+' / '+ROUND+' 정답'+(G.sunGot?' · 햇살 +'+G.sunGot:'')));c.appendChild(el('h2',null,G.jarFull?'꿀단지 '+G.jarFull+'개째 완성!':(G.mastered&&G.mastered.length)?'꿀이 가득 찬 단어 '+G.mastered.length+'개!':'꿀이 차오르고 있어요'));if(G.jarFull){SND.bloom();setTimeout(function(){burst(innerWidth/2,innerHeight*.35,46,true)},300)}
-    var nt=[];if(G.mastered&&G.mastered.length)nt.push(G.mastered.join(', ')+'.');if(G.jarFull)nt.push('햇살 +20! 새 꿀단지에 단어 '+JAR_N+'개가 들어왔어요.');else nt.push('한 단어를 뜻, 글자, 듣고 쓰기 세 가지 모두 한 번에 맞히면 꿀이 가득 차요.');c.appendChild(el('p','sub',nt.join(' ')))}
-  else{var J=enJar();c.appendChild(el('div','eyebrow','영어 벌집 · '+(EN.title||'이번 주 단어')));if(enTrack()==='ph'){c.appendChild(el('h2',null,'파닉스 연습 중'));c.appendChild(el('p','sub','알파벳, 소리 단어, 사이트 워드를 익혀요. 익숙해지면 아래에서 단어장으로 바꿔요.'))}else{c.appendChild(el('h2',null,'꿀단지 '+J.no+' · '+jarDone()+' / '+J.ws.length));c.appendChild(el('p','sub','이 꿀단지 단어 '+J.ws.length+'개를 뜻, 글자, 듣고 쓰기로 모두 맞히면 꿀단지가 가득 차요.'))}var tot_=el('div','entot');tot_.appendChild(el('span',null,'지금까지 익힌 단어'));tot_.appendChild(el('b',null,st.all+'\u00a0/\u00a0'+N));c.appendChild(tot_)}
+    var nt=[];if(G.mastered&&G.mastered.length)nt.push(G.mastered.join(', ')+'.');if(G.jarFull)nt.push('햇살 +20! 새 꿀단지에 단어 '+JAR_N+'개가 들어왔어요.');else nt.push(enTrack()==='s'?'들은 문장을 소리 내어 따라 말해 보면 더 빨리 늘어요.':enTrack()==='ph'?'소리와 글자를 함께 익히고 있어요.':'한 단어를 뜻, 글자, 듣고 쓰기 세 가지 모두 한 번에 맞히면 꿀이 가득 차요.');c.appendChild(el('p','sub',nt.join(' ')))}
+  else{var J=enJar();c.appendChild(el('div','eyebrow','영어 벌집 · '+(EN.title||'이번 주 단어')));if(enTrack()==='s'){c.appendChild(el('h2',null,'문장·대화 연습 중'));c.appendChild(el('p','sub','교과서 핵심 표현으로 묻고 답하기를 익혀요. 듣기 버튼을 누르고 따라 말해 보세요.'))}else if(enTrack()==='ph'){c.appendChild(el('h2',null,'파닉스 연습 중'));c.appendChild(el('p','sub','알파벳, 소리 단어, 사이트 워드를 익혀요. 익숙해지면 아래에서 단어장으로 바꿔요.'))}else{c.appendChild(el('h2',null,'꿀단지 '+J.no+' · '+jarDone()+' / '+J.ws.length));c.appendChild(el('p','sub','이 꿀단지 단어 '+J.ws.length+'개를 뜻, 글자, 듣고 쓰기로 모두 맞히면 꿀단지가 가득 차요.'))}var tot_=el('div','entot');tot_.appendChild(el('span',null,'지금까지 익힌 단어'));tot_.appendChild(el('b',null,st.all+'\u00a0/\u00a0'+N));c.appendChild(tot_)}
   var JJ=enJar(),jarIn={};JJ.ws.forEach(function(w){jarIn[w]=1});var jar=el('div','jar');var fill=el('i');fill.style.height=Math.round(jarDone()/JJ.ws.length*100)+'%';jar.appendChild(fill);var hv=img('k3_hive','jarhive');jar.appendChild(hv);c.appendChild(jar);
-  var bars=el('div','enbars');[[1,'뜻 고르기'],[2,'글자 맞추기'],[4,'듣고 쓰기']].forEach(function(x){var n_=JJ.ws.filter(function(w){return enBits(w)&x[0]}).length,T_=JJ.ws.length;var r=el('div','enbar');r.appendChild(el('span',null,x[1]));var b2=el('div','bar');var f=el('i');f.style.width=(n_/T_*100)+'%';b2.appendChild(f);r.appendChild(b2);r.appendChild(el('b','tnum',n_+'/'+T_));bars.appendChild(r)});c.appendChild(bars);if(!fromRound)c.appendChild(enTrackBar());
+  var bars=el('div','enbars');[[1,'뜻 고르기'],[2,'글자 맞추기'],[4,'듣고 쓰기']].forEach(function(x){var n_=JJ.ws.filter(function(w){return enBits(w)&x[0]}).length,T_=JJ.ws.length;var r=el('div','enbar');r.appendChild(el('span',null,x[1]));var b2=el('div','bar');var f=el('i');f.style.width=(n_/T_*100)+'%';b2.appendChild(f);r.appendChild(b2);r.appendChild(el('b','tnum',n_+'/'+T_));bars.appendChild(r)});if(enTrack()==='w')c.appendChild(bars);if(!fromRound)c.appendChild(enTrackBar());
   var det=el('details','enlist');det.appendChild(el('summary',null,'단어 '+N+'개 보기'));var ul=el('div','enwords');
   EN.words.slice().sort(function(a,b){return (jarIn[b.w]?1:0)-(jarIn[a.w]?1:0)}).forEach(function(x){var p=enBits(x.w),b=el('button','enw'+(p===7?' full':'')+(jarIn[x.w]?' injar':''));b.appendChild(el('b',null,x.w));b.appendChild(el('span',null,x.k));var d=el('i','dots3');[1,2,4].forEach(function(k){d.appendChild(el('em',p&k?'on':''))});b.appendChild(d);b.onclick=function(){sayEn(x.w)};ul.appendChild(b)});
   det.appendChild(ul);c.appendChild(det);
