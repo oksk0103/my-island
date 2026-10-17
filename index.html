@@ -5789,7 +5789,7 @@ function vC(c,r){return [VW/2+(c-r)*VTW/2,VY0+(c+r)*VTH/2+VTH/2]}
 function vLand(c,r){return !((c===6&&r===0)||(c===0&&r===6)||(c===0&&r===0))}
 var VCELL={tree:[1,1],home:[0,3],shop:[3,0],mail:[3,5],pot:[5,4]};
 var VPATH={'5,5':1,'4,4':1,'3,3':1,'2,2':1,'2,3':1,'1,3':1,'3,2':1,'3,1':1,'3,4':1};
-var FISH_XY=[438, 504],MAILP_XY=[118, 482],DOCK_XY=[268, 515],BOAT_XY=[318, 560];var VB=['tree','home','shop','mail','pot','bee','boat'].map(function(id){return {id:id,x:K3.anch[id][0],y:K3.anch[id][1]}});VB.push({id:'fish',x:FISH_XY[0],y:FISH_XY[1]});VB.push({id:'mailp',x:MAILP_XY[0],y:MAILP_XY[1]});VB.forEach(function(v){if(v.id==='boat'){v.x=BOAT_XY[0];v.y=BOAT_XY[1]}});
+var FISH_XY=[438, 504],MAILP_XY=[118, 482],DOCK_XY=[268, 515],BOAT_XY=[280, 566];var VB=['tree','home','shop','mail','pot','bee','boat'].map(function(id){return {id:id,x:K3.anch[id][0],y:K3.anch[id][1]}});VB.push({id:'fish',x:FISH_XY[0],y:FISH_XY[1]});VB.push({id:'mailp',x:MAILP_XY[0],y:MAILP_XY[1]});VB.forEach(function(v){if(v.id==='boat'){v.x=BOAT_XY[0];v.y=BOAT_XY[1]}});
 var VLABEL={bee:'영어 벌집',tree:'한자 나무',home:'우리 집',pot:'수학 화분',mail:'오솔길',shop:'상점',boat:'내 섬 가기',fish:'낚시터',mailp:'우체통'};
 function villageScreen(){
   HUB='village';clear();gdInit();if(ADV&&ADV.day!==dayKey())ADV=null;var advDone_=ADV&&ADV.i>=ADV.q.length;if(advDone_)setTimeout(advFinish,0);else fishCatchUp();
