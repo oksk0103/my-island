@@ -2373,6 +2373,10 @@ body .tacts .trot{background:none!important;box-shadow:none!important}
 .spr.g3p img{display:block;max-width:none}
 .setc .setpv .spr{width:34px;height:34px}
 .fprev .spr.g3p{margin:0 auto}
+
+/* 상점·세트 미리보기 안의 격자 그림: 카드 안에 가만히 */
+.fprev .spr.g3p,.setpv .spr.g3p{position:relative!important;left:auto!important;top:auto!important;transform:none!important;margin:0 auto}
+.fprev .spr.g3p img,.setpv .spr.g3p img{width:auto;height:auto;object-fit:unset}
 </style>
 
 <div id="app"></div>
@@ -4282,7 +4286,7 @@ function itemSprite(key,TW,rot){
   else if(key.indexOf('a:')===0){var a=key.slice(2);avDress(add(a,ANIMAL_S[a]||.8),a);w.className='spr pet'}
   else if(key.indexOf('h:')===0){var hh=el('div','fhouse');var ci=img('f_cottage');ci.style.width=(TW*1.05)+'px';hh.appendChild(ci);var fi_=img(key.slice(2),'fhpet');fi_.style.width=(TW*.42)+'px';hh.appendChild(fi_);w.appendChild(hh)}
   else if(/^fo_/.test(key)){add('fd_'+key.slice(3),key==='fo_rex'?1:.9)}
-  else if(SPR3[key]&&TW>60){var m3=SPR3[key],k3=key;if(rot&&A[key+'_r'+rot])k3=key+'_r'+rot;var i3=img(k3);i3.style.width=m3[0]+'px';w.appendChild(i3);w.className+=' g3'}
+  else if(SPR3[key]&&Math.abs(TW-ITW*.8)<.01){var m3=SPR3[key],k3=key;if(rot&&A[key+'_r'+rot])k3=key+'_r'+rot;var i3=img(k3);i3.style.width=m3[0]+'px';w.appendChild(i3);w.className+=' g3'}
   else if(SPR3[key]){var m4=SPR3[key],bx=m4[2],k4=key;if(rot&&A[key+'_r'+rot])k4=key+'_r'+rot;var sc4=TW/Math.max(bx[2],bx[3]),i4=img(k4);i4.style.width=(m4[0]*sc4)+'px';i4.style.position='absolute';i4.style.left=(-bx[0]*sc4+(TW-bx[2]*sc4)/2)+'px';i4.style.top=(-bx[1]*sc4+(TW-bx[3]*sc4)/2)+'px';w.style.width=TW+'px';w.style.height=TW+'px';w.style.overflow='hidden';w.style.position='relative';w.appendChild(i4);w.className+=' g3p'}
   else{var dd_=DECOR_BY[key]||{s:1};add(key,dd_.sz>1&&TW>60?dd_.s2:dd_.s)}
   return w;
