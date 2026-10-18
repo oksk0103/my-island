@@ -2676,6 +2676,34 @@ html body .vcalc .vr.ans .slot{width:calc(var(--L) * 40px - 2px);min-width:0;pad
 .hzchips .catchip.some{box-shadow:inset 0 0 0 1.5px #ffd8a8,0 2px 0 #e3e9ee}
 .hzchips .catchip.done{background:#ebfbee;color:#2b8a3e}
 .hzchips .catchip.on{background:var(--ink,#26313d);color:#fff}
+/* 카드 넘겨보기 · 오답노트 */
+.hzccount{flex:1;text-align:center;font-weight:800;color:var(--ink-2);font-size:.95rem}
+.hzctr{display:flex;align-items:center;gap:6px}
+.tpill{height:34px;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.9);color:var(--ink);font-weight:800;font-size:.82rem;box-shadow:0 2px 0 rgba(0,40,80,.12);white-space:nowrap}
+.tpill.on{background:var(--ink);color:#fff}
+.tpill.warn{color:#c2410c}
+.treetools{margin-left:auto;display:flex;gap:6px}
+.wstar{width:38px;height:38px;border-radius:50%;background:#fff;color:#adb5bd;font-size:1.25rem;line-height:1;box-shadow:inset 0 0 0 1.5px #e3e9ee;flex:none}
+.wstar.on{color:#f59f00}
+.hzcard.hid .hzcname b{display:none}
+.hzcard.hid .hzcname::after{content:'눌러서 뜻과 음 보기';display:flex;align-items:center;height:46px;padding:0 22px;border-radius:14px;background:#eef2f6;font-size:.95rem;font-weight:800;color:var(--ink-2);white-space:nowrap}
+.hzcard.hid .hzcname{cursor:pointer}
+.hzcard.hid .hzcalt,.hzcard.hid .hzcorigin,.hzcard.hid .hzcwords{visibility:hidden}
+.hzcnav{display:flex;gap:10px}.hzcnav .cta{flex:1}.hzcnav .cta.light{flex:0 0 32%}
+.wrongscr .wtitle{font-family:var(--title);font-weight:400;font-size:1.2rem;margin:0;color:var(--ink)}
+.wrongscr .wsub{margin:4px 2px 12px;text-align:left}
+.wsec{background:rgba(255,255,255,.85);border-radius:18px;padding:12px;margin-bottom:12px}
+.wsechd{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.wsechd b{font-family:var(--title);font-weight:400;font-size:1.1rem}
+.wsechd small{color:var(--ink-2);font-weight:700}
+.wsec .wsechd .cta.wgo{margin:0 0 0 auto;width:auto;min-height:0;height:40px;padding:0 16px;font-size:.92rem;flex:none}
+.wrow{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid #eef2f6}
+.wmain{flex:1;display:flex;align-items:center;gap:12px;text-align:left;background:none;min-width:0}
+.wmain b.hz{font-size:2rem;width:48px;text-align:center;color:#26313d}
+.wmain span{display:flex;flex-direction:column;min-width:0}
+.wmain strong{font-size:1rem;color:var(--ink)}
+.wmain small{font-size:.75rem;color:var(--ink-2)}
+.wdel{width:34px;height:34px;border-radius:50%;background:none;color:#adb5bd;flex:none}
 </style>
 
 <div id="app"></div>
@@ -3466,6 +3494,7 @@ function normS(){
 if(!S.en)S.en=blank({mean:1,tiles:1,spell:1});if(!S.en.p)S.en.p={};if(!S.en.sr)S.en.sr={};
 if(!S.hz.m)S.hz.m={};if(!S.hz.unlocked)S.hz.unlocked=10;if(S.onb==null)S.onb=TS0?1:0;if(!S.hz.gu){S.hz.gu={};var u_=Math.min(S.hz.unlocked,H8.length);for(var g_=0;g_<GB.length-1;g_++){var n_=Math.max(0,Math.min(GB[g_+1]-GB[g_],u_-GB[g_]));if(n_>0)S.hz.gu[g_]=n_}S.hz.cg=gradeOf(H8[Math.max(0,u_-1)][0]);S.hz.base=GB[S.hz.cg]}
 if(S.hz.seen){var now_=Date.now();for(var k_ in S.hz.seen)if(!(S.hz.seen[k_]>1e12))S.hz.seen[k_]=now_}
+if(!S.hz.wn)S.hz.wn={};if(!S.hz.pin)S.hz.pin={};
 if(!S.hz.learned){S.hz.learned={};if(TS0)for(var g2 in S.hz.gu)H8.slice(GB[g2],GB[g2]+S.hz.gu[g2]).forEach(function(h){S.hz.learned[h[0]]=1})}
 if(S.sun==null)S.sun=0;if(!S.own)S.own={};if(!S.equip)S.equip={pot:'pot',friend:''};
 ['math','hz'].forEach(function(k){if(S[k].water==null)S[k].water=0});
@@ -4698,6 +4727,7 @@ function hzSelect(g){hzSync();S.hz.cg=g;S.hz.base=GB[g];var n=S.hz.gu[g]||Math.m
 function hzPick(){return hzPool()}
 function pickChar(){
   if(FORCE&&FORCE.t==='h'){var fk=FORCE.k;FORCE=null;if(HIDX[fk]!=null)return H8[HIDX[fk]]}
+  if(HZWQ&&HZWQ.length){var q=HZWQ.shift();if(HIDX[q]!=null)return H8[HIDX[q]]}
   var wl=wiltedList().filter(function(c){return gradeOf(c)===S.hz.cg});if(wl.length&&Math.random()<.5){var c=wl[Math.floor(Math.random()*wl.length)];if(HIDX[c]!=null)return H8[HIDX[c]]}
   var pool=hzPick(),m=S.hz.m,tot=0,w=pool.map(function(h){var x=1/(1+(m[h[0]]||0)*1.5);tot+=x;return x}),r=Math.random()*tot;
   for(var i=0;i<pool.length;i++){r-=w[i];if(r<=0)return pool[i]}
@@ -4736,7 +4766,7 @@ function genFind(){
   return choicePz('"'+hzName(h)+'"에 알맞은 한자를 골라요.',function(b){b.appendChild(el('div','hzlabel',hzName(h)))},opts,opts.indexOf(h[0]),
     '비슷하게 생긴 한자를 잘 비교해 봐요. 뜻이 '+qt(h[1],'인','인')+' 한자예요.',josa(hzName(h),'은','는')+' '+h[0]+(batchim(h[2])?'이에요.':'예요.'),[h[0]],true);
 }
-function genWord(){
+function genWord(){if(HZWQ&&HZWQ.length)return [genMean,genSound,genFind][R(0,2)]();
   var ok={};hzPool().forEach(function(h){ok[h[0]]=1});
   var ws=HWORDS.filter(function(w){return ok[w[0][0]]&&ok[w[0][1]]});
   if(ws.length<4)return genSound();
@@ -4801,21 +4831,26 @@ function hzTrace(B,onDone,onStroke){if(B.font){onDone&&onDone(false);return}B.to
 function distToPoly(p,m){var best=1e9;for(var i=1;i<m.length;i++){var a=m[i-1],b=m[i],dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy,t=L?((p[0]-a[0])*dx+(p[1]-a[1])*dy)/L:0;t=Math.max(0,Math.min(1,t));var x=a[0]+t*dx,y=a[1]+t*dy,d=Math.hypot(p[0]-x,p[1]-y);if(d<best)best=d}if(m.length===1)best=Math.hypot(p[0]-m[0][0],p[1]-m[0][1]);return best}
 function hzWordsOf(c,n){return HWORDS.filter(function(w){return w[0].indexOf(c)>=0}).slice(0,n||3)}
 // 카드 화면: list 순서대로 넘겨 봐요. opts.learn이면 '새 한자 배우기'
-function hzCards(list,opts,done){opts=opts||{};var idx=0;
+var HZHIDE=false;
+function hzCards(list,opts,done){opts=opts||{};var idx=opts.start||0;
   function show(){clear();document.body.classList.add('qmode');var c=list[idx],h=H8[HIDX[c]],sc=el('div','screen hzcardscr'),top=el('div','qtop');
     var x=el('button','x');x.setAttribute('aria-label','닫기');x.innerHTML=BACK_SVG;x.onclick=function(){document.body.classList.remove('qmode');(opts.back||home)()};top.appendChild(x);
-    var pr=el('div','hzcprog');list.forEach(function(_,i){pr.appendChild(el('i',i<idx?'done':i===idx?'now':null))});top.appendChild(pr);sc.appendChild(top);
+    if(opts.browse){top.appendChild(el('span','hzccount tnum',(idx+1)+' / '+list.length));var tr=el('div','hzctr');
+      var eye=el('button','tpill'+(HZHIDE?' on':''),HZHIDE?'뜻 보이기':'뜻 가리기');eye.onclick=function(){HZHIDE=!HZHIDE;show()};tr.appendChild(eye);
+      var st=el('button','wstar'+(S.hz.pin[c]?' on':''),S.hz.pin[c]?'★':'☆');st.setAttribute('aria-label','별표해서 오답노트에 두기');st.onclick=function(){if(S.hz.pin[c])delete S.hz.pin[c];else S.hz.pin[c]=1;save();st.className='wstar'+(S.hz.pin[c]?' on':'');st.textContent=S.hz.pin[c]?'★':'☆'};tr.appendChild(st);top.appendChild(tr)}
+    else{var pr=el('div','hzcprog');list.forEach(function(_,i){pr.appendChild(el('i',i<idx?'done':i===idx?'now':null))});top.appendChild(pr)}sc.appendChild(top);
     var card=el('div','hzcard');sc.appendChild(card);
     card.appendChild(el('small','hzctag',opts.learn?'새 한자 '+(idx+1)+' / '+list.length:GRADES[gradeOf(c)]+' 한자'));
     var bw=Math.min(260,innerWidth-110),slot=el('div','hzbslot');card.appendChild(slot);var B=null;
-    var hn=el('div','hzcname');hn.appendChild(el('b',null,h[1]));hn.appendChild(el('b','eum',h[2]));card.appendChild(hn);
+    var hn=el('div','hzcname');if(opts.browse&&HZHIDE){card.classList.add('hid');hn.onclick=function(){card.classList.remove('hid')}}hn.appendChild(el('b',null,h[1]));hn.appendChild(el('b','eum',h[2]));card.appendChild(hn);
     if(h[5]&&h[5].length)card.appendChild(el('p','hzcalt','다른 뜻: '+h[5].map(function(a){return a[0]+' '+a[1]}).join(', ')));
     var meta=el('div','hzcmeta');[['급수',GRADES[gradeOf(c)]],['부수',h[3]||'-'],['총획',(h[4]||'-')+'획']].forEach(function(m){var d=el('span');d.appendChild(el('small',null,m[0]));d.appendChild(el('b',null,m[1]));meta.appendChild(d)});card.appendChild(meta);
     var og=HORIGIN[c];if(og){var o=el('div','hzcorigin');o.appendChild(el('em',null,og[0]));o.appendChild(el('p',null,og[1]));card.appendChild(o)}
     var ws=hzWordsOf(c,3);if(ws.length){var wl=el('div','hzcwords');ws.forEach(function(w){var b=el('span');b.appendChild(el('b','hz',w[0]));b.appendChild(el('small',null,w[1]));wl.appendChild(b)});card.appendChild(wl)}
     var tools=el('div','hzctools'),bPlay=el('button','cta light','획순 보기'),bTrace=el('button','cta light','따라 쓰기');tools.appendChild(bPlay);tools.appendChild(bTrace);card.appendChild(tools);
     var msg=el('p','hzcmsg','');card.appendChild(msg);
-    var next=el('button','cta green',idx<list.length-1?'다음 한자':(opts.learn?'다 배웠어요':'닫기'));sc.appendChild(next);
+    var next=el('button','cta green',idx<list.length-1?'다음 한자':(opts.learn?'다 배웠어요':'닫기'));
+    if(opts.browse){var nav=el('div','hzcnav'),prev=el('button','cta light','이전');prev.disabled=idx===0;prev.onclick=function(){if(B&&B.stopTrace)B.stopTrace();idx--;show()};nav.appendChild(prev);nav.appendChild(next);sc.appendChild(nav)}else sc.appendChild(next);
     next.onclick=function(){if(B&&B.stopTrace)B.stopTrace();if(opts.learn){S.hz.learned[c]=1;save()}if(idx<list.length-1){idx++;show()}else{document.body.classList.remove('qmode');done?done():(opts.back||home)()}};
     app.appendChild(sc);
     strokeLoad(c,function(d){if(!sc.isConnected)return;B=hzBoard(c,d,bw);window.__hzB=B;slot.appendChild(B.el);
@@ -4829,6 +4864,37 @@ function hzCards(list,opts,done){opts=opts||{};var idx=0;
 function hzUnseen(){var sn=S.hz.learned||{},out=[];var L=H8.slice(S.hz.base||0,S.hz.unlocked);for(var i=0;i<L.length&&out.length<5;i++)if(!sn[L[i][0]])out.push(L[i][0]);return out}
 function hzLearn(list,go){showSheet('good','k3_tree','새 한자 배우기',list.length+'자를 먼저 배워요','카드로 뜻과 소리를 익히고, 획순을 보고 따라 써 봐요. 다 배우면 바로 문제를 풀어요.','배우기',function(){hzCards(list,{learn:true,back:home},go)});
   var sk=el('button','cta light','바로 문제 풀기');sk.onclick=function(){hideSheet();list.forEach(function(c){S.hz.learned[c]=1});save();go()};sheet.firstChild.appendChild(sk)}
+// ================= 한자 오답노트 · 카드 넘겨보기 =================
+// S.hz.wn[c]={n:틀린 횟수,t:마지막으로 틀린 시각,ok:그 뒤 연속으로 맞힌 횟수}
+// 두 번 연속 한 번에 맞히면 오답노트에서 빠져요(별표한 한자는 남아요).
+var HZWQ=null;
+function hzWrongMark(c,ok){var wn=S.hz.wn,w=wn[c];
+  if(!ok){wn[c]={n:((w&&w.n)||0)+1,t:Date.now(),ok:0};return}
+  if(w){w.ok=(w.ok||0)+1;if(w.ok>=2&&!S.hz.pin[c])delete wn[c]}}
+function hzWrongList(g){var wn=S.hz.wn,pin=S.hz.pin,ks={};Object.keys(wn).forEach(function(c){ks[c]=1});Object.keys(pin).forEach(function(c){ks[c]=1});
+  return Object.keys(ks).filter(function(c){return HIDX[c]!=null&&(g==null||gradeOf(c)===g)}).sort(function(a,b){return ((pin[b]?1:0)-(pin[a]?1:0))||(((wn[b]||{}).t||0)-((wn[a]||{}).t||0))})}
+function hzWrongCount(){return hzWrongList().length}
+// 그 급수에서 열린 한자를 카드로 넘겨 봐요
+function hzOpenList(g){return H8.slice(GB[g],GB[g]+Math.min(gradeCap(g),S.hz.gu[g]||0)).map(function(h){return h[0]})}
+function hzBrowse(g,start,back){var L=hzOpenList(g);if(!L.length)return;var i=Math.max(0,L.indexOf(start));hzCards(L,{browse:true,start:i,back:back})}
+// 오답만 다시 풀기
+function hzWrongRound(g,list){if(g!==S.hz.cg)hzSelect(g);HZWQ=shuffle(list.slice()).slice(0,ROUND);_startRound(SUBJ.hz)}
+function wrongScreen(back){clear();
+  var sc=el('div','screen wrongscr'),top=el('div','qtop'),x=el('button','x');x.setAttribute('aria-label','돌아가기');x.innerHTML=BACK_SVG;x.onclick=back||home;top.appendChild(x);top.appendChild(el('h3','wtitle','한자 오답노트'));sc.appendChild(top);
+  var all=hzWrongList();
+  if(!all.length){var e=el('div','center');e.appendChild(el('h2',null,'틀린 한자가 없어요'));e.appendChild(el('p','sub','한자 문제에서 틀린 글자가 여기에 모여요. 두 번 연속 맞히면 저절로 빠져요.'));sc.appendChild(e);app.appendChild(sc);return}
+  sc.appendChild(el('p','sub wsub','틀린 한자가 모여 있어요. 두 번 연속 한 번에 맞히면 저절로 빠지고, 별표한 한자는 계속 남아요.'));
+  GRADES.forEach(function(gn,g){var L=all.filter(function(c){return gradeOf(c)===g});if(!L.length)return;
+    var sec=el('div','wsec'),hd=el('div','wsechd');hd.appendChild(el('b',null,gn));hd.appendChild(el('small',null,L.length+'자'));
+    var go=el('button','cta green wgo','다시 풀기');go.onclick=function(){hzWrongRound(g,L)};hd.appendChild(go);sec.appendChild(hd);
+    L.forEach(function(c){var h=H8[HIDX[c]],row=el('div','wrow'),w=S.hz.wn[c];
+      var main=el('button','wmain');main.appendChild(el('b','hz',c));var t=el('span');t.appendChild(el('strong',null,hzName(h)));t.appendChild(el('small',null,w?'틀린 횟수 '+w.n+'번'+(w.ok?' · 이어서 '+w.ok+'번 맞힘':''):'별표한 한자'));main.appendChild(t);
+      main.onclick=function(){hzCards(L,{browse:true,start:L.indexOf(c),back:function(){wrongScreen(back)}})};row.appendChild(main);
+      var st=el('button','wstar'+(S.hz.pin[c]?' on':''),S.hz.pin[c]?'★':'☆');st.setAttribute('aria-label','별표');st.onclick=function(){if(S.hz.pin[c])delete S.hz.pin[c];else S.hz.pin[c]=1;save();wrongScreen(back)};row.appendChild(st);
+      var del=el('button','wdel');del.setAttribute('aria-label','오답노트에서 빼기');del.innerHTML='<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';del.onclick=function(){delete S.hz.wn[c];delete S.hz.pin[c];save();wrongScreen(back)};row.appendChild(del);
+      sec.appendChild(row)});
+    sc.appendChild(sec)});
+  app.appendChild(sc)}
 
 // ================= 처음 시작: 학년 고르기 → 실력 알아보기 → 시작 단계 =================
 var ONB=null;
@@ -5128,12 +5194,13 @@ function startRound(sub){
     showSheet('good',S.path.char||'rabbit','오늘 벌써 '+dy.rounds+'판','눈도 조금 쉬어 줄까?','오늘 정말 많이 했어요. 내일 하면 물방울이 또 기다리고 있어요.','한 판 더 하기',function(){dy.rest=true;save();startRound(sub)});
     var inn=sheet.firstChild,rb=el('button','cta light','오늘은 쉴래요');rb.onclick=function(){hideSheet();home()};inn.appendChild(rb);return;
   }
+  HZWQ=null;
   if(sub.key==='hz'){var nw=hzUnseen();if(nw.length){hzLearn(nw,function(){_startRound(sub)});return}}
   _startRound(sub);
 }
 function _startRound(sub){
   tone([],'sine');
-  var types=Object.keys(sub.types),re=[],q0;
+  var types=Object.keys(sub.types).filter(function(k){return k!=='hzl'}),re=[],q0; // hzl은 첫 급수 찾기 전용
   if(sub.key==='math'){var dn=dnum(),cn={};(S.mx||[]).forEach(function(m){if(m[1]==='m'&&sub.types[m[2]]&&dn-m[0]>=1&&dn-m[0]<=21)cn[m[2]]=(cn[m[2]]||0)+1});
     re=Object.keys(cn).sort(function(a,b){return cn[b]-cn[a]}).slice(0,2);
     var act=activeTypes();re=re.filter(function(k){return act.indexOf(k)>=0}).slice(0,2);
@@ -5169,7 +5236,7 @@ function play(){
       if(G.ch){if(tries===0&&pz.word==null&&!pz.chars&&sub.key==='math'){st.chw=st.chw||{};st.chw[type]=(st.chw[type]||0)+1;if(st.chw[type]>=2&&base<5){st.lv[type]=base+1;st.chw[type]=0;st.run[type]=0;G.ups.push(sub.types[type])}}}
       else if(tries===0){st.run[type]=(st.run[type]||0)+1;if(st.run[type]>=2&&(st.lv[type]||1)<(type==='write'?WR_MAX:5)){st.lv[type]=(st.lv[type]||1)+1;st.run[type]=0;G.ups.push(sub.types[type])}}else st.run[type]=0;
     }else{G.combo=0;if(G.ch){if(st.chw)st.chw[type]=0}else{st.run[type]=0;if((st.lv[type]||1)>1)st.lv[type]--}}
-    if(pz.chars)pz.chars.forEach(function(c){var m=S.hz.m,o=hzOrder();m[c]=ok&&tries===0?(m[c]||0)+1:Math.max(0,(m[c]||0)-1);if(m[c]>=2&&o.indexOf(c)<0){o.push(c);G.newFruits.push(c)}});
+    if(pz.chars)pz.chars.forEach(function(c){hzWrongMark(c,ok&&tries===0);var m=S.hz.m,o=hzOrder();m[c]=ok&&tries===0?(m[c]||0)+1:Math.max(0,(m[c]||0)-1);if(m[c]>=2&&o.indexOf(c)<0){o.push(c);G.newFruits.push(c)}});
     if(ok&&tries===0&&G.re&&G.re.indexOf(type)>=0&&S.mx){S.mx=S.mx.filter(function(m){return !(m[1]==='m'&&m[2]===type)});G.reOk=(G.reOk||0)+1}
     if((!ok||tries>0)&&!G.lvl){if(!S.mx)S.mx=[];var dn=dnum();if(pz.chars)pz.chars.forEach(function(c){S.mx.push([dn,'h',c])});else if(pz.word)S.mx.push([dn,'e',pz.word]);else S.mx.push([dn,sub.key==='en'?'w':'m',type]);if(S.mx.length>400)S.mx=S.mx.slice(-400)}
     if(pz.word){var ep=S.en.p,bef=ep[pz.word]||0;if(ok&&tries===0){ep[pz.word]=bef|pz.bit;if(ep[pz.word]===7&&bef!==7)(G.mastered=G.mastered||[]).push(pz.word)}
@@ -5721,9 +5788,11 @@ function treeEl(w,opts){
   return box;
 }
 
+// 그 급수에서 카드로 배웠거나 문제를 푼 한자가 있나요
+function hzStudied(g){var L=H8.slice(GB[g],GB[g]+Math.min(gradeCap(g),S.hz.gu[g]||0));for(var i=0;i<L.length;i++){var c=L[i][0];if(S.hz.learned[c]||S.hz.m[c]!=null||S.hz.wn[c])return true}return false}
 // 한자 나무 급수 고르기(급수가 많을 때)
 function treePick(tgs,fc,fromRound){
-  showSheet('good','blossom','한자 나무','어느 급수 나무를 볼까요?','열매가 열린 급수와 지금 공부 중인 급수예요.','닫기',function(){});
+  showSheet('good','blossom','한자 나무','어느 급수 나무를 볼까요?','공부한 급수와 지금 공부 중인 급수예요.','닫기',function(){});
   var inn=sheet.firstChild,box=el('div','treegrid');
   tgs.forEach(function(gi){var b=el('button','tgbtn'+(gi===TREEG?' on':'')+(gi===S.hz.cg?' cur':''));b.appendChild(el('b',null,GRADES[gi]));b.appendChild(el('small',null,gi===S.hz.cg?'공부 중':'열매 '+(fc[gi]||0)+'개'));b.onclick=function(){TREEG=gi;TREEP=null;hideSheet();treeScreen(fromRound)};box.appendChild(b)});
   inn.insertBefore(box,inn.querySelector('.cta'));
@@ -5733,8 +5802,8 @@ function treeScreen(fromRound){if(fromRound)TREEP=null;
   clear();
   var sc=el('div','screen'),top=el('div','qtop');
   var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=fromRound?'<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>':BACK_SVG;back.onclick=home;
-  top.appendChild(back);sc.appendChild(top);
-  var fc={};hzOrder().forEach(function(ch){var g=gradeOf(ch);fc[g]=(fc[g]||0)+1});var tgs=GRADES.map(function(_,gi){return gi}).filter(function(gi){return gi===S.hz.cg||fc[gi]>0});
+  top.appendChild(back);if(!fromRound){var tb=el('div','treetools'),bc=el('button','tpill','카드 넘겨보기');bc.onclick=function(){if(hzOpenList(TREEG).length)hzBrowse(TREEG,null,function(){treeScreen(false)})};tb.appendChild(bc);var wc=hzWrongCount(),bw=el('button','tpill'+(wc?' warn':''),'오답노트'+(wc?' '+wc:''));bw.onclick=function(){wrongScreen(function(){treeScreen(false)})};tb.appendChild(bw);top.appendChild(tb)}sc.appendChild(top);
+  var fc={};hzOrder().forEach(function(ch){var g=gradeOf(ch);fc[g]=(fc[g]||0)+1});var tgs=GRADES.map(function(_,gi){return gi}).filter(function(gi){return gi===S.hz.cg||fc[gi]>0||hzStudied(gi)});
   if(TREEG==null||tgs.indexOf(TREEG)<0)TREEG=S.hz.cg;var tg=TREEG;
   var n=hzOrder().filter(function(ch){return gradeOf(ch)===tg}).length,c=el('div','center treecenter');
   if(tgs.length>3){var pk=el('button','treepick');pk.appendChild(el('b',null,GRADES[tg]+' 나무'));if(tg===S.hz.cg)pk.appendChild(el('small','now','공부 중'));pk.appendChild(el('span','dd','급수 바꾸기 ▾'));pk.onclick=function(){treePick(tgs,fc,fromRound)};sc.appendChild(pk)}
@@ -5763,7 +5832,7 @@ function treeScreen(fromRound){if(fromRound)TREEP=null;
   var zz=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z'))||1;var tw=Math.max(170,Math.min((app.clientWidth||375)-40,320,(innerHeight/(document.body.classList.contains('big')?zz:1)-(fromRound?380:330))/TREE_AR));
   c.appendChild(treeEl(tw,{grade:tg,part:gradeCap(tg)>100?TREEP:null,labels:true,hi:fromRound&&G?G.newFruits.concat(G.revived||[]):[],onFruit:function(ch){
     var h=H8[HIDX[ch]],ex=exampleWord(ch);info.hidden=false;info.innerHTML='';
-    info.appendChild(el('b','hz',ch));var t=el('span');t.appendChild(el('strong',null,hzName(h)));if(ex)t.appendChild(el('small',null,ex[0]+'('+ex[1]+')'));info.appendChild(t);var cb=el('button','cta light hzcardbtn','카드');cb.onclick=function(){hzCards([ch],{back:function(){treeScreen(false)}})};info.appendChild(cb);
+    info.appendChild(el('b','hz',ch));var t=el('span');t.appendChild(el('strong',null,hzName(h)));if(ex)t.appendChild(el('small',null,ex[0]+'('+ex[1]+')'));info.appendChild(t);var cb=el('button','cta light hzcardbtn','카드');cb.onclick=function(){hzBrowse(tg,ch,function(){treeScreen(false)})};info.appendChild(cb);
   }}));
   c.appendChild(info);
   var bar=el('div','prog'),b2=el('div','bar'),fi=el('i');fi.style.width=(n/gradeCap(tg)*100)+'%';b2.appendChild(fi);bar.appendChild(b2);bar.appendChild(el('span','tnum',GRADES[tg]+' '+n+' / '+gradeCap(tg)));bar.style.width='100%';c.appendChild(bar);
@@ -6942,7 +7011,7 @@ function houseScreen(){
   var sk=el('section','card skills');sk.appendChild(el('h3',null,'나의 실력'));
   [SUBJ.math,SUBJ.hz].forEach(function(sub){
     sk.appendChild(el('p','lvline',sub.key==='math'?'수학':'한자 · '+GRADES[S.hz.cg]+' 연습 중 '+(S.hz.unlocked-(S.hz.base||0))+'자'));
-    Object.keys(sub.types).forEach(function(k){var r=el('div','skill');r.appendChild(el('span',null,sub.types[k]));var d=el('div','dots');var lv=stOf(sub).lv[k]||1;d.setAttribute('aria-label',lv+'단계');for(var i=1;i<=5;i++)d.appendChild(el('i',i<=lv?'on':''));r.appendChild(d);sk.appendChild(r)});
+    Object.keys(sub.types).filter(function(k){return k!=='hzl'}).forEach(function(k){var r=el('div','skill');r.appendChild(el('span',null,sub.types[k]));var d=el('div','dots');var lv=stOf(sub).lv[k]||1;d.setAttribute('aria-label',lv+'단계');for(var i=1;i<=5;i++)d.appendChild(el('i',i<=lv?'on':''));r.appendChild(d);sk.appendChild(r)});
   });
   sc.appendChild(sk);
   var links=el('div','dockrow');
