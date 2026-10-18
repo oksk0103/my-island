@@ -7902,13 +7902,15 @@ function villageScreen(){
     if(id==='boat'){var t=totals(),p=placedCount(),n=0;for(var k in t)n+=Math.max(0,t[k]-(p[k]||0));n+=digSpots().length;return n?String(n):false}
     return false;
   }
-  function sprite(key){var m=K3[key],w=el('div','v3art'),im=img('k3_'+key);im.draggable=false;var mw=m.w*VK,mh=m.h*VK;
+  // 네 과목 장소(나무·서점·벌집·화분)는 비슷한 크기로, 집은 조금 작게 → 눈에 보이는 무게를 맞춰요
+  var VSC=window.__vsc||{tree:.75,bookshop:.86,hive:1.45,pot:1.25,house:.82};
+  function sprite(key){var m=K3[key],w=el('div','v3art'),im=img('k3_'+key);im.draggable=false;var sc=VSC[key]||1,mw=m.w*VK*sc,mh=m.h*VK*sc;
     w.style.width=mw+'px';w.style.height=mh+'px';w.style.left=(-mw*m.bx)+'px';w.style.top=(-mh*m.by)+'px';w.appendChild(im);return w}
   VB.forEach(function(v){
     var b=el('button','v3 lm-'+v.id);b.style.left=v.x+'px';b.style.top=v.y+'px';b.style.zIndex=Math.round(v.y);
     var art;
-    if(v.id==='tree'){art=el('div','v3art');var tw=K3.tree.w*VK,tb=treeEl(tw,{full:1});art.appendChild(tb);art.style.width=tw+'px';art.style.height=(tw*TREE_AR)+'px';art.style.left=(-tw/2)+'px';art.style.top=(-tw*TREE_AR*K3.tree.by)+'px'}
-    else if(v.id==='pot'){art=el('div','v3art pot');art.appendChild(potBox(null,stage_(),74,potKey(SUBJ.math),S.equip.friend))}
+    if(v.id==='tree'){art=el('div','v3art');var tw=K3.tree.w*VK*(VSC.tree||1),tb=treeEl(tw,{full:1});art.appendChild(tb);art.style.width=tw+'px';art.style.height=(tw*TREE_AR)+'px';art.style.left=(-tw/2)+'px';art.style.top=(-tw*TREE_AR*K3.tree.by)+'px'}
+    else if(v.id==='pot'){art=el('div','v3art pot');var pw=Math.round(74*(VSC.pot||1));art.style.width=pw+'px';art.style.left=(-pw/2)+'px';art.appendChild(potBox(null,stage_(),pw,potKey(SUBJ.math),S.equip.friend))}
     else if(v.id==='home')art=sprite('house');
     else if(v.id==='bee')art=sprite('hive');
     else if(v.id==='book')art=sprite('bookshop');
