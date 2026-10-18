@@ -2603,6 +2603,9 @@ html body .qscreen .choice.pic{min-height:96px;padding:8px}
 .fruit.lab.sm{width:21px;height:21px;margin:-10.5px 0 0 -10.5px;font-size:.72rem!important}
 .fruit.lab.sm::after{width:7px;height:5px;top:-3px}
 .fruit.sm:not(.lab){width:10px;height:10px;margin:-5px 0 0 -5px}
+
+.hzgh{margin:14px 0 6px}
+.hzchips .catchip.past{opacity:.45;background:#f1f4f7}
 </style>
 
 <div id="app"></div>
@@ -4605,10 +4608,12 @@ var TYPE_NAMES5={mixcalc:'혼합 계산',factor:'약수와 배수',corr:'규칙�
 Object.assign(GEN,GEN5);Object.assign(SUBJ.math.types,TYPE_NAMES5);
 
 // 부모님 설정: 학년 · 단원 켜기/끄기
-function unitSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('school'));var t=el('div');t.appendChild(el('small',null,'부모님 설정'));t.appendChild(el('h3',null,'학년과 단원'));hd.appendChild(t);inn.appendChild(hd);
+function unitSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('school'));var t=el('div');t.appendChild(el('small',null,'부모님 설정'));t.appendChild(el('h3',null,'학년 · 단원 · 한자 급수'));hd.appendChild(t);inn.appendChild(hd);
   var g=curGrade(),gr=el('div','gradechips');[1,2,3,4,5,6].forEach(function(n){var ok=UNITS.some(function(u){return u.g===n});var b=el('button','catchip'+(n===g?' on':''),GRADE_NAMES[n]+(ok?'':' (준비 중)'));b.disabled=!ok;b.onclick=function(){var was=curGrade();S.grade=n;S.uoff={};save();if(n!==was){hideSheet();showSheet('good','blossom',GRADE_NAMES[n]+' 시작','실력 알아보기를 할까요?','이 학년 단원 문제 10개를 풀어 시작 단계를 정해요. 틀려도 괜찮아요. 건너뛰면 모두 쉬운 단계부터 시작해요.','알아보기',mathLevelTest);var sk=el('button','cta light','건너뛰기');sk.onclick=function(){hideSheet();unitSheet()};sheet.firstChild.appendChild(sk)}else unitSheet()};gr.appendChild(b)});inn.appendChild(gr);
   var off=unitsOff(),list=el('div','unitlist');[1,2].forEach(function(sem){var us=UNITS.filter(function(u){return u.g===g&&u.s===sem});if(!us.length)return;list.appendChild(el('h4',null,g+'학년 '+sem+'학기'));us.forEach(function(u){var row=el('label','unitrow'+(off[u.id]?' off':''));var cb=document.createElement('input');cb.type='checkbox';cb.checked=!off[u.id];cb.onchange=function(){if(cb.checked)delete off[u.id];else off[u.id]=1;row.classList.toggle('off',!cb.checked);save()};row.appendChild(cb);var tx=el('span');tx.appendChild(el('b',null,u.name));tx.appendChild(el('small',null,u.code));row.appendChild(tx);list.appendChild(row)})});inn.appendChild(list);
   inn.appendChild(el('p','sub','꺼진 단원의 문제는 나오지 않아요. 학교 진도에 맞춰 켜고 끄세요. 문제 난이도는 풀면서 저절로 맞춰져요.'));
+  inn.appendChild(el('h4','hzgh','한자 시작 급수'));var hg=hzGrade(),hc=el('div','gradechips hzchips');GRADES.forEach(function(gn,gi){var b=el('button','catchip'+(gi===hg?' on':'')+(gi<hg?' past':''),gn);if(gi<hg)b.disabled=true;b.onclick=function(){if(gi<=hg)return;hideSheet();showSheet('good','blossom',gn+'부터 시작','한자 '+GB[gi]+'자를 건너뛸까요?',GRADES[gi-1]+'까지 '+GB[gi]+'자는 이미 아는 것으로 열매를 달아 두고, '+gn+' 한자부터 새로 배워요. 앞 급수 한자도 가끔 복습으로 나와요.','건너뛰기',function(){hzSkipTo(gi);hideSheet();unitSheet()});var no=el('button','cta light','취소');no.onclick=function(){hideSheet();unitSheet()};sheet.firstChild.appendChild(no)};hc.appendChild(b)});inn.appendChild(hc);
+  inn.appendChild(el('p','sub','지금 '+GRADES[hg]+' 공부 중 · '+Math.min(S.hz.unlocked,H8.length)+'자 열림. 이미 급수 시험을 본 아이는 다음 급수부터 시작할 수 있어요. 앞으로만 건너뛸 수 있어요.'));
   var c=el('button','cta','닫기');c.onclick=hideSheet;inn.appendChild(c);sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;requestAnimationFrame(function(){sheet.className='sheet good show'})}
 
 
@@ -4618,10 +4623,12 @@ var WILT_DAYS=4;
 function hzSeen(){if(!S.hz.seen)S.hz.seen={};var n=Date.now();hzOrder().forEach(function(c){if(!S.hz.seen[c])S.hz.seen[c]=n});return S.hz.seen}
 function isWilted(c){var t=hzSeen()[c];return !!t&&(Date.now()-t)/864e5>=WILT_DAYS}
 function wiltedList(){return hzOrder().filter(isWilted)}
+function hzSkipTo(g){var base=GB[g],m=S.hz.m,ord=hzOrder();for(var i=0;i<base;i++){var c=H8[i][0];if((m[c]||0)<2)m[c]=2;if(ord.indexOf(c)<0)ord.push(c)}S.hz.base=base;S.hz.unlocked=Math.max(S.hz.unlocked,Math.min(H8.length,base+10));TREEG=null;save()}
+function hzPick(){var b=S.hz.base||0;if(b&&b<S.hz.unlocked&&Math.random()<.85)return H8.slice(b,S.hz.unlocked);return hzPool()}
 function pickChar(){
   if(FORCE&&FORCE.t==='h'){var fk=FORCE.k;FORCE=null;if(HIDX[fk]!=null)return H8[HIDX[fk]]}
   var wl=wiltedList();if(wl.length&&Math.random()<.5){var c=wl[Math.floor(Math.random()*wl.length)];if(HIDX[c]!=null)return H8[HIDX[c]]}
-  var pool=hzPool(),m=S.hz.m,tot=0,w=pool.map(function(h){var x=1/(1+(m[h[0]]||0)*1.5);tot+=x;return x}),r=Math.random()*tot;
+  var pool=hzPick(),m=S.hz.m,tot=0,w=pool.map(function(h){var x=1/(1+(m[h[0]]||0)*1.5);tot+=x;return x}),r=Math.random()*tot;
   for(var i=0;i<pool.length;i++){r-=w[i];if(r<=0)return pool[i]}
   return pool[pool.length-1];
 }
@@ -4817,7 +4824,7 @@ function enTrackBar(){var w=el('div','entracks');var cur=enTrack()!=='w'?enTrack
 
 function hzMastered(){var n=0;H8.forEach(function(h){if((S.hz.m[h[0]]||0)>=2)n++});return n}
 function hzUnlockCheck(){
-  var pool=hzPool(),n=0;pool.forEach(function(h){if((S.hz.m[h[0]]||0)>=2)n++});
+  var pool=H8.slice(S.hz.base||0,S.hz.unlocked),n=0;pool.forEach(function(h){if((S.hz.m[h[0]]||0)>=2)n++});
   if(S.hz.unlocked<H8.length&&n>=pool.length*.8){S.hz.unlocked=Math.min(H8.length,S.hz.unlocked+5);return true}
   return false;
 }
@@ -6697,7 +6704,7 @@ function weekCard(){var W=weekStats(0),P=weekStats(1),card=el('section','card wk
   card.appendChild(sub);
   var tip=el('p','wktip');var best=['math','hz','en'].filter(function(k){return W.rs[k]&&W.rs[k][0]>=5}).sort(function(a,b){return W.rs[a][1]/W.rs[a][0]-W.rs[b][1]/W.rs[b][0]})[0];
   tip.textContent=!W.q?'이번 주는 아직 문제를 풀지 않았어요.':best&&W.rs[best][1]/W.rs[best][0]<.7?({math:'수학',hz:'한자',en:'영어'}[best])+'이(가) 조금 어려웠어요. 섬 학교 오답 교실에서 같이 봐 주세요.':W.n>=5?'이번 주 꾸준히 잘했어요. 칭찬 한마디 부탁해요!':'아직 이번 주가 남았어요. 하루 한 판이면 충분해요.';
-  card.appendChild(tip);var ub=el('button','cta light unitbtn',GRADE_NAMES[curGrade()]+' · 단원 설정');ub.onclick=unitSheet;card.appendChild(ub);return card}
+  card.appendChild(tip);var ub=el('button','cta light unitbtn',GRADE_NAMES[curGrade()]+' · 단원 · 한자 급수');ub.onclick=unitSheet;card.appendChild(ub);return card}
 // ================= 숨김 디버그 메뉴: '나의 기록' 제목을 7번 누르면 =================
 function dbgSave(){try{localStorage.setItem('pot-dbg',JSON.stringify(DBG))}catch(e){}}
 function dbgSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('light_bulb'));var t=el('div');t.appendChild(el('small',null,'개발자 메뉴'));t.appendChild(el('h3',null,'테스트용 (아이는 쓰지 않아요)'));hd.appendChild(t);inn.appendChild(hd);
