@@ -2660,6 +2660,9 @@ html body .vcalc .vr.ans .slot{width:calc(var(--L) * 40px - 2px);min-width:0;pad
 .hzcmsg{margin:0;min-height:1.2em;font-size:.85rem;color:#6b7a90;text-align:center}
 .hzcardscr>.cta{margin:0 16px}
 .fruitinfo .hzcardbtn{margin:0 0 0 auto;height:36px;padding:0 14px;font-size:.85rem;flex:none;width:auto}
+.hzchips .catchip.some{box-shadow:inset 0 0 0 1.5px #ffd8a8,0 2px 0 #e3e9ee}
+.hzchips .catchip.done{background:#ebfbee;color:#2b8a3e}
+.hzchips .catchip.on{background:var(--ink,#26313d);color:#fff}
 </style>
 
 <div id="app"></div>
@@ -3370,7 +3373,7 @@ var HWORDS=[["山水","산수"],["火山","화산"],["日月","일월"],["大小
 var HORIGIN={"一":["지사","막대 하나를 가로로 놓아 '하나'를 나타냈어요."],"二":["지사","막대 두 개를 놓아 '둘'을 나타냈어요."],"三":["지사","막대 세 개를 놓아 '셋'을 나타냈어요."],"四":["가차","본래 숨 쉬는 입 모양을 본뜬 글자인데, 숫자 넷으로 빌려 쓰게 되었어요."],"五":["지사","위아래 두 줄 사이에 엇갈린 선을 넣어 숫자 다섯을 나타냈어요."],"六":["가차","본래 지붕이 있는 집 모양인데, 숫자 여섯으로 빌려 썼어요."],"七":["가차","칼로 무언가를 자르는 모양이었는데, 숫자 일곱으로 빌려 썼어요."],"八":["지사","두 갈래로 나뉘는 모양으로, '나누다'에서 숫자 여덟이 되었어요."],"九":["가차","팔을 굽힌 모양이라는 풀이가 있어요. 숫자 아홉으로 빌려 썼어요."],"十":["지사","세로 막대 가운데에 점(나중에 가로획)을 찍어 열을 나타냈어요."],"日":["상형","둥근 해 모양을 본떴어요. 가운데 획은 해의 빛이에요."],"月":["상형","이지러진 초승달 모양을 본떴어요."],"火":["상형","활활 타오르는 불꽃 모양을 본떴어요."],"水":["상형","가운데로 흐르는 물줄기와 양옆의 물방울 모양이에요."],"木":["상형","위로 뻗은 가지와 땅속 뿌리가 있는 나무 모양이에요."],"金":["형성","흙(土) 속에 묻힌 쇠붙이 알갱이 모양에 今(금) 소리를 더했어요."],"土":["상형","땅 위에 흙이 쌓인 모양을 본떴어요."],"山":["상형","봉우리가 세 개 솟은 산 모양을 본떴어요."],"人":["상형","사람이 옆으로 서 있는 모습을 본떴어요."],"大":["상형","사람이 두 팔과 두 다리를 크게 벌리고 선 모습이에요."],"小":["지사","작은 점 세 개로 작은 것을 나타냈어요."],"中":["지사","네모 한가운데를 막대가 꿰뚫어 '가운데'를 나타냈어요."],"父":["상형","손에 도끼(또는 회초리)를 든 모습으로, 집안을 이끄는 아버지를 뜻해요."],"母":["상형","여자(女)에 젖을 뜻하는 두 점을 더해, 아기를 기르는 어머니를 나타냈어요."],"兄":["회의","입(口)을 크게 벌린 사람(儿)으로, 동생들을 이끄는 형을 나타내요."],"弟":["상형","막대에 끈을 차례로 감은 모양으로, 차례에서 뒤에 오는 아우를 뜻해요."],"女":["상형","두 손을 모으고 무릎을 꿇은 여자의 모습이에요."],"王":["지사","하늘·사람·땅(三)을 하나로 꿰뚫는(丨) 사람이 임금이라는 풀이가 있어요."],"白":["상형","해(日) 위로 빛이 비치는 모양으로, 밝고 희다는 뜻이에요."],"靑":["형성","새싹이 돋는 모양(生)과 丹 모양을 합해, 푸르다는 뜻을 나타내요."],"東":["회의","나무(木) 사이로 해(日)가 떠오르는 쪽, 동쪽을 나타낸다고 풀이해요."],"西":["상형","둥지 위에 새가 앉은 모양으로, 새가 둥지로 돌아가는 해 질 녘 서쪽을 뜻해요."],"南":["상형","남쪽 지방의 악기 모양이라는 풀이가 있어요. 남녘을 뜻하게 되었어요."],"北":["회의","두 사람이 등을 맞댄 모양으로, 등지는 쪽인 북쪽을 뜻해요."],"門":["상형","양쪽으로 여닫는 두 짝 문 모양을 본떴어요."],"生":["상형","땅(土) 위로 새싹이 돋아나는 모양이에요."],"年":["회의","사람이 다 익은 벼(禾)를 짊어진 모습으로, 곡식이 한 번 익는 '한 해'를 뜻해요."],"先":["회의","사람(儿) 위에 발(止)이 앞서 나가는 모양으로, '먼저'를 뜻해요."],"外":["회의","저녁(夕)에 치는 점(卜)은 보통과 다른 바깥 일이라는 데서 나왔어요."],"長":["상형","머리카락이 긴 노인의 모습으로, '길다'와 '어른'을 뜻해요."],"學":["형성","집 안에서 아이(子)가 두 손으로 셈 막대를 쥐고 배우는 모습이에요."],"校":["형성","나무(木)로 엮은 울타리에 交(교) 소리를 더해, 배우는 곳 학교가 되었어요."],"敎":["형성","아이(子)를 회초리(攵)로 가르치는 모습에 爻(효→교) 소리가 더해졌어요."],"室":["형성","집(宀)에 이르러(至) 머무는 곳, 방을 뜻해요."],"國":["형성","창(戈)을 들고 지키는 땅을 큰 울타리(囗)로 둘러싼 나라예요."],"韓":["형성","韋와 해 뜨는 모양(倝, 간→한 소리)을 합한 글자로, 한국을 나타내요."],"民":["상형","한쪽 눈을 가린 사람의 모습으로, 다스림을 받는 백성을 뜻해요."],"軍":["회의","수레(車)를 빙 둘러싼(冖) 모습으로, 군사를 뜻해요."],"萬":["가차","전갈 모양을 본뜬 글자인데, 아주 많다는 뜻의 '일만'으로 빌려 썼어요."],"寸":["지사","손(又) 아래 맥 짚는 자리에 점을 찍어, 한 치(마디)를 나타냈어요."],"家":["회의","지붕(宀) 아래에서 돼지(豕)를 기르던 집의 모습이에요."],"間":["회의","문(門) 틈으로 햇빛(日)이 들어오는 모양으로, '사이'를 뜻해요."],"江":["형성","물(氵)을 뜻하고 工(공→강) 소리를 더해 큰 강을 나타냈어요."],"車":["상형","바퀴 두 개와 굴대가 있는 수레를 위에서 본 모양이에요."],"空":["형성","구멍(穴)이 뚫려 비어 있다는 뜻에 工(공) 소리를 더했어요."],"工":["상형","목수가 쓰는 자(곱자) 모양으로, 물건을 만드는 장인을 뜻해요."],"記":["형성","말(言)을 적어 둔다는 뜻에 己(기) 소리를 더했어요."],"氣":["형성","밥(米)을 지을 때 피어오르는 김(气)으로, '기운'을 뜻해요."],"男":["회의","밭(田)에서 힘(力)을 쓰는 사람, 사내를 뜻해요."],"內":["회의","집(冂) 안으로 들어가는(入) 모양으로, '안'을 뜻해요."],"農":["회의","조개껍데기 도구(辰)로 밭을 가는 모습으로, 농사를 뜻해요."],"答":["형성","대나무(竹) 쪽에 써서 답한다는 뜻에 合(합→답) 소리를 더했어요."],"道":["형성","사람이 머리(首)를 앞으로 하고 걸어가는(辶) 길이에요."],"動":["형성","무거운(重) 것을 힘(力)으로 움직인다는 뜻이에요."],"力":["상형","팔에 힘을 주어 불끈 솟은 근육(또는 쟁기) 모양이에요."],"立":["상형","사람(大)이 땅(一) 위에 똑바로 선 모습이에요."],"每":["형성","머리에 장식을 꽂은 어머니(母) 모습에서, '늘·매번'을 뜻하게 되었어요."],"名":["회의","저녁(夕)이라 얼굴이 안 보여 입(口)으로 이름을 불렀다는 뜻이에요."],"物":["형성","소(牛)를 대표로 한 여러 가지 물건에 勿(물) 소리를 더했어요."],"方":["상형","쟁기 모양을 본뜬 글자로, '모'와 '방향'을 뜻해요."],"不":["가차","꽃받침 모양을 본떴는데, '아니다'라는 뜻으로 빌려 썼어요."],"事":["상형","깃발 단 장대를 손에 든 모습으로, '일'을 뜻해요."],"上":["지사","기준선 위에 짧은 획을 그어 '위'를 나타냈어요."],"姓":["형성","여자(女)가 낳은(生) 핏줄, 성씨를 뜻해요."],"世":["지사","十을 세 개 이어 서른 해, 한 세대를 나타냈어요."],"手":["상형","다섯 손가락을 편 손 모양이에요."],"時":["형성","해(日)의 움직임으로 때를 안다는 뜻에 寺(사→시) 소리를 더했어요."],"市":["형성","사람들이 모여 물건을 사고파는 저잣거리를 나타내요."],"食":["상형","그릇에 음식을 담고 뚜껑을 덮은 모양이에요."],"安":["회의","집(宀) 안에 여자(女)가 있어 편안하다는 뜻이에요."],"午":["상형","절굿공이 모양인데, 한낮(정오)을 뜻하게 되었어요."],"右":["회의","손(又)과 입(口)을 합해, 밥을 먹는 손인 오른쪽을 뜻해요."],"子":["상형","두 팔을 벌린 아기의 모습이에요."],"自":["상형","사람의 코 모양이에요. 자기를 가리킬 때 코를 가리켜서 '스스로'를 뜻해요."],"場":["형성","흙(土)을 평평하게 다진 마당에 昜(양→장) 소리를 더했어요."],"電":["형성","비(雨)가 올 때 번쩍이는 번개(申 모양)를 뜻해요."],"前":["형성","배(舟) 위에서 발(止)이 앞으로 나아가는 모양으로, '앞'을 뜻해요."],"全":["회의","흠 없는 옥(王)을 잘 감싸(入) 온전하다는 뜻이에요."],"正":["회의","목표(一)를 향해 발(止)이 곧게 나아가는 모양으로, '바르다'를 뜻해요."],"足":["상형","무릎(口)과 발 모양을 본떴어요."],"左":["회의","손에 자(工)를 든 모습으로, 왼손·왼쪽을 뜻해요."],"直":["회의","눈(目)으로 곧게(十) 바라본다는 뜻이에요."],"平":["지사","물 위에 뜬 풀처럼 평평한 모양을 나타내요."],"下":["지사","기준선 아래에 짧은 획을 그어 '아래'를 나타냈어요."],"漢":["형성","물(氵)과 소리 부분을 합해 강 이름(한수)을 뜻해요. 한나라·한자에도 써요."],"海":["형성","물(氵)이 모이는 곳에 每(매→해) 소리를 더해 바다를 나타냈어요."],"話":["형성","말(言)과 혀(舌)를 합해 말씀·이야기를 뜻해요."],"活":["형성","물(氵)이 콸콸 흐르듯 살아 움직인다는 뜻에 舌(설→활) 소리를 더했어요."],"孝":["회의","노인(老의 윗부분)을 아들(子)이 업은 모습으로, 효도를 뜻해요."],"後":["회의","걸음(彳)이 작고(幺) 느려 뒤처진다(夊)는 뜻으로, '뒤'를 뜻해요."],"歌":["형성","입을 크게 벌리고(欠) 노래하는 모습에 哥(가) 소리를 더했어요."],"口":["상형","벌린 입 모양을 본떴어요."],"旗":["형성","깃발 모양(㫃)에 其(기) 소리를 더했어요."],"冬":["회의","실 끝을 묶은 모양에 얼음(冫)을 더해, 한 해의 끝인 겨울을 뜻해요."],"同":["회의","여러 사람의 입(口)이 하나로 같다는 뜻이에요."],"洞":["형성","물(氵)이 함께(同) 흐르는 골짜기로, 골·마을을 뜻해요."],"登":["회의","두 발(癶)로 제기(豆)를 들고 높은 곳에 오르는 모습이에요."],"來":["가차","보리 이삭 모양을 본떴는데, '오다'라는 뜻으로 빌려 썼어요."],"老":["상형","허리 굽은 노인이 지팡이를 짚은 모습이에요."],"里":["회의","밭(田)과 흙(土)이 있어 사람이 사는 마을이에요."],"林":["회의","나무(木) 두 그루가 모여 수풀을 이루었어요."],"面":["상형","얼굴의 윤곽과 눈(目)을 본뜬 글자예요."],"命":["회의","입(口)으로 명령(令)을 내리는 모습이에요."],"問":["형성","문(門) 앞에서 입(口)으로 묻는다는 뜻이에요."],"文":["상형","사람 가슴에 새긴 무늬 모양으로, 글월·글자를 뜻해요."],"百":["형성","一과 白(백)을 합해 백(100)을 나타냈어요."],"夫":["지사","어른(大)이 머리에 비녀(一)를 꽂은 모습으로, 지아비를 뜻해요."],"算":["회의","대나무(竹) 산가지를 두 손으로 늘어놓고 셈하는 모습이에요."],"色":["회의","사람과 무릎 꿇은 사람을 합한 글자로, 얼굴빛·빛깔을 뜻해요."],"夕":["상형","반쯤 보이는 저녁달 모양이에요."],"少":["지사","작을 小에 삐침을 더해 양이 '적다'는 뜻을 나타냈어요."],"所":["형성","도끼(斤)로 나무를 찍는 곳에서 '장소'를 뜻하고, 戶(호→소) 소리를 더했어요."],"數":["형성","손에 막대(攵)를 들고 하나씩 세는 모습에 婁(루→수) 소리를 더했어요."],"植":["형성","나무(木)를 곧게(直) 세워 심는다는 뜻이에요."],"心":["상형","사람의 심장 모양을 본떴어요."],"語":["형성","말(言)에 吾(오→어) 소리를 더해 말씀을 뜻해요."],"然":["형성","고기(月)를 불(灬)에 굽는 모양으로 본래 '타다'였는데, '그러하다'로 쓰여요."],"有":["형성","손(又)에 고기(月=肉)를 들고 있는 모습으로, '있다'를 뜻해요."],"育":["회의","아기가 태어나는 모양과 몸(月=肉)을 합해, 낳아 기른다는 뜻이에요."],"邑":["회의","울타리(口) 안에 사람(巴)이 모여 사는 고을이에요."],"入":["상형","뾰족한 것이 안으로 들어가는 모양이에요."],"字":["형성","집(宀) 안에서 아이(子)가 늘어나듯 생겨나는 글자를 뜻해요."],"祖":["형성","제사(示)를 받는 조상에 且(차→조) 소리를 더했어요."],"主":["상형","등잔 위에 타오르는 불꽃 모양으로, 집안의 중심인 주인을 뜻하게 되었어요."],"住":["형성","사람(亻)이 주인(主)처럼 머물러 산다는 뜻이에요."],"重":["형성","사람이 무거운 짐을 진 모습으로, '무겁다'를 뜻해요."],"地":["형성","흙(土)에 也(야→지) 소리를 더해 땅을 나타냈어요."],"紙":["형성","실(糸)에 氏(씨→지) 소리를 더해 종이를 나타냈어요."],"千":["형성","사람(人)에 一을 더해 천(1000)을 나타냈어요."],"天":["지사","사람(大)의 머리 위에 一을 그어 하늘을 나타냈어요."],"川":["상형","물이 흐르는 내 모양이에요."],"草":["형성","풀(艹)에 早(조→초) 소리를 더했어요."],"村":["형성","나무(木)가 있는 마을에 寸(촌) 소리를 더했어요."],"秋":["회의","벼(禾)를 불(火)에 말리는 가을이에요."],"春":["형성","햇볕(日)을 받아 풀이 돋아나는 봄이에요."],"出":["상형","발(止)이 움집 밖으로 나가는 모양이에요."],"便":["회의","사람(亻)이 불편한 것을 고쳐(更) 편하게 한다는 뜻이에요."],"夏":["상형","머리·몸·발을 드러낸 사람의 모습으로, 더운 여름을 뜻해요."],"花":["형성","풀(艹)에 化(화) 소리를 더해 꽃을 나타냈어요."],"休":["회의","사람(亻)이 나무(木) 그늘에 기대어 쉬는 모습이에요."]};
 var HIDX={};H8.forEach(function(h,i){HIDX[h[0]]=i});
 var GRADES=HGR.map(function(g){return g[0]}),GB=[0];HGR.forEach(function(g,i){GB.push(GB[i]+g[1])});
-function gradeOf(c){var i=HIDX[c];for(var g=GB.length-2;g>=0;g--)if(i>=GB[g])return g;return 0}function hzGrade(){return gradeOf(H8[Math.max(0,Math.min(H8.length,S.hz.unlocked)-1)][0])}function gradeCap(g){return GB[g+1]-GB[g]}function gradeDone(){var g=GB.indexOf(S.hz.unlocked-5);return g>0?GRADES[g-1]+(GRADES[g-1].indexOf('Ⅱ')>=0?'를':'을')+' 마쳤어요! '+GRADES[g]+' 한자 나무가 새로 열렸어요.':'새 한자 5자가 열렸어요.'}var TREEG=null;
+function gradeOf(c){var i=HIDX[c];for(var g=GB.length-2;g>=0;g--)if(i>=GB[g])return g;return 0}function hzGrade(){return gradeOf(H8[Math.max(0,Math.min(H8.length,S.hz.unlocked)-1)][0])}function gradeCap(g){return GB[g+1]-GB[g]}function gradeDone(){var d=S.hz.done_;if(d!=null){S.hz.done_=null;return GRADES[d]+(GRADES[d].indexOf('Ⅱ')>=0?'를':'을')+' 마쳤어요! '+GRADES[S.hz.cg]+' 한자 나무가 열렸어요.'}return '새 한자 5자가 열렸어요.'}var TREEG=null;
 
 var KID=138, PER=6, ROUND=6;
 var RARE_CHANCE=.15, RARE_PERFECT=.3, RARE_PITY=10; // 기본 15%, 6문제를 한 번에 다 맞힌 판은 30%, 10번 안에 한 번은 반드시
@@ -3448,7 +3451,8 @@ try{
 }catch(e){}
 function normS(){
 if(!S.en)S.en=blank({mean:1,tiles:1,spell:1});if(!S.en.p)S.en.p={};if(!S.en.sr)S.en.sr={};
-if(!S.hz.m)S.hz.m={};if(!S.hz.unlocked)S.hz.unlocked=10;if(S.onb==null)S.onb=TS0?1:0;if(!S.hz.seen){S.hz.seen={};if(TS0)H8.slice(0,S.hz.unlocked).forEach(function(h){S.hz.seen[h[0]]=1})}
+if(!S.hz.m)S.hz.m={};if(!S.hz.unlocked)S.hz.unlocked=10;if(S.onb==null)S.onb=TS0?1:0;if(!S.hz.gu){S.hz.gu={};var u_=Math.min(S.hz.unlocked,H8.length);for(var g_=0;g_<GB.length-1;g_++){var n_=Math.max(0,Math.min(GB[g_+1]-GB[g_],u_-GB[g_]));if(n_>0)S.hz.gu[g_]=n_}S.hz.cg=gradeOf(H8[Math.max(0,u_-1)][0]);S.hz.base=GB[S.hz.cg]}
+if(!S.hz.seen){S.hz.seen={};if(TS0)H8.slice(0,S.hz.unlocked).forEach(function(h){S.hz.seen[h[0]]=1})}
 if(S.sun==null)S.sun=0;if(!S.own)S.own={};if(!S.equip)S.equip={pot:'pot',friend:''};
 ['math','hz'].forEach(function(k){if(S[k].water==null)S[k].water=0});
 if(!S.path)S.path={step:0,prog:0,walk:0,char:''};
@@ -4663,19 +4667,21 @@ function unitSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','
   var g=curGrade(),gr=el('div','gradechips');[1,2,3,4,5,6].forEach(function(n){var ok=UNITS.some(function(u){return u.g===n});var b=el('button','catchip'+(n===g?' on':''),GRADE_NAMES[n]+(ok?'':' (준비 중)'));b.disabled=!ok;b.onclick=function(){var was=curGrade();S.grade=n;S.uoff={};save();if(n!==was){hideSheet();showSheet('good','blossom',GRADE_NAMES[n]+' 시작','실력 알아보기를 할까요?','이 학년 단원 문제 10개를 풀어 시작 단계를 정해요. 틀려도 괜찮아요. 건너뛰면 모두 쉬운 단계부터 시작해요.','알아보기',mathLevelTest);var sk=el('button','cta light','건너뛰기');sk.onclick=function(){hideSheet();unitSheet()};sheet.firstChild.appendChild(sk)}else unitSheet()};gr.appendChild(b)});inn.appendChild(gr);
   var off=unitsOff(),list=el('div','unitlist');[1,2].forEach(function(sem){var us=UNITS.filter(function(u){return u.g===g&&u.s===sem});if(!us.length)return;list.appendChild(el('h4',null,g+'학년 '+sem+'학기'));us.forEach(function(u){var row=el('label','unitrow'+(off[u.id]?' off':''));var cb=document.createElement('input');cb.type='checkbox';cb.checked=!off[u.id];cb.onchange=function(){if(cb.checked)delete off[u.id];else off[u.id]=1;row.classList.toggle('off',!cb.checked);save()};row.appendChild(cb);var tx=el('span');tx.appendChild(el('b',null,u.name));tx.appendChild(el('small',null,u.code));row.appendChild(tx);list.appendChild(row)})});inn.appendChild(list);
   inn.appendChild(el('p','sub','꺼진 단원의 문제는 나오지 않아요. 학교 진도에 맞춰 켜고 끄세요. 문제 난이도는 풀면서 저절로 맞춰져요.'));
-  inn.appendChild(el('h4','hzgh','한자 시작 급수'));var hg=hzGrade(),hc=el('div','gradechips hzchips');GRADES.forEach(function(gn,gi){var b=el('button','catchip'+(gi===hg?' on':'')+(gi<hg?' past':''),gn);if(gi<hg)b.disabled=true;b.onclick=function(){if(gi<=hg)return;hideSheet();showSheet('good','blossom',gn+'부터 시작','한자 '+GB[gi]+'자를 건너뛸까요?',GRADES[gi-1]+'까지 '+GB[gi]+'자는 이미 아는 것으로 열매를 달아 두고, '+gn+' 한자부터 새로 배워요. 앞 급수 한자도 가끔 복습으로 나와요.','건너뛰기',function(){hzSkipTo(gi);hideSheet();unitSheet()});var no=el('button','cta light','취소');no.onclick=function(){hideSheet();unitSheet()};sheet.firstChild.appendChild(no)};hc.appendChild(b)});inn.appendChild(hc);
-  inn.appendChild(el('p','sub','지금 '+GRADES[hg]+' 공부 중 · '+Math.min(S.hz.unlocked,H8.length)+'자 열림. 이미 급수 시험을 봤다면 다음 급수부터 시작할 수 있어요. 앞으로만 건너뛸 수 있어요.'));
+  inn.appendChild(el('h4','hzgh','한자 급수'));var hg=S.hz.cg,hc=el('div','gradechips hzchips');GRADES.forEach(function(gn,gi){var gu=S.hz.gu[gi]||0,b=el('button','catchip'+(gi===hg?' on':'')+(gu>=gradeCap(gi)?' done':gu?' some':''),gn);b.onclick=function(){if(gi===hg)return;hzSelect(gi);unitSheet()};hc.appendChild(b)});inn.appendChild(hc);
+  inn.appendChild(el('p','sub','지금 '+GRADES[hg]+' 공부 중 · 이 급수 '+(S.hz.gu[hg]||0)+' / '+gradeCap(hg)+'자 열림. 학년 고르듯이 공부할 급수를 골라요. 다른 급수로 바꿔도 진도는 급수마다 그대로 남아요.'));
   var ra=el('button','cta light onbagain','실력 알아보기 다시 하기 (수학·영어·한자)');ra.onclick=function(){hideSheet();setTimeout(onbBegin,250)};inn.appendChild(ra);var c=el('button','cta','닫기');c.onclick=hideSheet;inn.appendChild(c);sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;requestAnimationFrame(function(){sheet.className='sheet good show'})}
 
 
 // ================= 한자 퍼즐 =================
-function hzPool(){return H8.slice(0,S.hz.unlocked)}
+function hzPool(){return H8.slice(S.hz.base||0,S.hz.unlocked)}
 var WILT_DAYS=4;
 function hzSeen(){if(!S.hz.seen)S.hz.seen={};var n=Date.now();hzOrder().forEach(function(c){if(!S.hz.seen[c])S.hz.seen[c]=n});return S.hz.seen}
 function isWilted(c){var t=hzSeen()[c];return !!t&&(Date.now()-t)/864e5>=WILT_DAYS}
 function wiltedList(){return hzOrder().filter(isWilted)}
-function hzSkipTo(g){var base=GB[g],m=S.hz.m,ord=hzOrder();S.hz.seen=S.hz.seen||{};for(var i=0;i<base;i++){var c=H8[i][0];S.hz.seen[c]=1;if((m[c]||0)<2)m[c]=2;if(ord.indexOf(c)<0)ord.push(c)}S.hz.base=base;S.hz.unlocked=Math.max(S.hz.unlocked,Math.min(H8.length,base+10));TREEG=null;save()}
-function hzPick(){var b=S.hz.base||0;if(b&&b<S.hz.unlocked&&Math.random()<.85)return H8.slice(b,S.hz.unlocked);return hzPool()}
+// 급수 고르기 (학년 고르듯이): 급수마다 열린 글자 수(gu)를 따로 기억하고, 고른 급수 한자만 문제로 나와요
+function hzSync(){var g=S.hz.cg;if(g==null)return;S.hz.gu[g]=Math.max(0,Math.min(gradeCap(g),S.hz.unlocked-GB[g]))}
+function hzSelect(g){hzSync();S.hz.cg=g;S.hz.base=GB[g];var n=S.hz.gu[g]||Math.min(10,gradeCap(g));S.hz.gu[g]=n;S.hz.unlocked=GB[g]+n;TREEG=null;TREEP=null;save()}
+function hzPick(){return hzPool()}
 function pickChar(){
   if(FORCE&&FORCE.t==='h'){var fk=FORCE.k;FORCE=null;if(HIDX[fk]!=null)return H8[HIDX[fk]]}
   var wl=wiltedList();if(wl.length&&Math.random()<.5){var c=wl[Math.floor(Math.random()*wl.length)];if(HIDX[c]!=null)return H8[HIDX[c]]}
@@ -4788,7 +4794,7 @@ function hzCards(list,opts,done){opts=opts||{};var idx=0;
     var card=el('div','hzcard');sc.appendChild(card);
     card.appendChild(el('small','hzctag',opts.learn?'새 한자 '+(idx+1)+' / '+list.length:GRADES[gradeOf(c)]+' 한자'));
     var bw=Math.min(260,innerWidth-110),slot=el('div','hzbslot');card.appendChild(slot);var B=null;
-    var hn=el('div','hzcname');hn.appendChild(el('b',null,h[1]));hn.appendChild(el('b','eum',h[2]));var sp=el('button','enspeak');sp.innerHTML=SPEAK_SVG;sp.onclick=function(){ttsKo(h[1]+' '+h[2])};hn.appendChild(sp);card.appendChild(hn);
+    var hn=el('div','hzcname');hn.appendChild(el('b',null,h[1]));hn.appendChild(el('b','eum',h[2]));card.appendChild(hn);
     if(h[5]&&h[5].length)card.appendChild(el('p','hzcalt','다른 뜻: '+h[5].map(function(a){return a[0]+' '+a[1]}).join(', ')));
     var meta=el('div','hzcmeta');[['급수',GRADES[gradeOf(c)]],['부수',h[3]||'-'],['총획',(h[4]||'-')+'획']].forEach(function(m){var d=el('span');d.appendChild(el('small',null,m[0]));d.appendChild(el('b',null,m[1]));meta.appendChild(d)});card.appendChild(meta);
     var og=HORIGIN[c];if(og){var o=el('div','hzcorigin');o.appendChild(el('em',null,og[0]));o.appendChild(el('p',null,og[1]));card.appendChild(o)}
@@ -4800,7 +4806,7 @@ function hzCards(list,opts,done){opts=opts||{};var idx=0;
     app.appendChild(sc);
     strokeLoad(c,function(d){if(!sc.isConnected)return;B=hzBoard(c,d,bw);window.__hzB=B;slot.appendChild(B.el);
       if(B.font){bPlay.disabled=bTrace.disabled=true;msg.textContent='이 글자는 아직 획순 자료가 없어요.';return}
-      msg.textContent='총 '+d[0].length+'획';hzAnimate(B);if(opts.learn&&idx===0)setTimeout(function(){ttsKo(h[1]+' '+h[2])},300);
+      msg.textContent='총 '+d[0].length+'획';hzAnimate(B);
       bPlay.onclick=function(){if(B.stopTrace)B.stopTrace();msg.textContent='총 '+d[0].length+'획';hzAnimate(B)};
       bTrace.onclick=function(){if(B.stopTrace)B.stopTrace();msg.textContent='회색 글자 위를 손가락으로 한 획씩 따라 써 봐요. (1 / '+d[0].length+'획)';
         hzTrace(B,function(ok){msg.textContent=ok?'잘 썼어요!':'';if(ok){SND.good&&SND.good(0);burst&&burst(innerWidth/2,innerHeight*.35,18,false)}},function(k,n){if(k<n)msg.textContent='좋아요! 다음 획 ('+(k+1)+' / '+n+'획)'})}})}
@@ -4819,9 +4825,9 @@ function hzLevelTest(){tone([523,659],'sine',.1);var q=[];for(var i=0;i<GRADES.l
   G={sub:SUBJ.hz,re:[],q:q,n:q.length,idx:0,got:0,first:0,startPieces:0,ups:[],combo:0,drops:0,gain:1,newFruits:[],sunGot:0,quiet:true,lvl:true,lvh:true,lres:[],hzg:0,hzok:0};play()}
 // 급수마다 2문제. 하나라도 틀리면 그 급수에서 멈추고, 둘 다 맞히면 다음 급수로
 function hzLvlStep(){if(!G.lres[G.idx]){G.hzStop=G.hzg;G.n=G.idx+1;return}G.hzok++;if(G.hzok>=2){G.hzg++;G.hzok=0;if(G.hzg>=GRADES.length){G.hzStop=GRADES.length-1;G.n=G.idx+1}}}
-function hzLvlEnd(){document.body.classList.remove('qmode');var g=G.hzStop!=null?G.hzStop:G.hzg;G=null;if(g>0&&g>hzGrade())hzSkipTo(g);save();
+function hzLvlEnd(){document.body.classList.remove('qmode');var g=G.hzStop!=null?G.hzStop:G.hzg;G=null;if(g!==S.hz.cg)hzSelect(g);save();
   if(ONB){ONB.hz=g;onbNext();return}
-  showSheet('good','blossom','한자 급수 알아보기',GRADES[g]+' 한자부터 시작해요',g>0?GRADES[g-1]+'까지는 열매를 달아 두었어요. 가끔 복습으로 나와요.':'처음부터 차근차근 시작해요.','좋아요',home)}
+  showSheet('good','blossom','한자 급수 알아보기',GRADES[g]+' 한자부터 시작해요','언제든 나의 기록에서 다른 급수로 바꿀 수 있어요.','좋아요',home)}
 function onbSheet(build){var inn=sheet.firstChild;inn.innerHTML='';build(inn);sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=null;requestAnimationFrame(function(){sheet.className='sheet good show'})}
 function onbStart(){if(G||document.querySelector('.sheet.show'))return;
   onbSheet(function(inn){var hd=el('div','hd');hd.appendChild(img('blossom'));var t=el('div');t.appendChild(el('small',null,'나의 섬에 온 걸 환영해요'));t.appendChild(el('h3',null,'몇 학년이에요?'));hd.appendChild(t);inn.appendChild(hd);
@@ -4836,8 +4842,11 @@ function onbBegin(){ONB={step:0,res:{},fresh:S.onb===0,keepCustom:S.onb!==0&&enT
 function onbNext(){ONB.step++;var s=ONB.step,g=curGrade();if(s>1)home();
   if(s===1)showSheet('good','blossom','실력 알아보기 1/3','수학','수학 문제 8개를 풀어요.','시작',mathLevelTest);
   else if(s===2)showSheet('good','k3_hive','실력 알아보기 2/3','영어',g<=2?'알파벳과 쉬운 단어 문제 8개를 풀어요.':'알파벳과 단어 문제 12개를 풀어요.','시작',function(){enLevelTest(g<=2)});
-  else if(s===3)showSheet('good','k3_tree','실력 알아보기 3/3','한자','8급부터 한 급수에 2문제씩 풀어요. 하나라도 틀리면 거기서 끝나요.','시작',hzLevelTest);
+  else if(s===3){showSheet('good','k3_tree','실력 알아보기 3/3','한자','8급부터 한 급수에 2문제씩 풀어요. 하나라도 틀리면 거기서 끝나요. 공부할 급수를 이미 정했다면 직접 골라도 돼요.','시작',hzLevelTest);var pk=el('button','cta light','급수 직접 고르기');pk.onclick=function(){hideSheet();onbHzPick()};sheet.firstChild.appendChild(pk)}
   else onbDone()}
+function onbHzPick(){onbSheet(function(inn){var hd=el('div','hd');hd.appendChild(img('k3_tree'));var t=el('div');t.appendChild(el('small',null,'실력 알아보기 3/3'));t.appendChild(el('h3',null,'공부할 한자 급수는?'));hd.appendChild(t);inn.appendChild(hd);
+  var gr=el('div','gradechips hzchips');GRADES.forEach(function(gn,gi){var b=el('button','catchip',gn);b.onclick=function(){hideSheet();hzSelect(gi);ONB.hz=gi;onbNext()};gr.appendChild(b)});inn.appendChild(gr);
+  var back=el('button','cta light','문제로 알아볼래요');back.onclick=function(){hideSheet();hzLevelTest()};inn.appendChild(back)})}
 var EN_TRACK_NAMES={ph:'파닉스부터',a:'3~4학년 단어',b:'5~6학년 단어',s:'문장·대화'};
 function onbDone(){var r=ONB,g=curGrade();ONB=null;save();
   onbSheet(function(inn){var hd=el('div','hd rw');hd.appendChild(img('blossom'));var t=el('div');t.appendChild(el('small',null,'실력 알아보기 끝'));t.appendChild(el('h3',null,'시작 준비가 됐어요!'));hd.appendChild(t);inn.appendChild(hd);
@@ -4998,7 +5007,7 @@ function enTrackBar(){var w=el('div','entracks');var cur=enTrack()!=='w'?enTrack
 function hzMastered(){var n=0;H8.forEach(function(h){if((S.hz.m[h[0]]||0)>=2)n++});return n}
 function hzUnlockCheck(){
   var pool=H8.slice(S.hz.base||0,S.hz.unlocked),n=0;pool.forEach(function(h){if((S.hz.m[h[0]]||0)>=2)n++});
-  if(S.hz.unlocked<H8.length&&n>=pool.length*.8){S.hz.unlocked=Math.min(H8.length,S.hz.unlocked+5);return true}
+  if(S.hz.unlocked<H8.length&&n>=pool.length*.8){S.hz.unlocked=Math.min(H8.length,S.hz.unlocked+5);var g=gradeOf(H8[S.hz.unlocked-1][0]);if(g!==S.hz.cg){S.hz.done_=S.hz.cg;S.hz.gu[S.hz.cg]=gradeCap(S.hz.cg);S.hz.cg=g;S.hz.base=GB[g];S.hz.unlocked=GB[g]+Math.max(5,S.hz.gu[g]||0)}hzSync();return true}
   return false;
 }
 
@@ -5680,7 +5689,7 @@ var FRUIT_POS=(function(){var C=K3.canopy,pts=[],sx=.08,sy=.044;
 var FPC={50:FRUIT_POS};function fruitPos(N){if(FPC[N])return FPC[N];var C=K3.canopy,pts=[],k=Math.sqrt(50/N),sx=.08*k,sy=.044*k;for(var row=-24;row<=24;row++)for(var col=-24;col<=24;col++){var x=C[0]+col*sx+(row%2?sx/2:0),y=C[1]+row*sy,dx=(x-C[0])/C[2],dy=(y-C[1])/C[3];if(dx*dx+dy*dy<=1.2)pts.push([x,y,dx*dx+dy*dy])}pts.sort(function(a,b){return a[2]-b[2]});return FPC[N]=pts.slice(0,N)}
 // 큰 급수(100자 넘게)는 100자씩 나무를 나눠요
 var TREEP=null;function partOf(c){return Math.floor((HIDX[c]-GB[gradeOf(c)])/100)}function partsOf(g){return Math.ceil(gradeCap(g)/100)}
-function partNow(g){if(g<hzGrade())return partsOf(g)-1;var u=Math.min(H8.length,S.hz.unlocked)-1;return Math.max(0,Math.floor((u-GB[g])/100))}
+function partNow(g){return Math.max(0,Math.floor(((S.hz.gu&&S.hz.gu[g])||1)-1)/100|0)}
 function treeEl(w,opts){
   opts=opts||{};var gg=opts.grade!=null?opts.grade:(function(){var g=hzGrade();while(g>0&&!hzOrder().some(function(c){return gradeOf(c)===g}))g--;return g})(),big=gradeCap(gg)>100,pt=big?(opts.part!=null?opts.part:partNow(gg)):0,LIST=hzOrder().filter(function(c){return gradeOf(c)===gg&&(!big||partOf(c)===pt)}),n=LIST.length,box=el('div','treebox');
   var cap=big?Math.min(100,gradeCap(gg)-pt*100):gradeCap(gg),FP=fruitPos(cap),sc=n===0?0:(opts.labels||opts.full?1:Math.min(1,.55+.45*n/cap));
@@ -5704,9 +5713,9 @@ function treeScreen(fromRound){if(fromRound)TREEP=null;
   var sc=el('div','screen'),top=el('div','qtop');
   var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=fromRound?'<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>':BACK_SVG;back.onclick=home;
   top.appendChild(back);sc.appendChild(top);
-  if(TREEG==null||TREEG>hzGrade())TREEG=hzGrade();var tg=TREEG;
+  if(TREEG==null||!(TREEG===S.hz.cg||S.hz.gu[TREEG]>0))TREEG=S.hz.cg;var tg=TREEG;
   var n=hzOrder().filter(function(ch){return gradeOf(ch)===tg}).length,c=el('div','center treecenter');
-  if(S.hz.unlocked>50){var seg=el('div','seg treeseg');GRADES.forEach(function(gn,gi){if(gi>hzGrade())return;var b=el('button',gi===tg?'on':null,gn+' 나무');b.onclick=function(){TREEG=gi;TREEP=null;treeScreen(fromRound)};seg.appendChild(b)});sc.appendChild(seg);setTimeout(function(){var o=seg.querySelector('.on');if(o)seg.scrollLeft=o.offsetLeft-seg.clientWidth/2+o.offsetWidth/2},0)}
+  if(Object.keys(S.hz.gu).length>1){var seg=el('div','seg treeseg');GRADES.forEach(function(gn,gi){if(gi!==S.hz.cg&&!(S.hz.gu[gi]>0))return;var b=el('button',gi===tg?'on':null,gn+' 나무');b.onclick=function(){TREEG=gi;TREEP=null;treeScreen(fromRound)};seg.appendChild(b)});sc.appendChild(seg);setTimeout(function(){var o=seg.querySelector('.on');if(o)seg.scrollLeft=o.offsetLeft-seg.clientWidth/2+o.offsetWidth/2},0)}
   if(gradeCap(tg)>100){var pn=partNow(tg);if(TREEP==null||TREEP>pn)TREEP=pn;var ps=el('div','seg treeseg treeparts');for(var pi=0;pi<=pn;pi++)(function(pi){var b=el('button',pi===TREEP?'on':null,(pi*100+1)+'~'+Math.min(gradeCap(tg),(pi+1)*100));b.onclick=function(){TREEP=pi;treeScreen(fromRound)};ps.appendChild(b)})(pi);sc.appendChild(ps);setTimeout(function(){var o=ps.querySelector('.on');if(o)ps.scrollLeft=o.offsetLeft-ps.clientWidth/2+o.offsetWidth/2},0)}
   if(fromRound&&G){
     var nf=G.newFruits||[];
