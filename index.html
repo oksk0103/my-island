@@ -7225,7 +7225,10 @@ function dbgSave(){try{localStorage.setItem('pot-dbg',JSON.stringify(DBG))}catch
 function dbgSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('light_bulb'));var t=el('div');t.appendChild(el('small',null,'개발자 메뉴'));t.appendChild(el('h3',null,'테스트용 (아이는 쓰지 않아요)'));hd.appendChild(t);inn.appendChild(hd);
   var st=el('p',null,'날짜 이동 '+(DBG.off>0?'+':'')+DBG.off+'일 · 시각 '+(DBG.hour==null?'실제':DBG.hour+'시')+' · 햇살 '+S.sun+' · 보석 '+avS().gem);inn.appendChild(st);
   function row(items){var r=el('div','dockrow');items.forEach(function(x){var b=el('button','cta light',x[0]);b.onclick=function(){x[1]();save();dbgSheet()};r.appendChild(b)});inn.appendChild(r)}
-  row([['햇살 +100',function(){S.sun+=100}],['보석 +3',function(){avS().gem+=3}]]);
+  row([['햇살 +100',function(){S.sun+=100}],['햇살 +1000',function(){S.sun+=1000}]]);
+  row([['보석 +3',function(){avS().gem+=3}],['보석 +50',function(){avS().gem+=50}]]);
+  row([['장비 모두 ★1',function(){var a=avS();AV_ITEMS.forEach(function(it){if(!a.own[it.id])a.own[it.id]=1})}],['장비 모두 ★3',function(){var a=avS();AV_ITEMS.forEach(function(it){a.own[it.id]=3})}]]);
+  row([['장비·보석 처음으로',function(){var a=avS();a.own={};a.eqc={};a.gem=0;AVC={}}],['꾸미기 화면 열기',function(){setTimeout(function(){hideSheet();avScreen()},0)}]]);
   row([['날짜 +1일',function(){DBG.off++;dbgSave()}],['날짜 +7일',function(){DBG.off+=7;dbgSave()}]]);
   row([['날짜 원래대로',function(){DBG.off=0;dbgSave()}],['시각: 낮/저녁/밤',function(){DBG.hour=DBG.hour==null?18:DBG.hour===18?21:DBG.hour===21?11:null;dbgSave()}]]);
   row([['낚시 티켓 +1',function(){fishS().tk++}],['물방울 +5',function(){S.math.water=(S.math.water||0)+5}]]);

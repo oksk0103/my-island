@@ -1,5 +1,5 @@
 // 나의 섬 — 오프라인 캐시 (먼저 캐시로 바로 열고, 뒤에서 새 버전을 받아 둬요)
-var CACHE='island-3fb6d1331a';
+var CACHE='island-a3cf7723ca';
 var AUDC='island-aud-1';
 var FILES=['./','./index.html','./icon.png'];
 self.addEventListener('install',function(e){e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(FILES)}).then(function(){return self.skipWaiting()}))});
