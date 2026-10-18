@@ -3452,7 +3452,8 @@ try{
 function normS(){
 if(!S.en)S.en=blank({mean:1,tiles:1,spell:1});if(!S.en.p)S.en.p={};if(!S.en.sr)S.en.sr={};
 if(!S.hz.m)S.hz.m={};if(!S.hz.unlocked)S.hz.unlocked=10;if(S.onb==null)S.onb=TS0?1:0;if(!S.hz.gu){S.hz.gu={};var u_=Math.min(S.hz.unlocked,H8.length);for(var g_=0;g_<GB.length-1;g_++){var n_=Math.max(0,Math.min(GB[g_+1]-GB[g_],u_-GB[g_]));if(n_>0)S.hz.gu[g_]=n_}S.hz.cg=gradeOf(H8[Math.max(0,u_-1)][0]);S.hz.base=GB[S.hz.cg]}
-if(!S.hz.seen){S.hz.seen={};if(TS0)H8.slice(0,S.hz.unlocked).forEach(function(h){S.hz.seen[h[0]]=1})}
+if(S.hz.seen){var now_=Date.now();for(var k_ in S.hz.seen)if(!(S.hz.seen[k_]>1e12))S.hz.seen[k_]=now_}
+if(!S.hz.learned){S.hz.learned={};if(TS0)for(var g2 in S.hz.gu)H8.slice(GB[g2],GB[g2]+S.hz.gu[g2]).forEach(function(h){S.hz.learned[h[0]]=1})}
 if(S.sun==null)S.sun=0;if(!S.own)S.own={};if(!S.equip)S.equip={pot:'pot',friend:''};
 ['math','hz'].forEach(function(k){if(S[k].water==null)S[k].water=0});
 if(!S.path)S.path={step:0,prog:0,walk:0,char:''};
@@ -4684,7 +4685,7 @@ function hzSelect(g){hzSync();S.hz.cg=g;S.hz.base=GB[g];var n=S.hz.gu[g]||Math.m
 function hzPick(){return hzPool()}
 function pickChar(){
   if(FORCE&&FORCE.t==='h'){var fk=FORCE.k;FORCE=null;if(HIDX[fk]!=null)return H8[HIDX[fk]]}
-  var wl=wiltedList();if(wl.length&&Math.random()<.5){var c=wl[Math.floor(Math.random()*wl.length)];if(HIDX[c]!=null)return H8[HIDX[c]]}
+  var wl=wiltedList().filter(function(c){return gradeOf(c)===S.hz.cg});if(wl.length&&Math.random()<.5){var c=wl[Math.floor(Math.random()*wl.length)];if(HIDX[c]!=null)return H8[HIDX[c]]}
   var pool=hzPick(),m=S.hz.m,tot=0,w=pool.map(function(h){var x=1/(1+(m[h[0]]||0)*1.5);tot+=x;return x}),r=Math.random()*tot;
   for(var i=0;i<pool.length;i++){r-=w[i];if(r<=0)return pool[i]}
   return pool[pool.length-1];
@@ -4715,7 +4716,7 @@ var LOOKALIKE=[['問','聞','間','開'],['住','注','主','往'],['材','財',
 function genFind(){
   var h=pickChar(),grp=null;
   LOOKALIKE.forEach(function(g){if(g.indexOf(h[0])>=0)grp=g});
-  var pool=(grp||[]).filter(function(c){return c!==h[0]&&HIDX[c]!=null&&HIDX[c]<S.hz.unlocked});
+  var pool=(grp||[]).filter(function(c){return c!==h[0]&&HIDX[c]!=null&&HIDX[c]>=(S.hz.base||0)&&HIDX[c]<S.hz.unlocked});
   var opts=[h[0]].concat(pool.slice(0,3));
   others(h,3,function(x){return x[0]}).forEach(function(x){if(opts.length<4&&opts.indexOf(x[0])<0)opts.push(x[0])});
   opts=shuffle(opts);
@@ -4802,7 +4803,7 @@ function hzCards(list,opts,done){opts=opts||{};var idx=0;
     var tools=el('div','hzctools'),bPlay=el('button','cta light','획순 보기'),bTrace=el('button','cta light','따라 쓰기');tools.appendChild(bPlay);tools.appendChild(bTrace);card.appendChild(tools);
     var msg=el('p','hzcmsg','');card.appendChild(msg);
     var next=el('button','cta green',idx<list.length-1?'다음 한자':(opts.learn?'다 배웠어요':'닫기'));sc.appendChild(next);
-    next.onclick=function(){if(B&&B.stopTrace)B.stopTrace();if(opts.learn){S.hz.seen=S.hz.seen||{};S.hz.seen[c]=1;save()}if(idx<list.length-1){idx++;show()}else{document.body.classList.remove('qmode');done?done():(opts.back||home)()}};
+    next.onclick=function(){if(B&&B.stopTrace)B.stopTrace();if(opts.learn){S.hz.learned[c]=1;save()}if(idx<list.length-1){idx++;show()}else{document.body.classList.remove('qmode');done?done():(opts.back||home)()}};
     app.appendChild(sc);
     strokeLoad(c,function(d){if(!sc.isConnected)return;B=hzBoard(c,d,bw);window.__hzB=B;slot.appendChild(B.el);
       if(B.font){bPlay.disabled=bTrace.disabled=true;msg.textContent='이 글자는 아직 획순 자료가 없어요.';return}
@@ -4812,9 +4813,9 @@ function hzCards(list,opts,done){opts=opts||{};var idx=0;
         hzTrace(B,function(ok){msg.textContent=ok?'잘 썼어요!':'';if(ok){SND.good&&SND.good(0);burst&&burst(innerWidth/2,innerHeight*.35,18,false)}},function(k,n){if(k<n)msg.textContent='좋아요! 다음 획 ('+(k+1)+' / '+n+'획)'})}})}
   show()}
 // 아직 카드로 배우지 않은 열린 한자 (한 번에 5자까지)
-function hzUnseen(){var sn=S.hz.seen||{},out=[];var L=H8.slice(S.hz.base||0,S.hz.unlocked);for(var i=0;i<L.length&&out.length<5;i++)if(!sn[L[i][0]])out.push(L[i][0]);return out}
+function hzUnseen(){var sn=S.hz.learned||{},out=[];var L=H8.slice(S.hz.base||0,S.hz.unlocked);for(var i=0;i<L.length&&out.length<5;i++)if(!sn[L[i][0]])out.push(L[i][0]);return out}
 function hzLearn(list,go){showSheet('good','k3_tree','새 한자 배우기',list.length+'자를 먼저 배워요','카드로 뜻과 소리를 익히고, 획순을 보고 따라 써 봐요. 다 배우면 바로 문제를 풀어요.','배우기',function(){hzCards(list,{learn:true,back:home},go)});
-  var sk=el('button','cta light','바로 문제 풀기');sk.onclick=function(){hideSheet();S.hz.seen=S.hz.seen||{};list.forEach(function(c){S.hz.seen[c]=1});save();go()};sheet.firstChild.appendChild(sk)}
+  var sk=el('button','cta light','바로 문제 풀기');sk.onclick=function(){hideSheet();list.forEach(function(c){S.hz.learned[c]=1});save();go()};sheet.firstChild.appendChild(sk)}
 
 // ================= 처음 시작: 학년 고르기 → 실력 알아보기 → 시작 단계 =================
 var ONB=null;
@@ -6265,13 +6266,13 @@ function fishPool(){var dn=dnum(),en={},hz={},Hm={};H8.forEach(function(h){Hm[h[
   var L=[];Object.keys(en).forEach(function(w){L.push({t:'e',k:w,c:en[w]})});Object.keys(hz).forEach(function(h){L.push({t:'h',k:h,c:hz[h]})});
   L=shuffle(L).sort(function(a,b){return b.c-a.c});
   var learnedE=EN.words.filter(function(w){return enBits(w.w)>0}).map(function(w){return w.w}),learnedH=hzOrder().slice();
-  if(learnedE.length<4)learnedE=enJar().ws.slice();if(learnedH.length<4)learnedH=H8.slice(0,Math.max(10,S.hz.unlocked||10)).map(function(h){return h[0]});
+  if(learnedE.length<4)learnedE=enJar().ws.slice();if(learnedH.length<4)learnedH=hzPool().map(function(h){return h[0]});
   var fill=shuffle(learnedE.map(function(w){return {t:'e',k:w}}).concat(learnedH.map(function(h){return {t:'h',k:h}})));
   var out=[],seen={};L.concat(fill).forEach(function(x){if(out.length<FISH_N&&!seen[x.t+x.k]){seen[x.t+x.k]=1;out.push(x)}});
   return out.map(function(x){
     if(x.t==='e'){var w=Em[x.k]||{w:x.k,k:x.k},others=shuffle(EN.words.filter(function(o){return o.w!==w.w&&o.k!==w.k})).slice(0,3).map(function(o){return o.w});
       return {t:'e',key:w.w,ask:'‘'+w.k+'’',sub:'영어 단어',opts:shuffle([w.w].concat(others)),ans:w.w}}
-    var h=Hm[x.k],ho=shuffle(H8.slice(0,Math.max(20,S.hz.unlocked||20)).filter(function(o){return o[0]!==h[0]&&o[1]!==h[1]})).slice(0,3).map(function(o){return o[0]});
+    var h=Hm[x.k],ho=shuffle(H8.slice(GB[gradeOf(h[0])],GB[gradeOf(h[0])+1]).filter(function(o){return o[0]!==h[0]&&o[1]!==h[1]})).slice(0,3).map(function(o){return o[0]});
     return {t:'h',key:h[0],ask:'‘'+h[1]+' '+h[2]+'’',sub:'한자',opts:shuffle([h[0]].concat(ho)),ans:h[0]}})}
 function fishCatchUp(){if(!advLeft().length&&!ADV)fishTicket()}
 
@@ -6918,7 +6919,7 @@ function houseScreen(){
   try{sc.appendChild(weekCard())}catch(e){}
   var sk=el('section','card skills');sk.appendChild(el('h3',null,'나의 실력'));
   [SUBJ.math,SUBJ.hz].forEach(function(sub){
-    sk.appendChild(el('p','lvline',sub.key==='math'?'수학':'한자 · 연습 중인 한자 '+S.hz.unlocked+'자'));
+    sk.appendChild(el('p','lvline',sub.key==='math'?'수학':'한자 · '+GRADES[S.hz.cg]+' 연습 중 '+(S.hz.unlocked-(S.hz.base||0))+'자'));
     Object.keys(sub.types).forEach(function(k){var r=el('div','skill');r.appendChild(el('span',null,sub.types[k]));var d=el('div','dots');var lv=stOf(sub).lv[k]||1;d.setAttribute('aria-label',lv+'단계');for(var i=1;i<=5;i++)d.appendChild(el('i',i<=lv?'on':''));r.appendChild(d);sk.appendChild(r)});
   });
   sc.appendChild(sk);
