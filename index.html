@@ -2704,6 +2704,17 @@ html body .vcalc .vr.ans .slot{width:calc(var(--L) * 40px - 2px);min-width:0;pad
 .wmain strong{font-size:1rem;color:var(--ink)}
 .wmain small{font-size:.75rem;color:var(--ink-2)}
 .wdel{width:34px;height:34px;border-radius:50%;background:none;color:#adb5bd;flex:none}
+/* 카드 넘겨보기: 학습 | 문제 */
+.seg.hzmode{display:flex;margin:0 16px 10px}
+.seg.hzmode button{flex:1}
+.hzquiz{gap:12px;padding:18px 16px 16px}
+.hzqq{margin:0;font-weight:800;color:var(--ink-2);font-size:.95rem;align-self:flex-start}
+.hzqbig{font-size:6.5rem;line-height:1.15;width:100%;text-align:center;background:#f4f6f8;border-radius:18px;padding:18px 0;color:#1d2530}
+.hzqopts{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.hzqc{min-height:58px;padding:8px 10px;border-radius:16px;background:#f1f6fa;box-shadow:0 4px 0 #d3dee8;font-weight:800;font-size:1.05rem;color:#26313d;line-height:1.25;word-break:keep-all;transition:transform .08s,background .12s}
+.hzqc:active{transform:translateY(3px);box-shadow:0 1px 0 #d3dee8}
+.hzqc.right{background:linear-gradient(#5fe0a0,#1fb878);color:#fff;box-shadow:0 4px 0 #0e8a55}
+.hzqc.wrong{background:linear-gradient(#ff9b9b,#f06464);color:#fff;box-shadow:0 4px 0 #c43c3c}
 </style>
 
 <div id="app"></div>
@@ -4831,17 +4842,21 @@ function hzTrace(B,onDone,onStroke){if(B.font){onDone&&onDone(false);return}B.to
 function distToPoly(p,m){var best=1e9;for(var i=1;i<m.length;i++){var a=m[i-1],b=m[i],dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy,t=L?((p[0]-a[0])*dx+(p[1]-a[1])*dy)/L:0;t=Math.max(0,Math.min(1,t));var x=a[0]+t*dx,y=a[1]+t*dy,d=Math.hypot(p[0]-x,p[1]-y);if(d<best)best=d}if(m.length===1)best=Math.hypot(p[0]-m[0][0],p[1]-m[0][1]);return best}
 function hzWordsOf(c,n){return HWORDS.filter(function(w){return w[0].indexOf(c)>=0}).slice(0,n||3)}
 // 카드 화면: list 순서대로 넘겨 봐요. opts.learn이면 '새 한자 배우기'
-var HZHIDE=false;
+var HZHIDE=false,HZMODE='learn';
+// 문제 보기 4개: 같은 급수에서 뜻·음이 겹치지 않게
+function hzQuizOpts(c,list){var h=H8[HIDX[c]],g=gradeOf(c),pool=(list.length>=6?list.map(function(x){return H8[HIDX[x]]}):H8.slice(GB[g],GB[g+1]||H8.length)),o=[h];shuffle(pool.slice()).forEach(function(x){if(o.length<4&&o.every(function(y){return y[1]!==x[1]&&hzName(y)!==hzName(x)}))o.push(x)});return shuffle(o)}
 function hzCards(list,opts,done){opts=opts||{};var idx=opts.start||0;
   function show(){clear();document.body.classList.add('qmode');var c=list[idx],h=H8[HIDX[c]],sc=el('div','screen hzcardscr'),top=el('div','qtop');
     var x=el('button','x');x.setAttribute('aria-label','닫기');x.innerHTML=BACK_SVG;x.onclick=function(){document.body.classList.remove('qmode');(opts.back||home)()};top.appendChild(x);
     if(opts.browse){top.appendChild(el('span','hzccount tnum',(idx+1)+' / '+list.length));var tr=el('div','hzctr');
-      var eye=el('button','tpill'+(HZHIDE?' on':''),HZHIDE?'뜻 보이기':'뜻 가리기');eye.onclick=function(){HZHIDE=!HZHIDE;show()};tr.appendChild(eye);
+      if(HZMODE==='learn'){var eye=el('button','tpill'+(HZHIDE?' on':''),HZHIDE?'뜻 보이기':'뜻 가리기');eye.onclick=function(){HZHIDE=!HZHIDE;show()};tr.appendChild(eye)}
       var st=el('button','wstar'+(S.hz.pin[c]?' on':''),S.hz.pin[c]?'★':'☆');st.setAttribute('aria-label','별표해서 오답노트에 두기');st.onclick=function(){if(S.hz.pin[c])delete S.hz.pin[c];else S.hz.pin[c]=1;save();st.className='wstar'+(S.hz.pin[c]?' on':'');st.textContent=S.hz.pin[c]?'★':'☆'};tr.appendChild(st);top.appendChild(tr)}
-    else{var pr=el('div','hzcprog');list.forEach(function(_,i){pr.appendChild(el('i',i<idx?'done':i===idx?'now':null))});top.appendChild(pr)}sc.appendChild(top);
+    var B=null,ms=null;if(opts.browse){ms=el('div','seg hzmode');[['learn','학습'],['quiz','문제']].forEach(function(m){var b=el('button',HZMODE===m[0]?'on':null,m[1]);b.onclick=function(){if(HZMODE===m[0])return;if(B&&B.stopTrace)B.stopTrace();HZMODE=m[0];show()};ms.appendChild(b)})}
+    else{var pr=el('div','hzcprog');list.forEach(function(_,i){pr.appendChild(el('i',i<idx?'done':i===idx?'now':null))});top.appendChild(pr)}sc.appendChild(top);if(ms)sc.appendChild(ms);
+    if(opts.browse&&HZMODE==='quiz'){hzQuizCard(sc,c,list,idx,function(d){idx+=d;show()},function(){document.body.classList.remove('qmode');(opts.back||home)()});app.appendChild(sc);return}
     var card=el('div','hzcard');sc.appendChild(card);
     card.appendChild(el('small','hzctag',opts.learn?'새 한자 '+(idx+1)+' / '+list.length:GRADES[gradeOf(c)]+' 한자'));
-    var bw=Math.min(260,innerWidth-110),slot=el('div','hzbslot');card.appendChild(slot);var B=null;
+    var bw=Math.min(opts.browse?Math.max(170,Math.min(230,innerHeight-640)):260,innerWidth-110),slot=el('div','hzbslot');card.appendChild(slot);
     var hn=el('div','hzcname');if(opts.browse&&HZHIDE){card.classList.add('hid');hn.onclick=function(){card.classList.remove('hid')}}hn.appendChild(el('b',null,h[1]));hn.appendChild(el('b','eum',h[2]));card.appendChild(hn);
     if(h[5]&&h[5].length)card.appendChild(el('p','hzcalt','다른 뜻: '+h[5].map(function(a){return a[0]+' '+a[1]}).join(', ')));
     var meta=el('div','hzcmeta');[['급수',GRADES[gradeOf(c)]],['부수',h[3]||'-'],['총획',(h[4]||'-')+'획']].forEach(function(m){var d=el('span');d.appendChild(el('small',null,m[0]));d.appendChild(el('b',null,m[1]));meta.appendChild(d)});card.appendChild(meta);
@@ -4864,6 +4879,18 @@ function hzCards(list,opts,done){opts=opts||{};var idx=opts.start||0;
 function hzUnseen(){var sn=S.hz.learned||{},out=[];var L=H8.slice(S.hz.base||0,S.hz.unlocked);for(var i=0;i<L.length&&out.length<5;i++)if(!sn[L[i][0]])out.push(L[i][0]);return out}
 function hzLearn(list,go){showSheet('good','k3_tree','새 한자 배우기',list.length+'자를 먼저 배워요','카드로 뜻과 소리를 익히고, 획순을 보고 따라 써 봐요. 다 배우면 바로 문제를 풀어요.','배우기',function(){hzCards(list,{learn:true,back:home},go)});
   var sk=el('button','cta light','바로 문제 풀기');sk.onclick=function(){hideSheet();list.forEach(function(c){S.hz.learned[c]=1});save();go()};sheet.firstChild.appendChild(sk)}
+
+// 카드 넘겨보기의 '문제' 모드: 지금 글자를 바로 확인해요(물방울·열매 없음, 틀리면 오답노트)
+function hzQuizCard(sc,c,list,idx,go,close){var h=H8[HIDX[c]],done=false,card=el('div','hzcard hzquiz');sc.appendChild(card);
+  card.appendChild(el('p','hzqq','다음 한자의 뜻과 음을 골라요.'));card.appendChild(el('div','hz hzqbig',c));
+  var g=el('div','hzqopts'),msg=el('p','hzcmsg','');card.appendChild(g);card.appendChild(msg);
+  var opts=hzQuizOpts(c,list),btns=[];
+  var nav=el('div','hzcnav'),prev=el('button','cta light','이전'),next=el('button','cta green',idx<list.length-1?'다음 한자':'닫기');prev.disabled=idx===0;prev.onclick=function(){go(-1)};next.onclick=function(){if(idx<list.length-1)go(1);else close()};nav.appendChild(prev);nav.appendChild(next);
+  opts.forEach(function(o){var b=el('button','choice hzqc',hzName(o));btns.push(b);b.onclick=function(){if(done)return;done=true;var ok=o===h;
+    hzWrongMark(c,ok);save();
+    if(ok){b.classList.add('right');SND.good(0);msg.textContent='맞았어요! '+c+' = '+hzName(h);if(idx<list.length-1)setTimeout(function(){if(sc.isConnected)go(1)},900)}
+    else{b.classList.add('wrong');SND.bad();btns[opts.indexOf(h)].classList.add('right');msg.textContent='정답은 '+josa(hzName(h),'이에요','예요')+'. 오답노트에 담았어요.'}};g.appendChild(b)});
+  sc.appendChild(nav)}
 // ================= 한자 오답노트 · 카드 넘겨보기 =================
 // S.hz.wn[c]={n:틀린 횟수,t:마지막으로 틀린 시각,ok:그 뒤 연속으로 맞힌 횟수}
 // 두 번 연속 한 번에 맞히면 오답노트에서 빠져요(별표한 한자는 남아요).
