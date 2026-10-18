@@ -6768,7 +6768,8 @@ function dbgSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','h
   row([['날짜 원래대로',function(){DBG.off=0;dbgSave()}],['시각: 낮/저녁/밤',function(){DBG.hour=DBG.hour==null?18:DBG.hour===18?21:DBG.hour===21?11:null;dbgSave()}]]);
   row([['낚시 티켓 +1',function(){fishS().tk++}],['물방울 +5',function(){S.math.water=(S.math.water||0)+5}]]);
   row([['안내 다시 보기',function(){S.intro={}}],['오늘 기록 지우기',function(){var k=dayKey();S.days=S.days.filter(function(d){return d!==k});S.math.today=S.hz.today=S.en.today='';ADV=null}]]);
-  inn.appendChild(el('p','mtip','날짜·시각을 옮겼으면 테스트가 끝난 뒤 꼭 원래대로 돌려 주세요. 켜져 있는 동안 마을에 "테스트 모드" 표시가 떠요.'));
+  var ob=el('button','cta green','처음 시작 화면 보기');ob.onclick=function(){hideSheet();setTimeout(onbStart,300)};inn.appendChild(ob);
+  inn.appendChild(el('p','mtip','처음 시작 화면은 기록을 지우지 않아요. 학년과 시작 단계만 다시 정하고, 학원 단어장은 그대로 둬요. 날짜·시각을 옮겼으면 테스트가 끝난 뒤 꼭 원래대로 돌려 주세요. 켜져 있는 동안 마을에 "테스트 모드" 표시가 떠요.'));
   var c=el('button','cta','닫고 마을로');c.onclick=function(){hideSheet();villageScreen()};inn.appendChild(c);
   sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;requestAnimationFrame(function(){sheet.className='sheet good show'})}
 
