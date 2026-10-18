@@ -2620,6 +2620,13 @@ html body .qscreen .choice.pic{min-height:96px;padding:8px}
 .onbsteps.res .onbstep span{min-width:44px}
 .onbsteps.res .onbstep em{margin-left:8px}
 .cta.onbagain{margin-top:10px}
+
+/* 세로셈 답 칸: 자리마다 문제 숫자와 같은 너비 */
+.vcalc .vr.ans{position:relative}
+html body .vcalc .vr.ans .slot{width:calc(var(--L) * 40px - 2px);min-width:0;padding:0;height:52px;color:transparent!important;box-sizing:border-box}
+.vcalc .vcells{position:absolute;right:0;top:0;bottom:0;display:flex;gap:2px;align-items:center;pointer-events:none}
+.vcalc .vcells b{width:38px;text-align:center;font-family:var(--game);font-weight:400;font-size:1.9rem;color:#a06a00;font-variant-numeric:tabular-nums}
+.vcalc .vcells.right b{color:#1f8a4c}.vcalc .vcells.wrong b{color:#d9480f}
 </style>
 
 <div id="app"></div>
@@ -4023,7 +4030,10 @@ function scaleSVG(side){var t=side==='L'?-9:side==='R'?9:0;return svgEl(160,90,'
 function vertCalc(box,P,nums,op,opt){opt=opt||{};var w=el('div','vcalc'),L=Math.max.apply(null,nums.map(function(n){return String(n).length}).concat([String(opt.ans||0).length]));
   if(opt.carry){var cr=el('div','vr carry');for(var c=0;c<L;c++)cr.appendChild(el('i'));w.appendChild(cr)}
   nums.forEach(function(n,i){var r=el('div','vr');if(i===nums.length-1)r.appendChild(el('span','op',op));var s=String(n);for(var k=0;k<L-s.length;k++)r.appendChild(el('b','d sp'));for(var k2=0;k2<s.length;k2++)r.appendChild(el('b','d',s[k2]));w.appendChild(r)});
-  w.appendChild(el('div','vline'));var ar=el('div','vr ans');ar.appendChild(P.slot);w.appendChild(ar);box.appendChild(w)}
+  w.appendChild(el('div','vline'));var ar=el('div','vr ans');var sl=P.slot;sl.classList.add('vslot');sl.style.setProperty('--L',L);ar.appendChild(sl);var cells=el('div','vcells');ar.appendChild(cells);
+  function sync(){var t=sl.textContent||'',n=Math.max(L,t.length);sl.style.setProperty('--L',n);cells.className='vcells'+(/\bwrong\b/.test(sl.className)?' wrong':/\bright\b/.test(sl.className)?' right':'');cells.innerHTML='';for(var i=0;i<n;i++){var ch=t[t.length-n+i];cells.appendChild(el('b',null,ch==null?'':ch))}}
+  sync();try{new MutationObserver(sync).observe(sl,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']})}catch(e){}
+  w.appendChild(ar);box.appendChild(w)}
 function pickPz(q,stem,nodes,names,answer,hint,explain){return {mode:'choice',pick:true,q:q,choices:names,nodes:nodes,answer:answer,hint:hint,explain:explain,render:stem||function(){}}}
 function twoNums(box,a,b){var r=el('div','ansrow twon');r.appendChild(el('span','tile',String(a)));r.appendChild(el('span','vs','·'));r.appendChild(el('span','tile',String(b)));box.appendChild(r)}
 function K(n){return ['영','하나','둘','셋','넷','다섯','여섯','일곱','여덟','아홉','열'][n]||String(n)}
