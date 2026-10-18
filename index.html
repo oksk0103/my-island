@@ -5770,7 +5770,7 @@ function treeScreen(fromRound){if(fromRound)TREEP=null;
   sc.appendChild(c);
   var d=el('div','dock');
   if(fromRound){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;d.appendChild(ok)}
-  else{var go=el('button','cta','한자 문제 풀기');go.onclick=function(){startRound(SUBJ.hz)};d.appendChild(go)}
+  else{var go=el('button','cta',GRADES[tg]+' 한자 문제 풀기');go.onclick=function(){if(tg!==S.hz.cg)hzSelect(tg);startRound(SUBJ.hz)};d.appendChild(go)}
   sc.appendChild(d);
   app.appendChild(sc);
 }
