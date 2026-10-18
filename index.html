@@ -2609,6 +2609,7 @@ html body .qscreen .choice.pic{min-height:96px;padding:8px}
 
 .seg.treeparts{margin-top:-2px}
 .seg.treeparts button{font-size:.78rem;padding-left:10px;padding-right:10px}
+.seg.treeseg button .now{font-size:.78em;font-weight:600;opacity:.7}
 /* ===== 처음 시작 ===== */
 .onbgrades{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 8px}
 .onbg{height:64px;border-radius:18px;background:#fff;font-family:var(--game);font-size:1.25rem;color:#26313d;box-shadow:inset 0 0 0 2px #e3e9ee,0 3px 0 #e3e9ee}
@@ -5714,9 +5715,10 @@ function treeScreen(fromRound){if(fromRound)TREEP=null;
   var sc=el('div','screen'),top=el('div','qtop');
   var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=fromRound?'<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>':BACK_SVG;back.onclick=home;
   top.appendChild(back);sc.appendChild(top);
-  if(TREEG==null||!(TREEG===S.hz.cg||S.hz.gu[TREEG]>0))TREEG=S.hz.cg;var tg=TREEG;
+  var fc={};hzOrder().forEach(function(ch){var g=gradeOf(ch);fc[g]=(fc[g]||0)+1});var tgs=GRADES.map(function(_,gi){return gi}).filter(function(gi){return gi===S.hz.cg||fc[gi]>0});
+  if(TREEG==null||tgs.indexOf(TREEG)<0)TREEG=S.hz.cg;var tg=TREEG;
   var n=hzOrder().filter(function(ch){return gradeOf(ch)===tg}).length,c=el('div','center treecenter');
-  if(Object.keys(S.hz.gu).length>1){var seg=el('div','seg treeseg');GRADES.forEach(function(gn,gi){if(gi!==S.hz.cg&&!(S.hz.gu[gi]>0))return;var b=el('button',gi===tg?'on':null,gn+' 나무');b.onclick=function(){TREEG=gi;TREEP=null;treeScreen(fromRound)};seg.appendChild(b)});sc.appendChild(seg);setTimeout(function(){var o=seg.querySelector('.on');if(o)seg.scrollLeft=o.offsetLeft-seg.clientWidth/2+o.offsetWidth/2},0)}
+  if(tgs.length>1){var seg=el('div','seg treeseg');tgs.forEach(function(gi){var gn=GRADES[gi];var b=el('button',gi===tg?'on':null,gn+' 나무');if(gi===S.hz.cg)b.appendChild(el('small','now',' · 공부 중'));b.onclick=function(){TREEG=gi;TREEP=null;treeScreen(fromRound)};seg.appendChild(b)});sc.appendChild(seg);setTimeout(function(){var o=seg.querySelector('.on');if(o)seg.scrollLeft=o.offsetLeft-seg.clientWidth/2+o.offsetWidth/2},0)}
   if(gradeCap(tg)>100){var pn=partNow(tg);if(TREEP==null||TREEP>pn)TREEP=pn;var ps=el('div','seg treeseg treeparts');for(var pi=0;pi<=pn;pi++)(function(pi){var b=el('button',pi===TREEP?'on':null,(pi*100+1)+'~'+Math.min(gradeCap(tg),(pi+1)*100));b.onclick=function(){TREEP=pi;treeScreen(fromRound)};ps.appendChild(b)})(pi);sc.appendChild(ps);setTimeout(function(){var o=ps.querySelector('.on');if(o)ps.scrollLeft=o.offsetLeft-ps.clientWidth/2+o.offsetWidth/2},0)}
   if(fromRound&&G){
     var nf=G.newFruits||[];
