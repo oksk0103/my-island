@@ -2671,7 +2671,7 @@ html body .vcalc .vr.ans .slot{width:calc(var(--L) * 40px - 2px);min-width:0;pad
 .hzctools{display:flex;gap:8px;width:100%}
 .hzctools .cta{flex:1;margin:0;height:46px;font-size:.95rem}
 .hzcmsg{margin:0;min-height:1.2em;font-size:.85rem;color:#6b7a90;text-align:center}
-.hzcardscr>.cta{margin:0 16px;width:auto;align-self:stretch;box-sizing:border-box}
+.hzcardscr>.cta,.hzcardscr>.hzcnav{margin:0 16px!important;width:calc(100% - 32px)!important;max-width:calc(100% - 32px);align-self:center;box-sizing:border-box;flex:none}
 .fruitinfo .hzcardbtn{margin:0 0 0 auto;height:36px;padding:0 14px;font-size:.85rem;flex:none;width:auto}
 .hzchips .catchip.some{box-shadow:inset 0 0 0 1.5px #ffd8a8,0 2px 0 #e3e9ee}
 .hzchips .catchip.done{background:#ebfbee;color:#2b8a3e}
@@ -4818,17 +4818,17 @@ function hzBoard(c,data,size){var wrap=el('div','hzboard');wrap.style.width=wrap
     pl._L=L;B.strokes.push(bg);B.fills.push(pl)});
   B.g=g;return B}
 function hzFill(B,i,on,dur){var pl=B.fills[i],bg=B.strokes[i];if(!pl)return;pl.style.transition=dur?'stroke-dashoffset '+dur+'ms linear':'none';pl.setAttribute('stroke-dashoffset',on?0:pl._L);
-  clearTimeout(pl._t);if(!on){bg.setAttribute('fill','#e4e8ee');return}pl._t=setTimeout(function(){bg.setAttribute('fill',pl.getAttribute('stroke')||'#26313d')},dur||0)} // 중심선 붓이 못 닿는 모서리까지 칠해요
+  clearTimeout(pl._t);if(!on){bg.setAttribute('fill','#e4e8ee');return}pl._t=setTimeout(function(){bg.setAttribute('fill','#26313d')},dur||0)} // 중심선 붓이 못 닿는 모서리까지 칠해요
 function hzShowAll(B){B.fills.forEach(function(p,i){hzFill(B,i,true,0)})}
 // 획순 재생: 한 획씩, 길이에 비례한 속도
 function hzAnimate(B,done){if(B.font){done&&done();return}var tok=B.tok={};B.fills.forEach(function(p,i){hzFill(B,i,false,0)});var i=0;
-  function next(){if(B.tok!==tok)return;if(i>=B.fills.length){done&&done();return}var d=Math.max(260,Math.min(900,B.fills[i]._L*0.9));hzFill(B,i,true,d);B.fills[i].setAttribute('stroke','#d9480f');var k=i;setTimeout(function(){if(B.fills[k]){B.fills[k].setAttribute('stroke','#26313d');B.strokes[k].setAttribute('fill','#26313d')}},d+60);i++;setTimeout(next,d+140)}
+  function next(){if(B.tok!==tok)return;if(i>=B.fills.length){done&&done();return}var d=Math.max(260,Math.min(900,B.fills[i]._L*0.9));hzFill(B,i,true,d);B.fills[i].setAttribute('stroke','#d9480f');var k=i;setTimeout(function(){if(B.tok===tok&&B.fills[k]){B.fills[k].setAttribute('stroke','#26313d');B.strokes[k].setAttribute('fill','#26313d')}},d+60);i++;setTimeout(next,d+140)}
   setTimeout(next,200)}
 // 따라 쓰기: 손가락으로 쓴 선이 다음 획의 중심선과 비슷하면 그 획을 채워요 (연습용, 너그럽게)
 function hzTrace(B,onDone,onStroke){if(B.font){onDone&&onDone(false);return}B.tok={};B.fills.forEach(function(p,i){hzFill(B,i,false,0)});
   var k=0,miss=0,pts=null,ink=null,s=B.svg,ig=sv('g',{},s);
   function toData(e){var r=s.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*1024,y=(e.clientY-r.top)/r.height*1024;return [x,900-y]}
-  function hint(){var pl=B.fills[k];if(!pl)return;pl.setAttribute('stroke','#f59f00');hzFill(B,k,true,500);setTimeout(function(){hzFill(B,k,false,200);setTimeout(function(){pl.setAttribute('stroke','#26313d')},220)},900)}
+  function hint(){var kk=k,pl=B.fills[kk];if(!pl)return;pl.setAttribute('stroke','#f59f00');hzFill(B,k,true,500);setTimeout(function(){if(k!==kk){pl.setAttribute('stroke','#26313d');return}hzFill(B,kk,false,200);setTimeout(function(){pl.setAttribute('stroke','#26313d')},220)},900)}
   function judge(u){var m=B.data[1][k];if(u.length<2){var p=u[0];var d0=Math.min.apply(null,m.map(function(q){return Math.hypot(q[0]-p[0],q[1]-p[1])}));return polyLen(m)<180&&d0<170}
     var a=Math.hypot(u[0][0]-m[0][0],u[0][1]-m[0][1]),b=Math.hypot(u[u.length-1][0]-m[m.length-1][0],u[u.length-1][1]-m[m.length-1][1]);
     var avg=0;u.forEach(function(p){avg+=distToPoly(p,m)});avg/=u.length;var lu=polyLen(u),lm=polyLen(m);
@@ -4836,8 +4836,9 @@ function hzTrace(B,onDone,onStroke){if(B.font){onDone&&onDone(false);return}B.to
   function down(e){if(k>=B.fills.length)return;e.preventDefault();pts=[toData(e)];ink=sv('polyline',{fill:'none',stroke:'#4dabf7','stroke-width':50,'stroke-linecap':'round','stroke-linejoin':'round',opacity:.8,transform:'matrix(1,0,0,-1,0,900)'},ig);ink.setAttribute('points',pts.map(function(p){return p.join(',')}).join(' '));try{s.setPointerCapture(e.pointerId)}catch(_){}}
   function move(e){if(!pts)return;e.preventDefault();var p=toData(e),q=pts[pts.length-1];if(Math.hypot(p[0]-q[0],p[1]-q[1])>12){pts.push(p);ink.setAttribute('points',pts.map(function(p){return p.join(',')}).join(' '))}}
   function up(e){if(!pts)return;var u=pts;pts=null;var line=ink;setTimeout(function(){if(line&&line.parentNode)line.parentNode.removeChild(line)},120);
-    if(judge(u)){hzFill(B,k,true,180);k++;miss=0;tone([660],'sine',.05);onStroke&&onStroke(k,B.fills.length);if(k>=B.fills.length){cleanup();setTimeout(function(){onDone&&onDone(true)},300)}}
-    else{miss++;tone([220],'triangle',.04);if(miss>=2)hint();if(miss>=4){hzFill(B,k,true,200);k++;miss=0;onStroke&&onStroke(k,B.fills.length);if(k>=B.fills.length){cleanup();setTimeout(function(){onDone&&onDone(true)},300)}}}}
+    if(judge(u)){hzFill(B,k,true,180);k++;miss=0;tone([660],'sine',.05);onStroke&&onStroke(k,B.fills.length);if(k>=B.fills.length){cleanup();setTimeout(function(){finish();onDone&&onDone(true)},300)}}
+    else{miss++;tone([220],'triangle',.04);if(miss>=2)hint();if(miss>=4){hzFill(B,k,true,200);k++;miss=0;onStroke&&onStroke(k,B.fills.length);if(k>=B.fills.length){cleanup();setTimeout(function(){finish();onDone&&onDone(true)},300)}}}}
+  function finish(){B.fills.forEach(function(p,i){p.setAttribute('stroke','#26313d');hzFill(B,i,true,0)})}
   function cleanup(){s.removeEventListener('pointerdown',down);s.removeEventListener('pointermove',move);s.removeEventListener('pointerup',up);s.removeEventListener('pointercancel',up);s.classList.remove('tracing')}
   s.classList.add('tracing');s.addEventListener('pointerdown',down);s.addEventListener('pointermove',move);s.addEventListener('pointerup',up);s.addEventListener('pointercancel',up);
   B.stopTrace=cleanup;B.traceState=function(){return {k:k,n:B.fills.length,miss:miss}}}
