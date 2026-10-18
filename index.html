@@ -2610,6 +2610,18 @@ html body .qscreen .choice.pic{min-height:96px;padding:8px}
 .seg.treeparts{margin-top:-2px}
 .seg.treeparts button{font-size:.78rem;padding-left:10px;padding-right:10px}
 .seg.treeseg button .now{font-size:.78em;font-weight:600;opacity:.7}
+
+.treepick{display:flex;align-items:center;gap:8px;width:100%;height:52px;padding:0 16px;border-radius:16px;background:rgba(255,255,255,.85);box-shadow:0 2px 0 rgba(0,40,80,.1);margin-bottom:4px;color:var(--ink)}
+.treepick b{font-family:var(--title);font-weight:400;font-size:1.15rem;color:var(--green-d,#1f7a4a)}
+.treepick .now{font-size:.75rem;font-weight:700;color:#1f7a4a;background:#e3f7ea;border-radius:999px;padding:3px 8px}
+.treepick .dd{margin-left:auto;font-size:.82rem;font-weight:700;color:var(--ink-2)}
+.treegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 14px}
+.tgbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:62px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1.5px #e3e9ee,0 2px 0 #e3e9ee;color:var(--ink)}
+.tgbtn b{font-family:var(--title);font-weight:400;font-size:1.05rem}
+.tgbtn small{font-size:.72rem;font-weight:700;color:var(--ink-2)}
+.tgbtn.cur small{color:#1f7a4a}
+.tgbtn.on{background:var(--ink);color:#fff;box-shadow:0 2px 0 #0c1117}
+.tgbtn.on small{color:#cfe8da}
 /* ===== 처음 시작 ===== */
 .onbgrades{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 8px}
 .onbg{height:64px;border-radius:18px;background:#fff;font-family:var(--game);font-size:1.25rem;color:#26313d;box-shadow:inset 0 0 0 2px #e3e9ee,0 3px 0 #e3e9ee}
@@ -5709,6 +5721,13 @@ function treeEl(w,opts){
   return box;
 }
 
+// 한자 나무 급수 고르기(급수가 많을 때)
+function treePick(tgs,fc,fromRound){
+  showSheet('good','blossom','한자 나무','어느 급수 나무를 볼까요?','열매가 열린 급수와 지금 공부 중인 급수예요.','닫기',function(){});
+  var inn=sheet.firstChild,box=el('div','treegrid');
+  tgs.forEach(function(gi){var b=el('button','tgbtn'+(gi===TREEG?' on':'')+(gi===S.hz.cg?' cur':''));b.appendChild(el('b',null,GRADES[gi]));b.appendChild(el('small',null,gi===S.hz.cg?'공부 중':'열매 '+(fc[gi]||0)+'개'));b.onclick=function(){TREEG=gi;TREEP=null;hideSheet();treeScreen(fromRound)};box.appendChild(b)});
+  inn.insertBefore(box,inn.querySelector('.cta'));
+}
 // 한자 나무 화면
 function treeScreen(fromRound){if(fromRound)TREEP=null;
   clear();
@@ -5718,8 +5737,9 @@ function treeScreen(fromRound){if(fromRound)TREEP=null;
   var fc={};hzOrder().forEach(function(ch){var g=gradeOf(ch);fc[g]=(fc[g]||0)+1});var tgs=GRADES.map(function(_,gi){return gi}).filter(function(gi){return gi===S.hz.cg||fc[gi]>0});
   if(TREEG==null||tgs.indexOf(TREEG)<0)TREEG=S.hz.cg;var tg=TREEG;
   var n=hzOrder().filter(function(ch){return gradeOf(ch)===tg}).length,c=el('div','center treecenter');
-  if(tgs.length>1){var seg=el('div','seg treeseg');tgs.forEach(function(gi){var gn=GRADES[gi];var b=el('button',gi===tg?'on':null,gn+' 나무');if(gi===S.hz.cg)b.appendChild(el('small','now',' · 공부 중'));b.onclick=function(){TREEG=gi;TREEP=null;treeScreen(fromRound)};seg.appendChild(b)});sc.appendChild(seg);setTimeout(function(){var o=seg.querySelector('.on');if(o)seg.scrollLeft=o.offsetLeft-seg.clientWidth/2+o.offsetWidth/2},0)}
-  if(gradeCap(tg)>100){var pn=partNow(tg);if(TREEP==null||TREEP>pn)TREEP=pn;var ps=el('div','seg treeseg treeparts');for(var pi=0;pi<=pn;pi++)(function(pi){var b=el('button',pi===TREEP?'on':null,(pi*100+1)+'~'+Math.min(gradeCap(tg),(pi+1)*100));b.onclick=function(){TREEP=pi;treeScreen(fromRound)};ps.appendChild(b)})(pi);sc.appendChild(ps);setTimeout(function(){var o=ps.querySelector('.on');if(o)ps.scrollLeft=o.offsetLeft-ps.clientWidth/2+o.offsetWidth/2},0)}
+  if(tgs.length>3){var pk=el('button','treepick');pk.appendChild(el('b',null,GRADES[tg]+' 나무'));if(tg===S.hz.cg)pk.appendChild(el('small','now','공부 중'));pk.appendChild(el('span','dd','급수 바꾸기 ▾'));pk.onclick=function(){treePick(tgs,fc,fromRound)};sc.appendChild(pk)}
+  else if(tgs.length>1){var seg=el('div','seg treeseg');tgs.forEach(function(gi){var gn=GRADES[gi];var b=el('button',gi===tg?'on':null,gn+' 나무');if(gi===S.hz.cg)b.appendChild(el('small','now',' · 공부 중'));b.onclick=function(){TREEG=gi;TREEP=null;treeScreen(fromRound)};seg.appendChild(b)});sc.appendChild(seg);setTimeout(function(){var o=seg.querySelector('.on');if(o)seg.scrollLeft=o.offsetLeft-seg.clientWidth/2+o.offsetWidth/2},0)}
+  if(gradeCap(tg)>100){var pn=partNow(tg);if(TREEP==null||TREEP>pn)TREEP=pn;if(pn>0){var ps=el('div','seg treeseg treeparts');for(var pi=0;pi<=pn;pi++)(function(pi){var b=el('button',pi===TREEP?'on':null,(pi*100+1)+'~'+Math.min(gradeCap(tg),(pi+1)*100));b.onclick=function(){TREEP=pi;treeScreen(fromRound)};ps.appendChild(b)})(pi);sc.appendChild(ps);setTimeout(function(){var o=ps.querySelector('.on');if(o)ps.scrollLeft=o.offsetLeft-ps.clientWidth/2+o.offsetWidth/2},0)}}
   if(fromRound&&G){
     var nf=G.newFruits||[];
     c.appendChild(el('div','eyebrow',G.got+' / '+ROUND+' 정답'+(G.sunGot?' · 햇살 +'+G.sunGot:'')));
