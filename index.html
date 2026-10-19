@@ -2989,6 +2989,11 @@ body .qscreen .choice.kfw{width:auto;min-width:0;height:auto;min-height:46px;pad
 .mseg .lockt{opacity:.55}
 .botseeds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 10px}
 .botseed{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1.5px #e3e9ef;border:0}.botseed img{width:40px;height:40px}.botseed b{font-size:.85rem}.botseed small{font-size:.72rem;color:var(--ink-2)}.botseed.on{box-shadow:inset 0 0 0 2.5px #40c057;background:#ebfbee}
+.botrv{display:flex;gap:12px;align-items:flex-start;padding:12px;margin:0 14px 8px}.botrv p{margin:0;font-size:.85rem;line-height:1.45;word-break:keep-all}
+
+/* 섬 건물 이름표 */
+.bldg .bldlab{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);font-family:var(--title);font-size:.92rem;padding:4px 12px;background:#fff;color:var(--o,#26313d);border-radius:999px;box-shadow:0 2px 6px rgba(20,40,80,.16);white-space:nowrap;pointer-events:none}
+.island.edit .bldg .bldlab{opacity:.75}
 </style>
 
 <div id="app"></div>
@@ -6717,7 +6722,7 @@ function buildWorld(edit,onLm){
   });
   BI.br.forEach(function(o){var p=iCtr(o.p[0],o.p[1]),bi=el('i','bridge');bi.appendChild(img(o.img));if(o.d){var e=iCtr(o.e[0],o.e[1]);bi.style.left=e[0]+'px';bi.style.top=(e[1]+ITH*BRYD)+'px';bi.style.width=(ITW*BRDW)+'px';bi.style.zIndex=Math.max(1,o.e[0]+o.e[1]);world.appendChild(bi);return}bi.style.left=p[0]+'px';bi.style.top=(p[1]+ITH*BRY)+'px';bi.style.width=(ITW*(o.n+1.2)/2*BRW)+'px';bi.style.zIndex=Math.max(1,Math.floor(o.p[0]+o.p[1])+1);world.appendChild(bi)});
   BI.deco.forEach(function(o){var cr=o.k.split(',').map(Number),p=iCtr(cr[0],cr[1]),sp=itemSprite(o.n,ITW*.8);var sh=el('i','gshadow iso');sh.style.left=p[0]+'px';sh.style.top=(p[1]+ITH*.12)+'px';sh.style.width=(ITW*.5)+'px';sh.style.zIndex=Math.max(1,cr[0]+cr[1]+1);world.appendChild(sh);sp.style.left=p[0]+'px';sp.style.top=(p[1]+ITH*.3)+'px';sp.style.zIndex=Math.max(2,cr[0]+cr[1]+2);sp.className+=' nat';world.appendChild(sp)});
-  bldList().forEach(function(B){var L=bldLot(B.id);if(!L)return;var p=iCtr(L[0]+.5,L[1]+.5),bt=el('button','bldg bld-'+B.id);bt.style.left=p[0]+'px';bt.style.top=(p[1]+ITH*1.02)+'px';bt.style.width=(ITW*2.05)+'px';bt.style.zIndex=Math.max(3,L[0]+L[1]+5);bt.appendChild(img(B.img));bt.setAttribute('aria-label',B.name);
+  bldList().forEach(function(B){var L=bldLot(B.id);if(!L)return;var p=iCtr(L[0]+.5,L[1]+.5),bt=el('button','bldg bld-'+B.id);bt.style.left=p[0]+'px';bt.style.top=(p[1]+ITH*1.02)+'px';bt.style.width=(ITW*2.05)+'px';bt.style.zIndex=Math.max(3,L[0]+L[1]+5);bt.appendChild(img(B.img));bt.appendChild(el('span','lmlabel bldlab',B.name));bt.setAttribute('aria-label',B.name);
     bt.onclick=function(e){e.stopPropagation();if(edit){var h=document.querySelector('.ihint');if(h)h.textContent=B.name+'은 정해진 자리에 있어요. 옮길 수 없어요.';return}tone([392,523],'sine',.1);B.open()};world.appendChild(bt)});
   return {world:world,W:W,H:H};
 }
@@ -7671,6 +7676,12 @@ function botAfter(r,cb,keep){if(!r||(!r.add&&!r.grown.length)){if(cb)cb();return
     showSheet('good','frog','개구리 연구원','섬 식물원이 생겼어요!','숙제를 한 시간만큼 화분이 자라요. 다 자란 식물은 섬 아래쪽 식물원에 전시돼요. 지금 화분은 '+Math.round(botPct()*100)+'% 자랐어요.','구경하러 가기',function(){botScreen(back)});later();return}
   if(cb)cb()}
 
+// 개발자 메뉴: 18종 그림·이름·필요 시간·이야기를 한눈에 검토
+function botReview(){clear();var sc=el('div','screen botscr botrev'),top=el('div','qtop');var x=el('button','x');x.innerHTML=BACK_SVG;x.setAttribute('aria-label','돌아가기');x.onclick=function(){home();setTimeout(dbgSheet,50)};top.appendChild(x);top.appendChild(el('h3','wtitle','식물 18종 검토'));sc.appendChild(top);
+  var tot=0;BOT_ROOMS.forEach(function(Rm,ri){var h=el('p','wsh2',Rm.name+' · '+botHM(Rm.ids.reduce(function(a,id){return a+botNeed(id)},0)));sc.appendChild(h);
+    Rm.ids.forEach(function(id){var p=botP(id),c=el('div','card botrv');tot+=botNeed(id);var im=el('div','botpot');im.appendChild(img('pl_'+id));c.appendChild(im);var tx=el('div','botinfo');tx.appendChild(el('small',null,(ri+1)+'관 · '+botHM(botNeed(id))+' · '+(p.home||'')));tx.appendChild(el('b',null,p.name));tx.appendChild(el('p',null,p.fact));tx.appendChild(el('p',null,p.fact2));c.appendChild(tx);sc.appendChild(c)})});
+  sc.appendChild(el('p','mtip','18종 모두 피우려면 숙제 '+botHM(tot)+' (하루 최대 '+botHM(BOT_CAP)+')'));app.appendChild(sc)}
+
 // ================= 섬 도서관(독서 기록장) =================
 var LIB_COL=['#e8590c','#1c7ed6','#2f9e44','#ae3ec9','#f59f00','#d6336c'],LIB_DAY=3,LIB_RW=[{n:3,gem:2},{n:10,gem:3},{n:20,gem:5},{n:40,gem:8}];
 var LIB_START=['I liked this book because','My favorite part was when','The main character is','This book taught me'];
@@ -8100,6 +8111,11 @@ function dbgSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','h
   row([['날짜 원래대로',function(){DBG.off=0;dbgSave()}],['시각: 낮/저녁/밤',function(){DBG.hour=DBG.hour==null?18:DBG.hour===18?21:DBG.hour===21?11:null;dbgSave()}]]);
   row([['낚시 티켓 +1',function(){fishS().tk++}],['화분 한 단계 키우기',function(){S.math.pieces++}]]);
   row([['안내 다시 보기',function(){S.intro={}}],['오늘 기록 지우기',function(){var k=dayKey();S.days=S.days.filter(function(d){return d!==k});S.math.today=S.hz.today=S.en.today='';if(S.ko)S.ko.today='';ADV=null}]]);
+  row([['섬 레벨 +3',function(){var L=islLevel().lv,tg=ISL_T[Math.min(ISL_T.length-1,L+2)];S.dbgIsl=(S.dbgIsl||0)+Math.max(0,tg-islScore())}],['섬 한 단계 넓히기',function(){if(!S.isl)S.isl={};S.isl.stage=Math.min(STAGES.length-1,(S.isl.stage||0)+1);BLDC.key=''}]]);
+  row([['건물 모두 열기',function(){var b=bldS();b.school=b.library=b.museum=b.botanic=1;BLDC.key='';botS()}],['섬 레벨 처음으로',function(){S.dbgIsl=0}]]);
+  row([['식물원 열기',function(){bldS().botanic=1;BLDC.key='';botS();setTimeout(function(){hideSheet();botScreen(function(){home()})},0)}],['식물 18종 검토',function(){setTimeout(function(){hideSheet();botReview()},0)}]]);
+  row([['화분 +30분',function(){botS();botAdd(30,true);bldS().botanic=1;BLDC.key=''}],['지금 관 다 피우기',function(){var b=botS();for(var i=0;i<6;i++){if(!b.cur)break;botAdd(Math.max(0,botNeed(b.cur.id)-b.cur.m),true)}bldS().botanic=1;BLDC.key=''}]]);
+  row([['식물원 처음으로',function(){S.bot={min:0,cur:null,got:{},slot:{},day:{d:-1,m:0}};delete bldS().botanic;BLDC.key=''}],['오늘 화분 한도 풀기',function(){botS().day={d:-1,m:0}}]]);
   row([['국어 검수',function(){setTimeout(function(){hideSheet();koReview()},0)}],['국어 다음 쪽',function(){var k=koS(),b=koBand();k.pg[b]=(k.pg[b]||0)+1}]]);
   var ob=el('button','cta green','처음 시작 화면 보기');ob.onclick=function(){hideSheet();setTimeout(onbStart,300)};inn.appendChild(ob);
   inn.appendChild(el('p','mtip','처음 시작 화면은 기록을 지우지 않아요. 학년과 시작 단계만 다시 정하고, 학원 단어장은 그대로 둬요. 날짜·시각을 옮겼으면 테스트가 끝난 뒤 꼭 원래대로 돌려 주세요. 켜져 있는 동안 마을에 "테스트 모드" 표시가 떠요.'));
@@ -8265,7 +8281,7 @@ function expandSheet(){
 }
 // ----- 섬 등급 -----
 var ISL_T=[0,4,10,18,28,40,55,72,92,115,140,170,205,245,290,340,395,455,520,590];
-function islScore(){var sc=0;for(var k in S.gd.cells){var v=S.gd.cells[k];sc+=/^(fr|zr)\d/.test(v)?2:(v.indexOf('a:')===0&&NBI[v.slice(2)]?4:(SZ(v)>2?6:SZ(v)>1?3:1))}return sc}
+function islScore(){var sc=(S.dbgIsl||0);for(var k in S.gd.cells){var v=S.gd.cells[k];sc+=/^(fr|zr)\d/.test(v)?2:(v.indexOf('a:')===0&&NBI[v.slice(2)]?4:(SZ(v)>2?6:SZ(v)>1?3:1))}return sc}
 function islLevel(){var s=islScore(),lv=0;for(var i=0;i<ISL_T.length;i++)if(s>=ISL_T[i])lv=i+1;var lo=ISL_T[lv-1],hi=ISL_T[lv]||lo+30;return {lv:lv,s:s,p:Math.min(1,(s-lo)/(hi-lo))}}
 function gardenScreen(edit,hand){islandScreen(!!edit,hand)}
 
