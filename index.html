@@ -2954,6 +2954,12 @@ body .qscreen .choice.kfw{width:auto;min-width:0;height:auto;min-height:46px;pad
 .cta.warn{background:#ffe3e3!important;color:#c92a2a!important}
 .krnote{display:none;margin:0 14px 8px}.krnote.on{display:block}.krnote textarea,.krcopy{width:100%;box-sizing:border-box;min-height:70px;padding:10px;border-radius:12px;border:2px solid #d6dfe8;font:500 .95rem 'Noto Sans KR',sans-serif}
 .krcopy{margin:8px 14px;width:calc(100% - 28px)}
+
+.wsafter{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.wsaf{display:flex;flex-direction:column;gap:2px;text-align:left;padding:10px 12px;border-radius:12px;background:#f1f3f5;border:0}
+.wsaf b{font-size:.95rem;color:#26313d}.wsaf small{font-size:.76rem;color:var(--ink-2);line-height:1.35;word-break:keep-all}
+.wsaf.on{background:#e7f1fc;box-shadow:inset 0 0 0 2px #1c6fb8}.wsaf.on b{color:#1c5d99}
+.sheet .wsaf small{color:#5b6b85!important;font-weight:500}
 </style>
 
 <div id="app"></div>
@@ -7547,7 +7553,7 @@ function wsOpen(back){WS_BACK=back||villageScreen;WS_SEL=null;wsScreen(WS_BACK)}
 // ----- 숙제 목록 만들기 (부모님 또는 아이) -----
 function wsCfgSheet(after){var W=wsS(),inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('pencil'));var tt=el('div');tt.appendChild(el('small',null,'우리 집 숙제'));tt.appendChild(el('h3',null,'숙제 목록 '+W.items.length+'개'));hd.appendChild(tt);inn.appendChild(hd);
   inn.appendChild(el('p','wscfgp','집에서 하는 숙제를 적어 두면 숙제 타이머와 오늘의 할 일에 나와요. 요일을 정하면 그날만 나와요.'));
-  var ul=el('div','wsilist');W.items.forEach(function(x){var r=el('button','wsitem');r.appendChild(img(x.img||'pencil'));var tx=el('span');tx.appendChild(el('b',null,x.name));tx.appendChild(el('small',null,wsDaysTxt(x)+(x.after==='lib'?' · 끝나면 도서관':x.after==='photo'?' · 끝나면 사진':'')));r.appendChild(tx);r.appendChild(el('em',null,'고치기'));r.onclick=function(){wsEdit(x,after)};ul.appendChild(r)});inn.appendChild(ul);
+  var ul=el('div','wsilist');W.items.forEach(function(x){var r=el('button','wsitem');r.appendChild(img(x.img||'pencil'));var tx=el('span');tx.appendChild(el('b',null,x.name));tx.appendChild(el('small',null,wsDaysTxt(x)+(x.after==='lib'?' · 읽은 책 적기':x.after==='photo'?' · 사진 남기기':'')));r.appendChild(tx);r.appendChild(el('em',null,'고치기'));r.onclick=function(){wsEdit(x,after)};ul.appendChild(r)});inn.appendChild(ul);
   var add=el('button','cta light','+ 숙제 추가');add.onclick=function(){wsEdit(null,after)};inn.appendChild(add);
   var ok=el('button','cta green','다 정했어요');ok.onclick=function(){hideSheet();if(after)after()};inn.appendChild(ok);
   sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=function(){hideSheet();if(after)after()};requestAnimationFrame(function(){sheet.className='sheet good show'})}
@@ -7560,7 +7566,8 @@ function wsEdit(x,after,draft){var W=wsS(),isNew=!x,d=draft||(x?JSON.parse(JSON.
   ni.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();ni.blur()}};
   inn.appendChild(el('p','wscfgp','하는 요일 (안 고르면 매일)'));var dw=el('div','wscfgrow');[1,2,3,4,5,6,0].forEach(function(k){var on=d.days.indexOf(k)>=0,b=el('button','pchip'+(on?' on':''),WS_DN[k]);b.onclick=function(){if(on)d.days=d.days.filter(function(z){return z!==k});else d.days.push(k);redraw()};dw.appendChild(b)});inn.appendChild(dw);
   inn.appendChild(el('p','wscfgp','그림'));var ic=el('div','wscfgrow wsicons');WS_ICON.forEach(function(k){var b=el('button','chimg'+(d.img===k?' on':''));b.appendChild(img(k));b.onclick=function(){d.img=k;redraw()};ic.appendChild(b)});inn.appendChild(ic);
-  inn.appendChild(el('p','wscfgp','다 하고 나서'));var af=el('div','wscfgrow');[['','그냥 끝내기'],['lib','도서관에 책 꽂기'],['photo','사진 남기기']].forEach(function(o){var b=el('button','pchip'+(d.after===o[0]?' on':''),o[1]);b.onclick=function(){d.after=o[0];redraw()};af.appendChild(b)});inn.appendChild(af);
+  // 끝난 뒤 남길 기록 (고르지 않아도 돼요). 숙제마다 어울리는 것만 고르면 돼요
+  inn.appendChild(el('p','wscfgp','끝나면 기록 남기기 (안 골라도 돼요)'));var af=el('div','wsafter');[['','없음','숙제를 끝내면 바로 햇살을 받아요.'],['lib','읽은 책 적기','책 읽기 숙제에 맞아요. 다 읽으면 책 제목을 적어 도서관 책장에 꽂아요.'],['photo','사진 남기기','공책, 학습지, 그림처럼 결과가 남는 숙제에 맞아요. 사진이 숙제 화면에 모여요.']].forEach(function(o){var b=el('button','wsaf'+(d.after===o[0]?' on':''));b.appendChild(el('b',null,o[1]));b.appendChild(el('small',null,o[2]));b.onclick=function(){d.after=o[0];redraw()};af.appendChild(b)});inn.appendChild(af);
   var row=el('div','dockrow');if(!isNew){var del=el('button','cta light','지우기'),arm=false;del.onclick=function(){if(!arm){arm=true;del.textContent='한 번 더 누르면 지워요';del.classList.add('warn');return}W.items=W.items.filter(function(z){return z.id!==d.id});save();wsCfgSheet(after)};row.appendChild(del)}else{var bk=el('button','cta light','뒤로');bk.onclick=function(){wsCfgSheet(after)};row.appendChild(bk)}
   var sv=el('button','cta green wssave','저장');sv.disabled=!d.name;sv.onclick=function(){if(!d.name)return;if(isNew)W.items.push(d);else{for(var i=0;i<W.items.length;i++)if(W.items[i].id===d.id)W.items[i]=d}save();wsCfgSheet(after)};row.appendChild(sv);inn.appendChild(row);
   function redraw(){wsEdit(x,after,d)}
