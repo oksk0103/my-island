@@ -3044,6 +3044,16 @@ body.qmode .minitoast{bottom:auto;top:calc(76px + env(safe-area-inset-top,0px))}
 .lbook.ko span{transform:none;text-orientation:upright;letter-spacing:-.05em;font-family:Jua,var(--ko),sans-serif}
 .lbook.ko span{font-size:.66rem;line-height:1.05;padding:6px 0}
 .lbook.ko span{writing-mode:horizontal-tb;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100%;box-sizing:border-box;overflow:hidden}.lbook.ko span i{font-style:normal;display:block;line-height:1.08}
+.weed{position:absolute;transform:translate(-50%,-88%);padding:0;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent;transform-origin:50% 100%;animation:weedsway 3.2s ease-in-out infinite}
+.weed img{display:block;width:100%;height:auto;pointer-events:none;filter:drop-shadow(0 2px 1px rgba(0,40,0,.25))}
+.weed::after{content:'';position:absolute;left:-30%;right:-30%;top:-30%;bottom:-20%}
+.weed.clover img{filter:drop-shadow(0 0 4px rgba(255,236,120,.9))}
+.weed.pulled{animation:weedpull .5s ease-in forwards;pointer-events:none}
+@keyframes weedsway{0%,100%{transform:translate(-50%,-88%) rotate(-3deg)}50%{transform:translate(-50%,-88%) rotate(3deg)}}
+@keyframes weedpull{0%{transform:translate(-50%,-88%) scale(1)}35%{transform:translate(-50%,-130%) scale(1.15) rotate(-12deg)}100%{transform:translate(-50%,-260%) scale(.4) rotate(40deg);opacity:0}}
+.iclean{font-style:normal;margin-left:4px;font-size:.85em}
+.compcard{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:#f4fbef;box-shadow:inset 0 0 0 1.5px #cfe8c1}
+.compcard img{width:38px;height:auto}.compcard>div{flex:1;display:flex;flex-direction:column}.compcard b{font-size:.95rem}.compcard small{font-size:.72rem;color:#5b6b85}.compcard .cta{width:auto;flex:none;padding:8px 12px;font-size:.85rem;min-height:0}
 </style>
 
 <div id="app"></div>
@@ -3910,6 +3920,10 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.av_chipmunk_back_dragon_1="b/27e504a1a5ae.webp";
 ;A.av_chipmunk_back_dragon_2="b/19c558523203.webp";
 ;A.av_chipmunk_back_dragon_3="b/6c05236a73de.webp";
+;A.weed1="b/2e89ac54237a.webp";
+;A.weed2="b/cced58285b90.webp";
+;A.weed3="b/80bfc154de7d.webp";
+;A.clover4="b/40b8011c5408.webp";
 
 // ================= 데이터 =================
 var FLOWERS=[
@@ -5970,7 +5984,7 @@ function flyTo(key,from,to,n,cb){
   })(i);
 }
 function hideSheet(){sheet.className=sheet.className.replace(' show','');scrim.className='scrim'}
-function clear(){document.onkeydown=null;document.body.classList.remove('qmode');hideSheet();app.innerHTML='';window.scrollTo(0,0)}
+function clear(){document.onkeydown=null;[].forEach.call(document.querySelectorAll('.guide.coach'),function(g){g.remove()});document.body.classList.remove('qmode');hideSheet();app.innerHTML='';window.scrollTo(0,0)}
 
 // ================= 상점 =================
 function shop(tab){
@@ -6710,7 +6724,7 @@ function gdInit(){
 }
 var TIMG={};function tImg(k){if(!TIMG[k]){TIMG[k]=new Image();TIMG[k].src=A['t_'+k]}return TIMG[k]}
 function drawGround(cv,CS,bx0,by0,cells){
-  var ks=['g1','g2','g3','sand','pond','foam','shadow','shallow','path','dirt','canal','rim_px','rim_nx','rim_pz','rim_nz'];ks.forEach(tImg);
+  var ks=['g1','g2','sand','pond','foam','shadow','shallow','path','dirt','canal','rim_px','rim_nx','rim_pz','rim_nz'];ks.forEach(tImg);
   function go(){
     var ctx=cv.getContext('2d'),sc=CS/2;
     function put(k,c,r,dy){var im=TIMG[k],a=TILE[k],p=iCtr(c,r);ctx.drawImage(im,((p[0]-bx0)-a[0]/2)*CS,((p[1]-by0)-a[1]/2+(dy||0))*CS,im.width*sc,im.height*sc)}
@@ -6723,7 +6737,7 @@ function drawGround(cv,CS,bx0,by0,cells){
     ctx.globalAlpha=.5;P.forEach(function(q){if(HAS[(q[0]+1)+','+q[1]]&&HAS[(q[0]-1)+','+q[1]]&&HAS[q[0]+','+(q[1]+1)]&&HAS[q[0]+','+(q[1]-1)])return;put('shallow',q[0],q[1],6)});ctx.globalAlpha=1;
     P.forEach(function(q){put('foam',q[0],q[1])});
     var GD=S.gd.ground||{},W_=function(c,r){return GROUND[GD[c+','+r]]==='canal'};
-    P.forEach(function(q){var k=q[0]+','+q[1],h=hsh(q[0]*3+1,q[1]*5+2),h2=hsh(q[0]*7+3,q[1]*11+5),g=GROUND[GD[k]];put(g&&g!=='hedge'&&!POND[k]?g:POND[k]?'pond':(BLDC.path&&BLDC.path[k])?'path':(SAND[k]||ISLS[k])?'sand':(h<.16?'g3':h2<.3?'g2':'g1'),q[0],q[1])});
+    P.forEach(function(q){var k=q[0]+','+q[1],h=hsh(q[0]*3+1,q[1]*5+2),h2=hsh(q[0]*7+3,q[1]*11+5),g=GROUND[GD[k]];put(g&&g!=='hedge'&&!POND[k]?g:POND[k]?'pond':(BLDC.path&&BLDC.path[k])?'path':(SAND[k]||ISLS[k])?'sand':(h2<.3?'g2':'g1'),q[0],q[1])});
     P.forEach(function(q){var k=q[0]+','+q[1];if(GROUND[GD[k]]!=='canal')return;if(!W_(q[0]+1,q[1]))put('rim_px',q[0],q[1]);if(!W_(q[0],q[1]+1))put('rim_pz',q[0],q[1]);if(!W_(q[0]-1,q[1]))put('rim_nx',q[0],q[1]);if(!W_(q[0],q[1]-1))put('rim_nz',q[0],q[1])});
   }
   var n=0;ks.forEach(function(k){var im=TIMG[k];if(im.complete&&im.naturalWidth)n++;else im.addEventListener('load',function(){if(++n===ks.length)go()},{once:true})});
@@ -6893,7 +6907,7 @@ function islandScreen(edit,hand){
   if(vis){var vk=freeCellNear(15,14);if(vk){var vc=vk.split(',').map(Number),vp=iCtr(vc[0],vc[1]);var vb=el('button','nbvis');vb.style.left=vp[0]+'px';vb.style.top=(vp[1]+ITH*.3)+'px';vb.style.zIndex=vc[0]+vc[1]+3;
     var vi=img(vis.id);vb.appendChild(vi);var bub=el('span','nbbub'+(nbReady()?' ok':''),nbReady()?'♥':'!');vb.appendChild(bub);vb.setAttribute('aria-label',NBI[vis.id].name+'의 부탁');
     vb.onclick=function(e){e.stopPropagation();if(!edit)nbSheet()};world.appendChild(vb)}}
-  if(!edit)setTimeout(bldUnlock,500);var digN=0;if(!edit)digSpots().forEach(function(k){var c=k.split(',').map(Number),p=iCtr(c[0],c[1]),d=el('button','digspot');d.style.left=p[0]+'px';d.style.top=p[1]+'px';d.style.zIndex=c[0]+c[1]+1;d.innerHTML=DIG_SVG;d.appendChild(img('sparkles','digsp'));d.setAttribute('aria-label','반짝이는 땅');d.onclick=function(e){e.stopPropagation();digIntro(k)};world.appendChild(d);digN++});
+  if(!edit)setTimeout(bldUnlock,500);var digN=0;if(!edit)digSpots().forEach(function(k){var c=k.split(',').map(Number),p=iCtr(c[0],c[1]),d=el('button','digspot');d.style.left=p[0]+'px';d.style.top=p[1]+'px';d.style.zIndex=c[0]+c[1]+1;d.innerHTML=DIG_SVG;d.appendChild(img('sparkles','digsp'));d.setAttribute('aria-label','반짝이는 땅');d.onclick=function(e){e.stopPropagation();digIntro(k)};world.appendChild(d);digN++});if(!edit)weedDraw(world);
 
   // 위 HUD
   var hud=el('div','hud');
@@ -6901,7 +6915,7 @@ function islandScreen(edit,hand){
   if(!edit){var bk=el('button','hbtn');bk.innerHTML=BACK_SVG;bk.setAttribute('aria-label','마을로 돌아가기');bk.onclick=function(){cloudWipe(villageScreen)};left.appendChild(bk)}
   function chip(icon,val,label){var c=el('div','hchip');c.appendChild(img(icon));c.appendChild(el('b','tnum',val));c.setAttribute('aria-label',label);return c}
   if(edit){left.appendChild(el('div','hchip title','섬 꾸미기'))}
-  else{var IL=islLevel();var lc=el('div','hchip islv');lc.appendChild(el('b',null,'섬 Lv.'+IL.lv));var lb=el('i','islbar');var lf=el('em');lf.style.width=(IL.p*100)+'%';lb.appendChild(lf);lc.appendChild(lb);lc.setAttribute('aria-label','섬 등급 '+IL.lv+', 눌러서 섬 넓히기');lc.style.pointerEvents='auto';lc.onclick=expandSheet;var NS=nextStage();if(NS&&IL.lv>=NS.lv&&S.sun>=NS.cost){lc.appendChild(el('em','lmbadge dot',''));lc.className+=' canx'}left.appendChild(lc);left.appendChild(sunTap(chip('sun',S.sun,'햇살 '+S.sun+'개')))
+  else{var IL=islLevel();var lc=el('div','hchip islv');lc.appendChild(el('b',null,'섬 Lv.'+IL.lv));if(!edit&&S.weed&&!Object.keys(S.weed.w||{}).length)lc.appendChild(el('em','iclean','✨'));var lb=el('i','islbar');var lf=el('em');lf.style.width=(IL.p*100)+'%';lb.appendChild(lf);lc.appendChild(lb);lc.setAttribute('aria-label','섬 등급 '+IL.lv+', 눌러서 섬 넓히기');lc.style.pointerEvents='auto';lc.onclick=expandSheet;var NS=nextStage();if(NS&&IL.lv>=NS.lv&&S.sun>=NS.cost){lc.appendChild(el('em','lmbadge dot',''));lc.className+=' canx'}left.appendChild(lc);left.appendChild(sunTap(chip('sun',S.sun,'햇살 '+S.sun+'개')))
     if(!S.isl)S.isl={lv:IL.lv};if(IL.lv>S.isl.lv){var upLv=IL.lv,ib=0;for(var L_=S.isl.lv+1;L_<=upLv;L_++)ib+=L_%5===0?50:10;S.isl.lv=upLv;S.sun+=ib;save();setTimeout(function(){SND.bloom();burst(innerWidth/2,innerHeight*.35,40,true);showSheet('good','sparkles','섬 등급 오름 · 햇살 +'+ib,'섬이 '+josa('Lv.'+upLv,'이','가')+' 되었어요','꽃과 소품, 이웃이 늘수록 섬 등급이 올라가요.','좋아요',function(){islandScreen(false)})},450)}}
   hud.appendChild(left);
   var zb=el('button','hbtn zbtn');zb.innerHTML=ZOOM<1?ZIN_SVG:ZOUT_SVG;zb.setAttribute('aria-label',ZOOM<1?'크게 보기':'섬 전체 보기');
@@ -7903,7 +7917,7 @@ function botScreen(back){back=back||function(){islandScreen(false)};clear();var 
   var guide=el('div','mcur');guide.appendChild(img('frog'));var gotN=Object.keys(b.got).length;guide.appendChild(el('p',null,!gotN?'숙제를 하면 그 시간만큼 화분이 자라. 다 자란 식물은 여기에 전시할게!':botAllGot()?'식물을 모두 모았구나! 이제 다시 키우면 식물마다 별이 하나씩 늘어나.':['어서 와! 오늘도 숙제로 물을 주러 왔구나.','식물을 누르면 재미있는 이야기를 들려줄게.','한 관을 다 채우면 다음 관 문이 열려!'][R(0,2)]));sc.appendChild(guide);
   // 지금 키우는 화분
   if(!b.cur){var s0=botSeeds();b.cur={id:s0[0],m:0};save()}var cur=b.cur,p=botP(cur.id),pct=botPct(),card=el('div','card botcur');var pim=el('div','botpot');pim.appendChild(img(botStageImg(pct,cur.id)));card.appendChild(pim);var info=el('div','botinfo');info.appendChild(el('small',null,'지금 키우는 화분'));info.appendChild(el('b',null,pct>=.67?p.name:'??? 씨앗'));var bar=el('div','botbar'),f=el('i');f.style.width=Math.round(pct*100)+'%';bar.appendChild(f);info.appendChild(bar);info.appendChild(el('small','botleft','숙제 '+botHM(botNeed(cur.id)-cur.m)+' 더 하면 피어요 · 오늘 '+botHM(b.day.d===dnum()?b.day.m:0)+' / '+botHM(BOT_CAP)));
-  var ch=el('button','linkbtn','씨앗 바꾸기');ch.onclick=function(){botSeedSheet(function(){botScreen(back)})};info.appendChild(ch);card.appendChild(info);sc.appendChild(card);
+  var ch=el('button','linkbtn','씨앗 바꾸기');ch.onclick=function(){botSeedSheet(function(){botScreen(back)})};info.appendChild(ch);card.appendChild(info);sc.appendChild(card);var cc_=compCard(back);if(cc_)sc.appendChild(cc_);
   // 관 탭
   var seg=el('div','mseg');BOT_ROOMS.forEach(function(Rm,i){var op=botRoomOpen(i),n=Rm.ids.filter(function(id){return b.got[id]}).length,bt=el('button',(BOT_TAB===i?'on':'')+(op?'':' lockt'));bt.appendChild(el('b',null,Rm.name));bt.appendChild(el('small',null,op?n+' / 6':'잠겨 있어요'));bt.onclick=function(){BOT_TAB=i;BOT_SWAP=null;botScreen(back)};seg.appendChild(bt)});sc.appendChild(seg);
   var Rm=BOT_ROOMS[BOT_TAB],op=botRoomOpen(BOT_TAB),room=el('div','botroom r'+(BOT_TAB+1)+(op?'':' locked'));
@@ -7939,6 +7953,36 @@ function botReview(){clear();var sc=el('div','screen botscr botrev'),top=el('div
   var tot=0;BOT_ROOMS.forEach(function(Rm,ri){var h=el('p','wsh2',Rm.name+' · '+botHM(Rm.ids.reduce(function(a,id){return a+botNeed(id)},0)));sc.appendChild(h);
     Rm.ids.forEach(function(id){var p=botP(id),c=el('div','card botrv');tot+=botNeed(id);var im=el('div','botpot');im.appendChild(img('pl_'+id));c.appendChild(im);var tx=el('div','botinfo');tx.appendChild(el('small',null,(ri+1)+'관 · '+botHM(botNeed(id))+' · '+(p.home||'')));tx.appendChild(el('b',null,p.name));tx.appendChild(el('p',null,p.fact));tx.appendChild(el('p',null,p.fact2));c.appendChild(tx);sc.appendChild(c)})});
   sc.appendChild(el('p','mtip','18종 모두 피우려면 숙제 '+botHM(tot)+' (하루 최대 '+botHM(BOT_CAP)+')'));app.appendChild(sc)}
+// ================= 잡초 뽑기 · 퇴비 =================
+// 매일 오면 하루 1포기, 며칠 비우면 빠진 날마다 3포기씩 자라요(최대 12). 다섯 개를 모으면 퇴비 1개 → 식물원 화분 +10분.
+var WEED_MAX=12,WEED_IMG=['weed1','weed2','weed3'],WEED_COMP=5,COMP_MIN=10;
+function weedS(){if(!S.weed)S.weed={last:null,w:{},n:0,comp:0,cday:-1};if(!S.weed.w)S.weed.w={};return S.weed}
+function weedFree(){var oc=occMap(),bc=bldCells(),ds={};try{(digS().spots||[]).forEach(function(k){ds[k]=1})}catch(e){}
+  return Object.keys(LAND).filter(function(k){return placeable(k)&&!oc[k]&&!bc[k]&&!ds[k]&&!(typeof NATURE!=='undefined'&&NATURE[k])&&!POND[k]&&!SAND[k]&&!(S.gd.ground&&S.gd.ground[k])})}
+function weedSync(){var W=weedS(),dn=dnum();if(typeof LAND==='undefined'||!Object.keys(LAND).length||!S.gd)return W;
+  var oc=occMap(),bc=bldCells(),ch=false;Object.keys(W.w).forEach(function(k){if(oc[k]||bc[k]||!LAND[k]||SAND[k]||(S.gd.ground&&S.gd.ground[k])){delete W.w[k];ch=true}});
+  if(W.last!==dn){var gap=W.last==null?1:Math.max(1,dn-W.last);W.last=dn;ch=true;
+    var add=Math.min(WEED_MAX-Object.keys(W.w).length,1+(gap-1)*3),free=weedFree().filter(function(k){return !W.w[k]}),hasC=Object.keys(W.w).some(function(k){return W.w[k]==='clover4'});
+    for(var i=0;i<add&&free.length;i++){var k=free.splice(R(0,free.length-1),1)[0],t=(!hasC&&Math.random()<.12)?'clover4':WEED_IMG[R(0,2)];if(t==='clover4')hasC=true;W.w[k]=t}}
+  if(ch)save();return W}
+function weedCount(){return Object.keys(weedS().w).length}
+// 섬 화면에 잡초를 그려요
+function weedDraw(world){var W=weedSync();Object.keys(W.w).forEach(function(k){var c=k.split(',').map(Number),p=iCtr(c[0],c[1]),t=W.w[k],b=el('button','weed'+(t==='clover4'?' clover':''));
+  b.style.left=p[0]+'px';b.style.top=(p[1]+ITH*.15)+'px';b.style.width=(ITW*(t==='weed2'?.52:.46))+'px';b.style.zIndex=c[0]+c[1]+1;b.appendChild(img(t));b.setAttribute('aria-label',t==='clover4'?'네잎클로버':'잡초');
+  b.onclick=function(e){e.stopPropagation();weedPull(k,b)};world.appendChild(b)});
+  if(Object.keys(W.w).length&&!introS().weed)setTimeout(function(){if(!document.querySelector('.weed')||document.querySelector('.guide,.sheet.show'))return;introS().weed=1;save();coachRun([['.weed','섬에 잡초가 자랐어! 눌러서 쏙 뽑아 줘. 잡초 다섯 개를 모으면 식물원 화분에 줄 퇴비가 돼.']])},1600)}
+function weedPull(k,b){var W=weedS(),t=W.w[k];if(!t||b.classList.contains('pulled'))return;delete W.w[k];b.classList.add('pulled');
+  try{tone([660,990],'sine',.07)}catch(e){}var r=b.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,t==='clover4'?18:8,false);
+  var msg;if(t==='clover4'){S.sun+=5;msg='네잎클로버를 찾았어요! 행운의 햇살 +5 🍀'}else{W.n=(W.n||0)+1;if(W.n>=WEED_COMP){W.n-=WEED_COMP;W.comp=(W.comp||0)+1;msg='퇴비 1개가 만들어졌어요! 식물원 화분에 줄 수 있어요 🌱'}else msg='잡초 '+W.n+' / '+WEED_COMP+' · 다 모으면 퇴비가 돼요'}
+  save();setTimeout(function(){b.remove()},520);
+  if(!weedCount()){msg+=' · 섬이 깔끔해졌어요 ✨';var lc=document.querySelector('.islv');if(lc&&!lc.querySelector('.iclean'))lc.appendChild(el('em','iclean','✨'))}
+  miniToast(msg)}
+// 식물원: 퇴비 주기 (하루 1번)
+function compCard(back){var W=weedS(),d=dnum();if(!(W.comp>0)&&!(W.n>0))return null;var c=el('div','compcard');c.appendChild(img('weed1'));var t=el('div');t.appendChild(el('b',null,'퇴비 '+(W.comp||0)+'개'));t.appendChild(el('small',null,'잡초 '+(W.n||0)+' / '+WEED_COMP+' · 섬에서 잡초를 뽑으면 모여요'));c.appendChild(t);
+  var used=W.cday===d,bt=el('button','cta '+(W.comp>0&&!used?'green':'light'),used?'오늘은 줬어요':'퇴비 주기 +'+COMP_MIN+'분');bt.disabled=!(W.comp>0)||used;
+  bt.onclick=function(){if(!(W.comp>0)||W.cday===d)return;W.comp--;W.cday=d;var r=botAdd(COMP_MIN,true);S.bot.min=Math.max(0,(S.bot.min||0)-r.add);save();
+    if(r.grown.length){var p=botP(r.grown[0]);showSheet('good','sprout','퇴비를 줬어요','꽃이 피었어요! '+(p?p.name:''),'식물원에 전시했어요.','좋아요',function(){botScreen(back)})}else{miniToast('화분이 '+COMP_MIN+'분만큼 자랐어요 🌱');botScreen(back)}};
+  c.appendChild(bt);return c}
 
 // ================= 섬 도서관(독서 기록장) =================
 var LIB_COL=['#e8590c','#1c7ed6','#2f9e44','#ae3ec9','#f59f00','#d6336c'],LIB_DAY=3,LIB_RW=[{n:3,gem:2},{n:10,gem:3},{n:20,gem:5},{n:40,gem:8}];
@@ -8221,7 +8265,7 @@ function libAdd(back){clear();var sc=el('div','screen libscr libadd'),top=el('di
 function libMonKey(d){var t=new Date(d*864e5);return t.getUTCFullYear()+'-'+(t.getUTCMonth()<9?'0':'')+(t.getUTCMonth()+1)}
 function libMonName(k){var p=k.split('-');return p[0]+'년 '+(+p[1])+'월'}
 function introS(){if(!S.intro)S.intro={};return S.intro}
-function coachRun(steps,done){if(document.querySelector('.guide'))return;var me=S.path.char||'rabbit',i=0;
+function coachRun(steps,done){if(document.querySelector('.guide'))return;if(steps[0]&&steps[0][0]&&!document.querySelector(steps[0][0]))return;var me=S.path.char||'rabbit',i=0;
   var lay=el('div','guide coach'),hole=el('div','tg-hole'),card=el('div','tg-card'),pic=avImg(me,'tg-pic'),txt=el('p','tg-txt'),row=el('div','tg-row');
   var skip=el('button','tg-skip','건너뛰기'),nx=el('button','tg-next','다음');if(steps.length<2)skip.style.visibility='hidden';
   row.appendChild(skip);row.appendChild(nx);card.appendChild(pic);var tb=el('div','tg-body');tb.appendChild(txt);tb.appendChild(row);card.appendChild(tb);
