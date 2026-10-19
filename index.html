@@ -8133,6 +8133,7 @@ function dbgSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','h
   row([['안내 다시 보기',function(){S.intro={}}],['오늘 기록 지우기',function(){var k=dayKey();S.days=S.days.filter(function(d){return d!==k});S.math.today=S.hz.today=S.en.today='';if(S.ko)S.ko.today='';ADV=null}]]);
   row([['섬 레벨 +3',function(){var L=islLevel().lv,tg=ISL_T[Math.min(ISL_T.length-1,L+2)];S.dbgIsl=(S.dbgIsl||0)+Math.max(0,tg-islScore())}],['섬 한 단계 넓히기',function(){if(!S.isl)S.isl={};S.isl.stage=Math.min(STAGES.length-1,(S.isl.stage||0)+1);BLDC.key=''}]]);
   row([['건물 모두 열기',function(){var b=bldS();b.school=b.library=b.museum=b.botanic=1;BLDC.key='';botS()}],['섬 레벨 처음으로',function(){S.dbgIsl=0}]]);
+  (function(){function op(id,f){return function(){bldS()[id]=1;BLDC.key='';setTimeout(function(){hideSheet();f(function(){home()})},0)}}row([['박물관 열기',op('museum',museumScreen)],['도서관 열기',op('library',libScreen)],['학교 열기',op('school',schoolScreen)]])})();
   row([['식물원 열기',function(){bldS().botanic=1;BLDC.key='';botS();setTimeout(function(){hideSheet();botScreen(function(){home()})},0)}],['식물 18종 검토',function(){setTimeout(function(){hideSheet();botReview()},0)}]]);
   row([['화분 +30분',function(){botS();botAdd(30,true);bldS().botanic=1;BLDC.key=''}],['지금 관 다 피우기',function(){var b=botS();for(var i=0;i<6;i++){if(!b.cur)break;botAdd(Math.max(0,botNeed(b.cur.id)-b.cur.m),true)}bldS().botanic=1;BLDC.key=''}]]);
   row([['식물원 처음으로',function(){S.bot={min:0,cur:null,got:{},slot:{},day:{d:-1,m:0}};delete bldS().botanic;BLDC.key=''}],['오늘 화분 한도 풀기',function(){botS().day={d:-1,m:0}}]]);
