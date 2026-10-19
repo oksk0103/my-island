@@ -2992,7 +2992,7 @@ body .qscreen .choice.kfw{width:auto;min-width:0;height:auto;min-height:46px;pad
 .botrv{display:flex;gap:12px;align-items:flex-start;padding:12px;margin:0 14px 8px}.botrv p{margin:0;font-size:.85rem;line-height:1.45;word-break:keep-all}
 
 /* 섬 건물 이름표 */
-.bldg .bldlab{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);font-family:var(--title);font-size:.92rem;padding:4px 12px;background:#fff;color:var(--o,#26313d);border-radius:999px;box-shadow:0 2px 6px rgba(20,40,80,.16);white-space:nowrap;pointer-events:none}
+.bldg .bldlab{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%) scale(min(1.9,var(--iz,1)));transform-origin:50% 0;font-family:var(--title);font-size:.92rem;padding:4px 12px;background:#fff;color:var(--o,#26313d);border-radius:999px;box-shadow:0 2px 6px rgba(20,40,80,.16);white-space:nowrap;pointer-events:none}
 .island.edit .bldg .bldlab{opacity:.75}
 </style>
 
@@ -6652,7 +6652,7 @@ function drawGround(cv,CS,bx0,by0,cells){
     ctx.globalAlpha=.5;P.forEach(function(q){if(HAS[(q[0]+1)+','+q[1]]&&HAS[(q[0]-1)+','+q[1]]&&HAS[q[0]+','+(q[1]+1)]&&HAS[q[0]+','+(q[1]-1)])return;put('shallow',q[0],q[1],6)});ctx.globalAlpha=1;
     P.forEach(function(q){put('foam',q[0],q[1])});
     var GD=S.gd.ground||{},W_=function(c,r){return GROUND[GD[c+','+r]]==='canal'};
-    P.forEach(function(q){var k=q[0]+','+q[1],h=hsh(q[0]*3+1,q[1]*5+2),h2=hsh(q[0]*7+3,q[1]*11+5),g=GROUND[GD[k]];put(g&&g!=='hedge'&&!POND[k]?g:POND[k]?'pond':(SAND[k]||ISLS[k])?'sand':(h<.16?'g3':h2<.3?'g2':'g1'),q[0],q[1])});
+    P.forEach(function(q){var k=q[0]+','+q[1],h=hsh(q[0]*3+1,q[1]*5+2),h2=hsh(q[0]*7+3,q[1]*11+5),g=GROUND[GD[k]];put(g&&g!=='hedge'&&!POND[k]?g:POND[k]?'pond':(BLDC.path&&BLDC.path[k])?'path':(SAND[k]||ISLS[k])?'sand':(h<.16?'g3':h2<.3?'g2':'g1'),q[0],q[1])});
     P.forEach(function(q){var k=q[0]+','+q[1];if(GROUND[GD[k]]!=='canal')return;if(!W_(q[0]+1,q[1]))put('rim_px',q[0],q[1]);if(!W_(q[0],q[1]+1))put('rim_pz',q[0],q[1]);if(!W_(q[0]-1,q[1]))put('rim_nx',q[0],q[1]);if(!W_(q[0],q[1]-1))put('rim_nz',q[0],q[1])});
   }
   var n=0;ks.forEach(function(k){var im=TIMG[k];if(im.complete&&im.naturalWidth)n++;else im.addEventListener('load',function(){if(++n===ks.length)go()},{once:true})});
@@ -6959,7 +6959,7 @@ function islandScreen(edit,hand){
   function apply(){world.style.transform='translate3d('+CAM[0]+'px,'+CAM[1]+'px,0) scale('+Z+')';world.style.setProperty('--iz',Math.min(2.2,1/Z))}
   world.style.transformOrigin='0 0';
   ISL_PAN=function(t){if(!t||!world.contains(t))return false;var x=parseFloat(t.style.left),y=parseFloat(t.style.top);if(isNaN(x)||isNaN(y))return false;CAM=clamp(vw/2-x*Z,vh*.42-y*Z);apply();return true};
-  zb.onclick=function(){var cx=(vw/2-CAM[0])/Z,cy=(vh/2-CAM[1])/Z;var FIT=Math.max(.28,Math.min(vw/(BX[2]-BX[0]),(vh-120)/(BX[3]-BX[1])));ZOOM=Z=Z>.9?.6:(Z>FIT+.03?FIT:1);var nz=Z>.9?.6:(Z>FIT+.03?FIT:1);zb.innerHTML=nz<Z?ZOUT_SVG:ZIN_SVG;zb.setAttribute('aria-label',nz<Z?'작게 보기':'크게 보기');CAM=clamp(vw/2-cx*Z,vh/2-cy*Z);apply()};
+  zb.onclick=function(){var cx=(vw/2-CAM[0])/Z,cy=(vh/2-CAM[1])/Z;var FIT=Math.max(.28,Math.min((vw-16)/(BX[2]-BX[0]+ITW*1.4),(vh-120)/(BX[3]-BX[1])));ZOOM=Z=Z>.9?.6:(Z>FIT+.03?FIT:1);var nz=Z>.9?.6:(Z>FIT+.03?FIT:1);zb.innerHTML=nz<Z?ZOUT_SVG:ZIN_SVG;zb.setAttribute('aria-label',nz<Z?'작게 보기':'크게 보기');CAM=clamp(vw/2-cx*Z,vh/2-cy*Z);apply()};
   apply();
   var sx=0,sy=0,ox=0,oy=0,down=false;
   view.addEventListener('pointerdown',function(e){down=true;moved=false;sx=e.clientX;sy=e.clientY;ox=CAM[0];oy=CAM[1]});
@@ -7435,10 +7435,30 @@ function botIslet(B,ks,cx,cy){var D=Math.round(cx-cy),T=null;ks.forEach(function
   [[0,0],[-1,0],[0,-1]].forEach(function(d){BLDC.land[(T[0]+d[0])+','+(T[1]+d[1])]=1});
   BLDC.deco.push({n:'palm_tree',k:(pick.c0+3)+','+(pick.r0+1)},{n:'d_flowers_yellow',k:(pick.c0+1)+','+(pick.r0+3)})}
 var BLDC={key:'',m:{},lots:{}};
+// ===== 시안: 섬 뒤쪽 '건물 부두' — 건물들이 섬 뒤 나무 부두 위에 나란히 서요 (다리 하나) =====
+var PIER_ORDER=['school','botanic','library','museum','gallery'];
+function bldPier(){return !(window.__pier===0)}
+function pierCalc(ks,cx,cy){var ids=PIER_ORDER.filter(function(id){return bldS()[id]});if(!ids.length)return;
+  // 섬 뒤쪽(위쪽)을 부채꼴로 둘러싼 작은 섬들 — 다리 없이 물 건너 떨어져 있어요
+  var bad={};ks.forEach(function(p){for(var i=-2;i<=2;i++)for(var j=-2;j<=2;j++)bad[(p[0]+i)+','+(p[1]+j)]=1});
+  // 섬 뒤쪽에 한 줄로, 화면 가로 간격이 고르게, 좌우 대칭 (바깥 두 섬은 살짝 내려서 부드러운 곡선)
+  var n=ids.length,ORD=['library','school','botanic','museum','gallery'];
+  var seq=ORD.filter(function(id){return ids.indexOf(id)>=0});
+  var X={1:[0],2:[-5,5],3:[-9,0,9],4:[-12,-4,4,12],5:[-16,-8,0,8,16]}[n],DROP={1:[0],2:[0,0],3:[1,0,1],4:[4,0,0,4],5:[3,1,0,1,3]}[n];
+  var D=cx-cy;
+  function blk(i,s){var x=D+X[i],y=s+DROP[i];var c0=Math.round((x+y)/2-1.5),r0=Math.round((y-x)/2-1.5);return [c0,r0]}
+  function clear(c0,r0){for(var u=0;u<4;u++)for(var v=0;v<4;v++)if(bad[(c0+u)+','+(r0+v)])return false;return true}
+  var s0=null;for(var s=-12;s<40;s++){if(seq.every(function(id,i){var q=blk(i,s);return clear(q[0],q[1])}))s0=s;else break}
+  if(s0===null)return;
+  seq.forEach(function(id,i){var q=blk(i,s0),c0=q[0],r0=q[1],cut={};[[0,0],[3,0],[0,3],[3,3]].forEach(function(z){cut[(c0+z[0])+','+(r0+z[1])]=1});
+    for(var u=0;u<4;u++)for(var v=0;v<4;v++){var k2=(c0+u)+','+(r0+v);if(!cut[k2]){BLDC.isl[k2]=1;ISLS[k2]=1}}
+    BLDC.lots[id]=[c0+1,r0+1]})}
+
 // 건물은 본섬 옆 작은 섬에 있어요. 다리로 이어져요.
 var BRYD=.35,BRDW=.86,ISLS={},BRW=1.0,BRY=1.35,BRY1=1.0;
 function bldCalc(){var key=Object.keys(LAND).length+'|'+JSON.stringify(bldS());if(BLDC.key===key)return BLDC;BLDC={key:key,m:{},lots:{},isl:{},br:[],deco:[],land:{}};ISLS={};
   var ks=Object.keys(LAND).map(function(k){return k.split(',').map(Number)}),cx=0,cy=0;ks.forEach(function(p){cx+=p[0];cy+=p[1]});cx/=ks.length;cy/=ks.length;
+  BLDC.sch={};BLDC.path={};if(bldPier()){pierCalc(ks,cx,cy);Object.keys(BLDC.land).forEach(function(k){BLDC.m[k]=1});return BLDC}
   BLDC.sch={};bldList().forEach(function(B){if(B.top){schIslet(B,ks,cx,cy);return}if(B.bottom){botIslet(B,ks,cx,cy);return}var sw=B.front==='r';
     // sw면 c와 r을 바꿔서 같은 방식으로 계산해요
     function K(u,v){return sw?v+','+u:u+','+v}
