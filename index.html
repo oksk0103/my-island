@@ -59,14 +59,14 @@ img{display:block;-webkit-user-drag:none;user-select:none}
 .prog .bar{flex:1;height:8px;border-radius:4px;background:var(--fill-2);overflow:hidden}
 .prog .bar i{display:block;height:100%;border-radius:4px;background:var(--leaf);transition:width .5s ease}
 .prog span{font-size:.85rem;font-weight:700;color:var(--ink-2)}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{background:var(--card);border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:10px}
-.stat img{width:30px;height:30px}
-.stat div{display:flex;flex-direction:column;line-height:1.25}
-.stat small{font-size:.78rem;color:var(--sub);font-weight:500}
-.stat b{font-size:1.15rem;font-weight:800}
-.skills{display:flex;flex-direction:column}
-.skills h3{margin:0 0 6px;font-size:1rem;font-weight:700}
+
+
+
+
+
+
+
+
 .skill{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);font-size:.92rem}
 .skill:first-of-type{border-top:0}
 .dots{display:flex;gap:4px}
@@ -181,11 +181,11 @@ img{display:block;-webkit-user-drag:none;user-select:none}
 .choice.on{background:var(--ink);color:#fff}
 .choice.right{background:var(--leaf);color:#fff}
 .choice.wrong{background:var(--warn);color:#fff;animation:shake .35s}
-.lvline{font-size:.82rem;color:var(--sub);font-weight:500}
 
-.stats.three{grid-template-columns:repeat(3,1fr);gap:8px}
-.stats.three .stat{flex-direction:column;align-items:flex-start;gap:6px;padding:12px 12px 14px}
-.stats.three .stat img{width:24px;height:24px}
+
+
+
+
 .potbox .deco{position:absolute;z-index:3}
 .potbox .deco.back{z-index:0;opacity:.9}
 .deco.float{animation:float 3s ease-in-out infinite}
@@ -211,10 +211,10 @@ img{display:block;-webkit-user-drag:none;user-select:none}
 .combo img{width:18px;height:18px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.fall{display:none}}
 
-.trailcard{display:flex;align-items:center;gap:12px;padding:14px 16px;text-align:left;width:100%}
-.trailcard .tc-char{width:44px;height:44px;flex:none;object-fit:contain}
-.trailcard.ready{box-shadow:inset 0 0 0 2px var(--leaf)}
-.trailcard.ready .tc-char{animation:bob 1s ease-in-out infinite}
+
+
+
+
 @keyframes bob{50%{transform:translateY(-5px)}}
 .tc-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .tc-mid small{font-size:.78rem;font-weight:700;color:var(--leaf)}
@@ -369,7 +369,7 @@ img{display:block;-webkit-user-drag:none;user-select:none}
 .itray{position:static;width:100%;max-width:440px;margin:0;border-radius:22px;box-shadow:0 -2px 16px rgba(0,30,60,.15)}
 .sheetpot{width:64px;height:72px;flex:none;display:flex;justify-content:center;overflow:hidden}
 
-.lobby{gap:14px}
+
 .ltitle small{display:block;font-size:.82rem;font-weight:700;color:var(--sub)}
 .ltitle h1{margin:0;font-size:1.6rem;font-weight:800;letter-spacing:-.03em}
 .lhero{position:relative;display:block;width:100%;border-radius:24px;overflow:hidden;background:radial-gradient(120% 90% at 50% 40%,#8fdcf2,#5fb9e4 70%,#4aa6d8);box-shadow:0 6px 20px rgba(0,60,100,.15);padding:0}
@@ -926,11 +926,11 @@ body.zscr::after{content:"";position:fixed;left:-10%;right:-10%;bottom:-50px;hei
 body.zscr .screen h1,body.zscr .screen h2{font-family:var(--game);font-weight:400;letter-spacing:0}
 body.zscr .eyebrow{display:inline-block;align-self:center;padding:3px 12px;border-radius:999px;background:rgba(255,255,255,.75);font-family:var(--game);font-weight:400;font-size:.92rem}
 body.zscr .screen>.eyebrow,body.zscr .screen .head .eyebrow{align-self:flex-start}
-body.zscr .card,body.zscr .stat,body.zscr .fact,body.zscr .ghc,body.zscr .trailcard{background:#fff;box-shadow:0 4px 0 rgba(150,180,200,.35),0 8px 18px rgba(0,60,100,.06)}
+body.zscr .card,body.zscr .fact,body.zscr .ghc{background:#fff;box-shadow:0 4px 0 rgba(150,180,200,.35),0 8px 18px rgba(0,60,100,.06)}
 body.zscr .ghc{border-radius:22px}
-body.zscr .ghc b,body.zscr .stat b{font-family:var(--game);font-weight:400;font-size:1.08rem}
-body.zscr .stat b{font-size:1.2rem}
-body.zscr .skills h3,body.zscr .card h3{font-family:var(--game);font-weight:400;font-size:1.15rem}
+body.zscr .ghc b{font-family:var(--game);font-weight:400;font-size:1.08rem}
+
+body.zscr .card h3{font-family:var(--game);font-weight:400;font-size:1.15rem}
 body.zscr .x{width:44px;height:44px;margin-left:0;border-radius:50%;background:linear-gradient(#fff,#eef3f7);box-shadow:inset 0 0 0 2px rgba(255,255,255,.9),0 3px 0 rgba(10,60,100,.2),0 6px 12px rgba(0,40,80,.1);color:var(--ink)}
 body.zscr .x:active{transform:translateY(2px)}
 body.zscr .balance{height:40px;padding:0 14px 0 8px;background:linear-gradient(#fff,#eef3f7);box-shadow:inset 0 0 0 2px rgba(255,255,255,.9),0 3px 0 rgba(10,60,100,.2);font-family:var(--game);font-weight:400;font-size:1.1rem}
@@ -1164,14 +1164,14 @@ body.big .tg-card{zoom:var(--z2)}
 .choice.fq.wrong{background:linear-gradient(#ffa07a,#ff6b3d);color:#fff;box-shadow:0 4px 0 #c4471a}
 .fhouse{position:relative;display:flex;justify-content:center}
 .fhouse .fhpet{position:absolute;right:-6%;bottom:2%;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
-.frcard h3{margin:0 0 4px}
-.frrow{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #eef2f5}
-.frrow>img{width:40px;height:40px;object-fit:contain}
-.frrow b{font-family:var(--game);font-weight:400;font-size:1.02rem}
-.frh{display:flex;gap:3px;margin-top:3px}
-.frh i{width:12px;height:11px;background:#f0e3e8;clip-path:path('M6 11 L1 6 A3 3 0 0 1 6 2 A3 3 0 0 1 11 6 Z')}
-.frh i.on{background:#ff6b8a}
-.frrow small{font-size:.75rem;font-weight:700;color:var(--ink-2)}
+
+
+
+
+
+
+
+
 
 /* 위쪽 칩: 좁은 화면에서도 한 줄 */
 .hud .hudl{flex-wrap:nowrap;min-width:0}
@@ -1192,10 +1192,10 @@ body.big .tg-card{zoom:var(--z2)}
 @media (max-width:360px){.evchip small{display:none}.islbar{width:28px}.hud{padding-left:8px;padding-right:8px}.island .hudl{gap:5px}.island .hudr{gap:4px;margin-left:4px}.vhud .hchip{padding-right:8px}.island .hud .hchip{height:34px;padding:0 8px 0 30px;font-size:1rem}.island .hud .hchip img{left:3px;width:24px;height:24px}.island .hud .hchip.islv{padding:0 8px}.island .hbtn{width:34px;height:34px}}
 
 .enw.injar{box-shadow:inset 0 0 0 2px #ffc93c}
-.frhb{display:flex;align-items:center;gap:6px;margin-top:4px}
-.frtr{display:block;width:90px;height:8px;border-radius:4px;background:#f6e3e9;overflow:hidden}
-.frtr i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#ff8fab,#ff4d7a)}
-.frhb em{font-style:normal;font-size:.72rem;font-weight:800;color:#ff4d7a;white-space:nowrap}
+
+
+
+
 
 .qbody.mchoice{justify-content:flex-start;padding-bottom:16px}
 .qbody.mchoice .stemwrap{flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:0}
@@ -1208,7 +1208,7 @@ body.big .tg-card{zoom:var(--z2)}
 .enlist>summary{display:block;width:-webkit-fit-content;width:fit-content;margin:6px auto 0;padding:9px 20px;border-radius:999px;background:rgba(255,255,255,.8);font-family:var(--game);font-weight:400;font-size:1rem;color:#5b6b78;text-align:center;white-space:nowrap;line-height:1.2}
 .enlist>summary::after{display:inline-block;vertical-align:middle;margin-left:8px}
 h1,h2,h3,.sub,.sheet p,.qhead h2,.fact p,.petbub span{text-wrap:balance}
-.frrow small{white-space:nowrap}
+
 .enw span{word-break:keep-all}
 .cta,.ibig{padding-top:3px}
 .qscreen .choice,.choice.fq{padding:11px 8px 7px}
@@ -1292,15 +1292,15 @@ body.zscr .balance{padding-top:5px}
 .avnote{display:flex;align-items:center;gap:8px;margin-top:12px;text-align:left}
 .avnote img{width:26px;height:26px;flex:none}
 .sum.good{color:#127a4a}
-.avcard{position:relative;display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;margin:0 0 12px;text-align:left}
-.avcpv{width:64px;height:64px;flex:none;display:flex;align-items:flex-end;justify-content:center;border-radius:16px;background:linear-gradient(#eaf6ff,#d6eefc);overflow:visible}
-.avcimg{width:50px;height:50px;object-fit:contain;margin-bottom:4px}
-.avctx{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
-.avctx b{font-family:var(--game);font-weight:400;font-size:1.12rem;line-height:1.1}
-.avctx small{display:flex;align-items:center;gap:4px;font-weight:700;color:var(--sub);font-size:.82rem}
-.avctx small img{width:18px;height:18px}
-.avcar{color:#9aa7b3;display:flex}
-.avcard>.lmbadge{position:absolute;right:10px;top:10px}
+
+
+
+
+
+
+
+
+
 @media (max-width:340px){.qtag{font-size:.8rem!important;gap:4px;white-space:nowrap}.qtag .qcombo{margin-left:2px;padding:1px 6px 1px 3px;font-size:.7rem}.qtag .qcombo img{width:13px;height:13px}}
 .gh{grid-template-columns:repeat(2,minmax(0,1fr))}.gh.gh3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .avhit{position:absolute;pointer-events:auto;cursor:pointer;z-index:2}
@@ -1491,7 +1491,7 @@ body.qmode .qscreen.dig{background:transparent}
 .fodone small{color:#8a6237!important}
 .fodone.rare small{color:#d9480f!important}
 .fodone .fogain{font-weight:700;color:#1f8a57}
-.fdxbtn{margin-top:8px}
+
 
 .qdots i.w{background:rgba(196,170,255,.75)}
 .qdots i.w.done{background:linear-gradient(#b48cff,#7c4dff);box-shadow:inset 0 -2px 0 rgba(60,20,140,.25)}
@@ -1770,7 +1770,7 @@ body .qscreen .keys button.del,body .qscreen .keys button:last-child{background:
 :root{--ico:drop-shadow(1.5px 0 0 var(--o)) drop-shadow(-1.5px 0 0 var(--o)) drop-shadow(0 1.5px 0 var(--o)) drop-shadow(0 -1.5px 0 var(--o)) drop-shadow(0 2px 2px rgba(20,40,80,.25));
  --ico-s:drop-shadow(1px 0 0 var(--o)) drop-shadow(-1px 0 0 var(--o)) drop-shadow(0 1px 0 var(--o)) drop-shadow(0 -1px 0 var(--o));
  --title:"Black Han Sans","Jua",sans-serif}
-.hchip img,.qwallet img,.balance img,.stat img,.vtask img,.advic img,.wschip img,.wssub img,.evchip img,.sheet .hd img,.rrow img,.awmd img,.dexrwi img,.evtoast img,.gemtoast img,.hbtn .avbimg,.mcur img,.wsday i img,.mseg img,.chip img,.titem img,.ghc img,.evit img,.stkm img{filter:var(--ico)}
+.hchip img,.qwallet img,.balance img,.vtask img,.advic img,.wschip img,.wssub img,.evchip img,.sheet .hd img,.rrow img,.awmd img,.dexrwi img,.evtoast img,.gemtoast img,.hbtn .avbimg,.mcur img,.wsday i img,.mseg img,.chip img,.titem img,.ghc img,.evit img,.stkm img{filter:var(--ico)}
 .hchip img{filter:var(--ico) !important}
 .wsday i img,.balance img,.rrow img{filter:var(--ico-s)}
 /* 제목: 두꺼운 게임 글씨 + 남색 외곽선 */
@@ -1850,11 +1850,11 @@ body .qhead h2{font-family:var(--title);font-weight:400;font-size:1.5rem;letter-
 body .mtitle{font-family:var(--title);font-weight:400;color:var(--o);font-size:1.45rem;letter-spacing:.01em;margin-left:6px}
 body .ltitle h1,body .center h2{font-family:var(--title);font-weight:400;color:var(--o);letter-spacing:.01em}
 /* 카드/패널 */
-body .card,body .stat,body .rcard,body .wsbox,body .ddcard,body .trailcard,body .advdone0{background:#fff9e8;box-shadow:inset 0 0 0 3px #fff,var(--lift-s);border-radius:22px}
-body .card h3,body .rcard h3,body .frcard h3{font-family:var(--title);font-weight:400;color:var(--o);font-size:1.2rem;letter-spacing:.01em}
-body .stat small{color:#6b7a95;font-weight:700}body .stat b{font-family:var(--title);font-weight:400;color:var(--o);font-size:1.3rem}
-body .lvline{color:#8a6a45;font-family:var(--title);font-weight:400;font-size:.95rem}
-body .skill{border-top:1.5px dashed #ead9b6}body .frrow{border-top:1.5px dashed #ead9b6}
+body .card,body .rcard,body .wsbox,body .ddcard,body .advdone0{background:#fff9e8;box-shadow:inset 0 0 0 3px #fff,var(--lift-s);border-radius:22px}
+body .card h3,body .rcard h3{font-family:var(--title);font-weight:400;color:var(--o);font-size:1.2rem;letter-spacing:.01em}
+
+
+body .skill{border-top:1.5px dashed #ead9b6}
 /* 시트(아래 팝업) */
 body .sheet .in{background:#fff9e8;border-radius:28px 28px 0 0;box-shadow:0 -3px 0 var(--o),inset 0 4px 0 #fff,0 -14px 34px rgba(20,40,80,.3);border-top:0!important;background-image:none!important}
 body .sheet.good .in,body .sheet.bad .in{background:#fff9e8;border-top:0}
@@ -1912,8 +1912,7 @@ body .wsbar{box-shadow:inset 0 0 0 2px var(--o);background:#e4ebf2;height:14px}
 body .advrow{background:#fff;box-shadow:inset 0 0 0 2px #f0d9a6;border-radius:14px}
 body .stkm,body .evit{background:var(--tile);box-shadow:var(--tile-sh-s);border-radius:14px;margin-bottom:3px}
 body .evit b,body .stkm b{font-family:var(--title);font-weight:400;color:var(--o)}
-/* 캐릭터 꾸미기 */
-body .avcard{background:var(--tile);box-shadow:var(--tile-sh);border-radius:20px;margin-bottom:4px}
+
 
 /* 내 섬 바다: 멀수록 짙고, 물빛 일렁임 */
 body .island{background:radial-gradient(130% 90% at 50% 48%,#a9e4f5 0%,#7fcbe8 45%,#4fa9d8 100%)}
@@ -1969,11 +1968,11 @@ body .cta.warn:not(:disabled):active:not(:disabled)::before,body .qscreen .choic
 body .cta:disabled,body .qscreen>.cta:disabled{isolation:isolate;background:none!important;background-image:none!important;box-shadow:none!important;border-color:transparent!important}
 body .cta:disabled:not(.vtoday):not(.tray):not(.ihint):not(.in),body .qscreen>.cta:disabled:not(.vtoday):not(.tray):not(.ihint):not(.in){position:relative}
 body .cta:disabled::before,body .qscreen>.cta:disabled::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border:18.0px solid transparent;border-bottom-width:21.599999999999998px;border-image:var(--sk-btn_gray) 36 36 47 36 fill / 18.0px 18.0px 21.599999999999998px 18.0px / 0 stretch}
-body .cta.light,body .qscreen .choice,body .qscreen .keys button,body .village .vtask,body .ghc,body .catchip,body .wssub,body .wssg,body .awc,body .titem,body .dexrwi,body .wsday,body .seg button.on,body .mseg button.on,body .stkm,body .evit,body .avcard{isolation:isolate;background:none!important;background-image:none!important;box-shadow:none!important;border-color:transparent!important}
-body .cta.light:not(.vtoday):not(.tray):not(.ihint):not(.in),body .qscreen .choice:not(.vtoday):not(.tray):not(.ihint):not(.in),body .qscreen .keys button:not(.vtoday):not(.tray):not(.ihint):not(.in),body .village .vtask:not(.vtoday):not(.tray):not(.ihint):not(.in),body .ghc:not(.vtoday):not(.tray):not(.ihint):not(.in),body .catchip:not(.vtoday):not(.tray):not(.ihint):not(.in),body .wssub:not(.vtoday):not(.tray):not(.ihint):not(.in),body .wssg:not(.vtoday):not(.tray):not(.ihint):not(.in),body .awc:not(.vtoday):not(.tray):not(.ihint):not(.in),body .titem:not(.vtoday):not(.tray):not(.ihint):not(.in),body .dexrwi:not(.vtoday):not(.tray):not(.ihint):not(.in),body .wsday:not(.vtoday):not(.tray):not(.ihint):not(.in),body .seg button.on:not(.vtoday):not(.tray):not(.ihint):not(.in),body .mseg button.on:not(.vtoday):not(.tray):not(.ihint):not(.in),body .stkm:not(.vtoday):not(.tray):not(.ihint):not(.in),body .evit:not(.vtoday):not(.tray):not(.ihint):not(.in),body .avcard:not(.vtoday):not(.tray):not(.ihint):not(.in){position:relative}
-body .cta.light::before,body .qscreen .choice::before,body .qscreen .keys button::before,body .village .vtask::before,body .ghc::before,body .catchip::before,body .wssub::before,body .wssg::before,body .awc::before,body .titem::before,body .dexrwi::before,body .wsday::before,body .seg button.on::before,body .mseg button.on::before,body .stkm::before,body .evit::before,body .avcard::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border:14px solid transparent;border-bottom-width:16.8px;border-image:var(--sk-tile) 36 36 47 36 fill / 14px 14px 16.8px 14px / 0 stretch}
-body .cta.light:active:not(:disabled),body .qscreen .choice:active:not(:disabled),body .qscreen .keys button:active:not(:disabled),body .village .vtask:active:not(:disabled),body .ghc:active:not(:disabled),body .catchip:active:not(:disabled),body .wssub:active:not(:disabled),body .wssg:active:not(:disabled),body .awc:active:not(:disabled),body .titem:active:not(:disabled),body .dexrwi:active:not(:disabled),body .wsday:active:not(:disabled),body .seg button.on:active:not(:disabled),body .mseg button.on:active:not(:disabled),body .stkm:active:not(:disabled),body .evit:active:not(:disabled),body .avcard:active:not(:disabled){transform:translateY(3px)}
-body .cta.light:active:not(:disabled)::before,body .qscreen .choice:active:not(:disabled)::before,body .qscreen .keys button:active:not(:disabled)::before,body .village .vtask:active:not(:disabled)::before,body .ghc:active:not(:disabled)::before,body .catchip:active:not(:disabled)::before,body .wssub:active:not(:disabled)::before,body .wssg:active:not(:disabled)::before,body .awc:active:not(:disabled)::before,body .titem:active:not(:disabled)::before,body .dexrwi:active:not(:disabled)::before,body .wsday:active:not(:disabled)::before,body .seg button.on:active:not(:disabled)::before,body .mseg button.on:active:not(:disabled)::before,body .stkm:active:not(:disabled)::before,body .evit:active:not(:disabled)::before,body .avcard:active:not(:disabled)::before{border-bottom-width:16.8px;border-image:var(--sk-tile_dn) 36 36 38 36 fill / 14px 14px 16.8px 14px / 0 stretch}
+body .cta.light,body .qscreen .choice,body .qscreen .keys button,body .village .vtask,body .ghc,body .catchip,body .wssub,body .wssg,body .awc,body .titem,body .dexrwi,body .wsday,body .seg button.on,body .mseg button.on,body .stkm,body .evit{isolation:isolate;background:none!important;background-image:none!important;box-shadow:none!important;border-color:transparent!important}
+body .cta.light:not(.vtoday):not(.tray):not(.ihint):not(.in),body .qscreen .choice:not(.vtoday):not(.tray):not(.ihint):not(.in),body .qscreen .keys button:not(.vtoday):not(.tray):not(.ihint):not(.in),body .village .vtask:not(.vtoday):not(.tray):not(.ihint):not(.in),body .ghc:not(.vtoday):not(.tray):not(.ihint):not(.in),body .catchip:not(.vtoday):not(.tray):not(.ihint):not(.in),body .wssub:not(.vtoday):not(.tray):not(.ihint):not(.in),body .wssg:not(.vtoday):not(.tray):not(.ihint):not(.in),body .awc:not(.vtoday):not(.tray):not(.ihint):not(.in),body .titem:not(.vtoday):not(.tray):not(.ihint):not(.in),body .dexrwi:not(.vtoday):not(.tray):not(.ihint):not(.in),body .wsday:not(.vtoday):not(.tray):not(.ihint):not(.in),body .seg button.on:not(.vtoday):not(.tray):not(.ihint):not(.in),body .mseg button.on:not(.vtoday):not(.tray):not(.ihint):not(.in),body .stkm:not(.vtoday):not(.tray):not(.ihint):not(.in),body .evit:not(.vtoday):not(.tray):not(.ihint):not(.in){position:relative}
+body .cta.light::before,body .qscreen .choice::before,body .qscreen .keys button::before,body .village .vtask::before,body .ghc::before,body .catchip::before,body .wssub::before,body .wssg::before,body .awc::before,body .titem::before,body .dexrwi::before,body .wsday::before,body .seg button.on::before,body .mseg button.on::before,body .stkm::before,body .evit::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border:14px solid transparent;border-bottom-width:16.8px;border-image:var(--sk-tile) 36 36 47 36 fill / 14px 14px 16.8px 14px / 0 stretch}
+body .cta.light:active:not(:disabled),body .qscreen .choice:active:not(:disabled),body .qscreen .keys button:active:not(:disabled),body .village .vtask:active:not(:disabled),body .ghc:active:not(:disabled),body .catchip:active:not(:disabled),body .wssub:active:not(:disabled),body .wssg:active:not(:disabled),body .awc:active:not(:disabled),body .titem:active:not(:disabled),body .dexrwi:active:not(:disabled),body .wsday:active:not(:disabled),body .seg button.on:active:not(:disabled),body .mseg button.on:active:not(:disabled),body .stkm:active:not(:disabled),body .evit:active:not(:disabled){transform:translateY(3px)}
+body .cta.light:active:not(:disabled)::before,body .qscreen .choice:active:not(:disabled)::before,body .qscreen .keys button:active:not(:disabled)::before,body .village .vtask:active:not(:disabled)::before,body .ghc:active:not(:disabled)::before,body .catchip:active:not(:disabled)::before,body .wssub:active:not(:disabled)::before,body .wssg:active:not(:disabled)::before,body .awc:active:not(:disabled)::before,body .titem:active:not(:disabled)::before,body .dexrwi:active:not(:disabled)::before,body .wsday:active:not(:disabled)::before,body .seg button.on:active:not(:disabled)::before,body .mseg button.on:active:not(:disabled)::before,body .stkm:active:not(:disabled)::before,body .evit:active:not(:disabled)::before{border-bottom-width:16.8px;border-image:var(--sk-tile_dn) 36 36 38 36 fill / 14px 14px 16.8px 14px / 0 stretch}
 body .qscreen .choice.on{isolation:isolate;background:none!important;background-image:none!important;box-shadow:none!important;border-color:transparent!important}
 body .qscreen .choice.on:not(.vtoday):not(.tray):not(.ihint):not(.in){position:relative}
 body .qscreen .choice.on::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border:14px solid transparent;border-bottom-width:16.8px;border-image:var(--sk-tile_blue) 36 36 47 36 fill / 14px 14px 16.8px 14px / 0 stretch}
@@ -1983,9 +1982,9 @@ body .qscreen .choice.right::before,body .village .vtask.done::before,body .wssu
 body .village .vtoday,body .tray{isolation:isolate;background:none!important;background-image:none!important;box-shadow:none!important;border-color:transparent!important}
 body .village .vtoday:not(.vtoday):not(.tray):not(.ihint):not(.in),body .tray:not(.vtoday):not(.tray):not(.ihint):not(.in){position:relative}
 body .village .vtoday::before,body .tray::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border:16px solid transparent;border-bottom-width:19.2px;border-image:var(--sk-panel_wood) 36 36 47 36 fill / 16px 16px 19.2px 16px / 0 stretch}
-body .card,body .rcard,body .wsbox,body .stat,body .sheet .in,body .ddcard,body .trailcard,body .advdone0,body .qscreen:not(.thm) .qbody{isolation:isolate;background:none!important;background-image:none!important;box-shadow:none!important;border-color:transparent!important}
-body .card:not(.vtoday):not(.tray):not(.ihint):not(.in),body .rcard:not(.vtoday):not(.tray):not(.ihint):not(.in),body .wsbox:not(.vtoday):not(.tray):not(.ihint):not(.in),body .stat:not(.vtoday):not(.tray):not(.ihint):not(.in),body .sheet .in:not(.vtoday):not(.tray):not(.ihint):not(.in),body .ddcard:not(.vtoday):not(.tray):not(.ihint):not(.in),body .trailcard:not(.vtoday):not(.tray):not(.ihint):not(.in),body .advdone0:not(.vtoday):not(.tray):not(.ihint):not(.in),body .qscreen:not(.thm) .qbody:not(.vtoday):not(.tray):not(.ihint):not(.in){position:relative}
-body .card::before,body .rcard::before,body .wsbox::before,body .stat::before,body .sheet .in::before,body .ddcard::before,body .trailcard::before,body .advdone0::before,body .qscreen:not(.thm) .qbody::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border:16px solid transparent;border-bottom-width:19.2px;border-image:var(--sk-panel_cream) 36 36 47 36 fill / 16px 16px 19.2px 16px / 0 stretch}
+body .card,body .rcard,body .wsbox,body .sheet .in,body .ddcard,body .advdone0,body .qscreen:not(.thm) .qbody{isolation:isolate;background:none!important;background-image:none!important;box-shadow:none!important;border-color:transparent!important}
+body .card:not(.vtoday):not(.tray):not(.ihint):not(.in),body .rcard:not(.vtoday):not(.tray):not(.ihint):not(.in),body .wsbox:not(.vtoday):not(.tray):not(.ihint):not(.in),body .sheet .in:not(.vtoday):not(.tray):not(.ihint):not(.in),body .ddcard:not(.vtoday):not(.tray):not(.ihint):not(.in),body .advdone0:not(.vtoday):not(.tray):not(.ihint):not(.in),body .qscreen:not(.thm) .qbody:not(.vtoday):not(.tray):not(.ihint):not(.in){position:relative}
+body .card::before,body .rcard::before,body .wsbox::before,body .sheet .in::before,body .ddcard::before,body .advdone0::before,body .qscreen:not(.thm) .qbody::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border:16px solid transparent;border-bottom-width:19.2px;border-image:var(--sk-panel_cream) 36 36 47 36 fill / 16px 16px 19.2px 16px / 0 stretch}
 body .hchip,body .balance,body .qwallet{isolation:isolate;background:none!important;background-image:none!important;box-shadow:none!important;border-color:transparent!important}
 body .hchip:not(.vtoday):not(.tray):not(.ihint):not(.in),body .balance:not(.vtoday):not(.tray):not(.ihint):not(.in),body .qwallet:not(.vtoday):not(.tray):not(.ihint):not(.in){position:relative}
 body .hchip::before,body .balance::before,body .qwallet::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border:15px solid transparent;border-bottom-width:18.0px;border-image:var(--sk-chip_cream) 55 55 66 55 fill / 15px 15px 18.0px 15px / 0 stretch}
@@ -2048,8 +2047,8 @@ body .advdone0{padding:4px 4px 6px}
 
 /* ===== 위계 정리: 테두리는 '누르는 큰 버튼'에만. 선택 칸은 얇게, 정보 카드는 테두리 없이 ===== */
 /* 2단계: 선택 칸(보기·소품·상장·숙제 과목·칩·탭) — 그림 테두리 제거, 흰 타일 + 얇은 선 + 작은 받침 */
-body .qscreen .choice,body .qscreen .keys button,body .village .vtask,body .ghc,body .catchip,body .wssub,body .wssg,body .awc,body .titem,body .dexrwi,body .wsday,body .seg button.on,body .mseg button.on,body .stkm,body .evit,body .avcard,body .cta.light,body .mcase .mglass,body .lsg,body .wswpi img,body .lfbook{background:#fff!important;background-image:none!important;box-shadow:inset 0 0 0 1.5px #d6dfe8,0 3px 0 #cfd9e3!important;border-radius:14px;isolation:auto}
-body .qscreen .choice::before,body .qscreen .keys button::before,body .village .vtask::before,body .ghc::before,body .catchip::before,body .wssub::before,body .wssg::before,body .awc::before,body .titem::before,body .dexrwi::before,body .wsday::before,body .seg button.on::before,body .mseg button.on::before,body .stkm::before,body .evit::before,body .avcard::before,body .cta.light::before,body .qscreen .choice.on::before,body .qscreen .choice.right::before,body .qscreen .choice.wrong::before,body .village .vtask.done::before,body .wssub.on::before,body .wssg.on::before,body .village .wschip.on::before{display:none!important;content:none!important}
+body .qscreen .choice,body .qscreen .keys button,body .village .vtask,body .ghc,body .catchip,body .wssub,body .wssg,body .awc,body .titem,body .dexrwi,body .wsday,body .seg button.on,body .mseg button.on,body .stkm,body .evit,body .cta.light,body .mcase .mglass,body .lsg,body .wswpi img,body .lfbook{background:#fff!important;background-image:none!important;box-shadow:inset 0 0 0 1.5px #d6dfe8,0 3px 0 #cfd9e3!important;border-radius:14px;isolation:auto}
+body .qscreen .choice::before,body .qscreen .keys button::before,body .village .vtask::before,body .ghc::before,body .catchip::before,body .wssub::before,body .wssg::before,body .awc::before,body .titem::before,body .dexrwi::before,body .wsday::before,body .seg button.on::before,body .mseg button.on::before,body .stkm::before,body .evit::before,body .cta.light::before,body .qscreen .choice.on::before,body .qscreen .choice.right::before,body .qscreen .choice.wrong::before,body .village .vtask.done::before,body .wssub.on::before,body .wssg.on::before,body .village .wschip.on::before{display:none!important;content:none!important}
 body .qscreen .choice:active,body .qscreen .keys button:active,body .village .vtask:active,body .ghc:active,body .catchip:active,body .wssub:active,body .awc:active,body .titem:active,body .cta.light:active{transform:translateY(2px);box-shadow:inset 0 0 0 1.5px #d6dfe8,0 1px 0 #cfd9e3!important}
 body .qscreen .choice.on{background:linear-gradient(#8fd4ff,#3aa6f5)!important;box-shadow:inset 0 0 0 1.5px #1f86d6,0 3px 0 #1a6fb5!important;color:#fff;text-shadow:0 1.5px 0 rgba(20,60,110,.5)}
 body .qscreen .choice.right,body .village .vtask.done,body .wssub.on,body .wssg.on,body .village .wschip.on{background:linear-gradient(#a6ef8f,#4fc957)!important;box-shadow:inset 0 0 0 1.5px #2ea645,0 3px 0 #268a3a!important;color:#fff;text-shadow:0 1.5px 0 rgba(20,80,30,.5)}
@@ -2063,14 +2062,13 @@ body .wsday.on{background:#eafbe0!important}
 /* 글자: 선택 칸은 테두리 글자 대신 남색 보통 글자 */
 body .qscreen .choice,body .village .vtask,body .ghc b,body .catchip,body .wssub,body .wssg,body .awc b,body .cta.light{color:var(--o);text-shadow:none}
 /* 3단계: 정보 카드 — 테두리·받침 없음, 연한 바탕만 */
-body .card,body .rcard,body .wsbox,body .stat,body .trailcard,body .mcur p,body .rtalk p,body .advrow,body .lfield,body .evnote,body .sheet p{background:rgba(255,255,255,.72)!important;background-image:none!important;box-shadow:none!important;border:0!important;border-radius:18px;isolation:auto}
-body .card::before,body .rcard::before,body .wsbox::before,body .stat::before,body .trailcard::before,body .advdone0::before{display:none!important;content:none!important}
+body .card,body .rcard,body .wsbox,body .mcur p,body .rtalk p,body .advrow,body .lfield,body .evnote,body .sheet p{background:rgba(255,255,255,.72)!important;background-image:none!important;box-shadow:none!important;border:0!important;border-radius:18px;isolation:auto}
+body .card::before,body .rcard::before,body .wsbox::before,body .advdone0::before{display:none!important;content:none!important}
 body .card{padding:18px 18px 14px}
-/* 정보 카드 안의 작은 칸들: 상자 대신 구분선 */
-body .stats{gap:10px}
-body .stat{background:rgba(255,255,255,.55)!important;border-radius:14px;padding:12px 14px}
-body .skill,body .frrow,body .rrow{border-top:1.5px solid rgba(40,56,90,.1)}
-body .skill:first-of-type,body .frrow:first-of-type{border-top:0}
+
+
+body .skill,body .rrow{border-top:1.5px solid rgba(40,56,90,.1)}
+body .skill:first-of-type{border-top:0}
 /* 팝업·문제 카드(큰 패널)만 그림 테두리 유지, 두께는 줄여요 */
 body .sheet .in::before,body .ddcard::before,body .qscreen:not(.thm) .qbody::before{border-width:12px 12px 16px 12px!important}
 /* 상점·박물관·상장 격자: 칸 사이 여백 늘리기 */
@@ -2125,8 +2123,8 @@ body .village .vtask,body .qscreen .choice,body .ghc b,body .catchip,body .wssub
 body .qhead h2{font-size:1.4rem;letter-spacing:0;text-shadow:none}
 body .mtitle{font-size:1.35rem;letter-spacing:0}
 body .sheet h3{font-size:1.3rem;letter-spacing:0}
-body .card h3,body .rcard h3,body .frcard h3{font-size:1.15rem;letter-spacing:0}
-body .stat b{font-size:1.2rem}
+body .card h3,body .rcard h3{font-size:1.15rem;letter-spacing:0}
+
 body .qhead small,body .qhead .qtag,body .qscreen .qtag{font-size:.85rem;letter-spacing:0;padding:4px 10px 3px}
 /* 큰 버튼 글자: Jua + 얇은 테두리 */
 body .cta,body .sheet .cta,body .qscreen>.cta,body .village .advbtn .advtx b{font-size:1.2rem;letter-spacing:0}
@@ -2211,7 +2209,7 @@ html body .sheet .in::before,html body .ddcard::before,html body .qscreen:not(.t
 html body .sheet .in,html body .ddcard,html body .qscreen:not(.thm) .qbody{background:rgba(255,250,236,.97)!important;background-image:none!important;box-shadow:0 12px 32px rgba(20,30,60,.22)!important;border:0!important;border-radius:24px;isolation:auto}
 html body .ddcard,html body .qscreen:not(.thm) .qbody{box-shadow:0 4px 0 rgba(40,56,90,.08),0 8px 20px rgba(20,30,60,.10)!important}
 /* 선택 칸: 안쪽 선은 더 옅게, 받침만 */
-html body .qscreen .choice,html body .qscreen .keys button,html body .village .vtask,html body .ghc,html body .catchip,html body .wssub,html body .wssg,html body .awc,html body .titem,html body .dexrwi,html body .wsday,html body .stkm,html body .evit,html body .avcard,html body .hchip,html body .balance,html body .qwallet,html body .x,html body .hbtn,html body .village .lmlabel{box-shadow:0 3px 0 #dfe5ec!important}
+html body .qscreen .choice,html body .qscreen .keys button,html body .village .vtask,html body .ghc,html body .catchip,html body .wssub,html body .wssg,html body .awc,html body .titem,html body .dexrwi,html body .wsday,html body .stkm,html body .evit,html body .hchip,html body .balance,html body .qwallet,html body .x,html body .hbtn,html body .village .lmlabel{box-shadow:0 3px 0 #dfe5ec!important}
 html body .qscreen .choice:active,html body .qscreen .keys button:active,html body .village .vtask:active,html body .ghc:active,html body .catchip:active,html body .wssub:active,html body .awc:active,html body .titem:active{box-shadow:0 1px 0 #dfe5ec!important}
 html body .qscreen .choice.on{box-shadow:0 3px 0 #1a6fb5!important}
 html body .qscreen .choice.right,html body .village .vtask.done,html body .wssub.on,html body .wssg.on,html body .village .wschip.on{box-shadow:0 3px 0 #268a3a!important}
@@ -2334,31 +2332,30 @@ html body .awc:not(.on) small{color:#5b6b85}
 .catchips{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),rgba(0,0,0,.15));mask-image:linear-gradient(90deg,#000 calc(100% - 36px),rgba(0,0,0,.15))}
 .catchips.end{-webkit-mask-image:none;mask-image:none}
 
-/* 이번 주 요약 */
-.wkcard{display:flex;flex-direction:column;gap:12px}
+
 .wkhd{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
 .wkhd h3{margin:0}
 .wkhd small{font-size:.76rem;color:#7a8597}
-.wkdays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.wkd{display:flex;flex-direction:column;align-items:center;gap:4px}
-.wkd i{width:26px;height:26px;border-radius:50%;background:#e9eef3;display:block}
-.wkd.on i{background:#4fc957;box-shadow:inset 0 0 0 3px #d9f5dc}
-.wkd.today i{box-shadow:0 0 0 2px #ffd43b}
-.wkd.fut i{opacity:.45}
-.wkd small{font-size:.72rem;color:#7a8597}
-.wkgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.wks{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.6)}
-.wks small{font-size:.76rem;color:#7a8597}
-.wks b{font-family:var(--game);font-weight:400;font-size:1.25rem;color:var(--o)}
-.wks em{font-style:normal;font-size:.72rem;color:#5b8a63}
-.wksub{display:flex;flex-direction:column;gap:6px}
-.wkrow{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:8px;font-size:.84rem}
-.wkrow span{color:var(--o);font-weight:600}
-.wkrow .wkbar{display:block;height:8px;border-radius:4px;background:#e9eef3;overflow:hidden}
-.wkrow .wkbar b{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#8ce99a,#4fc957)}
-.wkrow em{font-style:normal;color:#5b6b85;font-size:.78rem;white-space:nowrap}
-.wkrow.ws{grid-template-columns:40px 1fr}
-.wkrow.ws em{white-space:normal}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .dbgchip{position:absolute;left:50%;top:calc(58px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:60;padding:4px 10px;border-radius:999px;background:#e8453c;color:#fff;font-family:var(--game);font-size:.78rem;box-shadow:0 2px 6px rgba(0,0,0,.3)}
 .wktip{margin:0;padding:10px 12px;border-radius:12px;background:#fff7e0;color:#6b4e16;font-size:.86rem;line-height:1.45}
 
@@ -2527,16 +2524,15 @@ html body .qscreen .choice.pic{min-height:96px;padding:8px}
 .choices:has(.pic:nth-child(5)) .choice.pic img{width:44px;height:44px}
 /* 읽어주기 */
 .qread{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;margin-left:6px;vertical-align:middle;border-radius:50%;background:#fff;color:#2f8fe6;box-shadow:0 2px 0 #dfe5ec}
-/* 부모님 단원 설정 */
-.unitbtn{margin-top:10px;width:100%}
+
 .gradechips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
-.unitlist h4{margin:10px 0 4px;font-size:.9rem;color:#6b7a90}
-.unitrow{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 1.5px #dfe7ef;margin-bottom:6px}
-.unitrow.off{opacity:.55}
-.unitrow input{width:20px;height:20px;accent-color:#4fc957}
-.unitrow span{display:flex;flex-direction:column}
-.unitrow b{font-size:.98rem}.unitrow small{font-size:.72rem;color:#8a97ab}
-.sheet .unitlist{max-height:46vh;min-height:min(46vh,240px);flex-shrink:0;overflow:auto;margin:0 -4px;padding:0 4px}
+
+
+
+
+
+
+
 
 .phpic{width:72px;height:72px;object-fit:contain;display:block;margin:0 auto 4px}
 .ensent{font-family:var(--game);font-size:1.5rem;color:#26313d;text-align:center;letter-spacing:.02em}
@@ -2612,7 +2608,7 @@ html body .qscreen .choice.pic{min-height:96px;padding:8px}
 .fruit.lab.sm::after{width:7px;height:5px;top:-3px}
 .fruit.sm:not(.lab){width:10px;height:10px;margin:-5px 0 0 -5px}
 
-.hzgh{margin:14px 0 6px}
+
 .hzchips .catchip.past{opacity:.45;background:#f1f4f7}
 
 .seg.treeparts{margin-top:-2px}
@@ -2642,7 +2638,7 @@ html body .qscreen .choice.pic{min-height:96px;padding:8px}
 .onbsteps.res .onbstep b{background:none;color:#1f8a4c;font-family:var(--game);font-weight:400;font-size:1.1rem;min-width:0;width:auto;height:auto;margin-left:auto}
 .onbsteps.res .onbstep span{min-width:44px}
 .onbsteps.res .onbstep em{margin-left:8px}
-.cta.onbagain{margin-top:10px}
+
 
 /* 세로셈 답 칸: 자리마다 문제 숫자와 같은 너비 */
 .vcalc .vr.ans{position:relative}
@@ -2798,7 +2794,7 @@ html body .vcalc .vr.ans .slot{width:calc(var(--L) * 40px - 2px);min-width:0;pad
 .phz{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}.phz small{font-size:.72rem;font-weight:800;color:var(--ink-2);width:100%}
 .phz span{font-size:.8rem;background:#fff0f6;color:#a61e4d;border-radius:8px;padding:2px 8px}
 .pcard .cta{margin:2px 0 0}
-.parbtn{margin:0 0 12px!important;font-size:.95rem!important;height:auto!important;min-height:56px!important;padding:8px 14px!important;line-height:1.3!important}
+
 .parscr>.cta{margin:0 0 16px}
 .pcred{font-size:.68rem;opacity:.75;margin:4px 2px 16px}
 /* 문해력: 한자어 뜻·문장·짝 */
@@ -2878,8 +2874,8 @@ body .qscreen.q-ko .choice.long{font-size:.98rem;line-height:1.35;text-align:lef
 .krq small{font-size:.72rem;font-weight:800;color:#1c6fb8}.krq ol{margin:0;padding-left:20px}.krq li.ok{color:#1f9d55;font-weight:800}.krq em{font-size:.8rem;color:var(--ink-2)}
 .krmark{display:flex;gap:8px;justify-content:center;margin:12px 14px}
 .krm{flex:1;padding:12px;border-radius:14px;font-weight:800;background:#f1f3f5}.krm.ok.on{background:#d3f9d8;color:#2b8a3e}.krm.fix.on{background:#ffe3e3;color:#c92a2a}
-.pkband{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:4px}.pkband small{width:100%;font-size:.72rem;font-weight:800;color:var(--ink-2)}
-.pkband .pchip{border:0;font-size:.78rem;padding:5px 10px;background:#f1f3f5;color:#495057}.pkband .pchip.on{background:#1c6fb8;color:#fff}.pkband .pchip.off{opacity:.55}
+
+
 .kmini{display:block;width:100%;max-height:240px;overflow-y:auto;text-align:left;padding:10px 12px;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 1.5px #e3d4b2;margin:0 0 4px}
 .kmini .ktext{font-size:.95rem;line-height:1.7}
 .qscreen.q-ko .stemwrap:has(.kmini){width:100%;align-self:stretch}
@@ -2907,7 +2903,7 @@ body .qscreen .choice.kfw{width:auto;min-width:0;height:auto;min-height:46px;pad
 .pkdom{display:flex;flex-direction:column;gap:5px;margin:4px 0}.pkdom>small{font-size:.72rem;font-weight:800;color:var(--ink-2)}
 .pkrow{display:grid;grid-template-columns:84px 1fr auto;gap:8px;align-items:center;font-size:.8rem}.pkrow span{font-weight:700}.pkrow em{font-style:normal;font-size:.72rem;color:var(--ink-2);min-width:70px;text-align:right}
 .pkbar{height:8px;border-radius:4px;background:#e9ecef;overflow:hidden}.pkbar b{display:block;height:100%;background:#adb5bd;border-radius:4px}.pkbar b.low{background:#ff8a5b}.pkbar b.mid{background:#ffc93c}.pkbar b.hi{background:#40c057}
-.pkw{font-size:.8rem;background:#fff0f6;color:#a61e4d;border-radius:8px;padding:2px 8px;border:0}
+
 /* 공부 달력 */
 .scgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:6px 0}
 .schd{font-size:.66rem;text-align:center;color:var(--ink-2);font-weight:700}
@@ -3060,30 +3056,30 @@ body.qmode .minitoast{bottom:auto;top:calc(76px + env(safe-area-inset-top,0px))}
 .stgchip{background:#fff3bf!important;box-shadow:inset 0 0 0 2px #f2c12e!important}
 .psec{margin:10px 0 4px}.psec>b{display:block;font-size:.88rem;margin-bottom:6px;color:#3b4757}.pchips .kchip{font-size:.82rem;padding:7px 11px}.onbg.on{box-shadow:inset 0 0 0 3px #37b24d,0 3px 0 #b2f2bb;background:#ebfbee}
 .qrep{flex:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.7);color:#7a8597;margin-left:6px}
-.stgline{display:flex;align-items:center;gap:8px;padding:10px 0;border-top:1px dashed #dbe3ec}.stgline:first-of-type{border-top:0}.stgline>b{flex:none;width:34px;font-size:.92rem}.stgmid{flex:1;display:flex;flex-direction:column}.stgmid strong{font-size:.9rem}.stgmid small{font-size:.74rem;color:#5b6b85;line-height:1.35}
-.stgbtn{flex:none;width:32px;height:32px;border-radius:10px;background:#f3f6fa;box-shadow:inset 0 0 0 1.5px #dbe3ec;font-weight:900;color:#3b4757}
-.repbox{margin-top:8px}.repbox summary{font-weight:800;font-size:.85rem;cursor:pointer}.reprow{font-size:.78rem;color:#3b4757;margin:6px 0;line-height:1.4}
+
+
+
 .dictcard{display:flex;flex-direction:column;gap:6px;margin-top:10px;text-align:left}.dictcard b{font-size:1rem}.dictcard small{color:#5b6b85;font-size:.78rem}.dictcard .cta{font-size:.85rem}
 .dsay{margin:10px auto 0;display:block}.dictbig{max-width:280px;margin:16px auto}
 .dictans{display:flex;flex-direction:column;gap:6px;padding-bottom:90px}.dictrow{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:10px 12px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1.5px #e3e9ee}.dictrow b{flex:none;width:22px}.dictrow span{flex:1;font-size:1.02rem;line-height:1.45}
 .dmk{flex:none;width:38px;height:38px;border-radius:50%;font-size:1.2rem;font-weight:900;background:#f3f6fa;color:#37b24d;box-shadow:inset 0 0 0 1.5px #dbe3ec}.dmk.x{color:#e03131}.dmk.on{background:#37b24d;color:#fff}.dmk.x.on{background:#e03131;color:#fff}.dtip{flex-basis:100%;color:#e8590c;font-size:.78rem;font-weight:700}
 .dmk.on{background:#37b24d!important;color:#fff!important}.dmk.x.on{background:#e03131!important;color:#fff!important}
 .stdsub{padding:10px 0;border-top:1px dashed #dbe3ec}.stdhd{display:flex;justify-content:space-between;align-items:baseline}.stdhd small{color:#5b6b85;font-weight:800;font-size:.78rem}
-.stdbar{height:8px;border-radius:99px;background:#eef2f6;margin:6px 0 8px;overflow:hidden}.stdbar i{display:block;height:100%;background:linear-gradient(90deg,#69db7c,#37b24d);border-radius:99px}
+
 .stdlab{display:block;font-weight:800;color:#e8590c;font-size:.75rem;margin-top:4px}.stdrow{font-size:.76rem;line-height:1.4;margin:5px 0;color:#3b4757}.stdrow.done{color:#2b8a3e}.stdrow.off{color:#9aa5b1}.stdrow.weak{color:#c92a2a}.stddet summary{font-size:.8rem;font-weight:800;cursor:pointer;margin-top:4px}
 
-.stdleg{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.74rem;color:#5b6b85;font-weight:700;margin:2px 0 6px}.stdleg b{font-size:.85rem}
-.stdleg .l2 b,.stdrow2.l2>i{color:#2f9e44}.stdleg .l1 b,.stdrow2.l1>i{color:#74b816}.stdleg .l0 b,.stdrow2.l0>i{color:#adb5bd}
-.stdbar3{display:flex;height:10px;border-radius:99px;background:#eef2f6;margin:6px 0 4px;overflow:hidden}.stdbar3 i{display:block;height:100%}.stdbar3 .l2{background:#40c057}.stdbar3 .l1{background:#b2f2bb}.stdbar3 .l0{background:#e9ecef}
-.stdsum{font-size:.76rem;font-weight:800;color:#3b4757;margin:2px 0}.stdkid{font-size:.76rem;color:#5b6b85;margin:2px 0 4px}
+
+
+
+
 .stddom{display:flex;justify-content:space-between;align-items:baseline;margin:12px 0 2px;padding-top:6px;border-top:1px solid #eef2f6}.stddom b{font-size:.82rem}.stddom small{font-size:.7rem;color:#8a97a8;font-weight:700}
-.stdrow2{display:flex;gap:6px;margin:6px 0;font-size:.76rem;line-height:1.4}.stdrow2>i{font-style:normal;font-size:.9rem;line-height:1.2}.stdrow2 p{margin:0;color:#3b4757}.stdrow2.l0 p{color:#9aa5b1}.stdrow2 small{display:block;color:#2b8a3e;font-size:.7rem;margin-top:1px}.stdrow2.l1 small{color:#5c940d}
-.stdtip{font-size:.72rem;background:#fff9db;border-radius:8px;padding:6px 8px;margin:4px 0 2px;color:#7c5e10}
+
+
 .stdhow{margin-top:8px}
 
-.stglist.ro .stgrow{cursor:default}.stglist.ro .stgrow.past{opacity:.6}.sheet .gnote{font-size:.78rem;margin:6px 0 2px}
+.stglist.ro .stgrow{cursor:default}.stglist.ro .stgrow.past{opacity:.6}
 
-.mystg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}.mystgc{background:#fff;border-radius:14px;padding:8px 4px;text-align:center;box-shadow:0 2px 0 #e3e8ef}.mystgc small{display:block;font-size:.7rem;color:#6b7a90;font-weight:800}.mystgc b{font-size:.92rem;color:#24344d}
+
 /* ================= 부모님 보기: 차분한 대시보드 스타일 ================= */
 .screen.pv{--pv-bg:#f4f5f7;--pv-card:#fff;--pv-ink:#101828;--pv-sub:#667085;--pv-mute:#98a2b3;--pv-line:#eaecf0;--pv-acc:#1f6feb;--pv-good:#12b76a;--pv-mid:#f79009;--pv-bad:#f04438;
   background:var(--pv-bg);color:var(--pv-ink);gap:0;padding:0 0 28px;margin:0 calc(-1 * var(--pv-gut,16px));padding-inline:var(--pv-gut,16px);min-height:100%;font-family:var(--ko);letter-spacing:-.01em}
@@ -3093,9 +3089,9 @@ body.qmode .minitoast{bottom:auto;top:calc(76px + env(safe-area-inset-top,0px))}
 .pvback{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:transparent;color:var(--pv-ink);box-shadow:none}
 .pvback:active{background:#e4e7ec}.pvback svg{width:22px;height:22px}
 .pvtt{display:flex;flex-direction:column;line-height:1.2}.pvtt b{font-size:1.12rem;font-weight:800}.pvtt small{font-size:.75rem;color:var(--pv-sub);font-weight:600}
-.pvtabs{position:sticky;top:56px;z-index:5;display:flex;gap:4px;padding:4px;margin:0 0 14px;background:#e9ebef;border-radius:12px}
-.pvtab{flex:1;height:34px;border-radius:9px;font-size:.86rem;font-weight:700;color:var(--pv-sub);background:transparent;box-shadow:none}
-.pvtab.on{background:#fff;color:var(--pv-ink);box-shadow:0 1px 2px rgba(16,24,40,.12)}
+
+
+
 .pvbody{display:flex;flex-direction:column;gap:12px}
 /* 섹션 카드 */
 .pv .pvsec,.pv .pvsec.pcard{background:var(--pv-card);border-radius:16px;padding:16px;margin:0;box-shadow:0 1px 2px rgba(16,24,40,.05);border:1px solid var(--pv-line);display:flex;flex-direction:column;gap:0}
@@ -3105,11 +3101,10 @@ body.qmode .minitoast{bottom:auto;top:calc(76px + env(safe-area-inset-top,0px))}
 .pvh small,.pv .pvsec .wkhd small{font-size:.74rem;color:var(--pv-mute);font-weight:600}
 .pv .pvsec .wkhd{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 10px}
 .pv .pvsec>h3{margin:0 0 10px}
-/* 주 이동 */
-.pvweek{display:flex;align-items:center;justify-content:space-between;background:var(--pv-card);border:1px solid var(--pv-line);border-radius:14px;padding:6px}
-.pvwkb{width:40px;height:40px;border-radius:10px;font-size:1.5rem;line-height:1;color:var(--pv-ink);background:transparent;box-shadow:none}
-.pvwkb:disabled{color:#d0d5dd}.pvwkb:not(:disabled):active{background:#f2f4f7}
-.pvwklab{display:flex;flex-direction:column;align-items:center;line-height:1.25}.pvwklab b{font-size:.98rem;font-weight:800}.pvwklab small{font-size:.75rem;color:var(--pv-sub)}
+
+
+
+
 /* 핵심 지표 */
 .pvkpis{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--pv-line);border-radius:12px;overflow:hidden;border:1px solid var(--pv-line)}
 .pvkpis.three{grid-template-columns:repeat(3,1fr)}
@@ -3119,7 +3114,7 @@ body.qmode .minitoast{bottom:auto;top:calc(76px + env(safe-area-inset-top,0px))}
 .pvkpis.three .pvkpi b{font-size:1.15rem}
 .pvkpi em{font-style:normal;font-size:.7rem;color:var(--pv-mute);font-weight:600;line-height:1.35}
 .pvkpi em.up{color:#039855}.pvkpi em.down{color:#d92d20}
-.pv .pvkpisec{padding:12px}
+
 .pvstrip{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
 .pvday{display:flex;flex-direction:column;align-items:center;gap:4px}.pvday small{font-size:.7rem;color:var(--pv-sub);font-weight:600}
 .pvday i{width:100%;max-width:34px;height:8px;border-radius:4px;background:#eef0f3}.pvday.on i{background:var(--pv-good)}.pvday.today small{color:var(--pv-ink);font-weight:800}.pvday.today i{box-shadow:0 0 0 2px #fff,0 0 0 3px #d0d5dd}.pvday.fut i{background:#f7f8fa}
@@ -3184,12 +3179,12 @@ button.pvrow:active{background:#f9fafb}
 .pv .vccard .vcb{border-radius:10px;box-shadow:none;background:#f9fafb;border:1px solid var(--pv-line)}.pv .vccard .vcb.on{border-color:var(--pv-ink);background:#fff}
 .pv .stdcard{padding:16px}
 
-body.pvmode,html:has(body.pvmode){background:#f4f5f7}
-body.pvmode .pvtabs{top:56px}
+
+
 
 .screen.pv{border:0!important;box-shadow:none!important;border-radius:0!important;align-items:stretch}
 .screen.pv::before,.screen.pv::after{display:none!important}
-.pvtop,.pvtabs,.pvbody{align-self:stretch;width:100%;box-sizing:border-box}
+.pvtop,.pvbody{align-self:stretch;width:100%;box-sizing:border-box}
 .pvtop{justify-content:flex-start}
 .screen.pv .cta,.screen.pv .cta:active{background-image:none!important;box-shadow:none!important;text-shadow:none!important}
 .screen.pv .cta.light{box-shadow:inset 0 0 0 1px #d0d5dd!important}
@@ -3197,10 +3192,10 @@ body.pvmode .pvtabs{top:56px}
 .screen.pv .cta::before,.screen.pv .cta::after{display:none!important}
 .pv .scgrid .scd{aspect-ratio:auto;height:16px;border-radius:4px}
 .pv .scgrid{gap:3px}
-html body.pvmode{background:#f4f5f7!important}
-html.pvmode{background:#f4f5f7!important}
+
+
 .pv .stdhd b{font-size:1rem;font-weight:800;font-family:var(--ko)}.pv .stdsub{border-top:1px solid #f2f4f7}
-html body.pvmode::after,html body.pvmode::before{display:none!important}
+
 
 /* 교육과정 진도 */
 .pv .stdcard h3{font-size:1rem}
@@ -4183,7 +4178,6 @@ function dayKey(d){d=d||(typeof dbgNow==='function'?dbgNow():new Date());return 
 function batchim(w){w=String(w).replace(/[\s)\]’'"]+$/,'');var l=w.charAt(w.length-1);if(/[0-9]/.test(l)){if(l==='0')return true;return '13678'.indexOf(l)>=0}var c=w.charCodeAt(w.length-1)-44032;return c>=0&&c%28>0}
 function josa(w,a,b){return w+(batchim(w)?a:b)}
 var KNUM=['첫','두','세','네','다섯','여섯','일곱','여덟','아홉','열'];
-function nth(n){return (KNUM[n-1]||n)+' 번째'}
 (function(){var d=document.createElement('div');d.style.cssText='position:absolute;width:0;height:0;overflow:hidden';d.innerHTML='<svg width="0" height="0" aria-hidden="true"><filter id="nightf" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values=".6 .05 0 0 .01  .03 .64 .05 0 .01  .05 .1 .86 0 .04  0 0 0 1 0"/></filter><filter id="evef" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 .05 0 0 .03  .02 .93 0 0 .01  0 0 .86 0 0  0 0 0 1 0"/></filter></svg>';document.body.appendChild(d)})();
 var app=document.getElementById('app'),sheet=document.getElementById('sheet'),scrim=document.getElementById('scrim');
 var Z_W=0,Z_H=0;
@@ -6786,7 +6780,6 @@ function stdLink(code){var s=STDI[code];if(!s)return [0,''];
   var M=stdMathLinks()[code];if(!M)return [0,''];
   var lv=/계산을 할 수/.test(s.t)?2:/그릴|그리고|만들|탐구|수집|양감|컴퍼스/.test(s.t)?1:2;
   return [lv,M.slice(0,3).join('·')+' 문제'+(lv===1?' (그리기·만들기·조사 같은 활동은 집에서)':'')]}
-function stdCovered(){var o={};STD.forEach(function(s){if(stdLink(s.code)[0])o[s.code]=1});return o}
 // 부모님 화면: 교육과정 진도 — 우리 아이가 이 학년군 기준을 어디까지 했는지
 var STD_ST={good:['잘해요','#12b76a'],doing:['연습 중','#53b1fd'],weak:['더 연습 필요','#f79009'],none:['아직 안 함','#d0d5dd'],off:['학교·집에서','#f2f4f7']};
 function stdStatus(code){if(!stdLink(code)[0])return 'off';var r=(S.std||{})[code];if(!r||!r[0])return 'none';var a=r[1]/r[0];if(r[0]>=5&&a<.6)return 'weak';if(r[0]>=5&&a>=.8)return 'good';return 'doing'}
@@ -7415,7 +7408,6 @@ function unitsOff(){if(!S.uoff)S.uoff={};return S.uoff}
 // 지금 켜진 유형(현재 학년에서 꺼지지 않은 단원의 유형). 하나도 없으면 전체.
 function activeTypes(){var g=curGrade(),off=unitsOff(),t={},any=false;UNITS.forEach(function(u){if(u.g!==g||off[u.id])return;u.types.forEach(function(k){if(GEN[k]){t[k]=1;any=true}})});
   if(!any)UNITS.forEach(function(u){if(u.g===g)u.types.forEach(function(k){if(GEN[k])t[k]=1})});return Object.keys(t)}
-function unitOfType(k){var g=curGrade();return UNITS.filter(function(u){return u.g===g&&u.types.indexOf(k)>=0})[0]||UNITS.filter(function(u){return u.types.indexOf(k)>=0})[0]}
 
 // ---------- 그림 도우미 ----------
 var OBJS=[['red_apple','사과'],['tangerine','귤'],['cherries','체리'],['blossom','꽃'],['droplet','물방울'],['pencil','연필'],['x_candy','사탕'],['books','책'],['wrapped_gift','선물'],['tulip','튤립']];
@@ -7741,7 +7733,6 @@ function genBignum(lv){
   if(lv===3){var st=[10000,100000,1000000][R(0,2)],s=R(1,9)*st+R(1,9)*(st/10),seq=[];for(var i=0;i<5;i++)seq.push(s+i*st);var miss=R(2,4);return {mode:'pad',maxlen:9,q:st.toLocaleString()+'씩 뛰어 세었어요. 빈칸은? (숫자만)',answer:seq[miss],hint:st.toLocaleString()+'씩 뛰면 '+['','','','','만','십만','백만'][String(st).length-1]+'의 자리만 1씩 커져요.',explain:seq.map(function(v){return v.toLocaleString()}).join(', ')+'이니까 '+seq[miss].toLocaleString()+'이에요.',render:function(box,P){var r=el('div','ansrow seqrow');seq.forEach(function(v,i){if(i===miss)r.appendChild(P.slot);else r.appendChild(el('span','tile sm',v.toLocaleString()))});box.appendChild(r)}}}
   if(lv===4){var a=R(100000,9999999),b=R(100000,9999999);while(a===b)b=R(100000,9999999);var bg=Math.random()<.5,an=bg?Math.max(a,b):Math.min(a,b);return choicePz('더 '+(bg?'큰':'작은')+' 수는?',function(box){twoNums(box,a.toLocaleString(),b.toLocaleString())},[a.toLocaleString(),b.toLocaleString()],an===a?0:1,'자릿수가 다르면 자릿수가 많은 쪽이 커요. 같으면 높은 자리부터 비교해요.',an.toLocaleString()+'이에요.')}
   var uk=R(1,9),man=R(1,9999),n5=uk*100000000+man*10000;var o5=shuffle([n5,n5*10,n5/10,n5+10000]).map(function(v){return v.toLocaleString()});return choicePz(koNum(n5)+'을 숫자로 쓰면?',function(b){bigText(b,koNum(n5))},o5,o5.indexOf(n5.toLocaleString()),'억은 1 뒤에 0이 8개예요. 만 단위로 네 자리씩 써요.',n5.toLocaleString()+'이에요.')}
-function fixAns(pz,correct){if(pz.answer==null)pz.answer=pz.choices.indexOf(correct);return pz}
 function genAngle(lv){
   if(lv===1){var d=R(2,16)*10;return {mode:'pad',q:'각도기로 잰 각의 크기는 몇 도일까요?',answer:d,hint:'한 변을 0에 맞추고 다른 변이 가리키는 눈금을 읽어요.',explain:'각의 크기는 '+d+'°예요.',render:function(box,P){box.appendChild(protractorSVG(d));unitPad(box,P,'','°')}}}
   if(lv===2){var d2=[R(20,80),90,R(100,170)][R(0,2)],kind=d2<90?'예각':d2===90?'직각':'둔각',o=shuffle(['예각','직각','둔각']);return choicePz('이 각은 어떤 각일까요?',function(b){b.appendChild(angleSVG(d2,140))},o,o.indexOf(kind),'직각(90°)보다 작으면 예각, 크면 둔각이에요.',d2+'°니까 '+kind+'이에요.')}
@@ -8093,13 +8084,6 @@ var TYPE_NAMES5={mixcalc:'혼합 계산',factor:'약수와 배수',corr:'규칙�
 Object.assign(GEN,GEN5);Object.assign(SUBJ.math.types,TYPE_NAMES5);
 
 // 부모님 설정: 학년 · 단원 켜기/끄기
-function unitSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('school'));var t=el('div');t.appendChild(el('small',null,'부모님 설정'));t.appendChild(el('h3',null,'학년 · 단원 · 한자 급수'));hd.appendChild(t);inn.appendChild(hd);
-  var g=curGrade(),gr=el('div','gradechips');[1,2,3,4,5,6].forEach(function(n){var ok=UNITS.some(function(u){return u.g===n});var b=el('button','catchip'+(n===g?' on':''),GRADE_NAMES[n]+(ok?'':' (준비 중)'));b.disabled=!ok;b.onclick=function(){var was=curGrade();S.grade=n;S.uoff={};if(n!==was)koOnGrade();save();if(n!==was){hideSheet();showSheet('good','blossom',GRADE_NAMES[n]+' 시작','실력 알아보기를 할까요?','이 학년 단원 문제 10개를 풀어 시작 단계를 정해요. 틀려도 괜찮아요. 건너뛰면 모두 쉬운 단계부터 시작해요.','알아보기',mathLevelTest);var sk=el('button','cta light','건너뛰기');sk.onclick=function(){hideSheet();unitSheet()};sheet.firstChild.appendChild(sk)}else unitSheet()};gr.appendChild(b)});inn.appendChild(gr);inn.appendChild(el('p','sub gnote','학년을 바꾸면 수학 단원과 국어 책이 그 학년에 맞춰져요. 영어는 학년과 따로 실력에 맞춰 단계가 오르내려요(지금 '+(typeof enStage==='function'?enStage():1)+'단계). 영어·국어 단계는 부모님 보기 › 설정에서 바꿀 수 있어요.'));
-  var off=unitsOff(),list=el('div','unitlist');[1,2].forEach(function(sem){var us=UNITS.filter(function(u){return u.g===g&&u.s===sem});if(!us.length)return;list.appendChild(el('h4',null,g+'학년 '+sem+'학기'));us.forEach(function(u){var row=el('label','unitrow'+(off[u.id]?' off':''));var cb=document.createElement('input');cb.type='checkbox';cb.checked=!off[u.id];cb.onchange=function(){if(cb.checked)delete off[u.id];else off[u.id]=1;row.classList.toggle('off',!cb.checked);save()};row.appendChild(cb);var tx=el('span');tx.appendChild(el('b',null,u.name));tx.appendChild(el('small',null,stdUnitCodes(u).join(' ')||u.code));row.appendChild(tx);list.appendChild(row)})});inn.appendChild(list);
-  inn.appendChild(el('p','sub','꺼진 단원의 문제는 나오지 않아요. 학교 진도에 맞춰 켜고 끄세요. 문제 난이도는 풀면서 저절로 맞춰져요.'));
-  inn.appendChild(el('h4','hzgh','한자 급수'));var hg=S.hz.cg,hc=el('div','gradechips hzchips');GRADES.forEach(function(gn,gi){var gu=S.hz.gu[gi]||0,b=el('button','catchip'+(gi===hg?' on':'')+(gu>=gradeCap(gi)?' done':gu?' some':''),gn);b.onclick=function(){if(gi===hg)return;hzSelect(gi);unitSheet()};hc.appendChild(b)});inn.appendChild(hc);
-  inn.appendChild(el('p','sub','지금 '+GRADES[hg]+' 공부 중 · 이 급수 '+(S.hz.gu[hg]||0)+' / '+gradeCap(hg)+'자 열림. 학년 고르듯이 공부할 급수를 골라요. 다른 급수로 바꿔도 진도는 급수마다 그대로 남아요.'));
-  var ra=el('button','cta light onbagain','실력 알아보기 다시 하기 (수학·영어·한자)');ra.onclick=function(){hideSheet();setTimeout(onbBegin,250)};inn.appendChild(ra);var c=el('button','cta','닫기');c.onclick=hideSheet;inn.appendChild(c);sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;requestAnimationFrame(function(){sheet.className='sheet good show'})}
 
 
 // ================= 한자 퍼즐 =================
@@ -8538,7 +8522,7 @@ function koCover(bk,i,small){var c=el('div','kcov'+(small?' sm':''));var cc=KO_C
 // 국어 서점 화면
 function koScreen(fromRound){clear();document.body.classList.remove('qmode');var sc=el('div','screen koscr'),top=el('div','qtop');var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=BACK_SVG;back.onclick=home;top.appendChild(back);top.appendChild(el('h3','wtitle','국어 서점'));sc.appendChild(top);
   var c=el('div','center kocenter'),b=koBand(),books=KOB[b]||[];
-  if(!books.length){c.appendChild(img('k3_bookshop','kohero'));c.appendChild(el('h2',null,KO_BANDS[b]+' 책을 준비하고 있어요'));c.appendChild(el('p','sub','지금은 1~2학년 이야기책이 먼저 열렸어요. 부모님 보기에서 국어만 1~2학년 책으로 읽게 바꿀 수 있어요.'));var pb=el('button','cta light','1~2학년 책으로 읽기');pb.onclick=function(){koS().band='g12';save();koScreen()};c.appendChild(pb);sc.appendChild(c);var dk0=el('div','dock'),h0=el('button','cta','마을로');h0.onclick=home;dk0.appendChild(h0);sc.appendChild(dk0);app.appendChild(sc);return}
+  if(!books.length){c.appendChild(img('k3_bookshop','kohero'));c.appendChild(el('h2',null,KO_BANDS[b]+' 책을 준비하고 있어요'));c.appendChild(el('p','sub','지금은 1~2학년 이야기책이 먼저 열렸어요. 우리 집 › 국어에서 1~2학년 책으로 읽게 바꿀 수 있어요.'));var pb=el('button','cta light','1~2학년 책으로 읽기');pb.onclick=function(){koS().band='g12';save();koScreen()};c.appendChild(pb);sc.appendChild(c);var dk0=el('div','dock'),h0=el('button','cta','마을로');h0.onclick=home;dk0.appendChild(h0);sc.appendChild(dk0);app.appendChild(sc);return}
   var R_=fromRound&&G&&G.kres;
   if(fromRound&&G){c.appendChild(el('div','eyebrow',G.got+' / '+KO_QN+' 정답'+sunTxt()));c.appendChild(el('h2',null,R_&&R_.book?'『'+R_.book.title+'』 완성!':R_?R_.pg.bk.title+' '+(R_.pg.pi+1)+'쪽을 읽었어요':'이야기를 읽었어요'));
     var nt=[];if(R_&&R_.book)nt.push('이야기책 한 권을 다 읽었어요! 보석 '+KO_GEM+'개를 받았어요. 책장에 꽂아 두었어요.');if(G.ups&&G.ups.length)nt.push(G.ups.join(', ')+' 단계가 올랐어요.');if(R_&&R_.lap)nt.push('책장의 책을 모두 다 읽었어요! 이제 1권부터 다시 읽으며 다른 문제를 풀어요.');if(!nt.length)nt.push('다음 쪽에서 이야기가 이어져요. 어떻게 될까요?');c.appendChild(el('p','sub',nt.join(' ')));
@@ -8623,7 +8607,7 @@ function hzLevelTest(){tone([523,659],'sine',.1);var q=[];for(var i=0;i<GRADES.l
 function hzLvlStep(){if(!G.lres[G.idx]){G.hzStop=G.hzg;G.n=G.idx+1;return}G.hzok++;if(G.hzok>=2){G.hzg++;G.hzok=0;if(G.hzg>=GRADES.length){G.hzStop=GRADES.length-1;G.n=G.idx+1}}}
 function hzLvlEnd(){document.body.classList.remove('qmode');var g=G.hzStop!=null?G.hzStop:G.hzg;G=null;if(g!==S.hz.cg)hzSelect(g);save();
   if(ONB){ONB.hz=g;onbNext();return}
-  showSheet('good','blossom','한자 급수 알아보기',GRADES[g]+' 한자부터 시작해요','언제든 나의 기록에서 다른 급수로 바꿀 수 있어요.','좋아요',home)}
+  showSheet('good','blossom','한자 급수 알아보기',GRADES[g]+' 한자부터 시작해요','언제든 우리 집(부모님 보기)에서 다른 급수로 바꿀 수 있어요.','좋아요',home)}
 function onbSheet(build){var inn=sheet.firstChild;inn.innerHTML='';build(inn);sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=null;requestAnimationFrame(function(){sheet.className='sheet good show'})}
 // 처음 설정: 부모님이 1분 동안 고르고, 아이는 바로 섬으로. 과목별 첫 판이 실력 알아보기를 대신해요.
 var PSET=null;
@@ -8642,12 +8626,7 @@ function onbApply(){var P=PSET||{g:2,en:2,hz:-1},g=P.g||2;PSET=null;S.grade=g;S.
   var es=stgEnByGrade(g,P.en<0?2:P.en);S.en.stgv=1;enSetStage(es,true);
   if(P.hz>=0){hzSelect(P.hz)}
   S.place={ko:1,en:1};S.onb=1;save();hideSheet();home();
-  setTimeout(function(){showSheet('good','blossom','준비 끝!','이제 아이가 섬을 구경할 차례예요','오늘의 모험 첫 판에서 국어와 영어 수준을 조금 더 맞춰요. 학년과 단계는 나의 기록 → 부모님 화면에서 언제든 바꿀 수 있어요.','좋아요',function(){})},400)}
-function onbAsk(){var g=curGrade();onbSheet(function(inn){var hd=el('div','hd');hd.appendChild(img('blossom'));var t=el('div');t.appendChild(el('small',null,GRADE_NAMES[g]));t.appendChild(el('h3',null,'실력 알아보기를 할까요?'));hd.appendChild(t);inn.appendChild(hd);
-  var ul=el('div','onbsteps');[['수학','8문제'],['영어',g<=2?'8문제':'12문제'],['한자','2~14문제']].forEach(function(x,i){var r=el('div','onbstep');r.appendChild(el('b',null,(i+1)+''));r.appendChild(el('span',null,x[0]));r.appendChild(el('em',null,x[1]));ul.appendChild(r)});inn.appendChild(ul);
-  inn.appendChild(el('p',null,'문제를 풀어서 과목마다 시작 단계를 정해요. 몰라도 괜찮아요, 틀리면 쉬운 단계부터 시작하면 돼요.'));
-  var go=el('button','cta green','시작');go.onclick=function(){hideSheet();onbBegin()};inn.appendChild(go);
-  var sk=el('button','cta light','나중에 할게요');sk.onclick=function(){hideSheet();onbSkip()};inn.appendChild(sk)})}
+  setTimeout(function(){showSheet('good','blossom','준비 끝!','이제 아이가 섬을 구경할 차례예요','오늘의 모험 첫 판에서 국어와 영어 수준을 조금 더 맞춰요. 학년과 단계는 우리 집(부모님 보기)에서 언제든 바꿀 수 있어요.','좋아요',function(){})},400)}
 function onbBegin(){ONB={step:0,res:{},fresh:S.onb===0,keepCustom:S.onb!==0&&enTrack()==='w'&&!S.en.set};onbNext()}
 function onbNext(){ONB.step++;var s=ONB.step,g=curGrade();if(s>1)home();
   if(s===1)showSheet('good','blossom','실력 알아보기 1/3','수학','수학 문제 8개를 풀어요.','시작',mathLevelTest);
@@ -8662,10 +8641,8 @@ function onbDone(){var r=ONB,g=curGrade();ONB=null;save();
   onbSheet(function(inn){var hd=el('div','hd rw');hd.appendChild(img('blossom'));var t=el('div');t.appendChild(el('small',null,'실력 알아보기 끝'));t.appendChild(el('h3',null,'시작 준비가 됐어요!'));hd.appendChild(t);inn.appendChild(hd);
     var L=el('div','onbsteps res');function row(k,v,s){var x=el('div','onbstep');x.appendChild(el('span',null,k));var b=el('b',null,v);x.appendChild(b);if(s)x.appendChild(el('em',null,s));L.appendChild(x)}
     row('수학',GRADE_NAMES[g],r.math?(r.math[0]?'잘하는 단원 '+r.math[0]+'개':'쉬운 단계부터'):'');row('영어',EN_TRACK_NAMES[r.en]||'단어',r.keepCustom?'학원 단어장은 그대로':'');row('한자',GRADES[r.hz||0]+'부터','');inn.appendChild(L);
-    inn.appendChild(el('p','sub','문제를 풀면서 단계는 저절로 맞춰져요. 다시 하고 싶으면 나의 기록 → 학년 · 단원 · 한자 급수에서 할 수 있어요.'));
+    inn.appendChild(el('p','sub','문제를 풀면서 단계는 저절로 맞춰져요. 다시 하고 싶으면 우리 집 › 설정 › 실력 알아보기에서 할 수 있어요.'));
     var b=el('button','cta green','섬으로 가기');b.onclick=function(){S.onb=1;save();hideSheet();home()};inn.appendChild(b)})}
-function onbSkip(){var g=curGrade();if(S.onb===0)enSetUse(g<=2?'ph':g<=4?'a':'b');S.onb=1;save();
-  showSheet('good','blossom','실력 알아보기','나중에 해도 돼요','지금은 '+GRADE_NAMES[g]+' 쉬운 단계부터 시작해요. 나의 기록 → 학년 · 단원 · 한자 급수에서 언제든 할 수 있어요.','좋아요',home)}
 SUBJ.hz.gen.hzl=genHzl;SUBJ.hz.types.hzl='급수 알아보기';
 
 SUBJ.en={key:'en',tab:'영어',noun:'단어',types:{mean:'뜻 고르기',tiles:'글자 맞추기',spell:'듣고 쓰기',write:'문장 만들기'},items:[],rare:[],stage:[],gen:{mean:genEnMean,tiles:genEnTiles,spell:genEnSpell,write:genWrite}};
@@ -9650,7 +9627,6 @@ function enTrackBar(){var w=el('div','entracks'),st=enStage(),tr=enTrack();
   var t=el('button','catchip lvlbtn','수준 알아보기');t.onclick=function(){showSheet('good','k3_hive','영어','수준을 알아볼까요?','알파벳·단어 문제 12개를 풀어요. 틀려도 괜찮아요, 시작점을 정하는 거예요.','시작',enLevelTest)};w.appendChild(t);return w}
 
 
-function hzMastered(){var n=0;H8.forEach(function(h){if((S.hz.m[h[0]]||0)>=2)n++});return n}
 function hzUnlockCheck(){
   var pool=H8.slice(S.hz.base||0,S.hz.unlocked),n=0;pool.forEach(function(h){if((S.hz.m[h[0]]||0)>=2)n++});
   var cg_=S.hz.cg,full_=cg_!=null&&S.hz.unlocked>=GB[cg_+1];if(full_&&Object.keys(S.hz.gu).some(function(k){return +k>cg_&&S.hz.gu[k]>0&&hzStudied(+k)}))return false; // 끝낸 급수를 복습할 때는 다음 급수로 넘기지 않아요
@@ -16473,7 +16449,7 @@ function enMigrate(){if(!S.en||S.en.stgv)return;S.en.stgv=1;
 function enBoot(){try{enMigrate();enApplyStage()}catch(e){}}
 // 단계 고르기
 function enStageSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('k3_hive'));var t=el('div');t.appendChild(el('small',null,'영어 단계'));t.appendChild(el('h3',null,'지금 '+enStage()+'단계예요'));hd.appendChild(t);inn.appendChild(hd);
-  inn.appendChild(el('p','sub','문제를 잘 풀면 저절로 다음 단계로 올라가요. 단계는 부모님 보기 › 설정에서 바꿀 수 있어요.'));
+  inn.appendChild(el('p','sub','문제를 잘 풀면 저절로 다음 단계로 올라가요. 단계는 우리 집(부모님 보기)에서 바꿀 수 있어요.'));
   var L=el('div','stglist ro');for(var i=1;i<=9;i++){var s_=STG_EN[i],b=el('div','stgrow'+(enStage()===i?' on':'')+(i<enStage()?' past':''));b.appendChild(el('b',null,s_.n));var tx=el('span');tx.appendChild(el('em',null,s_.g+' · '+s_.c));tx.appendChild(el('small',null,s_.d));b.appendChild(tx);L.appendChild(b)}inn.appendChild(L);
   var c=el('button','cta light','닫기');c.onclick=hideSheet;inn.appendChild(c);sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;requestAnimationFrame(function(){sheet.className='sheet good show';var on=L.querySelector('.on');if(on)on.scrollIntoView({block:'center'})})}
 
@@ -16762,17 +16738,7 @@ function repBtn(sub,type,lv,pz,sc){var b=el('button','qrep');b.setAttribute('ari
   return b}
 function repSave(sub,type,lv,pz,sc,why){if(!S.reports)S.reports=[];var q='';try{var qe=sc.querySelector('.qhead')||sc;q=(qe.innerText||'').replace(/\s+/g,' ').slice(0,160);var bd=sc.querySelector('.qbody,.choices');if(bd)q+=' | '+(bd.innerText||'').replace(/\s+/g,' ').slice(0,160)}catch(e){}
   S.reports.push({d:dnum(),s:sub.key,t:type,lv:lv,why:why,q:q,id:pz.kid||pz.word||(pz.chars&&pz.chars.join(''))||null,v:typeof APP_VER!=='undefined'?APP_VER:''});if(S.reports.length>100)S.reports=S.reports.slice(-100);save()}
-// 부모님 화면: 과목별 단계 + 신고 목록
-function stageCard(back){var c=el('section','card pcard stgcard');c.appendChild(el('h3',null,'과목별 단계'));
-  var ko=STG_KO[koStage()],en=STG_EN[enStage()],lv=(S.ko&&S.ko.lv)||{};
-  function row(subj,s,detail,onMinus,onPlus){var r=el('div','stgline');r.appendChild(el('b',null,subj));var m=el('div','stgmid');m.appendChild(el('strong',null,s.n+' · '+s.g+(s.c?' · '+s.c:'')));m.appendChild(el('small',null,detail));r.appendChild(m);
-    var mi=el('button','stgbtn','－');mi.onclick=onMinus;var pl=el('button','stgbtn','＋');pl.onclick=onPlus;r.appendChild(mi);r.appendChild(pl);c.appendChild(r)}
-  row('국어',ko,'맞춤법 '+(lv.sp||1)+' · 표현 '+(lv.ex||1)+' — '+ko.d,function(){koS();S.ko.lv.sp=Math.max(1,(lv.sp||1)-1);S.ko.lv.ex=Math.max(1,(lv.ex||1)-1);save();parentScreen(back)},function(){koS();S.ko.lv.sp=Math.min(9,(lv.sp||1)+1);S.ko.lv.ex=Math.min(9,(lv.ex||1)+1);save();parentScreen(back)});
-  row('영어',en,(enUsingCustom()?'우리 집 단어장 70% + ':'')+en.d,function(){enSetStage(enStage()-1,true);parentScreen(back)},function(){enSetStage(enStage()+1,true);parentScreen(back)});
-  c.appendChild(el('p','pnote','문제를 풀면서 저절로 오르내려요. 최근 정답률이 85%를 넘으면 오르고 60%보다 낮으면 내려가요. 직접 바꿀 수도 있어요.'));
-  var R=S.reports||[];if(R.length){var d=el('details','repbox');d.appendChild(el('summary',null,'아이가 알려 준 이상한 문제 '+R.length+'개'));R.slice(-10).reverse().forEach(function(x){d.appendChild(el('p','reprow','['+({ko:'국어',en:'영어',math:'수학',hz:'한자'}[x.s]||x.s)+'] '+x.why+' — '+x.q))});
-    var cp=el('button','cta light','목록 복사하기 (개발자에게 보내기)');cp.onclick=function(){var txt=R.map(function(x){return [x.d,x.s,x.t,x.lv,x.id,x.why,x.q].join('\t')}).join('\n');try{navigator.clipboard.writeText(txt).then(function(){miniToast('복사했어요')},function(){miniToast('복사하지 못했어요')})}catch(e){miniToast('복사하지 못했어요')}};d.appendChild(cp);c.appendChild(d)}
-  return c}
+// 문제 신고 (목록은 우리 집 › 설정)
 
 // ================= 한 판 끝 =================
 var ADV=null,ADVK={math:['수학','blossom'],hz:['한자','red_apple'],en:['영어','k3_hive'],ko:['국어','books']};
@@ -17147,8 +17113,7 @@ var FRUIT_POS=(function(){var C=K3.canopy,pts=[],sx=.08,sy=.044;
   pts.sort(function(a,b){return a[2]-b[2]});return pts.slice(0,50)})();
 var FPC={50:FRUIT_POS};function fruitPos(N){if(FPC[N])return FPC[N];var C=K3.canopy,pts=[],k=Math.sqrt(50/N),sx=.08*k,sy=.044*k;for(var row=-24;row<=24;row++)for(var col=-24;col<=24;col++){var x=C[0]+col*sx+(row%2?sx/2:0),y=C[1]+row*sy,dx=(x-C[0])/C[2],dy=(y-C[1])/C[3];if(dx*dx+dy*dy<=1.2)pts.push([x,y,dx*dx+dy*dy])}pts.sort(function(a,b){return a[2]-b[2]});return FPC[N]=pts.slice(0,N)}
 // 큰 급수(100자 넘게)는 100자씩 나무를 나눠요
-var TREEP=null;function partOf(c){return Math.floor((HIDX[c]-GB[gradeOf(c)])/100)}function partsOf(g){return Math.ceil(gradeCap(g)/100)}
-function partNow(g){return Math.max(0,Math.floor(((S.hz.gu&&S.hz.gu[g])||1)-1)/100|0)}
+var TREEP=null;function partOf(c){return Math.floor((HIDX[c]-GB[gradeOf(c)])/100)}function partNow(g){return Math.max(0,Math.floor(((S.hz.gu&&S.hz.gu[g])||1)-1)/100|0)}
 function treeEl(w,opts){
   opts=opts||{};var gg=opts.grade!=null?opts.grade:(function(){var g=hzGrade();while(g>0&&!hzOrder().some(function(c){return gradeOf(c)===g}))g--;return g})(),big=gradeCap(gg)>100,pt=big?(opts.part!=null?opts.part:partNow(gg)):0,LIST=hzOrder().filter(function(c){return gradeOf(c)===gg&&(!big||partOf(c)===pt)}),n=LIST.length,box=el('div','treebox');
   var cap=big?Math.min(100,gradeCap(gg)-pt*100):gradeCap(gg),FP=fruitPos(cap),sc=n===0?0:(opts.labels||opts.full?1:Math.min(1,.55+.45*n/cap));
@@ -17403,7 +17368,6 @@ function petBubble(host,id,zHost){var old=document.querySelector('.petbub');if(o
   clearTimeout(window.__pbT);window.__pbT=setTimeout(function(){b.classList.add('out');setTimeout(function(){if(b.parentNode)b.remove();if(zHost&&zHost.__z!=null)zHost.style.zIndex=zHost.__z},250)},4200)}
 var FR_MAX=20,FR_MID=10;
 function frOf(id){if(!S.fr)S.fr={};if(!S.fr[id])S.fr[id]={h:0,d:'',q:'',g:0};return S.fr[id]}
-function frHearts(id){var f=frOf(id);return f.h}
 function whenFree(fn,ms){setTimeout(function w(){if(sheet.className.indexOf('show')>=0)return setTimeout(w,400);fn()},ms||0)}
 function frGain(id,host){var f=frOf(id);if(f.h>=FR_MAX)return false;f.h++;save();
   if(host){var ht=el('div','hfloat','♥');host.appendChild(ht);setTimeout(function(){ht.remove()},1100)}
@@ -17691,7 +17655,7 @@ function avCanUp(){var a=avS();return AV_ITEMS.some(function(it){var t=a.own[it.
 function avBadge(){var a=avS();if(avCanUp())return true;if(!a.visited&&(a.gem>0||S.sun>=40))return true;return false}
 var GEMQ={n:0,t:null,first:false};
 function gemGain(n){if(!n)return;var a=avS();if(!a.seen)GEMQ.first=true;a.gem+=n;a.seen=1;save();GEMQ.n+=n;clearTimeout(GEMQ.t);
-  GEMQ.t=setTimeout(function(){var n=GEMQ.n,first=GEMQ.first;GEMQ.n=0;GEMQ.first=false;var t=el('div','evtoast gemtoast');t.appendChild(img('gem'));t.appendChild(el('b',null,'보석 +'+n));if(first)t.appendChild(el('small',null,'우리 집에서 캐릭터를 꾸며요'));document.body.appendChild(t);setTimeout(function(){t.remove()},first?3800:2600)},1250)}
+  GEMQ.t=setTimeout(function(){var n=GEMQ.n,first=GEMQ.first;GEMQ.n=0;GEMQ.first=false;var t=el('div','evtoast gemtoast');t.appendChild(img('gem'));t.appendChild(el('b',null,'보석 +'+n));if(first)t.appendChild(el('small',null,'위쪽 캐릭터 버튼을 눌러 꾸며요'));document.body.appendChild(t);setTimeout(function(){t.remove()},first?3800:2600)},1250)}
 var AVL=0;function avLock(){var n=Date.now();if(AVL>n)return true;AVL=n+450;return false}
 function avScreen(keep){
   var y_=keep?window.scrollY:0;clear();var a=avS(),c=S.path.char||'rabbit',E_=avEq(c);a.visited=1;save();
@@ -17730,10 +17694,6 @@ function avScreen(keep){
   app.appendChild(sc);zMark&&zMark();if(keep)window.scrollTo(0,y_);
   if(!introS().avs){setTimeout(function(){if(!document.querySelector('.avscr')||introS().avs)return;introS().avs=1;introS().av=1;save();coachRun([[null,'여기는 나를 꾸미는 곳이야!'],['.avgrid','햇살로 모자, 옷, 손, 등에 달 장비를 살 수 있어.'],['.gembal','공부로 모은 보석으로 장비를 강화하면 ★이 올라가고 점점 반짝반짝해져.'],['.avchars','친구를 바꾸면 옷도 친구마다 따로 입힐 수 있어. 산 장비는 모두 같이 써!','꾸미러 가자!']])},400)}
 }
-function avCard(){var a=avS(),c=S.path.char;if(!c)return null;var cd=el('button','card avcard');var pv=el('span','avcpv');pv.appendChild(avImg(c,'avcimg'));cd.appendChild(pv);
-  var tx=el('span','avctx');tx.appendChild(el('b',null,'내 캐릭터 꾸미기'));var sm=el('small');sm.appendChild(img('gem'));sm.appendChild(document.createTextNode('보석 '+a.gem+'개'));tx.appendChild(sm);cd.appendChild(tx);
-  if(avBadge())cd.appendChild(el('em','lmbadge dot'));var ar=el('i','avcar');ar.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';cd.appendChild(ar);
-  cd.onclick=function(){AVBACK=villageScreen;avScreen()};return cd}
 function setChar(id){S.path.char=id;gdInit();var placed=false;for(var k in S.gd.cells)if(S.gd.cells[k].indexOf('a:')===0&&CHARS.some(function(c){return 'a:'+c.id===S.gd.cells[k]})){S.gd.cells[k]='a:'+id;placed=true}return placed}
 
 // ================= 섬 낚시 =================
@@ -18587,15 +18547,11 @@ function wsOnDay(x,wd){return !x.days||!x.days.length||x.days.indexOf(wd)>=0}
 function wsToday(){var wd=wsToday0();return wsItems().filter(function(x){return wsOnDay(x,wd)})}
 function wsSub(id){var L=wsItems();for(var i=0;i<L.length;i++)if(L[i].id===id)return L[i];for(var j=0;j<WS_SUB.length;j++)if(WS_SUB[j].id===id)return WS_SUB[j];return {id:id,name:'숙제',img:'pencil'}}
 // 아래 이름들은 다른 화면에서 써요: '오늘 해야 할 숙제' 기준
-function wsCore(){return wsToday()}
 function wsCoreN(){return wsToday().length}
-function wsCoreNames(){var L=wsToday();return L.length>3?L.slice(0,2).map(function(x){return x.name}).join('·')+' 외 '+(L.length-2)+'개':L.map(function(x){return x.name}).join('·')}
 function wsDoneN(){var D_=wsS().day.done;return wsToday().filter(function(x){return D_[x.id]}).length}
-function wsClassDay(){return false}
 function wsDaysTxt(x){if(!x.days||!x.days.length||x.days.length===7)return '매일';return [1,2,3,4,5,6,0].filter(function(k){return x.days.indexOf(k)>=0}).map(function(k){return WS_DN[k]}).join('·')}
 function wsMax(sid){return 90*6e4}
 function wsMs(){var c=wsS().cur;if(!c)return 0;return Math.max(0,Math.min(wsMax(c.s),c.acc+(c.t0?Math.max(0,Date.now()-c.t0):0)))}
-function wsStage(ms){var m=ms/6e4,i=0;WS_ST.forEach(function(x,j){if(m>=x.m)i=j});return i}
 function wsWake(on){try{if(on){if(navigator.wakeLock&&!WS_LOCK)navigator.wakeLock.request('screen').then(function(l){WS_LOCK=l}).catch(function(){})}else if(WS_LOCK){WS_LOCK.release();WS_LOCK=null}}catch(e){}}
 function wsPause(){var c=wsS().cur;if(!c||!c.t0)return;c.acc=wsMs();c.t0=null;save();wsWake(false);if(WS_UI)WS_UI()}
 function wsRun(){var W=wsS();if(!W.cur)W.cur={acc:0,t0:null,s:WS_SEL,nb:WS_BRK};W.cur.t0=Date.now();W.cur.rest=null;W.cur.hid=null;save();wsWake(true);if(WS_UI)WS_UI()}
@@ -18652,8 +18608,6 @@ function wsGive(sid,mn,feel){var W=wsS(),sb=wsSub(sid),rew=!W.day.done[sid],sun=
   W.log.push({d:dnum(),m:mn,s:sid,n:sb.name,f:feel||0});if(W.log.length>400)W.log=W.log.slice(-400);W.cur=null;W.day.done[sid]=1;
   botS();var bot=botAdd(mn);
   if(rew){sun=WS_SUN;var TD=wsToday();if(TD.length>=2&&TD.indexOf(sb)>=0&&wsDoneN()>=TD.length&&!W.day.bonus){W.day.bonus=1;sun+=WS_BONUS;bonus=true;var b2=botAdd(BOT_BONUS,true);bot.add+=b2.add;bot.grown=bot.grown.concat(b2.grown)}S.sun+=sun}save();return {rew:rew,sun:sun,bonus:bonus,bot:bot}}
-function wsTreeSheet(tree,sun,head){var tn=itemName(tree);showSheet('good',tree,head,tn+(batchim(tn)?'을':'를')+' 선물로 받았어요!','햇살도 '+sun+'개 받았어요. 보너스 '+WS_BONUS+'개가 들어 있어요. '+tn+(batchim(tn)?'은':'는')+' 섬 꾸미기 보관함에 있어요.','좋아요',function(){})}
-function wsClass(){}
 function wsBusyMsg(){miniToast('숙제하는 중에는 바꿀 수 없어요. 다 했어요를 누르거나 잠깐 쉰 뒤 처음부터 다시 하면 바꿀 수 있어요.')}
 function wsDone(){var W=wsS();if(!W.cur)return;wsPause();var sid=W.cur.s||WS_SEL,sb=wsSub(sid),lab=sb.name;
   // 끝까지 했는지 확인하면서, 어땠는지 한 번에 골라요
@@ -18851,23 +18805,6 @@ function weekStats(back){var days=weekRange(back),d0=dnumOf(days[0]),d1=dnumOf(d
   var wl=((S.ws&&S.ws.log)||[]).filter(function(x){return x.d>=d0&&x.d<=d1}),wmin={},wdays={};wl.forEach(function(x){if(x.s==='cls'){wdays[x.d]=1;return}wmin[x.s]=(wmin[x.s]||0)+(x.m||0);wdays[x.d]=1});
   var books=libS().books.filter(function(b){return b.d>=d0&&b.d<=d1}).length;var m=S.mail&&S.mail.rep||{},mails=0;Object.keys(m).forEach(function(k){if(m[k].d>=d0&&m[k].d<=d1)mails++});
   return {days:days,study:study,n:study.filter(Boolean).length,rs:rs,q:q,c:c,wmin:wmin,wdays:Object.keys(wdays).length,books:books,mails:mails,wl:wl}}
-function weekCard(){var W=weekStats(0),P=weekStats(1),card=el('section','card wkcard');var hd=el('div','wkhd');hd.appendChild(el('h3',null,'이번 주 요약'));var sm=el('small',null,(W.days[0].getMonth()+1)+'/'+W.days[0].getDate()+' ~ '+(W.days[6].getMonth()+1)+'/'+W.days[6].getDate()+' · 부모님 보기');hd.appendChild(sm);card.appendChild(hd);
-  var row=el('div','wkdays');var tdk=dayKey();W.days.forEach(function(d,i){var c=el('div','wkd'+(W.study[i]?' on':'')+(dayKey(d)===tdk?' today':'')+(d>dbgNow()?' fut':''));c.appendChild(el('i'));c.appendChild(el('small',null,['월','화','수','목','금','토','일'][i]));row.appendChild(c)});card.appendChild(row);
-  function stat(lab,val,sub){var d=el('div','wks');d.appendChild(el('small',null,lab));d.appendChild(el('b','tnum',val));if(sub)d.appendChild(el('em',null,sub));return d}
-  function diff(a,b,unit){var x=a-b;return x===0?'지난주와 같아요':(x>0?'▲ ':'▼ ')+Math.abs(x)+unit+' (지난주 '+b+unit+')'}
-  var g=el('div','wkgrid');
-  g.appendChild(stat('공부한 날',W.n+'일',diff(W.n,P.n,'일')));
-  g.appendChild(stat('푼 문제',W.q+'개',W.q?'정답률 '+Math.round(W.c/W.q*100)+'%':diff(W.q,P.q,'개')));
-  g.appendChild(stat('숙제한 날',W.wdays+'일',diff(W.wdays,P.wdays,'일')));
-  g.appendChild(stat('읽은 책 · 편지',W.books+'권 · '+W.mails+'통',diff(W.books,P.books,'권')));
-  var xn=0,xp=0;W.days.forEach(function(d){xn+=(S.xtra&&S.xtra[dayKey(d)])||0});P.days.forEach(function(d){xp+=(S.xtra&&S.xtra[dayKey(d)])||0});var cw=0,d0_=dnumOf(W.days[0]),d1_=d0_+6;((S.ch&&S.ch.log)||[]).forEach(function(x){if(x[0]>=d0_&&x[0]<=d1_&&x[2]>=2)cw++});g.appendChild(stat('도전 성공',cw+'번','한 단계 어려운 문제'));var en_=effortNext();g.appendChild(stat('추가 연습',xn+'판',en_?'노력상 '+en_.lv+'상까지 '+en_.left+'문제':diff(xn,xp,'판')));
-  card.appendChild(g);
-  var sub=el('div','wksub');[['ko','국어'],['math','수학'],['en','영어'],['hz','한자']].forEach(function(k){if(k[0]==='ko'&&!koReady()&&!(W.rs.ko&&W.rs.ko[0]))return;var r=W.rs[k[0]]||[0,0];var li=el('div','wkrow');li.appendChild(el('span',null,k[1]));var bar=el('i','wkbar');var f=el('b');f.style.width=(r[0]?Math.round(r[1]/r[0]*100):0)+'%';bar.appendChild(f);li.appendChild(bar);li.appendChild(el('em',null,r[0]?r[0]+'문제 · '+Math.round(r[1]/r[0]*100)+'%':'아직 없어요'));sub.appendChild(li)});
-  var ws=Object.keys(W.wmin);if(ws.length){var li2=el('div','wkrow ws');li2.appendChild(el('span',null,'숙제'));li2.appendChild(el('em','wsmin',ws.map(function(k){var o=wsSub(k);return (o.sh||o.name)+' '+W.wmin[k]+'분'}).join(' · ')));sub.appendChild(li2)}
-  card.appendChild(sub);
-  var tip=el('p','wktip');var best=['math','hz','en','ko'].filter(function(k){return W.rs[k]&&W.rs[k][0]>=5}).sort(function(a,b){return W.rs[a][1]/W.rs[a][0]-W.rs[b][1]/W.rs[b][0]})[0];
-  tip.textContent=!W.q?'이번 주는 아직 문제를 풀지 않았어요.':best&&W.rs[best][1]/W.rs[best][0]<.7?({math:'수학',hz:'한자',en:'영어',ko:'국어'}[best])+'이(가) 조금 어려웠어요. 섬 학교 오답 교실에서 같이 봐 주세요.':W.n>=5?'이번 주 꾸준히 잘했어요. 칭찬 한마디 부탁해요!':'아직 이번 주가 남았어요. 하루 한 판이면 충분해요.';
-  card.appendChild(tip);return card}
 // ================= 공부 달력: 많이 한 날일수록 진하게 =================
 // 앱에서 푼 문제 수 + 숙제 분(1분 = 0.5문제)을 합쳐 하루 점수를 매겨요
 function studyScore(d){var r=(S.rep||{})[d]||{},q=0;for(var k in r)q+=r[k][0]||0;var m=0;((S.ws&&S.ws.log)||[]).forEach(function(x){if(x.d===d&&x.s!=='cls')m+=x.m||0});return {q:q,m:m,v:q+m*.5}}
@@ -18876,7 +18813,7 @@ function studyCal(weeks){weeks=weeks||5;var card=el('section','card scal');var h
   var days=0,tot=0;for(var d=start;d<start+7*weeks;d++){var s=studyScore(d),lv=d>today?-1:s.v<=0?0:s.v<8?1:s.v<16?2:s.v<28?3:4;if(s.v>0&&d<=today){days++;tot+=s.q}
     var c=el('i','scd l'+lv+(d===today?' today':''));c.title=s.q+'문제'+(s.m?' · 숙제 '+s.m+'분':'');g.appendChild(c)}
   card.appendChild(g);var lg=el('div','sclg');lg.appendChild(el('small',null,'적게'));for(var i=0;i<5;i++)lg.appendChild(el('i','scd l'+i));lg.appendChild(el('small',null,'많이'));card.appendChild(lg);
-  card.appendChild(el('p','wktip',days?weeks+'주 동안 '+days+'일 공부했어요. 문제 '+tot+'개를 풀었어요.':'아직 기록이 없어요. 오늘 첫 칸을 채워 봐요!'));return card}
+  card.appendChild(el('p','wktip',days?weeks+'주 동안 '+days+'일 공부했어요. 문제 '+tot+'개를 풀었어요.':'아직 기록이 없어요. 문제를 풀거나 숙제를 하면 칸이 채워져요.'));return card}
 // ================= 부모님 보기 =================
 // 아이가 이번 주에 무엇을 얼마나 했는지, 어디가 약한지, 한자 진도와 모의시험 점수를 한눈에 보여 줘요.
 var PV={sub:'ko',wk:0,back:null,page:null,flash:null};
@@ -18906,8 +18843,6 @@ function pvBar(pc,cls){var b=el('i','pvbar');var f=el('b',cls||null);f.style.wid
 function pvMeter(name,pc,n,cls,onclick){var r=el(onclick?'button':'div','pvmeter'+(cls?' '+cls:''));r.appendChild(el('span','pvsn',name));r.appendChild(pvBar(pc,n?pvTone(pc):''));r.appendChild(el('em',null,n?pc+'%':'—'));r.appendChild(el('small',null,n+'문제'));if(onclick){r.onclick=onclick;r.appendChild(el('i','pvchev','›'))}return r}
 function pvRow(label,right,onclick,sub){var r=el(onclick?'button':'div','pvrow');var t=el('span','pvrl');t.appendChild(el('b',null,label));if(sub)t.appendChild(el('small',null,sub));r.appendChild(t);if(right!=null)r.appendChild(typeof right==='string'?el('em',null,right):right);if(onclick){r.appendChild(el('i','pvchev','›'));r.onclick=onclick}return r}
 function pvStep(minus,plus){var st=el('div','pvstep');var m=el('button',null,'−');m.setAttribute('aria-label','내리기');m.onclick=minus;var p=el('button',null,'+');p.setAttribute('aria-label','올리기');p.onclick=plus;st.appendChild(m);st.appendChild(p);return st}
-function pvDelta(a,b,unit){if(a===b)return [b?'지난주와 같아요':'',''];var x=a-b;return [(x>0?'▲ ':'▼ ')+Math.abs(x)+unit+' · 지난주 '+b+unit,x>0?'up':'down']}
-function pvSheet(f){var hs=window.__hs0||(window.__hs0=hideSheet),w=function(){hs.apply(this,arguments);window.hideSheet=hs;if(document.querySelector('.pv'))pvRe()};window.hideSheet=w;f()}
 function pvDayLab(d){var dt=new Date(d*864e5);return (dt.getUTCMonth()+1)+'/'+dt.getUTCDate()+' ('+'일월화수목금토'[dt.getUTCDay()]+')'}
 function pvKoLv(dir){koS();var lv=S.ko.lv;lv.sp=Math.max(1,Math.min(9,(lv.sp||1)+dir));lv.ex=Math.max(1,Math.min(9,(lv.ex||1)+dir));save();pvRe()}
 // --- 요약 ---
@@ -19027,13 +18962,13 @@ function pvSettings(body){
 // ================= 응원 스티커: 부모님이 보내면 아이가 마을에서 받아요 =================
 var CHEER_IMG=['sparkles','fire','wrapped_gift','four_leaf_clover','rainbow','sun','red_apple','blossom'],CHEER_MSG=['정말 잘했어!','오늘도 최고야','꾸준히 해서 멋져','어려운 것도 해냈구나','내일도 같이 해 보자','사랑해'];
 function cheerS(){if(!S.cheer)S.cheer=[];return S.cheer}
-function cheerCard(back){var c=el('section','card pcard');c.appendChild(el('h3',null,'응원 스티커 보내기'));c.appendChild(el('p','pnote','고른 스티커와 한마디가 아이가 마을에 들어올 때 나타나요. 받은 스티커는 우리 집에 모여요.'));
+function cheerCard(back){var c=el('section','card pcard');c.appendChild(el('h3',null,'응원 스티커 보내기'));c.appendChild(el('p','pnote','고른 스티커와 한마디가 아이가 마을에 들어올 때 나타나요. 받은 스티커는 캐릭터 꾸미기 화면에 모여요.'));
   var sel={i:CHEER_IMG[0],m:CHEER_MSG[0]},g=el('div','chgrid');CHEER_IMG.forEach(function(k){var b=el('button','chimg'+(k===sel.i?' on':''));b.appendChild(img(k));b.onclick=function(){sel.i=k;[].forEach.call(g.children,function(x){x.classList.remove('on')});b.classList.add('on')};g.appendChild(b)});c.appendChild(g);
   var m=el('div','wscfgrow');CHEER_MSG.forEach(function(s){var b=el('button','pchip'+(s===sel.m?' on':''),s);b.onclick=function(){sel.m=s;[].forEach.call(m.children,function(x){x.classList.remove('on')});b.classList.add('on')};m.appendChild(b)});c.appendChild(m);
   var go=el('button','cta green','보내기');go.onclick=function(){cheerS().push({d:dnum(),i:sel.i,m:sel.m,seen:0});if(S.cheer.length>60)S.cheer=S.cheer.slice(-60);save();SND.bloom();miniToast('응원 스티커를 보냈어요')};c.appendChild(go);
   var n=cheerS().filter(function(x){return !x.seen}).length;if(n)c.appendChild(el('p','pnote','아직 아이가 못 본 스티커 '+n+'개'));return c}
 function cheerShow(){var L=cheerS().filter(function(x){return !x.seen});if(!L.length||document.querySelector('.sheet.show,.daydone,.guide'))return false;var x=L[0];x.seen=1;save();
-  showSheet('good',x.i,'응원 스티커가 왔어요','“'+x.m+'”',(L.length>1?'스티커가 '+L.length+'장 와 있어요. ':'')+'받은 스티커는 우리 집에 모여요.','고마워요!',function(){setTimeout(cheerShow,400)});SND.bloom();return true}
+  showSheet('good',x.i,'응원 스티커가 왔어요','“'+x.m+'”',(L.length>1?'스티커가 '+L.length+'장 와 있어요. ':'')+'받은 스티커는 캐릭터 꾸미기 화면에 모여요.','고마워요!',function(){setTimeout(cheerShow,400)});SND.bloom();return true}
 function cheerBoard(){var L=cheerS();if(!L.length)return null;var c=el('section','card chboard');c.appendChild(el('h3',null,'받은 응원 스티커 '+L.length+'장'));var g=el('div','chgrid');L.slice(-16).reverse().forEach(function(x){var b=el('button','chimg got');b.appendChild(img(x.i));b.title=x.m;b.onclick=function(){showSheet('good',x.i,'응원 스티커','“'+x.m+'”','','좋아요',function(){})};g.appendChild(b)});c.appendChild(g);return c}
 
 // 숙제: 이번 주 시간, 이번 달 숙제별로 한 날·평균 시간·어려웠다고 한 횟수
@@ -19059,7 +18994,7 @@ function voiceCard(){var c=el('section','card vccard');c.appendChild(el('h3',nul
   draw();try{speechSynthesis.addEventListener('voiceschanged',function(){if(box.isConnected)draw()})}catch(e){}
   return c}
 
-// ================= 숨김 디버그 메뉴: '나의 기록' 제목을 7번 누르면 =================
+// ================= 숨김 디버그 메뉴: 우리 집(부모님 보기) 제목을 7번 누르면 =================
 function dbgSave(){try{localStorage.setItem('pot-dbg',JSON.stringify(DBG))}catch(e){}}
 function dbgSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('light_bulb'));var t=el('div');t.appendChild(el('small',null,'개발자 메뉴'));t.appendChild(el('h3',null,'테스트용 (아이는 쓰지 않아요)'));hd.appendChild(t);inn.appendChild(hd);
   var st=el('p',null,'날짜 이동 '+(DBG.off>0?'+':'')+DBG.off+'일 · 시각 '+(DBG.hour==null?'실제':DBG.hour+'시')+' · 햇살 '+S.sun+' · 보석 '+avS().gem);inn.appendChild(st);
@@ -19086,7 +19021,7 @@ function dbgSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','h
 
 // 우리 집 = 부모님 보기 (아이용 물건은 화분·캐릭터 화면으로 옮겼어요)
 function houseScreen(){parentScreen(home)}
-// 기록 지키기 (부모님 보기 › 설정)
+// 기록 지키기 (우리 집 › 설정)
 function backupCard(){
   var bk=el('section','card backup');bk.appendChild(el('h3',null,'기록 지키기'));
   var stt=el('p','bkstate');
@@ -19228,10 +19163,8 @@ function gardenScreen(edit,hand){islandScreen(!!edit,hand)}
 // 칸 없는 한 장면. 건물을 누르면 들어가고, 배를 타면 꾸미는 섬으로 가요.
 var HUB='village';
 function home(){HUB==='island'?islandScreen(false):villageScreen()}
-function lobby(){villageScreen()}
 var VW=560,VH=560,VK=1.15,VTW=80*VK,VTH=40*VK,VN=7,VY0=280-100*VK;
 function vC(c,r){return [VW/2+(c-r)*VTW/2,VY0+(c+r)*VTH/2+VTH/2]}
-function vLand(c,r){return !((c===6&&r===0)||(c===0&&r===6)||(c===0&&r===0))}
 var VCELL={tree:[1,1],home:[0,3],shop:[3,0],mail:[3,5],pot:[5,4]};
 var VPATH={'5,5':1,'4,4':1,'3,3':1,'2,2':1,'2,3':1,'1,3':1,'3,2':1,'3,1':1,'3,4':1};
 var BOOK_XY=K3.anch.shop,FISH_XY=[438, 504],MAILP_XY=[118, 482],DOCK_XY=[268, 515],BOAT_XY=[280, 503.6];var VB=['tree','home','mail','pot','bee','boat'].map(function(id){return {id:id,x:K3.anch[id][0],y:K3.anch[id][1]}});VB.push({id:'book',x:BOOK_XY[0],y:BOOK_XY[1]});VB.push({id:'fish',x:FISH_XY[0],y:FISH_XY[1]});VB.push({id:'mailp',x:MAILP_XY[0],y:MAILP_XY[1]});VB.forEach(function(v){if(v.id==='boat'){v.x=BOAT_XY[0];v.y=BOAT_XY[1]}});
@@ -19438,23 +19371,6 @@ function missionDone(){
 }
 function track(ev,data){}
 
-function trailCard(){
-  var card=el('button','card trailcard'+(S.path.walk?' ready':''));
-  var ch=avImg(S.path.char||'footprints','tc-char');card.appendChild(ch);
-  var mid=el('div','tc-mid');
-  if(!S.path.char){mid.appendChild(el('small',null,'오솔길'));mid.appendChild(el('b',null,'함께 걸을 친구를 골라요'))}
-  else if(S.path.walk){mid.appendChild(el('small',null,'도전 성공'));mid.appendChild(el('b',null,'눌러서 한 칸 앞으로 가요'))}
-  else{
-    var m=curMission();
-    mid.appendChild(el('small',null,'오솔길 '+(S.path.step+1)+'번째 칸'));
-    mid.appendChild(el('b',null,m?m.text:'보물상자를 열어요'));
-    if(m&&need(m)>1){var pb=el('div','tc-bar'),i=el('i');i.style.width=Math.min(100,S.path.prog/need(m)*100)+'%';pb.appendChild(i);mid.appendChild(pb)}
-  }
-  card.appendChild(mid);
-  card.appendChild(el('span','chev','›'));
-  card.onclick=function(){S.path.char?trail():chooseFriend()};
-  return card;
-}
 
 function chooseFriend(){
   clear();
