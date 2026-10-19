@@ -2536,7 +2536,7 @@ html body .qscreen .choice.pic{min-height:96px;padding:8px}
 .unitrow input{width:20px;height:20px;accent-color:#4fc957}
 .unitrow span{display:flex;flex-direction:column}
 .unitrow b{font-size:.98rem}.unitrow small{font-size:.72rem;color:#8a97ab}
-.sheet .unitlist{max-height:46vh;overflow:auto;margin:0 -4px;padding:0 4px}
+.sheet .unitlist{max-height:46vh;min-height:min(46vh,240px);flex-shrink:0;overflow:auto;margin:0 -4px;padding:0 4px}
 
 .phpic{width:72px;height:72px;object-fit:contain;display:block;margin:0 auto 4px}
 .ensent{font-family:var(--game);font-size:1.5rem;color:#26313d;text-align:center;letter-spacing:.02em}
@@ -6522,6 +6522,27 @@ var STD_KO={g12:{fact:'[2국02-03]',main:'[2국02-03]',tf:'[2국02-03]',order:'[
  g34:{fact:'[4국02-02]',main:'[4국02-02]',tf:'[4국02-02]',fo:'[4국02-04]',infer:'[4국02-03]',why:'[4국05-01]',feel:'[4국05-01]',order:'[4국05-01]',word:'[4국04-01]',wm:'[4국04-01]',crit:'[4국02-04]'},
  g56:{fact:'[6국02-01]',main:'[6국02-01]',tf:'[6국02-01]',infer:'[6국02-02]',crit:'[6국02-03]',fo:'[6국02-03]',why:'[6국05-03]',feel:'[6국05-03]',order:'[6국05-03]',word:'[6국04-03]',wm:'[6국04-03]'}};
 var STD_KOX={mimic:'[2국05-01]',opp:'[4국04-01]',mod:'[4국04-01]',poly:'[4국04-01]',honor:'[4국04-04]',prov:'[6국04-03]',idiom:'[6국04-03]',saja:'[6국04-03]'};
+// 수학: 문제 유형 → [기본 기준, [문제 글 규칙, 기준]...]
+var STD_MA={n9:['2수01-01'],shape3d:['2수03-01'],add9:['2수01-05',[/빈칸|가르|모으/,'2수01-04']],cmp:['2수03-06'],n50:['2수01-01'],n100:['2수01-01',[/배열표/,'2수01-03']],
+ shape2d:['2수03-03'],add10:['2수01-06',[/세 수/,'2수01-08'],[/10이 되려면|10을 만들어|가르|모으/,'2수01-04'],[/먹으면|남을|모두/,'2수01-05']],clock1:['2수03-07'],add20:['2수01-06',[/모두|남았/,'2수01-05']],n3:['2수01-02'],
+ shape2:['2수03-04',[/쌓기나무/,'2수03-02'],[/꼭짓점|변/,'2수03-05']],addc:['2수01-06',[/빈칸/,'2수01-09']],pyr:['2수01-06'],sym:['2수01-09'],card:['2수01-06'],
+ len:['2수03-10',[/빈칸| m /,'2수03-11']],sort:['2수04-01'],mul:['2수01-10'],num4:['2수01-02',[/큰|작은/,'2수01-03']],money:['2수01-02'],gugu:['2수01-11'],
+ clock:['2수03-07',[/분 뒤|분 전|지났|걸린|시간/,'2수03-08'],[/하루|며칠|주일|개월|\d+년/,'2수03-09']],graph:['2수04-02',[/그래프/,'2수04-03']],
+ add3:['4수01-03'],plane:['4수03-01',[/직각/,'4수03-02']],div:['4수01-05'],mul2:['4수01-04'],lentime:['4수03-16',[/분 뒤|분 전|지났|걸린/,'4수03-14'],[/초/,'4수03-13']],
+ frac1:['4수01-09',[/소수/,'4수01-12']],mul3:['4수01-04'],div2:['4수01-06'],circ:['4수03-06'],frac2:['4수01-10',[/큰|작은|비교/,'4수01-11']],
+ capw:['4수03-21',[/L.*[+−-] .*=/,'4수03-19'],[/g.*[+−-] .*=/,'4수03-23'],[/mL|L/,'4수03-18']],data3:['4수04-01'],bignum:['4수01-01',[/큰|작은|비교/,'4수01-02']],
+ angle:['4수03-24',[/어떤 각/,'4수03-02'],[/삼각형의|사각형의/,'4수03-25']],muldiv4:['4수01-04',[/나누|÷/,'4수01-07']],move:['4수03-04'],bargraph:['4수04-01'],
+ rule4:['4수02-01',[/계산식/,'4수02-02']],fracadd:['4수01-15'],tri4:['4수03-08',[/어떤 삼각형/,'4수03-09']],decadd:['4수01-16'],quad4:['4수03-10'],linegraph:['4수04-02'],polygon:['4수03-11'],
+ mixcalc:['6수01-01'],factor:['6수01-04',[/배수|출발/,'6수01-05']],corr:['6수02-01'],reduce:['6수01-06',[/통분/,'6수01-06']],fracadd5:['6수01-08'],
+ area5:['6수03-13',[/둘레/,'6수03-11'],[/평행사변형|삼각형|사다리꼴|마름모/,'6수03-14']],range:['6수01-03',[/이상|이하|초과|미만/,'6수01-02']],fracmul:['6수01-09'],
+ congr:['6수03-01',[/대칭/,'6수03-02']],decmul:['6수01-13'],cuboid:['6수03-03',[/전개도|겨냥도/,'6수03-04']],avg:['6수04-01',[/가능성을 수로/,'6수04-05'],[/가능성|일 것 같/,'6수04-04']],
+ fracdiv:['6수01-11'],prism:['6수03-05',[/전개도/,'6수03-06']],decdiv:['6수01-15'],ratio:['6수02-03',[/비로 나타|비를/,'6수02-02']],graph6:['6수04-02'],
+ volume:['6수03-19',[/겉넓이/,'6수03-17']],fracdiv2:['6수01-11'],decdiv2:['6수01-15'],space:['6수03-10',[/모두 몇 개/,'6수03-09']],
+ proport:['6수02-04',[/비례배분|나누어/,'6수02-05']],circarea:['6수03-16',[/원주율/,'6수03-15']],solid:['6수03-07']};
+function stdMath(type,q){var g=typeof curGrade==='function'?curGrade():2;if(type==='seq')return '['+(g<=2?'2수02-01':'4수02-01')+']';
+  var m=STD_MA[type];if(!m)return null;q=String(q||'');for(var i=1;i<m.length;i++)if(m[i][0].test(q))return '['+m[i][1]+']';return '['+m[0]+']'}
+// 단원 설정 화면에 보일 기준 코드들
+function stdUnitCodes(u){var o=[];u.types.forEach(function(t){var m=STD_MA[t];if(t==='seq')o.push(stdMath('seq'));else if(m)m.forEach(function(x,i){var c='['+(i?x[1]:x)+']';if(o.indexOf(c)<0)o.push(c)})});return o.filter(function(c,i){return o.indexOf(c)===i})}
 function stdCodes(sub,type,pz,lv){if(!pz)return [];var k=sub.key;
   if(k==='ko'){if(pz.kk==='dict')return [pz.dictG>=14?'[2국04-03]':'[2국04-02]'];
     if(type==='read'){var b=(typeof koBand==='function'?koBand():'g12'),M=STD_KO[b]||STD_KO.g12;return M[pz.kk]?[M[pz.kk]]:[]}
@@ -6531,14 +6552,15 @@ function stdCodes(sub,type,pz,lv){if(!pz)return [];var k=sub.key;
     if(type==='abc')return ['[4영01-02]'];if(type==='cvc')return ['[4영01-04]'];if(type==='sight')return ['[4영01-05]'];
     if(type==='mean')return [hi?'[6영01-03]':'[4영01-05]'];if(type==='tiles'||type==='spell')return [hi?'[6영02-02]':'[4영02-03]'];
     if(type==='write')return [hi?'[6영02-04]':'[4영02-05]'];if(/^s[xrob]$/.test(type))return [hi?'[6영02-07]':'[4영02-08]'];return []}
+  if(k==='math'){var c=stdMath(type,pz.q);return c?[c]:[]}
   return []}
 function stdLog(codes,ok){if(!codes||!codes.length)return;if(!S.std)S.std={};var d=dnum();codes.forEach(function(c){var r=S.std[c]||(S.std[c]=[0,0,0]);r[0]++;if(ok)r[1]++;r[2]=d})}
 // 앱에서 연습할 수 있는 성취기준(지금 콘텐츠 기준)
-function stdCovered(){var o={};[STD_KO.g12,STD_KO.g34,STD_KO.g56,STD_KOX].forEach(function(M){for(var q in M)o[M[q]]=1});['[2국04-02]','[2국04-03]','[6국04-06]','[4영01-02]','[4영01-04]','[4영01-05]','[6영01-03]','[6영02-02]','[4영02-03]','[6영02-04]','[4영02-05]','[6영02-07]','[4영02-08]','[2국03-02]','[2국03-04]','[4국03-04]','[6영02-08]','[2국05-02]','[4국05-03]','[6영02-06]'].forEach(function(c){o[c]=1});return o}
+function stdCovered(){var o={};[STD_KO.g12,STD_KO.g34,STD_KO.g56,STD_KOX].forEach(function(M){for(var q in M)o[M[q]]=1});['[2국04-02]','[2국04-03]','[6국04-06]','[4영01-02]','[4영01-04]','[4영01-05]','[6영01-03]','[6영02-02]','[4영02-03]','[6영02-04]','[4영02-05]','[6영02-07]','[4영02-08]','[2국03-02]','[2국03-04]','[4국03-04]','[6영02-08]','[2국05-02]','[4국05-03]','[6영02-06]'].forEach(function(c){o[c]=1});for(var t in STD_MA)STD_MA[t].forEach(function(x,i){o['['+(i?x[1]:x)+']']=1});o['[2수02-01]']=o['[4수02-01]']=1;return o}
 // 부모님 화면: 성취기준 카드
 function stdCard(){var c=el('section','card pcard stdcard');c.appendChild(el('h3',null,'교육과정 성취기준'));c.appendChild(el('p','pnote','2022 개정 교육과정(교육부 고시 제2022-33호)의 성취기준에 문제를 연결했어요.'));
   var g=typeof curGrade==='function'?curGrade():3,band=g<=2?'2':g<=4?'4':'6',cov=stdCovered(),log=S.std||{};
-  [['ko','국어'],['en','영어']].forEach(function(sj){var L=STD.filter(function(s){return s.subj===sj[0]&&String(s.g)===band});if(!L.length)return;
+  [['ko','국어'],['math','수학'],['en','영어']].forEach(function(sj){var L=STD.filter(function(s){return s.subj===sj[0]&&String(s.g)===band});if(!L.length)return;
     var done=L.filter(function(s){return log[s.code]&&log[s.code][0]>0}),weak=L.filter(function(s){var r=log[s.code];return r&&r[0]>=5&&r[1]/r[0]<.6}),inApp=L.filter(function(s){return cov[s.code]});
     var box=el('div','stdsub');var h=el('div','stdhd');h.appendChild(el('b',null,sj[1]+' · '+L[0].band));h.appendChild(el('small',null,'연습한 기준 '+done.length+' / '+L.length));box.appendChild(h);
     var bar=el('div','stdbar');var f=el('i');f.style.width=Math.round(done.length/L.length*100)+'%';bar.appendChild(f);box.appendChild(bar);
@@ -7122,22 +7144,22 @@ var UNITS=[
  {id:'1a3',g:1,s:1,name:'덧셈과 뺄셈',code:'2수01-04',types:['add9']},
  {id:'1a4',g:1,s:1,name:'비교하기',code:'2수03-06',types:['cmp']},
  {id:'1a5',g:1,s:1,name:'50까지의 수',code:'2수01-01',types:['n50']},
- {id:'1b1',g:1,s:2,name:'100까지의 수',code:'2수01-02',types:['n100']},
- {id:'1b2',g:1,s:2,name:'여러 가지 모양',code:'2수03-02',types:['shape2d']},
- {id:'1b3',g:1,s:2,name:'덧셈과 뺄셈(1)',code:'2수01-05',types:['add10']},
- {id:'1b4',g:1,s:2,name:'시계 보기',code:'2수03-10',types:['clock1']},
- {id:'1b5',g:1,s:2,name:'덧셈과 뺄셈(2)',code:'2수01-05',types:['add20']},
+ {id:'1b1',g:1,s:2,name:'100까지의 수',code:'2수01-01',types:['n100']},
+ {id:'1b2',g:1,s:2,name:'여러 가지 모양',code:'2수03-03',types:['shape2d']},
+ {id:'1b3',g:1,s:2,name:'덧셈과 뺄셈(1)',code:'2수01-06',types:['add10']},
+ {id:'1b4',g:1,s:2,name:'시계 보기',code:'2수03-07',types:['clock1']},
+ {id:'1b5',g:1,s:2,name:'덧셈과 뺄셈(2)',code:'2수01-06',types:['add20']},
  {id:'1b6',g:1,s:2,name:'규칙 찾기',code:'2수02-01',types:['seq']},
  {id:'2a1',g:2,s:1,name:'세 자리 수',code:'2수01-02',types:['n3']},
- {id:'2a2',g:2,s:1,name:'여러 가지 도형',code:'2수03-03',types:['shape2']},
+ {id:'2a2',g:2,s:1,name:'여러 가지 도형',code:'2수03-04',types:['shape2']},
  {id:'2a3',g:2,s:1,name:'덧셈과 뺄셈',code:'2수01-06',types:['addc','pyr','sym','card']},
- {id:'2a4',g:2,s:1,name:'길이 재기',code:'2수03-11',types:['len']},
+ {id:'2a4',g:2,s:1,name:'길이 재기',code:'2수03-10',types:['len']},
  {id:'2a5',g:2,s:1,name:'분류하기',code:'2수04-01',types:['sort']},
- {id:'2a6',g:2,s:1,name:'곱셈',code:'2수01-09',types:['mul']},
- {id:'2b1',g:2,s:2,name:'네 자리 수',code:'2수01-03',types:['num4','money']},
- {id:'2b2',g:2,s:2,name:'곱셈구구',code:'2수01-10',types:['gugu','div']},
- {id:'2b3',g:2,s:2,name:'길이 재기',code:'2수03-12',types:['len']},
- {id:'2b4',g:2,s:2,name:'시각과 시간',code:'2수03-09',types:['clock']},
+ {id:'2a6',g:2,s:1,name:'곱셈',code:'2수01-10',types:['mul']},
+ {id:'2b1',g:2,s:2,name:'네 자리 수',code:'2수01-02',types:['num4','money']},
+ {id:'2b2',g:2,s:2,name:'곱셈구구',code:'2수01-11',types:['gugu','div']},
+ {id:'2b3',g:2,s:2,name:'길이 재기',code:'2수03-11',types:['len']},
+ {id:'2b4',g:2,s:2,name:'시각과 시간',code:'2수03-08',types:['clock']},
  {id:'2b5',g:2,s:2,name:'표와 그래프',code:'2수04-02',types:['graph']},
  {id:'2b6',g:2,s:2,name:'규칙 찾기',code:'2수02-02',types:['seq']}
 ];
@@ -7310,29 +7332,29 @@ Object.assign(GEN,GEN1);Object.assign(SUBJ.math.types,TYPE_NAMES1);
 
 // ================= 3·4학년 수학 =================
 UNITS.push(
- {id:'3a1',g:3,s:1,name:'덧셈과 뺄셈',code:'4수01-02',types:['add3']},
+ {id:'3a1',g:3,s:1,name:'덧셈과 뺄셈',code:'4수01-03',types:['add3']},
  {id:'3a2',g:3,s:1,name:'평면도형',code:'4수03-01',types:['plane']},
  {id:'3a3',g:3,s:1,name:'나눗셈',code:'4수01-05',types:['div']},
  {id:'3a4',g:3,s:1,name:'곱셈',code:'4수01-04',types:['mul2']},
- {id:'3a5',g:3,s:1,name:'길이와 시간',code:'4수03-13',types:['lentime']},
+ {id:'3a5',g:3,s:1,name:'길이와 시간',code:'4수03-16',types:['lentime']},
  {id:'3a6',g:3,s:1,name:'분수와 소수',code:'4수01-09',types:['frac1']},
  {id:'3b1',g:3,s:2,name:'곱셈',code:'4수01-04',types:['mul3']},
  {id:'3b2',g:3,s:2,name:'나눗셈',code:'4수01-06',types:['div2']},
  {id:'3b3',g:3,s:2,name:'원',code:'4수03-06',types:['circ']},
  {id:'3b4',g:3,s:2,name:'분수',code:'4수01-10',types:['frac2']},
- {id:'3b5',g:3,s:2,name:'들이와 무게',code:'4수03-17',types:['capw']},
+ {id:'3b5',g:3,s:2,name:'들이와 무게',code:'4수03-18',types:['capw']},
  {id:'3b6',g:3,s:2,name:'자료의 정리',code:'4수04-01',types:['data3']},
  {id:'4a1',g:4,s:1,name:'큰 수',code:'4수01-01',types:['bignum']},
- {id:'4a2',g:4,s:1,name:'각도',code:'4수03-14',types:['angle']},
+ {id:'4a2',g:4,s:1,name:'각도',code:'4수03-24',types:['angle']},
  {id:'4a3',g:4,s:1,name:'곱셈과 나눗셈',code:'4수01-07',types:['muldiv4']},
  {id:'4a4',g:4,s:1,name:'평면도형의 이동',code:'4수03-04',types:['move']},
- {id:'4a5',g:4,s:1,name:'막대그래프',code:'4수04-02',types:['bargraph']},
+ {id:'4a5',g:4,s:1,name:'막대그래프',code:'4수04-01',types:['bargraph']},
  {id:'4a6',g:4,s:1,name:'규칙 찾기',code:'4수02-01',types:['seq','rule4']},
  {id:'4b1',g:4,s:2,name:'분수의 덧셈과 뺄셈',code:'4수01-15',types:['fracadd']},
  {id:'4b2',g:4,s:2,name:'삼각형',code:'4수03-08',types:['tri4']},
- {id:'4b3',g:4,s:2,name:'소수의 덧셈과 뺄셈',code:'4수01-14',types:['decadd']},
+ {id:'4b3',g:4,s:2,name:'소수의 덧셈과 뺄셈',code:'4수01-16',types:['decadd']},
  {id:'4b4',g:4,s:2,name:'사각형',code:'4수03-10',types:['quad4']},
- {id:'4b5',g:4,s:2,name:'꺾은선그래프',code:'4수04-03',types:['linegraph']},
+ {id:'4b5',g:4,s:2,name:'꺾은선그래프',code:'4수04-02',types:['linegraph']},
  {id:'4b6',g:4,s:2,name:'다각형',code:'4수03-11',types:['polygon']});
 
 // ---------- 그리기 도우미 ----------
@@ -7559,28 +7581,28 @@ function mathLvlEnd(){document.body.classList.remove('qmode');var st=stOf(SUBJ.m
 // ================= 5·6학년 수학 =================
 UNITS.push(
  {id:'5a1',g:5,s:1,name:'자연수의 혼합 계산',code:'6수01-01',types:['mixcalc']},
- {id:'5a2',g:5,s:1,name:'약수와 배수',code:'6수01-02',types:['factor']},
+ {id:'5a2',g:5,s:1,name:'약수와 배수',code:'6수01-04',types:['factor']},
  {id:'5a3',g:5,s:1,name:'규칙과 대응',code:'6수02-01',types:['corr']},
- {id:'5a4',g:5,s:1,name:'약분과 통분',code:'6수01-04',types:['reduce']},
- {id:'5a5',g:5,s:1,name:'분수의 덧셈과 뺄셈',code:'6수01-05',types:['fracadd5']},
- {id:'5a6',g:5,s:1,name:'다각형의 둘레와 넓이',code:'6수03-09',types:['area5']},
+ {id:'5a4',g:5,s:1,name:'약분과 통분',code:'6수01-06',types:['reduce']},
+ {id:'5a5',g:5,s:1,name:'분수의 덧셈과 뺄셈',code:'6수01-08',types:['fracadd5']},
+ {id:'5a6',g:5,s:1,name:'다각형의 둘레와 넓이',code:'6수03-13',types:['area5']},
  {id:'5b1',g:5,s:2,name:'수의 범위와 어림하기',code:'6수01-03',types:['range']},
- {id:'5b2',g:5,s:2,name:'분수의 곱셈',code:'6수01-06',types:['fracmul']},
+ {id:'5b2',g:5,s:2,name:'분수의 곱셈',code:'6수01-09',types:['fracmul']},
  {id:'5b3',g:5,s:2,name:'합동과 대칭',code:'6수03-01',types:['congr']},
- {id:'5b4',g:5,s:2,name:'소수의 곱셈',code:'6수01-08',types:['decmul']},
+ {id:'5b4',g:5,s:2,name:'소수의 곱셈',code:'6수01-13',types:['decmul']},
  {id:'5b5',g:5,s:2,name:'직육면체',code:'6수03-03',types:['cuboid']},
  {id:'5b6',g:5,s:2,name:'평균과 가능성',code:'6수04-01',types:['avg']},
- {id:'6a1',g:6,s:1,name:'분수의 나눗셈',code:'6수01-07',types:['fracdiv']},
- {id:'6a2',g:6,s:1,name:'각기둥과 각뿔',code:'6수03-04',types:['prism']},
- {id:'6a3',g:6,s:1,name:'소수의 나눗셈',code:'6수01-09',types:['decdiv']},
+ {id:'6a1',g:6,s:1,name:'분수의 나눗셈',code:'6수01-11',types:['fracdiv']},
+ {id:'6a2',g:6,s:1,name:'각기둥과 각뿔',code:'6수03-05',types:['prism']},
+ {id:'6a3',g:6,s:1,name:'소수의 나눗셈',code:'6수01-15',types:['decdiv']},
  {id:'6a4',g:6,s:1,name:'비와 비율',code:'6수02-03',types:['ratio']},
- {id:'6a5',g:6,s:1,name:'여러 가지 그래프',code:'6수04-03',types:['graph6']},
- {id:'6a6',g:6,s:1,name:'직육면체의 부피와 겉넓이',code:'6수03-13',types:['volume']},
- {id:'6b1',g:6,s:2,name:'분수의 나눗셈',code:'6수01-07',types:['fracdiv2']},
- {id:'6b2',g:6,s:2,name:'소수의 나눗셈',code:'6수01-09',types:['decdiv2']},
- {id:'6b3',g:6,s:2,name:'공간과 입체',code:'6수03-06',types:['space']},
+ {id:'6a5',g:6,s:1,name:'여러 가지 그래프',code:'6수04-02',types:['graph6']},
+ {id:'6a6',g:6,s:1,name:'직육면체의 부피와 겉넓이',code:'6수03-19',types:['volume']},
+ {id:'6b1',g:6,s:2,name:'분수의 나눗셈',code:'6수01-11',types:['fracdiv2']},
+ {id:'6b2',g:6,s:2,name:'소수의 나눗셈',code:'6수01-15',types:['decdiv2']},
+ {id:'6b3',g:6,s:2,name:'공간과 입체',code:'6수03-10',types:['space']},
  {id:'6b4',g:6,s:2,name:'비례식과 비례배분',code:'6수02-04',types:['proport']},
- {id:'6b5',g:6,s:2,name:'원의 넓이',code:'6수03-11',types:['circarea']},
+ {id:'6b5',g:6,s:2,name:'원의 넓이',code:'6수03-16',types:['circarea']},
  {id:'6b6',g:6,s:2,name:'원기둥, 원뿔, 구',code:'6수03-07',types:['solid']});
 
 // ---------- 공통 도우미 ----------
@@ -7827,7 +7849,7 @@ Object.assign(GEN,GEN5);Object.assign(SUBJ.math.types,TYPE_NAMES5);
 // 부모님 설정: 학년 · 단원 켜기/끄기
 function unitSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('school'));var t=el('div');t.appendChild(el('small',null,'부모님 설정'));t.appendChild(el('h3',null,'학년 · 단원 · 한자 급수'));hd.appendChild(t);inn.appendChild(hd);
   var g=curGrade(),gr=el('div','gradechips');[1,2,3,4,5,6].forEach(function(n){var ok=UNITS.some(function(u){return u.g===n});var b=el('button','catchip'+(n===g?' on':''),GRADE_NAMES[n]+(ok?'':' (준비 중)'));b.disabled=!ok;b.onclick=function(){var was=curGrade();S.grade=n;S.uoff={};save();if(n!==was){hideSheet();showSheet('good','blossom',GRADE_NAMES[n]+' 시작','실력 알아보기를 할까요?','이 학년 단원 문제 10개를 풀어 시작 단계를 정해요. 틀려도 괜찮아요. 건너뛰면 모두 쉬운 단계부터 시작해요.','알아보기',mathLevelTest);var sk=el('button','cta light','건너뛰기');sk.onclick=function(){hideSheet();unitSheet()};sheet.firstChild.appendChild(sk)}else unitSheet()};gr.appendChild(b)});inn.appendChild(gr);
-  var off=unitsOff(),list=el('div','unitlist');[1,2].forEach(function(sem){var us=UNITS.filter(function(u){return u.g===g&&u.s===sem});if(!us.length)return;list.appendChild(el('h4',null,g+'학년 '+sem+'학기'));us.forEach(function(u){var row=el('label','unitrow'+(off[u.id]?' off':''));var cb=document.createElement('input');cb.type='checkbox';cb.checked=!off[u.id];cb.onchange=function(){if(cb.checked)delete off[u.id];else off[u.id]=1;row.classList.toggle('off',!cb.checked);save()};row.appendChild(cb);var tx=el('span');tx.appendChild(el('b',null,u.name));tx.appendChild(el('small',null,u.code));row.appendChild(tx);list.appendChild(row)})});inn.appendChild(list);
+  var off=unitsOff(),list=el('div','unitlist');[1,2].forEach(function(sem){var us=UNITS.filter(function(u){return u.g===g&&u.s===sem});if(!us.length)return;list.appendChild(el('h4',null,g+'학년 '+sem+'학기'));us.forEach(function(u){var row=el('label','unitrow'+(off[u.id]?' off':''));var cb=document.createElement('input');cb.type='checkbox';cb.checked=!off[u.id];cb.onchange=function(){if(cb.checked)delete off[u.id];else off[u.id]=1;row.classList.toggle('off',!cb.checked);save()};row.appendChild(cb);var tx=el('span');tx.appendChild(el('b',null,u.name));tx.appendChild(el('small',null,stdUnitCodes(u).join(' ')||u.code));row.appendChild(tx);list.appendChild(row)})});inn.appendChild(list);
   inn.appendChild(el('p','sub','꺼진 단원의 문제는 나오지 않아요. 학교 진도에 맞춰 켜고 끄세요. 문제 난이도는 풀면서 저절로 맞춰져요.'));
   inn.appendChild(el('h4','hzgh','한자 급수'));var hg=S.hz.cg,hc=el('div','gradechips hzchips');GRADES.forEach(function(gn,gi){var gu=S.hz.gu[gi]||0,b=el('button','catchip'+(gi===hg?' on':'')+(gu>=gradeCap(gi)?' done':gu?' some':''),gn);b.onclick=function(){if(gi===hg)return;hzSelect(gi);unitSheet()};hc.appendChild(b)});inn.appendChild(hc);
   inn.appendChild(el('p','sub','지금 '+GRADES[hg]+' 공부 중 · 이 급수 '+(S.hz.gu[hg]||0)+' / '+gradeCap(hg)+'자 열림. 학년 고르듯이 공부할 급수를 골라요. 다른 급수로 바꿔도 진도는 급수마다 그대로 남아요.'));
