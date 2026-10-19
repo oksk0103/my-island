@@ -2947,6 +2947,13 @@ body .qscreen .choice.kfw{width:auto;min-width:0;height:auto;min-height:46px;pad
 .wsicons{display:grid;grid-template-columns:repeat(5,1fr)}
 .wssubs{flex-wrap:wrap}
 .wssubs .wsoff{grid-column:1/-1;flex-basis:100%;align-self:center}
+
+.wsname2{display:flex;flex-direction:column;gap:4px;margin:8px 0;text-align:left}.wsname2 small{font-size:.78rem;font-weight:800;color:var(--ink-2)}
+.wsnamein{width:100%;box-sizing:border-box;padding:12px 14px;border-radius:12px;border:2px solid #d6dfe8;font:700 1.05rem 'Noto Sans KR',sans-serif;background:#fff;color:#26313d}
+.wsnamein:focus{outline:none;border-color:#4d8fd1}
+.cta.warn{background:#ffe3e3!important;color:#c92a2a!important}
+.krnote{display:none;margin:0 14px 8px}.krnote.on{display:block}.krnote textarea,.krcopy{width:100%;box-sizing:border-box;min-height:70px;padding:10px;border-radius:12px;border:2px solid #d6dfe8;font:500 .95rem 'Noto Sans KR',sans-serif}
+.krcopy{margin:8px 14px;width:calc(100% - 28px)}
 </style>
 
 <div id="app"></div>
@@ -5631,9 +5638,10 @@ function koReview(tab,idx){tab=tab||'read';idx=idx||0;clear();var sc=el('div','s
   if(tab==='read'){var pg=list[idx];koHead(c,pg);koText(c,pg.p,false,pg);var px_=koPX(pg);if(px_){var xd=el('div','krq');xd.appendChild(el('small',null,'오늘의 낱말 · 맞아요 틀려요'));(px_.words||[]).forEach(function(w){xd.appendChild(el('p',null,w.w+' — '+w.m+' / '+(w.ex||'')))});(px_.tf||[]).forEach(function(q){xd.appendChild(el('p',null,(q.t?'⭕ ':'❌ ')+q.s))});c.appendChild(xd)}pg.p.qs.forEach(function(q,qi){var d=el('div','krq');d.appendChild(el('small',null,(qi+1)+'. '+(KOK[q.k]||q.k)));d.appendChild(el('b',null,q.q||''));if(q.k==='order')d.appendChild(el('p',null,q.seq.join(' → ')));else{var ul=el('ol');q.c.forEach(function(o,oi){ul.appendChild(el('li',oi===q.a?'ok':'',o))});d.appendChild(ul)}if(q.e)d.appendChild(el('em',null,q.e));c.appendChild(d)})}
   else{var it=list[idx],d=el('div','krq');d.appendChild(el('small',null,(KOK[it.k]||it.k)+' · Lv.'+(it.lv||1)));if(it.q)d.appendChild(el('b',null,it.q));if(it.s)koSent(d,it.s);if(it.k==='find'){var fp=el('p','krfind');it.w.forEach(function(w,wi){fp.appendChild(el('span',wi===it.bad?'bad':'',w+' '))});d.appendChild(fp);d.appendChild(el('p',null,'고친 말: '+it.fix))}else{var ul=el('ol');it.c.forEach(function(o,oi){ul.appendChild(el('li',oi===it.a?'ok':'',o))});d.appendChild(ul)}if(it.e)d.appendChild(el('em',null,it.e));if(it.rule)d.appendChild(el('small','krrule','근거: '+it.rule));c.appendChild(d)}
   sc.appendChild(c);
-  var mark=k.rev[id],mr=el('div','krmark');[['ok','좋아요'],['fix','고쳐 주세요']].forEach(function(m){var bt=el('button','krm '+m[0]+(mark&&mark.m===m[0]?' on':''),m[1]);bt.onclick=function(){if(m[0]==='fix'){var note=prompt('무엇을 고치면 될까요? (짧게)',mark&&mark.n||'');if(note===null)return;k.rev[id]={m:'fix',n:note}}else k.rev[id]={m:'ok'};save();koReview(tab,idx+1)};mr.appendChild(bt)});sc.appendChild(mr);
+  var mark=k.rev[id],mr=el('div','krmark');[['ok','좋아요'],['fix','고쳐 주세요']].forEach(function(m){var bt=el('button','krm '+m[0]+(mark&&mark.m===m[0]?' on':''),m[1]);bt.onclick=function(){if(m[0]==='fix'){if(!fw.classList.contains('on')){fw.classList.add('on');fta.focus();return}k.rev[id]={m:'fix',n:fta.value.trim()}}else k.rev[id]={m:'ok'};save();koReview(tab,idx+1)};mr.appendChild(bt)});sc.appendChild(mr);
+  var fw=el('div','krnote'+(mark&&mark.m==='fix'?' on':'')),fta=document.createElement('textarea');fta.placeholder='무엇을 고치면 될까요? 쓰고 나서 고쳐 주세요를 한 번 더 눌러요';fta.value=mark&&mark.n||'';fw.appendChild(fta);sc.appendChild(fw);
   var nav=el('div','dockrow');var pv=el('button','cta light','앞');pv.disabled=idx===0;pv.onclick=function(){koReview(tab,idx-1)};var nx=el('button','cta light',(idx+1)+' / '+list.length+' · 다음');nx.disabled=idx>=list.length-1;nx.onclick=function(){koReview(tab,idx+1)};nav.appendChild(pv);nav.appendChild(nx);sc.appendChild(nav);
-  var cnt={ok:0,fix:0};for(var r in k.rev)cnt[k.rev[r].m]++;var cp=el('button','linkbtn','표시 '+(cnt.ok+cnt.fix)+'개 (고칠 것 '+cnt.fix+') 복사하기');cp.onclick=function(){var t=Object.keys(k.rev).filter(function(r){return k.rev[r].m==='fix'}).map(function(r){return r+': '+k.rev[r].n}).join('\n')||'고칠 것 없음';try{navigator.clipboard.writeText(t);miniToast('복사했어요')}catch(e){prompt('복사해서 보내 주세요',t)}};sc.appendChild(cp);
+  var cnt={ok:0,fix:0};for(var r in k.rev)cnt[k.rev[r].m]++;var cp=el('button','linkbtn','표시 '+(cnt.ok+cnt.fix)+'개 (고칠 것 '+cnt.fix+') 복사하기');cp.onclick=function(){var t=Object.keys(k.rev).filter(function(r){return k.rev[r].m==='fix'}).map(function(r){return r+': '+k.rev[r].n}).join('\n')||'고칠 것 없음';var box=sc.querySelector('.krcopy')||el('textarea','krcopy');box.value=t;box.readOnly=true;sc.appendChild(box);try{box.select()}catch(e){}try{navigator.clipboard.writeText(t).then(function(){miniToast('복사했어요')},function(){miniToast('아래 글을 길게 눌러 복사해요')})}catch(e){miniToast('아래 글을 길게 눌러 복사해요')}};sc.appendChild(cp);
   app.appendChild(sc)}
 
 // ================= 처음 시작: 학년 고르기 → 실력 알아보기 → 시작 단계 =================
@@ -7546,12 +7554,15 @@ function wsCfgSheet(after){var W=wsS(),inn=sheet.firstChild;inn.innerHTML='';var
 function wsEdit(x,after,draft){var W=wsS(),isNew=!x,d=draft||(x?JSON.parse(JSON.stringify(x)):{id:'w'+Date.now().toString(36),name:'',img:'pencil',days:[],after:''});if(!d.days)d.days=[];var inn=sheet.firstChild;inn.innerHTML='';
   var hd=el('div','hd');hd.appendChild(img(d.img||'pencil'));var tt=el('div');tt.appendChild(el('small',null,isNew?'숙제 추가':'숙제 고치기'));tt.appendChild(el('h3',null,d.name||'이름을 정해요'));hd.appendChild(tt);inn.appendChild(hd);
   if(isNew){inn.appendChild(el('p','wscfgp','자주 쓰는 숙제'));var pr=el('div','wscfgrow');WS_PRESET.forEach(function(p){var b=el('button','pchip'+(d.name===p[0]?' on':''),p[0]);b.onclick=function(){d.name=p[0];d.img=p[1];d.after=p[2]||'';redraw()};pr.appendChild(b)});inn.appendChild(pr)}
-  var nb=el('button','linkbtn',d.name?'이름: '+d.name+' (바꾸기)':'이름 직접 쓰기 (예: 눈높이 수학)');nb.onclick=function(){var v=prompt('숙제 이름 (예: 눈높이 수학, 피아노 연습)',d.name||'');if(v&&v.trim()){d.name=v.trim().slice(0,14);redraw()}};inn.appendChild(nb);
+  // 이름은 바로 써요 (아티팩트 안에서는 prompt 창이 막혀요)
+  var nw=el('label','wsname2');nw.appendChild(el('small',null,'숙제 이름'));var ni=document.createElement('input');ni.type='text';ni.maxLength=14;ni.value=d.name||'';ni.placeholder='예: 눈높이 수학, 피아노 연습';ni.className='wsnamein';nw.appendChild(ni);inn.appendChild(nw);
+  ni.oninput=function(){d.name=ni.value.trim().slice(0,14);var h3=inn.querySelector('.hd h3');if(h3)h3.textContent=d.name||'이름을 정해요';var s=inn.querySelector('.wssave');if(s)s.disabled=!d.name};
+  ni.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();ni.blur()}};
   inn.appendChild(el('p','wscfgp','하는 요일 (안 고르면 매일)'));var dw=el('div','wscfgrow');[1,2,3,4,5,6,0].forEach(function(k){var on=d.days.indexOf(k)>=0,b=el('button','pchip'+(on?' on':''),WS_DN[k]);b.onclick=function(){if(on)d.days=d.days.filter(function(z){return z!==k});else d.days.push(k);redraw()};dw.appendChild(b)});inn.appendChild(dw);
   inn.appendChild(el('p','wscfgp','그림'));var ic=el('div','wscfgrow wsicons');WS_ICON.forEach(function(k){var b=el('button','chimg'+(d.img===k?' on':''));b.appendChild(img(k));b.onclick=function(){d.img=k;redraw()};ic.appendChild(b)});inn.appendChild(ic);
   inn.appendChild(el('p','wscfgp','다 하고 나서'));var af=el('div','wscfgrow');[['','그냥 끝내기'],['lib','도서관에 책 꽂기'],['photo','사진 남기기']].forEach(function(o){var b=el('button','pchip'+(d.after===o[0]?' on':''),o[1]);b.onclick=function(){d.after=o[0];redraw()};af.appendChild(b)});inn.appendChild(af);
-  var row=el('div','dockrow');if(!isNew){var del=el('button','cta light','지우기');del.onclick=function(){if(!confirm(d.name+' 숙제를 지울까요? 지난 기록은 남아요.'))return;W.items=W.items.filter(function(z){return z.id!==d.id});save();wsCfgSheet(after)};row.appendChild(del)}else{var bk=el('button','cta light','뒤로');bk.onclick=function(){wsCfgSheet(after)};row.appendChild(bk)}
-  var sv=el('button','cta green','저장');sv.disabled=!d.name;sv.onclick=function(){if(!d.name)return;if(isNew)W.items.push(d);else{for(var i=0;i<W.items.length;i++)if(W.items[i].id===d.id)W.items[i]=d}save();wsCfgSheet(after)};row.appendChild(sv);inn.appendChild(row);
+  var row=el('div','dockrow');if(!isNew){var del=el('button','cta light','지우기'),arm=false;del.onclick=function(){if(!arm){arm=true;del.textContent='한 번 더 누르면 지워요';del.classList.add('warn');return}W.items=W.items.filter(function(z){return z.id!==d.id});save();wsCfgSheet(after)};row.appendChild(del)}else{var bk=el('button','cta light','뒤로');bk.onclick=function(){wsCfgSheet(after)};row.appendChild(bk)}
+  var sv=el('button','cta green wssave','저장');sv.disabled=!d.name;sv.onclick=function(){if(!d.name)return;if(isNew)W.items.push(d);else{for(var i=0;i<W.items.length;i++)if(W.items[i].id===d.id)W.items[i]=d}save();wsCfgSheet(after)};row.appendChild(sv);inn.appendChild(row);
   function redraw(){wsEdit(x,after,d)}
   sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=function(){wsCfgSheet(after)};requestAnimationFrame(function(){sheet.className='sheet good show'})}
 // ----- 집중 소리: 빗소리·파도·숲 (기기에서 바로 만들어요) -----
