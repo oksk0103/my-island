@@ -2967,6 +2967,28 @@ body .qscreen .choice.kfw{width:auto;min-width:0;height:auto;min-height:46px;pad
 .wssub span{font-size:.82rem!important;line-height:1.15;text-align:center;word-break:keep-all;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .wssub.lock{opacity:.45}
 .cta.wait{opacity:.6}
+
+/* 숙제 화면: 합계 줄, 식물원 버튼, 어땠어요, 순서 */
+.wssum{display:flex;align-items:center;gap:4px;justify-content:center;margin:2px 14px 8px;font-size:.88rem;color:var(--ink-2)}.wssum b{color:#26313d;font-size:.95rem}
+.wsbot{margin-left:auto;display:inline-flex;align-items:center;gap:4px;padding:4px 10px 4px 4px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1.5px #cfe8d4,0 2px 0 #cfe8d4;font-weight:800;font-size:.82rem;color:#2b8a3e}.wsbot img{width:28px;height:28px}
+.wsfeel{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px}.wsfeel .cta{padding:0 4px;font-size:.92rem}
+.wsmv{display:flex;flex-direction:column;gap:2px}.wsmvb{font-style:normal;font-size:.7rem;width:26px;height:20px;display:grid;place-items:center;border-radius:6px;background:#f1f3f5;color:#495057;cursor:pointer}.wsmvb.off{opacity:.3}
+/* 섬 식물원 */
+.botscr{padding-bottom:110px}
+.botcur{display:flex;gap:14px;align-items:center;padding:14px;margin:0 14px 10px}
+.botpot{width:96px;height:96px;display:grid;place-items:center;flex:none;border-radius:16px;background:radial-gradient(circle at 50% 70%,#e9f8e4,#d4efcd)}.botpot img{max-width:84px;max-height:84px}
+.botinfo{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1;text-align:left}.botinfo small{font-size:.75rem;font-weight:700;color:var(--ink-2)}.botinfo b{font-size:1.1rem}.botinfo .linkbtn{align-self:flex-start;padding:0;margin:0}
+.botbar{height:10px;border-radius:5px;background:#e9ecef;overflow:hidden}.botbar i{display:block;height:100%;background:linear-gradient(90deg,#8fd9a2,#40c057);border-radius:5px}
+.botroom{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 14px;padding:14px 10px;border-radius:20px;background:linear-gradient(#eaf7ef,#d6efdc);box-shadow:inset 0 0 0 2px #c3e6cb}
+.botroom.r2{background:linear-gradient(#fff6e3,#f6e5c2);box-shadow:inset 0 0 0 2px #ecd9a6}.botroom.r3{background:linear-gradient(#e8f1ff,#d6e6fb);box-shadow:inset 0 0 0 2px #bfd5f2}
+.botroom.locked{display:block;text-align:center;padding:30px 16px}.botlockp{margin:0;font-weight:700;color:var(--ink-2);word-break:keep-all}
+.botslot{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:118px;padding:6px 4px;border-radius:14px;background:rgba(255,255,255,.75);border:0;box-shadow:0 3px 0 rgba(0,0,0,.06)}
+.botslot img{max-width:78px;max-height:82px}.botslot span{font-size:.72rem;font-weight:800;color:#26313d;word-break:keep-all;text-align:center}
+.botslot.empty{background:rgba(255,255,255,.35);box-shadow:inset 0 0 0 2px rgba(255,255,255,.7);justify-content:center}.botemp{color:#9aa5b1!important}
+.botslot.pick{box-shadow:0 0 0 3px #ffc93c}.botstar{position:absolute;top:4px;right:6px;font-style:normal;font-size:.68rem;font-weight:800;color:#e67700}
+.mseg .lockt{opacity:.55}
+.botseeds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 10px}
+.botseed{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1.5px #e3e9ef;border:0}.botseed img{width:40px;height:40px}.botseed b{font-size:.85rem}.botseed small{font-size:.72rem;color:var(--ink-2)}.botseed.on{box-shadow:inset 0 0 0 2.5px #40c057;background:#ebfbee}
 </style>
 
 <div id="app"></div>
@@ -2974,7 +2996,7 @@ body .qscreen .choice.kfw{width:auto;min-width:0;height:auto;min-height:46px;pad
 <div class="sheet" id="sheet" aria-live="polite"><div class="in"></div></div>
 
 <script>
-var A={"pot":"b/fb6c2af9f554.webp","fol":"b/ef40cb10455e.webp","sprout":"b/4e959e69adfb.webp","seedling":"b/4e959e69adfb.webp","blossom":"b/5e888fd3f2c6.webp","tulip":"b/aa514e71ca51.webp","sunflower":"b/5baf87bbffcf.webp","rose":"b/922084613d8e.webp","hibiscus":"b/3a9b332021dd.webp","cherry_blossom":"b/c76696a8fa25.webp","droplet":"b/afb806f78742.webp","fire":"b/1708c445dad2.png","sparkles":"b/14bdfc93156d.png","check_mark_button":"b/84b182e42ffa.png","light_bulb":"b/ea857031b97e.png","speaker_high_volume":"b/84ed11d97781.png","muted_speaker":"b/d0d9b8f98351.png","rare_blossom":"b/89ba679f6d65.webp","rare_tulip":"b/78fa22e63ec1.webp","rare_sunflower":"b/a1977ff43d62.webp","rare_rose":"b/f33232bf4df0.webp","rare_hibiscus":"b/111cca8593c3.webp","rare_cherry_blossom":"b/377d7aa63ee8.webp","pot_gold":"b/5d893cae4724.webp","red_apple":"b/69f26295ade1.webp","peach":"b/c22057201d2f.webp","tangerine":"b/ce7c6218b843.webp","cherries":"b/cd507c15137a.webp","lemon":"b/d0eca1d1b06a.webp","grapes":"b/7a6362f49cbe.webp","rare_red_apple":"b/aee9a71c3ba0.webp","rare_peach":"b/abab150fd8f5.webp","rare_tangerine":"b/b1ce2a5a59c9.webp","rare_cherries":"b/c437de206848.webp","rare_lemon":"b/6bae98fbd847.webp","rare_grapes":"b/2a65c74daa97.webp","books":"b/dd5ecc8f9231.png","pot_sky":"b/20e71dbdee72.webp","pot_pink":"b/ffecd648a6fd.webp","pot_violet":"b/f6df9ff49da5.webp","pot_mint":"b/8e6c0ed19933.webp","pot_white":"b/b76e7356807d.webp","sun":"b/c3f5cc28eaa0.png","lady_beetle":"b/f7065fbd7d5d.webp","butterfly":"b/f182f95f84fd.webp","snail":"b/7aca81e92a12.webp","mushroom":"b/b5e6352df04a.webp","four_leaf_clover":"b/a38cf93e89a8.webp","rainbow":"b/0fef91acb565.webp","shopping_bags":"b/166dbd4854c2.png","rabbit":"b/8093dac91ad9.webp","cat":"b/e2278883e07a.webp","penguin":"b/c84c1459f97a.webp","chipmunk":"b/0d89b349be1b.webp","hedgehog":"b/8a45e2a59ce1.webp","turtle":"b/e4eb6d6608d7.webp","owl":"b/3649c02d95b9.webp","hatching_chick":"b/616f32f6dd0d.webp","wrapped_gift":"b/416b1375f11a.png","footprints":"b/ca49a2d65fe6.png","cloud":"b/e74c1fb9f0d4.webp","cloud_with_rain":"b/778f39b59c79.webp","evergreen_tree":"b/d196ec2eed3d.webp","fountain":"b/1a3d2241e26e.webp","chair":"b/616acb8c7fc8.webp","tent":"b/4a1934081b08.webp","house_with_garden":"b/7b642b1dcb07.webp","rock":"b/b638a5fb4e0f.webp","wood":"b/eead985eb68c.webp","jack-o-lantern":"b/2c9a23643877.webp","snowman":"b/5c48f968a8cb.webp","red_paper_lantern":"b/c1fc89120bdd.webp","playground_slide":"b/f4423425e414.webp","umbrella_on_ground":"b/fb506422a896.webp","teddy_bear":"b/f3ccb6c964e8.webp","cactus":"b/d28e37abee65.webp","palm_tree":"b/a7539d2c63bb.webp","postbox":"b/0b91780d718b.webp","pencil":"b/3d8782d79009.png","k3_house":"b/7b642b1dcb07.webp","k3_shop":"b/e485b6c34206.webp","k3_sign":"b/c6b9aa2bfe22.webp","k3_bookshop":"b/4fa967529d47.webp","k3_cart":"b/09fb5e5e68fe.webp","k3_tree":"b/494c1911fb78.webp","k3_boat":"b/2b9f04fac32d.webp","k3_village":"b/d37f562fc6ee.webp",};
+var A={"pot":"b/fb6c2af9f554.webp","fol":"b/ef40cb10455e.webp","sprout":"b/4e959e69adfb.webp","seedling":"b/4e959e69adfb.webp","blossom":"b/5e888fd3f2c6.webp","tulip":"b/aa514e71ca51.webp","sunflower":"b/5baf87bbffcf.webp","rose":"b/922084613d8e.webp","hibiscus":"b/3a9b332021dd.webp","cherry_blossom":"b/c76696a8fa25.webp","droplet":"b/afb806f78742.webp","fire":"b/1708c445dad2.png","sparkles":"b/14bdfc93156d.png","check_mark_button":"b/84b182e42ffa.png","light_bulb":"b/ea857031b97e.png","speaker_high_volume":"b/84ed11d97781.png","muted_speaker":"b/d0d9b8f98351.png","rare_blossom":"b/89ba679f6d65.webp","rare_tulip":"b/78fa22e63ec1.webp","rare_sunflower":"b/a1977ff43d62.webp","rare_rose":"b/f33232bf4df0.webp","rare_hibiscus":"b/111cca8593c3.webp","rare_cherry_blossom":"b/377d7aa63ee8.webp","pot_gold":"b/5d893cae4724.webp","red_apple":"b/69f26295ade1.webp","peach":"b/c22057201d2f.webp","tangerine":"b/ce7c6218b843.webp","cherries":"b/cd507c15137a.webp","lemon":"b/d0eca1d1b06a.webp","grapes":"b/7a6362f49cbe.webp","rare_red_apple":"b/aee9a71c3ba0.webp","rare_peach":"b/abab150fd8f5.webp","rare_tangerine":"b/b1ce2a5a59c9.webp","rare_cherries":"b/c437de206848.webp","rare_lemon":"b/6bae98fbd847.webp","rare_grapes":"b/2a65c74daa97.webp","books":"b/dd5ecc8f9231.png","pot_sky":"b/20e71dbdee72.webp","pot_pink":"b/ffecd648a6fd.webp","pot_violet":"b/f6df9ff49da5.webp","pot_mint":"b/8e6c0ed19933.webp","pot_white":"b/b76e7356807d.webp","sun":"b/c3f5cc28eaa0.png","lady_beetle":"b/f7065fbd7d5d.webp","butterfly":"b/f182f95f84fd.webp","snail":"b/7aca81e92a12.webp","mushroom":"b/b5e6352df04a.webp","four_leaf_clover":"b/a38cf93e89a8.webp","rainbow":"b/0fef91acb565.webp","shopping_bags":"b/166dbd4854c2.png","rabbit":"b/8093dac91ad9.webp","cat":"b/e2278883e07a.webp","penguin":"b/c84c1459f97a.webp","chipmunk":"b/0d89b349be1b.webp","hedgehog":"b/8a45e2a59ce1.webp","turtle":"b/e4eb6d6608d7.webp","owl":"b/3649c02d95b9.webp","hatching_chick":"b/616f32f6dd0d.webp","wrapped_gift":"b/416b1375f11a.png","footprints":"b/ca49a2d65fe6.png","cloud":"b/e74c1fb9f0d4.webp","cloud_with_rain":"b/778f39b59c79.webp","evergreen_tree":"b/d196ec2eed3d.webp","fountain":"b/1a3d2241e26e.webp","chair":"b/616acb8c7fc8.webp","tent":"b/4a1934081b08.webp","house_with_garden":"b/7b642b1dcb07.webp","rock":"b/b638a5fb4e0f.webp","wood":"b/eead985eb68c.webp","jack-o-lantern":"b/2c9a23643877.webp","snowman":"b/5c48f968a8cb.webp","red_paper_lantern":"b/c1fc89120bdd.webp","playground_slide":"b/f4423425e414.webp","umbrella_on_ground":"b/fb506422a896.webp","teddy_bear":"b/f3ccb6c964e8.webp","cactus":"b/d28e37abee65.webp","palm_tree":"b/a7539d2c63bb.webp","postbox":"b/0b91780d718b.webp","pencil":"b/3d8782d79009.png","k3_house":"b/7b642b1dcb07.webp","k3_shop":"b/e485b6c34206.webp","k3_sign":"b/c6b9aa2bfe22.webp","k3_bookshop":"b/4fa967529d47.webp","pl_succ":"b/1bf86fb376fb.webp","pl_aloe":"b/c53c3c9b771a.webp","pl_fern":"b/425e54f0985a.webp","pl_lav":"b/72990a54538f.webp","pl_mimo":"b/33c5508b8c8e.webp","pl_hydr":"b/f2775b654d87.webp","pl_saguaro":"b/8ff009c51ed5.webp","pl_ballcac":"b/4263b5a1a022.webp","pl_baobab":"b/72bd37f3a6f6.webp","pl_monst":"b/a595e16d5243.webp","pl_coffee":"b/fd296d8793cb.webp","pl_bird":"b/319830325813.webp","pl_flytrap":"b/66bc0ea98119.webp","pl_pitcher":"b/50c60beed2b8.webp","pl_sundew":"b/1d96e595a518.webp","pl_lotus":"b/b2e512b36207.webp","pl_hyacinth":"b/706bdbc3ebbf.webp","pl_rafflesia":"b/86188fb0707c.webp","bld_botanic":"b/3fc267617b26.webp","k3_cart":"b/09fb5e5e68fe.webp","k3_tree":"b/494c1911fb78.webp","k3_boat":"b/2b9f04fac32d.webp","k3_village":"b/d37f562fc6ee.webp",};
 var K3={"bookshop": {"w": 141, "h": 153, "bx": 0.5, "by": 0.7476}, "cart": {"w": 84, "h": 88, "bx": 0.5, "by": 0.7936}, "house": {"w": 168.7, "h": 178.7, "bx": 0.5, "by": 0.6996}, "shop": {"w": 161.4, "h": 166.4, "bx": 0.5, "by": 0.6442}, "sign": {"w": 67.2, "h": 82.9, "bx": 0.5, "by": 0.6991}, "tree": {"w": 130.4, "h": 205.0, "bx": 0.5, "by": 0.8097}, "boat": {"w": 134.8, "h": 83.2, "bx": 0.5, "by": 0.5396}, "canopy": [0.499, 0.365, 0.304, 0.2], "anch": {"home": [165, 245.5], "tree": [293.8, 236.3], "shop": [427.2, 261.6], "mail": [188, 372], "pot": [326, 395], "boat": [280, 537.2]}};
 var POT_AR=1.03,POT_SOIL=.76;
 K3.pond=["16,9", "17,9", "16,10", "17,10", "15,10"];K3.nat=["3,8", "2,10", "3,11", "8,2", "10,1", "11,2", "9,18", "11,17", "17,13", "16,15", "3,14", "14,3", "16,4", "4,16", "18,8", "16,11", "15,9", "17,11", "2,9", "9,2"];
@@ -7383,7 +7405,7 @@ function digEnd(){var win=G.got>0,key=G.digKey,ups=G.ups.slice(),s=digS(),t=dayK
 function fossilDex(back){MUSE_TAB='fossil';museumScreen(back||villageScreen)}
 
 // ================= 섬 건물(정해진 자리) =================
-var BLDS=[{id:'museum',name:'섬 박물관',img:'museum',side:-1,front:'c',open:function(){museumScreen(function(){islandScreen(false)})}},{id:'library',name:'섬 도서관',img:'library',side:1,front:'r',open:function(){libScreen(function(){islandScreen(false)})}},{id:'school',name:'섬 학교',img:'school',top:1,front:'d',open:function(){schoolScreen(function(){islandScreen(false)})}}];
+var BLDS=[{id:'museum',name:'섬 박물관',img:'museum',side:-1,front:'c',open:function(){museumScreen(function(){islandScreen(false)})}},{id:'library',name:'섬 도서관',img:'library',side:1,front:'r',open:function(){libScreen(function(){islandScreen(false)})}},{id:'school',name:'섬 학교',img:'school',top:1,front:'d',open:function(){schoolScreen(function(){islandScreen(false)})}},{id:'botanic',name:'섬 식물원',img:'bld_botanic',bottom:1,front:'d',open:function(){botScreen(function(){islandScreen(false)})}}];
 function bldS(){if(!S.bld)S.bld={};return S.bld}
 function bldList(){var b=bldS();return BLDS.filter(function(x){return b[x.id]})}
 
@@ -7397,12 +7419,22 @@ function schIslet(B,ks,cx,cy){var D=Math.round(cx-cy),T=null;ks.forEach(function
   BLDC.br.push({id:B.id,img:'br2d_'+pick.k,n:pick.k,d:1,e:T,p:[(pick.c0+3+T[0])/2,(pick.r0+3+T[1])/2]});
   [[0,0],[1,0],[0,1]].forEach(function(d){BLDC.land[(T[0]+d[0])+','+(T[1]+d[1])]=1});
   BLDC.deco.push({n:'palm_tree',k:(pick.c0+2)+','+pick.r0},{n:'palm_tree',k:pick.c0+','+(pick.r0+2)})}
+// 식물원은 본섬 아래쪽(앞쪽) 작은 섬. 학교 섬을 위아래로 뒤집은 모양이에요.
+function botIslet(B,ks,cx,cy){var D=Math.round(cx-cy),T=null;ks.forEach(function(p){if(p[0]-p[1]!==D)return;if(!T||p[0]+p[1]>T[0]+T[1])T=p});if(!T)return;
+  var near={};function mk(c,r){for(var i=-1;i<=1;i++)for(var j=-1;j<=1;j++)near[(c+i)+','+(r+j)]=1}ks.forEach(function(p){mk(p[0],p[1])});Object.keys(BLDC.isl).forEach(function(k){var q=k.split(',').map(Number);mk(q[0],q[1])});
+  var pick=null;for(var k=2;k<=5&&!pick;k++){var c0=T[0]+k,r0=T[1]+k,cl=[];for(var du=0;du<4;du++)for(var dv=0;dv<4;dv++){if((du===3&&dv===3)||(du===3&&dv===0)||(du===0&&dv===3))continue;cl.push([c0+du,r0+dv,du,dv])}if(cl.every(function(x){return !near[x[0]+','+x[1]]}))pick={k:k,c0:c0,r0:r0,cl:cl}}
+  if(!pick)return;
+  pick.cl.forEach(function(x){var kk=x[0]+','+x[1];BLDC.isl[kk]=1;if(!(x[2]>0&&x[2]<3&&x[3]>0&&x[3]<3))ISLS[kk]=1});
+  BLDC.lots[B.id]=[pick.c0+1,pick.r0+1];
+  BLDC.br.push({id:B.id,img:'br2d_'+pick.k,n:pick.k,d:1,e:[pick.c0,pick.r0],p:[(pick.c0+T[0])/2,(pick.r0+T[1])/2]});
+  [[0,0],[-1,0],[0,-1]].forEach(function(d){BLDC.land[(T[0]+d[0])+','+(T[1]+d[1])]=1});
+  BLDC.deco.push({n:'palm_tree',k:(pick.c0+3)+','+(pick.r0+1)},{n:'d_flowers_yellow',k:(pick.c0+1)+','+(pick.r0+3)})}
 var BLDC={key:'',m:{},lots:{}};
 // 건물은 본섬 옆 작은 섬에 있어요. 다리로 이어져요.
 var BRYD=.35,BRDW=.86,ISLS={},BRW=1.0,BRY=1.35,BRY1=1.0;
 function bldCalc(){var key=Object.keys(LAND).length+'|'+JSON.stringify(bldS());if(BLDC.key===key)return BLDC;BLDC={key:key,m:{},lots:{},isl:{},br:[],deco:[],land:{}};ISLS={};
   var ks=Object.keys(LAND).map(function(k){return k.split(',').map(Number)}),cx=0,cy=0;ks.forEach(function(p){cx+=p[0];cy+=p[1]});cx/=ks.length;cy/=ks.length;
-  BLDC.sch={};bldList().forEach(function(B){if(B.top){schIslet(B,ks,cx,cy);return}var sw=B.front==='r';
+  BLDC.sch={};bldList().forEach(function(B){if(B.top){schIslet(B,ks,cx,cy);return}if(B.bottom){botIslet(B,ks,cx,cy);return}var sw=B.front==='r';
     // sw면 c와 r을 바꿔서 같은 방식으로 계산해요
     function K(u,v){return sw?v+','+u:u+','+v}
     var m0=Math.round((sw?cx:cy)-.5);
@@ -7440,6 +7472,204 @@ function museumScreen(back){clear();var sc=el('div','screen museumscr'),top=el('
   sc.appendChild(g);
   var tip={fish:'낚시터에서 새 물고기를 낚으면 전시돼요.',fossil:'섬의 반짝이는 땅에서 화석을 캐면 전시돼요.',doll:'주말 보스를 물리치면 인형이 전시돼요.'}[MUSE_TAB];sc.appendChild(el('p','mtip',tip));
   app.appendChild(sc);zMark&&zMark()}
+// ================= 섬 식물원: 숙제 시간으로 식물을 키워 전시해요 =================
+// 퀴즈 보상(꽃·열매·소품)은 섬을 꾸미는 재료, 숙제는 식물원에만 전시되는 식물이에요. 섬 꾸미기와 겹치지 않아요.
+// - 숙제를 끝낼 때마다 그 시간이 지금 키우는 화분에 쌓여요(하루 최대 BOT_CAP분). 필요한 시간이 차면 피어서 전시돼요.
+// - 한 관(6종)을 다 채우면 다음 관이 열려요. 18종을 다 모으면 다시 키워 ★을 모아요.
+var PLANTS=[
+ {
+  "id": "succ",
+  "name": "다육이",
+  "fact": "통통한 잎에 물을 저장해서 오랫동안 물 없이도 잘 버텨요.",
+  "fact2": "떨어진 잎 한 장에서 뿌리가 나와 새 다육이로 자랄 수 있어요.",
+  "home": "멕시코와 중앙아메리카"
+ },
+ {
+  "id": "aloe",
+  "name": "알로에",
+  "fact": "두꺼운 잎을 자르면 속에 투명하고 미끈미끈한 젤이 들어 있어요.",
+  "fact2": "잎에 물을 저장해서 비가 적은 건조한 곳에서도 잘 살아요.",
+  "home": "아라비아반도와 아프리카"
+ },
+ {
+  "id": "fern",
+  "name": "고사리",
+  "fact": "꽃도 씨도 없이 잎 뒷면의 작은 홀씨로 자손을 퍼뜨려요.",
+  "fact2": "공룡이 살던 아주 먼 옛날부터 지구에 살아온 식물이에요.",
+  "home": "세계 곳곳의 그늘지고 습한 숲"
+ },
+ {
+  "id": "lav",
+  "name": "라벤더",
+  "fact": "보라색 꽃에서 마음을 편안하게 해 주는 향기가 나요.",
+  "fact2": "향이 좋아서 비누, 향수, 방향제를 만들 때 많이 써요.",
+  "home": "지중해 연안의 햇볕 드는 언덕"
+ },
+ {
+  "id": "mimo",
+  "name": "미모사",
+  "fact": "잎을 살짝 건드리면 잎이 금세 오므라들고 축 처져요.",
+  "fact2": "밤이 되면 건드리지 않아도 잎을 접고 잠자는 것처럼 보여요.",
+  "home": "중앙아메리카와 남아메리카"
+ },
+ {
+  "id": "hydr",
+  "name": "수국",
+  "fact": "흙의 성질에 따라 꽃 색이 파란색이나 분홍색으로 바뀌어요.",
+  "fact2": "작은 꽃들이 수십 송이 모여 커다란 공 모양을 이뤄요.",
+  "home": "동아시아(일본)"
+ },
+ {
+  "id": "saguaro",
+  "name": "기둥 선인장",
+  "fact": "10m 넘게 자라고, 수십 년이 지나야 팔 같은 가지가 생겨요.",
+  "fact2": "비가 오면 몸통이 부풀 만큼 물을 많이 저장해요.",
+  "home": "북아메리카 소노라 사막"
+ },
+ {
+  "id": "ballcac",
+  "name": "공 선인장",
+  "fact": "동글동글한 몸이 황금빛 가시로 빽빽하게 덮여 있어요.",
+  "fact2": "아주 천천히 자라서 큰 공 모양이 되려면 여러 해가 걸려요.",
+  "home": "멕시코 중부의 건조한 지역"
+ },
+ {
+  "id": "baobab",
+  "name": "바오바브나무",
+  "fact": "굵은 줄기 속에 물을 많이 저장해서 건기를 견뎌요.",
+  "fact2": "천 년 넘게 살아온 아주 오래된 나무도 있어요.",
+  "home": "아프리카 사바나와 마다가스카르"
+ },
+ {
+  "id": "monst",
+  "name": "몬스테라",
+  "fact": "커다란 잎이 자라면서 구멍과 갈라진 틈이 생겨요.",
+  "fact2": "줄기에서 공기뿌리를 내려 다른 나무를 붙잡고 올라가요.",
+  "home": "중앙아메리카 열대 우림"
+ },
+ {
+  "id": "coffee",
+  "name": "커피나무",
+  "fact": "빨갛게 익은 열매 속 씨앗을 볶은 것이 바로 커피콩이에요.",
+  "fact2": "하얀 꽃이 피는데, 재스민처럼 좋은 향기가 나요.",
+  "home": "아프리카 에티오피아 고원"
+ },
+ {
+  "id": "bird",
+  "name": "극락조화",
+  "fact": "꽃 모양이 화려한 새가 머리를 내민 모습과 닮았어요.",
+  "fact2": "새가 꽃에 앉으면 발에 꽃가루가 묻어 다른 꽃으로 옮겨져요.",
+  "home": "남아프리카"
+ },
+ {
+  "id": "flytrap",
+  "name": "파리지옥",
+  "fact": "잎 안쪽 감각털이 연달아 건드려지면 잎이 순식간에 닫혀요.",
+  "fact2": "곤충을 잡아 흙에서 부족한 영양분을 얻어요.",
+  "home": "미국 남동부의 습지"
+ },
+ {
+  "id": "pitcher",
+  "name": "벌레잡이통풀",
+  "fact": "잎 끝이 길쭉한 주머니 모양으로 변해 곤충을 잡아요.",
+  "fact2": "주머니 입구가 미끄러워서 곤충이 미끄러져 빠져요.",
+  "home": "동남아시아 열대 우림"
+ },
+ {
+  "id": "sundew",
+  "name": "끈끈이주걱",
+  "fact": "잎의 털 끝에 반짝이는 끈끈한 물방울이 맺혀 있어요.",
+  "fact2": "물방울에 붙은 작은 곤충에서 영양분을 얻어요.",
+  "home": "세계 곳곳의 습지(우리나라 포함)"
+ },
+ {
+  "id": "lotus",
+  "name": "연꽃",
+  "fact": "잎이 물에 젖지 않아서 물방울이 또르르 굴러떨어져요.",
+  "fact2": "씨앗이 아주 튼튼해서 수백 년이 지나 싹을 틔운 적도 있어요.",
+  "home": "아시아의 연못과 늪"
+ },
+ {
+  "id": "hyacinth",
+  "name": "부레옥잠",
+  "fact": "잎자루가 공기로 볼록하게 부풀어 있어 물에 둥둥 떠요.",
+  "fact2": "물속의 더러운 물질을 빨아들여 물을 깨끗하게 하는 데 도움을 줘요.",
+  "home": "남아메리카 아마존강 유역"
+ },
+ {
+  "id": "rafflesia",
+  "name": "라플레시아",
+  "fact": "세상에서 가장 큰 꽃 중 하나로, 지름이 1m 가까이 돼요.",
+  "fact2": "고약한 냄새를 풍겨 파리를 불러 꽃가루를 옮기게 해요.",
+  "home": "동남아시아 열대 우림"
+ }
+];
+var BOT_ROOMS=[{id:'r1',name:'잎 온실',ids:['succ','aloe','fern','lav','mimo','hydr']},{id:'r2',name:'사막·열대관',ids:['ballcac','saguaro','monst','coffee','bird','baobab']},{id:'r3',name:'신기한 식물관',ids:['flytrap','sundew','pitcher','hyacinth','lotus','rafflesia']}];
+// 피기까지 필요한 숙제 시간(분). 처음엔 하루 이틀에 하나, 뒤로 갈수록 오래
+var BOT_NEED={succ:30,aloe:40,fern:50,lav:60,mimo:75,hydr:90,ballcac:90,saguaro:110,monst:120,coffee:140,bird:160,baobab:200,flytrap:150,sundew:170,pitcher:200,hyacinth:220,lotus:260,rafflesia:320};
+var BOT_CAP=150,BOT_BONUS=15,BOT_SEL=null;
+function botP(id){for(var i=0;i<PLANTS.length;i++)if(PLANTS[i].id===id)return PLANTS[i];return {id:id,name:id,fact:'',fact2:'',home:''}}
+function botRoomOf(id){for(var i=0;i<BOT_ROOMS.length;i++)if(BOT_ROOMS[i].ids.indexOf(id)>=0)return i;return 0}
+function botS(){if(!S.bot){S.bot={min:0,cur:null,got:{},slot:{},day:{d:-1,m:0}};
+    // 예전 숙제 기록도 식물로 바꿔 줘요 (최대 10시간)
+    var past=0;((S.ws&&S.ws.log)||[]).forEach(function(x){if(x.s!=='cls')past+=x.m||0});past=Math.min(600,past);if(past>0){S.bot.mig={m:past,shown:0};botAdd(past,true)}}
+  var b=S.bot;if(!b.got)b.got={};if(!b.slot)b.slot={};if(!b.day)b.day={d:-1,m:0};return b}
+function botRoomOpen(i){if(i===0)return true;var b=S.bot||{got:{}};return BOT_ROOMS[i-1].ids.every(function(id){return b.got&&b.got[id]})}
+function botAllGot(){var b=S.bot||{got:{}};return PLANTS.length&&PLANTS.every(function(p){return b.got[p.id]})}
+// 고를 수 있는 씨앗: 열린 관에서 아직 없는 것 (다 모았으면 아무거나 다시)
+function botSeeds(){var b=S.bot,L=[];BOT_ROOMS.forEach(function(R,i){if(!botRoomOpen(i))return;R.ids.forEach(function(id){if(!b.got[id])L.push(id)})});
+  // 다 모았으면 가장 적게 키운 식물부터 다시 (★ 모으기)
+  if(!L.length){L=PLANTS.map(function(p){return p.id});L.sort(function(a,c){return (b.got[a]||0)-(b.got[c]||0)||botNeed(a)-botNeed(c)})}return L}
+function botNeed(id){return BOT_NEED[id]||60}
+function botPickSeed(id){var b=botS();if(!b.cur)b.cur={id:id,m:0};else b.cur.id=id;save();if(b.cur.m>=botNeed(id)){var r=botAdd(0,true);if(r.grown.length)setTimeout(function(){botAfter(r,null,false)},400)}}
+// 분을 더해요. 다 자라면 전시하고 남은 시간은 다음 씨앗으로. 돌려주는 값: {add, grown:[id], cur}
+function botAdd(mn,noCap){if(!S.bot)botS();var b=S.bot,d=dnum(),add=mn;if(!noCap){if(b.day.d!==d)b.day={d:d,m:0};add=Math.max(0,Math.min(mn,BOT_CAP-b.day.m));b.day.m+=add}
+  b.min=(b.min||0)+add;var grown=[];if(!b.cur){var s0=botSeeds();b.cur={id:s0[0],m:0}}b.cur.m+=add;
+  while(b.cur&&b.cur.m>=botNeed(b.cur.id)){var id=b.cur.id,left=b.cur.m-botNeed(id);b.got[id]=(b.got[id]||0)+1;botPlace(id);grown.push(id);var nx=botSeeds().filter(function(x){return x!==id});b.cur={id:nx[0]||id,m:left}}
+  save();return {add:add,grown:grown,cur:b.cur,capped:add<mn}}
+// 전시: 그 관의 첫 빈 자리에 놓아요 (이미 있으면 그대로)
+function botPlace(id){var b=S.bot,ri=botRoomOf(id),R=BOT_ROOMS[ri],sl=b.slot[R.id]||(b.slot[R.id]=[null,null,null,null,null,null]);if(sl.indexOf(id)>=0)return;var e=sl.indexOf(null);if(e<0)return;sl[e]=id}
+function botPct(extra){var b=botS();if(!b.cur)return 0;return Math.max(0,Math.min(1,(b.cur.m+Math.max(0,extra||0))/botNeed(b.cur.id)))}
+// 자라는 모습: 씨앗 → 새싹 → 그 식물 (작게) → 다 핌
+function botStageImg(pct,id){return pct<.34?'sprout':pct<.67?'seedling':'pl_'+id}
+function botHM(m){m=Math.max(0,Math.round(m||0));var h=Math.floor(m/60),r=m%60;return h?(h+'시간'+(r?' '+r+'분':'')):r+'분'}
+function botUnlockMaybe(){var bs=bldS();if(bs.botanic||!(S.bot&&S.bot.min>0))return false;bs.botanic=1;BLDC.key='';save();return true}
+// 식물원 화면
+var BOT_TAB=0,BOT_SWAP=null;
+function botScreen(back){back=back||function(){islandScreen(false)};clear();var b=botS(),sc=el('div','screen botscr'),top=el('div','qtop');var x=el('button','x');x.setAttribute('aria-label','나가기');x.innerHTML=BACK_SVG;x.onclick=function(){BOT_SWAP=null;back()};top.appendChild(x);top.appendChild(el('h2','mtitle','섬 식물원'));top.appendChild(el('div','spacer'));var tot=el('div','balance');tot.appendChild(img('sprout'));tot.appendChild(el('b','tnum',botHM(b.min||0)));tot.setAttribute('aria-label','지금까지 숙제 시간');top.appendChild(tot);sc.appendChild(top);
+  var guide=el('div','mcur');guide.appendChild(img('frog'));var gotN=Object.keys(b.got).length;guide.appendChild(el('p',null,!gotN?'숙제를 하면 그 시간만큼 화분이 자라. 다 자란 식물은 여기에 전시할게!':botAllGot()?'식물을 모두 모았구나! 이제 다시 키우면 식물마다 별이 하나씩 늘어나.':['어서 와! 오늘도 숙제로 물을 주러 왔구나.','식물을 누르면 재미있는 이야기를 들려줄게.','한 관을 다 채우면 다음 관 문이 열려!'][R(0,2)]));sc.appendChild(guide);
+  // 지금 키우는 화분
+  if(!b.cur){var s0=botSeeds();b.cur={id:s0[0],m:0};save()}var cur=b.cur,p=botP(cur.id),pct=botPct(),card=el('div','card botcur');var pim=el('div','botpot');pim.appendChild(img(botStageImg(pct,cur.id)));card.appendChild(pim);var info=el('div','botinfo');info.appendChild(el('small',null,'지금 키우는 화분'));info.appendChild(el('b',null,pct>=.67?p.name:'??? 씨앗'));var bar=el('div','botbar'),f=el('i');f.style.width=Math.round(pct*100)+'%';bar.appendChild(f);info.appendChild(bar);info.appendChild(el('small','botleft','숙제 '+botHM(botNeed(cur.id)-cur.m)+' 더 하면 피어요 · 오늘 '+botHM(b.day.d===dnum()?b.day.m:0)+' / '+botHM(BOT_CAP)));
+  var ch=el('button','linkbtn','씨앗 바꾸기');ch.onclick=function(){botSeedSheet(function(){botScreen(back)})};info.appendChild(ch);card.appendChild(info);sc.appendChild(card);
+  // 관 탭
+  var seg=el('div','mseg');BOT_ROOMS.forEach(function(Rm,i){var op=botRoomOpen(i),n=Rm.ids.filter(function(id){return b.got[id]}).length,bt=el('button',(BOT_TAB===i?'on':'')+(op?'':' lockt'));bt.appendChild(el('b',null,Rm.name));bt.appendChild(el('small',null,op?n+' / 6':'잠겨 있어요'));bt.onclick=function(){BOT_TAB=i;BOT_SWAP=null;botScreen(back)};seg.appendChild(bt)});sc.appendChild(seg);
+  var Rm=BOT_ROOMS[BOT_TAB],op=botRoomOpen(BOT_TAB),room=el('div','botroom r'+(BOT_TAB+1)+(op?'':' locked'));
+  if(!op){room.appendChild(el('p','botlockp','앞 관의 식물 6종을 다 키우면 '+Rm.name+' 문이 열려요.'))}
+  else{var sl=b.slot[Rm.id]||(b.slot[Rm.id]=[null,null,null,null,null,null]);Rm.ids.forEach(function(id){if(b.got[id]&&sl.indexOf(id)<0){var e=sl.indexOf(null);if(e>=0)sl[e]=id}});
+    sl.forEach(function(id,si){var c=el('button','botslot'+(id?'':' empty')+(BOT_SWAP&&BOT_SWAP.r===Rm.id&&BOT_SWAP.i===si?' pick':''));if(id){c.appendChild(img('pl_'+id));var nm=el('span',null,botP(id).name);c.appendChild(nm);var n=b.got[id];if(n>1)c.appendChild(el('em','botstar','★'+(n-1)))}else c.appendChild(el('span','botemp','빈 자리'));
+      c.onclick=function(){if(BOT_SWAP){if(BOT_SWAP.r===Rm.id&&BOT_SWAP.i!==si){var t=sl[si];sl[si]=sl[BOT_SWAP.i];sl[BOT_SWAP.i]=t;save();tone([660],'sine',.06)}BOT_SWAP=null;botScreen(back);return}if(id)botFact(id,function(){BOT_SWAP={r:Rm.id,i:si};hideSheet();botScreen(back)})};room.appendChild(c)})}
+  sc.appendChild(room);
+  sc.appendChild(el('p','mtip',BOT_SWAP?'옮길 자리를 눌러요. 다른 식물이 있으면 서로 자리를 바꿔요.':'숙제 시간에 ‘다 했어요’를 누르면 그 시간만큼 화분이 자라요. 하루에 '+botHM(BOT_CAP)+'까지 자라요.'));
+  var dk=el('div','dock'),go=el('button','cta green','숙제하러 가기');go.onclick=function(){wsOpen(function(){botScreen(back)})};dk.appendChild(go);sc.appendChild(dk);
+  app.appendChild(sc);zMark&&zMark();
+  if(b.mig&&!b.mig.shown){b.mig.shown=1;save();setTimeout(function(){var n=Object.keys(b.got).length;showSheet('good','frog','섬 식물원이 열렸어요','지금까지 한 숙제 '+botHM(b.mig.m)+'으로 '+(n?'식물 '+n+'종이 자랐어요!':'화분이 자라고 있어요!'),'앞으로도 숙제를 끝낼 때마다 그 시간만큼 화분이 자라요.','좋아요',function(){})},350)}}
+function botFact(id,onMove){var p=botP(id),n=S.bot.got[id]||0;showSheet('good','pl_'+id,p.home||'섬 식물원',p.name+(n>1?' ★'+(n-1):''),p.fact+' '+p.fact2,'좋아요',function(){});if(onMove){var mv=el('button','cta light','자리 옮기기');mv.onclick=onMove;sheet.firstChild.appendChild(mv)}}
+function botSeedSheet(after){var b=botS(),L=botSeeds(),inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('seedling'));var t=el('div');t.appendChild(el('small',null,'섬 식물원'));t.appendChild(el('h3',null,'어떤 씨앗을 심을까요?'));hd.appendChild(t);inn.appendChild(hd);
+  inn.appendChild(el('p','wscfgp','지금까지 준 숙제 시간('+botHM(b.cur?b.cur.m:0)+')은 바꾼 씨앗에도 그대로 이어져요. 어떤 식물이 될지는 자라 봐야 알아요!'));
+  var g=el('div','botseeds');L.slice(0,6).forEach(function(id,i){var on=b.cur&&b.cur.id===id,bt=el('button','botseed'+(on?' on':''));bt.appendChild(img('seedling'));bt.appendChild(el('b',null,(b.got[id]?botP(id).name:'씨앗 '+(i+1))));bt.appendChild(el('small',null,botHM(botNeed(id))));bt.onclick=function(){botPickSeed(id);hideSheet();if(after)after()};g.appendChild(bt)});inn.appendChild(g);
+  var c=el('button','cta light','그대로 둘게요');c.onclick=function(){hideSheet()};inn.appendChild(c);sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;requestAnimationFrame(function(){sheet.className='sheet good show'})}
+// 숙제를 끝냈을 때 결과를 알려 줘요 (wsDone 에서 불러요)
+function botAfter(r,cb,keep){if(!r||(!r.add&&!r.grown.length)){if(cb)cb();return}var newB=botUnlockMaybe(),back=function(){wsOpen(WS_BACK||villageScreen)};
+  function later(){var l=el('button','cta light',keep?'다음':'나중에');l.onclick=function(){hideSheet();if(cb)cb()};sheet.firstChild.appendChild(l)}
+  if(r.grown.length){var id=r.grown[r.grown.length-1],p=botP(id),first=S.bot.got[id]===1,more=r.grown.length>1?' 외 '+(r.grown.length-1)+'종':'';SND.bloom();
+    var head=(newB?'섬 식물원이 생겼어요! ':'')+(first?josa(p.name,'이','가')+more+' 피었어요!':p.name+' ★'+(S.bot.got[id]-1)+more);
+    var body=(newB?'숙제를 한 시간만큼 화분이 자라요. 섬 아래쪽 식물원에 전시돼요. ':first?'식물원 '+BOT_ROOMS[botRoomOf(id)].name+'에 전시됐어요. ':'')+p.fact;
+    if(keep){showSheet('good','pl_'+id,'섬 식물원',head,body+' 식물원은 숙제 화면의 식물원 버튼에서 볼 수 있어요.','계속',function(){if(cb)cb()})}
+    else{showSheet('good','pl_'+id,'섬 식물원',head,body,'식물원 가기',function(){botScreen(back)});later()}
+    setTimeout(function(){burst(innerWidth/2,innerHeight*.4,40,true)},200);return}
+  if(newB){if(keep){showSheet('good','frog','개구리 연구원','섬 식물원이 생겼어요!','숙제를 한 시간만큼 화분이 자라요. 다 자란 식물은 섬 아래쪽 식물원에 전시돼요. 지금 화분은 '+Math.round(botPct()*100)+'% 자랐어요.','계속',function(){if(cb)cb()});return}
+    showSheet('good','frog','개구리 연구원','섬 식물원이 생겼어요!','숙제를 한 시간만큼 화분이 자라요. 다 자란 식물은 섬 아래쪽 식물원에 전시돼요. 지금 화분은 '+Math.round(botPct()*100)+'% 자랐어요.','구경하러 가기',function(){botScreen(back)});later();return}
+  if(cb)cb()}
 
 // ================= 섬 도서관(독서 기록장) =================
 var LIB_COL=['#e8590c','#1c7ed6','#2f9e44','#ae3ec9','#f59f00','#d6336c'],LIB_DAY=3,LIB_RW=[{n:3,gem:2},{n:10,gem:3},{n:20,gem:5},{n:40,gem:8}];
@@ -7494,12 +7724,14 @@ function wsDoneN(){var D_=wsS().day.done;return wsToday().filter(function(x){ret
 function wsClassDay(){return false}
 function wsDaysTxt(x){if(!x.days||!x.days.length||x.days.length===7)return '매일';return [1,2,3,4,5,6,0].filter(function(k){return x.days.indexOf(k)>=0}).map(function(k){return WS_DN[k]}).join('·')}
 function wsMax(sid){return 90*6e4}
-function wsMs(){var c=wsS().cur;if(!c)return 0;return Math.min(wsMax(c.s),c.acc+(c.t0?Math.max(0,Date.now()-c.t0):0))}
+function wsMs(){var c=wsS().cur;if(!c)return 0;return Math.max(0,Math.min(wsMax(c.s),c.acc+(c.t0?Math.max(0,Date.now()-c.t0):0)))}
 function wsStage(ms){var m=ms/6e4,i=0;WS_ST.forEach(function(x,j){if(m>=x.m)i=j});return i}
 function wsWake(on){try{if(on){if(navigator.wakeLock&&!WS_LOCK)navigator.wakeLock.request('screen').then(function(l){WS_LOCK=l}).catch(function(){})}else if(WS_LOCK){WS_LOCK.release();WS_LOCK=null}}catch(e){}}
 function wsPause(){var c=wsS().cur;if(!c||!c.t0)return;c.acc=wsMs();c.t0=null;save();wsWake(false);if(WS_UI)WS_UI()}
-function wsRun(){var W=wsS();if(!W.cur)W.cur={acc:0,t0:null,s:WS_SEL,nb:WS_BRK};W.cur.t0=Date.now();W.cur.rest=null;save();wsWake(true);if(WS_UI)WS_UI()}
-document.addEventListener('visibilitychange',function(){if(document.hidden)wsPause()});
+function wsRun(){var W=wsS();if(!W.cur)W.cur={acc:0,t0:null,s:WS_SEL,nb:WS_BRK};W.cur.t0=Date.now();W.cur.rest=null;W.cur.hid=null;save();wsWake(true);if(WS_UI)WS_UI()}
+document.addEventListener('visibilitychange',function(){var W=S&&S.ws,c=W&&W.cur;if(!c)return;if(document.hidden){if(c.t0){c.hid=Date.now();c.hidMs=wsMs();save()}}else wsBack()});
+function wsBack(){var W=wsS(),c=W.cur;if(!c||!c.hid)return;var away=Date.now()-c.hid,ms0=c.hidMs||0;c.hid=null;save();if(away<10*6e4)return;
+  showSheet('good','pencil','숙제 시간','숙제 화면을 '+Math.round(away/6e4)+'분 동안 떠나 있었어요','화면이 꺼져 있는 동안에도 시간을 쟀어요. 그동안 계속 숙제하고 있었나요?','네, 계속했어요',function(){if(WS_UI)WS_UI()});var no=el('button','cta light','아까 멈췄어요');no.onclick=function(){c.acc=Math.max(0,ms0);c.t0=null;c.rest=null;save();hideSheet();if(WS_UI)WS_UI()};sheet.firstChild.appendChild(no)}
 function wsMMSS(ms){var t=Math.max(0,Math.floor(ms/1000));return (t/60<10?'0':'')+Math.floor(t/60)+':'+(t%60<10?'0':'')+(t%60)}
 function wsWeek(){var L=wsS().log,d0=dnum(),out=[];for(var i=6;i>=0;i--){var d=d0-i,m=0,sb={},cls=false;L.forEach(function(x){if(x.d!==d)return;if(x.s==='cls'){cls=true;return}m+=x.m;sb[x.s||'x'+m]=1});
     var wd=new Date(d*864e5).getUTCDay(),need=wsItems().filter(function(x){return wsOnDay(x,wd)}).length;out.push({d:d,m:m,n:Object.keys(sb).length,need:need,cls:cls})}return out}
@@ -7510,8 +7742,8 @@ function wsScreen(back){clear();var W=wsS(),sc=el('div','screen wsscr'),top=el('
   var b=el('button','x');b.setAttribute('aria-label','나가기');b.innerHTML=BACK_SVG;b.onclick=function(){wsPause();wsNoise(null);WS_UI=null;back()};top.appendChild(b);top.appendChild(el('h2','mtitle','숙제 시간'));top.appendChild(el('div','spacer'));
   var dn0=wsDoneN(),cnt=el('button','balance wscfgb');cnt.appendChild(img('pencil'));cnt.appendChild(el('b','tnum',dn0+'/'+wsCoreN()));cnt.onclick=function(){if(W.cur){wsBusyMsg();return}wsCfgSheet(function(){wsScreen(back)})};cnt.setAttribute('aria-label','오늘 숙제 '+dn0+'개 완료 · 눌러서 숙제 목록 바꾸기');top.appendChild(cnt);sc.appendChild(top);
   // 숙제가 하나도 없으면 먼저 만들어요
-  if(!wsItems().length){var em=el('div','center wsempty');em.appendChild(img('pencil','wsemi'));em.appendChild(el('h2',null,'숙제를 먼저 만들어요'));em.appendChild(el('p','sub','학습지, 학원 숙제, 책 읽기처럼 집에서 하는 숙제를 적어 두면, 숙제하는 동안 나무가 자라고 다 하면 햇살을 받아요.'));var ad=el('button','cta green','숙제 만들기');ad.onclick=function(){wsCfgSheet(function(){wsScreen(back)})};em.appendChild(ad);sc.appendChild(em);app.appendChild(sc);WS_UI=null;return}
-  var subs=el('div','wssubs');sc.appendChild(subs);
+  if(!wsItems().length){var em=el('div','center wsempty');em.appendChild(img('pencil','wsemi'));em.appendChild(el('h2',null,'숙제를 먼저 만들어요'));em.appendChild(el('p','sub','학습지, 학원 숙제, 책 읽기처럼 집에서 하는 숙제를 적어 두면, 숙제한 시간만큼 섬 식물원의 화분이 자라고 햇살도 받아요.'));var ad=el('button','cta green','숙제 만들기');ad.onclick=function(){wsCfgSheet(function(){wsScreen(back)})};em.appendChild(ad);sc.appendChild(em);app.appendChild(sc);WS_UI=null;return}
+  var sum=el('div','wssum');sc.appendChild(sum);var subs=el('div','wssubs');sc.appendChild(subs);
   var box=el('div','wsbox'),stg=el('div','wsstage'),gr=el('i','wsground'),tr=el('div','wstree'),nm=el('b','wsname'),tm=el('div','wstime tnum'),bar=el('div','wsbar'),fill=el('i'),cap=el('small','wscap');
   stg.appendChild(gr);stg.appendChild(tr);box.appendChild(stg);box.appendChild(nm);box.appendChild(tm);bar.appendChild(fill);box.appendChild(bar);box.appendChild(cap);sc.appendChild(box);
   var hint=el('p','wshint');sc.appendChild(hint);var btns=el('div','wsbtns');sc.appendChild(btns);sc.appendChild(wsNoiseBtn());
@@ -7519,12 +7751,15 @@ function wsScreen(back){clear();var W=wsS(),sc=el('div','screen wsscr'),top=el('
   sc.appendChild(el('p','wsh2','최근 7일'));sc.appendChild(wkr);
   if(W.wp.length){sc.appendChild(el('p','wsh2','숙제 사진'));var gl=el('div','wswp');W.wp.slice(-12).reverse().forEach(function(x){var t=el('button','wswpi');t.appendChild(covImg(x.cid));t.appendChild(el('small',null,wsDate(x.d)));t.setAttribute('aria-label',wsDate(x.d)+' 숙제 사진');t.onclick=function(){showSheet('good','pencil',x.n||'숙제 사진',wsDate(x.d),'','닫기',function(){});var inn=sheet.firstChild,w=el('div','lcovshow wsbig');w.appendChild(covImg(x.cid));inn.insertBefore(w,inn.querySelector('.hd').nextSibling)};gl.appendChild(t)});sc.appendChild(gl)}
   var lastI=-1,restRang=false;
-  function draw(){var c=W.cur,ms=wsMs(),i=wsStage(ms),S_=WS_ST[i],nx=WS_ST[i+1],mx=wsMax(c?c.s:WS_SEL);
-    if(i!==lastI){tr.innerHTML='';tr.appendChild(img(S_.img));tr.style.setProperty('--sz',S_.sz);tr.classList.toggle('gold',!!S_.gold);if(lastI>=0&&i>lastI){tr.classList.remove('grow');void tr.offsetWidth;tr.classList.add('grow');SND.bloom();var r=tr.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,18,false)}lastI=i}
-    nm.textContent=S_.name;tm.textContent=wsMMSS(ms);
-    if(nx){var a=S_.m*6e4,z=nx.m*6e4;fill.style.width=Math.round((ms-a)/(z-a)*100)+'%';cap.textContent=nx.name+'까지 '+Math.ceil((z-ms)/6e4)+'분'}else{fill.style.width='100%';cap.textContent=ms>=mx?'오늘은 여기까지! 잘했어요':'다 자랐어요!'}
+  function draw(){var c=W.cur,ms=wsMs(),mx=wsMax(c?c.s:WS_SEL),B_=botS();if(!B_.cur){var s0=botSeeds();B_.cur={id:s0[0],m:0}}
+    var room=Math.max(0,BOT_CAP-(B_.day.d===dnum()?B_.day.m:0)),sm=Math.min(ms/6e4,room),pct=botPct(sm),key=botStageImg(pct,B_.cur.id),i=pct<.34?0:pct<.67?1:pct<1?2:3;
+    if(i!==lastI){tr.innerHTML='';tr.appendChild(img(key));tr.style.setProperty('--sz',[.4,.62,.85,1][i]);tr.classList.toggle('gold',i===3);if(lastI>=0&&i>lastI){tr.classList.remove('grow');void tr.offsetWidth;tr.classList.add('grow');SND.bloom();var r=tr.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,18,false)}lastI=i}
+    nm.textContent=(pct>=.67?botP(B_.cur.id).name:'식물원 화분')+' '+Math.round(pct*100)+'%';tm.textContent=wsMMSS(ms);
+    var sb_=wsSub(c?c.s:WS_SEL),goal=(sb_.goal||0)*6e4;
+    if(goal){fill.style.width=Math.min(100,Math.round(ms/goal*100))+'%';cap.textContent=ms<goal?'목표 '+sb_.goal+'분까지 '+Math.ceil((goal-ms)/6e4)+'분':'목표 '+sb_.goal+'분 달성!';if(c&&c.t0&&ms>=goal&&!c.gd){c.gd=1;save();wsDing();miniToast('목표 '+sb_.goal+'분을 채웠어요! 다 했으면 다 했어요를 눌러요.')}}
+    else{fill.style.width=Math.round(pct*100)+'%';cap.textContent=pct>=1?'다 했어요를 누르면 꽃이 펴요!':!room?'오늘은 화분이 충분히 자랐어요. 내일 또 자라요':'피기까지 숙제 '+botHM(botNeed(B_.cur.id)-B_.cur.m-sm)}
     if(c&&c.t0&&ms>=mx){wsPause();wsDing()}
-    else if(c&&c.t0&&ms>=(c.nb||WS_BRK)*6e4&&ms<mx-6e4)wsBreak();
+    else if(c&&c.t0&&!document.hidden&&ms>=(c.nb||WS_BRK)*6e4&&ms<mx-6e4)wsBreak();
     if(c&&!c.t0&&c.rest){var left=WS_REST*6e4-(Date.now()-c.rest);if(left>0)hint.textContent='쉬는 시간 '+wsMMSS(left)+' 남았어요. 물 마시고 기지개 켜요!';else{hint.textContent='다 쉬었어요! 계속하기를 눌러요.';if(!restRang){restRang=true;tone([523,659,784],'sine',.12)}}}}
   function pick(id){if(W.cur)return;WS_SEL=id;tone([523],'sine',.06);ui()}
   function drawSubs(){subs.innerHTML='';var c=W.cur;if(c&&c.s)WS_SEL=c.s;var TD=wsToday(),ALL=wsItems(),rest=ALL.filter(function(x){return TD.indexOf(x)<0});
@@ -7535,33 +7770,39 @@ function wsScreen(back){clear();var W=wsS(),sc=el('div','screen wsscr'),top=el('
     var add=el('button','wssub wsadd');add.appendChild(el('b',null,'+'));add.appendChild(el('span',null,'숙제 바꾸기'));if(c)add.classList.add('lock');add.onclick=function(){if(W.cur){wsBusyMsg();return}wsCfgSheet(function(){wsScreen(back)})};subs.appendChild(add)}
   function ui(){if(!document.body.contains(sc)){WS_UI=null;return}var c=W.cur,ms=wsMs(),run=!!(c&&c.t0);btns.innerHTML='';sc.classList.toggle('run',run);drawSubs();var sb=wsSub(WS_SEL),nmS=sb.name,early=ms<WS_MIN*6e4,today=wsToday().indexOf(sb)>=0;
     if(!c){var dd=W.day.done[WS_SEL],left=wsToday().filter(function(x){return !W.day.done[x.id]&&x!==sb}).length;
-      hint.textContent=dd?josa(nmS,'은','는')+' 오늘 이미 했어요. 다시 하면 기록만 남아요.':!today?josa(nmS,'은','는')+' 오늘 하는 날이 아니에요('+wsDaysTxt(sb)+'). 해도 기록과 햇살은 받아요.':sb.after==='lib'?'숙제를 펴고 시작을 눌러요. 다 읽으면 도서관에 책을 꽂아요.':sb.after==='photo'?'숙제를 펴고 시작을 눌러요. 다 하면 사진을 남길 수 있어요.':wsCoreN()>1&&left?'숙제를 펴고 시작을 눌러요. 오늘 숙제를 다 하면 나무 선물!':'숙제를 펴고 시작을 눌러요.';
+      hint.textContent=dd?josa(nmS,'은','는')+' 오늘 이미 했어요. 다시 하면 햇살은 없지만 식물원 화분은 자라요.':!today?josa(nmS,'은','는')+' 오늘 하는 날이 아니에요('+wsDaysTxt(sb)+'). 해도 기록과 햇살은 받아요.':sb.after==='lib'?'숙제를 펴고 시작을 눌러요. 다 읽으면 도서관에 책을 꽂아요.':sb.after==='photo'?'숙제를 펴고 시작을 눌러요. 다 하면 사진을 남길 수 있어요.':wsCoreN()>1&&left?'숙제를 펴고 시작을 눌러요. 숙제한 시간만큼 식물원 화분이 자라요.':'숙제를 펴고 시작을 눌러요.';
       var go=el('button','cta green',nmS+' 시작');go.onclick=function(){SND.good(0);wsRun()};btns.appendChild(go)}
-    else if(run){hint.textContent=josa(nmS,'을','를')+' 하는 동안 나무가 자라요. '+WS_BRK+'분마다 쉬는 시간이 있어요.';var dn=el('button','cta green'+(early?' wait':''),early?WS_MIN+'분이 지나면 끝낼 수 있어요':nmS+' 다 했어요!');dn.onclick=early?function(){miniToast('숙제는 '+WS_MIN+'분 이상 해야 햇살을 받아요. 실수로 바로 끝나지 않게 하려는 거예요.')}:wsDone;btns.appendChild(dn);var ps=el('button','cta light','잠깐 쉬기');ps.onclick=wsPause;btns.appendChild(ps)}
+    else if(run){hint.textContent=josa(nmS,'을','를')+' 하는 동안 식물원 화분이 자라요. '+WS_BRK+'분마다 쉬는 시간이 있어요. 화면이 꺼져도 시간은 계속 재요.';var dn=el('button','cta green'+(early?' wait':''),early?WS_MIN+'분이 지나면 끝낼 수 있어요':nmS+' 다 했어요!');dn.onclick=early?function(){miniToast('숙제는 '+WS_MIN+'분 이상 해야 햇살을 받아요. 실수로 바로 끝나지 않게 하려는 거예요.')}:wsDone;btns.appendChild(dn);var ps=el('button','cta light','잠깐 쉬기');ps.onclick=wsPause;btns.appendChild(ps)}
     else{if(!c.rest)hint.textContent='잠깐 쉬는 중이에요. 다시 하려면 계속하기를 눌러요.';var go2=el('button','cta green','계속하기');go2.onclick=function(){wsRun()};btns.appendChild(go2);var e2=el('button','cta light',early?'처음부터 다시':nmS+' 다 했어요!');e2.onclick=early?function(){W.cur=null;save();lastI=-1;ui()}:wsDone;btns.appendChild(e2)}
+    var tdm=0,wkm=0,dn_=dnum(),wd_=(dbgNow().getDay()+6)%7;W.log.forEach(function(x){if(x.s==='cls')return;if(x.d===dn_)tdm+=x.m||0;if(x.d>dn_-wd_-1)wkm+=x.m||0});var live=W.cur?Math.floor(wsMs()/6e4):0;sum.innerHTML='';sum.appendChild(el('span',null,'오늘 '));sum.appendChild(el('b',null,botHM(tdm+live)));sum.appendChild(el('span',null,' · 이번 주 '));sum.appendChild(el('b',null,botHM(wkm+live)));var gb=el('button','wsbot');gb.appendChild(img('bld_botanic'));gb.appendChild(el('span',null,'식물원'));gb.onclick=function(){if(W.cur){wsBusyMsg();return}botScreen(function(){wsScreen(back)})};sum.appendChild(gb);
     draw()}
-  var tk=setInterval(function(){if(!document.body.contains(sc)){clearInterval(tk);return}var c=W.cur;if(!c)return;if(!c.t0){if(c.rest)draw();return}var was=btns.firstChild&&btns.firstChild.classList.contains('wait');draw();if(was&&wsMs()>=WS_MIN*6e4)ui();if(W.cur&&W.cur.t0&&Date.now()-c.t0>15e3){c.acc=wsMs();c.t0=Date.now();save()}},1000);
-  app.appendChild(sc);WS_UI=ui;ui();zMark&&zMark()}
-function wsGive(sid,mn){var W=wsS(),sb=wsSub(sid),rew=!W.day.done[sid],sun=0,tree=null;
-  W.log.push({d:dnum(),m:mn,s:sid,n:sb.name});if(W.log.length>400)W.log=W.log.slice(-400);W.cur=null;W.day.done[sid]=1;
-  if(rew){sun=WS_SUN;var TD=wsToday();if(TD.length>=2&&TD.indexOf(sb)>=0&&wsDoneN()>=TD.length&&!W.day.bonus){W.day.bonus=1;sun+=WS_BONUS;tree=WS_TREES[W.trees%WS_TREES.length];W.trees++;S.gd.bought[tree]=(S.gd.bought[tree]||0)+1}S.sun+=sun}save();return {rew:rew,sun:sun,tree:tree}}
+  var tk=setInterval(function(){if(!document.body.contains(sc)){clearInterval(tk);return}var c=W.cur;if(!c)return;if(!c.t0){if(c.rest)draw();return}var was=btns.firstChild&&btns.firstChild.classList.contains('wait');draw();if(sum.firstChild&&Date.now()%60000<1100)ui();if(was&&wsMs()>=WS_MIN*6e4)ui();if(W.cur&&W.cur.t0&&Date.now()-c.t0>15e3){c.acc=wsMs();c.t0=Date.now();save()}},1000);
+  app.appendChild(sc);WS_UI=ui;ui();zMark&&zMark();setTimeout(wsBack,300)}
+function wsGive(sid,mn,feel){var W=wsS(),sb=wsSub(sid),rew=!W.day.done[sid],sun=0,bonus=false;botS();
+  W.log.push({d:dnum(),m:mn,s:sid,n:sb.name,f:feel||0});if(W.log.length>400)W.log=W.log.slice(-400);W.cur=null;W.day.done[sid]=1;
+  botS();var bot=botAdd(mn);
+  if(rew){sun=WS_SUN;var TD=wsToday();if(TD.length>=2&&TD.indexOf(sb)>=0&&wsDoneN()>=TD.length&&!W.day.bonus){W.day.bonus=1;sun+=WS_BONUS;bonus=true;var b2=botAdd(BOT_BONUS,true);bot.add+=b2.add;bot.grown=bot.grown.concat(b2.grown)}S.sun+=sun}save();return {rew:rew,sun:sun,bonus:bonus,bot:bot}}
 function wsTreeSheet(tree,sun,head){var tn=itemName(tree);showSheet('good',tree,head,tn+(batchim(tn)?'을':'를')+' 선물로 받았어요!','햇살도 '+sun+'개 받았어요. 보너스 '+WS_BONUS+'개가 들어 있어요. '+tn+(batchim(tn)?'은':'는')+' 섬 꾸미기 보관함에 있어요.','좋아요',function(){})}
 function wsClass(){}
 function wsBusyMsg(){miniToast('숙제하는 중에는 바꿀 수 없어요. 다 했어요를 누르거나 잠깐 쉰 뒤 처음부터 다시 하면 바꿀 수 있어요.')}
 function wsDone(){var W=wsS();if(!W.cur)return;wsPause();var sid=W.cur.s||WS_SEL,sb=wsSub(sid),lab=sb.name;
-  showSheet('good',sb.img||'pencil','숙제 확인',josa(lab,'을','를')+' 끝까지 다 했나요?',W.day.done[sid]?'다 했으면 오늘 기록에 남겨 둘게요.':'다 했으면 햇살 '+WS_SUN+'개를 줄게요.','응, 다 했어!',function(){var mn=Math.max(1,Math.round(wsMs()/6e4)),R_=wsGive(sid,mn);WS_SEL=null;
+  // 끝까지 했는지 확인하면서, 어땠는지 한 번에 골라요
+  showSheet('good',sb.img||'pencil','숙제 확인',josa(lab,'을','를')+' 끝까지 다 했나요?','다 했으면 어땠는지 골라요. '+(W.day.done[sid]?'오늘 기록에 남겨 둘게요.':'햇살 '+WS_SUN+'개를 줄게요.'),'쉬웠어요',function(){fin(1)});
+  var inn=sheet.firstChild,g0=inn.querySelector('.cta.green');var row=el('div','wsfeel');[[1,'쉬웠어요'],[2,'보통이에요'],[3,'어려웠어요']].forEach(function(o){var b=el('button','cta '+(o[0]===2?'green':'light'),o[1]);b.onclick=function(){hideSheet();fin(o[0])};row.appendChild(b)});g0.replaceWith(row);
+  var lt=el('button','linkbtn','아직이야');lt.onclick=function(){hideSheet()};inn.appendChild(lt);
+  function fin(feel){var mn=Math.max(1,Math.round(wsMs()/6e4)),R_=wsGive(sid,mn,feel);WS_SEL=null;
     wsScreen(WS_BACK);SND.bloom();var left=wsToday().filter(function(x){return !W.day.done[x.id]}).map(function(x){return x.name});
-    setTimeout(function(){
-      if(R_.tree)wsTreeSheet(R_.tree,R_.sun,'오늘 숙제 모두 끝!');
-      else if(sb.after==='lib'){showSheet('good','books',lab+' '+mn+'분',R_.rew?lab+' 끝! 햇살 '+R_.sun+'개':'오늘은 이미 했어요','오늘 읽은 책을 도서관 책장에 꽂아요. 표지 사진도 찍을 수 있어요.','도서관에 책 꽂기',function(){libAdd(function(){wsScreen(WS_BACK)})});var l2=el('button','cta light','다음에');l2.onclick=function(){hideSheet()};sheet.firstChild.appendChild(l2)}
-      else if(sb.after==='photo'){showSheet('good','pencil',lab+' '+mn+'분',R_.rew?lab+' 끝! 햇살 '+R_.sun+'개':'오늘은 이미 했어요','오늘 한 숙제를 사진으로 남겨 둘까요? 나중에 얼마나 늘었는지 볼 수 있어요.','사진 찍기',function(){});(function(){var g=sheet.firstChild.querySelector('.cta.green');var lb=covLabel('cta green','사진 찍기',function(d){hideSheet();W.wp.push({d:dnum(),cid:covNew(d),n:lab});save();wsScreen(WS_BACK);setTimeout(function(){showSheet('good','pencil','숙제 사진','사진을 남겼어요!','숙제 시간 화면 아래에서 볼 수 있어요.','좋아요',function(){})},300)});g.replaceWith(lb)})();var l3=el('button','cta light','다음에');l3.onclick=function(){hideSheet()};sheet.firstChild.appendChild(l3)}
-      else showSheet('good',sb.img||'pencil',lab+' '+mn+'분',R_.rew?lab+' 끝! 햇살 '+R_.sun+'개':'오늘 '+josa(lab,'은','는')+' 이미 했어요',R_.rew?(left.length?'남은 숙제: '+left.join(', ')+'.'+(wsCoreN()>=2?' 다 하면 나무 선물이 있어요.':''):'오늘 숙제를 다 끝냈어요!'):'기록에 남겨 뒀어요. 그래도 정말 잘했어요!','좋아요',function(){})},350)});
-  var lt=el('button','cta light','아직이야');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)}
+    var grow=R_.bot&&R_.bot.add?' 식물원 화분이 '+botHM(R_.bot.add)+'만큼 자랐어요.':R_.bot&&R_.bot.capped?' 화분은 오늘 충분히 자랐어요.':'';
+    function rest_(){
+      if(sb.after==='lib'){showSheet('good','books',lab+' '+mn+'분',R_.rew?lab+' 끝! 햇살 '+R_.sun+'개':'오늘은 이미 했어요','오늘 읽은 책을 도서관 책장에 꽂아요. 표지 사진도 찍을 수 있어요.'+grow,'도서관에 책 꽂기',function(){libAdd(function(){wsScreen(WS_BACK)})});var l2=el('button','cta light','다음에');l2.onclick=function(){hideSheet()};sheet.firstChild.appendChild(l2)}
+      else if(sb.after==='photo'){showSheet('good','pencil',lab+' '+mn+'분',R_.rew?lab+' 끝! 햇살 '+R_.sun+'개':'오늘은 이미 했어요','오늘 한 숙제를 사진으로 남겨 둘까요?'+grow,'사진 찍기',function(){});(function(){var g=sheet.firstChild.querySelector('.cta.green');var lb=covLabel('cta green','사진 찍기',function(d){hideSheet();W.wp.push({d:dnum(),cid:covNew(d),n:lab});save();wsScreen(WS_BACK);setTimeout(function(){showSheet('good','pencil','숙제 사진','사진을 남겼어요!','숙제 시간 화면 아래에서 볼 수 있어요.','좋아요',function(){})},300)});g.replaceWith(lb)})();var l3=el('button','cta light','다음에');l3.onclick=function(){hideSheet()};sheet.firstChild.appendChild(l3)}
+      else showSheet('good',sb.img||'pencil',lab+' '+mn+'분',R_.rew?lab+' 끝! 햇살 '+R_.sun+'개'+(R_.bonus?' (오늘 숙제 모두 끝! 보너스 포함)':''):'오늘 '+josa(lab,'은','는')+' 이미 했어요',(R_.rew?(left.length?'남은 숙제: '+left.join(', ')+'.':'오늘 숙제를 다 끝냈어요!'):'기록에 남겨 뒀어요.')+grow,'좋아요',function(){})}
+    setTimeout(function(){botAfter(R_.bot,rest_,!!sb.after)},350)}}
 function wsOpen(back){WS_BACK=back||villageScreen;WS_SEL=null;wsScreen(WS_BACK)}
 // ----- 숙제 목록 만들기 (부모님 또는 아이) -----
 function wsCfgSheet(after){var W=wsS(),inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('pencil'));var tt=el('div');tt.appendChild(el('small',null,'우리 집 숙제'));tt.appendChild(el('h3',null,'숙제 목록 '+W.items.length+'개'));hd.appendChild(tt);inn.appendChild(hd);
   inn.appendChild(el('p','wscfgp','집에서 하는 숙제를 적어 두면 숙제 타이머와 오늘의 할 일에 나와요. 요일을 정하면 그날만 나와요.'));
-  var ul=el('div','wsilist');W.items.forEach(function(x){var r=el('button','wsitem');r.appendChild(img(x.img||'pencil'));var tx=el('span');tx.appendChild(el('b',null,x.name));tx.appendChild(el('small',null,wsDaysTxt(x)+(x.after==='lib'?' · 읽은 책 적기':x.after==='photo'?' · 사진 남기기':'')));r.appendChild(tx);r.appendChild(el('em',null,'고치기'));r.onclick=function(){wsEdit(x,after)};ul.appendChild(r)});inn.appendChild(ul);
+  var ul=el('div','wsilist');W.items.forEach(function(x){var r=el('button','wsitem');r.appendChild(img(x.img||'pencil'));var tx=el('span');tx.appendChild(el('b',null,x.name));tx.appendChild(el('small',null,wsDaysTxt(x)+(x.goal?' · '+x.goal+'분':'')+(x.after==='lib'?' · 읽은 책 적기':x.after==='photo'?' · 사진 남기기':'')));r.appendChild(tx);var ix=W.items.indexOf(x),mv=el('span','wsmv');[['▲',-1],['▼',1]].forEach(function(o){var b=el('i','wsmvb'+((o[1]<0&&!ix)||(o[1]>0&&ix===W.items.length-1)?' off':''),o[0]);b.onclick=function(e){e.stopPropagation();var j2=ix+o[1];if(j2<0||j2>=W.items.length)return;var tmp=W.items[j2];W.items[j2]=x;W.items[ix]=tmp;save();wsCfgSheet(after)};mv.appendChild(b)});r.appendChild(mv);r.appendChild(el('em',null,'고치기'));r.onclick=function(){wsEdit(x,after)};ul.appendChild(r)});inn.appendChild(ul);
   var add=el('button','cta light','+ 숙제 추가');add.onclick=function(){wsEdit(null,after)};inn.appendChild(add);
   var ok=el('button','cta green','다 정했어요');ok.onclick=function(){hideSheet();if(after)after()};inn.appendChild(ok);
   sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=function(){hideSheet();if(after)after()};requestAnimationFrame(function(){sheet.className='sheet good show'})}
@@ -7573,6 +7814,7 @@ function wsEdit(x,after,draft){var W=wsS(),isNew=!x,d=draft||(x?JSON.parse(JSON.
   ni.oninput=function(){d.name=ni.value.trim().slice(0,14);var h3=inn.querySelector('.hd h3');if(h3)h3.textContent=d.name||'이름을 정해요';var s=inn.querySelector('.wssave');if(s)s.disabled=!d.name};
   ni.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();ni.blur()}};
   inn.appendChild(el('p','wscfgp','하는 요일 (안 고르면 매일)'));var dw=el('div','wscfgrow');[1,2,3,4,5,6,0].forEach(function(k){var on=d.days.indexOf(k)>=0,b=el('button','pchip'+(on?' on':''),WS_DN[k]);b.onclick=function(){if(on)d.days=d.days.filter(function(z){return z!==k});else d.days.push(k);redraw()};dw.appendChild(b)});inn.appendChild(dw);
+  inn.appendChild(el('p','wscfgp','목표 시간 (채우면 알림이 울려요)'));var gl=el('div','wscfgrow');[0,10,15,20,30,45,60].forEach(function(m){var b=el('button','pchip'+((d.goal||0)===m?' on':''),m?m+'분':'없음');b.onclick=function(){d.goal=m;redraw()};gl.appendChild(b)});inn.appendChild(gl);
   inn.appendChild(el('p','wscfgp','그림'));var ic=el('div','wscfgrow wsicons');WS_ICON.forEach(function(k){var b=el('button','chimg'+(d.img===k?' on':''));b.appendChild(img(k));b.onclick=function(){d.img=k;redraw()};ic.appendChild(b)});inn.appendChild(ic);
   // 끝난 뒤 남길 기록 (고르지 않아도 돼요). 숙제마다 어울리는 것만 고르면 돼요
   inn.appendChild(el('p','wscfgp','끝나면 기록 남기기 (안 골라도 돼요)'));var af=el('div','wsafter');[['','없음','숙제를 끝내면 바로 햇살을 받아요.'],['lib','읽은 책 적기','책 읽기 숙제에 맞아요. 다 읽으면 책 제목을 적어 도서관 책장에 꽂아요.'],['photo','사진 남기기','공책, 학습지, 그림처럼 결과가 남는 숙제에 맞아요. 사진이 숙제 화면에 모여요.']].forEach(function(o){var b=el('button','wsaf'+(d.after===o[0]?' on':''));b.appendChild(el('b',null,o[1]));b.appendChild(el('small',null,o[2]));b.onclick=function(){d.after=o[0];redraw()};af.appendChild(b)});inn.appendChild(af);
@@ -7635,7 +7877,7 @@ function schEnd(){var items=G.sch,res=G.sres||[];document.body.classList.remove(
 var AWARDS=[{id:'stk',name:'꾸준상',img:'fire',unit:'일 연속 공부',t:[7,14,30],v:function(){var g=(S.stk&&S.stk.got)||[];return Math.max(streak(),g.length?Math.max.apply(null,g):0)},say:function(n){return '하루도 빠지지 않고 '+n+'일 동안 꾸준히 공부했으므로'}},
   {id:'book',name:'독서상',img:'books',unit:'권 읽기',t:[10,30,100],v:function(){return libS().books.length},say:function(n){return '영어책을 '+n+'권이나 읽었으므로'}},
   {id:'grad',name:'끈기상',img:'check_mark_button',unit:'개 오답 졸업',t:[10,30,100],v:function(){return schS().gn||0},say:function(n){return '틀린 문제를 포기하지 않고 다시 풀어 '+n+'문제를 졸업시켰으므로'}},
-  {id:'ws',name:'성실상',img:'pencil',unit:'그루 숙제 나무',t:[5,20,50],v:function(){return (S.ws&&S.ws.trees)||0},say:function(n){return '숙제를 성실하게 해서 숙제 나무를 '+n+'그루나 키웠으므로'}},
+  {id:'ws',name:'성실상',img:'pencil',unit:'번 식물원 식물 키우기',t:[5,20,50],v:function(){var g=(S.bot&&S.bot.got)||{},n=0;for(var k in g)n+=g[k];return Math.max(n,(S.ws&&S.ws.trees)||0)},say:function(n){return '숙제를 성실하게 해서 식물원에서 식물을 '+n+'번이나 키웠으므로'}},
   {id:'q',name:'노력상',img:'light_bulb',unit:'문제 풀기',t:[100,500,1000],v:function(){return repTotal()},say:function(n){return '문제를 '+n+'개나 풀며 열심히 노력했으므로'}},
   {id:'fo',name:'탐험상',img:'fo_ammo',unit:'개 화석',t:[8,16,25],v:function(){return fossilCount()},say:function(n){return '섬 곳곳을 탐험해 화석을 '+n+'개나 찾았으므로'}}];
 var AW_LV=['동','은','금'],AW_COL=['#cd7f32','#9aa5b1','#f2b705'];
@@ -7814,6 +8056,7 @@ function parentScreen(back){clear();var sc=el('div','screen parscr'),top=el('div
   // 5) 영어
   var ep=S.en.p||{},mast=Object.keys(ep).filter(function(w){return ep[w]===7}).length,ec=el('section','card pcard');ec.appendChild(el('h3',null,'영어'));
   var eg=el('div','pgrid');[['다 익힌 단어',mast+'개'],['이번 주 문제',(W.rs.en||[0])[0]+'개'],['읽은 책(이번 주)',W.books+'권'],['편지 답장(이번 주)',W.mails+'통']].forEach(function(s){var d=el('div');d.appendChild(el('small',null,s[0]));d.appendChild(el('b',null,s[1]));eg.appendChild(d)});ec.appendChild(eg);sc.appendChild(ec);
+  try{sc.appendChild(wsParentCard(back))}catch(e){}
   try{sc.appendChild(cheerCard(back))}catch(e){}
   // 6) 설정
   var set=el('button','cta','학년 · 단원 · 한자 급수 바꾸기');set.onclick=function(){unitSheet()};sc.appendChild(set);
@@ -7832,6 +8075,17 @@ function cheerCard(back){var c=el('section','card pcard');c.appendChild(el('h3',
 function cheerShow(){var L=cheerS().filter(function(x){return !x.seen});if(!L.length||document.querySelector('.sheet.show,.daydone,.guide'))return false;var x=L[0];x.seen=1;save();
   showSheet('good',x.i,'응원 스티커가 왔어요','“'+x.m+'”',(L.length>1?'스티커가 '+L.length+'장 와 있어요. ':'')+'받은 스티커는 우리 집에 모여요.','고마워요!',function(){setTimeout(cheerShow,400)});SND.bloom();return true}
 function cheerBoard(){var L=cheerS();if(!L.length)return null;var c=el('section','card chboard');c.appendChild(el('h3',null,'받은 응원 스티커 '+L.length+'장'));var g=el('div','chgrid');L.slice(-16).reverse().forEach(function(x){var b=el('button','chimg got');b.appendChild(img(x.i));b.title=x.m;b.onclick=function(){showSheet('good',x.i,'응원 스티커','“'+x.m+'”','','좋아요',function(){})};g.appendChild(b)});c.appendChild(g);return c}
+
+// 숙제: 이번 주 시간, 이번 달 숙제별로 한 날·평균 시간·어려웠다고 한 횟수
+function wsParentCard(back){var W=wsS(),c=el('section','card pcard');c.appendChild(el('h3',null,'숙제'));var dn=dnum(),wd=(dbgNow().getDay()+6)%7,wk=0,now=dbgNow(),m0=dnumOf(new Date(now.getFullYear(),now.getMonth(),1));
+  W.log.forEach(function(x){if(x.s!=='cls'&&x.d>dn-wd-1)wk+=x.m||0});
+  var b=botS(),g=el('div','pgrid');[['이번 주 숙제',botHM(wk)],['지금까지',botHM(b.min||0)],['식물원',Object.keys(b.got).length+' / 18종']].forEach(function(s2){var d=el('div');d.appendChild(el('small',null,s2[0]));d.appendChild(el('b',null,s2[1]));g.appendChild(d)});c.appendChild(g);
+  if(!W.items.length){c.appendChild(el('p','pnote','아직 숙제 목록이 없어요. 아래 ‘우리 집 숙제 목록 바꾸기’에서 만들 수 있어요.'));return c}
+  var tb=el('div','pkdom');tb.appendChild(el('small',null,'이번 달 · 한 날 / 해야 하는 날 · 평균 시간 · 어려웠어요'));
+  W.items.forEach(function(x){var need=0,done={},mins=[],hard=0;for(var d=m0;d<=dn;d++){var wdd=new Date(d*864e5).getUTCDay();if(wsOnDay(x,wdd))need++}W.log.forEach(function(L){if(L.s!==x.id||L.d<m0)return;done[L.d]=1;mins.push(L.m||0);if(L.f===3)hard++});
+    var n=Object.keys(done).length,pc=need?Math.min(100,Math.round(n/need*100)):0,r=el('div','pkrow');r.appendChild(el('span',null,x.name));var bar=el('i','pkbar'),f=el('b');f.style.width=pc+'%';f.className=pc<60?'low':pc<85?'mid':'hi';bar.appendChild(f);r.appendChild(bar);r.appendChild(el('em',null,n+'/'+need+(mins.length?' · '+Math.round(mins.reduce(function(a,v){return a+v},0)/mins.length)+'분':'')+(hard?' · 어려움 '+hard:'')));tb.appendChild(r)});c.appendChild(tb);
+  var hardL=W.log.filter(function(L){return L.f===3&&L.d>dn-7}).map(function(L){return L.n||wsSub(L.s).name});if(hardL.length)c.appendChild(el('p','pnote','최근 일주일 동안 아이가 ‘어려웠어요’라고 한 숙제: '+hardL.join(', ')+'. 한 번 같이 봐 주세요.'));
+  return c}
 
 // ================= 숨김 디버그 메뉴: '나의 기록' 제목을 7번 누르면 =================
 function dbgSave(){try{localStorage.setItem('pot-dbg',JSON.stringify(DBG))}catch(e){}}
