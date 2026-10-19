@@ -3071,6 +3071,15 @@ body.qmode .minitoast{bottom:auto;top:calc(76px + env(safe-area-inset-top,0px))}
 .stdsub{padding:10px 0;border-top:1px dashed #dbe3ec}.stdhd{display:flex;justify-content:space-between;align-items:baseline}.stdhd small{color:#5b6b85;font-weight:800;font-size:.78rem}
 .stdbar{height:8px;border-radius:99px;background:#eef2f6;margin:6px 0 8px;overflow:hidden}.stdbar i{display:block;height:100%;background:linear-gradient(90deg,#69db7c,#37b24d);border-radius:99px}
 .stdlab{display:block;font-weight:800;color:#e8590c;font-size:.75rem;margin-top:4px}.stdrow{font-size:.76rem;line-height:1.4;margin:5px 0;color:#3b4757}.stdrow.done{color:#2b8a3e}.stdrow.off{color:#9aa5b1}.stdrow.weak{color:#c92a2a}.stddet summary{font-size:.8rem;font-weight:800;cursor:pointer;margin-top:4px}
+
+.stdleg{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.74rem;color:#5b6b85;font-weight:700;margin:2px 0 6px}.stdleg b{font-size:.85rem}
+.stdleg .l2 b,.stdrow2.l2>i{color:#2f9e44}.stdleg .l1 b,.stdrow2.l1>i{color:#74b816}.stdleg .l0 b,.stdrow2.l0>i{color:#adb5bd}
+.stdbar3{display:flex;height:10px;border-radius:99px;background:#eef2f6;margin:6px 0 4px;overflow:hidden}.stdbar3 i{display:block;height:100%}.stdbar3 .l2{background:#40c057}.stdbar3 .l1{background:#b2f2bb}.stdbar3 .l0{background:#e9ecef}
+.stdsum{font-size:.76rem;font-weight:800;color:#3b4757;margin:2px 0}.stdkid{font-size:.76rem;color:#5b6b85;margin:2px 0 4px}
+.stddom{display:flex;justify-content:space-between;align-items:baseline;margin:12px 0 2px;padding-top:6px;border-top:1px solid #eef2f6}.stddom b{font-size:.82rem}.stddom small{font-size:.7rem;color:#8a97a8;font-weight:700}
+.stdrow2{display:flex;gap:6px;margin:6px 0;font-size:.76rem;line-height:1.4}.stdrow2>i{font-style:normal;font-size:.9rem;line-height:1.2}.stdrow2 p{margin:0;color:#3b4757}.stdrow2.l0 p{color:#9aa5b1}.stdrow2 small{display:block;color:#2b8a3e;font-size:.7rem;margin-top:1px}.stdrow2.l1 small{color:#5c940d}
+.stdtip{font-size:.72rem;background:#fff9db;border-radius:8px;padding:6px 8px;margin:4px 0 2px;color:#7c5e10}
+.stdhow{margin-top:8px}
 </style>
 
 <div id="app"></div>
@@ -6518,10 +6527,38 @@ var STD=[
 "t": "자료를 이용하여 가능성을 예상하고, 가능성에 근거하여 적절한 판단을 내릴 수 있다."
 }
 ],STDI={};STD.forEach(function(s){STDI[s.code]=s});
-var STD_KO={g12:{fact:'[2국02-03]',main:'[2국02-03]',tf:'[2국02-03]',order:'[2국02-03]',why:'[2국02-04]',feel:'[2국02-04]',word:'[2국02-01]',wm:'[2국02-01]',infer:'[2국02-04]',fo:'[2국02-03]',crit:'[2국02-03]'},
- g34:{fact:'[4국02-02]',main:'[4국02-02]',tf:'[4국02-02]',fo:'[4국02-04]',infer:'[4국02-03]',why:'[4국05-01]',feel:'[4국05-01]',order:'[4국05-01]',word:'[4국04-01]',wm:'[4국04-01]',crit:'[4국02-04]'},
- g56:{fact:'[6국02-01]',main:'[6국02-01]',tf:'[6국02-01]',infer:'[6국02-02]',crit:'[6국02-03]',fo:'[6국02-03]',why:'[6국05-03]',feel:'[6국05-03]',order:'[6국05-03]',word:'[6국04-03]',wm:'[6국04-03]'}};
-var STD_KOX={mimic:'[2국05-01]',opp:'[4국04-01]',mod:'[4국04-01]',poly:'[4국04-01]',honor:'[4국04-04]',prov:'[6국04-03]',idiom:'[6국04-03]',saja:'[6국04-03]'};
+// 국어 읽기 문제 종류 → 기준 (낱말 뜻처럼 맞는 기준이 없는 종류는 연결하지 않아요)
+var STD_KO={g12:{fact:'[2국02-03]',main:'[2국02-03]',tf:'[2국02-03]',order:'[2국02-03]',why:'[2국02-04]',feel:'[2국02-04]',infer:'[2국02-04]',fo:'[2국02-03]',crit:'[2국02-03]'},
+ g34:{fact:'[4국02-02]',main:'[4국02-02]',tf:'[4국02-02]',fo:'[4국02-04]',infer:'[4국02-03]',why:'[4국05-01]',feel:'[4국05-01]',order:'[4국05-01]',crit:'[4국02-04]'},
+ g56:{fact:'[6국02-01]',main:'[6국02-01]',tf:'[6국02-01]',infer:'[6국02-02]',crit:'[6국02-03]',fo:'[6국02-03]',why:'[6국05-03]',feel:'[6국05-03]',order:'[6국05-03]',word:'[6국02-02]',wm:'[6국02-02]'}};
+var STD_KOX={mimic:'[2국05-01]',opp:'[4국04-01]',mod:'[4국04-03]',poly:'[4국04-01]',honor:'[4국04-04]',prov:'[6국04-03]',idiom:'[6국04-03]',saja:'[6국04-03]'};
+// 국어·영어 연결 근거: 기준 → [2 직접 | 1 일부, 앱에서 하는 활동]
+var STD_LINK={
+ '[2국02-03]':[2,'읽기 지문의 중심 내용·내용 찾기 문제'],'[2국02-04]':[2,'읽기 지문의 인물의 마음·까닭 찾기 문제'],
+ '[2국04-02]':[2,'받아쓰기, 맞춤법·글자 맞추기 문제'],'[2국04-03]':[2,'띄어쓰기·문장 부호 문제, 받아쓰기'],
+ '[2국05-01]':[1,'흉내 내는 말 문제 (말놀이·낭송은 집에서)'],'[2국03-01]':[1,'편지 따라 쓰기 (글씨 모양은 확인하지 않아요)'],
+ '[2국03-02]':[2,'우체통 국어 편지 1단계: 내 생각을 한 문장으로 쓰기'],'[2국03-04]':[1,'우체통 국어 편지 2단계: 내 경험을 문장으로 답하기'],
+ '[2국02-05]':[1,'도서관: 읽은 책 기록하고 책장 모으기'],
+ '[4국02-01]':[1,'학년 수준의 글을 읽고 내용을 확인해요. 소리 내어 유창하게 읽기는 앱에서 확인하지 않아요.'],
+ '[4국02-02]':[2,'읽기 지문의 중심 생각 문제 (간추리기는 집에서)'],'[4국02-03]':[1,'읽기 지문의 짐작하기 문제 (질문 만들기는 집에서)'],
+ '[4국02-04]':[2,'읽기 지문의 사실과 의견·비판하며 읽기 문제'],'[4국02-06]':[1,'도서관: 읽은 책 기록'],
+ '[4국04-01]':[2,'반대말·여러 뜻을 가진 말 문제'],'[4국04-03]':[1,'문장에 알맞은 말 넣기 문제'],'[4국04-04]':[2,'높임 표현 문제'],
+ '[4국05-01]':[2,'이야기 지문의 일의 순서·인물의 마음 문제'],'[4국03-04]':[2,'우체통 국어 편지 3단계: 마음을 전하는 편지 쓰기'],
+ '[6국02-01]':[2,'읽기 지문의 중심 생각·내용 찾기 문제 (요약하기는 집에서)'],'[6국02-02]':[2,'읽기 지문의 짐작하기·문맥 속 낱말 뜻 문제'],
+ '[6국02-03]':[1,'읽기 지문의 비판하며 읽기·사실과 의견 문제'],'[6국02-05]':[1,'도서관: 읽은 책 기록'],
+ '[6국04-03]':[2,'속담·관용 표현·사자성어 문제'],'[6국04-06]':[2,'맞춤법·띄어쓰기·틀린 곳 찾기 문제'],'[6국05-03]':[2,'이야기 지문의 일의 순서·인물의 마음·까닭 문제'],
+ '[4영01-02]':[2,'알파벳 문제'],'[4영01-04]':[1,'파닉스: 소리와 철자 연결 (소리 내어 읽기는 집에서)'],'[4영01-05]':[2,'단어 뜻 고르기·문장 뜻 문제'],
+ '[4영02-03]':[2,'파닉스·단어 듣고 쓰기, 글자 맞추기'],'[4영02-05]':[1,'문장 만들기, 우체통 영어 편지 1단계'],'[4영02-08]':[1,'알맞은 대답 고르기 문제 (직접 묻고 답하기는 집에서)'],
+ '[4영01-08]':[1,'도서관: 영어책 기록'],
+ '[6영01-03]':[2,'단어 뜻 고르기·문장 뜻 문제'],'[6영02-02]':[1,'단어 듣고 쓰기, 글자 맞추기'],'[6영02-04]':[1,'문장 만들기·문장 순서 문제'],
+ '[6영02-07]':[1,'알맞은 대답 고르기 문제'],'[6영02-08]':[2,'우체통 영어 편지 2단계: 예시를 보고 내 글 쓰기'],'[6영01-08]':[1,'도서관: 영어책 기록']};
+// 앱 밖에서 해 볼 것 (영역별)
+var STD_TIP={'ko|듣기·말하기':'저녁에 오늘 있었던 일을 순서대로 말해 보고, 가족 대화에서 말차례를 지켜요.','ko|읽기':'한 쪽씩 번갈아 소리 내어 읽고, 읽은 내용을 짧게 간추려 말해요.','ko|쓰기':'그림일기나 짧은 글을 쓰고 가족과 함께 읽어요.',
+ 'ko|문법':'모르는 낱말을 국어사전에서 함께 찾아봐요.','ko|문학':'읽은 이야기나 동시에 대해 느낀 점을 이야기 나눠요.','ko|매체':'함께 정보를 검색하고, 믿을 만한 자료인지 이야기해요.',
+ 'en|이해':'영어 노래·그림책을 함께 듣고 무슨 내용인지 이야기해요.','en|표현':'배운 문장으로 가족과 짧게 묻고 답해 봐요.',
+ 'math|수와 연산':'장보기에서 값을 어림해 보고, 계산 방법을 말로 설명해 봐요.','math|변화와 관계':'구슬 꿰기나 무늬 그리기로 나만의 규칙을 만들어요.',
+ 'math|도형과 측정':'자·저울·계량컵으로 직접 재고, 컴퍼스로 원을 그려 봐요.','math|자료와 가능성':'가족에게 설문을 하고 표와 그래프로 나타내 봐요.'};
+var STD_REVIEW='';// 교사 검토를 마치면 '○○초 교사 검토 (2026.11)'처럼 적어요
 // 수학: 문제 유형 → [기본 기준, [문제 글 규칙, 기준]...]
 var STD_MA={n9:['2수01-01'],shape3d:['2수03-01'],add9:['2수01-05',[/빈칸|가르|모으/,'2수01-04']],cmp:['2수03-06'],n50:['2수01-01'],n100:['2수01-01',[/배열표/,'2수01-03']],
  shape2d:['2수03-03'],add10:['2수01-06',[/세 수/,'2수01-08'],[/10이 되려면|10을 만들어|가르|모으/,'2수01-04'],[/먹으면|남을|모두/,'2수01-05']],clock1:['2수03-07'],add20:['2수01-06',[/모두|남았/,'2수01-05']],n3:['2수01-02'],
@@ -6548,24 +6585,50 @@ function stdCodes(sub,type,pz,lv){if(!pz)return [];var k=sub.key;
     if(type==='read'){var b=(typeof koBand==='function'?koBand():'g12'),M=STD_KO[b]||STD_KO.g12;return M[pz.kk]?[M[pz.kk]]:[]}
     var l=pz.klv||lv||1;if(/^(pick|block|find)$/.test(pz.kk||''))return [l<=3?'[2국04-02]':'[6국04-06]'];if(/^(space|punct)$/.test(pz.kk||''))return [l<=3?'[2국04-03]':'[6국04-06]'];
     if(STD_KOX[pz.kk])return [STD_KOX[pz.kk]];return []}
-  if(k==='en'){var hi=(typeof enStage==='function'?enStage():4)>=6,P=hi?'6':'4';
-    if(type==='abc')return ['[4영01-02]'];if(type==='cvc')return ['[4영01-04]'];if(type==='sight')return ['[4영01-05]'];
-    if(type==='mean')return [hi?'[6영01-03]':'[4영01-05]'];if(type==='tiles'||type==='spell')return [hi?'[6영02-02]':'[4영02-03]'];
-    if(type==='write')return [hi?'[6영02-04]':'[4영02-05]'];if(/^s[xrob]$/.test(type))return [hi?'[6영02-07]':'[4영02-08]'];return []}
+  if(k==='en'){var hi=(typeof enStage==='function'?enStage():4)>=6;
+    if(type==='abc')return ['[4영01-02]'];if(type==='cvc')return ['[4영02-03]','[4영01-04]'];if(type==='sight')return ['[4영01-05]'];
+    if(type==='mean'||type==='sx'||type==='sb')return [hi?'[6영01-03]':'[4영01-05]'];if(type==='tiles'||type==='spell')return [hi?'[6영02-02]':'[4영02-03]'];
+    if(type==='write'||type==='so')return [hi?'[6영02-04]':'[4영02-05]'];if(type==='sr')return [hi?'[6영02-07]':'[4영02-08]'];return []}
   if(k==='math'){var c=stdMath(type,pz.q);return c?[c]:[]}
   return []}
 function stdLog(codes,ok){if(!codes||!codes.length)return;if(!S.std)S.std={};var d=dnum();codes.forEach(function(c){var r=S.std[c]||(S.std[c]=[0,0,0]);r[0]++;if(ok)r[1]++;r[2]=d})}
-// 앱에서 연습할 수 있는 성취기준(지금 콘텐츠 기준)
-function stdCovered(){var o={};[STD_KO.g12,STD_KO.g34,STD_KO.g56,STD_KOX].forEach(function(M){for(var q in M)o[M[q]]=1});['[2국04-02]','[2국04-03]','[6국04-06]','[4영01-02]','[4영01-04]','[4영01-05]','[6영01-03]','[6영02-02]','[4영02-03]','[6영02-04]','[4영02-05]','[6영02-07]','[4영02-08]','[2국03-02]','[2국03-04]','[4국03-04]','[6영02-08]','[2국05-02]','[4국05-03]','[6영02-06]'].forEach(function(c){o[c]=1});for(var t in STD_MA)STD_MA[t].forEach(function(x,i){o['['+(i?x[1]:x)+']']=1});o['[2수02-01]']=o['[4수02-01]']=1;return o}
+// 기준별 연결 정도: [2 직접 | 1 일부 | 0 학교·가정, 앱 활동]
+var STD_MLV=null;
+function stdMathLinks(){if(STD_MLV)return STD_MLV;var o={},TN=(typeof SUBJ!=='undefined'&&SUBJ.math&&SUBJ.math.types)||{};
+  function add(c,t){c='['+c+']';(o[c]=o[c]||[]);var n=TN[t]||t;if(o[c].indexOf(n)<0)o[c].push(n)}
+  for(var t in STD_MA)STD_MA[t].forEach(function(x,i){add(i?x[1]:x,t)});add('2수02-01','seq');add('4수02-01','seq');STD_MLV=o;return o}
+function stdLink(code){var s=STDI[code];if(!s)return [0,''];
+  if(s.subj!=='math'){var L=STD_LINK[code];return L?L:[0,'']}
+  var M=stdMathLinks()[code];if(!M)return [0,''];
+  var lv=/계산을 할 수/.test(s.t)?2:/그릴|그리고|만들|탐구|수집|양감|컴퍼스/.test(s.t)?1:2;
+  return [lv,M.slice(0,3).join('·')+' 문제'+(lv===1?' (그리기·만들기·조사 같은 활동은 집에서)':'')]}
+function stdCovered(){var o={};STD.forEach(function(s){if(stdLink(s.code)[0])o[s.code]=1});return o}
 // 부모님 화면: 성취기준 카드
-function stdCard(){var c=el('section','card pcard stdcard');c.appendChild(el('h3',null,'교육과정 성취기준'));c.appendChild(el('p','pnote','2022 개정 교육과정(교육부 고시 제2022-33호)의 성취기준에 문제를 연결했어요.'));
-  var g=typeof curGrade==='function'?curGrade():3,band=g<=2?'2':g<=4?'4':'6',cov=stdCovered(),log=S.std||{};
-  [['ko','국어'],['math','수학'],['en','영어']].forEach(function(sj){var L=STD.filter(function(s){return s.subj===sj[0]&&String(s.g)===band});if(!L.length)return;
-    var done=L.filter(function(s){return log[s.code]&&log[s.code][0]>0}),weak=L.filter(function(s){var r=log[s.code];return r&&r[0]>=5&&r[1]/r[0]<.6}),inApp=L.filter(function(s){return cov[s.code]});
-    var box=el('div','stdsub');var h=el('div','stdhd');h.appendChild(el('b',null,sj[1]+' · '+L[0].band));h.appendChild(el('small',null,'연습한 기준 '+done.length+' / '+L.length));box.appendChild(h);
-    var bar=el('div','stdbar');var f=el('i');f.style.width=Math.round(done.length/L.length*100)+'%';bar.appendChild(f);box.appendChild(bar);
-    if(weak.length){box.appendChild(el('small','stdlab','더 연습하면 좋은 기준'));weak.slice(0,3).forEach(function(s){var r=log[s.code];box.appendChild(el('p','stdrow weak',s.code+' '+s.t+' ('+Math.round(r[1]/r[0]*100)+'%)'))})}
-    var d=el('details','stddet');d.appendChild(el('summary',null,'기준 전체 보기 (앱에서 연습 가능 '+inApp.length+'개)'));L.forEach(function(s){var r=log[s.code],cls='stdrow'+(r&&r[0]?' done':'')+(cov[s.code]?'':' off');var p=el('p',cls,s.code+' ['+s.dom+'] '+s.t+(r&&r[0]?' · '+r[0]+'문제 '+Math.round(r[1]/r[0]*100)+'%':cov[s.code]?'':' · 학교·가정 활동'));d.appendChild(p)});box.appendChild(d);c.appendChild(box)});
+function stdCard(){var c=el('section','card pcard stdcard');c.appendChild(el('h3',null,'교육과정 성취기준'));
+  c.appendChild(el('p','pnote','2022 개정 교육과정(교육부 고시 제2022-33호)의 성취기준 원문에 앱 활동을 하나하나 연결했어요.'));
+  var lg=el('div','stdleg');[['l2','●','앱에서 직접'],['l1','◐','앱에서 일부'],['l0','○','학교·가정 활동']].forEach(function(x){var i=el('span',x[0]);i.appendChild(el('b',null,x[1]));i.appendChild(document.createTextNode(' '+x[2]));lg.appendChild(i)});c.appendChild(lg);
+  var g=typeof curGrade==='function'?curGrade():3,band=g<=2?'2':g<=4?'4':'6',log=S.std||{};
+  [['ko','국어'],['math','수학'],['en','영어']].forEach(function(sj){var L=STD.filter(function(s){return s.subj===sj[0]&&String(s.g)===band});
+    var box=el('div','stdsub');
+    if(!L.length){var h0=el('div','stdhd');h0.appendChild(el('b',null,sj[1]+' · '+(band==='2'?'1~2학년':'')));box.appendChild(h0);box.appendChild(el('p','stdrow off','영어는 3학년부터 배워요. 앱에서는 알파벳·파닉스로 미리 시작할 수 있어요.'));c.appendChild(box);return}
+    var lk={};L.forEach(function(s){lk[s.code]=stdLink(s.code)});
+    var n2=L.filter(function(s){return lk[s.code][0]===2}).length,n1=L.filter(function(s){return lk[s.code][0]===1}).length,n0=L.length-n2-n1;
+    var done=L.filter(function(s){return log[s.code]&&log[s.code][0]>0}),weak=L.filter(function(s){var r=log[s.code];return r&&r[0]>=5&&r[1]/r[0]<.6});
+    var h=el('div','stdhd');h.appendChild(el('b',null,sj[1]+' · '+L[0].band));h.appendChild(el('small',null,'기준 '+L.length+'개'));box.appendChild(h);
+    var bar=el('div','stdbar3');[[n2,'l2'],[n1,'l1'],[n0,'l0']].forEach(function(x){if(!x[0])return;var i=el('i',x[1]);i.style.width=(x[0]/L.length*100)+'%';bar.appendChild(i)});box.appendChild(bar);
+    box.appendChild(el('p','stdsum','직접 '+n2+' · 일부 '+n1+' · 학교·가정 '+n0));
+    box.appendChild(el('p','stdkid',done.length?'우리 아이가 연습한 기준 '+done.length+'개 (앱 연결 '+(n2+n1)+'개 중)':'아직 연습 기록이 없어요. 문제를 풀면 기준별로 쌓여요.'));
+    if(weak.length){box.appendChild(el('small','stdlab','더 연습하면 좋은 기준'));weak.slice(0,3).forEach(function(s){var r=log[s.code];box.appendChild(el('p','stdrow weak',s.code+' '+s.t+' (정답률 '+Math.round(r[1]/r[0]*100)+'%)'))})}
+    var d=el('details','stddet');d.appendChild(el('summary',null,'기준 전체 보기'));var doms=[];L.forEach(function(s){if(doms.indexOf(s.dom)<0)doms.push(s.dom)});
+    doms.forEach(function(dm){var DL=L.filter(function(s){return s.dom===dm}),k0=DL.filter(function(s){return !lk[s.code][0]}).length;
+      var dh=el('div','stddom');dh.appendChild(el('b',null,dm));dh.appendChild(el('small',null,(DL.length-k0)+' / '+DL.length+' 앱 연결'));d.appendChild(dh);
+      DL.forEach(function(s){var x=lk[s.code],r=log[s.code],row=el('div','stdrow2 l'+x[0]);row.appendChild(el('i',null,['○','◐','●'][x[0]]));var tx=el('div');
+        tx.appendChild(el('p',null,s.code+' '+s.t));if(x[0])tx.appendChild(el('small',null,'앱: '+x[1]+(r&&r[0]?' · 푼 문제 '+r[0]+'개, 정답률 '+Math.round(r[1]/r[0]*100)+'%':'')));
+        row.appendChild(tx);d.appendChild(row)});
+      var tip=STD_TIP[sj[0]+'|'+dm];if(k0&&tip)d.appendChild(el('p','stdtip','집에서: '+tip))});
+    box.appendChild(d);c.appendChild(box)});
+  var m=el('details','stddet stdhow');m.appendChild(el('summary',null,'어떻게 연결했나요?'));
+  ['기준 문장은 교육부 고시 원문 그대로예요. 학년군(1~2, 3~4, 5~6학년)별로 아이 학년에 맞는 기준만 보여 줘요.','● 직접: 앱 문제가 그 기준의 핵심을 바로 물어요.','◐ 일부: 기준의 한 부분만 연습해요. 예를 들어 [4국02-01]은 글을 읽고 내용을 확인하지만, 소리 내어 유창하게 읽기는 앱이 확인하지 않아요.','○ 학교·가정: 말하기, 발표, 그리기, 조사처럼 앱으로 확인하기 어려운 활동이에요. 영역마다 집에서 해 볼 것을 적어 두었어요.','연습 기록은 문제마다 그 기준에 쌓이고, 정답률은 처음 시도에 맞힌 비율이에요. 실력 알아보기 문제는 기록하지 않아요.',STD_REVIEW?'검토: '+STD_REVIEW:'연결은 앱 제작팀이 분류했고, 아직 현직 교사 검토 전이에요.'].forEach(function(t){m.appendChild(el('p','stdrow',t))});c.appendChild(m);
   return c}
 
 // ================= 소리 =================
@@ -17631,7 +17694,7 @@ function mailWrite(x){
   render();
 }
 function mailSend(x,ans){
-  var m=mailS();if(m.rep[x.id])return;var rec={free:ans.free||'',d:dnum()};['a','b','k1','k2','hi','body','bye'].forEach(function(k){if(ans[k]!=null&&ans[k]!==''&&ans[k]!==-1)rec[k]=ans[k]});if(rec.a==null&&ans.a!=null)rec.a=ans.a;m.rep[x.id]=rec;try{stdLog([x.kind==='ko'?(x.tier===1?'[2국03-02]':x.tier===2?'[2국03-04]':'[4국03-04]'):(x.tier===2?'[6영02-08]':'[4영02-05]')],true)}catch(e){}m.stamps=(m.stamps||0)+1;S.sun+=20;save();x.rep=m.rep[x.id];
+  var m=mailS();if(m.rep[x.id])return;var rec={free:ans.free||'',d:dnum()};['a','b','k1','k2','hi','body','bye'].forEach(function(k){if(ans[k]!=null&&ans[k]!==''&&ans[k]!==-1)rec[k]=ans[k]});if(rec.a==null&&ans.a!=null)rec.a=ans.a;m.rep[x.id]=rec;try{stdLog(x.kind==='ko'?(x.tier===1?['[2국03-01]','[2국03-02]']:x.tier===2?['[2국03-04]']:['[4국03-04]']):[x.tier===2?'[6영02-08]':'[4영02-05]'],true)}catch(e){}m.stamps=(m.stamps||0)+1;S.sun+=20;save();x.rep=m.rep[x.id];
   clear();var sc=el('div','screen mailscr');var fly=el('div','mfly');var env=el('i','menv');fly.appendChild(env);sc.appendChild(fly);app.appendChild(sc);tone([523,659,784,1047],'sine',.1);
   setTimeout(function(){
     showSheet('good','sun','답장을 보냈어요!','우표 1장과 햇살 20개를 받았어요','편지는 우체통에서 다시 읽을 수 있어요. 다음 편지도 곧 와요.','좋아요',function(){mailRead(x)});
