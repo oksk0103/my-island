@@ -3082,6 +3082,8 @@ body.qmode .minitoast{bottom:auto;top:calc(76px + env(safe-area-inset-top,0px))}
 .stdhow{margin-top:8px}
 
 .stglist.ro .stgrow{cursor:default}.stglist.ro .stgrow.past{opacity:.6}.sheet .gnote{font-size:.78rem;margin:6px 0 2px}
+
+.mystg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}.mystgc{background:#fff;border-radius:14px;padding:8px 4px;text-align:center;box-shadow:0 2px 0 #e3e8ef}.mystgc small{display:block;font-size:.7rem;color:#6b7a90;font-weight:800}.mystgc b{font-size:.92rem;color:#24344d}
 </style>
 
 <div id="app"></div>
@@ -18813,11 +18815,7 @@ function houseScreen(){
   try{sc.appendChild(weekCard())}catch(e){}
   try{sc.appendChild(studyCal(5))}catch(e){}
   try{var cb_=cheerBoard();if(cb_)sc.appendChild(cb_)}catch(e){}
-  var sk=el('section','card skills');sk.appendChild(el('h3',null,'나의 실력'));
-  [SUBJ.math,SUBJ.hz].forEach(function(sub){
-    sk.appendChild(el('p','lvline',sub.key==='math'?'수학':'한자 · '+GRADES[S.hz.cg]+' 연습 중 '+(S.hz.unlocked-(S.hz.base||0))+'자'));
-    Object.keys(sub.types).filter(function(k){return k!=='hzl'}).forEach(function(k){var r=el('div','skill');r.appendChild(el('span',null,sub.types[k]));var d=el('div','dots');var lv=stOf(sub).lv[k]||1;d.setAttribute('aria-label',lv+'단계');for(var i=1;i<=5;i++)d.appendChild(el('i',i<=lv?'on':''));r.appendChild(d);sk.appendChild(r)});
-  });
+  var sk=el('div','mystg');[['수학',GRADE_NAMES[curGrade()]],['국어',(typeof koStage==='function'?koStage():1)+'단계'],['영어',(typeof enStage==='function'?enStage():1)+'단계'],['한자',GRADES[S.hz.cg]]].forEach(function(x){var c=el('div','mystgc');c.appendChild(el('small',null,x[0]));c.appendChild(el('b',null,x[1]));sk.appendChild(c)});
   sc.appendChild(sk);
   var links=el('div','dockrow');
   var g=el('button','cta light','꽃 도감');g.onclick=function(){greenhouse('math')};
