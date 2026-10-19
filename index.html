@@ -3263,6 +3263,17 @@ button.pvrow:active{background:#f9fafb}
 .pvkid{flex-direction:row!important;align-items:center;gap:12px;text-align:left;width:100%;color:var(--ink)}.pvkid img{width:48px;height:48px;object-fit:contain}.pvkid span{flex:1;display:flex;flex-direction:column}.pvkid small{font-size:.76rem;color:var(--sub);font-weight:700}.pvkid b{font-family:var(--game);font-weight:400;font-size:1.5rem;line-height:1.1}.pvkid em{font-style:normal;font-size:.82rem;color:#1971c2;font-weight:700}
 .pvsmain b .pvcmp{margin-left:2px}
 .pvsmain b em{white-space:nowrap}
+
+/* 부모님 화면 버튼 통일: 주 버튼(초록) · 보조 버튼(흰 바탕 테두리) */
+html body .screen.pv .cta,html body .screen.pv .cta.green,html body .screen.pv .pvbtn{height:46px;border-radius:14px;font-family:var(--ko)!important;font-weight:800;font-size:.92rem;letter-spacing:0;color:#fff!important;background:#37b24d!important;background-image:none!important;box-shadow:none!important;text-shadow:none!important;border:0;margin:14px 0 0;width:100%}
+html body .screen.pv .cta.light,html body .screen.pv .backup .cta,html body .screen.pv .pvbtn.ghost{color:var(--ink)!important;background:#fff!important;box-shadow:inset 0 0 0 1.5px #dee2e6!important}
+html body .screen.pv .pvbtn.sm{width:auto;height:38px;padding:0 16px;margin-top:10px;font-size:.84rem}
+html body .screen.pv .cta:active,html body .screen.pv .pvbtn:active{transform:scale(.98)}
+html body .screen.pv .cta::before,html body .screen.pv .cta::after{display:none!important}
+html body .screen.pv .backup .dockrow{gap:8px}html body .screen.pv .backup .dockrow .cta{margin-top:10px}
+.pvmodal .pvbtn{height:44px;border-radius:12px;font-family:var(--ko);font-weight:800;background:#37b24d;color:#fff;box-shadow:none}.pvmodal .pvbtn.ghost{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px #dee2e6}
+.pvgear svg{display:block}
+html body .screen.pv .cta:not(.light):not(.warn):not(:disabled)::before,html body .screen.pv .cta:not(.light):not(.warn):not(:disabled)::after,html body .screen.pv .cta.green::before{display:none!important;content:none!important}
 </style>
 
 <div id="app"></div>
@@ -4133,7 +4144,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.62";
+var APP_VER="1.0.63";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -18799,7 +18810,7 @@ function parentScreen(back,page){if(back){PV.back=back;PV.stack=[];if(page===und
   clear();var sc=el('div','screen parscr pv');
   var top=el('div','pvtop'),x=el('button','pvback');x.setAttribute('aria-label','돌아가기');x.innerHTML=BACK_SVG;x.onclick=function(){if(PV.page){var st=PV.stack||[];PV.page=st.length?st.pop():(PV_UP[PV.page]||null);PV.flash=null;pvRe(true);return}B()};top.appendChild(x);
   var tt=el('div','pvtt');var tb=el('b',null,PV.page?(PV.page==='sub'?PV_SUBN[PV.sub]:PV_TITLE[PV.page]||'부모님 보기'):'우리 집 · 부모님 보기');tt.appendChild(tb);if(!PV.page){var tapN=0,tapT=0;tb.onclick=function(){var now=Date.now();tapN=now-tapT<1200?tapN+1:1;tapT=now;if(tapN>=7){tapN=0;dbgSheet()}}}if(!PV.page)tt.appendChild(el('small',null,'연속 '+streak()+'일 공부 중'));top.appendChild(tt);
-  if(!PV.page){var gs=el('button','pvgear');gs.setAttribute('aria-label','설정');gs.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M10.3 2.6h3.4l.5 2.6a7.6 7.6 0 0 1 1.9 1.1l2.5-.9 1.7 2.9-2 1.7a7.7 7.7 0 0 1 0 2.2l2 1.7-1.7 2.9-2.5-.9a7.6 7.6 0 0 1-1.9 1.1l-.5 2.6h-3.4l-.5-2.6a7.6 7.6 0 0 1-1.9-1.1l-2.5.9-1.7-2.9 2-1.7a7.7 7.7 0 0 1 0-2.2l-2-1.7 1.7-2.9 2.5.9a7.6 7.6 0 0 1 1.9-1.1z"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>';gs.onclick=function(){pvGo('set')};top.appendChild(gs)}
+  if(!PV.page){var gs=el('button','pvgear');gs.setAttribute('aria-label','설정');gs.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';gs.onclick=function(){pvGo('set')};top.appendChild(gs)}
   sc.appendChild(top);var body=el('div','pvbody');sc.appendChild(body);
   if(PV.flash){var f=el('div','pvnote');f.appendChild(el('b',null,PV.flash.t));f.appendChild(el('span',null,PV.flash.s));if(PV.flash.a){var fa=el('button','pvbtn sm',PV.flash.a[0]);fa.onclick=PV.flash.a[1];f.appendChild(fa)}body.appendChild(f)}
   try{({voice:pvPgVoice,backup:pvPgBackup,reports:pvPgReports,credits:pvPgCredits,set:pvSettings,grade:pvPgGrade,units:pvPgUnits,hz:pvPgHz,sub:pvSubjects,std:pvStd,log:pvLog,hw:pvHw,mail:pvMail,cheer:pvCheer}[PV.page]||pvMain)(body)}catch(e){console.error(e);body.appendChild(el('p','pvempty','화면을 불러오지 못했어요.'))}
