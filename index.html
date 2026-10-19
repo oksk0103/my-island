@@ -4144,7 +4144,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.64";
+var APP_VER="1.0.65";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -18941,7 +18941,6 @@ function pvSettings(body){
   s.appendChild(pvRow('수준 다시 맞추기',(S.place&&Object.keys(S.place).length)?'다음 판에서 맞춰요':null,function(){pvConfirm('수준을 다시 맞출까요?','다음에 푸는 국어·수학·영어 첫 판에서 문제마다 난이도가 빠르게 오르내리며 수준을 다시 맞춰요. 시험처럼 따로 보지 않아요.','다시 맞추기',function(){pvPlace(['ko','math','en']);miniToast('다음 판에서 수준을 맞춰요');pvRe()})},'국어·수학·영어 첫 판에서 저절로 맞춰요'));body.appendChild(s);
   var s1=pvSec('소리');s1.appendChild(pvRow('효과음',pvTog(!!S.sound,function(){S.sound=!S.sound;save();pvRe()})));
   var vn='';try{var cv=pickVoice(/^ko/i,'ko');vn=cv?(cv.name||'').replace(/\s*\(.*?\)\s*/g,' ').trim():''}catch(e){}s1.appendChild(pvRow('읽어 주기 목소리',vn||'기본',function(){pvGo('voice')}));body.appendChild(s1);
-  var s2=pvSec('우리 집');s2.appendChild(pvRow('숙제 목록',wsS().items.length+'개',function(){wsCfgSheet(function(){pvRe()})}));body.appendChild(s2);
   var ok=typeof CLOUD!=='undefined'&&CLOUD.ref&&CLOUD.state==='ok',s3=pvSec('데이터');s3.appendChild(pvRow('기록 지키기',ok?'자동 저장 중':'이 기기에 저장',function(){pvGo('backup')},'백업 파일 저장 · 되살리기'));body.appendChild(s3);
   var R=S.reports||[],s4=pvSec('정보');s4.appendChild(pvRow('이상한 문제 신고',R.length+'개',function(){pvGo('reports')},'아이가 알려 준 문제'));s4.appendChild(pvRow('자료 출처',null,function(){pvGo('credits')}));s4.appendChild(pvRow('앱 버전',typeof APP_VER!=='undefined'?APP_VER:'-'));body.appendChild(s4)}
 function pvPgVoice(body){var vc=voiceCard();vc.className='pvsec vccard';var h=vc.querySelector('h3');if(h)h.remove();body.appendChild(vc)}
