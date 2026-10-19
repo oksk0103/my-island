@@ -4143,7 +4143,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.66";
+var APP_VER="1.0.67";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -16778,7 +16778,7 @@ function chAvail(){return !!S.path.char&&chDayDone()&&!chWon()&&chInfo().tries<C
 function chInfo(){var t=dayKey();if(!S.ch)S.ch={n:0,day:'',tries:0,log:[]};if(S.ch.day!==t){S.ch.day=t;S.ch.tries=0}return S.ch}
 function chSub(){var L=chSubs();return L[chInfo().n%L.length]}
 function chTypes(k){if(k==='ko')return shuffle(['sp','ex','sp']);if(k==='hz')return shuffle(['word','find','sound']);if(k==='en')return shuffle(['spell','spell','tiles']);
-  var st=S.math,ts=Object.keys(SUBJ.math.types).filter(function(t){return (st.lv[t]||1)<5});if(ts.length<3)ts=Object.keys(SUBJ.math.types);
+  var st=S.math,act=activeTypes(),ts=act.filter(function(t){return (st.lv[t]||1)<5});if(ts.length<3)ts=act.slice();
   ts.sort(function(a,b){return (st.lv[b]||1)-(st.lv[a]||1)+Math.random()-.5});return shuffle(ts.slice(0,5)).slice(0,3)}
 function chStart(){var c=chInfo();if(!chDayDone()){showSheet('good','sparkles','오늘의 도전','오늘의 모험을 먼저 끝내요',daySubs().map(function(k){return ADVK[k][0]}).join(', ')+'를 한 판씩 풀면 오늘의 도전이 열려요.','좋아요',function(){});return}if(chWon()){showSheet('good','sparkles','오늘의 도전','오늘 도전 성공!','내일 새 도전 문제가 기다려요.','좋아요',function(){});return}if(c.tries>=CH_MAX){showSheet('good','sparkles','오늘의 도전','오늘 도전은 다 했어요','내일 새 도전 문제가 기다려요.','좋아요',function(){});return}
   var k=chSub(),sub=SUBJ[k];tone([392,523,659,784],'sine',.08);
@@ -18068,7 +18068,7 @@ function bossIntro(){var bs=bossS(),B=bossNow();
   showSheet('good',B.id,'주말 보스 · '+B.name,B.name+' 등장!','"'+B.say+'" 수학·한자·영어 '+BOSS_N+'문제로 싸워요. 맞힐 때마다 보스 체력이 1씩 줄어서, '+BOSS_HP+'번 맞히면 이겨요! 이번 주말 남은 기회 '+(BOSS_TRY-bs.tries)+'번.','싸우러 가기',function(){bossStart()});
   var lt=el('button','cta light','나중에 할게요');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)}
 function bossStart(){var bs=bossS();bs.tries++;save();tone([392,523,659,784],'sine',.08);
-  var qs=shuffle(['math','math','math','hz','hz','hz','en','en','en','en']),mt=shuffle(Object.keys(SUBJ.math.types)),ht=shuffle(['mean','sound','word','find']),et=shuffle(['spell','spell','mean','tiles']),c={math:0,hz:0,en:0};
+  var qs=shuffle(['math','math','math','hz','hz','hz','en','en','en','en']),mt=shuffle(activeTypes()),ht=shuffle(['mean','sound','word','find']),et=shuffle(['spell','spell','mean','tiles']),c={math:0,hz:0,en:0};
   var q=qs.map(function(k){var L=k==='math'?mt:k==='hz'?ht:et;return L[(c[k]++)%L.length]});
   G={sub:SUBJ[qs[0]],qs:qs,boss:bossNow(),quiet:true,hp:BOSS_HP,n:BOSS_N,re:[],q:q,idx:0,got:0,first:0,startPieces:0,ups:[],unlocked:false,combo:0,drops:0,gain:1,newFruits:[],sunGot:0};
   play()}
@@ -18127,10 +18127,10 @@ function digSpots(){var s=digS();if(!S.gd||!S.gd.cells||typeof LAND==='undefined
   return s.spots.filter(function(k){return !oc[k]&&!bldCells()[k]})}
 function digIntro(k){tone([523,659],'sine',.1);showSheet('good','rock','화석 발굴','반짝이는 땅을 찾았어요!','땅속에서 돌덩이가 나왔어요. 예전에 헷갈렸던 문제를 하나 맞히면 돌이 깨지면서 안에 든 화석이 나와요. 틀려도 괜찮아요, 다시 도전할 수 있어요.','문제 풀기',function(){digStart(k)});var lt=el('button','cta light','나중에 할게요');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)}
 function digPick(){var dn=dnum(),L=(S.mx||[]).filter(function(m){return dn-m[0]<=21}),m=L.length?L[R(0,L.length-1)]:null;
-  if(m&&m[1]==='m'&&SUBJ.math.types[m[2]])return {k:'math',t:m[2]};
+  var act=activeTypes();if(m&&m[1]==='m'&&act.indexOf(m[2])>=0)return {k:'math',t:m[2]};
   if(m&&m[1]==='h'&&HIDX[m[2]]!=null)return {k:'hz',t:['mean','sound'][R(0,1)],f:{t:'h',k:m[2]}};
   if(m&&m[1]==='e'&&EN.words.some(function(w){return w.w===m[2]}))return {k:'en',t:['mean','spell','tiles'][R(0,2)],f:{t:'e',k:m[2]}};
-  var k=['math','hz','en'][R(0,2)];return {k:k,t:k==='math'?shuffle(Object.keys(SUBJ.math.types))[0]:'mean'}}
+  var k=['math','hz','en'][R(0,2)];return {k:k,t:k==='math'?act[R(0,act.length-1)]:'mean'}}
 function digStart(k){var p=digPick();FORCE=p.f||null;
   G={sub:SUBJ[p.k],dig:true,quiet:true,digKey:k,n:1,re:[],q:[p.t],idx:0,got:0,first:0,startPieces:0,ups:[],unlocked:false,combo:0,drops:0,gain:1,newFruits:[],sunGot:0};
   play();FORCE=null}
@@ -18660,7 +18660,7 @@ function repSum(d0,d1){var o={math:[0,0],hz:[0,0],en:[0,0]};Object.keys(S.rep||{
 function repTotal(){var n=0;Object.keys(S.rep||{}).forEach(function(d){var r=S.rep[d];Object.keys(r).forEach(function(k){n+=r[k][0]})});return n+((S.sch&&S.sch.rep0)||0)}
 function schLabel(it){if(it.t==='h'){var h=H8[HIDX[it.k]];return {big:it.k,sm:h?h[1]+' '+h[2]:''}}if(it.t==='e')return {big:it.k,sm:''};if(it.t==='m')return {big:SUBJ.math.types[it.k]||it.k,sm:''};return {big:'문장 만들기',sm:''}}
 function schBoard(){var dn=dnum(),sc=schS(),M={},out=[];
-  (S.mx||[]).forEach(function(m){if(dn-m[0]>30)return;var t=m[1],k=m[2];if(t==='h'&&HIDX[k]==null)return;if(t==='e'&&!EN.words.some(function(w){return w.w===k}))return;if(t==='m'&&!SUBJ.math.types[k])return;if(t==='w')k='write';if('hemw'.indexOf(t)<0)return;
+  (S.mx||[]).forEach(function(m){if(dn-m[0]>30)return;var t=m[1],k=m[2];if(t==='h'&&HIDX[k]==null)return;if(t==='e'&&!EN.words.some(function(w){return w.w===k}))return;if(t==='m'&&activeTypes().indexOf(k)<0)return;if(t==='w')k='write';if('hemw'.indexOf(t)<0)return;
     var key=t+':'+k;if(sc.gd[key]!=null&&sc.gd[key]>=m[0])return;if(!M[key]){M[key]={key:key,t:t,k:k,n:0,last:0};out.push(M[key])}M[key].n++;M[key].last=Math.max(M[key].last,m[0])});
   out.sort(function(a,b){return (b.n-a.n)||(b.last-a.last)});return out}
 function schStart(){var items=schBoard().slice(0,SCH_N);if(!items.length)return;var qs=[],q=[],fq=[];
