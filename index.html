@@ -2883,6 +2883,10 @@ body .qscreen.q-ko .choice.long{font-size:.98rem;line-height:1.35;text-align:lef
 .kmini{display:block;width:100%;max-height:240px;overflow-y:auto;text-align:left;padding:10px 12px;border-radius:12px;background:#fff;box-shadow:inset 0 0 0 1.5px #e3d4b2;margin:0 0 4px}
 .kmini .ktext{font-size:.95rem;line-height:1.7}
 .qscreen.q-ko .stemwrap:has(.kmini){width:100%;align-self:stretch}
+/* 내 섬: 상점 버튼 (꾸미기 옆) */
+.ibar{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
+.ibig.ishop{background:linear-gradient(#ffb547,#f08a1d);box-shadow:inset 0 2px 0 rgba(255,255,255,.3),0 4px 0 #b85f0a,0 8px 18px rgba(120,60,0,.25);color:#fff}
+.ibig.ishop:active{box-shadow:inset 0 2px 0 rgba(255,255,255,.3),0 1px 0 #b85f0a}
 </style>
 
 <div id="app"></div>
@@ -5807,7 +5811,7 @@ function shop(tab){
           S.sun-=it.price;S.own[it.id]=1;tone([659,880,1175],'sine',.08);
         }
         if(tab==='pot')S.equip.pot=it.id;else S.equip.friend=(S.equip.friend===it.id&&own)?'':it.id;
-        save();shop(tab);
+        S.gd.shopSeen=0;save();shop(tab);
       };
       g.appendChild(card);
     });
@@ -6744,6 +6748,7 @@ function islandScreen(edit,hand){
     var row=el('div','ibar');
     var deco=el('button','ibig');deco.appendChild(img('pencil'));deco.appendChild(document.createTextNode('섬 꾸미기'));if(inv)deco.appendChild(el('em','lmbadge',String(inv)));
     if(inv)deco.className+=' has';deco.onclick=function(){islandScreen(true)};row.appendChild(deco);
+    var shp=el('button','ibig ishop');shp.appendChild(img('shopping_bags'));shp.appendChild(document.createTextNode('상점'));var cheap=DECOR.filter(function(d){return d.price!=null&&d.price<=S.sun}).length;if(cheap&&!S.gd.shopSeen)shp.appendChild(el('em','lmbadge dot'));shp.onclick=function(){S.gd.shopSeen=1;save();shop('decor')};row.appendChild(shp);
     bottom.appendChild(hint);bottom.appendChild(row);
   }else{
     tray=el('div','tray itray');bottom.appendChild(hint);bottom.appendChild(tray);
@@ -7867,7 +7872,7 @@ function vC(c,r){return [VW/2+(c-r)*VTW/2,VY0+(c+r)*VTH/2+VTH/2]}
 function vLand(c,r){return !((c===6&&r===0)||(c===0&&r===6)||(c===0&&r===0))}
 var VCELL={tree:[1,1],home:[0,3],shop:[3,0],mail:[3,5],pot:[5,4]};
 var VPATH={'5,5':1,'4,4':1,'3,3':1,'2,2':1,'2,3':1,'1,3':1,'3,2':1,'3,1':1,'3,4':1};
-var CART_XY=[202,438],BOOK_XY=K3.anch.shop,FISH_XY=[438, 504],MAILP_XY=[118, 482],DOCK_XY=[268, 515],BOAT_XY=[280, 503.6];var VB=['tree','home','shop','mail','pot','bee','boat'].map(function(id){return {id:id,x:K3.anch[id][0],y:K3.anch[id][1]}});VB.push({id:'book',x:BOOK_XY[0],y:BOOK_XY[1]});VB.push({id:'fish',x:FISH_XY[0],y:FISH_XY[1]});VB.push({id:'mailp',x:MAILP_XY[0],y:MAILP_XY[1]});VB.forEach(function(v){if(v.id==='boat'){v.x=BOAT_XY[0];v.y=BOAT_XY[1]}if(v.id==='shop'){v.x=CART_XY[0];v.y=CART_XY[1]}});
+var BOOK_XY=K3.anch.shop,FISH_XY=[438, 504],MAILP_XY=[118, 482],DOCK_XY=[268, 515],BOAT_XY=[280, 503.6];var VB=['tree','home','mail','pot','bee','boat'].map(function(id){return {id:id,x:K3.anch[id][0],y:K3.anch[id][1]}});VB.push({id:'book',x:BOOK_XY[0],y:BOOK_XY[1]});VB.push({id:'fish',x:FISH_XY[0],y:FISH_XY[1]});VB.push({id:'mailp',x:MAILP_XY[0],y:MAILP_XY[1]});VB.forEach(function(v){if(v.id==='boat'){v.x=BOAT_XY[0];v.y=BOAT_XY[1]}});
 var VLABEL={book:'국어 서점',bee:'영어 벌집',tree:'한자 나무',home:'우리 집',pot:'수학 화분',mail:'오솔길',shop:'상점',boat:'내 섬 가기',fish:'낚시터',mailp:'우체통'};
 function villageScreen(){
   HUB='village';clear();gdInit();if(ADV&&ADV.day!==dayKey())ADV=null;var advDone_=ADV&&ADV.i>=ADV.q.length;if(advDone_)setTimeout(advFinish,0);else fishCatchUp();
@@ -7914,7 +7919,6 @@ function villageScreen(){
     else if(v.id==='home')art=sprite('house');
     else if(v.id==='bee')art=sprite('hive');
     else if(v.id==='book')art=sprite('bookshop');
-    else if(v.id==='shop')art=sprite('cart');
     else if(v.id==='mail'){art=sprite('sign');if(S.path.char){var ch=avImg(S.path.char,'v3pet');art.appendChild(ch)}}
     else if(v.id==='boat'){art=sprite('boat');art.className+=' vboat'}
     else if(v.id==='fish'){art=el('div','v3art vpier');art.appendChild(img('pier'))}
@@ -8001,7 +8005,7 @@ function startGuide(){
     ['.lm-book .v3art','국어 서점에서는 섬 친구들 이야기를 한 쪽씩 읽어. 열 쪽을 읽으면 책 한 권이 완성돼!'],
     ['.lm-mail .v3art','오솔길 표지판에서는 나랑 도전 문제를 풀면서 여행해. 할 게 있으면 표지판에 표시가 떠!'],
     ['.lm-boat .v3art','꽃과 열매는 배를 타고 내 섬에 가서 마음대로 놓을 수 있어.'],
-    ['.lm-shop .v3art','햇살을 모으면 상점에서 소품을 살 수 있어.'],
+    ['.lm-boat .v3art','햇살을 모으면 내 섬의 상점에서 소품을 사서 놓을 수 있어.'],
     ['.lm-fish .v3art','오늘의 모험을 마치면 낚시터가 열리고, 보석을 모으면 나를 꾸밀 수도 있어. 그럼 오늘의 할 일부터 시작해 볼까?']
   ],i=0;
   var lay=el('div','guide'),hole=el('div','tg-hole'),card=el('div','tg-card'),pic=img(me,'tg-pic'),txt=el('p','tg-txt'),row=el('div','tg-row');
