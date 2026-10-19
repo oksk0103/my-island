@@ -3948,7 +3948,9 @@ var KNUM=['첫','두','세','네','다섯','여섯','일곱','여덟','아홉','
 function nth(n){return (KNUM[n-1]||n)+' 번째'}
 (function(){var d=document.createElement('div');d.style.cssText='position:absolute;width:0;height:0;overflow:hidden';d.innerHTML='<svg width="0" height="0" aria-hidden="true"><filter id="nightf" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values=".6 .05 0 0 .01  .03 .64 .05 0 .01  .05 .1 .86 0 .04  0 0 0 1 0"/></filter><filter id="evef" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 .05 0 0 .03  .02 .93 0 0 .01  0 0 .86 0 0  0 0 0 1 0"/></filter></svg>';document.body.appendChild(d)})();
 var app=document.getElementById('app'),sheet=document.getElementById('sheet'),scrim=document.getElementById('scrim');
-function setZ(){var w=innerWidth,h=innerHeight,z=w>=700?Math.max(1,Math.min(w/440,h/820,1.7)):1,z2=w>=700?Math.max(1,Math.min(z,1.45)):1;
+var Z_W=0,Z_H=0;
+// 사파리 주소창이 접히면 높이만 바뀌어요. 그때 확대가 바뀌지 않게, 같은 너비에서는 처음 높이를 기준으로 해요.
+function setZ(){var w=innerWidth,h=innerHeight;if(w===Z_W&&Z_H&&Math.abs(h-Z_H)/Z_H<.25)h=Z_H;else{Z_W=w;Z_H=h}var z=w>=700?Math.max(1,Math.min(w/440,h/820,1.7)):1,z2=w>=700?Math.max(1,Math.min(z,1.45)):1;
   var r=document.documentElement.style;r.setProperty('--z',z);r.setProperty('--z2',z2);document.body.classList.toggle('big',z>1.02);document.body.classList.toggle('wide',w>=700)}
 function zMark(){var f=app.firstElementChild;document.body.classList.toggle('zscr',!!(f&&f.classList.contains('screen')))}
 setZ();addEventListener('resize',setZ);try{new MutationObserver(zMark).observe(app,{childList:true})}catch(e){}
@@ -8004,7 +8006,7 @@ function schoolScreen(back){SCH_BACK=back=back||SCH_BACK||villageScreen;clear();
     sc.appendChild(el('p','mtip','상장을 받으면 보석 1개! 상장을 누르면 내용을 볼 수 있어요.'))}
   app.appendChild(sc);zMark&&zMark();
   if(nw.length&&SCH_TAB!=='award')setTimeout(function(){if(document.querySelector('.sheet.show'))return;var k=nw[0],A=AWARDS.filter(function(x){return x.id===k.slice(0,-1)})[0],i=+k.slice(-1);showSheet('good',A.img,'새 상장!',A.name+' ('+AW_LV[i]+')을 받았어요','위 어린이는 '+A.say(A.t[i])+' 이 상장을 줍니다.'+(nw.length>1?' 상장이 '+nw.length+'개 나왔어요!':''),'상장 보러 가기',function(){SCH_TAB='award';schoolScreen(back)})},500)}
-function libShow(bk){libShow0(bk);var inn=sheet.firstChild,hd=inn.querySelector('.hd');if(bk.cv){var w=el('div','lcovshow');w.appendChild(covImg(bk.cv));inn.insertBefore(w,hd.nextSibling)}var lt=covLabel('cta light',bk.cv?'표지 다시 찍기':'표지 사진 넣기',function(d){bk.cv=covNew(d);save();hideSheet();if(document.querySelector('.libscr:not(.libadd)'))libScreen(LIB_BACK);setTimeout(function(){libShow(bk)},350)});inn.appendChild(lt)}
+function libShow(bk){libShow0(bk);var inn=sheet.firstChild,hd=inn.querySelector('.hd');if(bk.cv){var w=el('div','lcovshow');w.appendChild(covImg(bk.cv));inn.insertBefore(w,hd.nextSibling)}var lt=covLabel('cta light',bk.cv?'표지 다시 찍기':'표지 사진 넣기',function(d){bk.cv=covNew(d);save();hideSheet();if(document.querySelector('.libscr:not(.libadd)'))libScreen(LIB_BACK);setTimeout(function(){libShow(bk)},350)});inn.appendChild(lt);var cl=el('button','cta light','닫기');cl.onclick=hideSheet;inn.appendChild(cl);scrim.onclick=hideSheet}
 function libShow0(bk){showSheet('good','books',bk.d!=null?libMonName(libMonKey(bk.d))+'에 읽은 책':'책',bk.t,(bk.ar!=null?'AR 퀴즈 '+bk.ar+'점  ':'')+(bk.s?'★★★★★'.slice(0,bk.s)+'☆☆☆☆☆'.slice(0,5-bk.s)+'  ':'')+(bk.w||'아직 한마디를 쓰지 않았어요.'),bk.w?'영어로 듣기':'좋아요',function(){if(bk.w)libRead(bk.w)})}
 function libAdd(back){clear();var sc=el('div','screen libscr libadd'),top=el('div','qtop');var b=el('button','x');b.innerHTML=BACK_SVG;b.setAttribute('aria-label','돌아가기');b.onclick=function(){libScreen(back)};top.appendChild(b);top.appendChild(el('h2','mtitle','읽은 책 꽂기'));sc.appendChild(top);
   var st={t:'',c:LIB_COL[R(0,5)],s:0,st:0};
