@@ -3024,6 +3024,12 @@ html body .awc.on .awmd img{filter:drop-shadow(0 1px 0 rgba(255,255,255,.6))}
 .minitoast{pointer-events:none}
 body.qmode .minitoast{bottom:auto;top:calc(76px + env(safe-area-inset-top,0px))}
 .lmsub{display:inline-block;margin-left:4px;font-size:.62em;padding:1px 5px;border-radius:99px;background:#ffe8a3;color:#8a5a00;vertical-align:middle;line-height:1.3}
+.vcsub{display:block;margin:10px 0 6px;font-weight:800;color:#5b6b85;font-size:.78rem}
+.vcrow{display:flex;flex-wrap:wrap;gap:6px}
+.vcb{display:flex;align-items:center;gap:5px;padding:8px 11px;border-radius:12px;background:#f3f6fa;box-shadow:inset 0 0 0 1.5px #dbe3ec;font-size:.85rem;color:var(--o,#26313d)}
+.vcb.on{background:#e7f8ec;box-shadow:inset 0 0 0 2px #37b24d}
+.vcb em{font-style:normal;font-size:.62rem;font-weight:900;padding:2px 6px;border-radius:99px;background:#ffe8a3;color:#8a5a00}
+.vccard .vcrow+.pnote{margin-top:10px}
 </style>
 
 <div id="app"></div>
@@ -3949,6 +3955,13 @@ setZ();addEventListener('resize',setZ);try{new MutationObserver(zMark).observe(a
 var BACK_SVG='<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M11.5 3L5.5 9l6 6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 var CHECK_SVG='<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 5.2l2 2L8 3" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+// ===== 읽어 주기 목소리: 기기에 있는 목소리 중 가장 자연스러운 것을 골라요 =====
+var VOICE_BAD=/eddy|flo\b|grandma|grandpa|reed|rocko|sandy|shelley|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|albert|fred|junior|kathy|ralph|novelty/i;
+function voiceScore(v){var n=(v.name||'')+' '+(v.voiceURI||''),s=0;if(/premium|프리미엄/i.test(n))s+=100;if(/enhanced|향상/i.test(n))s+=80;if(/natural|neural|online/i.test(n))s+=70;if(/google/i.test(n))s+=40;if(/yuna|유나|sora|siri|sunhi|injoon|hyunsu|samantha|ava|allison|zoe|nicky|jenny|aria/i.test(n))s+=20;if(VOICE_BAD.test(n))s-=200;if(v.default)s+=3;return s}
+function voiceList(re){try{return (speechSynthesis.getVoices()||[]).filter(function(x){return re.test(x.lang)}).sort(function(a,b){return voiceScore(b)-voiceScore(a)})}catch(e){return []}}
+function pickVoice(re,key){var L=voiceList(re);if(!L.length)return null;var want=S&&S.voice&&S.voice[key];if(want){var w=L.filter(function(v){return v.voiceURI===want})[0];if(w)return w}return L[0]}
+try{if(window.speechSynthesis&&speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',function(){})}catch(e){}
+
 // ================= 소리 =================
 var ac=null;
 function spkIcon(){var sp=document.createElement('span');sp.className='spk';sp.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="#26313d"/>'+(S.sound?'<path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="#26313d" stroke-width="2" stroke-linecap="round"/>':'<path d="M16 9l6 6M22 9l-6 6" stroke="#ff6b6b" stroke-width="2.2" stroke-linecap="round"/>')+'</svg>';return sp}
@@ -4037,7 +4050,7 @@ function playRec(src,w,id){var fell=false,fb=function(e){if(fell||id!==SAYN||(e&
 function ttsEn(w){var key=audKey(w),id=++SAYN,rec=window.EN_AUD&&EN_AUD[key];if(rec){playRec(rec,w,id);return}var bk=AUDIDX[key];
   if(!bk){speakTTS(w);return}
   audLoad(bk,function(){if(id!==SAYN)return;var b=AUDB[bk]&&AUDB[bk][key];if(b)playRec('data:audio/mpeg;base64,'+b,w,id);else speakTTS(w)})}
-function speakTTS(w){if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){ttsWarn();return}try{var go=function(){var u=new SpeechSynthesisUtterance(w);u.lang='en-US';u.rate=.8;u.onerror=function(e){if(e&&e.error&&e.error!=='interrupted'&&e.error!=='canceled')ttsWarn()};var v=(speechSynthesis.getVoices()||[]).filter(function(x){return /^en[-_]US/i.test(x.lang)})[0];if(v)u.voice=v;speechSynthesis.speak(u)};
+function speakTTS(w){if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){ttsWarn();return}try{var go=function(){var u=new SpeechSynthesisUtterance(w);u.lang='en-US';u.rate=.8;u.onerror=function(e){if(e&&e.error&&e.error!=='interrupted'&&e.error!=='canceled')ttsWarn()};var v=pickVoice(/^en[-_]US/i,'en')||pickVoice(/^en/i,'en');if(v)u.voice=v;speechSynthesis.speak(u)};
   if(speechSynthesis.speaking||speechSynthesis.pending){speechSynthesis.cancel();setTimeout(go,80)}else go()}catch(e){}}
 var SAYN=0;function sayEn(w){var o_=EN.words.filter(function(x){return x.w===w})[0];if(!(window.EN_AUD&&EN_AUD[w])&&!(o_&&o_.a)){ttsEn(w);return}var id=++SAYN,o=EN.words.filter(function(x){return x.w===w})[0],src=(window.EN_AUD&&EN_AUD[w])||(o&&o.a);
   if(src){var fell=false,fb=function(e){if(fell||id!==SAYN||(e&&e.name==='AbortError'))return;fell=true;EPLAYER.onerror=null;ttsEn(w)};
@@ -4612,7 +4625,7 @@ function vertCalc(box,P,nums,op,opt){opt=opt||{};var w=el('div','vcalc'),L=Math.
 function pickPz(q,stem,nodes,names,answer,hint,explain){return {mode:'choice',pick:true,q:q,choices:names,nodes:nodes,answer:answer,hint:hint,explain:explain,render:stem||function(){}}}
 function twoNums(box,a,b){var r=el('div','ansrow twon');r.appendChild(el('span','tile',String(a)));r.appendChild(el('span','vs','·'));r.appendChild(el('span','tile',String(b)));box.appendChild(r)}
 function K(n){return ['영','하나','둘','셋','넷','다섯','여섯','일곱','여덟','아홉','열'][n]||String(n)}
-function ttsKo(t){if(!window.speechSynthesis||!window.SpeechSynthesisUtterance)return;try{var go=function(){var u=new SpeechSynthesisUtterance(String(t).replace(/[□_]+/g,'빈칸').replace(/×/g,'곱하기').replace(/÷/g,'나누기').replace(/−/g,'빼기').replace(/\+/g,'더하기'));u.lang='ko-KR';u.rate=.9;var v=(speechSynthesis.getVoices()||[]).filter(function(x){return /^ko/i.test(x.lang)})[0];if(v)u.voice=v;speechSynthesis.speak(u)};if(speechSynthesis.speaking||speechSynthesis.pending){speechSynthesis.cancel();setTimeout(go,80)}else go()}catch(e){}}
+function ttsKo(t){if(!window.speechSynthesis||!window.SpeechSynthesisUtterance)return;try{var go=function(){var u=new SpeechSynthesisUtterance(String(t).replace(/[□_]+/g,'빈칸').replace(/×/g,'곱하기').replace(/÷/g,'나누기').replace(/−/g,'빼기').replace(/\+/g,'더하기'));u.lang='ko-KR';u.rate=.92;u.pitch=1.05;var v=pickVoice(/^ko/i,'ko');if(v)u.voice=v;speechSynthesis.speak(u)};if(speechSynthesis.speaking||speechSynthesis.pending){speechSynthesis.cancel();setTimeout(go,80)}else go()}catch(e){}}
 
 // ---------- 1-1 ----------
 function genN9(lv){var o=pickObj();
@@ -5603,9 +5616,9 @@ function koWordStrip(box,pg){var px=koPX(pg);if(!px||!px.words||!px.words.length
 // 한 문장씩 읽어 주기 (읽는 문장을 밝게)
 function koSpeak(spans,btn){if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){miniToast('이 기기에서는 읽어 주기를 쓸 수 없어요');return}
   if(btn.classList.contains('on')){speechSynthesis.cancel();btn.classList.remove('on');spans.forEach(function(s){s.classList.remove('now')});return}
-  btn.classList.add('on');var i=0,v=(speechSynthesis.getVoices()||[]).filter(function(x){return /^ko/i.test(x.lang)})[0];speechSynthesis.cancel();
+  btn.classList.add('on');var i=0,v=pickVoice(/^ko/i,'ko');speechSynthesis.cancel();
   (function nx(){spans.forEach(function(s){s.classList.remove('now')});if(i>=spans.length||!btn.isConnected||!btn.classList.contains('on')){btn.classList.remove('on');return}
-    var s=spans[i];s.classList.add('now');var u=new SpeechSynthesisUtterance(s.textContent.replace(/[“”"']/g,''));u.lang='ko-KR';u.rate=.85;if(v)u.voice=v;u.onend=u.onerror=function(){i++;setTimeout(nx,180)};speechSynthesis.speak(u)})()}
+    var s=spans[i];s.classList.add('now');var u=new SpeechSynthesisUtterance(s.textContent.replace(/[“”"']/g,''));u.lang='ko-KR';u.rate=.9;u.pitch=1.05;if(v)u.voice=v;u.onend=u.onerror=function(){i++;setTimeout(nx,180)};speechSynthesis.speak(u)})()}
 function koSpkBtn(label){var b=el('button','kspk');b.innerHTML='<svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8v4h3l4 3V5L6 8z" fill="currentColor"/><path d="M13 7a3.5 3.5 0 010 6M15.5 4.5a7 7 0 010 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';b.appendChild(el('span',null,label||'읽어 주기'));return b}
 function koHead(box,pg){var h=el('div','khead');var bk=el('small','kbk',pg.bk.title+' · '+(pg.pi+1)+'쪽');h.appendChild(bk);h.appendChild(el('em','kkind',pg.p.kind));box.appendChild(h);box.appendChild(el('h2','ktitle',pg.p.title))}
 // 문제 풀기 전에 글을 읽는 화면
@@ -8137,7 +8150,7 @@ function parentScreen(back){clear();var sc=el('div','screen parscr'),top=el('div
   try{sc.appendChild(cheerCard(back))}catch(e){}
   // 6) 설정
   var set=el('button','cta','학년 · 단원 · 한자 급수 바꾸기');set.onclick=function(){unitSheet()};sc.appendChild(set);
-  var wsb=el('button','cta light','우리 집 숙제 목록 바꾸기');wsb.onclick=function(){wsCfgSheet(function(){parentScreen(back)})};sc.appendChild(wsb);
+  var wsb=el('button','cta light','우리 집 숙제 목록 바꾸기');wsb.onclick=function(){wsCfgSheet(function(){parentScreen(back)})};sc.appendChild(wsb);sc.appendChild(voiceCard());
   sc.appendChild(el('p','pnote pcred','자료 출처 · 한자 급수 목록: rycont/hanja-grade-dataset · 획순: Make Me a Hanzi (Arphic Public License) · 한자어 읽기: libhangul 한자 사전 (BSD, © 2005-2006 Choe Hwanjin)'));
   app.appendChild(sc);zMark&&zMark()}
 
@@ -8162,6 +8175,18 @@ function wsParentCard(back){var W=wsS(),c=el('section','card pcard');c.appendChi
   W.items.forEach(function(x){var need=0,done={},mins=[],hard=0;for(var d=m0;d<=dn;d++){var wdd=new Date(d*864e5).getUTCDay();if(wsOnDay(x,wdd))need++}W.log.forEach(function(L){if(L.s!==x.id||L.d<m0)return;done[L.d]=1;mins.push(L.m||0);if(L.f===3)hard++});
     var n=Object.keys(done).length,pc=need?Math.min(100,Math.round(n/need*100)):0,r=el('div','pkrow');r.appendChild(el('span',null,x.name));var bar=el('i','pkbar'),f=el('b');f.style.width=pc+'%';f.className=pc<60?'low':pc<85?'mid':'hi';bar.appendChild(f);r.appendChild(bar);r.appendChild(el('em',null,n+'/'+need+(mins.length?' · '+Math.round(mins.reduce(function(a,v){return a+v},0)/mins.length)+'분':'')+(hard?' · 어려움 '+hard:'')));tb.appendChild(r)});c.appendChild(tb);
   var hardL=W.log.filter(function(L){return L.f===3&&L.d>dn-7}).map(function(L){return L.n||wsSub(L.s).name});if(hardL.length)c.appendChild(el('p','pnote','최근 일주일 동안 아이가 ‘어려웠어요’라고 한 숙제: '+hardL.join(', ')+'. 한 번 같이 봐 주세요.'));
+  return c}
+
+// ===== 읽어 주기 목소리 고르기 =====
+function voiceCard(){var c=el('section','card vccard');c.appendChild(el('h3',null,'읽어 주기 목소리'));
+  if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){c.appendChild(el('p','pnote','이 화면에서는 기기 목소리를 쓸 수 없어요. 사파리나 크롬에서 열면 읽어 주기가 돼요.'));return c}
+  var box=el('div');c.appendChild(box);
+  function draw(){box.innerHTML='';if(!S.voice)S.voice={};[['ko',/^ko/i,'국어 · 수학','안녕! 오늘은 텃밭에 물을 주는 이야기를 읽어 줄게.','ko-KR'],['en',/^en/i,'영어','Hello! Let\'s read a story together.','en-US']].forEach(function(g){
+    var L=voiceList(g[1]),L2=L.filter(function(v){return voiceScore(v)>-100});if(L2.length)L=L2;box.appendChild(el('small','vcsub',g[2]+' · 목소리 '+L.length+'개'));if(!L.length){box.appendChild(el('p','pnote','이 기기에 '+g[2]+' 목소리가 없어요.'));return}
+    var cur=pickVoice(g[1],g[0]),row=el('div','vcrow');L.slice(0,8).forEach(function(v){var on=cur&&v.voiceURI===cur.voiceURI,b=el('button','vcb'+(on?' on':''));b.appendChild(el('b',null,(v.name||'').replace(/\s*\(.*?\)\s*/g,' ').trim()));var tag=/premium|프리미엄/i.test(v.name)?'프리미엄':/enhanced|향상/i.test(v.name)?'고음질':/natural|neural|online/i.test(v.name)?'자연스러움':'';if(tag)b.appendChild(el('em',null,tag));
+      b.onclick=function(){S.voice[g[0]]=v.voiceURI;save();try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(g[3]);u.lang=g[4];u.voice=v;u.rate=g[0]==='ko'?.92:.85;u.pitch=g[0]==='ko'?1.05:1;speechSynthesis.speak(u)}catch(e){}draw()};row.appendChild(b)});box.appendChild(row)});
+    box.appendChild(el('p','pnote','누르면 미리 들어 볼 수 있어요. 목소리가 기계 같으면 아이패드 설정 → 손쉬운 사용 → 읽기 및 말하기 → 음성 → 한국어에서 ‘유나(프리미엄)’ 또는 ‘유나(향상됨)’을 내려받은 뒤 여기서 골라 주세요. 영어는 Samantha(향상됨)·Ava(프리미엄)가 자연스러워요.'))}
+  draw();try{speechSynthesis.addEventListener('voiceschanged',function(){if(box.isConnected)draw()})}catch(e){}
   return c}
 
 // ================= 숨김 디버그 메뉴: '나의 기록' 제목을 7번 누르면 =================
