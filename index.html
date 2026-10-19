@@ -3867,6 +3867,7 @@ if(!S.hz.wn)S.hz.wn={};if(!S.hz.pin)S.hz.pin={};
 if(!S.hz.learned){S.hz.learned={};if(TS0)for(var g2 in S.hz.gu)H8.slice(GB[g2],GB[g2]+S.hz.gu[g2]).forEach(function(h){S.hz.learned[h[0]]=1})}
 if(S.sun==null)S.sun=0;if(!S.own)S.own={};if(!S.equip)S.equip={pot:'pot',friend:''};
 ['math','hz'].forEach(function(k){if(S[k].water==null)S[k].water=0});
+if(S.math.water>0){var wv=S.math.water,room=PER-1-(S.math.pieces%PER),g0=Math.max(0,Math.min(wv,room));S.math.pieces+=g0;S.sun=(S.sun||0)+(wv-g0);S.math.water=0;S.math.wmig=wv}
 if(!S.path)S.path={step:0,prog:0,walk:0,char:''};
 ['math','hz'].forEach(function(k){var st=S[k];if(!st.hist)st.hist=[];while(st.hist.length<Math.floor(st.pieces/PER))st.hist.push(st.hist.length%6)});
 }
@@ -3909,11 +3910,14 @@ function enDue(w){var c=S.en.sr[w];return c&&c.d<=dnum()}
 var JAR_N=10;
 function enJar(){var j=S.en.jar,has={};EN.words.forEach(function(x){has[x.w]=1});
   if(j&&j.ws){j.ws=j.ws.filter(function(w){return has[w]})}
+  // 다 익힌 단어는 바로 새 단어로 바꿔 넣어요 (같은 단어만 계속 나오지 않게). 10개를 익힐 때마다 꿀단지 하나 완성
+  if(j&&j.ws&&j.ws.length&&!j.all){var done_=j.ws.filter(function(w){return enBits(w)===7}),inJ_={};j.ws.forEach(function(w){inJ_[w]=1});var cand_=EN.words.filter(function(x){return enBits(x.w)!==7&&!inJ_[x.w]}).map(function(x){return x.w});
+    while(done_.length&&cand_.length){var dw=done_.shift();j.ws[j.ws.indexOf(dw)]=cand_.shift();j.done=(j.done||0)+1;if(j.done>=JAR_N){j.done=0;j.no=(j.no||1)+1;S.en.jarPend=(S.en.jarPend||0)+1}}}
   var left=EN.words.some(function(x){return enBits(x.w)!==7}),full=j&&j.ws&&j.ws.length&&!j.all&&j.ws.every(function(w){return enBits(w)===7});
   if(!j||!j.ws||!j.ws.length||full||(j.all&&left)){var no=j&&j.no?j.no+(j.ws&&j.ws.length?1:0):1;if(full)S.en.jarPend=(S.en.jarPend||0)+1;
     var nw=EN.words.filter(function(x){return enBits(x.w)!==7}).slice(0,JAR_N).map(function(x){return x.w}),all=false;if(!nw.length){nw=shuffle(EN.words.slice()).slice(0,JAR_N).map(function(x){return x.w});all=true}S.en.jar={no:no,ws:nw,all:all}}
   return S.en.jar}
-function jarDone(){var j=enJar();return j.ws.filter(function(w){return enBits(w)===7}).length}
+function jarDone(){var j=enJar();return Math.min(JAR_N,(j.done||0)+j.ws.filter(function(w){return enBits(w)===7}).length)}
 function enPick(bit){
   if(FORCE&&FORCE.t==='e'){var fw=FORCE.k;FORCE=null;var fx=EN.words.filter(function(x){return x.w===fw})[0];if(fx){if(G){G.usedW=G.usedW||{};G.usedW[fx.w]=1}return fx}}
   var J=enJar(),inJ={};J.ws.forEach(function(w){inJ[w]=1});
@@ -3921,7 +3925,7 @@ function enPick(bit){
   if(bit===4){var due=EN.words.filter(function(x){return !inJ[x.w]&&enBits(x.w)===7&&enDue(x.w)});if(due.length&&Math.random()<.35)pool=pool.concat(due.slice(0,2))}
   var used=(G&&G.usedW)||{},L=pool.filter(function(x){return !used[x.w]});if(!L.length)L=pool;
   function rank(x){var p=enBits(x.w);if(bit===1)return p&1?2:0;if(bit===2)return p&2?2:(p&1?0:1);return enDue(x.w)?0:(p&4?3:(p&2?1:2))}
-  L=shuffle(L);L.sort(function(a,b){return rank(a)-rank(b)});var w=L[0];if(G){G.usedW=G.usedW||{};G.usedW[w.w]=1}return w;
+  var last=S.en.last||(S.en.last={});L=shuffle(L);L.sort(function(a,b){return rank(a)-rank(b)||(last[a.w]||0)-(last[b.w]||0)});var w=L[0];last[w.w]=dnum();if(G){G.usedW=G.usedW||{};G.usedW[w.w]=1}return w;
 }
 function enStem(w,showWord){return function(b){var box=el('div','enstem');if(showWord)box.appendChild(el('div','enword',w.w));else box.appendChild(el('div','enko',w.k));
   var sp=el('button','enspeak');sp.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>듣기</span>';sp.onclick=function(){sayEn(w.w)};box.appendChild(sp);
@@ -5826,7 +5830,7 @@ function dayInit(){var t=dayKey();if(!S.day||S.day.d!==t)S.day={d:t,rounds:0,don
 function startRound(sub){
   var dy=dayInit();
   if(dy.rounds>=4&&!dy.rest){
-    showSheet('good',S.path.char||'rabbit','오늘 벌써 '+dy.rounds+'판','눈도 조금 쉬어 줄까?','오늘 정말 많이 했어요. 내일 하면 물방울이 또 기다리고 있어요.','한 판 더 하기',function(){dy.rest=true;save();startRound(sub)});
+    showSheet('good',S.path.char||'rabbit','오늘 벌써 '+dy.rounds+'판','눈도 조금 쉬어 줄까?','오늘 정말 많이 했어요. 내일 또 새 문제가 기다리고 있어요.','한 판 더 하기',function(){dy.rest=true;save();startRound(sub)});
     var inn=sheet.firstChild,rb=el('button','cta light','오늘은 쉴래요');rb.onclick=function(){hideSheet();home()};inn.appendChild(rb);return;
   }
   HZWQ=null;
@@ -5854,7 +5858,7 @@ function play(){
   var x=el('button','x');x.setAttribute('aria-label','그만하기');x.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';x.onclick=G.sch?function(){document.body.classList.remove('qmode');G=null;FORCE=null;schoolScreen(SCH_BACK)}:home;
   var tr=el('div','track'),fill=el('i');fill.style.width=(G.idx/(G.n||ROUND)*100)+'%';tr.appendChild(fill);
     var NQ=G.n||ROUND;var dots=el('div','qdots');for(var di=0;di<NQ;di++){var dd=el('i',(di<G.idx?'done':di===G.idx?'now':'')+(G.q[di]==='write'?' w':''));dots.appendChild(dd)}
-  var wallet=el('div','qwallet');wallet.appendChild(img(sub.key==='math'?'droplet':'sun'));var wN=el('b','tnum',sub.key==='math'?G.drops:G.drops);wallet.appendChild(wN);
+  var wallet=el('div','qwallet');wallet.appendChild(img('sun'));var wN=el('b','tnum',G.drops);wallet.appendChild(wN);
   if(G.boss){top.appendChild(x);top.appendChild(bossBar());var bc=el('div','qwallet bosscnt');bc.appendChild(el('b','tnum',(G.idx+1)+' / '+G.n));top.appendChild(bc)}else{top.appendChild(x);top.appendChild(dots);if(!G.dig)top.appendChild(wallet)}sc.appendChild(top);if(ADV&&ADV.q[ADV.i]===G.sub.key&&!G.ch&&!G.quiet)sc.appendChild(advStrip());
   var cb0=null;if(G.combo>=2&&!G.ch&&!G.quiet){var cb=el('em','combo qcombo');cb.appendChild(img('fire'));cb.appendChild(el('span',null,G.combo+'연속'+(G.combo>=3?' · 2배':'')));cb0=cb}
   var qh=el('div','qhead');var tag=el('small','qtag',pz.label||sub.types[type]);if(sub.key==='math'||type==='write'){var lvb=el('em','qlv','Lv.'+lv);tag.appendChild(lvb)}if(type==='write'&&G.idx>0&&G.q[G.idx-1]!=='write'&&!G.quiet&&!G.ch){tag.appendChild(el('em','qnew','이제 문장!'))}if(G.ch){tag.insertBefore(el('em','qch','도전'),tag.firstChild)}if(G.boss){tag.insertBefore(el('em','qch qboss','보스전'),tag.firstChild)}if(G.dig){tag.insertBefore(el('em','qch qdig','화석 발굴'),tag.firstChild)}if((G.re&&G.re.indexOf(type)>=0)||pz.redo){tag.appendChild(el('em','qre','다시 도전'))}else if(type==='div'&&!introS().div){introS().div=1;save();tag.appendChild(el('em','qnew','새 문제'))}if(cb0)tag.appendChild(cb0);qh.appendChild(tag);var h2q=el('h2',null,pz.q);qh.appendChild(h2q);if((sub.key==='math'||sub.key==='ko')&&curGrade()<=2){var rd=el('button','qread');rd.innerHTML='<svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8v4h3l4 3V5L6 8z" fill="currentColor"/><path d="M13 7a3.5 3.5 0 010 6M15.5 4.5a7 7 0 010 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';rd.setAttribute('aria-label','문제 읽어주기');rd.onclick=function(e){e.stopPropagation();ttsKo(pz.q)};h2q.appendChild(rd);if(curGrade()===1&&sub.key==='math'&&!G.ch&&!G.boss)setTimeout(function(){if(sc.isConnected)ttsKo(pz.q)},350)}sc.appendChild(qh);
@@ -5887,9 +5891,9 @@ function play(){
         var bub=el('div','palbub'+(G.combo>=2?' hot':''));if(G.combo>=2)bub.appendChild(img('fire'));bub.appendChild(document.createTextNode(t));pal.appendChild(bub);setTimeout(function(){bub.remove()},1400);
         if(G.combo>=3&&!G.ch&&!G.quiet){var bn=el('div','combobig');bn.appendChild(img('fire'));bn.appendChild(el('b',null,G.combo+'연속 정답'));bn.appendChild(el('small',null,'보상 2배!'));document.body.appendChild(bn);setTimeout(function(){bn.remove()},1300)}})();
       var src=body.querySelector('.choice.right,.slot,.goal')||body,r=src.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,G.gain===2?26:18,G.gain===2);
-      var gain=G.gain;if(!G.ch&&!G.quiet)flyTo(sub.key==='math'?'droplet':'sun',src,wallet,gain,function(k){if(!G||!document.body.contains(wN))return;wN.textContent=G.drops-gain+k;wallet.className='qwallet pop';void wallet.offsetWidth;wallet.className='qwallet pop'});
+      var gain=G.gain;if(!G.ch&&!G.quiet)flyTo('sun',src,wallet,gain,function(k){if(!G||!document.body.contains(wN))return;wN.textContent=G.drops-gain+k;wallet.className='qwallet pop';void wallet.offsetWidth;wallet.className='qwallet pop'});
       setTimeout(function(){if(!sc.isConnected||!G)return;
-        var u=sub.key==='math'?'물방울':'햇살',txt=G.dig?'맞았어요! 돌이 깨져요':G.boss?(G.hp<=0?'보스를 물리쳤어요!':(tries?'해냈어요! ':'')+'공격 성공! 보스 체력 -1'):G.ch?'도전 문제 '+(G.idx+1)+' / '+G.n+' 정답!':G.gain===2?G.combo+'연속 정답! '+u+' +2':G.combo===2?'맞았어요! 한 번 더 맞히면 2배':(tries?'해냈어요! ':['맞았어요! ','정답이에요! ','최고예요! '][R(0,2)])+u+' +1';
+        var u='햇살',txt=G.dig?'맞았어요! 돌이 깨져요':G.boss?(G.hp<=0?'보스를 물리쳤어요!':(tries?'해냈어요! ':'')+'공격 성공! 보스 체력 -1'):G.ch?'도전 문제 '+(G.idx+1)+' / '+G.n+' 정답!':G.gain===2?G.combo+'연속 정답! '+u+' +2':G.combo===2?'맞았어요! 한 번 더 맞히면 2배':(tries?'해냈어요! ':['맞았어요! ','정답이에요! ','최고예요! '][R(0,2)])+u+' +1';
         var went=false,ms=pz.say?3000:(G.combo>=3?1000:1200);function go(){if(went||!sc.isConnected||!G)return;went=true;clearTimeout(tm);sc.removeEventListener('pointerdown',tap,true);next()}
         function tap(e){if(e.target.closest('.x')||(e.target.closest('.scrcv')&&body.classList.contains('scron')))return;e.preventDefault();e.stopPropagation();go()}
         check.className='cta autoq'+(G.gain===2||G.boss?' hot':'');check.disabled=false;check.textContent='';if(G.gain===2)check.appendChild(img('fire'));check.appendChild(el('span',null,txt));check.style.setProperty('--t',ms+'ms');check.onclick=go;
@@ -6066,7 +6070,7 @@ function roundEnd(){
   var sub=G.sub,st=stOf(sub),today=dayKey();
   if(S.days.indexOf(today)<0)S.days.push(today);if(S.days.length>400)S.days=S.days.slice(-400);stkAward();
   st.today=today;
-  if(sub.key==='math'){st.water=(st.water||0)+G.drops;G.sunGot=G.got}else if(sub.key==='ko'){G.sunGot=G.drops;G.kres=koAdvance()}else G.sunGot=G.drops+G.newFruits.length*2;
+  if(sub.key==='math'){G.sunGot=G.drops;G.grow0=stage(sub);G.grow=0;G.bloom=null;for(var gi=0;gi<G.got;gi++){st.pieces++;G.grow++;if(stage(sub)===0){var wasGold=hasGold(sub),code=decideBloom(sub,G.first===ROUND);G.bloom={code:code,gold:!wasGold&&hasGold(sub)};S.sun+=itemOf(sub,code).rare?15:5;track('bloom');break}}}else if(sub.key==='ko'){G.sunGot=G.drops;G.kres=koAdvance()}else G.sunGot=G.drops+G.newFruits.length*2;
   if(sub.key==='en'){G.sunGot+=(G.mastered||[]).length*2;var J0=enJar(),pd=S.en.jarPend||0;if(pd){G.jarFull=J0.no-1;G.sunGot+=20*pd;S.en.jarPend=0;gemGain(2*pd)}}
   S.sun+=G.sunGot;
   if(G.first===ROUND){st.perfect=true;gemGain(1)}
@@ -6083,98 +6087,44 @@ function roundEnd(){
   if(sub.key==='hz')treeScreen(true);else if(sub.key==='ko')koScreen(true);else if(sub.key==='en')beeScreen(true);else waterScene(sub,true);
 }
 
-// ================= 물 주기 =================
-// 비구름을 꾹 누르고 있으면 비가 내려요. 게이지가 다 차면 물방울 1개를 쓰고 화분이 자라요.
-var POUR_MS=900;
+// ================= 화분이 자라요 =================
+// 수학 한 판을 끝내면 맞힌 만큼 구름에서 비가 내리고 꽃이 자라요. 여섯 단계가 차면 꽃이 펴요.
 function waterScene(sub,fromRound){
   clear();
   var st=stOf(sub),sc=el('div','screen'),top=el('div','qtop');
   var x=el('button','x');x.setAttribute('aria-label','홈으로');x.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';x.onclick=home;
   top.appendChild(x);top.appendChild(el('div','spacer'));
-  var bag=el('div','balance');bag.appendChild(img('droplet'));var bagN=el('b','tnum',st.water);bag.appendChild(bagN);bag.setAttribute('aria-label','남은 물방울');top.appendChild(bag);
+  var bag=el('div','balance');bag.appendChild(img('sun'));bag.appendChild(el('b','tnum',S.sun));bag.setAttribute('aria-label','햇살');top.appendChild(bag);
   sc.appendChild(top);
-  var c=el('div','center rain');
+  var c=el('div','center rain'),grow=fromRound&&G?G.grow||0:0,from=fromRound&&G?G.grow0||0:stage(sub),bloom=fromRound&&G?G.bloom:null;
   if(fromRound&&G){
-    c.appendChild(el('div','eyebrow',G.got+' / '+ROUND+' 정답'));
-    c.appendChild(el('h2',null,'물방울 '+G.drops+'개를 모았어요'));
+    c.appendChild(el('div','eyebrow',G.got+' / '+ROUND+' 정답 · 햇살 +'+G.sunGot));
+    c.appendChild(el('h2',null,bloom?'꽃이 피려고 해요!':grow?'꽃이 '+grow+'단계 자랐어요':'다음엔 꽃이 자랄 거예요'));
     var notes=[];
     if(G.drops>G.got)notes.push('연속 정답 보너스 +'+(G.drops-G.got)+'.');
-    notes.push('햇살 +'+G.sunGot+'.');
     if(G.ups.length)notes.push(G.ups.join(', ')+' 실력이 올랐어요.');
     if(G.unlocked)notes.push(gradeDone());
     if(G.mission)notes.push('오솔길 친구가 한 칸 앞으로 갔어요.');
+    if(!bloom)notes.push('꽃이 피려면 '+(PER-stage(sub))+'문제만 더 맞히면 돼요.');
     c.appendChild(el('p','sub',notes.join(' ')));
-  }else{
-    c.appendChild(el('div','eyebrow',sub.pot));
-    c.appendChild(el('h2',null,'화분에 비를 내려 주세요'));
-  }
+  }else{c.appendChild(el('div','eyebrow',sub.pot));c.appendChild(el('h2',null,sub.stage[stage(sub)]))}
   var stage_=el('div','rainstage');
-  var cloud=el('button','cloudbtn');cloud.setAttribute('aria-label','꾹 누르고 있으면 비가 내려요');
-  var cimg=img('cloud','cloudimg');cloud.appendChild(cimg);
-  var gauge=el('div','gauge'),gfill=el('i');gauge.appendChild(gfill);cloud.appendChild(gauge);
-  var drops=el('div','rainfall');
-  var wrap=el('div','potwrap');
-  stage_.appendChild(cloud);stage_.appendChild(drops);stage_.appendChild(wrap);
-  c.appendChild(stage_);
-  var info=el('p','sub rainhint');c.appendChild(info);
-  sc.appendChild(c);
+  var cloud=el('div','cloudbtn'+(grow?' on':''));var cimg=img(grow?'cloud_with_rain':'cloud','cloudimg');cloud.appendChild(cimg);
+  var drops=el('div','rainfall'),wrap=el('div','potwrap');
+  stage_.appendChild(cloud);stage_.appendChild(drops);stage_.appendChild(wrap);c.appendChild(stage_);
+  var info=el('p','sub rainhint');c.appendChild(info);sc.appendChild(c);
   var dock=el('div','dock'),btn=el('button',ADV?'cta green':'cta light',advNextLabel()||'다 했어요');btn.onclick=resultDone;dock.appendChild(btn);sc.appendChild(dock);
   app.appendChild(sc);
-
-  function render(pop){
-    wrap.innerHTML='';wrap.appendChild(potBox(null,stage(sub),190,potKey(sub),S.equip.friend));
-    if(pop){wrap.className='potwrap';void wrap.offsetWidth;wrap.className='potwrap pop'}
-    bagN.textContent=st.water;
-    var left=PER-stage(sub);
-    if(st.water>0){info.innerHTML='';info.appendChild(el('b',null,'구름을 꾹 누르고 있으면 비가 내려요'));info.appendChild(document.createElement('br'));info.appendChild(document.createTextNode(josa(sub.noun,'이','가')+' '+(sub.key==='math'?'피려면':'열리려면')+' 비가 '+left+'번 더 필요해요.'))}
-    else{info.textContent='물방울을 다 썼어요. 문제를 풀면 또 모을 수 있어요.';cloud.className='cloudbtn empty';btn.className='cta'+(ADV?' green':'');btn.textContent=advNextLabel()||'확인'}
-  }
+  var cur=from;
+  function render(pop){wrap.innerHTML='';wrap.appendChild(potBox(null,cur,190,potKey(sub),S.equip.friend));if(pop){wrap.className='potwrap';void wrap.offsetWidth;wrap.className='potwrap pop'}info.textContent=sub.stage[cur]||''}
   render(false);
-
-  var holding=false,t0=0,raf=0,dropTimer=0,busy=false;
-  function spawn(){
-    var d=el('i','raindrop');d.style.left=(30+Math.random()*40)+'%';d.style.animationDuration=(.45+Math.random()*.2)+'s';drops.appendChild(d);
-    setTimeout(function(){d.remove()},700);
-  }
-  function tick(now){
-    if(!holding)return;if(!cloud.isConnected){stop();return}
-    var p=Math.min(1,(now-t0)/POUR_MS);gfill.style.width=(p*100)+'%';
-    if(p>=1){grow();if(!holding)return;t0=now}
-    raf=requestAnimationFrame(tick);
-  }
-  function start(e){
-    if(e)e.preventDefault();
-    if(holding||busy||st.water<=0)return;
-    holding=true;cloud.className='cloudbtn on';cimg.src=A.cloud_with_rain;
-    t0=performance.now();raf=requestAnimationFrame(tick);
-    spawn();dropTimer=setInterval(function(){spawn();spawn()},80);
-    tone([392],'sine');
-  }
-  function stop(){
-    if(!holding)return;
-    holding=false;cancelAnimationFrame(raf);clearInterval(dropTimer);
-    cloud.className='cloudbtn'+(st.water<=0?' empty':'');cimg.src=A.cloud;gfill.style.width='0%';
-  }
-  function grow(){
-    st.water--;st.pieces++;track('water');save();tone([880,660],'sine',.07);
-    if(stage(sub)===0){
-      stop();busy=true;
-      var wasGold=hasGold(sub),code=decideBloom(sub,!!st.perfect);st.perfect=false;
-      var f=itemOf(sub,code);S.sun+=f.rare?15:5;track('bloom');save();
-      setTimeout(function(){if(!cloud.isConnected)return;bloomScene(sub,code,!wasGold&&hasGold(sub))},350);
-      return;
-    }
-    render(true);
-    if(st.water<=0)stop();
-  }
-  cloud.addEventListener('pointerdown',start);
-  cloud.addEventListener('touchstart',start,{passive:false});
-  ['pointerup','pointerleave','pointercancel','touchend','touchcancel'].forEach(function(ev){cloud.addEventListener(ev,stop)});
-  cloud.addEventListener('contextmenu',function(e){e.preventDefault()});
-  cloud.addEventListener('keydown',function(e){if((e.key===' '||e.key==='Enter')&&!e.repeat)start(e)});
-  cloud.addEventListener('keyup',function(e){if(e.key===' '||e.key==='Enter')stop()});
+  if(!grow)return;
+  function spawn(){var d=el('i','raindrop');d.style.left=(30+Math.random()*40)+'%';d.style.animationDuration=(.45+Math.random()*.2)+'s';drops.appendChild(d);setTimeout(function(){d.remove()},700)}
+  var dropTimer=setInterval(function(){if(!cloud.isConnected){clearInterval(dropTimer);return}spawn();spawn()},80);
+  var i=0;(function step(){if(!wrap.isConnected)return;if(i>=grow){clearInterval(dropTimer);cloud.className='cloudbtn';cimg.src=A.cloud;
+      if(bloom){st.perfect=false;save();setTimeout(function(){if(wrap.isConnected)bloomScene(sub,bloom.code,bloom.gold)},500)}return}
+    i++;cur=(cur+1)%PER;if(cur===0&&bloom)cur=PER-1;tone([660+i*60],'sine',.06);render(true);setTimeout(step,420)})();
 }
-
 function revealAll(body,pz){try{
   [].forEach.call(body.querySelectorAll('[data-rv]'),function(e){e.textContent=e.getAttribute('data-rv');e.classList.remove('q');e.classList.add('rv')});
   [].forEach.call(body.querySelectorAll('[data-bd]'),function(e,i){if(e.querySelector(':scope>.rvb'))return;var b=el('b','rvb',e.getAttribute('data-bd'));b.style.animationDelay=(i*.12)+'s';e.appendChild(b);e.classList.add('hasbd')});
@@ -6182,7 +6132,7 @@ function revealAll(body,pz){try{
   if(pz.sol){var bs=document.querySelectorAll('.ncard');[].forEach.call(bs,function(b,j){b.className='ncard'+(pz.sol.indexOf(j)>=0?' on rv':' dim')})}
   var qb=body;qb.classList.add('revealed')}catch(e){}}
 function sparkles(pb,pts){pts.forEach(function(p){var s=img('sparkles','sparkle');s.style.left=p[0]+'px';s.style.top=p[1]+'px';pb.appendChild(s)})}
-function afterBloom(sub){return stOf(sub).water>0?function(){waterScene(sub,false)}:resultDone}
+function afterBloom(sub){return resultDone}
 function bloomScene(sub,code,unlocked){
   clear();SND.bloom();
   var f=itemOf(sub,code),sc=el('div','screen'),c=el('div','center bloomin');
@@ -6194,7 +6144,7 @@ function bloomScene(sub,code,unlocked){
   sc.appendChild(c);
   var key='f'+code,d=el('div','dock');
   if(unlocked){var nb=el('button','cta','다음');nb.onclick=function(){goldScene(sub,key)};d.appendChild(nb)}
-  else{var row=el('div','dockrow');var later=el('button','cta light',stOf(sub).water>0?'비 더 내리기':'나중에 심기');later.onclick=afterBloom(sub);
+  else{var row=el('div','dockrow');var later=el('button','cta light','나중에 심기');later.onclick=afterBloom(sub);
     var plant=el('button','cta green','섬에 심기');plant.onclick=function(){gardenScreen(true,key)};row.appendChild(later);row.appendChild(plant);d.appendChild(row)}
   sc.appendChild(d);
   app.appendChild(sc);
@@ -6640,7 +6590,6 @@ function petLines(){var L=[],t=dayKey();
   var wn=wiltedList().length;if(wn)L.push('한자 나무에 복습할 열매가 '+wn+'개 있대. 맞히면 한 단계 자란대!');
   var sk=streak();if(sk>=2)L.push(sk+'일 연속이라니, 정말 대단해!');
   var nx=STK.filter(function(m){return m.d>sk&&m.item&&!(S.stk&&S.stk.got&&S.stk.got.indexOf(m.d)>=0)})[0];if(nx&&sk>=1)L.push(nx.d+'일 연속이면 '+josa(itemName(nx.item),'을','를')+' 받는대! '+(nx.d-sk)+'일 남았어.');
-  if(S.math.water>0)L.push('수학 화분에 줄 물방울이 '+S.math.water+'개 있대.');
   var IL=islLevel();if(IL.lv>=2)L.push('우리 섬이 '+josa('Lv.'+IL.lv,'이','가')+' 됐어! 점점 멋져진다.');
   var tt=totals(),pc=placedCount(),inv=0;for(var k in tt)inv+=Math.max(0,tt[k]-(pc[k]||0));if(inv)L.push('보관함에 놓을 물건이 '+inv+'개 있대. 어디에 놓을지 궁금해!');
   var ph=skyPhase();if(ph==='night')L.push('졸려… 하암. 별이 예쁘다.');if(ph==='eve')L.push('노을이 진짜 예쁘다!');
@@ -6882,12 +6831,11 @@ var LMACT={
     var m=SUBJ.math,st=stage(m),inn=sheet.firstChild;inn.innerHTML='';
     var hd=el('div','hd');var pv=el('div','sheetpot');pv.appendChild(potBox(null,st,64,potKey(m)));hd.appendChild(pv);
     var t=el('div');t.appendChild(el('small',null,'수학 화분 · '+st+' / '+PER));t.appendChild(el('h3',null,m.stage[st]));hd.appendChild(t);inn.appendChild(hd);
-    inn.appendChild(el('p',null,S.math.water>0?'물방울 '+S.math.water+'개가 있어요. 구름을 꾹 눌러 비를 내려 주세요.':'수학 문제를 풀면 물방울을 모을 수 있어요.'));
+    inn.appendChild(el('p',null,'수학 문제를 맞힐 때마다 꽃이 한 단계 자라요. '+(PER-st)+'문제만 더 맞히면 꽃이 펴요.'));
     var row=el('div','dockrow');
     var a=el('button','cta light','닫기');a.onclick=hideSheet;
-    var b=el('button','cta '+(S.math.water>0?'green':''),S.math.water>0?'비 내리기 ('+S.math.water+')':'수학 문제 풀기');b.onclick=function(){hideSheet();S.math.water>0?waterScene(m,false):startRound(m)};
+    var b=el('button','cta green','수학 문제 풀기');b.onclick=function(){hideSheet();startRound(m)};
     row.appendChild(a);row.appendChild(b);inn.appendChild(row);
-    if(S.math.water>0){var c=el('button','linkbtn','수학 문제 풀기');c.onclick=function(){hideSheet();startRound(m)};inn.appendChild(c)}
     sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;
     requestAnimationFrame(function(){sheet.className='sheet good show'});
   }
@@ -7691,7 +7639,7 @@ function dbgSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','h
   row([['장비·보석 처음으로',function(){var a=avS();a.own={};a.eqc={};a.gem=0;AVC={}}],['꾸미기 화면 열기',function(){setTimeout(function(){hideSheet();avScreen()},0)}]]);
   row([['날짜 +1일',function(){DBG.off++;dbgSave()}],['날짜 +7일',function(){DBG.off+=7;dbgSave()}]]);
   row([['날짜 원래대로',function(){DBG.off=0;dbgSave()}],['시각: 낮/저녁/밤',function(){DBG.hour=DBG.hour==null?18:DBG.hour===18?21:DBG.hour===21?11:null;dbgSave()}]]);
-  row([['낚시 티켓 +1',function(){fishS().tk++}],['물방울 +5',function(){S.math.water=(S.math.water||0)+5}]]);
+  row([['낚시 티켓 +1',function(){fishS().tk++}],['화분 한 단계 키우기',function(){S.math.pieces++}]]);
   row([['안내 다시 보기',function(){S.intro={}}],['오늘 기록 지우기',function(){var k=dayKey();S.days=S.days.filter(function(d){return d!==k});S.math.today=S.hz.today=S.en.today='';if(S.ko)S.ko.today='';ADV=null}]]);
   row([['국어 검수',function(){setTimeout(function(){hideSheet();koReview()},0)}],['국어 다음 쪽',function(){var k=koS(),b=koBand();k.pg[b]=(k.pg[b]||0)+1}]]);
   var ob=el('button','cta green','처음 시작 화면 보기');ob.onclick=function(){hideSheet();setTimeout(onbStart,300)};inn.appendChild(ob);
@@ -7898,7 +7846,7 @@ function villageScreen(){
   function badgeOf(id){
     if(id==='bee')return S.en.today!==today;
     if(id==='tree'){var wn=wiltedList().length;return wn?String(wn):S.hz.today!==today}
-    if(id==='pot')return S.math.water>0?String(S.math.water):S.math.today!==today;
+    if(id==='pot')return S.math.today!==today;
     if(id==='mail'){if(!S.path.char)return true;if(S.path.walk)return '완료';return chInfo().tries===0}
     if(id==='book')return koReady()&&S.ko.today!==today;
     if(id==='home'&&S.path.char&&avBadge())return true;
@@ -7999,8 +7947,8 @@ function startGuide(){
   var me=S.path.char||'rabbit',nm=ANIMALS[me]||'토끼';
   var steps=[
     [null,'안녕! 나는 '+nm+(batchim(nm)?'이야':'야')+'. 오늘부터 같이 섬을 꾸며 보자!'],
-    ['.vtask','수학 문제를 풀면 물방울이 생겨. 연속으로 맞히면 두 배야!'],
-    ['.lm-pot .v3art','물방울로 수학 화분에 비를 내리면 꽃이 피어.'],
+    ['.vtask','문제를 풀면 햇살이 생겨. 연속으로 맞히면 두 배야!'],
+    ['.lm-pot .v3art','수학 문제를 맞힐 때마다 화분의 꽃이 자라. 여섯 문제를 다 맞히면 꽃이 펴!'],
     ['.lm-tree .v3art','한자 문제를 풀면 한자 나무에 열매가 열려.'],
     ['.lm-book .v3art','국어 서점에서는 섬 친구들 이야기를 한 쪽씩 읽어. 열 쪽을 읽으면 책 한 권이 완성돼!'],
     ['.lm-mail .v3art','오솔길 표지판에서는 나랑 도전 문제를 풀면서 여행해. 할 게 있으면 표지판에 표시가 떠!'],
@@ -8045,14 +7993,14 @@ function todayLabel(){var d=dbgNow();return (d.getMonth()+1)+'월 '+d.getDate()+
 var CHARS=[{id:'rabbit',name:'토끼'},{id:'cat',name:'고양이'},{id:'penguin',name:'펭귄'},{id:'chipmunk',name:'다람쥐'}];
 var MISSIONS=[
  {t:'round',sub:'math',icon:'blossom',text:'수학 문제 한 판 풀기'},
- {t:'water',n:6,icon:'droplet',text:'화분에 물 6번 주기'},
+ {t:'round',sub:'en',icon:'hive_ico',text:'영어 문제 한 판 풀기'},
  {t:'round',sub:'hz',icon:'red_apple',text:'한자 문제 한 판 풀기'},
  {t:'combo',n:3,icon:'fire',text:'한 판에서 3연속 정답 만들기'},
  {t:'bloom',icon:'seedling',text:'꽃 한 송이 피우기'},
  {t:'correct',n:10,icon:'check_mark_button',text:'정답 10개 맞히기'},
  {t:'both',icon:'sun',text:'하루에 수학과 한자 모두 풀기'},
  {t:'perfect',icon:'sparkles',text:'한 판을 실수 없이 다 맞히기'},
- {t:'water',n:10,icon:'droplet',text:'화분에 물 10번 주기'},
+ {t:'correct',n:20,icon:'check_mark_button',text:'정답 20개 맞히기'},
  {t:'combo',n:5,icon:'fire',text:'한 판에서 5연속 정답 만들기'}
 ];
 var CHESTS=[{sun:20},{sun:20,item:'hatching_chick'},{sun:25},{sun:25,item:'hedgehog'},{sun:30},{sun:30,item:'turtle'},{sun:30},{sun:35,item:'owl'}];
@@ -8072,7 +8020,7 @@ function chestAt(k){return CHESTS[(Math.floor((k+1)/CHEST_EVERY)-Math.floor((k+1
 function curMission(){return isChest(S.path.step)?null:missionAt(S.path.step)}
 function need(m){return (m.t==='water'||m.t==='correct')?(m.n||1):1}
 function missionCheck(){var m=S.path.char?curMission():null;if(m&&m.t!=='ch'&&S.path.prog>=need(m))missionDone()}
-function mshort(m){return {ch:'도전',round:m.sub==='hz'?'한자 한 판':'수학 한 판',water:'물 주기',combo:'연속 정답',bloom:'꽃 피우기',correct:'정답',both:'수학+한자',perfect:'다 맞히기'}[m.t].replace(/ /g,'\u00a0')||'미션'}
+function mshort(m){return {ch:'도전',round:m.sub==='hz'?'한자 한 판':m.sub==='en'?'영어 한 판':'수학 한 판',water:'물 주기',combo:'연속 정답',bloom:'꽃 피우기',correct:'정답',both:'수학+한자',perfect:'다 맞히기'}[m.t].replace(/ /g,'\u00a0')||'미션'}
 function chAcc(){var L=(S.ch&&S.ch.log||[]).slice(-6);if(L.length<2)return '';var g=0,n=0;L.forEach(function(x){g+=x[2];n+=3});return '최근 도전 정답률 '+Math.round(g/n*100)+'%'}
 function missionDone(){
   S.sun+=0;S.path.step++;S.path.prog=0;S.path.walk=(S.path.walk||0)+1;save();
@@ -8173,7 +8121,6 @@ function trail(){missionCheck();
     var go=el('button','cta green chgo','도전하기');go.disabled=!left;
     go.onclick=function(){if(m.t==='ch'){chStart();return}
       if(m.t==='round'){S.cur=m.sub;save();startRound(SUBJ[m.sub]);return}
-      if((m.t==='water'||m.t==='bloom')&&S.math.water>0){waterScene(SUBJ.math,false);return}
       if(m.t==='water'||m.t==='bloom'){startRound(SUBJ.math);return}
       if(m.t==='both'){var t2=dayKey(),s2=S.math.today!==t2?'math':'hz';S.cur=s2;save();startRound(SUBJ[s2]);return}
       home();
