@@ -3229,6 +3229,38 @@ html body.pvmode::after,html body.pvmode::before{display:none!important}
 .pvmodalc{width:100%;max-width:340px;background:#fff;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:8px;font-family:var(--ko);box-shadow:0 20px 40px rgba(16,24,40,.2)}.pvmodalc b{font-size:1.05rem;font-weight:800;color:#101828}.pvmodalc p{margin:0;font-size:.86rem;color:#475467;line-height:1.5}
 .pvmodalb{display:flex;gap:8px;margin-top:10px}.pvmodalb .pvbtn{flex:1}
 .pv .stdtip2 b{font-size:.78rem;line-height:1.45}
+/* ---- 앱 톤에 맞춤: 하늘 배경 그대로, 둥근 흰 카드, 제목은 앱 글꼴 ---- */
+.screen.pv{background:transparent;margin:0;padding:0 0 28px}
+.pvtop{position:static;background:transparent;padding:10px 0 4px}
+.pvtt b{font-family:var(--game);font-weight:400;font-size:1.3rem;letter-spacing:0;color:var(--ink)}
+.pvtt small{color:var(--ink-2)}
+.pvtt{flex:1}
+.pvback{background:#fff;border-radius:50%;width:40px;height:40px;box-shadow:0 2px 0 rgba(10,60,100,.12)}
+.pvgear{height:36px;padding:0 14px;border-radius:999px;background:#fff;font-family:var(--game);font-size:.95rem;color:var(--ink);box-shadow:0 2px 0 rgba(10,60,100,.12)}
+.pv .pvsec,.pv .pvsec.pcard{border:0;border-radius:22px;box-shadow:0 2px 0 rgba(10,60,100,.06),0 8px 20px rgba(0,40,80,.06);padding:18px}
+.pvh h4,.pv .pvsec h3,.pv .pvsec .wkhd h3{font-family:var(--game);font-weight:400;font-size:1.08rem;letter-spacing:0;color:var(--ink)}
+.pvhero h3{margin:0 0 12px;font-size:1.25rem!important}
+.pvhero .pvstrip{margin-top:0}
+.pvday{gap:5px}.pvday i{height:28px;max-width:none;border-radius:9px}.pvday.on i{background:#7bd88f}.pvday.today i{box-shadow:inset 0 0 0 2px #f59f00}.pvday.today small{color:#e67700}
+.pvtip{margin:12px 0 0;font-size:.85rem;color:var(--ink-2);line-height:1.5}
+.pvsrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #f1f3f5}.pvh+.pvsrow{border-top:0}
+.pvsmain{flex:1;min-width:0;display:flex;align-items:center;gap:12px;background:none;box-shadow:none;text-align:left;padding:0;color:var(--ink)}
+.pvsmain img{width:40px;height:40px;object-fit:contain;flex:none}
+.pvsmain span{display:flex;flex-direction:column;min-width:0}
+.pvsmain b{font-size:.98rem;font-weight:800;display:flex;align-items:baseline;gap:8px}.pvsmain b em{font-style:normal;font-family:var(--game);font-weight:400;font-size:1rem;color:#1971c2}
+.pvsmain small{font-size:.74rem;color:var(--sub)}
+.pvstep{border:0;border-radius:12px;background:#f1f3f5;gap:2px;padding:2px}
+.pvstep button{width:38px;height:34px;border-radius:10px;background:#fff;box-shadow:0 1px 0 rgba(10,60,100,.12)}.pvstep button+button{border-left:0}
+.pvlink{border:0;background:#f1f3f5;border-radius:12px}
+.pvlinks .pvrow{min-height:50px}
+.pv .pvrow>em{color:var(--sub)}
+.pvbtn.wide{width:100%;height:46px}
+.pv .pvnote{background:#fff;border:0;border-radius:18px;box-shadow:0 2px 0 rgba(10,60,100,.06)}
+.pv .pvnote b{color:#1971c2}
+.pvkpis{border:0;background:#f1f3f5;gap:2px}.pvkpi{border-radius:0}
+.pvlv .pvlvt b{font-family:var(--game);font-weight:400;font-size:1.2rem;letter-spacing:0}
+.pvadv{margin:10px 0 0;padding:10px 12px;border-radius:14px;background:#fff8e6;display:flex;flex-direction:column;gap:2px;font-size:.82rem;line-height:1.45;color:#5c4813}.pvadv b{font-size:.88rem;color:#b35c00}
+.pv .pvdet>summary{margin:0}
 </style>
 
 <div id="app"></div>
@@ -16473,7 +16505,7 @@ function flyTo(key,from,to,n,cb){
   })(i);
 }
 function hideSheet(){sheet.className=sheet.className.replace(' show','');scrim.className='scrim'}
-function clear(){document.onkeydown=null;[].forEach.call(document.querySelectorAll('.guide.coach'),function(g){g.remove()});document.body.classList.remove('qmode');document.body.classList.remove('pvmode');document.documentElement.classList.remove('pvmode');hideSheet();app.innerHTML='';window.scrollTo(0,0)}
+function clear(){document.onkeydown=null;[].forEach.call(document.querySelectorAll('.guide.coach'),function(g){g.remove()});document.body.classList.remove('qmode');hideSheet();app.innerHTML='';window.scrollTo(0,0)}
 
 // ================= 상점 =================
 function shop(tab){
@@ -18842,18 +18874,24 @@ function studyCal(weeks){weeks=weeks||5;var card=el('section','card scal');var h
   card.appendChild(el('p','wktip',days?weeks+'주 동안 '+days+'일 공부했어요. 문제 '+tot+'개를 풀었어요.':'아직 기록이 없어요. 오늘 첫 칸을 채워 봐요!'));return card}
 // ================= 부모님 보기 =================
 // 아이가 이번 주에 무엇을 얼마나 했는지, 어디가 약한지, 한자 진도와 모의시험 점수를 한눈에 보여 줘요.
-var PV={tab:'sum',sub:'ko',wk:0,back:null,page:null,flash:null};
+var PV={sub:'ko',wk:0,back:null,page:null,flash:null};
 var PV_SUBN={ko:'국어',math:'수학',en:'영어',hz:'한자'};
-function parentScreen(back,tab){if(back)PV.back=back;if(!PV.back||!back&&!tab)PV.back=back||PV.back||houseScreen;if(tab)PV.tab=tab;var B=PV.back;
-  clear();document.body.classList.add('pvmode');document.documentElement.classList.add('pvmode');var sc=el('div','screen parscr pv');
-  var top=el('div','pvtop'),x=el('button','pvback');x.setAttribute('aria-label','돌아가기');x.innerHTML=BACK_SVG;x.onclick=function(){if(PV.page){PV.page=null;PV.flash=null;pvRe(true);return}PV.wk=0;B()};top.appendChild(x);
-  var tt=el('div','pvtt');tt.appendChild(el('b',null,PV.page?({grade:'학년',units:'수학 단원',hz:'한자 급수'}[PV.page]||'부모님 보기'):'부모님 보기'));tt.appendChild(el('small',null,GRADE_NAMES[curGrade()]+' · 연속 '+streak()+'일'));top.appendChild(tt);sc.appendChild(top);
-  if(PV.page){pvPage(sc);app.appendChild(sc);zMark&&zMark();return}
-  var tabs=el('div','pvtabs');[['sum','요약'],['sub','과목별'],['std','교육과정'],['set','설정']].forEach(function(t){var b=el('button','pvtab'+(PV.tab===t[0]?' on':''),t[1]);b.onclick=function(){PV.tab=t[0];pvRe(true)};tabs.appendChild(b)});sc.appendChild(tabs);
-  var body=el('div','pvbody');sc.appendChild(body);
-  try{({sum:pvSummary,sub:pvSubjects,std:pvStd,set:pvSettings}[PV.tab]||pvSummary)(body)}catch(e){console.error(e);body.appendChild(el('p','pvempty','화면을 불러오지 못했어요.'))}
+var PV_TITLE={set:'설정',grade:'학년',units:'수학 단원',hz:'한자 급수',sub:'',std:'교육과정 진도',log:'공부 기록',hw:'숙제',mail:'아이가 쓴 편지',cheer:'응원 스티커'};
+var PV_UP={grade:'set',units:'set',hz:'set'};
+// page: 없으면 첫 화면. 예전 탭 이름(sum/sub/std/set)도 받아요
+function parentScreen(back,page){if(back){PV.back=back;if(page===undefined)PV.page=null}if(page!==undefined&&page!==null)PV.page=page==='sum'?null:page;if(!PV.back)PV.back=houseScreen;var B=PV.back;
+  clear();var sc=el('div','screen parscr pv');
+  var top=el('div','pvtop'),x=el('button','pvback');x.setAttribute('aria-label','돌아가기');x.innerHTML=BACK_SVG;x.onclick=function(){if(PV.page){PV.page=PV_UP[PV.page]||null;PV.flash=null;pvRe(true);return}B()};top.appendChild(x);
+  var tt=el('div','pvtt');tt.appendChild(el('b',null,PV.page?(PV.page==='sub'?PV_SUBN[PV.sub]:PV_TITLE[PV.page]||'부모님 보기'):'부모님 보기'));if(!PV.page)tt.appendChild(el('small',null,GRADE_NAMES[curGrade()]+' · 연속 '+streak()+'일'));top.appendChild(tt);
+  if(!PV.page){var gs=el('button','pvgear','설정');gs.onclick=function(){pvGo('set')};top.appendChild(gs)}
+  sc.appendChild(top);var body=el('div','pvbody');sc.appendChild(body);
+  if(PV.flash){var f=el('div','pvnote');f.appendChild(el('b',null,PV.flash.t));f.appendChild(el('span',null,PV.flash.s));if(PV.flash.a){var fa=el('button','pvbtn sm',PV.flash.a[0]);fa.onclick=PV.flash.a[1];f.appendChild(fa)}body.appendChild(f)}
+  try{({set:pvSettings,grade:pvPgGrade,units:pvPgUnits,hz:pvPgHz,sub:pvSubjects,std:pvStd,log:pvLog,hw:pvHw,mail:pvMail,cheer:pvCheer}[PV.page]||pvMain)(body)}catch(e){console.error(e);body.appendChild(el('p','pvempty','화면을 불러오지 못했어요.'))}
   app.appendChild(sc);zMark&&zMark()}
-function pvRe(toTop){var y=window.scrollY||0;parentScreen(null,PV.tab);window.scrollTo(0,toTop?0:y)}
+function pvRe(toTop){var y=window.scrollY||0;parentScreen(null,PV.page||'sum');window.scrollTo(0,toTop?0:y)}
+// 수학 전체 단계: 지금 학년 단원의 유형 레벨 평균, ± 하면 모두 한 칸씩
+function mathLvAvg(){var a=activeTypes(),lv=S.math.lv||{};if(!a.length)return 1;return Math.round(a.reduce(function(t,k){return t+(lv[k]||1)},0)/a.length)}
+function mathShift(dir){if(!S.math.lv)S.math.lv={};activeTypes().forEach(function(k){S.math.lv[k]=Math.max(1,Math.min(5,(S.math.lv[k]||1)+dir))});save()}
 // --- 작은 부품 ---
 function pvSec(title,aside,cls){var s=el('section','pvsec'+(cls?' '+cls:''));if(title){var h=el('div','pvh');h.appendChild(el('h4',null,title));if(aside)h.appendChild(typeof aside==='string'?el('small',null,aside):aside);s.appendChild(h)}return s}
 function pvKpi(lab,val,sub,cls){var d=el('div','pvkpi');d.appendChild(el('small',null,lab));d.appendChild(el('b','tnum',val));if(sub)d.appendChild(el('em',cls||null,sub));return d}
@@ -18880,28 +18918,32 @@ function pvActivity(d0,d1){var A=[];function inR(d){return d!=null&&d>=d0&&d<=d1
   ((S.ch&&S.ch.log)||[]).forEach(function(x){if(inR(x[0])&&x[2]>=2)A.push({d:x[0],k:'ch',t:'오늘의 도전 성공',s:PV_SUBN[x[1]]||''})});
   ((S.hz&&S.hz.ex)||[]).forEach(function(r){if(inR(r.d))A.push({d:r.d,k:'hz',t:'한자 모의시험 '+r.sc+'점',s:GRADES[r.g]+(r.sc>=EX_PASS?' · 합격선 넘음':'')})});
   return A.sort(function(a,b){return b.d-a.d})}
-function pvSummary(body){var W=weekStats(PV.wk),P=weekStats(PV.wk+1);
-  var nav=el('div','pvweek');var pb=el('button','pvwkb');pb.innerHTML='&#8249;';pb.setAttribute('aria-label','이전 주');pb.disabled=PV.wk>=11;pb.onclick=function(){PV.wk++;pvRe()};
-  var nb=el('button','pvwkb');nb.innerHTML='&#8250;';nb.setAttribute('aria-label','다음 주');nb.disabled=PV.wk===0;nb.onclick=function(){PV.wk=Math.max(0,PV.wk-1);pvRe()};
-  function f(d){return (d.getMonth()+1)+'월 '+d.getDate()+'일'}var lab=el('div','pvwklab');lab.appendChild(el('b',null,PV.wk===0?'이번 주':PV.wk===1?'지난주':PV.wk+'주 전'));lab.appendChild(el('small',null,f(W.days[0])+' – '+f(W.days[6])));
-  nav.appendChild(pb);nav.appendChild(lab);nav.appendChild(nb);body.appendChild(nav);
-  var s=pvSec(null,null,'pvkpisec'),g=el('div','pvkpis');
-  var d1=pvDelta(W.n,P.n,'일');g.appendChild(pvKpi('공부한 날',W.n+'일',d1[0]||'7일 중',d1[1]));
-  var d2=pvDelta(W.q,P.q,'개');g.appendChild(pvKpi('푼 문제',W.q+'개',d2[0],d2[1]));
-  var a=W.q?Math.round(W.c/W.q*100):null,ap=P.q?Math.round(P.c/P.q*100):null;g.appendChild(pvKpi('정답률',a==null?'—':a+'%',a!=null&&ap!=null&&a!==ap?(a>ap?'▲ ':'▼ ')+Math.abs(a-ap)+'%p · 지난주 '+ap+'%':'처음 시도에 맞힌 비율',a!=null&&ap!=null?(a>ap?'up':a<ap?'down':''):''));
-  var wm=0;for(var k in W.wmin)wm+=W.wmin[k];g.appendChild(pvKpi('숙제',W.wdays+'일',wm?botHM(wm):'기록 없음'));s.appendChild(g);
-  var strip=el('div','pvstrip'),tdk=dayKey(),now=dbgNow();W.days.forEach(function(d,i){var c=el('div','pvday'+(W.study[i]?' on':'')+(dayKey(d)===tdk?' today':'')+(d>now?' fut':''));c.appendChild(el('small',null,'월화수목금토일'.charAt(i)));c.appendChild(el('i'));strip.appendChild(c)});s.appendChild(strip);body.appendChild(s);
-  var tip=pvInsight(W,P),nt=el('div','pvnote');nt.appendChild(el('b',null,tip[0]));nt.appendChild(el('span',null,tip[1]));body.appendChild(nt);
-  var s2=pvSec('과목별 정답률','처음 시도 기준');['ko','math','en','hz'].forEach(function(k){var r=W.rs[k]||[0,0];s2.appendChild(pvMeter(PV_SUBN[k],pvAcc(r),r[0],'',function(){PV.tab='sub';PV.sub=k;pvRe(true)}))});body.appendChild(s2);
-  var d0=dnumOf(W.days[0]),act=pvActivity(d0,d0+6),s3=pvSec('활동 기록',act.length?act.length+'개':'');
-  if(act.length)act.slice(0,8).forEach(function(x){var r=el('div','pvact');r.appendChild(el('i','pvdot '+x.k));var t=el('div');t.appendChild(el('b',null,x.t));if(x.s)t.appendChild(el('small',null,x.s));r.appendChild(t);r.appendChild(el('em',null,pvDayLab(x.d)));s3.appendChild(r)});
-  else s3.appendChild(el('p','pvempty','책 읽기, 편지, 도전, 모의시험 기록이 여기에 모여요.'));body.appendChild(s3);
-  try{var cal=studyCal(8);cal.className='pvsec pvcal';body.appendChild(cal)}catch(e){}
-  try{var hw=wsParentCard(PV.back);hw.className='pvsec pcard';body.appendChild(hw)}catch(e){}
-  try{var ch=cheerCard(PV.back);ch.className='pvsec pcard';body.appendChild(ch)}catch(e){}}
+function pvMain(body){var W=weekStats(0),P=weekStats(1);
+  var h=pvSec(null,null,'pvhero');h.appendChild(el('h3',null,W.n?'이번 주 '+W.n+'일 공부했어요':'이번 주는 아직 쉬고 있어요'));
+  var strip=el('div','pvstrip'),tdk=dayKey(),now=dbgNow();W.days.forEach(function(d,i){var c=el('div','pvday'+(W.study[i]?' on':'')+(dayKey(d)===tdk?' today':'')+(d>now?' fut':''));c.appendChild(el('i'));c.appendChild(el('small',null,'월화수목금토일'.charAt(i)));strip.appendChild(c)});h.appendChild(strip);
+  var tip=pvInsight(W,P);if(W.q)h.appendChild(el('p','pvtip',W.q+'문제를 풀고 '+Math.round(W.c/W.q*100)+'%를 한 번에 맞혔어요.'));var ad=el('p','pvadv');ad.appendChild(el('b',null,tip[0]));ad.appendChild(el('span',null,tip[1]));h.appendChild(ad);body.appendChild(h);
+  var s=pvSec('과목별 단계');['ko','math','en','hz'].forEach(function(k){s.appendChild(pvSubRow(k,W))});
+  s.appendChild(el('p','pvfoot','단계는 풀면서 저절로 오르내려요. 너무 쉽거나 어려워 보이면 바꿔 주세요.'));body.appendChild(s);
+  var l=pvSec(null,null,'pvlinks'),inApp=0,did=0,g=curGrade(),band=g<=2?'2':g<=4?'4':'6';try{STD.forEach(function(x){if(String(x.g)!==band)return;var k=stdStatus(x.code);if(k!=='off')inApp++;if(k==='good'||k==='doing'||k==='weak')did++})}catch(e){}
+  var nm=0;try{nm=mailList().filter(function(x){return x.rep}).length}catch(e){}
+  l.appendChild(pvRow('교육과정 진도',did+' / '+inApp+'개',function(){pvGo('std')}));
+  l.appendChild(pvRow('공부 기록','달력',function(){pvGo('log')}));
+  l.appendChild(pvRow('숙제',wsS().items.length?wsS().items.length+'개':'',function(){pvGo('hw')}));
+  l.appendChild(pvRow('아이가 쓴 편지',nm?nm+'통':'',function(){pvGo('mail')}));
+  l.appendChild(pvRow('응원 스티커 보내기',null,function(){pvGo('cheer')}));body.appendChild(l)}
+function pvSubRow(k,W){var r=el('div','pvsrow'),ic={ko:'books',math:'blossom',en:'k3_hive',hz:'red_apple'}[k],lv,ctrl;
+  if(k==='ko'){lv=STG_KO[koStage()].n;ctrl=pvStep(function(){pvKoLv(-1)},function(){pvKoLv(1)})}
+  else if(k==='math'){lv='Lv '+mathLvAvg();ctrl=pvStep(function(){mathShift(-1);pvRe()},function(){mathShift(1);pvRe()})}
+  else if(k==='en'){lv=STG_EN[enStage()].n;ctrl=pvStep(function(){enSetStage(enStage()-1,true);pvRe()},function(){enSetStage(enStage()+1,true);pvRe()})}
+  else{lv=GRADES[S.hz.cg];ctrl=el('button','pvlink','바꾸기');ctrl.onclick=function(){pvGo('hz')}}
+  var m=el('button','pvsmain');m.appendChild(img(ic));var t=el('span');var nm=el('b',null,PV_SUBN[k]);nm.appendChild(el('em',null,lv));t.appendChild(nm);var rr=W.rs[k]||[0,0];t.appendChild(el('small',null,rr[0]?'이번 주 '+rr[0]+'문제 · '+Math.round(rr[1]/rr[0]*100)+'%':'이번 주 기록 없음'));m.appendChild(t);m.onclick=function(){PV.sub=k;pvGo('sub')};r.appendChild(m);r.appendChild(ctrl);return r}
+function pvLog(body){var W=weekStats(0),d0=dnumOf(W.days[0]);try{var cal=studyCal(8);cal.className='pvsec pvcal';body.appendChild(cal)}catch(e){}
+  var act=pvActivity(d0-21,d0+6),s=pvSec('최근 활동');if(act.length)act.slice(0,10).forEach(function(x){var r=el('div','pvact');r.appendChild(el('i','pvdot '+x.k));var t=el('div');t.appendChild(el('b',null,x.t));if(x.s)t.appendChild(el('small',null,x.s));r.appendChild(t);r.appendChild(el('em',null,pvDayLab(x.d)));s.appendChild(r)});else s.appendChild(el('p','pvempty','책 읽기, 편지, 도전, 모의시험 기록이 여기에 모여요.'));body.appendChild(s)}
+function pvHw(body){var hw=wsParentCard(PV.back);hw.className='pvsec pcard';var h3=hw.querySelector('h3');if(h3)h3.remove();body.appendChild(hw);var b=el('button','pvbtn ghost wide','숙제 목록 바꾸기');b.onclick=function(){wsCfgSheet(function(){pvRe()})};body.appendChild(b)}
+function pvMail(body){var mc=mailParentCard();mc.className='pvsec mpcard';var h3=mc.querySelector('h3');if(h3)h3.remove();body.appendChild(mc)}
+function pvCheer(body){var ch=cheerCard(PV.back);ch.className='pvsec pcard';var h3=ch.querySelector('h3');if(h3)h3.remove();body.appendChild(ch)}
 // --- 과목별 ---
-function pvSubjects(body){var seg=el('div','pvseg');['ko','math','en','hz'].forEach(function(k){var b=el('button','pvsegb'+(PV.sub===k?' on':''),PV_SUBN[k]);b.onclick=function(){PV.sub=k;pvRe()};seg.appendChild(b)});body.appendChild(seg);
-  var W=weekStats(0);({ko:pvKo,math:pvMath,en:pvEn,hz:pvHz}[PV.sub]||pvKo)(body,W)}
+function pvSubjects(body){var W=weekStats(0);({ko:pvKo,math:pvMath,en:pvEn,hz:pvHz}[PV.sub]||pvKo)(body,W)}
 function pvLevel(name,val,desc,ctrl){var s=el('section','pvsec pvlv');var t=el('div','pvlvt');t.appendChild(el('small',null,name));t.appendChild(el('b',null,val));if(desc)t.appendChild(el('p',null,desc));s.appendChild(t);if(ctrl)s.appendChild(ctrl);return s}
 function pvWeek(body,W,k,extra){var r=W.rs[k]||[0,0],s=pvSec('이번 주'),g=el('div','pvkpis three');g.appendChild(pvKpi('푼 문제',r[0]+'개'));g.appendChild(pvKpi('정답률',r[0]?pvAcc(r)+'%':'—'));if(extra)g.appendChild(pvKpi(extra[0],extra[1],extra[2]));s.appendChild(g);body.appendChild(s)}
 function pvKo(body,W){var ks=koStats(),b=koBand(),st=STG_KO[koStage()],lv=koS().lv;
@@ -18915,12 +18957,12 @@ function pvKo(body,W){var ks=koStats(),b=koBand(),st=STG_KO[koStage()],lv=koS().
   s3.appendChild(el('p','pvfoot','틀린 맞춤법·표현 문제는 며칠 뒤 다시 나와요. 맞춤법과 표현은 학년과 상관없이 실력에 맞춰 Lv 1~9가 나와요.'));body.appendChild(s3);
   try{var mc=mailParentCard('ko');mc.className='pvsec mpcard';body.appendChild(mc)}catch(e){}}
 function pvMath(body,W){var g=curGrade(),act=activeTypes(),off=Object.keys(unitsOff()).length;
-  body.appendChild(pvLevel('수학',GRADE_NAMES[g]+' 교육과정',act.length+'개 유형 연습 중'+(off?' · 꺼진 단원 '+off+'개':''),(function(){var l=el('button','pvlink','단원 설정');l.onclick=function(){pvGo('units')};return l})()));
+  body.appendChild(pvLevel('수학 단계',GRADE_NAMES[g]+' · Lv '+mathLvAvg(),act.length+'개 유형 연습 중'+(off?' · 꺼진 단원 '+off+'개':'')+' · Lv 1~5',pvStep(function(){mathShift(-1);pvRe()},function(){mathShift(1);pvRe()})));
   pvWeek(body,W,'math',['피운 꽃',S.math.hist.length+'송이','누적']);
   var dn=dnum(),cnt={};(S.mx||[]).forEach(function(m){if(dn-m[0]<=21&&m[1]==='m')cnt[m[2]]=(cnt[m[2]]||0)+1});var weak=Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a]}).slice(0,5);
   var s=pvSec('자주 틀린 단원','최근 3주');if(weak.length)weak.forEach(function(k){s.appendChild(pvRow(SUBJ.math.types[k]||k,cnt[k]+'번 틀림',null,'지금 Lv.'+((S.math.lv||{})[k]||1)))});else s.appendChild(el('p','pvempty','최근 3주 동안 자주 틀린 단원이 없어요.'));
   s.appendChild(el('p','pvfoot','틀린 문제는 섬 학교 오답 교실에 모이고, 두 번 연속 맞히면 졸업해요.'));body.appendChild(s);
-  var s2=pvSec('유형별 숙련도','Lv 1~5 · 풀면서 저절로 올라가요');act.forEach(function(k){var lv=(S.math.lv||{})[k]||1,r=el('div','pvrow');var t=el('span','pvrl');t.appendChild(el('b',null,SUBJ.math.types[k]||k));r.appendChild(t);var d=el('div','pvdots');for(var i=1;i<=5;i++)d.appendChild(el('i',i<=lv?'on':null));r.appendChild(d);s2.appendChild(r)});body.appendChild(s2)}
+  var s2=pvSec(null),dd=el('details','pvdet');dd.appendChild(el('summary',null,'유형별 Lv 보기 ('+act.length+'개)'));s2.appendChild(dd);act.forEach(function(k){var lv=(S.math.lv||{})[k]||1,r=el('div','pvrow');var t=el('span','pvrl');t.appendChild(el('b',null,SUBJ.math.types[k]||k));r.appendChild(t);var d=el('div','pvdots');for(var i=1;i<=5;i++)d.appendChild(el('i',i<=lv?'on':null));r.appendChild(d);dd.appendChild(r)});body.appendChild(s2)}
 function pvEn(body,W){var st=enStage(),S_=STG_EN[st],ep=S.en.p||{},mast=Object.keys(ep).filter(function(w){return ep[w]===7}).length;
   body.appendChild(pvLevel('영어 단계',S_.n+' · '+S_.g+' · '+S_.c,(enUsingCustom()?'우리 집 단어장 70% + ':'')+S_.d,pvStep(function(){enSetStage(st-1,true);pvRe()},function(){enSetStage(st+1,true);pvRe()})));
   var d0=dnumOf(W.days[0]),eb=libS().books.filter(function(b){return b.lang==='en'&&b.d>=d0&&b.d<=d0+6}).length;
@@ -18941,11 +18983,9 @@ function pvHz(body,W){var g=S.hz.cg||0,open=Math.min(gradeCap(g),S.hz.gu[g]||0),
   else s2.appendChild(el('p','pvempty','아직 '+GRADES[g]+' 모의시험을 보지 않았어요. 한자 나무 → 시험에서 볼 수 있어요.'));body.appendChild(s2)}
 // --- 설정 하위 화면 ---
 function pvGo(pg){PV.page=pg;PV.flash=null;pvRe(true)}
+
 function pvConfirm(title,text,okLab,onOk){var ov=el('div','pvmodal'),c=el('div','pvmodalc');c.appendChild(el('b',null,title));c.appendChild(el('p',null,text));var r=el('div','pvmodalb');var no=el('button','pvbtn ghost','취소');no.onclick=function(){ov.remove()};var ok=el('button','pvbtn',okLab);ok.onclick=function(){ov.remove();onOk()};r.appendChild(no);r.appendChild(ok);c.appendChild(r);ov.appendChild(c);ov.onclick=function(e){if(e.target===ov)ov.remove()};document.body.appendChild(ov)}
 function pvTog(on,f){var t=el('button','pvtog'+(on?' on':''));t.setAttribute('role','switch');t.setAttribute('aria-checked',on?'true':'false');t.appendChild(el('i'));t.onclick=function(e){e.stopPropagation();f()};return t}
-function pvPage(sc){var body=el('div','pvbody');sc.appendChild(body);
-  if(PV.flash){var f=el('div','pvnote');f.appendChild(el('b',null,PV.flash.t));f.appendChild(el('span',null,PV.flash.s));if(PV.flash.a){var a=el('button','pvbtn sm',PV.flash.a[0]);a.onclick=PV.flash.a[1];f.appendChild(a)}body.appendChild(f)}
-  ({grade:pvPgGrade,units:pvPgUnits,hz:pvPgHz}[PV.page])(body)}
 function pvPgGrade(body){var g=curGrade(),s=pvSec(null);
   [1,2,3,4,5,6].forEach(function(n){var ok=UNITS.some(function(u){return u.g===n});var chk=el('i','pvcheck'+(n===g?' on':''));var r=pvRow(GRADE_NAMES[n],n===g?chk:null,ok&&n!==g?function(){pvConfirm(GRADE_NAMES[n]+'으로 바꿀까요?','수학 단원과 국어 이야기책이 '+GRADE_NAMES[n]+'에 맞춰져요. 맞춤법·표현 단계는 새 학년 시작 단계보다 낮을 때만 올라가요. 영어와 한자는 그대로예요.','바꾸기',function(){S.grade=n;S.uoff={};try{koOnGrade()}catch(e){}save();PV.flash={t:GRADE_NAMES[n]+'으로 바꿨어요',s:'수학은 쉬운 단계부터 시작해요. 아이와 함께 실력 알아보기(10문제)를 하면 시작 단계를 바로 맞출 수 있어요.',a:['수학 실력 알아보기',function(){PV.page=null;PV.flash=null;mathLevelTest()}]};pvRe(true)})}:null,ok?null:'준비 중');if(n===g)r.classList.add('cur');s.appendChild(r)});
   body.appendChild(s);body.appendChild(el('p','pvfoot pvpad','학년은 수학 단원과 국어 이야기책 수준을 정해요. 영어는 학년과 따로 실력에 맞춰 단계가 오르내려요.'))}
@@ -18960,12 +19000,9 @@ function pvStd(body){var c=stdCard();c.className='pvsec stdcard';body.appendChil
 function pvSettings(body){
   var s=pvSec('학습'),uon=UNITS.filter(function(u){return u.g===curGrade()}),uoff=uon.filter(function(u){return unitsOff()[u.id]}).length;s.appendChild(pvRow('학년',GRADE_NAMES[curGrade()],function(){pvGo('grade')}));s.appendChild(pvRow('수학 단원',(uon.length-uoff)+' / '+uon.length+'개 켜짐',function(){pvGo('units')}));
   var r=el('div','pvrow col');var t=el('span','pvrl');t.appendChild(el('b',null,'국어 책 수준'));r.appendChild(t);var sg=el('div','pvseg sm');[['','학년에 맞춤'],['g12','1~2학년'],['g34','3~4학년'],['g56','5~6학년']].forEach(function(o){var b=el('button','pvsegb'+((koS().band||'')===o[0]?' on':''),o[1]);b.onclick=function(){koS().band=o[0]||null;save();pvRe()};sg.appendChild(b)});r.appendChild(sg);s.appendChild(r);
-  var ko=STG_KO[koStage()],en=STG_EN[enStage()];
-  var r1=pvRow('국어 단계',null,null,ko.n+' · '+ko.g);r1.appendChild(pvStep(function(){pvKoLv(-1)},function(){pvKoLv(1)}));s.appendChild(r1);
-  var r2=pvRow('영어 단계',null,null,en.n+' · '+en.g+' · '+en.c);r2.appendChild(pvStep(function(){enSetStage(enStage()-1,true);pvRe()},function(){enSetStage(enStage()+1,true);pvRe()}));s.appendChild(r2);
   s.appendChild(pvRow('한자 급수',GRADES[S.hz.cg],function(){pvGo('hz')}));
   s.appendChild(pvRow('실력 알아보기 다시 하기',null,function(){setTimeout(onbBegin,50)},'수학·영어·한자 시작 단계를 다시 정해요'));
-  s.appendChild(el('p','pvfoot','단계는 문제를 풀면서 저절로 오르내려요. 최근 정답률이 85%를 넘으면 오르고 60%보다 낮으면 내려가요.'));body.appendChild(s);
+  body.appendChild(s);
   var s2=pvSec('우리 집');s2.appendChild(pvRow('숙제 목록',wsS().items.length+'개',function(){wsCfgSheet(function(){pvRe()})}));body.appendChild(s2);
   try{var vc=voiceCard();vc.className='pvsec vccard';body.appendChild(vc)}catch(e){}
   var R=S.reports||[],s3=pvSec('아이가 알려 준 이상한 문제',R.length+'개');
