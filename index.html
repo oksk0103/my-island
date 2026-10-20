@@ -4177,7 +4177,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.83";
+var APP_VER="1.0.84";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -8545,7 +8545,7 @@ var SVGNS='http://www.w3.org/2000/svg',HZSEQ=0;
 var HZ_RN={'艸':'艹(초두머리)는 우리나라에서 4획으로 세요','辵':'辶(책받침)은 우리나라에서 4획으로 세요','阜':'阝(좌부변)은 우리나라에서 3획으로 세요','邑':'阝(우부방)은 우리나라에서 3획으로 세요'};
 function hzStrokeNote(c,d){var h=H8[HIDX[c]]||[],m=h[4],n=d[0].length,src=d[2]||'c',t='총 '+(m||n)+'획';
   if(m&&n!==m)t+=' · 그림은 '+n+'획으로 그려요. '+(Math.abs(m-n)===1&&HZ_RN[h[3]]||'우리나라 사전은 글자 모양을 조금 달리 보아 '+m+'획으로 세요');
-  if(src!=='k')t+=' · 참고용 획순('+(src==='j'?'일본':src==='t'?'대만':'중국')+' 자료라 우리 획순과 다를 수 있어요)';return t}
+  if(src==='m')t+=' · 참고용 획순(부분 획순을 이어 붙여 만든 그림이라 우리 획순과 다를 수 있어요)';else if(src!=='k')t+=' · 참고용 획순('+(src==='j'?'일본':src==='t'?'대만':'중국')+' 자료라 우리 획순과 다를 수 있어요)';return t}
 function sv(tag,attrs,parent){var e=document.createElementNS(SVGNS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
 function polyLen(m){var L=0;for(var i=1;i<m.length;i++)L+=Math.hypot(m[i][0]-m[i-1][0],m[i][1]-m[i-1][1]);return L}
 // 글자 판: 田자 칸 + (획순 데이터가 있으면) 획마다 그리기
