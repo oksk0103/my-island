@@ -4177,7 +4177,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.82";
+var APP_VER="1.0.83";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -8541,6 +8541,11 @@ function strokeLoad(c,cb){var k=strokeKey(c);if(STROKE[k]!==undefined){cb(STROKE
   function done(j){STROKE[k]=j||null;var L=STROKE_L[k];STROKE_L[k]=null;L.forEach(function(f){try{f()}catch(e){}});if(!j)setTimeout(function(){if(STROKE[k]===null)delete STROKE[k]},30000)}
   try{fetch('stroke/'+k+'.json').then(function(r){if(!r.ok)throw 0;return r.json()}).then(done,function(){done(null)})}catch(e){done(null)}}
 var SVGNS='http://www.w3.org/2000/svg',HZSEQ=0;
+// 획수 안내: 우리나라 사전 획수(H8)를 먼저 보여 줘요. 획순 그림의 획 수가 다르면 까닭을, 한국 획순 자료가 아니면 '참고용'이라고 알려 줘요
+var HZ_RN={'艸':'艹(초두머리)는 우리나라에서 4획으로 세요','辵':'辶(책받침)은 우리나라에서 4획으로 세요','阜':'阝(좌부변)은 우리나라에서 3획으로 세요','邑':'阝(우부방)은 우리나라에서 3획으로 세요'};
+function hzStrokeNote(c,d){var h=H8[HIDX[c]]||[],m=h[4],n=d[0].length,src=d[2]||'c',t='총 '+(m||n)+'획';
+  if(m&&n!==m)t+=' · 그림은 '+n+'획으로 그려요. '+(Math.abs(m-n)===1&&HZ_RN[h[3]]||'우리나라 사전은 글자 모양을 조금 달리 보아 '+m+'획으로 세요');
+  if(src!=='k')t+=' · 참고용 획순('+(src==='j'?'일본':src==='t'?'대만':'중국')+' 자료라 우리 획순과 다를 수 있어요)';return t}
 function sv(tag,attrs,parent){var e=document.createElementNS(SVGNS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
 function polyLen(m){var L=0;for(var i=1;i<m.length;i++)L+=Math.hypot(m[i][0]-m[i-1][0],m[i][1]-m[i-1][1]);return L}
 // 글자 판: 田자 칸 + (획순 데이터가 있으면) 획마다 그리기
@@ -8616,8 +8621,8 @@ function hzCards(list,opts,done){opts=opts||{};var idx=opts.start||0;
     if(opts.browse){var I=introS();if(!I.hzcard){I.hzcard=1;save();setTimeout(function(){if(sc.isConnected)coachRun([['.hzmode','학습에서는 카드로 뜻과 획순을 익히고, 확인 문제에서는 지금 글자를 혼자 맞혀 봐. 연습이라 햇살은 없어.'],['.hzctr .wstar','별표를 누르면 이 한자가 오답노트에 남아서 다시 풀 수 있어.','알겠어!']])},350)}}
     strokeLoad(c,function(d){if(!sc.isConnected)return;B=hzBoard(c,d,bw);window.__hzB=B;slot.appendChild(B.el);
       if(B.font){bPlay.disabled=bTrace.disabled=true;msg.textContent='이 글자는 아직 획순 자료가 없어요.';return}
-      msg.textContent='총 '+d[0].length+'획';hzAnimate(B);
-      bPlay.onclick=function(){if(B.stopTrace)B.stopTrace();msg.textContent='총 '+d[0].length+'획';hzAnimate(B)};
+      var note=hzStrokeNote(c,d);msg.textContent=note;hzAnimate(B);
+      bPlay.onclick=function(){if(B.stopTrace)B.stopTrace();msg.textContent=note;hzAnimate(B)};
       bTrace.onclick=function(){if(B.stopTrace)B.stopTrace();msg.textContent='회색 글자 위를 손가락으로 한 획씩 따라 써 봐요. (1 / '+d[0].length+'획)';
         hzTrace(B,function(ok){msg.textContent=ok?'잘 썼어요!':'';if(ok){SND.good&&SND.good(0);burst&&burst(innerWidth/2,innerHeight*.35,18,false)}},function(k,n){if(k<n)msg.textContent='좋아요! 다음 획 ('+(k+1)+' / '+n+'획)'})}})}
   show()}
@@ -8687,11 +8692,11 @@ function exMake(g){var L=exGradeChars(g),W=exWords(g),Q=[],used={};
   var WMS=shuffle(WM.slice());for(var m=0;m<nM;m++){var wm=WMS[m%WMS.length],om=shuffle(exUniq(WM,function(x){return hwMean(x[0])[0]},4,wm));Q.push({sec:'한자어 뜻',q:'"'+wm[1]+'('+wm[0]+')"의 뜻은?',big:wm[0],word:1,sub:hwBreak(wm[0]),opts:om.map(function(x){return hwMean(x[0])[0]}),ans:om.indexOf(wm),ch:wm[0][HIDX[wm[0][0]]>=GB[g]?0:1],why:wm[1]+'('+wm[0]+') = '+hwMean(wm[0])[0]})}
   for(var s=0;s<nS;s++){var h5=pickC();Q.push({sec:'필순',stroke:h5[0],q:'빨간 획은 몇 번째로 쓸까요?',opts:[],ans:-1,ch:h5[0]})}
   return Q}
-// 필순 문제는 획순 자료가 있어야 해서, 자료를 받은 뒤 보기를 만들어요 (없으면 훈음 문제로 바꿔요)
+// 필순 문제는 한국 획순 자료(획수가 사전과 같은 글자)가 있어야 해서, 자료를 받은 뒤 보기를 만들어요 (없으면 훈음 문제로 바꿔요)
 function exPrepStroke(Q,g,done){var P=Q.filter(function(q){return q.stroke}),left=P.length,fin=false;if(!left){done();return}
   function end(){if(fin)return;fin=true;done()}
   setTimeout(function(){if(fin)return;P.forEach(function(q){if(q.stroke&&!q.data){var L=exGradeChars(g),h=H8[HIDX[q.stroke]],o=shuffle(exUniq(L,function(x){return hzName(x)},4,h));q.sec='훈음';q.stroke=null;q.big=h[0];q.q='다음 한자의 훈(뜻)과 음(소리)은?';q.opts=o.map(hzName);q.ans=o.indexOf(h);q.why=h[0]+' = '+hzName(h)}});end()},6000);
-  P.forEach(function(q){strokeLoad(q.stroke,function(d){if(fin)return;if(d&&d[0].length>=3){var n=d[0].length,k=R(1,n-1);q.data=d;q.k=k;var nums=[k+1];var c=[k,k+2,k+3,k-1,k+4].filter(function(x){return x>=1&&x<=n&&nums.indexOf(x)<0});shuffle(c).slice(0,3).forEach(function(x){nums.push(x)});
+  P.forEach(function(q){strokeLoad(q.stroke,function(d){if(fin)return;var hh=H8[HIDX[q.stroke]]||[];if(d&&d[0].length>=3&&(d[2]||'c')==='k'&&d[0].length===hh[4]){var n=d[0].length,k=R(1,n-1);q.data=d;q.k=k;var nums=[k+1];var c=[k,k+2,k+3,k-1,k+4].filter(function(x){return x>=1&&x<=n&&nums.indexOf(x)<0});shuffle(c).slice(0,3).forEach(function(x){nums.push(x)});
         for(var x=1;nums.length<4&&x<=n+3;x++)if(nums.indexOf(x)<0)nums.push(x);nums=shuffle(nums);q.opts=nums.map(function(x){return x+'번째'});q.ans=nums.indexOf(k+1);q.why=q.stroke+'은(는) 모두 '+n+'획, 빨간 획은 '+(k+1)+'번째예요.'}
       else{var L=exGradeChars(g),h=H8[HIDX[q.stroke]],o=shuffle(exUniq(L,function(x){return hzName(x)},4,h));q.sec='훈음';q.stroke=null;q.big=h[0];q.q='다음 한자의 훈(뜻)과 음(소리)은?';q.opts=o.map(hzName);q.ans=o.indexOf(h);q.why=h[0]+' = '+hzName(h)}
       if(--left===0)end()})})}
