@@ -2476,6 +2476,9 @@ html body .qscreen.q-en .choice:active{box-shadow:inset 0 0 0 1.5px #bdd1ea,0 1p
 .tfr{display:grid;grid-template-columns:repeat(5,30px);grid-auto-rows:30px;gap:2px;padding:4px;border-radius:8px;background:#fff8e6;box-shadow:inset 0 0 0 2px #e6cf9a}
 .tfr i{display:flex;align-items:center;justify-content:center;border-radius:4px;background:#fff;box-shadow:inset 0 0 0 1px #e6cf9a}
 .tfr i img{width:24px;height:24px;object-fit:contain}
+.tfr i.off{position:relative;background:#fff1ee}.tfr i.off img{opacity:.35}
+.tfr i.off::after{content:'';z-index:1;position:absolute;left:4px;right:4px;top:50%;height:3px;margin-top:-1.5px;border-radius:2px;background:#e8590c;transform:rotate(-45deg)}
+.tfr i.off::before{content:'';z-index:1;position:absolute;left:4px;right:4px;top:50%;height:3px;margin-top:-1.5px;border-radius:2px;background:#e8590c;transform:rotate(45deg)}
 .bundles{display:flex;align-items:flex-end;justify-content:center;gap:10px;flex-wrap:wrap}
 .bund{display:flex;flex-direction:column;gap:2px;padding:3px;border-radius:6px;background:#ffe8cc;box-shadow:inset 0 0 0 2px #e8a86b}
 .bund i,.ones i{display:block;width:16px;height:9px;border-radius:2px;background:#ff922b;box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}
@@ -4177,7 +4180,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.96";
+var APP_VER="1.0.98";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -7488,7 +7491,8 @@ function pickObj(){return OBJS[R(0,OBJS.length-1)]}
 // 물건 n개를 줄지어 (10개씩 한 줄, cross=빼기 표시 개수)
 function objRow(n,key,cross,small){var w=el('div','objrow'+(small?' sm':''));for(var i=0;i<n;i++){var im=img(key);if(cross&&i>=n-cross)im.className='xo';w.appendChild(im)}return w}
 // 십 프레임: n개 (10칸 묶음)
-function tenFrames(n,key){var w=el('div','tenfr');var k=Math.ceil(n/10);for(var f=0;f<k;f++){var fr=el('div','tfr');for(var i=0;i<10;i++){var c=el('i');if(f*10+i<n){var im=img(key);c.appendChild(im);c.className='on'}fr.appendChild(c)}w.appendChild(fr)}return w}
+// take: 빼는 수만큼 뒤에서부터 가위표(낱개 먼저, 모자라면 10에서) — 뺄셈 그림에서 '몇 개를 덜어 내는지' 보여 줘요
+function tenFrames(n,key,take){take=take||0;var w=el('div','tenfr');var k=Math.ceil(n/10);for(var f=0;f<k;f++){var fr=el('div','tfr');for(var i=0;i<10;i++){var c=el('i'),j=f*10+i;if(j<n){var im=img(key);c.appendChild(im);c.className=j>=n-take?'on off':'on'}fr.appendChild(c)}w.appendChild(fr)}if(take)w.setAttribute('aria-label',n+'개 중 '+take+'개를 덜어 내요');return w}
 // 10개씩 묶음 + 낱개 (막대/낱개 블록)
 function bundles(tens,ones){var w=el('div','bundles');for(var i=0;i<tens;i++){var b=el('div','bund');for(var j=0;j<10;j++)b.appendChild(el('i'));w.appendChild(b)}var o=el('div','ones');for(var k=0;k<ones;k++)o.appendChild(el('i'));if(ones)w.appendChild(o);return w}
 function svgEl(w,h,inner,cls){var d=el('div',cls||'shp');d.innerHTML='<svg viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'" aria-hidden="true">'+inner+'</svg>';return d}
@@ -7663,7 +7667,7 @@ function genAdd20(lv){
   if(lv<=2){var a,b;do{a=R(2,9);b=R(2,9)}while(a+b<=10);var s=a+b;/* 받아올림 있는 (a,b) 짝을 고르게 */return {mode:'pad',q:lv===2&&Math.random()<.5?'덧셈을 해 볼까요?':'계산해 볼까요?',answer:s,hint:a+'에 '+josa(String(10-a),'을','를')+' 더해 10을 만들고, 남은 '+josa(String(b-(10-a)),'을','를')+' 더해요.',explain:a+' + '+(10-a)+' = 10, 10 + '+(b-(10-a))+' = '+s+'이에요.',render:function(box,P){if(lv===1)box.appendChild(tenFrames(a,'droplet'));var r=el('div','ansrow big');r.appendChild(el('span','unit',a+' + '+b+' ='));r.appendChild(P.slot);box.appendChild(r)}}}
   if(lv<=4){var x,y;do{x=R(11,18);y=R(2,9)}while(y<=x-10);var d=x-y,bl=lv===4&&Math.random()<.4,ex=x+' − '+(x-10)+' = 10, 10 − '+(y-(x-10))+' = '+d+'이에요.';/* 받아내림 있는 (x,y) 짝을 고르게 */
     if(bl)return {mode:'pad',q:'빈칸에 알맞은 수는?',answer:y,hint:x+'에서 얼마를 빼야 '+josa(String(d),'이','가')+' 될까요? '+x+' − '+josa(String(d),'을','를')+' 계산해 봐요.',explain:x+' − '+y+' = '+d+'이니까 빈칸은 '+y+'이에요. ('+ex+')',render:function(box,P){var r=el('div','ansrow big');r.appendChild(el('span','unit',x+' −'));r.appendChild(P.slot);r.appendChild(el('span','unit','= '+d));box.appendChild(r)}};
-    return {mode:'pad',q:lv===3&&Math.random()<.5?'뺄셈을 해 볼까요?':'계산해 볼까요?',answer:d,hint:x+'에서 먼저 '+josa(String(x-10),'을','를')+' 빼서 10을 만들고, 남은 '+josa(String(y-(x-10)),'을','를')+' 더 빼요.',explain:ex,render:function(box,P){if(lv===3)box.appendChild(tenFrames(x,'droplet'));var r=el('div','ansrow big');r.appendChild(el('span','unit',x+' − '+y+' ='));r.appendChild(P.slot);box.appendChild(r)}}}
+    return {mode:'pad',q:lv===3&&Math.random()<.5?'뺄셈을 해 볼까요?':'계산해 볼까요?',answer:d,hint:x+'에서 먼저 '+josa(String(x-10),'을','를')+' 빼서 10을 만들고, 남은 '+josa(String(y-(x-10)),'을','를')+' 더 빼요.',explain:ex,render:function(box,P){if(lv===3)box.appendChild(tenFrames(x,'droplet',y));var r=el('div','ansrow big');r.appendChild(el('span','unit',x+' − '+y+' ='));r.appendChild(P.slot);box.appendChild(r)}}}
   var pl=Math.random()<.5,a5=R(5,9),b5=R(10-a5+1,9),x5=R(11,18),y5=R(x5-9,9),T=pl?['딸기 '+a5+'개와 '+b5+'개를 모으면 모두 몇 개일까요?','개',a5+b5]:['색종이 '+x5+'장 중 '+y5+'장을 썼어요. 몇 장 남았을까요?','장',x5-y5];
   return {mode:'pad',q:T[0],answer:T[2],hint:pl?'10을 먼저 만들어 더해요.':'10을 먼저 만들어 빼요.',explain:(pl?a5+' + '+b5:x5+' − '+y5)+' = '+T[2]+T[1]+'이에요.',render:function(box,P){unitPad(box,P,'',T[1])}}}
 // ---------- 2-1 ----------
@@ -8545,7 +8549,7 @@ var SVGNS='http://www.w3.org/2000/svg',HZSEQ=0;
 var HZ_RN={'艸':'艹(초두머리)는 가로획을 이어 3획으로 써도 되지만, 획수는 4획으로 세요','辵':'辶(책받침)은 우리나라에서 4획으로 쓰고 세요','阜':'阝(좌부변)은 우리나라에서 3획으로 세요','邑':'阝(우부방)은 우리나라에서 3획으로 세요','示':'礻(보일시변)은 우리나라에서 示처럼 5획으로 세요','食':'飠(밥식변)은 우리나라에서 食처럼 9획으로 세요'};
 var HZ_ZHE='者都著諸暑緖署箸屠堵賭渚奢煮躇猪睹';// 者가 들어간 글자: 우리나라는 점을 찍어 9획
 // 어문회 상담 답변으로 정리한 글자별 설명(글꼴에 따라 모양·획수가 다른 글자)
-var HZ_FORM={'毒':'아래를 그림처럼 母 모양으로 쓰면 9획, 강희자전 모양인 毋(말 무)로 쓰면 8획이에요. 둘 다 맞아요'};
+var HZ_FORM={'成':'그림처럼 丁을 ㄱ 모양 한 획으로 쓰면 6획, 본래 모양(戊에 丁 2획)으로 쓰면 7획이에요. 둘 다 맞아요','毒':'아래를 그림처럼 母 모양으로 쓰면 9획, 강희자전 모양인 毋(말 무)로 쓰면 8획이에요. 둘 다 맞아요'};
 function hzStrokeNote(c,d){var h=H8[HIDX[c]]||[],m=h[4],n=d[0].length,src=d[2]||'c',t='총 '+(m||n)+'획';if(HZ_FORM[c])return t+' · '+HZ_FORM[c];
   if(m&&n!==m)t+=' · 그림은 '+n+'획으로 그려요. '+(m-n===1&&HZ_ZHE.indexOf(c)>=0&&'者는 우리나라에서 日 위에 점을 찍어 9획으로 써요'||Math.abs(m-n)===1&&HZ_RN[h[3]]||'우리나라 사전은 글자 모양을 조금 달리 보아 '+m+'획으로 세요');
   return t}
