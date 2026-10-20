@@ -4177,7 +4177,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.85";
+var APP_VER="1.0.86";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -8684,7 +8684,7 @@ function exUniq(L,key,need,first){var seen={},o=[];if(first){seen[key(first)]=1;
 // 문제 한 개: {sec, q, stem(box), opts[], ans, ch(오답노트용 한자), why}
 function exMake(g){var L=exGradeChars(g),W=exWords(g),Q=[],used={};
   function pickC(){for(var t=0;t<40;t++){var h=L[R(0,L.length-1)];if(!used[h[0]]){used[h[0]]=1;return h}}return L[R(0,L.length-1)]}
-  var WM=(typeof hwPoolGrade==='function'?hwPoolGrade(g):[]),nM=WM.length>=4?4:0,nW=Math.min(8,W.length>=4?8:0),nS=g<=6?3:0,nF=nW?2:0,nFind=7,nMean=EX_N-nW-nS-nF-nFind-nM;
+  var WM=(typeof hwPoolGrade==='function'?hwPoolGrade(g):[]),nM=WM.length>=4?4:0,nW=Math.min(8,W.length>=4?8:0),nS=g<=2?2:g<=6?3:0,nF=nW?2:0,nFind=7,nMean=EX_N-nW-nS-nF-nFind-nM;
   for(var i=0;i<nMean;i++){var h=pickC(),o=exUniq(L,function(x){return hzName(x)},4,h);o=shuffle(o);Q.push({sec:'훈음',q:'다음 한자의 훈(뜻)과 음(소리)은?',big:h[0],opts:o.map(hzName),ans:o.indexOf(h),ch:h[0],why:h[0]+' = '+hzName(h)})}
   for(var j=0;j<nFind;j++){var h2=pickC(),o2=shuffle(exUniq(L,function(x){return x[0]},4,h2));Q.push({sec:'한자 찾기',q:'"'+hzName(h2)+'"에 알맞은 한자는?',label:hzName(h2),opts:o2.map(function(x){return x[0]}),ans:o2.indexOf(h2),hzOpts:1,ch:h2[0],why:hzName(h2)+' = '+h2[0]})}
   if(nW){var ws=shuffle(W.slice()).slice(0,nW+nF);ws.slice(0,nW).forEach(function(w){var o3=shuffle(exUniq(W,function(x){return x[1]},4,w));Q.push({sec:'독음',q:'다음 한자어의 읽는 소리는?',big:w[0],word:1,opts:o3.map(function(x){return x[1]}),ans:o3.indexOf(w),ch:w[0][0],why:w[0]+' = '+w[1]})});
