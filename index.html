@@ -4177,7 +4177,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.88";
+var APP_VER="1.0.89";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -8541,8 +8541,8 @@ function strokeLoad(c,cb){var k=strokeKey(c);if(STROKE[k]!==undefined){cb(STROKE
   function done(j){STROKE[k]=j||null;var L=STROKE_L[k];STROKE_L[k]=null;L.forEach(function(f){try{f()}catch(e){}});if(!j)setTimeout(function(){if(STROKE[k]===null)delete STROKE[k]},30000)}
   try{fetch('stroke/'+k+'.json').then(function(r){if(!r.ok)throw 0;return r.json()}).then(done,function(){done(null)})}catch(e){done(null)}}
 var SVGNS='http://www.w3.org/2000/svg',HZSEQ=0;
-// 획수 안내: 우리나라 사전 획수(H8)를 먼저 보여 줘요. 획순 그림의 획 수가 다르면 까닭을 알려 줘요
-var HZ_RN={'艸':'艹(초두머리)는 우리나라에서 4획으로 세요','辵':'辶(책받침)은 우리나라에서 4획으로 세요','阜':'阝(좌부변)은 우리나라에서 3획으로 세요','邑':'阝(우부방)은 우리나라에서 3획으로 세요'};
+// 획수 안내 (2026-10 확인: 艹는 4획형·3획형 모두 인정하고 획수는 4획으로 셈, 辶는 한국에서 4획형이 표준): 우리나라 사전 획수(H8)를 먼저 보여 줘요. 획순 그림의 획 수가 다르면 까닭을 알려 줘요
+var HZ_RN={'艸':'艹(초두머리)는 가로획을 이어 3획으로 써도 되지만, 획수는 4획으로 세요','辵':'辶(책받침)은 우리나라에서 4획으로 쓰고 세요','阜':'阝(좌부변)은 우리나라에서 3획으로 세요','邑':'阝(우부방)은 우리나라에서 3획으로 세요'};
 function hzStrokeNote(c,d){var h=H8[HIDX[c]]||[],m=h[4],n=d[0].length,src=d[2]||'c',t='총 '+(m||n)+'획';
   if(m&&n!==m)t+=' · 그림은 '+n+'획으로 그려요. '+(Math.abs(m-n)===1&&HZ_RN[h[3]]||'우리나라 사전은 글자 모양을 조금 달리 보아 '+m+'획으로 세요');
   return t}
