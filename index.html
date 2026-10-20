@@ -4177,7 +4177,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.89";
+var APP_VER="1.0.90";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -8692,11 +8692,11 @@ function exMake(g){var L=exGradeChars(g),W=exWords(g),Q=[],used={};
   var WMS=shuffle(WM.slice());for(var m=0;m<nM;m++){var wm=WMS[m%WMS.length],om=shuffle(exUniq(WM,function(x){return hwMean(x[0])[0]},4,wm));Q.push({sec:'한자어 뜻',q:'"'+wm[1]+'('+wm[0]+')"의 뜻은?',big:wm[0],word:1,sub:hwBreak(wm[0]),opts:om.map(function(x){return hwMean(x[0])[0]}),ans:om.indexOf(wm),ch:wm[0][HIDX[wm[0][0]]>=GB[g]?0:1],why:wm[1]+'('+wm[0]+') = '+hwMean(wm[0])[0]})}
   for(var s=0;s<nS;s++){var h5=pickC();Q.push({sec:'필순',stroke:h5[0],q:'빨간 획은 몇 번째로 쓸까요?',opts:[],ans:-1,ch:h5[0]})}
   return Q}
-// 필순 문제는 한국 획순 자료(획수가 사전과 같은 글자)가 있어야 해서, 자료를 받은 뒤 보기를 만들어요 (없으면 훈음 문제로 바꿔요)
+// 필순 문제는 필순이 확인된 글자(한국 자료가 일본·대만·중국 자료 하나 이상과 모든 획 순서가 같고 획수가 사전과 같음, tools/hanja/stroke_verify.py)만 써요. 자료를 받은 뒤 보기를 만들어서, 자료를 받은 뒤 보기를 만들어요 (없으면 훈음 문제로 바꿔요)
 function exPrepStroke(Q,g,done){var P=Q.filter(function(q){return q.stroke}),left=P.length,fin=false;if(!left){done();return}
   function end(){if(fin)return;fin=true;done()}
   setTimeout(function(){if(fin)return;P.forEach(function(q){if(q.stroke&&!q.data){var L=exGradeChars(g),h=H8[HIDX[q.stroke]],o=shuffle(exUniq(L,function(x){return hzName(x)},4,h));q.sec='훈음';q.stroke=null;q.big=h[0];q.q='다음 한자의 훈(뜻)과 음(소리)은?';q.opts=o.map(hzName);q.ans=o.indexOf(h);q.why=h[0]+' = '+hzName(h)}});end()},6000);
-  P.forEach(function(q){strokeLoad(q.stroke,function(d){if(fin)return;var ok_=function(c,v){var x=H8[HIDX[c]]||[];return v&&v[0].length>=3&&(v[2]||'c')==='k'&&v[0].length===x[4]};if(!ok_(q.stroke,d)){var F=STROKE[strokeKey(q.stroke)]||{},usedS={};P.forEach(function(o){usedS[o.stroke]=1});var C=shuffle(exGradeChars(g).map(function(h){return h[0]}).filter(function(c){return !usedS[c]&&ok_(c,F[c])}));if(C.length){q.stroke=C[0];q.ch=C[0];d=F[C[0]]}}var hh=H8[HIDX[q.stroke]]||[];if(d&&d[0].length>=3&&(d[2]||'c')==='k'&&d[0].length===hh[4]){var n=d[0].length,k=R(1,n-1);q.data=d;q.k=k;var nums=[k+1];var c=[k,k+2,k+3,k-1,k+4].filter(function(x){return x>=1&&x<=n&&nums.indexOf(x)<0});shuffle(c).slice(0,3).forEach(function(x){nums.push(x)});
+  P.forEach(function(q){strokeLoad(q.stroke,function(d){if(fin)return;var ok_=function(c,v){var x=H8[HIDX[c]]||[];return v&&v[0].length>=3&&(v[2]||'c')==='k'&&v[3]===1&&v[0].length===x[4]};if(!ok_(q.stroke,d)){var F=STROKE[strokeKey(q.stroke)]||{},usedS={};P.forEach(function(o){usedS[o.stroke]=1});var C=shuffle(exGradeChars(g).map(function(h){return h[0]}).filter(function(c){return !usedS[c]&&ok_(c,F[c])}));if(C.length){q.stroke=C[0];q.ch=C[0];d=F[C[0]]}}var hh=H8[HIDX[q.stroke]]||[];if(ok_(q.stroke,d)){var n=d[0].length,k=R(1,n-1);q.data=d;q.k=k;var nums=[k+1];var c=[k,k+2,k+3,k-1,k+4].filter(function(x){return x>=1&&x<=n&&nums.indexOf(x)<0});shuffle(c).slice(0,3).forEach(function(x){nums.push(x)});
         for(var x=1;nums.length<4&&x<=n+3;x++)if(nums.indexOf(x)<0)nums.push(x);nums=shuffle(nums);q.opts=nums.map(function(x){return x+'번째'});q.ans=nums.indexOf(k+1);q.why=q.stroke+'은(는) 모두 '+n+'획, 빨간 획은 '+(k+1)+'번째예요.'}
       else{var L=exGradeChars(g),h=H8[HIDX[q.stroke]],o=shuffle(exUniq(L,function(x){return hzName(x)},4,h));q.sec='훈음';q.stroke=null;q.big=h[0];q.q='다음 한자의 훈(뜻)과 음(소리)은?';q.opts=o.map(hzName);q.ans=o.indexOf(h);q.why=h[0]+' = '+hzName(h)}
       if(--left===0)end()})})}
