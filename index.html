@@ -4177,7 +4177,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.94";
+var APP_VER="1.0.95";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -8544,7 +8544,9 @@ var SVGNS='http://www.w3.org/2000/svg',HZSEQ=0;
 // 획수 안내 (2026-10 확인: 艹는 4획형·3획형 모두 인정하고 획수는 4획으로 셈, 辶는 한국에서 4획형이 표준): 우리나라 사전 획수(H8)를 먼저 보여 줘요. 획순 그림의 획 수가 다르면 까닭을 알려 줘요
 var HZ_RN={'艸':'艹(초두머리)는 가로획을 이어 3획으로 써도 되지만, 획수는 4획으로 세요','辵':'辶(책받침)은 우리나라에서 4획으로 쓰고 세요','阜':'阝(좌부변)은 우리나라에서 3획으로 세요','邑':'阝(우부방)은 우리나라에서 3획으로 세요','示':'礻(보일시변)은 우리나라에서 示처럼 5획으로 세요','食':'飠(밥식변)은 우리나라에서 食처럼 9획으로 세요'};
 var HZ_ZHE='者都著諸暑緖署箸屠堵賭渚奢煮躇猪睹';// 者가 들어간 글자: 우리나라는 점을 찍어 9획
-function hzStrokeNote(c,d){var h=H8[HIDX[c]]||[],m=h[4],n=d[0].length,src=d[2]||'c',t='총 '+(m||n)+'획';
+// 어문회 상담 답변으로 정리한 글자별 설명(글꼴에 따라 모양·획수가 다른 글자)
+var HZ_FORM={'毒':'아래를 그림처럼 母 모양으로 쓰면 9획, 강희자전 모양인 毋(말 무)로 쓰면 8획이에요. 둘 다 맞아요'};
+function hzStrokeNote(c,d){var h=H8[HIDX[c]]||[],m=h[4],n=d[0].length,src=d[2]||'c',t='총 '+(m||n)+'획';if(HZ_FORM[c])return t+' · '+HZ_FORM[c];
   if(m&&n!==m)t+=' · 그림은 '+n+'획으로 그려요. '+(m-n===1&&HZ_ZHE.indexOf(c)>=0&&'者는 우리나라에서 日 위에 점을 찍어 9획으로 써요'||Math.abs(m-n)===1&&HZ_RN[h[3]]||'우리나라 사전은 글자 모양을 조금 달리 보아 '+m+'획으로 세요');
   return t}
 function sv(tag,attrs,parent){var e=document.createElementNS(SVGNS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
