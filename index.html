@@ -4177,7 +4177,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.87";
+var APP_VER="1.0.88";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -19587,7 +19587,7 @@ function villageScreen(){
   var today=dayKey();
   function badgeOf(id){
     if(id==='bee')return S.en.today!==today;
-    if(id==='tree'){var wn=wiltedList().length;return wn?String(wn):S.hz.today!==today}
+    if(id==='tree'){var wn=wiltedList().length;return wn?'복습 '+wn:S.hz.today!==today} // 숫자만 있으면 뜻을 몰라요: 오늘 다시 물어볼 열매 수
     if(id==='pot')return S.math.today!==today;
     if(id==='mail'){if(!S.path.char)return true;if(S.path.walk)return '완료';return chAvail()}
     if(id==='book')return koReady()&&S.ko.today!==today;
