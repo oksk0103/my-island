@@ -4177,7 +4177,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.84";
+var APP_VER="1.0.85";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -8684,7 +8684,7 @@ function exUniq(L,key,need,first){var seen={},o=[];if(first){seen[key(first)]=1;
 // 문제 한 개: {sec, q, stem(box), opts[], ans, ch(오답노트용 한자), why}
 function exMake(g){var L=exGradeChars(g),W=exWords(g),Q=[],used={};
   function pickC(){for(var t=0;t<40;t++){var h=L[R(0,L.length-1)];if(!used[h[0]]){used[h[0]]=1;return h}}return L[R(0,L.length-1)]}
-  var WM=(typeof hwPoolGrade==='function'?hwPoolGrade(g):[]),nM=WM.length>=4?4:0,nW=Math.min(8,W.length>=4?8:0),nS=3,nF=nW?2:0,nFind=7,nMean=EX_N-nW-nS-nF-nFind-nM;
+  var WM=(typeof hwPoolGrade==='function'?hwPoolGrade(g):[]),nM=WM.length>=4?4:0,nW=Math.min(8,W.length>=4?8:0),nS=g<=6?3:0,nF=nW?2:0,nFind=7,nMean=EX_N-nW-nS-nF-nFind-nM;
   for(var i=0;i<nMean;i++){var h=pickC(),o=exUniq(L,function(x){return hzName(x)},4,h);o=shuffle(o);Q.push({sec:'훈음',q:'다음 한자의 훈(뜻)과 음(소리)은?',big:h[0],opts:o.map(hzName),ans:o.indexOf(h),ch:h[0],why:h[0]+' = '+hzName(h)})}
   for(var j=0;j<nFind;j++){var h2=pickC(),o2=shuffle(exUniq(L,function(x){return x[0]},4,h2));Q.push({sec:'한자 찾기',q:'"'+hzName(h2)+'"에 알맞은 한자는?',label:hzName(h2),opts:o2.map(function(x){return x[0]}),ans:o2.indexOf(h2),hzOpts:1,ch:h2[0],why:hzName(h2)+' = '+h2[0]})}
   if(nW){var ws=shuffle(W.slice()).slice(0,nW+nF);ws.slice(0,nW).forEach(function(w){var o3=shuffle(exUniq(W,function(x){return x[1]},4,w));Q.push({sec:'독음',q:'다음 한자어의 읽는 소리는?',big:w[0],word:1,opts:o3.map(function(x){return x[1]}),ans:o3.indexOf(w),ch:w[0][0],why:w[0]+' = '+w[1]})});
@@ -8696,14 +8696,14 @@ function exMake(g){var L=exGradeChars(g),W=exWords(g),Q=[],used={};
 function exPrepStroke(Q,g,done){var P=Q.filter(function(q){return q.stroke}),left=P.length,fin=false;if(!left){done();return}
   function end(){if(fin)return;fin=true;done()}
   setTimeout(function(){if(fin)return;P.forEach(function(q){if(q.stroke&&!q.data){var L=exGradeChars(g),h=H8[HIDX[q.stroke]],o=shuffle(exUniq(L,function(x){return hzName(x)},4,h));q.sec='훈음';q.stroke=null;q.big=h[0];q.q='다음 한자의 훈(뜻)과 음(소리)은?';q.opts=o.map(hzName);q.ans=o.indexOf(h);q.why=h[0]+' = '+hzName(h)}});end()},6000);
-  P.forEach(function(q){strokeLoad(q.stroke,function(d){if(fin)return;var hh=H8[HIDX[q.stroke]]||[];if(d&&d[0].length>=3&&(d[2]||'c')==='k'&&d[0].length===hh[4]){var n=d[0].length,k=R(1,n-1);q.data=d;q.k=k;var nums=[k+1];var c=[k,k+2,k+3,k-1,k+4].filter(function(x){return x>=1&&x<=n&&nums.indexOf(x)<0});shuffle(c).slice(0,3).forEach(function(x){nums.push(x)});
+  P.forEach(function(q){strokeLoad(q.stroke,function(d){if(fin)return;var ok_=function(c,v){var x=H8[HIDX[c]]||[];return v&&v[0].length>=3&&(v[2]||'c')==='k'&&v[0].length===x[4]};if(!ok_(q.stroke,d)){var F=STROKE[strokeKey(q.stroke)]||{},usedS={};P.forEach(function(o){usedS[o.stroke]=1});var C=shuffle(exGradeChars(g).map(function(h){return h[0]}).filter(function(c){return !usedS[c]&&ok_(c,F[c])}));if(C.length){q.stroke=C[0];q.ch=C[0];d=F[C[0]]}}var hh=H8[HIDX[q.stroke]]||[];if(d&&d[0].length>=3&&(d[2]||'c')==='k'&&d[0].length===hh[4]){var n=d[0].length,k=R(1,n-1);q.data=d;q.k=k;var nums=[k+1];var c=[k,k+2,k+3,k-1,k+4].filter(function(x){return x>=1&&x<=n&&nums.indexOf(x)<0});shuffle(c).slice(0,3).forEach(function(x){nums.push(x)});
         for(var x=1;nums.length<4&&x<=n+3;x++)if(nums.indexOf(x)<0)nums.push(x);nums=shuffle(nums);q.opts=nums.map(function(x){return x+'번째'});q.ans=nums.indexOf(k+1);q.why=q.stroke+'은(는) 모두 '+n+'획, 빨간 획은 '+(k+1)+'번째예요.'}
       else{var L=exGradeChars(g),h=H8[HIDX[q.stroke]],o=shuffle(exUniq(L,function(x){return hzName(x)},4,h));q.sec='훈음';q.stroke=null;q.big=h[0];q.q='다음 한자의 훈(뜻)과 음(소리)은?';q.opts=o.map(hzName);q.ans=o.indexOf(h);q.why=h[0]+' = '+hzName(h)}
       if(--left===0)end()})})}
 // 시험 첫 화면: 급수 고르기·기록
 function examHome(g,back){EXB=back||EXB;clear();if(g==null)g=S.hz.cg||0;var sc=el('div','screen examscr'),top=el('div','qtop'),x=el('button','x');x.setAttribute('aria-label','돌아가기');x.innerHTML=BACK_SVG;x.onclick=function(){(EXB||home)()};top.appendChild(x);top.appendChild(el('h3','wtitle','한자 급수 모의시험'));sc.appendChild(top);
   var card=el('div','excard');card.appendChild(el('small','exg',GRADES[g]+' 모의시험'));card.appendChild(el('h2',null,EX_N+'문제 · '+EX_PASS+'점이면 합격'));
-  card.appendChild(el('p','sub','진짜 급수 시험처럼 '+GRADES[g]+' 한자 '+gradeCap(g)+'자 전체에서 골고루 나와요. 훈음, 한자 찾기, 독음, 한자어 완성, 필순 문제가 섞여 있어요. 다 풀면 점수와 틀린 문제를 보여 줘요.'));
+  card.appendChild(el('p','sub','진짜 급수 시험처럼 '+GRADES[g]+' 한자 '+gradeCap(g)+'자 전체에서 골고루 나와요. 훈음, 한자 찾기, 독음, 한자어 완성'+(g<=6?', 필순':'')+' 문제가 섞여 있어요. 다 풀면 점수와 틀린 문제를 보여 줘요.'));
   var go=el('button','cta green','시험 시작');go.onclick=function(){examStart(g)};card.appendChild(go);
   var ch=el('button','cta light','다른 급수 고르기');ch.onclick=function(){examPick(g)};card.appendChild(ch);sc.appendChild(card);
   var L=exS(),mine=L.filter(function(r){return r.g===g});
