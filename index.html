@@ -4195,7 +4195,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.106";
+var APP_VER="1.0.107";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -7823,8 +7823,8 @@ function angleSVG(deg,sz){sz=sz||140;var cx=sz*.2,cy=sz*.8,L=sz*.7,ra=-deg*Math.
   return svgEl(sz,sz,inner)}
 // 변 길이 표시된 삼각형 (kind: iso/equi/scalene, right/acute/obtuse)
 function triSVG(pts,labels,sz,atV){sz=sz||150;var inner='<polygon points="'+pts.map(function(p){return p[0]+','+p[1]}).join(' ')+'" fill="#ffe8a3" stroke="#2b3f5c" stroke-width="2.5" stroke-linejoin="round"/>';
-  if(labels&&atV){var cx=(pts[0][0]+pts[1][0]+pts[2][0])/3,cy=(pts[0][1]+pts[1][1]+pts[2][1])/3;labels.forEach(function(l,i){if(!l)return;var v=pts[i],dx=cx-v[0],dy=cy-v[1],n=Math.hypot(dx,dy)||1;inner+='<text x="'+(v[0]+dx/n*22).toFixed(1)+'" y="'+(v[1]+dy/n*22+4).toFixed(1)+'" font-size="12" text-anchor="middle" fill="#c0392b" font-weight="700">'+l+'</text>'});return svgEl(sz,sz,inner)}
-  if(labels)labels.forEach(function(l,i){var a=pts[i],b=pts[(i+1)%3],mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,cx=(pts[0][0]+pts[1][0]+pts[2][0])/3,cy=(pts[0][1]+pts[1][1]+pts[2][1])/3,dx=mx-cx,dy=my-cy,n=Math.hypot(dx,dy)||1;inner+='<text x="'+(mx+dx/n*14).toFixed(1)+'" y="'+(my+dy/n*14+4).toFixed(1)+'" font-size="13" text-anchor="middle" fill="#2b3f5c" font-weight="700">'+l+'</text>'});
+  if(labels&&atV){var cx=(pts[0][0]+pts[1][0]+pts[2][0])/3,cy=(pts[0][1]+pts[1][1]+pts[2][1])/3;labels.forEach(function(l,i){if(!l)return;var v=pts[i],dx=cx-v[0],dy=cy-v[1],n=Math.hypot(dx,dy)||1;inner+='<text x="'+(v[0]+dx/n*22).toFixed(1)+'" y="'+(v[1]+dy/n*22+4).toFixed(1)+'" font-size="12" text-anchor="middle" fill="#c0392b" font-weight="700" style="paint-order:stroke;stroke:#fffdf6;stroke-width:3.5px;stroke-linejoin:round">'+l+'</text>'});return svgEl(sz,sz,inner)}
+  if(labels)labels.forEach(function(l,i){var a=pts[i],b=pts[(i+1)%3],mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,cx=(pts[0][0]+pts[1][0]+pts[2][0])/3,cy=(pts[0][1]+pts[1][1]+pts[2][1])/3,dx=mx-cx,dy=my-cy,n=Math.hypot(dx,dy)||1;var ux=dx/n,an=ux<-.35?'end':ux>.35?'start':'middle';inner+='<text x="'+(mx+ux*10).toFixed(1)+'" y="'+(my+dy/n*12+4).toFixed(1)+'" font-size="13" text-anchor="'+an+'" fill="#2b3f5c" font-weight="700" style="paint-order:stroke;stroke:#fffdf6;stroke-width:4px;stroke-linejoin:round">'+l+'</text>'});
   return svgEl(sz,sz,inner)}
 function quadSVG(kind,sz){sz=sz||120;var p;
   if(kind==='trap')p=[[20,90],[100,90],[80,30],[40,30]];else if(kind==='para')p=[[12,90],[86,90],[108,30],[34,30]];else if(kind==='rhom')p=[[60,8],[108,60],[60,112],[12,60]];else if(kind==='rect')p=[[14,34],[106,34],[106,86],[14,86]];else if(kind==='square')p=[[24,24],[96,24],[96,96],[24,96]];else p=[[18,96],[104,80],[84,22],[30,36]];
@@ -8092,6 +8092,9 @@ function genFracadd(lv){
   if(lv===4){var d4=R(3,8),w1=R(1,3),n1=R(1,d4-1),w2=R(1,2),n2;do{n2=R(1,d4-1)}while((n1+n2)%d4===0);var tot=(w1*d4+n1)+(w2*d4+n2),W=Math.floor(tot/d4),N=tot%d4;return {mode:'pad',q:'대분수의 덧셈 (자연수, 분자, 분모)',answers:[W,N,d4],answer:mixStr(W,N,d4),hint:'자연수끼리, 분자끼리 더하고 분자가 분모보다 크면 1을 올려요.',explain:mixStr(w1,n1,d4)+' + '+mixStr(w2,n2,d4)+' = '+mixStr(W,N,d4)+'이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(fracBox(n1,d4,w1));r.appendChild(el('span','unit','+'));r.appendChild(fracBox(n2,d4,w2));r.appendChild(el('span','unit','='));r.appendChild(fracBox(P.slots[1],P.slots[2],P.slots[0]));box.appendChild(r)}}}
   var d5=R(3,8),wa=R(2,4),na=R(1,d5-1),wb=R(1,wa-1),nb;do{nb=R(1,d5-1)}while(nb===na);var diff=(wa*d5+na)-(wb*d5+nb);if(diff<=0){nb=1;na=2;diff=(wa*d5+na)-(wb*d5+nb)}var W5=Math.floor(diff/d5),N5=diff%d5;
   return {mode:'pad',q:'대분수의 뺄셈 (자연수, 분자, 분모)',answers:[W5,N5,d5],answer:mixStr(W5,N5,d5),hint:'분자끼리 뺄 수 없으면 자연수에서 1을 '+d5+'/'+d5+'로 바꿔 내려요.',explain:mixStr(wa,na,d5)+' − '+mixStr(wb,nb,d5)+' = '+mixStr(W5,N5,d5)+'이에요.',render:function(box,P){var r=el('div','ansrow');r.appendChild(fracBox(na,d5,wa));r.appendChild(el('span','unit','−'));r.appendChild(fracBox(nb,d5,wb));r.appendChild(el('span','unit','='));r.appendChild(fracBox(P.slots[1],P.slots[2],P.slots[0]));box.appendChild(r)}}}
+// 이등변삼각형을 실제 비율대로: 같은 두 변 a, 밑변 b (각으로 줄 때는 밑각 y도 돼요). 150칸 안에 맞춰요
+function isoPts(a,b,sz){sz=sz||150;var h=Math.sqrt(Math.max(a*a-b*b/4,.01)),sc=Math.min((sz-50)/b,(sz-50)/h),B=b*sc,H=h*sc,cx=sz/2,y=sz-24;return [[Math.round(cx),Math.round(y-H)],[Math.round(cx-B/2),y],[Math.round(cx+B/2),y]]}
+function isoPtsAng(y,sz){var r=y*Math.PI/180;return isoPts(1/(2*Math.cos(r)),1,sz)}
 function genTri4(lv){var ISO=[[75,25],[25,125],[125,125]],EQ=[[75,22],[16,124],[134,124]],SC=[[30,120],[135,125],[110,30]],RT=[[25,125],[125,125],[25,35]],OB=[[20,120],[140,120],[120,40]];
   if(lv===1){var kind=['iso','equi','scal'][R(0,2)],P_=kind==='iso'?ISO:kind==='equi'?EQ:SC,a,L;do{a=R(4,9);L=kind==='iso'?[a,a,R(3,a*2-1)]:kind==='equi'?[a,a,a]:[a,a+R(1,3),a+R(4,6)]}while(kind==='iso'&&L[2]===a||L[0]+L[1]<=L[2]);var lab=kind==='iso'?[L[0],L[2],L[1]]:[L[1],L[2],L[0]],KN={iso:'이등변삼각형',equi:'정삼각형',scal:'세 변의 길이가 다른 삼각형'},o=shuffle(['이등변삼각형','정삼각형','세 변의 길이가 다른 삼각형']);return choicePz('이 삼각형의 이름은?',function(b){b.appendChild(triSVG(P_,lab.map(function(x){return x+'cm'})))},o,o.indexOf(KN[kind]),'두 변이 같으면 이등변삼각형, 세 변이 모두 같으면 정삼각형이에요.',KN[kind]+'이에요.')}
   if(lv===2){var KN2={acute:'예각삼각형',right:'직각삼각형',obtuse:'둔각삼각형'},HT2='세 각이 모두 예각이면 예각삼각형, 직각이 있으면 직각삼각형, 둔각이 있으면 둔각삼각형이에요.';
@@ -8101,12 +8104,12 @@ function genTri4(lv){var ISO=[[75,25],[25,125],[125,125]],EQ=[[75,22],[16,124],[
     if(f2<.7){var ks=shuffle(['acute','right','obtuse']);return pickPz(KN2[k2]+'은 어느 것일까요?',null,ks.map(function(k){var t=mk(k),rt=R(0,35)*10;return function(){return g34TriSVG(t[0],t[1],110,rt)}}),ks.map(function(k){return KN2[k]}),ks.indexOf(k2),HT2,KN2[k2]+'은 이거예요.')}
     return choicePz('세 각의 크기가 '+T[0]+'°, '+T[1]+'°, '+T[2]+'°인 삼각형은 어떤 삼각형일까요?',function(){},o2,o2.indexOf(KN2[k2]),HT2+' 90°보다 큰 각이 있는지 찾아봐요.',k2==='acute'?'세 각이 모두 90°보다 작으니까 예각삼각형이에요.':k2==='right'?'90°인 각이 있으니까 직각삼각형이에요.':Math.max.apply(null,T)+'°는 둔각이니까 둔각삼각형이에요.')}
   if(lv===3){var x=R(20,80);return {mode:'pad',q:'이등변삼각형에서 한 밑각이 '+x+'°예요. 다른 밑각은?',answer:x,hint:'이등변삼각형은 두 밑각의 크기가 같아요.',explain:'두 밑각이 같으니까 '+x+'°예요.',render:function(box,P){box.appendChild(triSVG(ISO,['',x+'°','?'],150,true));unitPad(box,P,'','°')}}}
-  if(lv===4){var y=R(20,80);return {mode:'pad',q:'이등변삼각형의 두 밑각이 각각 '+y+'°예요. 꼭지각은?',answer:180-2*y,hint:'세 각의 합 180°에서 두 밑각을 빼요.',explain:'180 − '+y+' − '+y+' = '+(180-2*y)+'°예요.',render:function(box,P){box.appendChild(triSVG(ISO,['?',y+'°',y+'°'],150,true));unitPad(box,P,'','°')}}}
+  if(lv===4){var y=R(20,80);return {mode:'pad',q:'이등변삼각형의 두 밑각이 각각 '+y+'°예요. 꼭지각은?',answer:180-2*y,hint:'세 각의 합 180°에서 두 밑각을 빼요.',explain:'180 − '+y+' − '+y+' = '+(180-2*y)+'°예요.',render:function(box,P){box.appendChild(triSVG(isoPtsAng(y),['?',y+'°',y+'°'],150,true));unitPad(box,P,'','°')}}}
   var s=R(3,20),f5=R(0,4),aa=R(4,15),bb;do{bb=R(3,2*aa-1)}while(bb===aa);var who=g34Who();
   if(f5===0)return {mode:'pad',q:'한 변이 '+s+' cm인 정삼각형의 세 변의 길이의 합은?',answer:3*s,hint:'정삼각형은 세 변의 길이가 모두 같아요.',explain:s+' × 3 = '+(3*s)+' cm예요.',render:function(box,P){box.appendChild(triSVG(EQ,[s+'cm',s+'cm',s+'cm']));unitPad(box,P,'','cm')}};
   if(f5===1)return {mode:'pad',q:'세 변의 길이의 합이 '+(3*s)+' cm인 정삼각형의 한 변은 몇 cm일까요?',answer:s,hint:'정삼각형은 세 변의 길이가 같으니까 합을 3으로 나눠요.',explain:(3*s)+' ÷ 3 = '+s+' cm예요.',render:function(box,P){box.appendChild(triSVG(EQ,['?','?','?']));unitPad(box,P,'','cm')}};
-  if(f5===2)return {mode:'pad',q:'길이가 같은 두 변이 각각 '+aa+' cm이고 나머지 한 변이 '+bb+' cm인 이등변삼각형의 세 변의 길이의 합은?',answer:2*aa+bb,hint:'같은 길이의 변이 2개 있어요.',explain:aa+' + '+aa+' + '+bb+' = '+(2*aa+bb)+' cm예요.',render:function(box,P){box.appendChild(triSVG(ISO,[aa+'cm',bb+'cm',aa+'cm']));unitPad(box,P,'','cm')}};
-  if(f5===3)return {mode:'pad',q:'세 변의 길이의 합이 '+(2*aa+bb)+' cm인 이등변삼각형이 있어요. 길이가 다른 한 변이 '+bb+' cm일 때, 길이가 같은 한 변은 몇 cm일까요?',answer:aa,hint:'전체에서 '+bb+' cm를 빼면 같은 두 변의 합이에요.',explain:'('+(2*aa+bb)+' − '+bb+') ÷ 2 = '+aa+' cm예요.',render:function(box,P){box.appendChild(triSVG(ISO,['?',bb+'cm','?']));unitPad(box,P,'','cm')}};
+  if(f5===2)return {mode:'pad',q:'길이가 같은 두 변이 각각 '+aa+' cm이고 나머지 한 변이 '+bb+' cm인 이등변삼각형의 세 변의 길이의 합은?',answer:2*aa+bb,hint:'같은 길이의 변이 2개 있어요.',explain:aa+' + '+aa+' + '+bb+' = '+(2*aa+bb)+' cm예요.',render:function(box,P){box.appendChild(triSVG(isoPts(aa,bb),[aa+'cm',bb+'cm',aa+'cm']));unitPad(box,P,'','cm')}};
+  if(f5===3)return {mode:'pad',q:'세 변의 길이의 합이 '+(2*aa+bb)+' cm인 이등변삼각형이 있어요. 길이가 다른 한 변이 '+bb+' cm일 때, 길이가 같은 한 변은 몇 cm일까요?',answer:aa,hint:'전체에서 '+bb+' cm를 빼면 같은 두 변의 합이에요.',explain:'('+(2*aa+bb)+' − '+bb+') ÷ 2 = '+aa+' cm예요.',render:function(box,P){box.appendChild(triSVG(isoPts(aa,bb),['?',bb+'cm','?']));unitPad(box,P,'','cm')}};
   return {mode:'pad',q:josa(who,'이','가')+' 한 변이 '+s+' m인 정삼각형 모양 텃밭의 둘레에 울타리를 쳤어요. 울타리는 모두 몇 m일까요?',answer:3*s,hint:'정삼각형의 세 변은 길이가 같아요. 둘레 = 한 변 × 3',explain:s+' × 3 = '+(3*s)+' m예요.',render:function(box,P){box.appendChild(triSVG(EQ,[s+'m',s+'m',s+'m']));unitPad(box,P,'','m')}}}
 function decStr(x){return (Math.round(x*100)/100).toString()}
 function genDecadd(lv){
@@ -8265,12 +8268,20 @@ function genFracadd5(lv){var a,b,c,d,w1,w2,N,D,g;
   if(lv===3){do{b=R(2,9);d=R(2,9);a=R(1,b-1);c=R(1,d-1)}while(b===d||a*d+c*b<=b*d);return fracQ('분수의 덧셈 (자연수, 분자, 분모)',[[a,b],'+',[c,d]],a*d+c*b,b*d,'통분해서 더한 뒤, 가분수면 대분수로 바꿔요.')}
   if(lv===4){do{b=R(2,8);d=R(2,8);a=R(1,b-1);c=R(1,d-1)}while(b===d);w1=R(1,3);w2=R(1,3);return fracQ('대분수의 덧셈 (자연수, 분자, 분모)',[[w1,a,b],'+',[w2,c,d]],(w1*b+a)*d+(w2*d+c)*b,b*d,'자연수끼리, 분수끼리 더해요. 분수끼리는 통분부터!')}
   do{b=R(2,8);d=R(2,8);a=R(1,b-1);c=R(1,d-1);w1=R(2,4);w2=R(1,w1-1);N=(w1*b+a)*d-(w2*d+c)*b}while(b===d||N<=0);return fracQ('대분수의 뺄셈 (자연수, 분자, 분모)',[[w1,a,b],'−',[w2,c,d]],N,b*d,'통분한 뒤 분수끼리 뺄 수 없으면 자연수에서 1을 받아내려요.')}
-function area56SVG(kind,la,lb,lc){var inner='',W=220,H=140;
-  if(kind==='rect'){inner=polyS([[30,25],[190,25],[190,105],[30,105]],'#d3f9d8')+svgT(110,124,la,null,14)+svgT(206,70,lb,null,14)}
-  else if(kind==='para'){inner=polyS([[20,105],[150,105],[195,25],[65,25]],'#d0ebff')+dash(65,25,65,105)+'<path d="M65 95h10v10" fill="none" stroke="#2b3f5c" stroke-width="1.4"/>'+svgT(85,124,la,null,14)+svgT(88,72,lb,null,14)}
-  else if(kind==='tri'){inner=polyS([[20,105],[190,105],[80,20]],'#ffe8a3')+dash(80,20,80,105)+'<path d="M80 95h10v10" fill="none" stroke="#2b3f5c" stroke-width="1.4"/>'+svgT(105,124,la,null,14)+svgT(103,76,lb,null,14)}
-  else if(kind==='trap'){inner=polyS([[20,105],[195,105],[150,30],[65,30]],'#ffd8e8')+dash(65,30,65,105)+'<path d="M65 95h10v10" fill="none" stroke="#2b3f5c" stroke-width="1.4"/>'+svgT(108,124,la,null,14)+svgT(88,74,lb,null,14)+svgT(108,22,lc,null,14)}
-  else{inner=polyS([[110,10],[200,70],[110,130],[20,70]],'#e5dbff')+dash(20,70,200,70)+dash(110,10,110,130)+svgT(60,64,la)+svgT(128,104,lb);H=140}
+// 넓이 도형: 라벨 숫자의 비율대로 그려요(밑변·높이·대각선). 숫자가 없으면 예전처럼 정해진 모양으로
+function svgTh(x,y,t,c,z){return svgT(x,y,t,c,z).replace('<text ','<text style="paint-order:stroke;stroke:#fffdf6;stroke-width:4px;stroke-linejoin:round" ')}
+function area56SVG(kind,la,lb,lc){var W=220,H=140,n=function(t){var v=parseFloat(t);return isFinite(v)&&v>0?v:null},a=n(la),b=n(lb),c=n(lc),inner='',mx=Math.max,f=function(v){return Math.round(v*10)/10};
+  var RA='<path d="M{x} {y}h10v10" fill="none" stroke="#2b3f5c" stroke-width="1.4"/>';function ra(x,y){return RA.replace('{x}',x).replace('{y}',y-10)}
+  if(kind==='rect'){a=a||16;b=b||8;var sc=Math.min(160/a,90/b),w=mx(26,a*sc),h=mx(22,b*sc),x0=(W-w)/2-6,y0=(H-20-h)/2+4;
+    inner=polyS([[x0,y0],[x0+w,y0],[x0+w,y0+h],[x0,y0+h]],'#d3f9d8')+svgT(f(x0+w/2),f(y0+h+18),la,null,14)+svgT(f(x0+w+18),f(y0+h/2+5),lb,null,14)}
+  else if(kind==='para'){a=a||13;b=b||8;var sk=.45,sc2=Math.min(165/(a+b*sk),90/b),w2=mx(30,a*sc2),h2=mx(22,b*sc2),o=h2*sk,x1=(W-w2-o)/2,y1=(H-20-h2)/2+4;
+    inner=polyS([[x1,y1+h2],[x1+w2,y1+h2],[x1+w2+o,y1],[x1+o,y1]],'#d0ebff')+dash(f(x1+o),y1,f(x1+o),f(y1+h2))+ra(f(x1+o),f(y1+h2))+svgT(f(x1+w2/2),f(y1+h2+18),la,null,14)+svgTh(f(x1+o+24),f(y1+h2/2+5),lb,null,14)}
+  else if(kind==='tri'){a=a||17;b=b||8.5;var sc3=Math.min(170/a,92/b),w3=mx(30,a*sc3),h3=mx(22,b*sc3),x3=(W-w3)/2,y3=(H-20-h3)/2+4,ax=x3+w3*.35;
+    inner=polyS([[x3,y3+h3],[x3+w3,y3+h3],[ax,y3]],'#ffe8a3')+dash(f(ax),y3,f(ax),f(y3+h3))+ra(f(ax),f(y3+h3))+svgT(f(x3+w3/2),f(y3+h3+18),la,null,14)+svgTh(f(ax+22),f(y3+h3/2+8),lb,null,14)}
+  else if(kind==='trap'){a=a||17.5;b=b||7.5;c=c||8.5;var big=mx(a,c),sc4=Math.min(170/big,88/b),wl=mx(30,a*sc4),wu=mx(20,c*sc4),h4=mx(22,b*sc4),x4=(W-mx(wl,wu))/2,y4=(H-30-h4)/2+18,ux=x4+(wl-wu)*.4;
+    inner=polyS([[x4,y4+h4],[x4+wl,y4+h4],[ux+wu,y4],[ux,y4]],'#ffd8e8')+dash(f(ux),y4,f(ux),f(y4+h4))+ra(f(ux),f(y4+h4))+svgT(f(x4+wl/2),f(y4+h4+18),la,null,14)+svgTh(f(ux+22),f(y4+h4/2+6),lb,null,14)+svgT(f(ux+wu/2),f(y4-7),lc,null,14)}
+  else{a=a||18;b=b||12;var sc5=Math.min(180/a,120/b),p5=mx(30,a*sc5),q5=mx(26,b*sc5),cx=W/2,cy=H/2;
+    inner=polyS([[cx,cy-q5/2],[cx+p5/2,cy],[cx,cy+q5/2],[cx-p5/2,cy]],'#e5dbff')+dash(f(cx-p5/2),cy,f(cx+p5/2),cy)+dash(cx,f(cy-q5/2),cx,f(cy+q5/2))+svgTh(f(cx-p5/4),cy-6,la)+svgTh(cx+22,f(cy+q5/4+5),lb)}
   return svgEl(W,H,inner)}
 function genArea5(lv){
   if(lv===1){var n=[3,4,5,6,8][R(0,4)],s=R(3,12),nm={3:'정삼각형',4:'정사각형',5:'정오각형',6:'정육각형',8:'정팔각형'}[n];return numQ('한 변이 '+s+' cm인 '+nm+'의 둘레는 몇 cm일까요?','',n*s,'정다각형은 변의 길이가 모두 같아요. 한 변 × 변의 수!',s+' × '+n+' = '+ey(n*s,'cm'),'cm',function(b){b.appendChild(n===4?quadSVG('square',110):polySVG(n,110))})}
@@ -8323,7 +8334,11 @@ function genCongr(lv){
 function genDecmul(lv){var x,y,p,px,py,ans,h='자연수처럼 곱한 뒤, 곱하는 두 수의 소수점 아래 자릿수를 더한 만큼 소수점을 찍어요.';
   function nz(a,b){var v;do{v=R(a,b)}while(v%10===0);return v}if(lv===1){x=R(1,9);y=R(2,9);px=1;py=0}else if(lv===2){x=nz(11,99);y=R(2,9);px=1;py=0}else if(lv===3){y=nz(11,99);x=R(2,9);px=0;py=2}else if(lv===4){x=R(1,9);y=R(1,9);px=1;py=1}else{x=nz(11,49);y=nz(11,49);px=1;py=1}
   p=px+py;ans=dN(x*y,p);var e=dS(x,px)+' × '+dS(y,py);return decQ('소수의 곱셈',e,ans,h,x+' × '+y+' = '+(x*y)+', 소수점 아래 '+p+'자리 → '+e+' = '+ey(dS(x*y,p)))}
-function cubSVG(la,lb,lc,cube){var x0=30,y0=55,w=cube?80:115,h=cube?80:65,dx=45,dy=-32,inner='';
+// 직육면체 그림: 라벨에 적힌 가로(la)·앞뒤 깊이(lb)·높이(lc) 숫자의 비율대로 그려요(7 cm 높이가 3 cm 가로보다 짧아 보이지 않게). 모르는 길이(?)는 다른 두 길이의 평균으로 그려요
+function cubDims(la,lb,lc,cube){var n=function(t){var v=parseFloat(t);return isFinite(v)&&v>0?v:null},a=n(la),b=n(lb),c=n(lc);
+  if(cube||(a==null&&b==null&&c==null))return {w:cube?80:115,h:cube?80:65,dx:45,dy:-32};var k=[a,b,c].filter(function(v){return v!=null}),m=k.reduce(function(x,y){return x+y},0)/k.length;a=a||m;b=b||m;c=c||m;
+  var cx=.62,cy=.44,sc=Math.min(160/(a+b*cx),112/(c+b*cy)),w=Math.max(22,a*sc),h=Math.max(22,c*sc),dd=Math.max(16,b*sc);return {w:w,h:h,dx:dd*cx,dy:-dd*cy}}
+function cubSVG(la,lb,lc,cube){var D=cubDims(la,lb,lc,cube),w=D.w,h=D.h,dx=D.dx,dy=D.dy,x0=Math.max(30,(230-w-dx)/2),y0=Math.max(8,(160-h+dy)/2)-dy,inner='';
   inner+=polyS([[x0,y0],[x0+w,y0],[x0+w+dx,y0+dy],[x0+dx,y0+dy]],'#fff0c2')+polyS([[x0+w,y0],[x0+w+dx,y0+dy],[x0+w+dx,y0+h+dy],[x0+w,y0+h]],'#ffd98a')+polyS([[x0,y0],[x0+w,y0],[x0+w,y0+h],[x0,y0+h]],'#ffe8a3');
   inner+=dash(x0+dx,y0+h+dy,x0+dx,y0+dy)+dash(x0+dx,y0+h+dy,x0+w+dx,y0+h+dy)+dash(x0+dx,y0+h+dy,x0,y0+h);
   if(la)inner+=svgT(x0+w/2,y0+h+18,la);if(lb)inner+=svgT(x0+w+dx/2+18,y0+h+dy/2+12,lb);if(lc)inner+=svgT(x0-16,y0+h/2+4,lc);return svgEl(230,160,inner)}
