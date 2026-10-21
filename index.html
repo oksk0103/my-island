@@ -2577,6 +2577,16 @@ html body .qscreen .choice.pic{min-height:96px;padding:8px}
 .mvtxt{font-family:var(--game);font-size:1rem;color:#26313d;font-weight:400;white-space:normal;line-height:1.3}
 .eqs .eq{font-family:var(--game);font-size:1.3rem;color:#26313d;display:flex;gap:8px;align-items:center}
 
+/* 칸이 여러 개일 때(분수·시각 등): 지금 쓰는 칸만 진하게, 다른 빈칸은 흐리게 · 깜빡이는 막대도 지금 칸에만 */
+.qscreen .slot.mslot{background:#fffdf3;box-shadow:inset 0 0 0 2px #ecd9a8;color:#b07a00}
+.qscreen .slot.mslot.empty::after{opacity:0;animation:none}
+.qscreen .slot.mslot.act{background:#fff3c4;box-shadow:inset 0 0 0 3px #ffb703,0 0 0 4px rgba(255,183,3,.25),0 3px 0 #f0d27a}
+.qscreen .slot.mslot.act.empty::after{opacity:1;animation:blink 1s steps(1) infinite}
+/* 분수 숫자는 같은 줄 자연수와 같은 크기로(교과서처럼) */
+.fracbox .fst i{font-size:1.4rem}
+.ansrow.big .fracbox .fst i,.ansrow.big .fracbox .fw{font-size:2.2rem}
+.fracbox .fw{font-size:1.4rem}
+.ansrow.big .fracbox .fst em{height:3.5px}
 /* ===== 5·6학년 틀 ===== */
 .ansrow.fq{flex-wrap:wrap;row-gap:8px}
 .ansrow>b.fw{font-family:var(--game);font-size:1.6rem;color:#26313d;font-weight:400}
@@ -4195,7 +4205,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.107";
+var APP_VER="1.0.108";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -7809,7 +7819,7 @@ function fracSVG(n,d,kind,sz){sz=sz||110;var inner='';
     inner+=d===1?'<circle cx="'+c+'" cy="'+c+'" r="'+r+'" fill="'+(n>=1?'#4dabf7':'#fff')+'" stroke="#2b3f5c" stroke-width="2"/>':'<path d="M'+c+' '+c+' L'+x0.toFixed(1)+' '+y0.toFixed(1)+' A'+r+' '+r+' 0 '+(2*Math.PI/d>Math.PI?1:0)+' 1 '+x1.toFixed(1)+' '+y1.toFixed(1)+' Z" fill="'+(k<n?'#4dabf7':'#fff')+'" stroke="#2b3f5c" stroke-width="2"/>'}
   return svgEl(sz,sz,inner,'shp frac')}
 // 분수 입력/표시: P.slots[0]/P.slots[1] 또는 숫자
-function fracBox(n,d,whole){var w=el('span','fracbox');if(whole!=null){if(typeof whole==='object')w.appendChild(whole);else w.appendChild(el('b','fw',String(whole)))}var st=el('span','fst');st.appendChild(typeof n==='object'?n:el('i',null,String(n)));st.appendChild(el('em'));st.appendChild(typeof d==='object'?d:el('i',null,String(d)));w.appendChild(st);return w}
+function fracBox(n,d,whole){if(n&&n.nodeType===1)n.setAttribute('data-fr','n');if(d&&d.nodeType===1)d.setAttribute('data-fr','d');var w=el('span','fracbox');if(whole!=null){if(typeof whole==='object')w.appendChild(whole);else w.appendChild(el('b','fw',String(whole)))}var st=el('span','fst');st.appendChild(typeof n==='object'?n:el('i',null,String(n)));st.appendChild(el('em'));st.appendChild(typeof d==='object'?d:el('i',null,String(d)));w.appendChild(st);return w}
 // 각도기
 function protractorSVG(deg,sz){sz=sz||260;var cx=sz/2,cy=sz*.58,r=sz*.44,inner='<path d="M'+(cx-r)+' '+cy+' A'+r+' '+r+' 0 0 1 '+(cx+r)+' '+cy+' Z" fill="#eef5ff" stroke="#2b3f5c" stroke-width="2"/>';
   for(var a=0;a<=180;a+=10){var rad=Math.PI-a*Math.PI/180,x1=cx+r*Math.cos(rad),y1=cy-r*Math.sin(rad),x2=cx+(r-(a%30?8:14))*Math.cos(rad),y2=cy-(r-(a%30?8:14))*Math.sin(rad);inner+='<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="#2b3f5c" stroke-width="1.2"/>';if(a%30===0){var tx=cx+(r-24)*Math.cos(rad),ty=cy-(r-24)*Math.sin(rad)+4;inner+='<text x="'+tx.toFixed(1)+'" y="'+ty.toFixed(1)+'" font-size="10" text-anchor="middle" fill="#2b3f5c">'+a+'</text>'}}
@@ -17124,9 +17134,13 @@ function play(){
     // 여러 칸(몫·나머지, 분자·분모) · 소수점 지원
     var ANS=pz.answers||[pz.answer],NS=ANS.length,vals=[],act=0,P={slots:[]};for(var si=0;si<NS;si++){vals.push('');var sl_=el('span','slot empty');(function(i){sl_.onclick=function(){if(done)return;act=i;show()}})(si);P.slots.push(sl_)}P.slot=P.slots[0];
     pz.render(body,P);
-    function show(){P.slots.forEach(function(s,i){s.textContent=vals[i];s.className='slot'+(vals[i]?'':' empty')+(NS>1&&i===act?' act':'')});check.disabled=vals.some(function(v){return !v})}
-    retry=function(){vals=vals.map(function(){return ''});act=0;show()};
-    function press(k){if(done)return;var v=vals[act];if(k==='del'){if(!v&&act>0)act--;else vals[act]=v.slice(0,-1)}else if(k==='.'){if(pz.dec&&v&&v.indexOf('.')<0)vals[act]=v+'.'}else if(v.length<(pz.maxlen||(pz.dec?7:5)))vals[act]=(v==='0'?'':v)+k;show()}
+    // 입력 순서: 분수 칸은 우리나라에서 쓰는 순서대로 분모 → 분자(대분수는 자연수 → 분모 → 분자). 칸을 누르면 어느 칸이든 고칠 수 있어요
+    var ORD=P.slots.map(function(_,i){return i});P.slots.forEach(function(sl,i){if(sl.getAttribute('data-fr')!=='n')return;var fb=sl.closest('.fracbox'),j=-1;P.slots.forEach(function(s2,k){if(s2.getAttribute('data-fr')==='d'&&s2.closest('.fracbox')===fb)j=k});if(j<0)return;var a=ORD.indexOf(i),b=ORD.indexOf(j);if(b>a){ORD.splice(b,1);ORD.splice(a,0,j)}});
+    act=ORD[0];function nxt(d){var p=ORD.indexOf(act);return ORD[(p+d+ORD.length)%ORD.length]}
+    function show(){P.slots.forEach(function(s,i){s.textContent=vals[i];s.className='slot'+(vals[i]?'':' empty')+(NS>1?' mslot':'')+(NS>1&&i===act?' act':'')});check.disabled=vals.some(function(v){return !v})}
+    retry=function(){vals=vals.map(function(){return ''});act=ORD[0];show()};
+    show(); // 처음부터 어느 칸에 쓰는지 보여 줘요
+    function press(k){if(done)return;var v=vals[act];if(k==='del'){if(!v&&ORD.indexOf(act)>0)act=nxt(-1);else vals[act]=v.slice(0,-1)}else if(k==='.'){if(pz.dec&&v&&v.indexOf('.')<0)vals[act]=v+'.'}else if(v.length<(pz.maxlen||(pz.dec?7:5)))vals[act]=(v==='0'?'':v)+k;show()}
     function numOk(v,a){var n=Number(v);if(!isFinite(n))return false;return pz.dec?Math.abs(n-a)<1e-9:n===a}
     check.onclick=function(){
       if(done||check.disabled)return;
@@ -17140,7 +17154,7 @@ function play(){
     sc.appendChild(keys);
     document.onkeydown=function(e){
       if(sheet.className.indexOf('show')>=0)return;
-      if(/^[0-9]$/.test(e.key))press(e.key);else if(e.key==='.')press('.');else if(e.key==='Backspace')press('del');else if(e.key==='Tab'&&NS>1){e.preventDefault();act=(act+1)%NS;show()}else if(e.key==='Enter'){e.preventDefault();if(NS>1&&vals[act]&&act<NS-1){act++;show()}else check.onclick()}
+      if(/^[0-9]$/.test(e.key))press(e.key);else if(e.key==='.')press('.');else if(e.key==='Backspace')press('del');else if(e.key==='Tab'&&NS>1){e.preventDefault();act=nxt(1);show()}else if(e.key==='Enter'){e.preventDefault();if(NS>1&&vals[act]&&ORD.indexOf(act)<NS-1){act=nxt(1);show()}else check.onclick()}
     };
   }else if(pz.mode==='tiles'){
     pz.render(body);
