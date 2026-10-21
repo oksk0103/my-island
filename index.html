@@ -2815,6 +2815,14 @@ html body .vcalc .vr.ans .slot{width:calc(var(--L) * 40px - 2px);min-width:0;pad
 .hzqc.long{font-size:.88rem;font-weight:700;line-height:1.3;padding:8px 8px;word-break:keep-all}
 .qscreen .choice.long{font-size:1rem;line-height:1.3;word-break:keep-all;padding:10px 12px}
 .choices:has(.choice.long){grid-template-columns:1fr}.qscreen .choice.long{min-height:50px;height:auto;text-align:left;justify-content:flex-start}
+/* 한자 나무: 오늘 복습할 한자 목록 */
+.srdue-list{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:4px 0 6px}
+.srdue-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px 4px 6px;border-radius:999px;background:#fff7d6;box-shadow:inset 0 0 0 2px #f2c94c;color:#28385a}
+.srdue-chip b.hz{font-size:20px;line-height:1}
+.srdue-chip small{font-size:12px;font-weight:700;color:#6b5a2b}
+.srdue-chip.old{background:#f4e6d6;box-shadow:inset 0 0 0 2px #b88a5c}
+.srdue-chip.old small{color:#7a5634}
+.dock .cta+.cta{margin-top:8px}
 /* ================= 국어 서점 ================= */
 .q-ko .qtag{color:#1c6fb8!important}
 body .qscreen.q-ko .qbody{background:linear-gradient(90deg,#f6efe0 0 10px,transparent 10px),#fffdf6;box-shadow:inset 0 0 0 4px #fff,inset 0 0 0 6px #9cc3e8,0 6px 0 #c7d8ea,0 12px 24px rgba(20,40,80,.14)!important}
@@ -4180,7 +4188,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.98";
+var APP_VER="1.0.99";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -8663,6 +8671,10 @@ function hzWrongCount(){return hzWrongList().length}
 function hzOpenList(g){return H8.slice(GB[g],GB[g]+Math.min(gradeCap(g),S.hz.gu[g]||0)).map(function(h){return h[0]})}
 function hzBrowse(g,start,back){var L=hzOpenList(g);if(!L.length)return;var i=Math.max(0,L.indexOf(start));hzCards(L,{browse:true,start:i,back:back})}
 // 오답만 다시 풀기
+// 복습할 한자만 한 판: 보고 있는 급수가 공부 중인 급수와 달라도, 판이 끝나면 공부 중인 급수로 돌아가요
+var HZBACKG=null;
+function hzReviewRound(g,list){if(g!==S.hz.cg){HZBACKG=S.hz.cg;hzSelect(g)}TREEG=g;HZWQ=shuffle(list.slice()).slice(0,ROUND);_startRound(SUBJ.hz)}
+function hzRestoreGrade(){if(HZBACKG==null)return;var g=HZBACKG,t=TREEG;HZBACKG=null;hzSelect(g);TREEG=t}
 function hzWrongRound(g,list){if(g!==S.hz.cg)hzSelect(g);HZWQ=shuffle(list.slice()).slice(0,ROUND);_startRound(SUBJ.hz)}
 function wrongScreen(back){clear();
   var sc=el('div','screen wrongscr'),top=el('div','qtop'),x=el('button','x');x.setAttribute('aria-label','돌아가기');x.innerHTML=BACK_SVG;x.onclick=back||home;top.appendChild(x);top.appendChild(el('h3','wtitle','한자 오답노트'));sc.appendChild(top);
@@ -17145,7 +17157,7 @@ function advLeft(){var t=dayKey();return daySubs().filter(function(k){return !S[
 function advStart(){var q=advLeft();if(!q.length)q=daySubs();ADV={q:q,i:0,log:[],day:dayKey()};tone([523,659,784],'sine',.09);advGo()}
 function advGo(){if(!ADV||ADV.day!==dayKey()){ADV=null;advStart();return}var ds_=daySubs();while(ADV.i<ADV.q.length&&ds_.indexOf(ADV.q[ADV.i])<0)ADV.q.splice(ADV.i,1);if(ADV.i>=ADV.q.length){advFinish();return}startRound(SUBJ[ADV.q[ADV.i]])}
 function advNextLabel(){if(!ADV)return null;var n=ADV.q[ADV.i];return n?'다음: '+ADVK[n][0]:'모험 끝내기'}
-function resultDone(){if(!ADV){home();return}
+function resultDone(){hzRestoreGrade();if(!ADV){home();return}
   if(ADV.i<ADV.q.length){advGo();return}advFinish()}
 function advFinish(){if(!ADV)return;var a=ADV;ADV=null;var dy=dayInit();var bonus=dy.pending;dy.pending=false;var ft0=fishTicket();save();home();setTimeout(function(){advDoneScene(a,bonus,ft0)},350)}
 function advStrip(){var w=el('div','advstrip');ADV.q.forEach(function(k,i){var c=el('span','advs'+(i<ADV.i?' done':i===ADV.i?' now':''));c.appendChild(img(ADVK[k][1]));c.appendChild(el('b',null,ADVK[k][0]));w.appendChild(c);if(i<ADV.q.length-1)w.appendChild(el('i','advline'+(i<ADV.i?' done':'')))});return w}
@@ -17562,11 +17574,14 @@ function treeScreen(fromRound){if(fromRound)TREEP=null;
   }else{
     c.appendChild(el('div','eyebrow','한자 나무'));
     c.appendChild(el('h2',null,n?GRADES[tg]+' 한자 '+n+'자가 열렸어요':'아직 열매가 없어요'));
-    var wn=wiltedList().filter(function(ch){return gradeOf(ch)===tg}).length;
-    c.appendChild(el('p','sub',n?(wn?'오늘 다시 물어볼 열매가 '+wn+'개 있어요. 문제에서 맞히면 한 단계 자라요.':'열매를 누르면 뜻과 음을 볼 수 있어요. 복습할수록 열매가 자라요.'):'한자 문제에서 같은 한자를 두 번 한 번에 맞히면 꽃봉오리가 열려요.'));
+    var wl=wiltedList().filter(function(ch){return gradeOf(ch)===tg}),wn=wl.length;
+    if(n&&wn){ // 복습: 어느 한자인지 보여 주고, 아래 버튼으로 그 한자만 풀어요
+      c.appendChild(el('p','sub','오늘 복습할 한자가 '+wn+'자 있어요. 반짝이는 열매와 시든 열매예요. 맞히면 한 단계 자라요.'));
+      var rv=el('div','srdue-list');wl.forEach(function(ch){var h=H8[HIDX[ch]],b=el('span','srdue-chip'+(hzOld(ch)?' old':''));b.appendChild(el('b','hz',ch));b.appendChild(el('small',null,h[1]+' '+h[2]));rv.appendChild(b)});c.appendChild(rv)}
+    else c.appendChild(el('p','sub',n?'열매를 누르면 뜻과 음을 볼 수 있어요. 복습할수록 열매가 자라요.':'한자 문제에서 같은 한자를 두 번 한 번에 맞히면 꽃봉오리가 열려요.'));
   }
   var info=el('p','fruitinfo');info.hidden=true;
-  var zz=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z'))||1;var tw=Math.max(170,Math.min((app.clientWidth||375)-40,320,(innerHeight/(document.body.classList.contains('big')?zz:1)-(fromRound?380:330))/TREE_AR));
+  var zz=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z'))||1;var tw=Math.max(170,Math.min((app.clientWidth||375)-40,320,(innerHeight/(document.body.classList.contains('big')?zz:1)-(fromRound?380:330)-(!fromRound&&wiltedList().some(function(ch){return gradeOf(ch)===tg})?150:0))/TREE_AR));
   c.appendChild(treeEl(tw,{grade:tg,part:gradeCap(tg)>100?TREEP:null,labels:true,hi:fromRound&&G?G.newFruits.concat(G.grown||[]):[],onFruit:function(ch){
     var h=H8[HIDX[ch]],ex=exampleWord(ch);info.hidden=false;info.innerHTML='';
     info.appendChild(el('b','hz',ch));var t=el('span');t.appendChild(el('strong',null,hzName(h)));var sr_=hzSrGet(ch),lf=hzSrLeft(ch);if(sr_)t.appendChild(el('em','srst st'+sr_.s,SR_NAME[sr_.s]+' · '+(lf<=0?'오늘 복습해요':lf+'일 뒤 복습')));else if(ex)t.appendChild(el('small',null,ex[0]+'('+ex[1]+')'));info.appendChild(t);var cb=el('button','cta light hzcardbtn','카드');cb.onclick=function(){hzBrowse(tg,ch,function(){treeScreen(false)})};info.appendChild(cb);
@@ -17577,7 +17592,9 @@ function treeScreen(fromRound){if(fromRound)TREEP=null;
   sc.appendChild(c);
   var d=el('div','dock');
   if(fromRound){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;d.appendChild(ok)}
-  else{var nwn=hzUnseenIn(tg).length,go=el('button','cta',nwn?'새 한자 '+nwn+'자 배우고 문제 풀기':GRADES[tg]+' 한자 문제 풀기');go.onclick=function(){if(tg!==S.hz.cg)hzSelect(tg);startRound(SUBJ.hz)};d.appendChild(go)}
+  else{var dueL=wiltedList().filter(function(ch){return gradeOf(ch)===tg});
+    if(dueL.length){var rb=el('button','cta green','복습할 한자 '+dueL.length+'자 풀기');rb.onclick=function(){hzReviewRound(tg,dueL)};d.appendChild(rb)}
+    var nwn=hzUnseenIn(tg).length,go=el('button','cta'+(dueL.length?' light':''),nwn?'새 한자 '+nwn+'자 배우고 문제 풀기':GRADES[tg]+' 한자 문제 풀기');go.onclick=function(){if(tg!==S.hz.cg)hzSelect(tg);startRound(SUBJ.hz)};d.appendChild(go)}
   sc.appendChild(d);
   app.appendChild(sc);
   if(!fromRound)setTimeout(function(){if(sc.isConnected)hzTreeIntro()},350);
@@ -19566,7 +19583,7 @@ function gardenScreen(edit,hand){islandScreen(!!edit,hand)}
 // ================= 마을 (첫 화면) =================
 // 칸 없는 한 장면. 건물을 누르면 들어가고, 배를 타면 꾸미는 섬으로 가요.
 var HUB='village';
-function home(){HUB==='island'?islandScreen(false):villageScreen()}
+function home(){hzRestoreGrade();HUB==='island'?islandScreen(false):villageScreen()}
 var VW=560,VH=560,VK=1.15,VTW=80*VK,VTH=40*VK,VN=7,VY0=280-100*VK;
 function vC(c,r){return [VW/2+(c-r)*VTW/2,VY0+(c+r)*VTH/2+VTH/2]}
 var VCELL={tree:[1,1],home:[0,3],shop:[3,0],mail:[3,5],pot:[5,4]};
