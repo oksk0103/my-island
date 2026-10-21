@@ -3336,19 +3336,69 @@ html body .village .vthead .wschip:not(.on):active{box-shadow:0 1px 0 #dfe5ec!im
 .ibig.locked{opacity:.92;filter:saturate(.6)}
 .ibig .glock{margin-left:6px;padding:2px 8px;border-radius:999px;background:#28385a;color:#fff;font-size:12px;font-weight:800;line-height:1.4}
 .island .hud .hchip.decoleft{padding:0 14px;font-size:1rem;color:#2b6a3a}
-/* 단원 친구(수학관) */
+/* 섬 친구 과외 (오늘은 내가 선생님) */
 .museumscr .mseg{grid-template-columns:repeat(4,1fr)}
-.udexg{display:flex;gap:6px;justify-content:center;margin:10px 0 2px}
-.udexg button{padding:6px 14px;border-radius:999px;background:rgba(120,80,30,.12);color:#8a6a45;font-family:var(--game);font-size:.95rem}
-.udexg button.on{background:#fff;color:#5b3d1e;box-shadow:0 2px 0 rgba(120,80,30,.15)}
-.udexsem{margin:14px 4px 6px;font-family:var(--game);font-weight:400;font-size:1.05rem;color:#5b3d1e}
-.udexgrid .mplate b{font-size:.82rem;line-height:1.2;word-break:keep-all}
-.udexq{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-style:normal;font-family:var(--game);font-size:2rem;color:rgba(70,50,30,.35);z-index:2}
-.udexbar{display:block;height:5px;margin-top:4px;border-radius:9px;background:rgba(120,80,30,.15);overflow:hidden}
-.udexbar em{display:block;height:100%;background:#5cc46b;border-radius:9px}
-.udexsil{filter:brightness(0);opacity:.18}
-.udexbtn{margin-top:8px;width:100%}
-.ddcard.udexnew .ddpic{width:150px;height:150px}
+.museumscr .mseg button b{white-space:nowrap}
+.tchscr .qtop{align-items:center}
+.tchdots{display:flex;gap:6px;margin-left:10px}
+.tchdots i{width:10px;height:10px;border-radius:50%;background:rgba(43,63,92,.18)}
+.tchdots i.done{background:#5cc46b}.tchdots i.now{background:#ffb23e;box-shadow:0 0 0 3px rgba(255,178,62,.25)}
+.tchfr{display:flex;align-items:center;gap:8px;margin:6px 16px 4px}
+.tchfi{width:64px;height:64px;object-fit:contain;flex:none;transition:transform .3s}
+.tchfr.yay .tchfi{animation:tchhop .5s 2}
+@keyframes tchhop{50%{transform:translateY(-8px)}}
+.tchsay{position:relative;flex:1;padding:10px 14px;border-radius:16px;background:#fff;box-shadow:0 2px 8px rgba(0,30,60,.1);font-family:var(--game);font-size:1.05rem;color:#2b3f5c}
+.tchsay:before{content:'';position:absolute;left:-7px;top:50%;margin-top:-7px;border:7px solid transparent;border-left:0;border-right-color:#fff}
+.tchnote{position:relative;margin:6px 14px;padding:34px 14px 14px 26px;border-radius:14px;background:#fffdf6 repeating-linear-gradient(#fffdf6 0 31px,#d9e6f2 31px 32px);box-shadow:0 3px 0 #e7dcc4,0 6px 14px rgba(80,60,20,.12);border-left:4px solid #f2a7a7}
+.tchwho{position:absolute;left:10px;top:-12px;display:flex;align-items:center;gap:5px;padding:3px 10px 3px 4px;border-radius:999px;background:#ffe9a8;font-family:var(--game);font-size:.85rem;color:#6b4a12;box-shadow:0 2px 0 rgba(120,80,20,.18)}
+.tchwho img{width:26px;height:26px;object-fit:contain}
+.tchq{margin:0 0 8px;font-weight:800;color:#2b3f5c;line-height:1.5;word-break:keep-all}
+.tchbox{display:flex;flex-direction:column;align-items:center;gap:8px}
+.tchbox .keys{display:none}
+.slot.tchans{position:relative;color:#c2405b;font-family:'Gaegu',var(--game),cursive;border-color:#f3b3c0;background:#fff4f6}
+.slot.tchans.right{color:#1f8a4c;border-color:#8fd6a8;background:#effbf3}
+.tchmark{position:absolute;right:-16px;top:-16px;width:26px;height:26px;object-fit:contain;filter:drop-shadow(0 1px 1px rgba(0,0,0,.2))}
+.tchch .choice{position:relative}
+body .qscreen.tchscr .tchch .choice.tchpick{background:#fff1f4!important;box-shadow:inset 0 0 0 3px #f08aa0,0 3px 0 #e9c3cc!important}
+body .qscreen.tchscr .tchch .choice.right{background:#effbf3!important;box-shadow:inset 0 0 0 3px #5cc46b,0 3px 0 #bfe5cb!important}
+.tchch .choice .tchmark{right:auto;left:-10px;top:-14px}
+.tchch .choice.tchpick:after{content:'고슴도치 답';position:absolute;right:8px;top:-11px;padding:1px 8px;border-radius:999px;background:#f08aa0;color:#fff;font-size:.72rem;font-weight:800}
+.tchch .choice.tchpickme{animation:tchglow 1.2s infinite}
+@keyframes tchglow{50%{box-shadow:0 0 0 3px #8fd6a8}}
+.tchexp{display:none;margin:4px 14px;padding:10px 14px;border-radius:14px;background:#effbf3;color:#2b3f5c;line-height:1.5}
+.tchexp.show{display:block}.tchexp.bad{background:#fff6e5}
+.tchexp b{font-family:var(--game);font-weight:400;font-size:1.05rem}.tchexp p{margin:4px 0 0;font-size:.92rem}
+.tchscr .dock.tchdock{flex-direction:row;flex-wrap:wrap;gap:10px}
+.tchscr .dock.tchdock .cta{flex:1 1 40%}
+.tchscr .dock.tchdock .cta{margin:0}
+body .qscreen.tchscr .dock .cta.tchyes{color:#fff;text-shadow:var(--stroke);background:var(--gloss),var(--jelly-b)!important;box-shadow:inset 0 -6px 0 rgba(0,40,90,.22),0 4px 0 #1667a8!important}
+body .qscreen.tchscr .dock .cta.tchno{color:#fff;text-shadow:var(--stroke);background:var(--gloss),var(--jelly-r)!important;box-shadow:inset 0 -6px 0 rgba(110,20,10,.22),0 4px 0 #b13a2c!important}
+.tchscr .tchopts{flex:1 1 100%}
+.tchopts{display:flex;gap:10px;width:100%}.tchopts .cta{flex:1;font-size:1.4rem}
+.tchhint{width:100%;margin:0;text-align:center;color:#5b6b80}
+.tchdone .tchline{font-family:var(--game);font-size:1.05rem;color:#5b3d1e}
+/* 우리 반 */
+.tchdesk{display:flex;align-items:center;gap:12px;margin:12px 0 10px;padding:12px 14px;border-radius:16px;background:linear-gradient(#fff,#fff7e6);box-shadow:0 3px 0 rgba(120,80,30,.15)}
+.tchdi{width:64px;height:64px;object-fit:contain}
+.tchdesk>div{flex:1;display:flex;flex-direction:column;gap:3px}
+.tchdesk b{font-family:var(--game);font-weight:400;font-size:1.1rem;color:#5b3d1e}.tchdesk small{color:#8a6a45}
+.tchbar{display:block;height:7px;border-radius:9px;background:rgba(120,80,30,.15);overflow:hidden}
+.tchbar em{display:block;height:100%;background:linear-gradient(90deg,#ffd35a,#ffb23e);border-radius:9px}
+.tchbar.sm{width:56px;height:6px;flex:none}.tchbar.sm em{background:#5cc46b}
+.tchsem{margin:14px 4px 6px;font-family:var(--game);font-weight:400;font-size:1.05rem;color:#5b3d1e}
+.tchlist{display:flex;flex-direction:column;gap:6px}
+.tchrow{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.75)}
+.tchrow>span{flex:1;display:flex;flex-direction:column}.tchrow b{font-weight:800;color:#3b2a14}.tchrow small{color:#8a6a45;font-size:.8rem}
+.tchic{width:28px;height:28px;flex:none;border-radius:50%;background:rgba(120,80,30,.12);display:flex;align-items:center;justify-content:center}
+.tchic img{width:20px;height:20px}
+.tchrow.done{background:linear-gradient(90deg,#fff6d6,#fff);box-shadow:inset 0 0 0 2px #ffe08a}.tchrow.done .tchic{background:#ffd35a}
+.tchrow.ready{box-shadow:inset 0 0 0 2px #8fd6a8}.tchrow.ready .tchic{background:#8fd6a8}
+.tchrow.off{opacity:.55}
+.tchpotbtn{margin-top:8px;width:100%;display:flex;align-items:center;justify-content:center;gap:6px}
+.tchpotbtn img{width:28px;height:28px;object-fit:contain}
+html body .qscreen.tchscr .dock .cta.tchyes::before{background:linear-gradient(#7cc4ff,#3c97ea)!important}
+html body .qscreen.tchscr .dock .cta.tchno::before{background:linear-gradient(#ff9d8d,#f0675a)!important}
+.ddcard.tchdone h3{word-break:keep-all}
 </style>
 
 <div id="app"></div>
@@ -4219,7 +4269,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.110";
+var APP_VER="1.0.111";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -17069,7 +17119,7 @@ function startRound(sub){
   _startRound(sub);
 }
 function _startRound(sub){
-  tone([],'sine');try{udexS()}catch(e){}
+  tone([],'sine');
   var types=Object.keys(sub.types),re=[],q0;
   if(sub.key==='math'){var dn=dnum(),cn={};(S.mx||[]).forEach(function(m){if(m[1]==='m'&&sub.types[m[2]]&&dn-m[0]>=1&&dn-m[0]<=21)cn[m[2]]=(cn[m[2]]||0)+1});
     re=Object.keys(cn).sort(function(a,b){return cn[b]-cn[a]}).slice(0,2);
@@ -17112,7 +17162,7 @@ function play(){
     if(pz.chars)pz.chars.forEach(function(c){var f1=ok&&tries===0;hzWrongMark(c,f1);var m=S.hz.m,o=hzOrder(),fr=o.indexOf(c)>=0;
       if(fr&&!G.lvl){var due=isWilted(c),mv=hzSrMark(c,f1);if(mv>0)(G.grown=G.grown||[]).push(c);if(f1&&due)(G.revived=G.revived||[]).push(c)}
       if(G.ch&&f1&&!fr)m[c]=Math.max(m[c]||0,1);m[c]=f1?(m[c]||0)+1:Math.max(0,(m[c]||0)-1);if(m[c]>=2&&!fr){o.push(c);hzSrNew(c);G.newFruits.push(c)}});
-    if(pz.kdom&&!G.lvl)koDomLog(pz.kdom,ok&&tries===0);if(pz.onResult&&!pz._r){pz._r=1;try{pz.onResult(ok&&tries===0)}catch(e){}}if(!pz._sl&&!G.lvl&&!G.quiet_std){pz._sl=1;try{stdLog(stdCodes(sub,type,pz,lv),ok&&tries===0)}catch(e){}}
+    if(pz.kdom&&!G.lvl)koDomLog(pz.kdom,ok&&tries===0);if(sub.key==='math'&&!G.place&&!G.lvl&&!G.quiet_std)try{tchMark(type,ok&&tries===0)}catch(e){}if(pz.onResult&&!pz._r){pz._r=1;try{pz.onResult(ok&&tries===0)}catch(e){}}if(!pz._sl&&!G.lvl&&!G.quiet_std){pz._sl=1;try{stdLog(stdCodes(sub,type,pz,lv),ok&&tries===0)}catch(e){}}
     if(ok&&tries===0&&pz.kid&&S.mx){S.mx=S.mx.filter(function(m){return !(m[1]==='k'&&m[2]===pz.kid)})}
     if(ok&&tries===0&&G.re&&G.re.indexOf(type)>=0&&S.mx){S.mx=S.mx.filter(function(m){return !(m[1]==='m'&&m[2]===type)});G.reOk=(G.reOk||0)+1}
     if((!ok||tries>0)&&!G.lvl){if(!S.mx)S.mx=[];var dn=dnum();if(pz.chars)pz.chars.forEach(function(c){S.mx.push([dn,'h',c])});else if(pz.kid)S.mx.push([dn,'k',pz.kid]);else if(pz.word)S.mx.push([dn,'e',pz.word]);else if(sub.key!=='ko')S.mx.push([dn,sub.key==='en'?'w':'m',type]);if(S.mx.length>400)S.mx=S.mx.slice(-400)}
@@ -17265,7 +17315,7 @@ function advLeft(){var t=dayKey();return daySubs().filter(function(k){return !S[
 function advStart(){var q=advLeft();if(!q.length)q=daySubs();ADV={q:q,i:0,log:[],day:dayKey()};tone([523,659,784],'sine',.09);advGo()}
 function advGo(){if(!ADV||ADV.day!==dayKey()){ADV=null;advStart();return}var ds_=daySubs();while(ADV.i<ADV.q.length&&ds_.indexOf(ADV.q[ADV.i])<0)ADV.q.splice(ADV.i,1);if(ADV.i>=ADV.q.length){advFinish();return}startRound(SUBJ[ADV.q[ADV.i]])}
 function advNextLabel(){if(!ADV)return null;var n=ADV.q[ADV.i];return n?'다음: '+ADVK[n][0]:'모험 끝내기'}
-function resultDone(){if(udexPend().length&&!document.querySelector('.daydone')){udexReveal(resultDone);return}hzRestoreGrade();if(!ADV){home();return}
+function resultDone(){hzRestoreGrade();if(!ADV){home();setTimeout(function(){try{tchOffer()}catch(e){}},450);return}
   if(ADV.i<ADV.q.length){advGo();return}advFinish()}
 function advFinish(){if(!ADV)return;var a=ADV;ADV=null;var dy=dayInit();var bonus=dy.pending;dy.pending=false;var ft0=fishTicket();save();home();setTimeout(function(){advDoneScene(a,bonus,ft0)},350)}
 function advStrip(){var w=el('div','advstrip');ADV.q.forEach(function(k,i){var c=el('span','advs'+(i<ADV.i?' done':i===ADV.i?' now':''));c.appendChild(img(ADVK[k][1]));c.appendChild(el('b',null,ADVK[k][0]));w.appendChild(c);if(i<ADV.q.length-1)w.appendChild(el('i','advline'+(i<ADV.i?' done':'')))});return w}
@@ -17320,7 +17370,7 @@ function chStart(){var c=chInfo();if(!chDayDone()){showSheet('good','sparkles','
   var k=chSub(),sub=SUBJ[k];tone([392,523,659,784],'sine',.08);
   G={sub:sub,ch:true,n:3,re:[],q:chTypes(k),idx:0,got:0,first:0,startPieces:stOf(sub).pieces,ups:[],unlocked:false,combo:0,drops:0,gain:1,newFruits:[],sunGot:0};
   showSheet('good','sparkles',ADVK[k][0]+' 도전 · 3문제','평소보다 어려운 문제예요!','3문제 중 2문제를 맞히면 성공! 힌트는 한 번 볼 수 있어요.','도전 시작',function(){if(!document.body.contains(sheet)||lt_used)return;G=g_;c.tries++;save();play()});var g_=G,lt_used=false;(function(){var lt=el('button','cta light','나중에 할게요');lt.onclick=function(){if(lt_used)return;lt_used=true;hideSheet();G=null;home()};sheet.firstChild.appendChild(lt)})()}
-function chEnd(){try{G.udexNew=udexCheck(false)}catch(e){}var c=chInfo(),k=G.sub.key,ok=G.got>=2,all=G.first===G.n,gain=ok?CH_SUN:0,t=dayKey();
+function chEnd(){var c=chInfo(),k=G.sub.key,ok=G.got>=2,all=G.first===G.n,gain=ok?CH_SUN:0,t=dayKey();
   c.log.push([dnum(),k,G.got,G.first]);if(c.log.length>60)c.log=c.log.slice(-60);
   if(S.days.indexOf(t)<0)S.days.push(t);stkAward();
   if(ok){c.n++;c.okd=t;S.sun+=gain;var m=curMission();if(m)missionDone()}
@@ -17329,7 +17379,7 @@ function chEnd(){try{G.udexNew=udexCheck(false)}catch(e){}var c=chInfo(),k=G.sub
   card.appendChild(el('small',null,ADVK[k][0]+' 도전 · '+G.got+' / '+G.n));
   card.appendChild(el('h3',null,ok?(all?'완벽해! 도전 성공!':'도전 성공!'):'아깝다! 다음에 다시 도전하자'));
   var msg=ok?'햇살 '+gain+'개를 받았어요. '+(S.path.char?'오솔길에서 한 칸 앞으로 가요!':''):(c.tries<CH_MAX?'한 번 더 도전할 수 있어요.':'내일 새 도전 문제가 기다려요.');
-  if(G.ups.length)msg+=' 도전을 잘해서 '+G.ups.join(', ')+' 레벨이 올랐어요!';if(G.newFruits.length)msg+=' 한자 '+G.newFruits.join(', ')+' 글자를 바로 익혔어요!';if(G.mastered&&G.mastered.length)msg+=' 영어 단어 '+G.mastered.join(', ')+'의 꿀이 가득 찼어요!';if(G.udexNew&&G.udexNew.length)msg+=' 새 단원 친구를 만났어요! 다음 판이 끝나면 보여 줄게요.';
+  if(G.ups.length)msg+=' 도전을 잘해서 '+G.ups.join(', ')+' 레벨이 올랐어요!';if(G.newFruits.length)msg+=' 한자 '+G.newFruits.join(', ')+' 글자를 바로 익혔어요!';if(G.mastered&&G.mastered.length)msg+=' 영어 단어 '+G.mastered.join(', ')+'의 꿀이 가득 찼어요!';
   card.appendChild(el('p',null,msg));
   if(!ok&&c.tries<CH_MAX){var rb=el('button','cta green','다시 도전');rb.onclick=function(){lay.remove();G=null;chStart()};card.appendChild(rb)}var b=el('button','cta '+(!ok&&c.tries<CH_MAX?'light':'green'),ok?'오솔길로':'좋아요');b.onclick=function(){lay.remove();G=null;S.path.char?trail():home()};card.appendChild(b);
   lay.appendChild(card);document.body.appendChild(lay);if(ok){SND.bloom();setTimeout(function(){var r=pic.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,44,true)},200)}else tone([523,440],'sine',.12);
@@ -17339,7 +17389,6 @@ function roundEnd(){HZWQ=null;
   if(S.days.indexOf(today)<0)S.days.push(today);if(S.days.length>400)S.days=S.days.slice(-400);stkAward();
   // 찍기가 한 판에 3번 이상이면 오늘의 할 일로 치지 않고 같은 과목을 다시 해요(천천히 풀다 틀리는 건 괜찮아요)
   G.rushed=!G.place&&!G.sch&&!G.boss&&!G.ch&&!G.lvl&&(G.rush||0)>=3;if(G.rushed){var dr_=dayInit();dr_.rush=(dr_.rush||0)+1}
-  try{G.udexNew=udexCheck(false)}catch(e){}
   try{repTime(sub.key,Math.min(Date.now()-(G.t0||Date.now()),20*6e4))}catch(e){}
   if(!G.rushed)st.today=today;if(st.rdD!==today){st.rdD=today;st.rdN=0}st.rdN=(st.rdN||0)+1;if(G.sunMul<1){var dx=dayInit();dx.extra=(dx.extra||0)+1;if(!S.xtra)S.xtra={};var dk=dayKey();S.xtra[dk]=(S.xtra[dk]||0)+1;var ks=Object.keys(S.xtra);if(ks.length>60)delete S.xtra[ks.sort()[0]]}
   if(sub.key==='math'){G.sunGot=G.drops;G.grow0=stage(sub);G.grow=0;G.bloom=null;for(var gi=0;gi<G.got;gi++){st.pieces++;G.grow++;if(stage(sub)===0){var wasGold=hasGold(sub),code=decideBloom(sub,G.first===ROUND);G.bloom={code:code,gold:!wasGold&&hasGold(sub)};S.sun+=itemOf(sub,code).rare?15:5;track('bloom');st.pieces+=G.got-gi-1;G.extra=G.got-gi-1;break}}}else if(sub.key==='ko'){G.sunGot=G.drops;G.kres=koAdvance()}else G.sunGot=G.drops+G.newFruits.length*2;
@@ -18116,7 +18165,7 @@ var LMACT={
     var a=el('button','cta light','닫기');a.onclick=hideSheet;
     var b=el('button','cta green','수학 문제 풀기');b.onclick=function(){hideSheet();startRound(m)};
     row.appendChild(a);row.appendChild(b);inn.appendChild(row);
-    var row2=el('div','dockrow');var gb=el('button','cta light','꽃 도감');gb.onclick=function(){hideSheet();greenhouse('math')};var pb=el('button','cta light','화분 꾸미기');pb.onclick=function(){hideSheet();shop('pot')};row2.appendChild(gb);row2.appendChild(pb);inn.appendChild(row2);var uc_=udexCount(curGrade()),ub=el('button','cta light udexbtn','단원 친구 '+uc_[0]+' / '+uc_[1]);ub.onclick=function(){hideSheet();MUSE_TAB='unit';museumScreen(function(){islandScreen(false)})};inn.appendChild(ub);
+    var row2=el('div','dockrow');var gb=el('button','cta light','꽃 도감');gb.onclick=function(){hideSheet();greenhouse('math')};var pb=el('button','cta light','화분 꾸미기');pb.onclick=function(){hideSheet();shop('pot')};row2.appendChild(gb);row2.appendChild(pb);inn.appendChild(row2);var uc_=tchCount(curGrade()),ub=el('button','cta light tchpotbtn');ub.appendChild(img(TCH_FR[0]));ub.appendChild(document.createTextNode(TCH_FR[1]+'에게 가르친 단원 '+uc_[0]+' / '+uc_[1]));ub.onclick=function(){hideSheet();SCH_TAB='class';schoolScreen(function(){islandScreen(false)})};inn.appendChild(ub);
     sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;
     requestAnimationFrame(function(){sheet.className='sheet good show'});
   }
@@ -18776,11 +18825,11 @@ function bldLot(id){return bldCalc().lots[id]}
 function museumCounts(){var f=fishS(),fn=FISH_SP.filter(function(x){return f.dex[x.id]}).length,fo=fossilCount(),bw=(S.boss&&S.boss.wins)||[];return {fish:fn,fossil:fo,doll:BOSSES.filter(function(B){return bw.indexOf(B.id)>=0}).length}}
 function bldUnlock(){var b=bldS();if(!b.school&&!document.querySelector('.sheet.show,.daydone,.guide')){b.school=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','panda','판다 선생님','섬 한가운데에 학교가 생겼어요!','틀렸던 문제를 다시 풀어 칠판을 깨끗하게 만들고, 이번 주 성적표와 상장도 볼 수 있어요.','구경하러 가기',function(){schoolScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300);return}if(!b.library&&!document.querySelector('.sheet.show,.daydone,.guide')){b.library=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','hedgehog','고슴도치 사서','섬 도서관이 생겼어요!','집이나 학교에서 읽은 책을 도서관 책장에 꽂아 봐요. 한국어 책도 영어 책도 좋아요. 책마다 한마디를 쓰면 햇살과 보석을 받아요.','구경하러 가기',function(){libScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300);return}if(b.museum)return;var m=museumCounts();if(m.fish<5&&m.fossil<5)return;if(document.querySelector('.sheet.show,.daydone,.guide'))return;
   b.museum=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','owl','부엉이 박사','섬 박물관이 생겼어요!','물고기와 화석을 많이 모아서 부엉이 박사가 섬에 박물관을 지어 줬어요. 박물관을 누르면 모은 것들을 구경할 수 있어요.','구경하러 가기',function(){museumScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300)}
-var MUSE_TAB='fish',MUSE_BACK=null;
-function museumScreen(back){MUSE_BACK=back;clear();var sc=el('div','screen museumscr'),top=el('div','qtop');
+var MUSE_TAB='fish';
+function museumScreen(back){if(MUSE_TAB==='unit')MUSE_TAB='fish';clear();var sc=el('div','screen museumscr'),top=el('div','qtop');
   var b=el('button','x');b.setAttribute('aria-label','나가기');b.innerHTML=BACK_SVG;b.onclick=function(){(back||villageScreen)()};top.appendChild(b);var built=!!bldS().museum;top.appendChild(el('h2','mtitle',built?'섬 박물관':'도감'));top.appendChild(el('div','spacer'));sc.appendChild(top);
   var m=museumCounts(),cur=el('div','mcur');cur.appendChild(img('owl'));cur.appendChild(el('p',null,!built?'물고기나 화석을 5종 모으면 섬에 박물관을 지어 줄게! 지금 물고기 '+m.fish+'종 · 화석 '+m.fossil+'종이야.':['어서 와! 네가 모은 걸 정성껏 전시해 두었어.','빈 진열장도 언젠가 꽉 채워 보자!','전시품을 누르면 재미있는 이야기를 들려줄게.'][R(0,2)]));sc.appendChild(cur);
-  var T=[['fish','물고기관',m.fish,FISH_SP.length],['fossil','화석관',m.fossil,FOSSILS.length],['doll','인형관',m.doll,BOSSES.length],['unit','수학관'].concat(udexCount(curGrade()))],seg=el('div','mseg');
+  var T=[['fish','물고기관',m.fish,FISH_SP.length],['fossil','화석관',m.fossil,FOSSILS.length],['doll','인형관',m.doll,BOSSES.length]],seg=el('div','mseg');
   T.forEach(function(t){var bt=el('button',MUSE_TAB===t[0]?'on':null);bt.appendChild(el('b',null,t[1]));bt.appendChild(el('small',null,t[2]+' / '+t[3]));bt.onclick=function(){MUSE_TAB=t[0];museumScreen(back)};seg.appendChild(bt)});sc.appendChild(seg);
   var g=el('div','mgrid'),f=fishS(),dg=digS().got,bw=(S.boss&&S.boss.wins)||[];
   function cas(ok,im,name,sub,onTap,rare){var c=el('button','mcase'+(ok?'':' lock')+(rare?' rare':''));var gl=el('div','mglass');gl.appendChild(img(im));c.appendChild(gl);var pl=el('div','mplate');pl.appendChild(el('b',null,ok?name:'???'));if(sub)pl.appendChild(el('small',null,sub));c.appendChild(pl);if(ok)c.onclick=onTap;g.appendChild(c)}
@@ -18789,80 +18838,103 @@ function museumScreen(back){MUSE_BACK=back;clear();var sc=el('div','screen museu
   else if(MUSE_TAB==='doll')BOSSES.forEach(function(B){var ok=bw.indexOf(B.id)>=0;cas(ok,B.id,B.name,'',function(){showSheet('good',B.id,'인형관',B.name+' 인형','주말 보스 '+josa(B.name,'을','를')+' 물리치고 받은 인형이에요. "'+B.say+'"','좋아요',function(){})})});
   if(MUSE_TAB==='fish'){fishRewards();var rw1=el('div','dexrw');FISH_RW.forEach(function(r){var on=f.rw&&f.rw[r.id],c=el('div','dexrwi'+(on?' on':''));c.appendChild(img(r.id));c.appendChild(el('b',null,r.n+'종'));c.appendChild(el('small',null,on?'받았어요':itemName(r.id)));rw1.appendChild(c)});sc.appendChild(rw1)}
   else if(MUSE_TAB==='fossil'){var rw2=el('div','dexrw');FO_RW.forEach(function(r){var on=m.fossil>=r.n,c=el('div','dexrwi'+(on?' on':''));c.appendChild(img('gem'));c.appendChild(el('b',null,r.n+'종'));c.appendChild(el('small',null,on?'받았어요':'보석 '+r.gem+'개'));rw2.appendChild(c)});sc.appendChild(rw2)}
-  if(MUSE_TAB==='unit')udexTab(sc);else sc.appendChild(g);
-  var tip={fish:'낚시터에서 새 물고기를 낚으면 전시돼요.',fossil:'섬의 반짝이는 땅에서 화석을 캐면 전시돼요.',doll:'주말 보스를 물리치면 인형이 전시돼요.',unit:'수학 단원 하나를 다 익히면 그 단원 친구를 만나요. 친구를 누르면 이야기를 볼 수 있어요.'}[MUSE_TAB];sc.appendChild(el('p','mtip',tip));
+  sc.appendChild(g);
+  var tip={fish:'낚시터에서 새 물고기를 낚으면 전시돼요.',fossil:'섬의 반짝이는 땅에서 화석을 캐면 전시돼요.',doll:'주말 보스를 물리치면 인형이 전시돼요.'}[MUSE_TAB];sc.appendChild(el('p','mtip',tip));
   app.appendChild(sc);zMark&&zMark()}
-// ================= 단원 친구(수학 단원 도감) =================
-// 수학 단원 하나를 다 익히면(그 단원 문제 유형이 모두 레벨 4 이상) 섬 친구 한 마리를 만나요.
-// 친구 그림은 몸·머리 장식·눈·입·색을 조합해 코드로 그려요(외부 그림 없음). 박물관 '수학관'에 전시돼요.
-var UDEX_LV=4;
-var UDEX_COL=['#ff8fa3','#ffb86b','#ffd84d','#9be07a','#5fd3c6','#6bb8ff','#a78bfa','#f78fd8','#ff7f6e','#7ad1ff','#c6e05a','#ffa8c5'];
-var UDEX_NA=['몽','콩','보','말','뭉','토','방','동','솜','쫑','포','꼬'],UDEX_NB=['글이','실이','랑이','동이','울이','롱이'];
-function udexS(){if(!S.udex){S.udex={got:{},pend:[]};udexCheck(true)}if(!S.udex.pend)S.udex.pend=[];return S.udex}
-function udexIdx(u){return UNITS.indexOf(u)}
-function udexName(u){var i=udexIdx(u);return UDEX_NA[i%12]+UDEX_NB[Math.floor(i/12)%6]}
-function udexTypes(u){return u.types.filter(function(k){return SUBJ.math.gen[k]})}
-function udexProg(u){var ts=udexTypes(u),lv=(S.math&&S.math.lv)||{};if(!ts.length)return 0;var s=0;ts.forEach(function(k){s+=(Math.min(lv[k]||1,UDEX_LV)-1)/(UDEX_LV-1)});return s/ts.length}
-function udexDone(u){return udexTypes(u).length>0&&udexProg(u)>=1}
-function udexGot(u){return !!(S.udex&&S.udex.got[u.id])}
-// 새로 다 익힌 단원을 찾아요. silent면 축하 없이 기록만 해요(처음 켰을 때 이미 익힌 단원)
-function udexCheck(silent){var X=S.udex||(S.udex={got:{},pend:[]}),nw=[];UNITS.forEach(function(u){if(!X.got[u.id]&&udexDone(u)){X.got[u.id]=dnum();if(!silent){X.pend.push(u.id);nw.push(u)}}});return nw}
-function udexPend(){return udexS().pend.map(function(id){return UNITS.filter(function(u){return u.id===id})[0]}).filter(Boolean)}
-// 보여 줄 학년: 지금 수학 학년 + 친구를 만난 적 있는 학년
-function udexGrades(){var X=udexS(),g={};g[curGrade()]=1;UNITS.forEach(function(u){if(X.got[u.id])g[u.g]=1});return Object.keys(g).map(Number).sort()}
-function udexCount(g){var U=UNITS.filter(function(u){return u.g===g});return [U.filter(udexGot).length,U.length]}
+// ================= 섬 친구 과외: 오늘은 내가 선생님 =================
+// 수학 단원을 익히면 상을 바로 주지 않고, 섬 친구(고슴도치)가 그 단원을 물으러 와요.
+// 친구 공책의 풀이가 맞는지 보고, 틀렸으면 바른 답을 골라 주면 '가르친 단원'이 돼요.
+// 익힘 판정은 오답 칠판과 같은 규칙이에요: 레벨 4 이상인 유형을 '다른 날 두 번' 한 번에 맞히기(배치 판 제외, 틀리면 처음부터).
+var TCH_LV=4,TCH_DAYMAX=2,TCH_GEM=3,TCH_FR=['hedgehog','고슴도치'];
+function tchS(){if(S.udex)delete S.udex;if(!S.tch)S.tch={cf:{},ready:{},done:{},tried:{},log:[]};return S.tch}
+function tchTypes(u){return u.types.filter(function(k){return SUBJ.math.gen[k]})}
+function tchCf(type){var a=tchS().cf[type]||[];return a.length>=2&&(S.math.lv[type]||1)>=TCH_LV}
+// 수학 문제 한 개가 끝날 때마다 불러요(play.js). ok는 '한 번에 맞힘'
+function tchMark(type,ok){var T=tchS();if((S.math.lv[type]||1)<TCH_LV){if(!ok)T.cf[type]=[];return}
+  if(!ok){T.cf[type]=[];return}var a=T.cf[type]||(T.cf[type]=[]),d=dnum();if(a.indexOf(d)<0){a.push(d);if(a.length>2)a.shift()}tchScan()}
+function tchScan(){var T=tchS(),d=dnum();UNITS.forEach(function(u){if(T.ready[u.id]||T.done[u.id])return;var ts=tchTypes(u);if(ts.length&&ts.every(tchCf))T.ready[u.id]=d})}
+function tchDone(u){return !!(S.tch&&S.tch.done[u.id])}
+// 익히는 정도(0~1): 레벨 4까지 70%, 다른 날 두 번 맞히기 30%
+function tchProg(u){var T=tchS(),ts=tchTypes(u);if(!ts.length)return 0;if(T.ready[u.id]||T.done[u.id])return 1;var s=0;ts.forEach(function(k){var lv=S.math.lv[k]||1;s+=(Math.min(lv,TCH_LV)-1)/(TCH_LV-1)*.7+(lv>=TCH_LV?Math.min(2,(T.cf[k]||[]).length)/2*.3:0)});return s/ts.length}
+function tchTodayN(){var d=dnum();return tchS().log.filter(function(x){return x[0]===d}).length}
+// 오늘 가르칠 수 있는 단원: 준비된 날 다음 날부터, 오늘 아직 안 해 본 것, 하루 2번까지
+function tchDue(){var T=tchS(),d=dnum();if(tchTodayN()>=TCH_DAYMAX)return [];return UNITS.filter(function(u){var r=T.ready[u.id];return r!=null&&r<d&&!T.done[u.id]&&T.tried[u.id]!==d})}
+function tchCount(g){var U=UNITS.filter(function(u){return u.g===g});return [U.filter(tchDone).length,U.length]}
+function tchSay(u){return '‘'+u.name+'’ 이제 알겠어! 고마워, 선생님!'}
 
-// ----- 그림 -----
-function udexSVG(u){var i=udexIdx(u),h=0;for(var c=0;c<u.id.length;c++)h=(h*31+u.id.charCodeAt(c))>>>0;
-  var body=i%6,top=Math.floor(i/6)%7,col=UDEX_COL[(i*5+u.g)%12],eyes=[2,2,1,3,2,1][h%6],mouth=(h>>3)%4,spots=(h>>5)%3===0,ink='#3a2e4a',sw=3;
-  var B=[['<ellipse cx="50" cy="60" rx="31" ry="28"/>',32,24],['<ellipse cx="50" cy="57" rx="25" ry="32"/>',25,19],['<path d="M22 88V52a28 28 0 0 1 56 0v36q-7-8-14 0q-7-8-14 0q-7-8-14 0q-7-8-14 0z"/>',24,22],['<rect x="21" y="31" width="58" height="56" rx="20"/>',31,24],['<path d="M50 26C64 26 66 41 70 51C83 63 80 88 50 88C20 88 17 63 30 51C34 41 36 26 50 26z"/>',26,12],['<ellipse cx="50" cy="65" rx="35" ry="23"/>',42,26]][body];
-  var ty=B[1],ex=B[2],s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g stroke="'+ink+'" stroke-width="'+sw+'" stroke-linejoin="round" stroke-linecap="round">';
-  // 머리 장식
-  if(top===1)s+='<circle cx="'+(50-ex)+'" cy="'+(ty+4)+'" r="8" fill="'+col+'"/><circle cx="'+(50+ex)+'" cy="'+(ty+4)+'" r="8" fill="'+col+'"/>';
-  if(top===2)s+='<path d="M'+(50-ex-8)+' '+(ty+10)+'L'+(50-ex-3)+' '+(ty-10)+'L'+(50-ex+8)+' '+(ty+6)+'z" fill="'+col+'"/><path d="M'+(50+ex+8)+' '+(ty+10)+'L'+(50+ex+3)+' '+(ty-10)+'L'+(50+ex-8)+' '+(ty+6)+'z" fill="'+col+'"/>';
-  if(top===3)s+='<path d="M44 '+(ty+3)+'Q40 '+(ty-8)+' 34 '+(ty-14)+'M56 '+(ty+3)+'Q60 '+(ty-8)+' 66 '+(ty-14)+'" fill="none"/><circle cx="34" cy="'+(ty-15)+'" r="4.5" fill="#ffd84d"/><circle cx="66" cy="'+(ty-15)+'" r="4.5" fill="#ffd84d"/>';
-  if(top===4)s+='<path d="M50 '+(ty+2)+'V'+(ty-9)+'" fill="none"/><path d="M50 '+(ty-8)+'C46 '+(ty-20)+' 34 '+(ty-18)+' 34 '+(ty-12)+'C38 '+(ty-6)+' 46 '+(ty-6)+' 50 '+(ty-8)+'z" fill="#7bd36a"/><path d="M50 '+(ty-8)+'C54 '+(ty-18)+' 64 '+(ty-17)+' 65 '+(ty-12)+'C61 '+(ty-7)+' 54 '+(ty-6)+' 50 '+(ty-8)+'z" fill="#7bd36a"/>';
-  if(top===5)s+='<path d="M44 '+(ty+5)+'L50 '+(ty-13)+'L56 '+(ty+5)+'z" fill="#fff3c4"/>';
-  if(top===6)s+='<circle cx="43" cy="'+(ty+1)+'" r="5" fill="'+col+'"/><circle cx="50" cy="'+(ty-3)+'" r="6" fill="'+col+'"/><circle cx="57" cy="'+(ty+1)+'" r="5" fill="'+col+'"/>';
-  // 발과 몸
-  s+='<ellipse cx="38" cy="89" rx="8" ry="4.5" fill="'+col+'"/><ellipse cx="62" cy="89" rx="8" ry="4.5" fill="'+col+'"/>';
-  s+='<g fill="'+col+'">'+B[0]+'</g></g>';
-  s+='<ellipse cx="50" cy="73" rx="17" ry="11" fill="#fff" opacity=".4"/>';
-  if(spots)s+='<g fill="'+ink+'" opacity=".14"><circle cx="30" cy="62" r="4"/><circle cx="70" cy="58" r="3.4"/><circle cx="66" cy="72" r="2.6"/></g>';
-  // 눈
-  var ey=body===5?56:52,E=eyes===1?[[50,10]]:eyes===3?[[37,6],[50,7],[63,6]]:[[40,7],[60,7]];
-  E.forEach(function(e){s+='<circle cx="'+e[0]+'" cy="'+ey+'" r="'+e[1]+'" fill="#fff" stroke="'+ink+'" stroke-width="2.4"/><circle cx="'+(e[0]+1)+'" cy="'+(ey+1)+'" r="'+(e[1]*.5)+'" fill="'+ink+'"/><circle cx="'+(e[0]+2.5)+'" cy="'+(ey-1.5)+'" r="'+(e[1]*.2)+'" fill="#fff"/>'});
-  // 볼과 입
-  s+='<ellipse cx="31" cy="'+(ey+11)+'" rx="5" ry="3" fill="#ff6f91" opacity=".45"/><ellipse cx="69" cy="'+(ey+11)+'" rx="5" ry="3" fill="#ff6f91" opacity=".45"/>';
-  var my=ey+13;
-  if(mouth===0)s+='<path d="M44 '+my+'Q50 '+(my+6)+' 56 '+my+'" fill="none" stroke="'+ink+'" stroke-width="2.6" stroke-linecap="round"/>';
-  if(mouth===1)s+='<path d="M44 '+my+'Q50 '+(my+10)+' 56 '+my+'z" fill="#c2405b" stroke="'+ink+'" stroke-width="2.4" stroke-linejoin="round"/>';
-  if(mouth===2)s+='<path d="M43 '+my+'Q46.5 '+(my+4)+' 50 '+my+'Q53.5 '+(my+4)+' 57 '+my+'" fill="none" stroke="'+ink+'" stroke-width="2.4" stroke-linecap="round"/>';
-  if(mouth===3)s+='<path d="M43 '+my+'Q50 '+(my+7)+' 57 '+my+'" fill="none" stroke="'+ink+'" stroke-width="2.6" stroke-linecap="round"/><path d="M47.5 '+(my+2.6)+'h5v3.4h-5z" fill="#fff" stroke="'+ink+'" stroke-width="1.6"/>';
-  return s+'</svg>'}
-var UDEX_IMG={};
-function udexImg(u,cls){var src=UDEX_IMG[u.id]||(UDEX_IMG[u.id]='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(udexSVG(u)));var i=new Image();i.src=src;i.alt='';if(cls)i.className=cls;return i}
+// 문제 판이 끝나고 섬으로 돌아왔을 때 친구가 찾아와요
+function tchOffer(){var L=tchDue();if(!L.length||document.querySelector('.sheet.show,.daydone,.guide,.coach'))return false;var u=L[0];
+  showSheet('good',TCH_FR[0],TCH_FR[1]+'가 찾아왔어요','“선생님, 이거 맞아?”','‘'+u.name+'’ 문제를 풀다가 헷갈렸대요. '+TCH_FR[1]+' 공책을 봐 줄래요? 3문제예요.','가르쳐 주기',function(){tchStart(u,home)});
+  var lt=el('button','cta light','나중에 할래요');lt.onclick=hideSheet;sheet.firstChild.appendChild(lt);return true}
 
-// ----- 새 친구를 만났어요 -----
-function udexReveal(done){var L=udexPend();if(!L.length){done&&done();return}var u=L[0],X=udexS();X.pend.shift();save();
-  var c=udexCount(u.g),lay=el('div','daydone'),card=el('div','ddcard udexnew');card.appendChild(el('i','ddrays'));var pic=udexImg(u,'ddpic');card.appendChild(pic);
-  card.appendChild(el('small',null,'새 단원 친구 · '+GRADE_NAMES[u.g]+' '+c[0]+' / '+c[1]));
-  card.appendChild(el('h3',null,udexName(u)+josa(udexName(u),'을','를').slice(-1)+' 만났어요!'));
-  card.appendChild(el('p',null,'수학 ‘'+u.name+'’ 단원을 다 익혔어요. 보석 1개를 받았어요. '+udexName(u)+josa(udexName(u),'은','는').slice(-1)+' 박물관 수학관에서 볼 수 있어요.'));
-  var b=el('button','cta green',L.length>1?'다음 친구 보기':'좋아요');b.onclick=function(){lay.remove();udexReveal(done)};card.appendChild(b);
-  var d=el('button','cta light','수학관 가 보기');d.onclick=function(){lay.remove();MUSE_TAB='unit';museumScreen(function(){done?done():home()})};card.appendChild(d);
-  lay.appendChild(card);document.body.appendChild(lay);gemGain(1);SND.bloom();setTimeout(function(){var r=pic.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,40,true)},200)}
+// ----- 공책 문제 만들기 -----
+function tchWrong(a,dec){var c=dec?[a+.1,a-.1,a*10,a/10]:[a+1,a-1,a+10,a-10,a+2];if(!dec&&a>=10){var s=String(a).split('').reverse().join('');if(s!==String(a)&&s.charAt(0)!=='0')c.push(+s)}
+  c=c.map(function(x){return dec?Math.round(x*1000)/1000:x}).filter(function(x){return x>=0&&x!==a&&(dec||x===Math.floor(x))});return c.length?c[R(0,c.length-1)]:null}
+function tchMake(type,lv,fw){for(var t=0;t<20;t++){var pz;try{pz=josaFixPz(SUBJ.math.gen[type](lv))}catch(e){continue}if(!pz)continue;
+    if(pz.mode==='pad'){if(pz.answers&&pz.answers.length===1)pz.answer=pz.answers[0];if(typeof pz.answer==='string'&&pz.answer!==''&&!isNaN(+pz.answer))pz.answer=+pz.answer}
+    if(pz.mode==='pad'&&!(pz.answers&&pz.answers.length>1)&&typeof pz.answer==='number'){var w=fw?tchWrong(pz.answer,pz.dec):pz.answer;if(w==null)continue;var w2=tchWrong(pz.answer,pz.dec);var o=[pz.answer,fw?w:w2];var w3=null;for(var k=0;k<8&&(w3==null||o.indexOf(w3)>=0);k++)w3=tchWrong(pz.answer,pz.dec);if(w3!=null&&o.indexOf(w3)<0)o.push(w3);if(o[1]==null||o[0]===o[1])continue;return {pz:pz,fw:fw,fa:w,opts:shuffle(o)}}
+    if(pz.mode==='pad'&&pz.answers&&pz.answers.length>1&&pz.answers.every(function(v){return typeof v==='number'})){var fa=pz.answers.slice();if(fw){var j=R(0,fa.length-1),wv=tchWrong(fa[j],pz.dec);if(wv==null||(pz.fracEq&&wv===0))continue;fa[j]=wv}return {pz:pz,fw:fw,fa:fa,multi:true}}
+    if(pz.mode==='choice'&&pz.choices&&pz.choices.length>=2){var ix=pz.choices.map(function(_,i){return i}).filter(function(i){return i!==pz.answer});return {pz:pz,fw:fw,fa:fw?ix[R(0,ix.length-1)]:pz.answer,choice:true}}}
+  return null}
 
-// ----- 박물관 수학관 -----
-var UDEX_G=0;
-function udexTab(sc){var gs=udexGrades();if(gs.indexOf(UDEX_G)<0)UDEX_G=curGrade();
-  if(gs.length>1){var seg=el('div','udexg');gs.forEach(function(g){var b=el('button',g===UDEX_G?'on':null,GRADE_NAMES[g]);b.onclick=function(){UDEX_G=g;museumScreen(MUSE_BACK)};seg.appendChild(b)});sc.appendChild(seg)}
-  [1,2].forEach(function(sem){var U=UNITS.filter(function(u){return u.g===UDEX_G&&u.s===sem});if(!U.length)return;sc.appendChild(el('h4','udexsem',GRADE_NAMES[UDEX_G]+' '+sem+'학기'));var g=el('div','mgrid udexgrid');
-    U.forEach(function(u){var ok=udexGot(u),p=udexProg(u),c=el('button','mcase'+(ok?'':' lock'));var gl=el('div','mglass');gl.appendChild(udexImg(u));if(!ok)gl.appendChild(el('em','udexq','?'));c.appendChild(gl);
-      var pl=el('div','mplate');pl.appendChild(el('b',null,ok?udexName(u):u.name));if(ok)pl.appendChild(el('small',null,u.name));else{var bar=el('i','udexbar'),f=el('em');f.style.width=Math.round(p*100)+'%';bar.appendChild(f);pl.appendChild(bar)}c.appendChild(pl);
-      c.onclick=function(){if(ok)showSheet('good',null,'수학관 · '+GRADE_NAMES[u.g]+' '+u.s+'학기',udexName(u),'‘'+u.name+'’ 단원을 다 익혀서 만난 친구예요. '+udexMet(u),'좋아요',function(){});else showSheet('good',null,'수학관 · 아직 못 만난 친구','‘'+u.name+'’ 단원',udexHow(u,p),'좋아요',function(){});var hi=sheet.querySelector('.hd img');if(hi){hi.src=udexImg(u).src;if(!ok)hi.className='udexsil'}};g.appendChild(c)});sc.appendChild(g)})}
-function udexMet(u){var d=S.udex.got[u.id];if(typeof d!=='number')return '';var t=new Date(d*864e5);return (t.getUTCMonth()+1)+'월 '+t.getUTCDate()+'일에 만났어요.'}
-function udexHow(u,p){var off=unitsOff()[u.id],cur=u.g===curGrade();if(!cur)return '지금 공부하는 학년의 단원이 아니에요.';if(off)return '이 단원은 지금 꺼져 있어요. 학교에서 배울 때가 되면 부모님이 켜 주실 거예요.';return p>0?'이 단원 문제를 꾸준히 맞히면 만날 수 있어요. 지금 '+Math.round(p*100)+'%까지 왔어요!':'수학 문제를 풀다 보면 이 단원 문제가 나와요. 다 익히면 친구를 만날 수 있어요.'}
+// ----- 과외 화면 -----
+var TCH=null;
+function tchStart(u,back){var ts=tchTypes(u),plan=shuffle([true,true,false]),qs=[];
+  for(var i=0;i<3;i++){var ty=ts[i%ts.length],q=tchMake(ty,Math.min(5,S.math.lv[ty]||TCH_LV),plan[i]);if(!q)for(var j=0;j<ts.length&&!q;j++)q=tchMake(ts[j],Math.min(5,S.math.lv[ts[j]]||TCH_LV),plan[i]);if(q)qs.push(q)}
+  if(!qs.length){tchFinish(u,true,back,true);return}
+  TCH={u:u,qs:qs,i:0,ok:0,back:back||home};tchQ()}
+function tchQ(){var T=TCH,q=T.qs[T.i],pz=q.pz;clear();document.body.classList.add('qmode');
+  var sc=el('div','screen qscreen q-math thm tchscr'),top=el('div','qtop');
+  var x=el('button','x');x.setAttribute('aria-label','그만하기');x.innerHTML=BACK_SVG;x.onclick=function(){document.body.classList.remove('qmode');TCH=null;(T.back||home)()};top.appendChild(x);
+  var dots=el('div','tchdots');T.qs.forEach(function(_,k){dots.appendChild(el('i',k<T.i?'done':k===T.i?'now':''))});top.appendChild(dots);top.appendChild(el('div','spacer'));sc.appendChild(top);
+  var fr=el('div','tchfr');fr.appendChild(img(TCH_FR[0],'tchfi'));var say=el('div','tchsay','선생님, 내가 푼 거 맞아?');fr.appendChild(say);sc.appendChild(fr);
+  var note=el('div','tchnote'),who=el('div','tchwho');who.appendChild(img(TCH_FR[0]));who.appendChild(el('span',null,TCH_FR[1]+' 공책'));note.appendChild(who);
+  note.appendChild(el('p','tchq',pz.q));var box=el('div','tchbox');note.appendChild(box);
+  var fslot=null,fbtns=[];
+  if(q.choice){var sw=el('div','stemwrap');box.appendChild(sw);pz.render(sw);var gr=el('div','choices tchch');pz.choices.forEach(function(c,i){var b=el('button','choice'+(pz.pick?' pic':''));if(pz.pick)b.appendChild(pz.nodes[i]());else b.textContent=c;if(i===q.fa){b.className+=' tchpick';b.appendChild(img(TCH_FR[0],'tchmark'))}b.disabled=true;fbtns.push(b);gr.appendChild(b)});box.appendChild(gr)}
+  else if(q.multi){var SL=q.fa.map(function(v){var e=el('span','slot tchans mslot');e.textContent=String(v);return e}),P2={slot:SL[0],slots:SL};pz.render(box,P2);SL.forEach(function(e){if(!box.contains(e)){var r=el('div','ansrow');r.appendChild(e);box.appendChild(r)}});SL[0].appendChild(img(TCH_FR[0],'tchmark'));fslot=SL}
+  else{var sl=el('span','slot tchans');sl.textContent=String(q.fa);var P={slot:sl,slots:[sl]};pz.render(box,P);if(!box.contains(sl)){var r=el('div','ansrow');r.appendChild(sl);box.appendChild(r)}var mk=img(TCH_FR[0],'tchmark');sl.appendChild(mk);fslot=sl}
+  sc.appendChild(note);
+  var exp=el('div','tchexp');sc.appendChild(exp);
+  var dock=el('div','dock tchdock'),yes=el('button','cta tchyes','맞아요'),no=el('button','cta tchno','틀렸어요');dock.appendChild(yes);dock.appendChild(no);sc.appendChild(dock);app.appendChild(sc);
+  function result(good){if(good)T.ok++;SND[good?'good':'bad'](0);
+    if(q.multi){fslot.forEach(function(e,i){e.textContent=String(pz.answers[i]);e.className='slot tchans mslot right'})}else if(fslot){fslot.textContent=String(pz.answer);fslot.className='slot tchans right'}else fbtns.forEach(function(b,i){b.className='choice'+(pz.pick?' pic':'')+(i===pz.answer?' right':'')});
+    say.textContent=good?(q.fw?'아하, 그렇구나! 고마워!':'맞았구나! 다행이다!'):'괜찮아, 같이 다시 보자!';fr.className='tchfr '+(good?'yay':'hmm');
+    exp.innerHTML='';exp.appendChild(el('b',null,good?'잘 가르쳤어요!':'바른 풀이를 같이 봐요'));exp.appendChild(el('p',null,(q.multi?'':q.choice?'정답은 '+pz.choices[pz.answer]+'. ':'정답은 '+pz.answer+'. ')+(pz.explain||'')));exp.className='tchexp show '+(good?'good':'bad');
+    dock.innerHTML='';var nx=el('button','cta green',T.i<T.qs.length-1?'다음 공책':'다 봤어요');nx.onclick=function(){T.i++;if(T.i<T.qs.length)tchQ();else tchFinish(T.u,T.ok===T.qs.length,T.back)};dock.appendChild(nx);
+    if(good){var r_=say.getBoundingClientRect();burst(r_.left+r_.width/2,r_.top+r_.height/2,16)}}
+  yes.onclick=function(){result(!q.fw)};
+  no.onclick=function(){if(!q.fw){result(false);return}
+    // 틀린 걸 찾았어요 → 바른 답 고르기
+    say.textContent='그럼 답이 뭐야?';dock.innerHTML='';
+    if(q.multi||q.choice&&pz.choices.length<=2){result(true);return} // 보기가 둘이면 틀린 걸 찾는 것으로 충분해요
+    if(q.choice){fbtns.forEach(function(b,i){if(i===q.fa)return;b.disabled=false;b.className+=' tchpickme';b.onclick=function(){result(i===pz.answer)}});dock.appendChild(el('p','tchhint','위에서 바른 답을 눌러 주세요'))}
+    else{var row=el('div','tchopts');q.opts.forEach(function(v){if(v===q.fa)return;var b=el('button','cta light',String(v));b.onclick=function(){result(v===pz.answer)};row.appendChild(b)});
+      if(row.children.length<2){var b2=el('button','cta light',String(q.fa));b2.onclick=function(){result(false)};row.appendChild(b2)}dock.appendChild(row)}}}
+function tchFinish(u,ok,back,quiet){var T=tchS(),d=dnum();T.log.push([d,u.id,ok?1:0]);if(T.log.length>200)T.log=T.log.slice(-200);
+  if(ok){T.done[u.id]=d}else T.tried[u.id]=d;save();TCH=null;document.body.classList.remove('qmode');
+  var go=function(){(back||home)()};go();if(quiet&&ok){gemGain(TCH_GEM);return}
+  var lay=el('div','daydone'),card=el('div','ddcard tchdone'+(ok?'':' fail'));card.appendChild(el('i','ddrays'));var pic=img(TCH_FR[0],'ddpic');card.appendChild(pic);
+  card.appendChild(el('small',null,ok?'오늘은 내가 선생님 · 가르친 단원 '+tchCount(u.g)[0]+' / '+tchCount(u.g)[1]:'오늘은 내가 선생님'));
+  card.appendChild(el('h3',null,ok?TCH_FR[1]+'에게 ‘'+u.name+'’'+josa(u.name,'을','를').slice(-1)+' 가르쳐 줬어요!':TCH_FR[1]+'가 “내일 또 알려 줘!”래요'));
+  card.appendChild(el('p','tchline','“'+(ok?tchSay(u):'오늘 같이 본 거 잊지 않을게. 내일 또 공책 봐 줘!')+'”'));
+  if(ok)card.appendChild(el('p',null,'보석 '+TCH_GEM+'개를 받았어요. 섬 학교 ‘우리 반’에서 가르친 단원을 볼 수 있어요.'));
+  var b=el('button','cta green','좋아요');b.onclick=function(){lay.remove()};card.appendChild(b);
+  if(ok){var c=el('button','cta light','우리 반 보기');c.onclick=function(){lay.remove();SCH_TAB='class';schoolScreen(back||home)};card.appendChild(c)}
+  lay.appendChild(card);document.body.appendChild(lay);
+  if(ok){gemGain(TCH_GEM);SND.bloom();setTimeout(function(){var r=pic.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,40,true)},200)}else tone([523,440],'sine',.12)}
+
+// ----- 섬 학교 '우리 반' -----
+function tchClassTab(sc){var T=tchS(),g=curGrade(),U=UNITS.filter(function(u){return u.g===g}),due=tchDue(),c=tchCount(g);
+  var desk=el('div','tchdesk');desk.appendChild(img(TCH_FR[0],'tchdi'));var dt=el('div');dt.appendChild(el('b',null,TCH_FR[1]+' · 수학 친구'));dt.appendChild(el('small',null,GRADE_NAMES[g]+' 단원 '+c[0]+' / '+c[1]+'개를 가르쳐 줬어요'));var bar=el('i','tchbar'),bf=el('em');bf.style.width=Math.round(c[0]/c[1]*100)+'%';bar.appendChild(bf);dt.appendChild(bar);desk.appendChild(dt);sc.appendChild(desk);
+  if(due.length){var go=el('button','cta green','‘'+due[0].name+'’ 가르치러 가기');go.onclick=function(){tchStart(due[0],function(){SCH_TAB='class';schoolScreen(SCH_BACK)})};sc.appendChild(go)}
+  else if(UNITS.some(function(u){var r=T.ready[u.id];return r!=null&&!T.done[u.id]}))sc.appendChild(el('p','mtip',tchTodayN()>=TCH_DAYMAX?'오늘은 '+TCH_FR[1]+'를 '+TCH_DAYMAX+'번 가르쳤어요. 내일 또 와요!':'익힌 단원은 다음 날 '+TCH_FR[1]+'가 물으러 와요.'));
+  [1,2].forEach(function(sem){var us=U.filter(function(u){return u.s===sem});if(!us.length)return;sc.appendChild(el('h4','tchsem',sem+'학기'));var l=el('div','tchlist');
+    us.forEach(function(u){var dn=T.done[u.id],rd=T.ready[u.id]!=null,p=tchProg(u),off=unitsOff()[u.id],r=el('div','tchrow'+(dn?' done':rd?' ready':'')+(off&&!dn?' off':''));
+      var ic=el('i','tchic');if(dn)ic.appendChild(img('sparkles'));r.appendChild(ic);var tx=el('span');tx.appendChild(el('b',null,u.name));
+      tx.appendChild(el('small',null,dn?'가르쳐 줬어요':rd?'다 익혔어요! '+TCH_FR[1]+'가 물으러 와요':off?'아직 안 배우는 단원':'익히는 중'));r.appendChild(tx);
+      if(!dn&&!rd&&!off){var b=el('i','tchbar sm'),f=el('em');f.style.width=Math.round(p*100)+'%';b.appendChild(f);r.appendChild(b)}l.appendChild(r)});sc.appendChild(l)});
+  sc.appendChild(el('p','mtip','단원 문제를 다른 날에 두 번 한 번에 맞히면 다 익힌 거예요. 그러면 '+TCH_FR[1]+'가 공책을 들고 찾아와요. 한자·영어·국어 친구도 곧 우리 반에 와요.'))}
 // ================= 섬 식물원: 숙제 시간으로 식물을 키워 전시해요 =================
 // 퀴즈 보상(꽃·열매·소품)은 섬을 꾸미는 재료, 숙제는 식물원에만 전시되는 식물이에요. 섬 꾸미기와 겹치지 않아요.
 // - 숙제를 끝낼 때마다 그 시간이 지금 키우는 화분에 쌓여요(하루 최대 BOT_CAP분). 필요한 시간이 차면 피어서 전시돼요.
@@ -19316,8 +19388,8 @@ function schoolScreen(back){SCH_BACK=back=back||SCH_BACK||villageScreen;clear();
   var b=el('button','x');b.setAttribute('aria-label','나가기');b.innerHTML=BACK_SVG;b.onclick=function(){back()};top.appendChild(b);top.appendChild(el('h2','mtitle','섬 학교'));top.appendChild(el('div','spacer'));var st=el('div','balance');st.appendChild(img('sparkles'));st.appendChild(el('b','tnum',String(S_.stars||0)));st.setAttribute('aria-label','칠판 별 '+(S_.stars||0)+'개');top.appendChild(st);sc.appendChild(top);
   var nw=awCheck(),bd=schBoard();if(nw.length)SCH_TAB='award';
   var cur=el('div','mcur');cur.appendChild(img('panda'));cur.appendChild(el('p',null,nw.length?'새 상장이 나왔어! 상장 칸에서 확인해 봐.':bd.length?['틀린 문제는 다시 풀면 내 것이 돼!','칠판 문제는 다른 날에 두 번 맞히면 졸업이야.','오늘도 와 줘서 고마워!'][R(0,2)]:'칠판이 깨끗하구나! 정말 잘했어.'));sc.appendChild(cur);
-  var T=[['wrong','오답 교실',bd.length+'문제'],['report','성적표','이번 주'],['award','상장',awHave().length+' / '+AWARDS.length*3]],seg=el('div','mseg');
-  T.forEach(function(t){var bt=el('button',SCH_TAB===t[0]?'on':null);bt.appendChild(el('b',null,t[1]));bt.appendChild(el('small',null,t[2]));if(t[0]==='award'&&nw.length)bt.appendChild(el('em','lmbadge dot'));bt.onclick=function(){SCH_TAB=t[0];schoolScreen(back)};seg.appendChild(bt)});sc.appendChild(seg);
+  var T=[['wrong','오답 교실',bd.length+'문제'],['report','성적표','이번 주'],['award','상장',awHave().length+' / '+AWARDS.length*3],['class','우리 반',tchCount(curGrade())[0]+'단원']],seg=el('div','mseg');
+  T.forEach(function(t){var bt=el('button',SCH_TAB===t[0]?'on':null);bt.appendChild(el('b',null,t[1]));bt.appendChild(el('small',null,t[2]));if(t[0]==='award'&&nw.length||t[0]==='class'&&tchDue().length)bt.appendChild(el('em','lmbadge dot'));bt.onclick=function(){SCH_TAB=t[0];schoolScreen(back)};seg.appendChild(bt)});sc.appendChild(seg);
   if(SCH_TAB==='wrong'){var ch=el('div','chalk'),bdin=el('div','chin');ch.appendChild(bdin);
     if(!bd.length){bdin.appendChild(el('p','chempty','칠판이 깨끗해요!\n틀린 문제가 생기면 여기 적어 둘게요.'))}
     else{bd.slice(0,18).forEach(function(it){var L=schLabel(it),c=el('div','chi ch-'+it.t);c.appendChild(el('b',null,L.big));if(L.sm)c.appendChild(el('small',null,L.sm));if(S_.ok[it.key])c.appendChild(el('i','chok','한 번 더!'));bdin.appendChild(c)});if(bd.length>18)bdin.appendChild(el('div','chi more','+'+(bd.length-18)))}
@@ -19338,6 +19410,7 @@ function schoolScreen(back){SCH_BACK=back=back||SCH_BACK||villageScreen;clear();
     var best=null,worst=null;['math','hz','en'].forEach(function(k){var a=o[k];if(a[0]<5)return;var p=a[1]/a[0];if(!best||p>best[1])best=[k,p];if(!worst||p<worst[1])worst=[k,p]});var NM={math:'수학',hz:'한자',en:'영어'};
     var cm=!tot?'이번 주 성적표를 적기 시작했어요. 문제를 풀면 여기에 쌓여요!':best&&worst&&best[0]!==worst[0]?NM[best[0]]+(batchim(NM[best[0]])?'을':'를')+' 정말 잘했어요! '+josa(NM[worst[0]],'은','는')+' 오답 교실에서 조금 더 연습해 봐요.':days>=5?'이번 주도 꾸준히 공부했어요. 정말 멋져요!':'조금씩 꾸준히 하면 금방 늘어요. 화이팅!';
     var tc=el('div','rtalk');tc.appendChild(img('panda'));tc.appendChild(el('p',null,cm));card.appendChild(tc);sc.appendChild(card)}
+  else if(SCH_TAB==='class')tchClassTab(sc);
   else{var g=el('div','awgrid'),have={};awHave().forEach(function(k){have[k]=1});
     AWARDS.forEach(function(A){A.t.forEach(function(n,i){var ok=have[A.id+i],c=el('button','awc'+(ok?' on':'')+(nw.indexOf(A.id+i)>=0?' new':''));c.className+=' t'+i;var wr=el('span','awwrap');if(i===2)wr.appendChild(el('i','awro'));if(i>=1){var rb=el('i','awrib');rb.appendChild(el('i'));rb.appendChild(el('i'));wr.appendChild(rb)}var md=el('i','awmd');md.appendChild(img(A.img));wr.appendChild(md);if(i===2)wr.appendChild(el('i','awcrown'));c.appendChild(wr);c.appendChild(el('span','awtier',AW_LV[i]));c.appendChild(el('b',null,A.name));var un_=({stk:'일 연속',book:'권',grad:'개 졸업',ws:'그루',q:'문제',fo:'개'}[A.id]||A.unit);c.appendChild(el('small',null,ok?AW_LV[i]+' · '+n+un_:Math.min(n,A.v())+' / '+n+un_));c.onclick=function(){awShow(A,i,ok)};g.appendChild(c)})});sc.appendChild(g);
     sc.appendChild(el('p','mtip','상장을 받으면 보석 1개! 상장을 누르면 내용을 볼 수 있어요.'))}
@@ -19552,8 +19625,8 @@ function pvPgGrade(body){var g=kidGrade(),s=pvSec(null);
   [1,2,3,4,5,6].forEach(function(n){var chk=el('i','pvcheck'+(n===g?' on':''));var r=pvRow(GRADE_NAMES[n],n===g?chk:null,n!==g?function(){pvKidGrade(n)}:null);if(n===g)r.classList.add('cur');s.appendChild(r)});
   body.appendChild(s);body.appendChild(el('p','pvfoot pvpad','아이가 학교에서 다니는 학년이에요. 교육과정 진도도 이 학년 기준으로 보여 줘요.'))}
 function pvPgUnits(body){var g=curGrade(),off=unitsOff(),U=UNITS.filter(function(u){return u.g===g}),on=U.filter(function(u){return !off[u.id]}).length;
-  var hd=el('div','pvnote light');hd.appendChild(el('b',null,GRADE_NAMES[g]+' 수학 · '+on+' / '+U.length+'개 단원 켜짐'));hd.appendChild(el('span',null,'다 익힌 단원 '+udexCount(g)[0]+'개(✓)는 아이 박물관 수학관에 친구로 전시돼요. '));hd.appendChild(el('span',null,'꺼진 단원의 문제는 나오지 않아요. 학교 진도에 맞춰 켜고 끄세요. 난이도는 풀면서 저절로 맞춰져요.'));body.appendChild(hd);
-  [1,2].forEach(function(sem){var us=U.filter(function(u){return u.s===sem});if(!us.length)return;var s=pvSec(sem+'학기');us.forEach(function(u){var r=pvRow((udexGot(u)?'✓ ':'')+u.name,pvTog(!off[u.id],function(){if(off[u.id])delete off[u.id];else{if(on<=1){miniToast('단원을 하나는 켜 두어야 해요');return}off[u.id]=1}save();pvRe()}),null,stdUnitCodes(u).join(' '));if(off[u.id])r.classList.add('off');s.appendChild(r)});body.appendChild(s)})}
+  var hd=el('div','pvnote light');hd.appendChild(el('b',null,GRADE_NAMES[g]+' 수학 · '+on+' / '+U.length+'개 단원 켜짐'));hd.appendChild(el('span',null,'고슴도치에게 가르친 단원 '+tchCount(g)[0]+'개(✓): 다른 날 두 번 한 번에 맞히고, 친구 공책의 틀린 풀이까지 고쳐 준 단원이에요. '));hd.appendChild(el('span',null,'꺼진 단원의 문제는 나오지 않아요. 학교 진도에 맞춰 켜고 끄세요. 난이도는 풀면서 저절로 맞춰져요.'));body.appendChild(hd);
+  [1,2].forEach(function(sem){var us=U.filter(function(u){return u.s===sem});if(!us.length)return;var s=pvSec(sem+'학기');us.forEach(function(u){var r=pvRow((tchDone(u)?'✓ ':'')+u.name,pvTog(!off[u.id],function(){if(off[u.id])delete off[u.id];else{if(on<=1){miniToast('단원을 하나는 켜 두어야 해요');return}off[u.id]=1}save();pvRe()}),null,stdUnitCodes(u).join(' '));if(off[u.id])r.classList.add('off');s.appendChild(r)});body.appendChild(s)})}
 function pvPgHz(body){var s=pvSec(null);GRADES.forEach(function(gn,gi){var gu=S.hz.gu[gi]||0,cap=gradeCap(gi),cur=gi===S.hz.cg;var r=pvRow(gn,cur?el('i','pvcheck on'):el('em',null,gu?gu+' / '+cap+'자':''),cur?null:function(){hzSelect(gi);PV.flash={t:gn+' 공부를 시작해요',s:'다른 급수로 바꿔도 진도는 급수마다 그대로 남아요.'};pvRe(true)},gu>=cap?'다 열었어요':gu?'공부한 적 있어요':null);if(cur)r.classList.add('cur');s.appendChild(r)});
   body.appendChild(s);body.appendChild(el('p','pvfoot pvpad','한자는 학년과 상관없이 급수 순서로 공부해요. 급수마다 글자가 조금씩 열려요.'))}
 // --- 교육과정 ---
