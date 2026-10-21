@@ -4191,7 +4191,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.102";
+var APP_VER="1.0.103";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -4241,6 +4241,23 @@ function fmt(cm){var m=Math.floor(cm/100),r=cm%100;return m?(r?m+'m '+r+'cm':m+'
 function dayKey(d){d=d||(typeof dbgNow==='function'?dbgNow():new Date());return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
 function batchim(w){w=String(w).replace(/[\s)\]’'"]+$/,'');var l=w.charAt(w.length-1);if(/[0-9]/.test(l)){if(l==='0')return true;return '13678'.indexOf(l)>=0}var c=w.charCodeAt(w.length-1)-44032;return c>=0&&c%28>0}
 function josa(w,a,b){return w+(batchim(w)?a:b)}
+// 숫자 뒤 조사 바로잡기: '36예요'→'36이에요', '8으로'→'8로', '11개이에요'→'11개예요', '42 이하은'→'42 이하는'
+// 숫자는 읽는 소리(일·이·삼…, 십·백·천·만)로 받침을 정하고, 숫자 바로 뒤 단위가 있으면 단위의 받침으로 정해요. 낱말 뒤 조사는 건드리지 않아요(사과·정가처럼 조사로 끝나는 낱말이 있어서)
+var JOSA_LAT={cm:0,mm:0,m:0,km:0,g:1,kg:1,mg:1,L:0,mL:0,l:0,ml:0};
+var JOSA_RE=/(^|[^\d.\/])(\d[\d,]*(?:\.\d+)?)(\s?)(개|마리|명|시|분|초|살|권|번|장|자루|송이|그루|대|층|일|주일|주|달|년|원|칸|쪽|봉지|상자|묶음|줄|켤레|벌|병|컵|조각|배|각|변|면|이상|이하|초과|미만|cm|mm|km|kg|mg|mL|m|g|L)?(이에요|예요|으로|로|은|는|이|가|을|를|과|와)(?![가-힣A-Za-z])/g;
+// 분수 a/b는 'b분의 a'로 읽으니 조사는 분자 a를 따라요
+var JOSA_FRE=/(\d+)\/(\d+)(이에요|예요|으로|로|은|는|이|가|을|를|과|와)(?![가-힣A-Za-z])/g;
+function numBat(n){n=n.replace(/,/g,'');var l=n.charAt(n.length-1);if(n.indexOf('.')<0&&l==='0'&&/[1-9]/.test(n))return 'ㅂ';return {'0':'ㅇ','1':'ㄹ','2':'','3':'ㅁ','4':'','5':'','6':'ㄱ','7':'ㄹ','8':'ㄹ','9':''}[l]}
+function wordBat(w){if(JOSA_LAT[w]!=null)return JOSA_LAT[w]?'ㅁ':'';var c=w.charCodeAt(w.length-1)-44032;if(c<0||c>11171)return null;var j=c%28;return j===0?'':j===8?'ㄹ':'x'}
+// 문제에 끼워 넣는 낱말(과일·요일·계절·도형 이름 등) 뒤 조사도 바로잡아요. 이 목록에 든 낱말만, 앞이 띄어쓰기·문장 처음일 때만 고쳐요
+var JOSA_WRE=new RegExp("(^|[\\s'\"(‘“·,])("+'이등변삼각형|직각삼각형|둔각삼각형|평행사변형|예각삼각형|정오각형|정다각형|정사각형|정삼각형|직사각형|정육각형|사각기둥|사다리꼴|정팔각형|동그라미|모서리|강아지|개구리|바구니|물고기|대각선|고양이|팔각형|축구공|밀가루|일곱째|모래밭|가분수|주머니|마름모|농구공|색종이|돗자리|다각형|다섯째|대분수|다람쥐|오각형|떡볶이|줄넘기|손수건|육각형|삼각형|원기둥|진분수|십각형|꼭짓점|탁구공|오렌지|햄스터|칠각형|도화지|사각형|구각형|원뿔|토끼|김밥|연필|단추|파랑|펭귄|국어|타일|수박|노랑|포도|돼지|사회|직선|텃밭|둔각|예각|봉지|수학|여우|조개|세모|사과|직각|리본|오리|초록|막대|축구|첫째|빨강|과학|가방|꽃밭|판다|여름|둘째|접시|방석|구슬|넷째|수영|상자|선분|겨울|치킨|피구|셋째|가을|피자|금|수|월|원|봄|화|귤|배|목'+")(이에요|예요|은|는|이|가|을|를|과|와)(?![가-힣A-Za-z])","g");
+function josaPick(b,j){var has=b!=='',r=b==='ㄹ';return {'이에요':has?'이에요':'예요','예요':has?'이에요':'예요','은':has?'은':'는','는':has?'은':'는','이':has?'이':'가','가':has?'이':'가','을':has?'을':'를','를':has?'을':'를','과':has?'과':'와','와':has?'과':'와','으로':has&&!r?'으로':'로','로':has&&!r?'으로':'로'}[j]}
+function josaFix(t){if(typeof t!=='string')return t;t=t.replace(JOSA_WRE,function(m0,pre,w,j){var b=wordBat(w);return b==null?m0:pre+w+josaPick(b,j)});if(!/\d/.test(t))return t;t=t.replace(JOSA_FRE,function(m0,a,b_,j){return a+'/'+b_+josaPick(numBat(a),j)});return t.replace(JOSA_RE,function(m0,pre,num,sp,unit,j){var b=unit?wordBat(unit):numBat(num);if(b==null)return m0;return pre+num+sp+(unit||'')+josaPick(b,j)})}
+// 문제 한 개(pz)의 글자를 모두 바로잡아요. 그림(render) 속 글자도 그린 뒤에 바로잡아요
+function josaFixPz(pz){if(!pz||pz.__jf)return pz;pz.__jf=1;['q','hint','explain','label','why'].forEach(function(k){if(typeof pz[k]==='string')pz[k]=josaFix(pz[k])});
+  ['choices','opts'].forEach(function(k){if(Array.isArray(pz[k]))pz[k]=pz[k].map(function(x){return typeof x==='string'?josaFix(x):x})});
+  if(typeof pz.render==='function'){var r0=pz.render;pz.render=function(box){var out=r0.apply(this,arguments);try{var w=document.createTreeWalker(box,NodeFilter.SHOW_TEXT),n;while((n=w.nextNode())){var v=josaFix(n.nodeValue);if(v!==n.nodeValue)n.nodeValue=v}}catch(e){}return out}}
+  return pz}
 var KNUM=['첫','두','세','네','다섯','여섯','일곱','여덟','아홉','열'];
 (function(){var d=document.createElement('div');d.style.cssText='position:absolute;width:0;height:0;overflow:hidden';d.innerHTML='<svg width="0" height="0" aria-hidden="true"><filter id="nightf" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values=".6 .05 0 0 .01  .03 .64 .05 0 .01  .05 .1 .86 0 .04  0 0 0 1 0"/></filter><filter id="evef" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 .05 0 0 .03  .02 .93 0 0 .01  0 0 .86 0 0  0 0 0 1 0"/></filter></svg>';document.body.appendChild(d)})();
 var app=document.getElementById('app'),sheet=document.getElementById('sheet'),scrim=document.getElementById('scrim');
@@ -17009,7 +17026,7 @@ function _startRound(sub){
 }
 function play(){
   clear();if(G.qs)G.sub=SUBJ[G.qs[G.idx]];if(G.fq)FORCE=G.fq[G.idx]||null;
-  var sub=G.sub,st=stOf(sub),type=G.q[G.idx],base=st.lv[type]||1,lv=G.ch?Math.min(sub.key==='ko'&&type!=='read'?KO_LVMAX:5,base+1):base,pz=sub.gen[type](lv),tries=0,done=false;
+  var sub=G.sub,st=stOf(sub),type=G.q[G.idx],base=st.lv[type]||1,lv=G.ch?Math.min(sub.key==='ko'&&type!=='read'?KO_LVMAX:5,base+1):base,pz=josaFixPz(sub.gen[type](lv)),tries=0,done=false;
   document.body.classList.add('qmode');if(sub.key==='en')audPrefetch(G.lvl?['ph','wa','wb']:audTrack());
   var sc=el('div','screen qscreen q-'+sub.key+(sub.key==='math'||sub.key==='hz'||sub.key==='en'||sub.key==='ko'?' thm':'')+(G.ch?' ch':'')+(G.boss?' boss':'')+(G.dig?' dig':'')),top=el('div','qtop');
   var x=el('button','x');x.setAttribute('aria-label','그만하기');x.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';x.onclick=G.sch?function(){HZWQ=null;document.body.classList.remove('qmode');G=null;FORCE=null;schoolScreen(SCH_BACK)}:function(){HZWQ=null;home()};
