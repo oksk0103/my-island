@@ -3318,6 +3318,9 @@ body .village .vhud .evchip:active{transform:translateY(2px);box-shadow:0 1px 0 
 /* 아래: 오늘의 할 일·숙제 칩 그림자를 과목 탭과 같은 받침으로 */
 html body .village .vthead .wschip:not(.on){box-shadow:var(--hcard-sh)!important}
 html body .village .vthead .wschip:not(.on):active{box-shadow:0 1px 0 #dfe5ec!important}
+/* 오늘의 할 일 먼저: 잠긴 섬 꾸미기 버튼 */
+.ibig.locked{opacity:.92;filter:saturate(.6)}
+.ibig .glock{margin-left:6px;padding:2px 8px;border-radius:999px;background:#28385a;color:#fff;font-size:12px;font-weight:800;line-height:1.4}
 </style>
 
 <div id="app"></div>
@@ -4188,7 +4191,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.99";
+var APP_VER="1.0.101";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -17171,6 +17174,7 @@ function advDoneScene(a,bonus,ft0){
   var ec=evGain(2);if(ec){var row2=el('div','advrow ev');row2.appendChild(img('x_candy'));row2.appendChild(el('span',null,evNow().tokName));row2.appendChild(el('em',null,''));var sb2=el('b');sb2.appendChild(img('x_candy'));sb2.appendChild(document.createTextNode('+'+ec));row2.appendChild(sb2);tb.appendChild(row2)}
   var ft=ft0||fishTicket();if(ft){var row3=el('div','advrow fishtk');row3.appendChild(img('f_red'));row3.appendChild(el('span',null,'낚시 티켓'));row3.appendChild(el('em',null,''));row3.appendChild(el('b',null,'+1'));tb.appendChild(row3)}
   card.appendChild(tb);
+  if(bonus&&gateMode()!=='off'){var go_=el('div','advch');go_.appendChild(img('palm_tree'));go_.appendChild(el('span',null,'섬 꾸미기가 열렸어요!'));card.appendChild(go_)}
   var chOpen=!S.path.char||chAvail();if(chOpen){var cg=el('div','advch');cg.appendChild(img('sparkles'));cg.appendChild(el('span',null,'오늘의 도전이 열렸어요! 성공하면 오솔길 한 칸'));card.appendChild(cg)}
   var fl=el('div','advfire');fl.appendChild(img('fire'));fl.appendChild(el('span',null,'연속 '+streak()+'일째'));card.appendChild(fl);
   if(chOpen){var cb_=el('button','cta green','오늘의 도전 하러 가기');cb_.onclick=function(){lay.remove();S.path.char?trail():chooseFriend()};card.appendChild(cb_)}
@@ -17824,6 +17828,8 @@ function petsLive(world){var occ=occMap(),claim={};
 // 마을에서 걷는 친구도 누르면 이야기해요
 function villagePetTap(wk,id){var im=wk.querySelector('img');if(!im)return;im.style.pointerEvents='auto';im.style.cursor='pointer';im.__tap=1;im.addEventListener('click',function(e){e.stopPropagation();petTap(wk,id,wk)})}
 function islandScreen(edit,hand){
+  if(edit&&!document.querySelector('.island.edit')&&gateLocked('edit')){gateSheet('edit');return} // 오늘의 할 일 먼저
+  if(!edit&&!document.querySelector('.island')&&gateLocked('enter')){HUB='village';if(!document.querySelector('.village'))villageScreen();gateSheet('enter');return}
   clear();gdInit();if(!edit){HUB='island';UNDO=[]}
   var root=el('div','island'+(edit?' edit':''));skyFx(root);
   var view=el('div','iview');root.appendChild(view);
@@ -17858,8 +17864,8 @@ function islandScreen(edit,hand){
     var inv=0,t=totals(),pc=placedCount();for(var k2 in t)inv+=Math.max(0,t[k2]-(pc[k2]||0));
     hint.textContent=digN?'반짝이는 땅이 '+digN+'곳 있어요! 눌러서 화석을 캐요.':inv?'보관함에 놓을 물건이 '+inv+'개 기다리고 있어요!':'섬을 끌어서 둘러보고, 섬 꾸미기로 꽃과 소품을 놓아요.';if(inv||digN)hint.className+=' wait';if(digN)setTimeout(function(){var I=introS();if(!I.dig&&document.querySelector('.digspot')&&!document.querySelector('.sheet.show')){I.dig=1;save();coachRun([['.digspot','섬에 반짝이는 땅이 생겼어! 누르고 문제를 하나 맞히면 땅속에서 화석이 나와. 매일 두 군데씩 생겨.']])}},900);
     var row=el('div','ibar');
-    var deco=el('button','ibig');deco.appendChild(img('pencil'));deco.appendChild(document.createTextNode('섬 꾸미기'));if(inv)deco.appendChild(el('em','lmbadge',String(inv)));
-    if(inv)deco.className+=' has';deco.onclick=function(){islandScreen(true)};row.appendChild(deco);
+    var deco=el('button','ibig');deco.appendChild(img('pencil'));deco.appendChild(document.createTextNode('섬 꾸미기'));var lk_=gateLocked('edit');if(lk_){var ds_=daySubs();deco.className+=' locked';deco.appendChild(el('small','glock','할 일 '+(ds_.length-advLeft().length)+'/'+ds_.length))}else if(inv)deco.appendChild(el('em','lmbadge',String(inv)));
+    if(inv&&!lk_)deco.className+=' has';deco.onclick=function(){islandScreen(true)};row.appendChild(deco);
     var shp=el('button','ibig ishop');shp.appendChild(img('shopping_bags'));shp.appendChild(document.createTextNode('상점'));var seenSun=typeof S.gd.shopSeen==='number'&&S.gd.shopSeen>1?S.gd.shopSeen:0,newOk=DECOR.filter(function(d){return d.price!=null&&d.price<=S.sun&&d.price>seenSun}).length;if(newOk)shp.appendChild(el('em','lmbadge dot'));shp.onclick=function(){S.gd.shopSeen=Math.max(2,S.sun);save();shop('decor')};row.appendChild(shp);
     bottom.appendChild(hint);bottom.appendChild(row);
   }else{
@@ -19228,7 +19234,7 @@ function studyCal(weeks){weeks=weeks||5;var card=el('section','card scal');var h
 // 아이가 이번 주에 무엇을 얼마나 했는지, 어디가 약한지, 한자 진도와 모의시험 점수를 한눈에 보여 줘요.
 var PV={sub:'ko',wk:0,back:null,page:null,flash:null};
 var PV_SUBN={ko:'국어',math:'수학',en:'영어',hz:'한자'};
-var PV_TITLE={grade:'우리 아이 학년',voice:'받아쓰기 목소리',backup:'기록 지키기',reports:'이상한 문제 신고',credits:'자료 출처',set:'설정',units:'수학 단원',hz:'한자 급수',sub:'',std:'교육과정 진도',log:'공부 기록',hw:'숙제',mail:'아이가 쓴 편지',cheer:'응원 스티커'};
+var PV_TITLE={gate:'오늘의 할 일 먼저',grade:'우리 아이 학년',voice:'받아쓰기 목소리',backup:'기록 지키기',reports:'이상한 문제 신고',credits:'자료 출처',set:'설정',units:'수학 단원',hz:'한자 급수',sub:'',std:'교육과정 진도',log:'공부 기록',hw:'숙제',mail:'아이가 쓴 편지',cheer:'응원 스티커'};
 var PV_UP={grade:'set',units:'sub',hz:null};
 // page: 없으면 첫 화면. 예전 탭 이름(sum/sub/std/set)도 받아요
 function parentScreen(back,page){if(back){PV.back=back;PV.stack=[];if(page===undefined)PV.page=null}if(page!==undefined&&page!==null)PV.page=page==='sum'?null:page;if(!PV.back)PV.back=houseScreen;var B=PV.back;
@@ -19238,7 +19244,7 @@ function parentScreen(back,page){if(back){PV.back=back;PV.stack=[];if(page===und
   if(!PV.page){var gs=el('button','pvgear');gs.setAttribute('aria-label','설정');gs.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';gs.onclick=function(){pvGo('set')};top.appendChild(gs)}
   sc.appendChild(top);var body=el('div','pvbody');sc.appendChild(body);
   if(PV.flash){var f=el('div','pvnote');f.appendChild(el('b',null,PV.flash.t));f.appendChild(el('span',null,PV.flash.s));if(PV.flash.a){var fa=el('button','pvbtn sm',PV.flash.a[0]);fa.onclick=PV.flash.a[1];f.appendChild(fa)}body.appendChild(f)}
-  try{({voice:pvPgVoice,backup:pvPgBackup,reports:pvPgReports,credits:pvPgCredits,set:pvSettings,grade:pvPgGrade,units:pvPgUnits,hz:pvPgHz,sub:pvSubjects,std:pvStd,log:pvLog,hw:pvHw,mail:pvMail,cheer:pvCheer}[PV.page]||pvMain)(body)}catch(e){console.error(e);body.appendChild(el('p','pvempty','화면을 불러오지 못했어요.'))}
+  try{({gate:pvPgGate,voice:pvPgVoice,backup:pvPgBackup,reports:pvPgReports,credits:pvPgCredits,set:pvSettings,grade:pvPgGrade,units:pvPgUnits,hz:pvPgHz,sub:pvSubjects,std:pvStd,log:pvLog,hw:pvHw,mail:pvMail,cheer:pvCheer}[PV.page]||pvMain)(body)}catch(e){console.error(e);body.appendChild(el('p','pvempty','화면을 불러오지 못했어요.'))}
   app.appendChild(sc);zMark&&zMark()}
 function pvSubStep(k,dir){var ch=false;if(k==='ko')ch=koSetGrade(koGrade()+dir);else if(k==='math')ch=mathSetGrade(curGrade()+dir);else if(k==='en'){var e=enStage(),n=Math.max(1,Math.min(9,e+dir));if(n!==e){enSetStage(n,true);ch=true}}if(ch)pvPlace([k]);else miniToast(dir>0?'가장 높은 단계예요':'가장 낮은 단계예요');pvRe()}
 function pvPlace(keys){if(!S.place)S.place={};keys.forEach(function(k){S.place[k]=1});save()}
@@ -19275,6 +19281,7 @@ function pvMain(body){var W=weekStats(0),P=weekStats(1);
   var now=dbgNow(),yr=now.getFullYear(),kg_=kidGrade();if(!S.kgY){S.kgY=now.getMonth()>=2?yr:yr-1;save()}if(now.getMonth()>=2&&S.kgY<yr&&kg_<6){var nu=el('div','pvnote');nu.appendChild(el('b',null,'새 학년이 됐나요?'));nu.appendChild(el('span',null,'올해 새 학년(3월)이 시작됐어요. '+GRADE_NAMES[kg_+1]+'으로 올리면 과목 학년도 함께 한 학년씩 올라가요.'));var r_=el('div','pvnrow');var up=el('button','pvbtn sm',GRADE_NAMES[kg_+1]+'으로 올리기');up.onclick=function(){pvKidGrade(kg_+1,true)};var no=el('button','pvbtn sm ghost','그대로 둘게요');no.onclick=function(){S.kgY=yr;save();pvRe()};r_.appendChild(up);r_.appendChild(no);nu.appendChild(r_);body.appendChild(nu)}
   var h=pvSec(null,null,'pvhero');h.appendChild(el('h3',null,W.n?'이번 주 '+W.n+'일 공부했어요':'이번 주는 아직 쉬고 있어요'));
   var strip=el('div','pvstrip'),tdk=dayKey(),now=dbgNow();W.days.forEach(function(d,i){var c=el('div','pvday'+(W.study[i]?' on':'')+(dayKey(d)===tdk?' today':'')+(d>now?' fut':''));c.appendChild(el('i'));c.appendChild(el('small',null,'월화수목금토일'.charAt(i)));strip.appendChild(c)});h.appendChild(strip);
+  var tdr=repSum(dnum(),dnum()),tq=0,tc=0;Object.keys(tdr).forEach(function(k){tq+=tdr[k][0];tc+=tdr[k][1]});var tl=advLeft(),tds=daySubs();h.appendChild(el('p','pvtip pvtoday','오늘의 할 일 '+(tds.length-tl.length)+' / '+tds.length+(tq?' · 오늘 '+tq+'문제 중 '+Math.round(tc/tq*100)+'%를 한 번에 맞혔어요':'')));
   var tip=pvInsight(W,P);if(W.q)h.appendChild(el('p','pvtip',W.q+'문제를 풀고 '+Math.round(W.c/W.q*100)+'%를 한 번에 맞혔어요.'));var ad=el('p','pvadv');ad.appendChild(el('b',null,tip[0]));ad.appendChild(el('span',null,tip[1]));h.appendChild(ad);body.appendChild(h);
   var s=pvSec('과목별 공부 학년','수준이 안 맞으면 − +');['ko','math','en','hz'].forEach(function(k){s.appendChild(pvSubRow(k,W))});
   s.appendChild(el('p','pvfoot','학년 안의 세부 난이도는 풀면서 저절로 맞춰져요. 과목을 누르면 단원·세부 난이도를 볼 수 있어요.'));body.appendChild(s);
@@ -19369,10 +19376,13 @@ function pvStd(body){var c=stdCard();c.className='pvsec stdcard';body.appendChil
 function pvSettings(body){
   var s=pvSec('아이');s.appendChild(pvRow('우리 아이 학년',GRADE_NAMES[kidGrade()],function(){pvGo('grade')}));
   s.appendChild(pvRow('수준 다시 맞추기',(S.place&&Object.keys(S.place).length)?'다음 판에서 맞춰요':null,function(){pvConfirm('수준을 다시 맞출까요?','다음에 푸는 국어·수학·영어 첫 판에서 문제마다 난이도가 빠르게 오르내리며 수준을 다시 맞춰요. 시험처럼 따로 보지 않아요.','다시 맞추기',function(){pvPlace(['ko','math','en']);miniToast('다음 판에서 수준을 맞춰요');pvRe()})},'국어·수학·영어 첫 판에서 저절로 맞춰요'));body.appendChild(s);
+  var gs=pvSec('섬'),gm=GATE_OPT.filter(function(o){return o[0]===gateMode()})[0];gs.appendChild(pvRow('오늘의 할 일 먼저',gm[1],function(){pvGo('gate')},'할 일을 다 끝내기 전에는 섬 꾸미기를 잠가요'));body.appendChild(gs);
   var s1=pvSec('소리');s1.appendChild(pvRow('효과음',pvTog(!!S.sound,function(){S.sound=!S.sound;save();pvRe()})));
   var vn='';try{var cv=pickVoice(/^ko/i,'ko');vn=cv?(cv.name||'').replace(/\s*\(.*?\)\s*/g,' ').trim():''}catch(e){}s1.appendChild(pvRow('받아쓰기 목소리',vn||'기본',function(){pvGo('voice')},'국어 받아쓰기를 불러 줄 때 쓰는 기기 목소리'));body.appendChild(s1);
   var ok=typeof CLOUD!=='undefined'&&CLOUD.ref&&CLOUD.state==='ok',s3=pvSec('데이터');s3.appendChild(pvRow('기록 지키기',ok?'자동 저장 중':'이 기기에 저장',function(){pvGo('backup')},'백업 파일 저장 · 되살리기'));body.appendChild(s3);
   var R=S.reports||[],s4=pvSec('정보');s4.appendChild(pvRow('이상한 문제 신고',R.length+'개',function(){pvGo('reports')},'아이가 알려 준 문제'));s4.appendChild(pvRow('자료 출처',null,function(){pvGo('credits')}));s4.appendChild(pvRow('앱 버전',typeof APP_VER!=='undefined'?APP_VER:'-'));body.appendChild(s4)}
+function pvPgGate(body){var s=pvSec(null,'국어·수학·영어·한자 한 판씩(오늘의 모험)을 다 끝내면 풀려요. 숙제는 넣지 않아요.');
+  GATE_OPT.forEach(function(o){var on=gateMode()===o[0],r=pvRow(o[1],on?'✓':'',function(){S.gate=o[0];save();miniToast(o[1]);pvRe()},o[2]);if(on)r.className+=' on';s.appendChild(r)});body.appendChild(s)}
 function pvPgVoice(body){var vc=voiceCard();vc.className='pvsec vccard';var h=vc.querySelector('h3');if(h)h.remove();body.appendChild(vc)}
 function pvPgBackup(body){var bc=backupCard();bc.className='pvsec backup';var h=bc.querySelector('h3');if(h)h.remove();body.appendChild(bc)}
 function pvPgReports(body){var R=S.reports||[],s3=pvSec(null);
@@ -19583,7 +19593,7 @@ function gardenScreen(edit,hand){islandScreen(!!edit,hand)}
 // ================= 마을 (첫 화면) =================
 // 칸 없는 한 장면. 건물을 누르면 들어가고, 배를 타면 꾸미는 섬으로 가요.
 var HUB='village';
-function home(){hzRestoreGrade();HUB==='island'?islandScreen(false):villageScreen()}
+function home(){hzRestoreGrade();if(HUB==='island'&&gateLocked('enter'))HUB='village';HUB==='island'?islandScreen(false):villageScreen()}
 var VW=560,VH=560,VK=1.15,VTW=80*VK,VTH=40*VK,VN=7,VY0=280-100*VK;
 function vC(c,r){return [VW/2+(c-r)*VTW/2,VY0+(c+r)*VTH/2+VTH/2]}
 var VCELL={tree:[1,1],home:[0,3],shop:[3,0],mail:[3,5],pot:[5,4]};
@@ -19641,7 +19651,7 @@ function villageScreen(){
     b.appendChild(art);
     var lab=el('span','lmlabel v3lab',VLABEL[v.id]);if(v.id==='mail')lab.appendChild(el('small','lmsub','도전'));var bd=badgeOf(v.id);if(bd){var e=el('em','lmbadge',bd===true?'':bd);if(bd===true)e.className+=' dot';lab.appendChild(e)}var lw=el('div','v3 v3lw lm-'+v.id);lw.setAttribute('aria-hidden','true');lw.appendChild(lab);lab.onclick=function(ev){ev.stopPropagation();b.click()};lab.addEventListener('pointerdown',function(){b.classList.add('press')});['pointerup','pointercancel','pointerleave'].forEach(function(t){lab.addEventListener(t,function(){b.classList.remove('press')})});
     b.setAttribute('aria-label',VLABEL[v.id]);
-    b.onclick=function(){if(v.id==='boat'){tone([392,523,659],'sine',.12);cloudWipe(function(){islandScreen(false)})}else LMACT[v.id]()};
+    b.onclick=function(){if(v.id==='boat'){if(gateLocked('enter')){gateSheet('enter');return}tone([392,523,659],'sine',.12);cloudWipe(function(){islandScreen(false)})}else LMACT[v.id]()};
     scene.appendChild(b);lw.style.left=b.style.left;lw.style.top=b.style.top;lw.style.zIndex=900;scene.appendChild(lw);
   });
   if(bossOn()){var BB=bossNow(),bb=el('button','v3 vboss');bb.style.left=BOSS_XY[0]+'px';bb.style.top=BOSS_XY[1]+'px';bb.style.zIndex=BOSS_XY[1];bb.appendChild(el('i','vbossring'));bb.appendChild(el('i','vbossring r2'));var bi_=el('i','vbosswrap');bi_.appendChild(img(BB.id,'vbossimg'));bb.appendChild(bi_);bb.appendChild(el('i','vbossex','!'));bb.appendChild(el('i','vbosssplash'));bb.setAttribute('aria-label','주말 보스 '+BB.name);bb.onclick=function(){bossIntro()};scene.appendChild(bb);
@@ -19707,7 +19717,7 @@ function dayDoneScene(){
   var me=S.path.char||'rabbit',lay=el('div','daydone'),card=el('div','ddcard');
   var pic=avImg(me,'ddpic');card.appendChild(el('i','ddrays'));card.appendChild(pic);
   card.appendChild(el('small',null,'오늘 할 일 끝!'));card.appendChild(el('h3',null,'정말 잘했어! 오늘은 충분해.'));
-  card.appendChild(el('p',null,(daySubs().length===4?'수학, 한자, 영어, 국어':'수학, 한자, 영어')+' 다 했어요. 선물로 햇살 10개와 보석 2개를 줄게요. 내일 또 만나요!'));
+  card.appendChild(el('p',null,(daySubs().length===4?'수학, 한자, 영어, 국어':'수학, 한자, 영어')+' 다 했어요. 선물로 햇살 20개와 보석 2개를 줄게요.'+(gateMode()!=='off'?' 섬 꾸미기도 열렸어요!':'')+' 내일 또 만나요!'));
   var b=el('button','cta green','좋아!');b.onclick=function(){lay.remove()};card.appendChild(b);
   lay.appendChild(card);document.body.appendChild(lay);SND.bloom();setTimeout(function(){var r=pic.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,36,true)},200);
 }
@@ -19765,6 +19775,16 @@ function todaySheet(){var L=todayList(),inn=sheet.firstChild;inn.innerHTML='';va
   var ul=el('div','tdlist');L.forEach(function(x){var r=el('button','tdrow'+(x.done?' done':''));r.appendChild(img(x.img));r.appendChild(el('span',null,x.name));if(x.note)r.appendChild(el('em',null,x.note));var ck=el('i','tdck');if(x.done)ck.innerHTML=CHECK_SVG;r.appendChild(ck);r.onclick=x.done?function(){}:x.go;ul.appendChild(r)});inn.appendChild(ul);
   inn.appendChild(el('p','tdnote','앱 과목은 오늘의 모험으로 한 번에 할 수 있어요. 숙제는 숙제 화면에서 우리 집에 맞게 만들고 요일을 정할 수 있어요.'));
   var c=el('button','cta light','닫기');c.onclick=hideSheet;inn.appendChild(c);sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;requestAnimationFrame(function(){sheet.className='sheet good show'})}
+
+// ----- 오늘의 할 일 먼저: 다 끝내기 전에는 섬 꾸미기(또는 섬 가기)를 잠가요. 부모님 설정에서 바꿔요 -----
+var GATE_OPT=[['edit','섬 꾸미기만 잠그기','섬 구경과 친구랑 놀기는 할 수 있어요'],['enter','섬 가기도 잠그기','배를 타고 섬에 가는 것부터 잠가요'],['off','잠그지 않기','언제든 섬을 꾸밀 수 있어요']];
+function gateMode(){var m=S.gate;return m==='enter'||m==='off'?m:'edit'}
+function gateLocked(kind){var m=gateMode();if(m==='off'||!advLeft().length)return false;return kind==='enter'?m==='enter':true}
+function gateSheet(kind){var L=daySubs(),left=advLeft(),dn=L.length-left.length;
+  showSheet('good',S.path.char||'rabbit',kind==='enter'?'내 섬 가기':'섬 꾸미기','오늘의 모험을 먼저 끝내요',
+    left.map(function(k){return ADVK[k][0]}).join(', ')+josa(ADVK[left[left.length-1]][0],'이','가').slice(-1)+' 남았어요 ('+dn+' / '+L.length+'). 다 끝내면 '+(kind==='enter'?'섬에 갈 수 있어요!':'섬 꾸미기가 열려요! 섬 구경이랑 친구랑 놀기는 지금도 할 수 있어요.'),
+    ADV?'모험 이어서 하기':'오늘의 모험 시작',function(){if(ADV)advGo();else advStart()});
+  var inn=sheet.firstChild,lt=el('button','cta light','나중에 할래요');lt.onclick=function(){hideSheet();if(!document.querySelector('.village,.island'))home()};inn.appendChild(lt)}
 
 // ================= 오솔길 =================
 var CHARS=[{id:'rabbit',name:'토끼'},{id:'cat',name:'고양이'},{id:'penguin',name:'펭귄'},{id:'chipmunk',name:'다람쥐'}];
