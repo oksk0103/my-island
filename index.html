@@ -3629,6 +3629,599 @@ html:root body:not(#z) .qscreen.tchscr .dock .cta:is(.tchyes,.tchno):active{back
 html:root body:not(#z) :is(.catchip,.evchip,.tpill,.hchip.tap,.scrtog){position:relative}
 html:root body:not(#z) :is(.evchip,.tpill,.hchip.tap,.scrtog)::after{content:""!important;display:block!important;position:absolute!important;inset:-5px!important;background:none!important;box-shadow:none!important;border:0!important}
 html:root body:not(#z) .catchip::after{content:""!important;display:block!important;position:absolute!important;inset:-4px -2px!important;background:none!important;box-shadow:none!important}
+/* 닫힌 시트 그림자가 화면 아래로 비치지 않게 */
+html:root body:not(#z) #sheet.sheet:not(.show)>.in{box-shadow:none!important}
+html:root body:not(#z) #sheet.sheet:not(.show){transform:translateY(110%)}
+/* ===== 41 나의 섬 리스킨 2차 (A: 홈·섬·꾸미기·상점·밤 시트) =====
+   40의 토큰(--c-*)만 써요. 40을 이기려고 html:root body:not(#z):not(#a) 로 시작해요(id 두 개). */
+
+/* ---------- 1. 홈 아래 판: 머리 줄 + 청록 주 버튼 + 정사각 과목 타일 ---------- */
+html:root body:not(#z):not(#a) .village .vtoday{display:flex!important;flex-direction:column!important;gap:12px!important;
+  padding:8px 16px calc(16px + env(safe-area-inset-bottom,0px))!important;border-radius:var(--r-sheet) var(--r-sheet) 0 0!important}
+/* 판 머리: 오늘의 할 일은 작은 줄 하나 */
+html:root body:not(#z):not(#a) .village .vthead{height:44px!important;min-height:44px!important;gap:8px!important;align-items:center!important;margin:0!important}
+html:root body:not(#z):not(#a) .village .vthead .todaychip{flex:1 1 auto!important;height:44px!important;min-height:44px!important;padding:0 6px 0 2px!important;
+  background:none!important;box-shadow:none!important;gap:8px!important;justify-content:flex-start!important;border-radius:var(--r-sm)!important}
+html:root body:not(#z):not(#a) .village .vthead .todaychip>img{width:22px!important;height:22px!important}
+html:root body:not(#z):not(#a) .village .vthead .todaychip .tdtx{display:flex!important;flex-direction:row!important;align-items:baseline!important;gap:8px!important;min-width:0}
+html:root body:not(#z):not(#a) .village .vthead .todaychip .tdtx small{order:2;font-family:'Noto Sans KR',sans-serif!important;font-size:12px!important;color:var(--c-ink-2)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html:root body:not(#z):not(#a) .village .vthead .todaychip .tdtx b{font-size:16px!important;color:var(--c-ink)!important;white-space:nowrap;font-weight:400!important}
+html:root body:not(#z):not(#a) .village .vthead .todaychip .vtcnt{margin-left:auto!important;font-family:var(--title,Jua),sans-serif;font-size:13px!important;font-style:normal;padding:3px 9px!important;border-radius:10px!important;min-width:0!important;height:auto!important}
+html:root body:not(#z):not(#a) .village .vthead .todaychip:active{transform:none!important;background:var(--c-cream-2)!important}
+html:root body:not(#z):not(#a) .village .vthead .wschip:not(.todaychip){flex:none!important;height:40px!important;min-height:40px!important;margin:2px 0!important;padding:0 14px 0 10px!important;gap:6px!important;
+  font-size:14px!important;background:var(--c-paper)!important;box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)!important;border-radius:var(--r-btn)!important}
+html:root body:not(#z):not(#a) .village .vthead .wschip:not(.todaychip)>img{width:20px!important;height:20px!important}
+html:root body:not(#z):not(#a) .village .vthead .wschip:not(.todaychip)::after{content:""!important;display:block!important;position:absolute!important;inset:-3px 0!important;background:none!important;box-shadow:none!important}
+
+/* 모험 시작: 가운데 놓인 큰 청록 버튼 하나 (재생 표시 + 제목 + 작은 순서 줄) */
+html:root body:not(#z):not(#a) .village .advbtn{min-height:64px!important;height:auto!important;padding:9px 18px!important;justify-content:center!important;gap:14px!important;border-radius:22px!important;margin:0!important;width:100%!important}
+html:root body:not(#z):not(#a) .village .advbtn .advic{display:none!important}
+html:root body:not(#z):not(#a) .village .advbtn .advgo{order:-1!important;flex:none!important;width:42px!important;height:42px!important;border-radius:50%!important;margin:0!important;
+  background:rgba(255,255,255,.18) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 6.5v11a1 1 0 0 0 1.5.86l9-5.5a1 1 0 0 0 0-1.72l-9-5.5A1 1 0 0 0 9 6.5z' fill='%23fff'/%3E%3C/svg%3E") 55% 50%/24px no-repeat!important;box-shadow:none!important}
+html:root body:not(#z):not(#a) .village .advbtn .advgo svg{display:none!important}
+html:root body:not(#z):not(#a) .village .advbtn .advtx{flex:0 1 auto!important;min-width:0!important;align-items:flex-start!important;text-align:left!important;gap:3px!important}
+html:root body:not(#z):not(#a) .village .advbtn .advtx b{font-size:20px!important;line-height:1.1!important;white-space:nowrap;font-weight:400!important}
+html:root body:not(#z):not(#a) .village .advbtn .advtx small{font-family:'Noto Sans KR',sans-serif!important;font-size:12px!important;line-height:1.2!important;white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis;max-width:100%;color:rgba(255,255,255,.86)!important}
+html:root body:not(#z):not(#a) .village .advdone0{min-height:64px!important;margin:0!important}
+
+/* 과목 타일: 정사각, 큰 그림을 받침 위에, 이름은 작게 */
+html:root body:not(#z):not(#a) .village .vtasks{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important;margin:0!important;height:auto!important}
+html:root body:not(#z):not(#a) .village .vtask{aspect-ratio:1/1!important;height:auto!important;min-height:0!important;min-width:0!important;margin:0!important;padding:0 2px 7px!important;
+  flex-direction:column!important;justify-content:flex-end!important;align-items:center!important;gap:6px!important;
+  background:var(--c-paper)!important;border-radius:20px!important;box-shadow:0 4px 0 var(--c-cream-edge),var(--in-line),0 6px 14px rgba(40,60,80,.06)!important;text-shadow:none!important;overflow:visible!important}
+html:root body:not(#z):not(#a) .village .vtask>img{position:relative;z-index:1;width:52%!important;height:auto!important;aspect-ratio:1/1;object-fit:contain;margin:0 0 2px!important;filter:drop-shadow(0 2px 1px rgba(60,50,20,.18))}
+/* 받침: 풀 덮인 작은 흙 판 */
+html:root body:not(#z):not(#a) .village .vtask::before{content:""!important;display:block!important;position:absolute!important;left:50%!important;bottom:27px!important;top:auto!important;width:62%!important;height:14px!important;transform:translateX(-50%)!important;
+  border-radius:50%!important;background:radial-gradient(ellipse at 50% 40%,#b5dc7c 0 55%,#9cc865 70%)!important;box-shadow:0 3px 0 #c9a46c,0 5px 6px rgba(80,60,20,.16)!important;inset:auto auto 27px 50%!important;opacity:1!important;z-index:0;border:0!important;border-image:none!important;padding:0!important}
+html:root body:not(#z):not(#a) .village .vtask>span{font-size:13px!important;line-height:1!important;color:var(--c-ink-2)!important;white-space:nowrap!important;font-family:var(--title,Jua),sans-serif;flex:none!important;text-align:center!important}
+html:root body:not(#z):not(#a) .village .vtask.trailp>span{display:flex!important;flex-direction:column!important;align-items:center!important;gap:2px!important}
+html:root body:not(#z):not(#a) .village .vtask.trailp>span small{display:none!important}
+html:root body:not(#z):not(#a) .village .vtask.trailp>span b{font-weight:400!important;font-size:13px!important}
+html:root body:not(#z):not(#a) .village .vtask.done{background:var(--c-paper)!important;color:var(--c-ink-2)!important}
+html:root body:not(#z):not(#a) .village .vtask .vok{position:absolute!important;top:6px!important;right:6px!important;left:auto!important;bottom:auto!important;width:20px!important;height:20px!important;z-index:2}
+html:root body:not(#z):not(#a) .village .vtask:active{transform:translateY(3px)!important;box-shadow:0 1px 0 var(--c-cream-edge),var(--in-line)!important}
+
+/* ---------- 2. 섬 위 건물 이름표: 크림 작은 태그, 다음 할 곳 하나만 청록 ---------- */
+html:root body:not(#z):not(#a) .village .lmlabel:not(.bosslab){font-size:13.5px!important;padding:4px 10px 3px!important;line-height:1.15!important;border-radius:10px!important;
+  background:rgba(247,240,223,.92)!important;color:var(--c-navy)!important;box-shadow:0 2px 0 var(--c-cream-edge),0 3px 8px rgba(30,60,90,.12)!important;text-shadow:none!important;opacity:.9}
+html:root body:not(#z):not(#a) .village .lm-boat .lmlabel{background:rgba(247,240,223,.92)!important;color:var(--c-navy)!important;box-shadow:0 2px 0 var(--c-cream-edge),0 3px 8px rgba(30,60,90,.12)!important}
+/* 다음 할 곳 */
+html:root body:not(#z):not(#a) .village .v3lw.lmnext .lmlabel{font-size:17px!important;padding:6px 14px 5px!important;border-radius:12px!important;opacity:1;
+  background:var(--c-teal)!important;color:#fff!important;box-shadow:0 3px 0 var(--c-teal-2),0 6px 14px rgba(22,88,98,.28)!important;animation:islNext 1.8s ease-in-out infinite}
+html:root body:not(#z):not(#a) .village .v3lw.lmnext .lmlabel::after{content:""!important;display:block!important;position:absolute!important;left:50%!important;top:100%!important;width:0!important;height:0!important;margin-left:-6px!important;
+  border:6px solid transparent!important;border-top-color:var(--c-teal)!important;border-bottom:0!important;background:none!important;box-shadow:none!important;inset:100% auto auto 50%!important}
+@keyframes islNext{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){html:root body:not(#z):not(#a) .village .v3lw.lmnext .lmlabel{animation:none}}
+/* 과목 빨간 점은 끄고(청록 태그가 대신 알려요), 숫자 배지는 남색 작은 원 */
+html:root body:not(#z):not(#a) .village .v3lw:is(.lm-book,.lm-pot,.lm-bee,.lm-tree) .lmbadge.dot{display:none!important}
+html:root body:not(#z):not(#a) .village .v3lw .lmbadge:not(.dot){font-size:11px!important;min-width:18px!important;height:18px!important;line-height:18px!important;padding:0 5px!important;box-shadow:0 0 0 2px var(--c-cream)!important;border:0!important}
+/* 오늘의 모험이 남아 있으면 곁가지 장소(집·오솔길·낚시터·우체통) 이름표는 숨겨요. 그림을 누르면 그대로 들어가요 */
+html:root body:not(#z):not(#a) .village .vscene:has(.v3lw.lmnext) .v3lw:is(.lm-home,.lm-mail,.lm-fish,.lm-mailp) .lmlabel{opacity:.72;filter:saturate(.7)}
+/* 밤 */
+html:root body:not(#z):not(#a) .village.tod-night .lmlabel:not(.bosslab){background:rgba(34,49,79,.9)!important;color:var(--c-night-ink)!important;box-shadow:0 2px 0 var(--c-night-edge),0 3px 10px rgba(0,0,0,.3)!important}
+html:root body:not(#z):not(#a) .village.tod-night .v3lw.lmnext .lmlabel{background:var(--c-teal)!important;color:#fff!important;box-shadow:0 3px 0 var(--c-teal-2),0 0 16px rgba(70,200,210,.45)!important}
+html:root body:not(#z):not(#a) .village.tod-night .v3lw .lmbadge:not(.dot){box-shadow:0 0 0 2px var(--c-night)!important}
+
+/* ---------- 3. 밤 홈 판: 남색, 타일은 한 단계 밝은 남색 ---------- */
+html:root body:not(#z):not(#a) .village.tod-night .vthead .todaychip{background:none!important;box-shadow:none!important}
+html:root body:not(#z):not(#a) .village.tod-night .vthead .todaychip .tdtx b{color:var(--c-night-ink)!important}
+html:root body:not(#z):not(#a) .village.tod-night .vthead .todaychip .tdtx small{color:#a9b6cb!important}
+html:root body:not(#z):not(#a) .village.tod-night .vthead .todaychip .vtcnt{background:rgba(255,255,255,.12)!important;color:var(--c-night-ink)!important}
+html:root body:not(#z):not(#a) .village.tod-night .vthead .wschip:not(.todaychip){background:var(--c-night-2)!important;color:var(--c-night-ink)!important;box-shadow:0 3px 0 var(--c-night-edge)!important}
+html:root body:not(#z):not(#a) .village.tod-night .vtask{background:var(--c-night-2)!important;color:var(--c-night-ink)!important;box-shadow:0 4px 0 var(--c-night-edge),inset 0 0 0 1px rgba(255,255,255,.05)!important}
+html:root body:not(#z):not(#a) .village.tod-night .vtask>span{color:#c9d3e3!important}
+html:root body:not(#z):not(#a) .village.tod-night .vtask::before{background:radial-gradient(ellipse at 50% 40%,#6f9a5a 0 55%,#5c8649 70%)!important;box-shadow:0 3px 0 #7d6744,0 0 12px rgba(120,220,200,.18)!important}
+
+/* ---------- 4. 내 섬: 위 칩 정돈, 아래 크림 판 + 청록 큰 버튼 두 개 ---------- */
+html:root body:not(#z):not(#a) .island:not(.edit) .ibottom{padding:0 14px calc(14px + env(safe-area-inset-bottom,0px))!important;gap:10px!important}
+html:root body:not(#z):not(#a) .island .ihint{background:rgba(43,74,99,.88)!important;color:#fff!important;border-radius:14px!important;box-shadow:0 4px 12px rgba(20,40,60,.18)!important;font-size:13.5px!important}
+html:root body:not(#z):not(#a) .island .ibar{width:100%!important;box-sizing:border-box;gap:12px!important;padding:12px!important;background:var(--c-cream)!important;border-radius:var(--r-panel)!important;
+  box-shadow:0 4px 0 var(--c-cream-edge),0 10px 24px rgba(30,60,90,.16),inset 0 1px 0 rgba(255,255,255,.7)!important}
+html:root body:not(#z):not(#a) .island .ibar .ibig{flex:1 1 0!important;min-width:0!important;height:64px!important;min-height:64px!important;padding:0 10px!important;justify-content:center!important;gap:10px!important;
+  background:var(--face-teal)!important;color:#fff!important;box-shadow:var(--sh-teal)!important;border-radius:var(--r-cta)!important;font-size:18px!important;text-shadow:none!important;white-space:nowrap!important}
+html:root body:not(#z):not(#a) .island .ibar .ibig>img{width:34px!important;height:34px!important;filter:drop-shadow(0 2px 0 rgba(0,0,0,.15))}
+html:root body:not(#z):not(#a) .island .ibar .ibig:active{transform:translateY(3px)!important;box-shadow:var(--sh-teal-on)!important;background:var(--c-teal-2)!important}
+html:root body:not(#z):not(#a) .island .ibar .ibig.locked{background:var(--c-cream-2)!important;color:var(--c-ink-2)!important;box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)!important}
+html:root body:not(#z):not(#a) .island .ibar .ibig.locked>img{opacity:.6;filter:grayscale(.4)}
+html:root body:not(#z):not(#a) .island .ibar .ibig .glock{position:static!important;flex:none;white-space:nowrap;background:var(--c-paper)!important;color:var(--c-navy)!important;box-shadow:none!important;border-radius:8px!important;font-size:11.5px!important;padding:2px 7px!important}
+html:root body:not(#z):not(#a) .island .ibar .ibig .lmbadge{box-shadow:0 0 0 2px var(--c-cream)!important;border:0!important}
+html:root body:not(#z):not(#a) .island .ibar .ibig .lmbadge:not(.dot){background:var(--c-navy)!important;color:#fff!important}
+/* 위: 섬 등급 칩의 막대는 청록 */
+html:root body:not(#z):not(#a) .island .islv .islbar{background:#e7dcc4!important;border-radius:999px!important;height:8px!important;width:48px!important;box-shadow:inset 0 1px 2px rgba(120,100,60,.15)!important}
+html:root body:not(#z):not(#a) .island .islv .islbar em{background:var(--c-teal)!important;border-radius:999px!important}
+html:root body:not(#z):not(#a) .island .islv b{color:var(--c-navy)!important}
+/* 밤 */
+html:root body:not(#z):not(#a) .island.tod-night .hchip,html:root body:not(#z):not(#a) .island.tod-night .hbtn{background:rgba(34,49,79,.94)!important;color:var(--c-night-ink)!important;box-shadow:0 4px 0 var(--c-night-edge)!important}
+html:root body:not(#z):not(#a) .island.tod-night .hchip b{color:var(--c-night-ink)!important}
+html:root body:not(#z):not(#a) .island.tod-night .hbtn svg *{stroke:var(--c-night-ink)}
+html:root body:not(#z):not(#a) .island.tod-night .islv .islbar{background:rgba(255,255,255,.14)!important;box-shadow:none!important}
+html:root body:not(#z):not(#a) .island.tod-night .islv .islbar em{background:#5cc3c9!important}
+html:root body:not(#z):not(#a) .island.tod-night .ibar{background:var(--c-night)!important;box-shadow:0 4px 0 var(--c-night-edge),0 10px 24px rgba(0,0,0,.3)!important}
+html:root body:not(#z):not(#a) .island.tod-night .ibar .ibig:not(.locked){box-shadow:0 4px 0 var(--c-teal-2),0 0 18px rgba(70,200,210,.25)!important}
+html:root body:not(#z):not(#a) .island.tod-night .ibar .ibig.locked{background:var(--c-night-2)!important;color:#b8c4d6!important;box-shadow:0 3px 0 var(--c-night-edge)!important}
+html:root body:not(#z):not(#a) .island.tod-night .ibar .ibig .glock{background:rgba(255,255,255,.12)!important;color:var(--c-night-ink)!important}
+html:root body:not(#z):not(#a) .island.tod-night .ihint{background:rgba(23,34,58,.9)!important}
+
+/* ---------- 5. 꾸미기 서랍 ---------- */
+html:root body:not(#z):not(#a) .island.edit .ibottom{padding:0!important;gap:10px!important}
+html:root body:not(#z):not(#a) .island.edit .ihint{margin:0 14px!important;align-self:center}
+html:root body:not(#z):not(#a) .island.edit .tray{width:100%!important;box-sizing:border-box;margin:0!important;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px))!important;gap:12px!important;
+  background:var(--c-cream)!important;background-image:none!important;border-radius:var(--r-sheet) var(--r-sheet) 0 0!important;box-shadow:0 -6px 24px rgba(30,60,90,.16),inset 0 1px 0 rgba(255,255,255,.7)!important}
+/* 분류 탭: 오목한 판 위에 선택 칸만 청록 */
+html:root body:not(#z):not(#a) .island.edit .tray .tchips{background:var(--c-cream-2)!important;box-shadow:inset 0 2px 3px rgba(120,100,60,.12)!important;border-radius:var(--r-btn)!important;padding:4px!important;gap:4px!important;margin:0!important;flex:none!important;height:auto!important}
+html:root body:not(#z):not(#a) .island.edit .tray .tchips .catchip{flex:1 0 auto!important;min-height:40px!important;height:40px!important;padding:0 14px!important;background:transparent!important;box-shadow:none!important;color:var(--c-navy)!important;border-radius:var(--r-sm)!important;font-size:14.5px!important}
+html:root body:not(#z):not(#a) .island.edit .tray .tchips .catchip.on{background:var(--face-teal)!important;color:#fff!important;box-shadow:0 3px 0 var(--c-teal-2)!important}
+/* 소품 카드: 받침대 위에 소품 */
+html:root body:not(#z):not(#a) .island.edit .trayrow{gap:10px!important;padding:2px 2px 6px!important;margin:0 -2px!important}
+html:root body:not(#z):not(#a) .island.edit .titem{flex:none!important;width:84px!important;min-height:96px!important;padding:6px 4px 8px!important;gap:4px!important;border-radius:18px!important;
+  background:var(--c-paper)!important;box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)!important;color:var(--c-ink)!important}
+html:root body:not(#z):not(#a) .island.edit .titem::before{content:none!important}
+html:root body:not(#z):not(#a) .island.edit .titem .tprev{position:relative!important;width:72px!important;height:58px!important;display:flex!important;align-items:flex-end!important;justify-content:center!important}
+html:root body:not(#z):not(#a) .island.edit .titem .tprev::before{content:""!important;display:block!important;position:absolute!important;left:50%;bottom:0;width:60px;height:16px;margin-left:-30px;border-radius:50%;
+  background:linear-gradient(#f3ead6,#e9dcc0)!important;box-shadow:0 3px 0 #d6c6a4,0 5px 6px rgba(80,60,20,.12)!important;z-index:0;pointer-events:none}
+html:root body:not(#z):not(#a) .island.edit .titem .tprev>*{position:relative;z-index:1;margin-bottom:5px}
+html:root body:not(#z):not(#a) .island.edit .titem .tn{font-size:12px!important;color:var(--c-ink-2)!important;line-height:1.15!important;max-width:78px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html:root body:not(#z):not(#a) .island.edit .titem .tc{background:var(--c-navy)!important;color:#fff!important;border-radius:9px!important;font-size:11px!important;padding:1px 6px!important;height:auto!important;width:auto!important;top:5px!important;right:5px!important;left:auto!important;bottom:auto!important;inset:5px 5px auto auto!important;z-index:2}
+html:root body:not(#z):not(#a) .island.edit .titem.on{background:var(--c-teal-tint)!important;box-shadow:inset 0 0 0 2.5px var(--c-teal),0 3px 0 #b5d6d3!important}
+html:root body:not(#z):not(#a) .island.edit .titem:active{transform:translateY(2px)!important}
+/* 도구: 둥근 크림 버튼, 완료는 청록 */
+html:root body:not(#z):not(#a) .island.edit .tacts{align-items:center!important;gap:10px!important;margin:0!important;height:auto!important}
+html:root body:not(#z):not(#a) .island.edit .tacts :is(.tundo,.terase,.trot){flex:none!important;width:52px!important;height:52px!important;min-height:52px!important;min-width:52px!important;padding:0!important;border-radius:50%!important;justify-content:center!important;
+  background:var(--face-cream)!important;color:var(--c-navy)!important;box-shadow:var(--sh-cream),var(--in-line)!important}
+html:root body:not(#z):not(#a) .island.edit .tacts :is(.tundo,.terase,.trot) svg{width:22px!important;height:22px!important}
+html:root body:not(#z):not(#a) .island.edit .tacts .terase span{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap}
+html:root body:not(#z):not(#a) .island.edit .tacts .terase.on{background:var(--c-teal-tint)!important;color:var(--c-teal-2)!important;box-shadow:inset 0 0 0 2.5px var(--c-teal),0 3px 0 #b5d6d3!important}
+html:root body:not(#z):not(#a) .island.edit .tacts .tundo:disabled{background:var(--c-cream-2)!important;color:#b4ab98!important;box-shadow:0 2px 0 var(--c-cream-edge)!important}
+html:root body:not(#z):not(#a) .island.edit .tacts .cta.light:not(.tundo):not(.terase):not(.trot){flex:none!important;width:auto!important;min-width:0!important;height:52px!important;min-height:52px!important;padding:0 16px!important;border-radius:26px!important;font-size:15px!important}
+html:root body:not(#z):not(#a) .island.edit .tacts .cta.green{margin-left:auto!important;flex:0 1 auto!important;width:auto!important;min-width:112px!important;height:56px!important;min-height:56px!important;padding:0 20px!important;border-radius:20px!important;font-size:18px!important}
+/* 밤 서랍 */
+html:root body:not(#z):not(#a) .island.edit.tod-night .tray{background:var(--c-night)!important;box-shadow:0 -6px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06)!important;color:var(--c-night-ink)!important}
+html:root body:not(#z):not(#a) .island.edit.tod-night .tray .tchips{background:var(--c-night-edge)!important;box-shadow:inset 0 2px 3px rgba(0,0,0,.25)!important}
+html:root body:not(#z):not(#a) .island.edit.tod-night .tray .tchips .catchip:not(.on){color:#c9d3e3!important}
+html:root body:not(#z):not(#a) .island.edit.tod-night .titem{background:var(--c-night-2)!important;box-shadow:0 3px 0 var(--c-night-edge)!important}
+html:root body:not(#z):not(#a) .island.edit.tod-night .titem .tn{color:#c9d3e3!important}
+html:root body:not(#z):not(#a) .island.edit.tod-night .titem .tprev::before{background:linear-gradient(#4a5d80,#3d4f71)!important;box-shadow:0 3px 0 #22304c!important}
+html:root body:not(#z):not(#a) .island.edit.tod-night .titem.on{background:#2f5865!important;box-shadow:inset 0 0 0 2.5px #5cc3c9,0 3px 0 var(--c-night-edge)!important}
+html:root body:not(#z):not(#a) .island.edit.tod-night .tacts :is(.tundo,.terase,.trot),html:root body:not(#z):not(#a) .island.edit.tod-night .tacts .cta.light{background:var(--c-night-2)!important;color:var(--c-night-ink)!important;box-shadow:0 4px 0 var(--c-night-edge)!important}
+html:root body:not(#z):not(#a) .island.edit.tod-night .tacts .tundo:disabled{color:#6f7d95!important}
+html:root body:not(#z):not(#a) .island.edit.tod-night .tray .sum{color:#c9d3e3!important}
+html:root body:not(#z):not(#a) .island.edit.tod-night .hchip{background:rgba(34,49,79,.94)!important;color:var(--c-night-ink)!important;box-shadow:0 4px 0 var(--c-night-edge)!important}
+
+/* ---------- 6. 상점: 크림 바탕, 받침대 카드, 햇살 가격 칩, 잠금 ---------- */
+html:root body:not(#z):not(#a):has(.shopscr){background:var(--c-cream)!important}
+html:root body:not(#z):not(#a) .shopscr .qhead small{background:var(--c-teal-tint)!important;color:var(--c-teal-2)!important;box-shadow:none!important}
+html:root body:not(#z):not(#a) .shopscr .qhead h2{color:var(--c-ink)!important}
+html:root body:not(#z):not(#a) .shopscr .stickhd{background:rgba(247,240,223,.96)!important;box-shadow:0 6px 10px -8px rgba(120,100,60,.25)!important;backdrop-filter:none!important}
+html:root body:not(#z):not(#a) .shopscr .sum{color:var(--c-ink-2)!important}
+html:root body:not(#z):not(#a) .shopscr .sum.warn{color:#b5503e!important}
+html:root body:not(#z):not(#a) .shopscr .gh{gap:12px!important}
+html:root body:not(#z):not(#a) .shopscr .shopc{background:var(--c-cream-2)!important;border-radius:20px!important;box-shadow:var(--in-line),0 2px 0 rgba(200,184,150,.6)!important;padding:10px 6px 12px!important;gap:6px!important;color:var(--c-ink)!important}
+html:root body:not(#z):not(#a) .shopscr .shopc::before,html:root body:not(#z):not(#a) .shopscr .shopc::after{content:none!important}
+html:root body:not(#z):not(#a) .shopscr .shopc:active{transform:translateY(2px)!important;background:#e8dcc2!important}
+html:root body:not(#z):not(#a) .shopscr .shopc .fprev{position:relative!important;align-items:flex-end!important;justify-content:center!important;width:88px!important;min-height:86px}
+html:root body:not(#z):not(#a) .shopscr .shopc .fprev::before{content:""!important;display:block!important;position:absolute!important;left:50%;bottom:0;width:80px;height:22px;margin-left:-40px;border-radius:50%;
+  background:radial-gradient(ellipse at 50% 35%,#fbf8f1 0 50%,#ece2cc 72%)!important;box-shadow:0 4px 0 #d3c19c,0 7px 8px rgba(80,60,20,.14)!important;z-index:0;pointer-events:none}
+html:root body:not(#z):not(#a) .shopscr .shopc .fprev>*{position:relative;z-index:1;margin-bottom:8px}
+html:root body:not(#z):not(#a) .shopscr .shopc.setc .fprev::before{bottom:-2px}
+html:root body:not(#z):not(#a) .shopscr .shopc .potbox,html:root body:not(#z):not(#a) .shopscr .shopc>div:first-child{position:relative}
+html:root body:not(#z):not(#a) .shopscr .shopc>b{font-size:15px!important;color:var(--c-ink)!important;line-height:1.2!important}
+html:root body:not(#z):not(#a) .shopscr .shopc .setls{color:var(--c-ink-2)!important}
+html:root body:not(#z):not(#a) .shopscr .shopc .tag{display:inline-flex!important;align-items:center!important;gap:4px!important;padding:3px 10px 3px 4px!important;border-radius:12px!important;
+  background:var(--c-paper)!important;color:var(--c-ink)!important;font-family:var(--title,Jua),sans-serif;font-size:14px!important;box-shadow:inset 0 0 0 1px rgba(120,100,60,.1)!important;width:auto!important;height:auto!important}
+html:root body:not(#z):not(#a) .shopscr .shopc .tag img{width:20px!important;height:20px!important}
+html:root body:not(#z):not(#a) .shopscr .shopc .tag.on{background:var(--c-teal)!important;color:#fff!important;padding:3px 10px!important}
+html:root body:not(#z):not(#a) .shopscr .shopc.on{box-shadow:inset 0 0 0 2.5px var(--c-teal),0 2px 0 #b5d6d3!important;background:var(--c-teal-tint)!important}
+html:root body:not(#z):not(#a) .shopscr .shopc .bigtag{background:var(--c-navy)!important;color:#fff!important;border-radius:8px!important}
+/* 햇살이 모자란 소품: 옅게 + 자물쇠 */
+html:root body:not(#z):not(#a) .shopscr .shopc.need{background:#e9dfc9!important}
+html:root body:not(#z):not(#a) .shopscr .shopc.need .fprev>*{filter:grayscale(.75) opacity(.55)}
+html:root body:not(#z):not(#a) .shopscr .shopc.need>b{color:var(--c-ink-2)!important}
+html:root body:not(#z):not(#a) .shopscr .shopc.need .tag{color:var(--c-ink-2)!important;background:rgba(251,248,241,.7)!important}
+html:root body:not(#z):not(#a) .shopscr .shopc.need .fprev::after{content:""!important;display:block!important;position:absolute!important;left:50%;top:50%;width:34px;height:34px;margin:-22px 0 0 -17px;border-radius:50%;z-index:2;
+  background:var(--c-navy) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='5' y='10.5' width='14' height='10' rx='2.5' fill='%23fff'/%3E%3Cpath d='M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5' fill='none' stroke='%23fff' stroke-width='2.4'/%3E%3C/svg%3E") center/18px no-repeat!important;box-shadow:0 0 0 3px rgba(251,248,241,.9)!important}
+
+/* ---------- 7. 밤 시트·팝업 (홈·섬이 밤일 때) ---------- */
+html:root body:not(#z):not(#a):has(.tod-night) #sheet.sheet>.in{background:var(--c-night)!important;color:var(--c-night-ink)!important;box-shadow:0 -6px 24px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06)!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet.sheet>.in::before{background:rgba(255,255,255,.22)!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet .hd h3{color:var(--c-night-ink)!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet .hd small{color:#7fd0d6!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet.sheet>.in>p{background:var(--c-night-2)!important;color:#dbe3ef!important;box-shadow:none!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet .cta.light{background:var(--c-night-2)!important;color:var(--c-night-ink)!important;box-shadow:0 4px 0 var(--c-night-edge)!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet .cta.light:active{background:var(--c-night-edge)!important;box-shadow:0 1px 0 var(--c-night-edge)!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet .cta.warn{background:var(--c-night-2)!important;color:#f3a08f!important;box-shadow:0 4px 0 var(--c-night-edge)!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet .cta:not(.light):not(.warn):not(:disabled){box-shadow:0 4px 0 var(--c-teal-2),0 0 18px rgba(70,200,210,.25)!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet .tdrow{background:var(--c-night-2)!important;color:var(--c-night-ink)!important;box-shadow:0 3px 0 var(--c-night-edge)!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet .tdrow span{color:var(--c-night-ink)!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet .tdrow .tdck{border-color:rgba(255,255,255,.3)!important;background:transparent!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet .tdrow.done .tdck{background:var(--c-ok)!important;border-color:var(--c-ok)!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet .tdnote{background:var(--c-night-2)!important;color:#c9d3e3!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet .seg button:not(.on){color:#c9d3e3!important}
+html:root body:not(#z):not(#a):has(.tod-night) #sheet .seg{background:var(--c-night-edge)!important}
+html:root body:not(#z):not(#a):has(.tod-night) #scrim.scrim.show{background:rgba(8,14,32,.5)!important}
+/* 낮 할 일 목록 줄도 크림 계열로 */
+html:root body:not(#z):not(#a) #sheet .tdrow{background:var(--c-paper)!important;box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)!important;border:0!important;border-radius:var(--r-btn)!important;color:var(--c-ink)!important}
+html:root body:not(#z):not(#a) #sheet .tdnote{background:var(--c-paper)!important;color:var(--c-ink-2)!important;box-shadow:var(--in-line)!important;border-radius:var(--r-btn)!important}
+
+/* ---------- 8. 2회차 비평 반영 ---------- */
+/* 좁은 폭: 날짜는 빼고 개수는 한 줄로 */
+html:root body:not(#z):not(#a) .village .vthead .todaychip .vtcnt{white-space:nowrap!important;flex:none!important}
+@media (max-width:374px){html:root body:not(#z):not(#a) .village .vthead .todaychip .tdtx small{display:none!important}}
+html:root body:not(#z):not(#a) .village .advbtn .advtx :is(b,small){text-shadow:none!important}
+/* ---------- 9. 3회차 비평 반영 ---------- */
+/* 도구가 많아져도(돌리기·팔기) 완료 버튼이 화면 밖으로 밀리지 않게 */
+html:root body:not(#z):not(#a) .island.edit .tacts{flex-wrap:nowrap!important;min-width:0}
+html:root body:not(#z):not(#a) .island.edit .tacts:has(.trot) :is(.tundo,.terase,.trot){width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important}
+html:root body:not(#z):not(#a) .island.edit .tacts:has(.trot) .cta.light:not(.tundo):not(.terase):not(.trot){padding:0 12px!important;height:48px!important;min-height:48px!important;font-size:14px!important}
+html:root body:not(#z):not(#a) .island.edit .tacts .cta.green{flex:1 1 auto!important;min-width:0!important;max-width:150px;padding:0 12px!important;white-space:nowrap!important}
+html:root body:not(#z):not(#a) .island .hudl{gap:10px!important}
+html:root body:not(#z):not(#a) .island .islv .islbar{width:40px!important}
+@media (max-width:374px){html:root body:not(#z):not(#a) .island.edit .tacts:has(.trot) .cta.green{font-size:16px!important;padding:0 10px!important}}
+/* ===== 42 부모님 보기 (리스킨 2차 · B) =====
+   기준: ref/05_부모설정.png. 따뜻한 종이 바탕(--c-paper) 위 크림 카드, 청록 토글, 오목한 분할 탭, 남색 주 버튼.
+   읽기 쉬움이 먼저예요: 본문은 Noto Sans KR, 작은 글자도 크림 위 대비 4.5 이상(--pv-sub #56616d = 5.5:1).
+   27-parent.css가 .screen.pv 에 둔 --pv-* 변수를 여기서 다시 정해서 대부분의 색을 한 번에 바꾸고,
+   직접 색을 박아 둔 곳만 따로 덮어요. 우선순위는 40과 같이 html:root body:not(#z)로 시작해요. */
+
+/* ---------- 0. 바탕과 변수 ---------- */
+html:root body:not(#z):has(.screen.pv){background:var(--c-paper)!important;background-image:none!important}
+html:root body:not(#z):has(.screen.pv)::after,html:root body:not(#z):has(.screen.pv)::before{display:none!important}
+html:root body:not(#z) .screen.pv{
+  --pv-bg:var(--c-paper);--pv-card:var(--c-cream);--pv-ink:var(--c-ink);--pv-sub:#56616d;--pv-mute:#56616d;
+  --pv-line:rgba(120,100,60,.16);--pv-acc:var(--c-teal);--pv-good:var(--c-teal);--pv-mid:#8fb9b8;--pv-bad:var(--c-bad);
+  --ink:var(--c-ink);--ink-2:#56616d;--sub:#56616d;
+  --pv-in:var(--c-paper);--pv-edge:0 1px 0 var(--c-cream-edge),0 6px 16px rgba(40,60,80,.06);
+  background:transparent!important;color:var(--c-ink)!important;font-family:'Noto Sans KR',var(--ko),sans-serif!important;letter-spacing:-.005em}
+html:root body:not(#z) .screen.pv :is(button,h3,h4,summary,b,strong,em,small,p,span,i){font-family:'Noto Sans KR',var(--ko),sans-serif}
+
+/* ---------- 1. 위 막대: 크림 원 버튼 + 남색 제목 ---------- */
+html:root body:not(#z) .screen.pv .pvtop{padding:12px 0 8px!important;gap:12px!important;min-height:64px}
+html:root body:not(#z) .screen.pv :is(.pvback,.pvgear){width:44px!important;height:44px!important;min-width:44px;border-radius:50%!important;border:0!important;
+  background:var(--face-cream)!important;color:var(--c-navy)!important;box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)!important;display:grid;place-items:center;padding:0!important}
+html:root body:not(#z) .screen.pv :is(.pvback,.pvgear) svg{color:var(--c-navy);stroke:var(--c-navy)}
+html:root body:not(#z) .screen.pv :is(.pvback,.pvgear):active{transform:translateY(2px);box-shadow:0 1px 0 var(--c-cream-edge),var(--in-line)!important;background:var(--c-cream-2)!important}
+html:root body:not(#z) .screen.pv .pvtt b{font-family:var(--title,Jua),'Noto Sans KR',sans-serif!important;font-weight:400;font-size:1.32rem;color:var(--c-navy)!important;letter-spacing:0}
+html:root body:not(#z) .screen.pv .pvtt small{font-size:.8rem;color:var(--pv-sub)!important;font-weight:600;margin-top:2px}
+
+/* ---------- 2. 카드 ---------- */
+html:root body:not(#z) .screen.pv .pvbody{gap:14px!important}
+html:root body:not(#z) .screen.pv :is(.pvsec,.pvsec.pcard){background:var(--c-cream)!important;background-image:var(--face-cream)!important;border:0!important;border-radius:22px!important;
+  box-shadow:var(--pv-edge),var(--in-line)!important;padding:18px!important;color:var(--c-ink)}
+html:root body:not(#z) .screen.pv .pvh{margin:0 0 8px!important;align-items:center!important}
+html:root body:not(#z) .screen.pv :is(.pvh h4,.pvsec h3,.pvsec .wkhd h3){font-family:'Noto Sans KR',sans-serif!important;font-weight:800!important;font-size:1.02rem!important;color:var(--c-navy)!important;letter-spacing:-.01em!important}
+html:root body:not(#z) .screen.pv :is(.pvh small,.pvsec .wkhd small){font-size:.78rem!important;color:var(--pv-sub)!important;font-weight:600}
+html:root body:not(#z) .screen.pv .pvhero h3{font-size:1.18rem!important;margin:0 0 14px!important}
+/* 행: 칸 사이 선은 따뜻한 옅은 선 */
+html:root body:not(#z) .screen.pv :is(.pvrow,.pvsrow,.pvmeter,.pvact,.stdrow3,.mprow,.stdsub){border-top:1px solid var(--pv-line)!important}
+html:root body:not(#z) .screen.pv :is(.pvh+.pvrow,.pvsec>.pvrow:first-child,.pvh+.pvsrow,.pvh+.pvmeter,.pvh+.pvact){border-top:0!important}
+html:root body:not(#z) .screen.pv .pvrow{min-height:56px!important;padding:10px 0!important;color:var(--c-ink)!important}
+html:root body:not(#z) .screen.pv button.pvrow:active{background:var(--c-cream-2)!important;border-radius:12px}
+html:root body:not(#z) .screen.pv .pvrl b{font-size:.96rem!important;font-weight:700;color:var(--c-ink)}
+html:root body:not(#z) .screen.pv .pvrl small{font-size:.8rem!important;color:var(--pv-sub)!important;line-height:1.45!important;margin-top:2px}
+html:root body:not(#z) .screen.pv .pvrow>em{font-size:.88rem!important;color:var(--pv-sub)!important;font-weight:600}
+html:root body:not(#z) .screen.pv .pvchev{color:#8d96a0!important;font-size:1.3rem!important}
+html:root body:not(#z) .screen.pv .pvrow.cur b{color:var(--c-teal-2)!important}
+html:root body:not(#z) .screen.pv .pvrow.off .pvrl b{color:#7b8590!important}
+html:root body:not(#z) .screen.pv .pvcheck.on{background:no-repeat center/16px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3L13 4.5' fill='none' stroke='%231e6d79' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;width:24px!important;height:24px!important}
+/* 보조 글 */
+html:root body:not(#z) .screen.pv :is(.pvfoot,.pvempty,.pnote,.pvcred,.stdrow,.stdhow p){color:var(--pv-sub)!important;font-size:.82rem!important;line-height:1.55!important}
+html:root body:not(#z) .screen.pv .pvtip{font-size:.9rem!important;color:var(--c-ink)!important;line-height:1.55!important}
+
+/* ---------- 3. 우리 아이 카드, 이번 주 ---------- */
+html:root body:not(#z) .screen.pv .pvkid{min-height:84px}
+html:root body:not(#z) .screen.pv .pvkid small{color:var(--pv-sub)!important;font-size:.8rem!important}
+html:root body:not(#z) .screen.pv .pvkid b{font-family:var(--title,Jua),sans-serif!important;color:var(--c-navy)!important}
+html:root body:not(#z) .screen.pv .pvkid em{color:var(--c-teal-2)!important;font-size:.88rem!important;padding:12px 0 12px 8px}
+html:root body:not(#z) .screen.pv .pvkid:active{transform:translateY(2px);box-shadow:0 0 0 var(--c-cream-edge),var(--in-line)!important}
+html:root body:not(#z) .screen.pv .pvday small{font-size:.78rem!important;color:var(--pv-sub)!important;font-weight:700}
+html:root body:not(#z) .screen.pv .pvday i{background:var(--c-cream-2)!important;box-shadow:inset 0 1px 2px rgba(120,100,60,.12)!important;border-radius:10px!important;height:30px!important}
+html:root body:not(#z) .screen.pv .pvday.on i{background:var(--c-teal)!important;box-shadow:none!important;background-image:var(--ic-check)!important;background-repeat:no-repeat!important;background-position:center!important;background-size:16px!important}
+html:root body:not(#z) .screen.pv .pvday.fut i{background:transparent!important;box-shadow:inset 0 0 0 1.5px var(--c-cream-2)!important}
+html:root body:not(#z) .screen.pv .pvday.today i{box-shadow:inset 0 0 0 2px var(--c-navy)!important}
+html:root body:not(#z) .screen.pv .pvday.today small{color:var(--c-navy)!important;font-weight:800}
+/* 조언 상자: 청록 옅은 면 */
+html:root body:not(#z) .screen.pv .pvadv{background:var(--c-teal-tint)!important;color:var(--c-ink)!important;border-radius:16px!important;padding:12px 14px!important;font-size:.88rem!important;line-height:1.55!important}
+html:root body:not(#z) .screen.pv .pvadv b{color:var(--c-teal-2)!important;font-size:.94rem!important}
+html:root body:not(#z) .screen.pv .pvadv span{color:var(--c-ink)!important}
+/* 알림 상자 */
+html:root body:not(#z) .screen.pv .pvnote,html:root body:not(#z) .screen.pv .pvnote.light{background:var(--c-cream)!important;border:0!important;border-radius:18px!important;box-shadow:var(--pv-edge),inset 4px 0 0 var(--c-teal)!important;padding:14px 16px!important}
+html:root body:not(#z) .screen.pv .pvnote b{color:var(--c-navy)!important;font-size:.95rem!important}
+html:root body:not(#z) .screen.pv .pvnote span{color:var(--c-ink)!important;font-size:.86rem!important;line-height:1.55!important}
+
+/* ---------- 4. 과목 줄 ---------- */
+html:root body:not(#z) .screen.pv .pvsrow{padding:12px 0!important}
+html:root body:not(#z) .screen.pv .pvsmain{color:var(--c-ink)!important;min-height:48px}
+html:root body:not(#z) .screen.pv .pvsmain b{font-size:1rem!important;color:var(--c-ink)}
+html:root body:not(#z) .screen.pv .pvsmain b em{font-family:'Noto Sans KR',sans-serif!important;font-weight:800!important;font-size:.98rem!important;color:var(--c-teal-2)!important}
+html:root body:not(#z) .screen.pv .pvsmain small{font-size:.8rem!important;color:var(--pv-sub)!important}
+html:root body:not(#z) .screen.pv .pveq{font-size:.8rem!important;color:var(--pv-sub)!important}
+html:root body:not(#z) .screen.pv .pvcmp{font-size:.74rem!important;font-weight:700!important;padding:2px 8px!important;border-radius:8px!important}
+html:root body:not(#z) .screen.pv .pvcmp.eq{background:var(--c-teal-tint)!important;color:var(--c-teal-2)!important}
+html:root body:not(#z) .screen.pv .pvcmp.up{background:#e1e9f0!important;color:var(--c-navy)!important}
+html:root body:not(#z) .screen.pv .pvcmp.down{background:var(--c-bad-tint)!important;color:#9c4334!important}
+/* − + 단계 버튼: 오목한 칸 안의 종이 버튼, 터치 44 */
+html:root body:not(#z) .screen.pv .pvstep{background:var(--c-cream-2)!important;box-shadow:inset 0 2px 3px rgba(120,100,60,.12)!important;border:0!important;border-radius:14px!important;padding:3px!important;gap:3px!important}
+html:root body:not(#z) .screen.pv .pvstep button{width:44px!important;height:44px!important;border-radius:11px!important;background:var(--c-paper)!important;color:var(--c-navy)!important;box-shadow:0 2px 0 var(--c-cream-edge)!important;border:0!important;font-size:1.25rem!important}
+html:root body:not(#z) .screen.pv .pvstep button:active{transform:translateY(2px);box-shadow:none!important;background:var(--c-teal-tint)!important}
+html:root body:not(#z) .screen.pv .pvlink{height:44px!important;padding:0 16px!important;border-radius:14px!important;border:0!important;background:var(--c-paper)!important;color:var(--c-navy)!important;box-shadow:0 2px 0 var(--c-cream-edge),var(--in-line)!important;font-size:.88rem!important;font-weight:700}
+
+/* ---------- 5. 수치, 막대 ---------- */
+html:root body:not(#z) .screen.pv .pvkpis{background:var(--pv-line)!important;border:0!important;border-radius:14px!important;gap:1px!important}
+html:root body:not(#z) .screen.pv .pvkpi{background:var(--c-paper)!important;padding:12px!important}
+html:root body:not(#z) .screen.pv .pvkpi small{font-size:.78rem!important;color:var(--pv-sub)!important}
+html:root body:not(#z) .screen.pv .pvkpi b{color:var(--c-navy)!important}
+html:root body:not(#z) .screen.pv .pvkpi em{font-size:.74rem!important;color:var(--pv-sub)!important}
+html:root body:not(#z) .screen.pv .pvkpi em.up{color:var(--c-teal-2)!important}
+html:root body:not(#z) .screen.pv .pvkpi em.down{color:#9c4334!important}
+html:root body:not(#z) .screen.pv .pvmeter .pvsn{font-size:.9rem!important}
+html:root body:not(#z) .screen.pv .pvmeter em{font-size:.9rem!important;color:var(--c-ink)}
+html:root body:not(#z) .screen.pv .pvmeter small{font-size:.76rem!important;color:var(--pv-sub)!important}
+html:root body:not(#z) .screen.pv .pvbar{background:#e7dcc4!important;border-radius:999px!important;height:10px!important}
+html:root body:not(#z) .screen.pv .pvbar b{background:#c9bfa8!important;border-radius:999px!important}
+html:root body:not(#z) .screen.pv .pvbar b.hi{background:var(--c-teal)!important}
+html:root body:not(#z) .screen.pv .pvbar b.mid{background:#6fa7a9!important}
+html:root body:not(#z) .screen.pv .pvbar b.low{background:var(--c-bad)!important}
+html:root body:not(#z) .screen.pv .pvdots i{background:#e7dcc4!important}
+html:root body:not(#z) .screen.pv .pvdots i.on{background:var(--c-teal)!important}
+html:root body:not(#z) .screen.pv .pvact b{font-size:.9rem!important}
+html:root body:not(#z) .screen.pv .pvact small,html:root body:not(#z) .screen.pv .pvact em{font-size:.78rem!important;color:var(--pv-sub)!important}
+html:root body:not(#z) .screen.pv .pvdot{width:10px!important;height:10px!important}
+html:root body:not(#z) .screen.pv .pvdot.book{background:var(--c-teal)!important}
+html:root body:not(#z) .screen.pv .pvdot.mail{background:var(--c-navy)!important}
+html:root body:not(#z) .screen.pv .pvdot.ko{background:#b98a52!important}
+html:root body:not(#z) .screen.pv .pvdot.ch{background:#7d74b0!important}
+html:root body:not(#z) .screen.pv .pvdot.hz{background:var(--c-bad)!important}
+/* 공부 달력: 초록 단계 대신 청록 단계 */
+html:root body:not(#z) .screen.pv .scd.l0{background:var(--c-cream-2)!important}
+html:root body:not(#z) .screen.pv .scd.l1{background:#cfe5e2!important}
+html:root body:not(#z) .screen.pv .scd.l2{background:#94c3c1!important}
+html:root body:not(#z) .screen.pv .scd.l3{background:#4f949b!important}
+html:root body:not(#z) .screen.pv .scd.l4{background:var(--c-teal-2)!important}
+html:root body:not(#z) .screen.pv .scd.today{box-shadow:inset 0 0 0 2px var(--c-navy)!important}
+html:root body:not(#z) .screen.pv .schd{color:var(--pv-sub)!important;font-size:.78rem!important}
+html:root body:not(#z) .screen.pv :is(.wktip,.stdtip2){background:var(--c-paper)!important;color:var(--c-ink)!important;box-shadow:var(--in-line)!important;border-radius:14px!important;font-size:.84rem!important;line-height:1.55!important}
+html:root body:not(#z) .screen.pv .stdtip2 b{color:var(--c-navy)!important}
+html:root body:not(#z) .screen.pv .stdtip2 span{color:var(--c-ink)!important}
+
+/* ---------- 6. 교육과정 진도 ---------- */
+html:root body:not(#z) .screen.pv .stdhead{color:var(--c-ink)!important;font-size:.9rem!important}
+html:root body:not(#z) .screen.pv .stdhd small,html:root body:not(#z) .screen.pv .stdlg5{color:var(--pv-sub)!important;font-size:.78rem!important}
+html:root body:not(#z) .screen.pv .stdbar5{background:#e7dcc4!important;border-radius:999px!important}
+html:root body:not(#z) .screen.pv .stddom{color:var(--c-navy)!important;font-size:.82rem!important}
+html:root body:not(#z) .screen.pv .stdlab{color:#9c4334!important;font-size:.8rem!important}
+html:root body:not(#z) .screen.pv .stdlab.home{color:var(--c-navy)!important}
+html:root body:not(#z) .screen.pv .stdrow.weak{border-left-color:var(--c-bad)!important;color:var(--c-ink)!important}
+html:root body:not(#z) .screen.pv .stdrow3 p{font-size:.86rem!important;color:var(--c-ink)!important;line-height:1.55!important}
+html:root body:not(#z) .screen.pv .stdrow3 small{font-size:.76rem!important;color:var(--pv-sub)!important}
+html:root body:not(#z) .screen.pv .stdchip{font-size:.74rem!important;padding:3px 8px!important;border-radius:8px!important}
+html:root body:not(#z) .screen.pv .stdchip.good{background:var(--c-teal-tint)!important;color:var(--c-teal-2)!important}
+html:root body:not(#z) .screen.pv .stdchip.doing{background:#e1e9f0!important;color:var(--c-navy)!important}
+html:root body:not(#z) .screen.pv .stdchip.weak{background:var(--c-bad-tint)!important;color:#9c4334!important}
+html:root body:not(#z) .screen.pv .stdchip.none{background:var(--c-cream-2)!important;color:#56616d!important}
+html:root body:not(#z) .screen.pv .stdchip.off{background:var(--c-paper)!important;color:#56616d!important;box-shadow:var(--in-line)!important}
+
+/* ---------- 7. 토글, 분할 탭, 칩 ---------- */
+html:root body:not(#z) .screen.pv .pvtog{width:52px!important;height:32px!important;border-radius:999px!important;background:#cfd5d9!important;box-shadow:inset 0 1px 2px rgba(40,60,80,.12)!important;position:relative;border:0!important}
+html:root body:not(#z) .screen.pv .pvtog.on{background:var(--c-teal)!important}
+html:root body:not(#z) .screen.pv .pvtog i{top:3px!important;left:3px!important;width:26px!important;height:26px!important;background:#fff!important;box-shadow:0 1px 3px rgba(20,40,60,.25)!important}
+html:root body:not(#z) .screen.pv .pvtog.on i{transform:translateX(20px)!important}
+html:root body:not(#z) .screen.pv .pvtog::after{content:"";position:absolute;inset:-6px -2px}
+html:root body:not(#z) .screen.pv .pvseg{background:var(--c-cream-2)!important;box-shadow:inset 0 2px 3px rgba(120,100,60,.12)!important;border-radius:16px!important;padding:4px!important;gap:4px!important}
+html:root body:not(#z) .screen.pv .pvsegb{height:44px!important;border-radius:12px!important;background:transparent!important;color:var(--c-navy)!important;box-shadow:none!important;font-size:.9rem!important}
+html:root body:not(#z) .screen.pv .pvsegb.on{background:var(--c-teal)!important;color:#fff!important;box-shadow:0 2px 0 var(--c-teal-2)!important}
+html:root body:not(#z) .screen.pv :is(.pchip,.pvchip){min-height:44px;padding:0 14px!important;border-radius:14px!important;border:0!important;background:var(--c-paper)!important;color:var(--c-navy)!important;box-shadow:0 2px 0 var(--c-cream-edge),var(--in-line)!important;font-weight:700!important;font-size:.88rem!important}
+html:root body:not(#z) .screen.pv .pchip.on{background:var(--c-teal)!important;color:#fff!important;box-shadow:0 2px 0 var(--c-teal-2)!important}
+html:root body:not(#z) .screen.pv .chimg{background:var(--c-paper)!important;border-radius:14px!important;box-shadow:0 2px 0 var(--c-cream-edge),var(--in-line)!important}
+html:root body:not(#z) .screen.pv .chimg.on{background:var(--c-teal-tint)!important;box-shadow:inset 0 0 0 2.5px var(--c-teal)!important}
+html:root body:not(#z) .screen.pv .vccard .vcb{background:var(--c-paper)!important;border:0!important;border-radius:14px!important;box-shadow:0 2px 0 var(--c-cream-edge),var(--in-line)!important}
+html:root body:not(#z) .screen.pv .vccard .vcb.on{background:var(--c-teal-tint)!important;box-shadow:inset 0 0 0 2px var(--c-teal)!important}
+html:root body:not(#z) .screen.pv .vcsub{color:var(--pv-sub)!important;font-size:.8rem!important}
+html:root body:not(#z) .screen.pv details>summary{min-height:44px;box-sizing:border-box;display:flex;align-items:center;background:var(--c-paper)!important;color:var(--c-navy)!important;border-radius:14px!important;box-shadow:0 2px 0 var(--c-cream-edge),var(--in-line)!important;font-size:.88rem!important;padding:10px 14px!important}
+html:root body:not(#z) .screen.pv .pgrid{background:var(--pv-line)!important;border:0!important;border-radius:14px!important}
+html:root body:not(#z) .screen.pv .pgrid div{background:var(--c-paper)!important}
+html:root body:not(#z) .screen.pv .pgrid small{color:var(--pv-sub)!important}
+html:root body:not(#z) .screen.pv .pgrid b{color:var(--c-navy)!important}
+html:root body:not(#z) .screen.pv .backup .bkstate{background:var(--c-paper)!important;color:var(--c-ink)!important;box-shadow:var(--in-line),inset 4px 0 0 var(--c-navy)!important;border-radius:14px!important;font-size:.86rem!important;line-height:1.55!important}
+
+/* ---------- 8. 버튼: 주 버튼 남색, 보조 버튼 종이 ---------- */
+html:root body:not(#z) .screen.pv :is(.cta,.cta.green,.pvbtn){min-height:52px;height:auto!important;padding:12px 18px!important;border-radius:16px!important;border:0!important;
+  background:var(--c-navy)!important;background-image:none!important;color:#fff!important;box-shadow:0 3px 0 #1d3447!important;
+  font-family:'Noto Sans KR',sans-serif!important;font-weight:700!important;font-size:.98rem!important;letter-spacing:0!important;text-shadow:none!important}
+html:root body:not(#z) .screen.pv :is(.cta.light,.pvbtn.ghost,.backup .cta,.backup .cta.light){background:var(--c-paper)!important;color:var(--c-navy)!important;box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)!important}
+html:root body:not(#z) .screen.pv :is(.cta,.pvbtn):active{transform:translateY(2px)!important;box-shadow:0 1px 0 #1d3447!important}
+html:root body:not(#z) .screen.pv :is(.cta.light,.pvbtn.ghost,.backup .cta):active{box-shadow:0 1px 0 var(--c-cream-edge),var(--in-line)!important;background:var(--c-cream-2)!important}
+html:root body:not(#z) .screen.pv .pvbtn.sm{min-height:44px!important;padding:0 16px!important;font-size:.88rem!important}
+html:root body:not(#z) .screen.pv .cta:disabled{background:#dde0e2!important;color:#7b8590!important;box-shadow:none!important}
+html:root body:not(#z) .screen.pv :is(.cta,.pvbtn)::before,html:root body:not(#z) .screen.pv :is(.cta,.pvbtn)::after{content:none!important;display:none!important}
+
+/* ---------- 9. 확인 창 ---------- */
+html:root body:not(#z) .pvmodal{background:rgba(30,50,70,.35)!important}
+html:root body:not(#z) .pvmodalc{background:var(--c-cream)!important;border-radius:24px!important;box-shadow:0 12px 32px rgba(30,50,70,.22)!important;font-family:'Noto Sans KR',sans-serif}
+html:root body:not(#z) .pvmodalc b{color:var(--c-navy)!important}
+html:root body:not(#z) .pvmodalc p{color:var(--c-ink)!important;font-size:.9rem!important}
+html:root body:not(#z) .pvmodal .pvbtn{min-height:48px;border-radius:14px!important;background:var(--c-navy)!important;color:#fff!important;box-shadow:0 3px 0 #1d3447!important}
+html:root body:not(#z) .pvmodal .pvbtn.ghost{background:var(--c-paper)!important;color:var(--c-navy)!important;box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)!important}
+
+/* ---------- 10. 1회차 비평 반영 ---------- */
+/* 과목 상세의 큰 학년 글자가 가늘게 보이던 것 */
+html:root body:not(#z) .screen.pv .pvlvt b{font-family:'Noto Sans KR',sans-serif!important;font-weight:800!important;font-size:1.25rem!important;color:var(--c-navy)!important}
+html:root body:not(#z) .screen.pv .pvlvt small,html:root body:not(#z) .screen.pv .pvlvt p{color:var(--pv-sub)!important;font-size:.8rem!important;line-height:1.5!important}
+/* 카드 머리: 제목은 한 줄, 옆 설명은 남은 자리에서 오른쪽 정렬 */
+html:root body:not(#z) .screen.pv .pvh h4{white-space:nowrap;flex:none}
+html:root body:not(#z) .screen.pv .pvh small{flex:1;min-width:0;text-align:right;line-height:1.4}
+
+/* ---------- 11. 2회차 비평 반영 ---------- */
+/* 응원 스티커: 한 줄 8칸은 33px라 터치가 모자라요 → 4칸 두 줄, 칸 48 이상 */
+html:root body:not(#z) .screen.pv .chgrid{grid-template-columns:repeat(4,1fr)!important;gap:8px!important}
+html:root body:not(#z) .screen.pv .chimg{min-height:52px;aspect-ratio:auto!important}
+html:root body:not(#z) .screen.pv .chimg img{width:36px!important;height:36px!important}
+/* ===== 43 섬의 각 공간 (리스킨 2차 · B) =====
+   대상: 한자 나무, 영어 벌집, 국어 서점, 섬 학교(모든 탭), 우체통(편지 읽기·쓰기), 박물관(도감), 과외.
+   기준: ref/09~13, 15_부품모음. 한 부품 언어로 묶어요.
+   - 위 막대: 크림 원 뒤로(46) + 남색 Jua 제목 + 크림 재화 칩
+   - 정보 카드: 크림 패널(24) / 작은 타일(16), 두께 0 4px 0 cream-edge
+   - 진행 막대: 바탕 #e7dcc4, 채움 청록
+   - 주 버튼은 화면마다 청록 하나(40에서 처리), 나머지는 크림
+   - 노랑은 보상(상장·보상 칸)에만
+   화면 위쪽 그림(나무, 벌집 등)은 손대지 않아요. */
+:root{--sp-sub:#56616d}
+
+/* ---------- 1. 위 막대 ---------- */
+html:root body:not(#z) :is(.beescr,.koscr,.museumscr,.mailscr,.tchscr,.screen:has(>.treecenter))>.qtop{min-height:52px;align-items:center!important;gap:12px!important}
+html:root body:not(#z) :is(.beescr,.koscr,.museumscr,.mailscr,.tchscr,.screen:has(>.treecenter))>.qtop :is(.mtitle,.wtitle){
+  font-family:var(--title,Jua),'Noto Sans KR',sans-serif!important;font-weight:400!important;font-size:1.36rem!important;line-height:1.2!important;color:var(--c-navy)!important;text-shadow:none!important;letter-spacing:0!important;margin:0!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 제목이 없던 벌집·나무에도 같은 자리 제목 (JS를 건드리지 않으려고 CSS로 넣어요) */
+html:root body:not(#z) .beescr>.qtop::after{
+  order:1;font-family:var(--title,Jua),'Noto Sans KR',sans-serif;font-size:1.36rem;line-height:1.2;color:var(--c-navy);white-space:nowrap}
+html:root body:not(#z) .beescr>.qtop::after{content:"영어 벌집"}
+/* 나무는 위 칩 세 개가 자리를 써서 제목을 넣지 않아요(바로 아래 '한자 나무' 꼬리표가 제목 역할) */
+/* 재화 칩 높이 통일 */
+html:root body:not(#z) :is(.museumscr,.mailscr)>.qtop :is(.balance,.qwallet){min-height:40px;padding:0 12px 0 8px!important;gap:6px}
+/* 나무 위 칩: 44 높이 */
+html:root body:not(#z) .treetools{gap:6px!important}
+html:root body:not(#z) .treetools .tpill{height:44px!important;padding:0 12px!important;border-radius:16px!important;font-size:.86rem!important}
+html:root body:not(#z) .treetools .tpill.exam{color:var(--c-navy)!important}
+html:root body:not(#z) .treetools .tpill.on{background:var(--face-teal)!important;color:#fff!important;box-shadow:0 3px 0 var(--c-teal-2)!important}
+
+/* ---------- 2. 머리 꼬리표(eyebrow)와 안내 글 ---------- */
+html:root body:not(#z) :is(.treecenter,.beecenter,.kocenter) .eyebrow{background:var(--c-teal-tint)!important;color:var(--c-teal-2)!important;box-shadow:none!important;border-radius:12px!important}
+html:root body:not(#z) :is(.treecenter,.beecenter,.kocenter) .eyebrow.gold{background:#fbefcc!important;color:#7a5a12!important}
+html:root body:not(#z) :is(.treecenter,.beecenter,.kocenter) h1,html:root body:not(#z) :is(.treecenter,.beecenter,.kocenter) h2{color:var(--c-navy)!important;text-shadow:none!important}
+html:root body:not(#z) :is(.treecenter,.beecenter,.kocenter) p.sub{color:var(--sp-sub)!important}
+html:root body:not(#z) :is(.museumscr,.mailscr) :is(.mtip,.mnote){color:var(--sp-sub)!important;font-family:'Noto Sans KR',sans-serif!important;font-size:.86rem!important;line-height:1.55!important}
+html:root body:not(#z) .museumscr .mtip{color:#5d4b35!important}
+/* 친구 말풍선 */
+html:root body:not(#z) .mcur p{background:var(--face-cream)!important;color:var(--c-ink)!important;box-shadow:var(--sh-cream),var(--in-line)!important;border-radius:18px 18px 18px 6px!important;font-family:var(--title,Jua),sans-serif!important}
+html:root body:not(#z) .tchsay{background:var(--face-cream)!important;color:var(--c-ink)!important;box-shadow:var(--sh-cream),var(--in-line)!important}
+html:root body:not(#z) .tchsay::before{border-right-color:var(--c-cream)!important}
+
+/* ---------- 3. 정보 카드: 크림 패널 ---------- */
+html:root body:not(#z) :is(.koscr .card,.schscr .rcard,.tchdesk,.mailscr .stgrid){
+  background:var(--face-cream)!important;background-image:var(--face-cream)!important;border:0!important;border-radius:var(--r-panel)!important;box-shadow:var(--sh-cream),var(--in-line)!important}
+html:root body:not(#z) :is(.koscr .card,.schscr .rcard)::before,html:root body:not(#z) :is(.koscr .card,.schscr .rcard)::after{content:none!important;display:none!important}
+/* 작은 타일: 크림 */
+html:root body:not(#z) :is(.mailscr .mlet,.tchrow,.awc,.dexrwi,.enw,.mailscr .mch .choice){
+  background:var(--face-cream)!important;background-image:var(--face-cream)!important;border:0!important;border-radius:var(--r-btn)!important;box-shadow:var(--sh-cream),var(--in-line)!important;color:var(--c-ink)}
+html:root body:not(#z) :is(.awc,.dexrwi)::before,html:root body:not(#z) :is(.awc,.dexrwi)::after{content:none!important;display:none!important}
+html:root body:not(#z) :is(.mailscr .mlet,.awc,.enw,.mailscr .mch .choice):active:not(:disabled){transform:translateY(3px);box-shadow:var(--sh-cream-on),var(--in-line)!important}
+/* 받은 상장·보상은 보상 색(햇살)으로 */
+html:root body:not(#z) :is(.awc.on,.dexrwi.on){background:linear-gradient(#fff8e2,#fcefc6)!important;box-shadow:0 4px 0 #ead59b,inset 0 0 0 1.5px rgba(242,185,46,.45)!important}
+html:root body:not(#z) .awc{color:var(--sp-sub)!important}
+html:root body:not(#z) .awc b,html:root body:not(#z) .dexrwi b{color:var(--c-navy)!important}
+html:root body:not(#z) .awc small,html:root body:not(#z) .dexrwi small{color:var(--sp-sub)!important;font-size:.7rem!important}
+
+/* ---------- 4. 영어 벌집 ---------- */
+html:root body:not(#z) .beecenter .entot{background:var(--face-cream)!important;color:var(--c-ink)!important;box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)!important;border-radius:16px!important}
+html:root body:not(#z) .beecenter .entot b{color:var(--c-teal-2)!important}
+html:root body:not(#z) .beecenter .jar{background:var(--c-paper)!important;box-shadow:inset 0 0 0 4px var(--c-cream-2),0 4px 0 var(--c-cream-edge),0 8px 18px rgba(40,60,80,.10)!important}
+/* 단계 칩: 정보 표시라 주 버튼과 겹치지 않게 옅은 청록 */
+html:root body:not(#z) .entracks .catchip,html:root body:not(#z) .entracks .catchip.on{background:var(--c-teal-tint)!important;color:var(--c-teal-2)!important;box-shadow:0 3px 0 #b5d6d3!important;min-height:40px}
+html:root body:not(#z) .enlist>summary{background:var(--face-cream)!important;color:var(--c-navy)!important;box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)!important;border:0!important;border-radius:16px!important;min-height:44px}
+html:root body:not(#z) .enw span{color:var(--sp-sub)!important}
+html:root body:not(#z) .enw.injar{box-shadow:var(--sh-cream),inset 0 0 0 2px #9fcbc8!important}
+html:root body:not(#z) .enw.full{background:var(--c-teal-tint)!important;box-shadow:0 4px 0 #b5d6d3,inset 0 0 0 2px var(--c-teal)!important}
+html:root body:not(#z) .enw .dots3 i{background:#e7dcc4!important}
+html:root body:not(#z) .enw .dots3 i.on{background:var(--c-teal)!important}
+
+/* ---------- 5. 국어 서점 ---------- */
+html:root body:not(#z) .koscr .kdots i{background:#e7dcc4!important;height:8px!important;border-radius:999px!important}
+html:root body:not(#z) .koscr .kdots i.on{background:var(--c-teal)!important}
+html:root body:not(#z) .koscr .kdots i.now{background:#6fb0b3!important}
+html:root body:not(#z) .koscr .knext{color:var(--c-teal-2)!important;font-weight:700}
+html:root body:not(#z) .koscr .kcov.lock{background:var(--c-cream-2)!important;color:#9a8f78!important;box-shadow:inset 0 0 0 1px rgba(120,100,60,.12)!important}
+html:root body:not(#z) .koscr .dictcard .cta.light{font-size:.88rem!important;min-height:56px}
+
+/* ---------- 6. 섬 학교 ---------- */
+/* 칠판: 짙은 초록 그대로, 테두리는 나무, 받침은 크림 */
+html:root body:not(#z) .schscr .chalk{background:linear-gradient(#b78656,#a9784a)!important;border-radius:22px!important;padding:12px 12px 18px!important;box-shadow:0 4px 0 #8a5f3a,0 8px 18px rgba(60,40,20,.16),inset 0 0 0 1px rgba(255,240,210,.18)!important}
+html:root body:not(#z) .schscr .chin{border-radius:12px!important;box-shadow:inset 0 2px 8px rgba(0,0,0,.32),0 0 0 2px rgba(60,35,15,.25)!important}
+html:root body:not(#z) .schscr .chledge{left:18px!important;right:18px!important;bottom:5px!important;height:8px!important;border-radius:999px!important;background:var(--c-cream)!important;box-shadow:0 2px 0 var(--c-cream-edge)!important}
+/* 성적표 */
+html:root body:not(#z) .schscr .rcard h3{color:var(--c-navy)!important}
+html:root body:not(#z) .schscr .rdate{color:var(--sp-sub)!important}
+html:root body:not(#z) .schscr .rrow{border-color:rgba(120,100,60,.14)!important;color:var(--c-ink)}
+html:root body:not(#z) .schscr .rrow small{color:var(--sp-sub)!important}
+html:root body:not(#z) .schscr .rb{background:#e7dcc4!important;border-radius:999px!important}
+html:root body:not(#z) .schscr .rb i{background:var(--c-teal)!important;border-radius:999px!important}
+html:root body:not(#z) .schscr .rtalk p{background:var(--c-paper)!important;color:var(--c-ink)!important;box-shadow:var(--in-line)!important;font-family:var(--title,Jua),sans-serif}
+/* 우리 반 */
+html:root body:not(#z) .tchdesk b{color:var(--c-navy)!important}
+html:root body:not(#z) .tchdesk small{color:var(--sp-sub)!important}
+html:root body:not(#z) .tchbar{background:#e7dcc4!important;border-radius:999px!important;height:8px!important}
+html:root body:not(#z) .tchbar em,html:root body:not(#z) .tchbar.sm em{background:var(--c-teal)!important;border-radius:999px!important}
+html:root body:not(#z) .schscr .tchsem{color:var(--c-navy)!important}
+html:root body:not(#z) .tchrow{min-height:60px;box-sizing:border-box}
+html:root body:not(#z) .tchrow b{color:var(--c-ink)!important}
+html:root body:not(#z) .tchrow small{color:var(--sp-sub)!important}
+html:root body:not(#z) .tchrow .tchic{background:var(--c-cream-2)!important}
+
+/* ---------- 7. 우체통 ---------- */
+html:root body:not(#z) .mailscr .mlet{min-height:68px}
+html:root body:not(#z) .mailscr .mlet .mltx b{color:var(--c-ink)!important}
+html:root body:not(#z) .mailscr .mlet .mltx small{color:var(--sp-sub)!important}
+html:root body:not(#z) .mailscr .mlet .mlst{background:var(--c-cream-2)!important;color:var(--c-navy)!important;border-radius:12px!important;font-size:.76rem!important;padding:6px 10px!important}
+html:root body:not(#z) .mailscr .mlet.new .mlst{background:var(--c-teal)!important;color:#fff!important}
+html:root body:not(#z) .mailscr .mlet.done .mlst{background:var(--c-teal-tint)!important;color:var(--c-teal-2)!important}
+html:root body:not(#z) .mailscr .mlet.note.done .mlst{background:var(--c-cream-2)!important;color:var(--sp-sub)!important}
+html:root body:not(#z) .mailscr .mlk{border-radius:8px!important;font-size:.66rem!important}
+html:root body:not(#z) .mailscr .mlk.ko{background:var(--c-teal-tint)!important;color:var(--c-teal-2)!important}
+html:root body:not(#z) .mailscr .mlk.en{background:var(--c-bad-tint)!important;color:#9c4334!important}
+html:root body:not(#z) .mailscr .mlk.tch{background:#e1e9f0!important;color:var(--c-navy)!important}
+html:root body:not(#z) .mailscr .mln{background:var(--c-cream-2)!important;color:var(--sp-sub)!important}
+html:root body:not(#z) .mailscr .stgrid{padding:14px!important}
+/* 편지지: 종이 면은 그대로 두고 크림 부품 두께만 */
+html:root body:not(#z) .mailscr .paper{border-radius:22px!important;box-shadow:var(--sh-cream),var(--in-line)!important;border:0!important}
+html:root body:not(#z) .mailscr .paper .phd small{color:var(--sp-sub)!important}
+/* 편지 쓰기 */
+html:root body:not(#z) .mailscr>.qtop .dots i{background:#e7dcc4!important;height:8px!important;border-radius:999px!important}
+html:root body:not(#z) .mailscr>.qtop .dots i:is(.on,.done){background:var(--c-teal)!important}
+html:root body:not(#z) .mailscr>.qtop .dots i.now{background:#6fb0b3!important}
+html:root body:not(#z) .mailscr .paper .wl.now{color:var(--c-teal-2)!important}
+html:root body:not(#z) .mailscr .mch .choice{min-height:56px;color:var(--c-ink)!important}
+html:root body:not(#z) .mailscr .mch .choice.on{background:var(--c-teal-tint)!important;box-shadow:inset 0 0 0 2px var(--c-teal),0 4px 0 #b5d6d3!important;color:var(--c-teal-2)!important}
+html:root body:not(#z) .mailscr .qhead :is(.qtag,small){background:var(--c-cream-2)!important;color:var(--c-navy)!important;box-shadow:none!important}
+
+/* ---------- 8. 박물관(도감) ---------- */
+html:root body:not(#z) .museumscr .mcase{border-radius:var(--r-btn);box-shadow:var(--sh-cream),var(--in-line);background:var(--c-cream);overflow:hidden}
+html:root body:not(#z) .museumscr .mcase .mglass{background:var(--c-paper)!important;border-radius:0!important;box-shadow:none!important}
+html:root body:not(#z) .museumscr .mcase .mglass::after{content:none!important;display:none!important}
+html:root body:not(#z) .museumscr .mcase .mplate{background:var(--c-cream-2)!important;box-shadow:none!important;border-radius:0!important;margin:0!important;color:var(--c-navy)!important;min-height:30px;box-sizing:border-box;justify-content:center}
+html:root body:not(#z) .museumscr .mcase .mplate small{color:var(--sp-sub)!important;opacity:1!important}
+html:root body:not(#z) .museumscr .mcase.lock .mplate{color:#8a8170!important}
+html:root body:not(#z) .museumscr .mcase.rare{box-shadow:var(--sh-cream),inset 0 0 0 2px rgba(242,185,46,.6)}
+html:root body:not(#z) .museumscr .mcase:active{transform:translateY(3px);box-shadow:var(--sh-cream-on),var(--in-line)}
+
+/* ---------- 9. 과외 ---------- */
+html:root body:not(#z) .tchscr .tchdots i{background:#e7dcc4!important;box-shadow:none!important}
+html:root body:not(#z) .tchscr .tchdots i.done{background:var(--c-teal)!important}
+html:root body:not(#z) .tchscr .tchdots i.now{background:#6fb0b3!important;box-shadow:0 0 0 3px rgba(30,109,121,.18)!important}
+html:root body:not(#z) .tchscr .tchwho{background:var(--c-cream-2)!important;color:var(--c-navy)!important;box-shadow:0 2px 0 var(--c-cream-edge)!important}
+html:root body:not(#z) .tchscr .tchnote{border-radius:22px!important;box-shadow:var(--sh-cream),var(--in-line)!important}
+html:root body:not(#z) .tchscr .tchq{color:var(--c-navy)!important}
+html:root body:not(#z) .tchscr .tile{background:var(--c-paper)!important;color:var(--c-navy)!important;box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)!important;border:0!important}
+html:root body:not(#z) .tchscr .tchpick::after{background:var(--c-navy)!important;color:#fff!important;box-shadow:0 0 0 2px var(--c-cream)!important}
+
+/* ---------- 10. 1회차 비평 반영 ---------- */
+/* 아래 버튼 받침(dock)의 옅은 네모가 언덕 위에 비쳐 보여서, 내용이 한 화면에 들어가는 나무·벌집·과외는 걷어내요 */
+html:root body:not(#z) :is(.beescr,.tchscr,.screen:has(>.treecenter))>.dock{background:none!important}
+/* 내용이 버튼 밑으로 스크롤되는 서점은 원래 흐림 받침을 두되, 옆 가장자리가 네모로 보이지 않게 화면 끝까지 넓혀요 */
+html:root body:not(#z) .koscr>.dock{margin-inline:-16px!important;padding-inline:16px!important}
+
+/* ---------- 11. 2회차 비평 반영 ---------- */
+/* 한자 나무 진행 막대: 아래 버튼에 가려지던 것을 나무 그림 위 작은 크림 판으로 올려요(그림은 그대로) */
+html:root body:not(#z) .treecenter>.treebox{order:3}
+html:root body:not(#z) .treecenter>.treebox~*{order:4}
+html:root body:not(#z) .treecenter>.prog{order:2!important;align-self:center;width:min(100%,300px);box-sizing:border-box;margin:6px 0 0!important;padding:10px 14px;border-radius:var(--r-btn);background:var(--face-cream);box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)}
+html:root body:not(#z) .treecenter>.prog .bar{height:10px!important}
+html:root body:not(#z) .treecenter>.prog .tnum{color:var(--c-navy)!important;font-weight:700;font-size:.86rem!important;white-space:nowrap}
+/* 진행 판을 올린 만큼 나무 칸을 위로 당기고, 큰 나무 윗부분이 판에 닿지 않게 아래 기준 0.9배로 그려요 */
+html:root body:not(#z) .treecenter>.treebox{margin-top:-52px!important;transform:scale(.9);transform-origin:50% 100%}
+html:root body:not(#z) .treecenter>.prog{position:relative;z-index:2}
+
+/* ---------- 12. 3회차 비평 반영 (기준 시안과 나란히) ---------- */
+/* 우체통: 13번처럼 편지 카드를 조금 더 크게, 새 편지 카드는 옅은 청록 테로 한눈에 */
+html:root body:not(#z) .mailscr .mlet{min-height:76px;padding-block:10px!important}
+html:root body:not(#z) .mailscr .mlet.new{box-shadow:var(--sh-cream),inset 0 0 0 2px #9fcbc8!important}
+html:root body:not(#z) .mailscr .mlet .mlav{background:var(--c-cream-2);border-radius:50%}
 </style>
 
 <div id="app"></div>
@@ -4499,7 +5092,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.114";
+var APP_VER="1.0.115";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -17270,7 +17863,7 @@ function clear(){setThemeColor('#bfe8f7');document.onkeydown=null;[].forEach.cal
 // ================= 상점 =================
 function shop(tab){
   clear();gdInit();
-  var sc=el('div','screen'),top=el('div','qtop');
+  var sc=el('div','screen shopscr'),top=el('div','qtop');
   var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=BACK_SVG;back.onclick=home;
   top.appendChild(back);top.appendChild(el('div','spacer'));
   var bal=el('div','balance');bal.appendChild(img('sun'));bal.appendChild(el('b','tnum',S.sun));top.appendChild(bal);sc.appendChild(top);
@@ -17283,7 +17876,7 @@ function shop(tab){
   if(tab==='decor'){
     var chips=el('div','catchips');chips.addEventListener('scroll',function(){chips.classList.toggle('end',chips.scrollLeft+chips.clientWidth>=chips.scrollWidth-6)});[['all','전체']].concat(CATS).forEach(function(c){var b=el('button','catchip'+(SHOPCAT===c[0]?' on':''),c[1]);b.onclick=function(){SHOPCAT=c[0];var y=window.scrollY;shop('decor');window.scrollTo(0,0)};chips.appendChild(b)});stk_.appendChild(chips);setTimeout(function(){var o=chips.querySelector('.on');if(o)chips.scrollLeft=o.offsetLeft-chips.clientWidth/2+o.clientWidth/2},0);
     DECOR.filter(function(d){return d.price!=null&&(SHOPCAT==='all'||d.cat===SHOPCAT)}).sort(function(x,y){return x.price-y.price}).forEach(function(d){
-      var have=t[d.id]||0,card=el('button','ghc shopc');
+      var have=t[d.id]||0,card=el('button','ghc shopc'+(S.sun<d.price?' need':''));
       var pv=el('div','fprev');if(SPR3[d.id]){pv.appendChild(itemSprite(d.id,d.sz>1?84:68))}else{var im=img(d.id);im.style.width=Math.min(84,60*d.s)+'px';im.style.height='auto';pv.appendChild(im)}card.appendChild(pv);
       card.appendChild(el('b',null,d.name));
       var tag=el('small','tag');tag.appendChild(img('sun'));tag.appendChild(document.createTextNode(d.price+(d.pack?' · '+d.pack+'칸':'')+(have?'  ·  '+have+(d.pack?'칸':'개'):'')));card.appendChild(tag);if(d.sz>1){card.appendChild(el('em','bigtag','큰 소품 '+d.sz+'×'+d.sz));card.className+=' bigc'}
@@ -17295,7 +17888,7 @@ function shop(tab){
       g.appendChild(card);
     });
   }else if(tab==='set'){
-    SETS.forEach(function(st){var pr=setPrice(st),card=el('button','ghc shopc setc');var pv=el('div','fprev setpv');Object.keys(st.items).slice(0,4).forEach(function(k){if(GROUND[k]){pv.appendChild(img('t_'+GROUND[k]))}else pv.appendChild(itemSprite(k,34))});card.appendChild(pv);
+    SETS.forEach(function(st){var pr=setPrice(st),card=el('button','ghc shopc setc'+(S.sun<pr?' need':''));var pv=el('div','fprev setpv');Object.keys(st.items).slice(0,4).forEach(function(k){if(GROUND[k]){pv.appendChild(img('t_'+GROUND[k]))}else pv.appendChild(itemSprite(k,34))});card.appendChild(pv);
       card.appendChild(el('b',null,st.name));var ls=Object.keys(st.items).map(function(k){return itemName(k)+(st.items[k]>1?' ×'+st.items[k]:'')}).join(', ');card.appendChild(el('small','setls',ls));
       var tag=el('small','tag');tag.appendChild(img('sun'));tag.appendChild(document.createTextNode(pr));card.appendChild(tag);
       card.onclick=function(){if(S.sun<pr){msg.textContent='햇살이 '+(pr-S.sun)+'개 더 필요해요. 문제를 풀면 햇살이 모여요.';msg.className='sum warn';return}
@@ -17305,7 +17898,7 @@ function shop(tab){
   }else{
     SHOP.filter(function(it){return it.kind===tab}).forEach(function(it){
       var own=owned(it.id),on=tab==='pot'?(S.equip.pot||'pot')===it.id:S.equip.friend===it.id;
-      var card=el('button','ghc shopc'+(on?' on':''));
+      var card=el('button','ghc shopc'+(on?' on':'')+(!own&&it.price!=null&&S.sun<it.price?' need':''));
       if(tab==='pot')card.appendChild(potBox(null,4,110,it.id==='pot'?(hasGold(SUBJ.math)?'pot_gold':'pot'):it.id));
       else{var pv=el('div','fprev');pv.appendChild(img(it.id));card.appendChild(pv)}
       card.appendChild(el('b',null,it.name));
@@ -20156,6 +20749,8 @@ function villageScreen(){
   var VSC=window.__vsc||{tree:.75,bookshop:.86,hive:1.45,pot:1.25,house:.82};
   function sprite(key){var m=K3[key],w=el('div','v3art'),im=img('k3_'+key);im.draggable=false;var sc=VSC[key]||1,mw=m.w*VK*sc,mh=m.h*VK*sc;
     w.style.width=mw+'px';w.style.height=mh+'px';w.style.left=(-mw*m.bx)+'px';w.style.top=(-mh*m.by)+'px';w.appendChild(im);return w}
+  // 다음 할 곳: 오늘의 모험에서 다음 과목의 건물 하나만 이름표를 강조해요
+  var NXB={ko:'book',math:'pot',en:'bee',hz:'tree'},nxk_=ADV&&ADV.i<ADV.q.length?ADV.q[ADV.i]:advLeft()[0],nxid_=nxk_?NXB[nxk_]:null;
   VB.forEach(function(v){
     var b=el('button','v3 lm-'+v.id);b.style.left=v.x+'px';b.style.top=v.y+'px';b.style.zIndex=Math.round(v.y);
     var art;
@@ -20172,7 +20767,7 @@ function villageScreen(){
     var lab=el('span','lmlabel v3lab',VLABEL[v.id]);if(v.id==='mail')lab.appendChild(el('small','lmsub','도전'));var bd=badgeOf(v.id);if(bd){var e=el('em','lmbadge',bd===true?'':bd);if(bd===true)e.className+=' dot';lab.appendChild(e)}var lw=el('div','v3 v3lw lm-'+v.id);lw.setAttribute('aria-hidden','true');lw.appendChild(lab);lab.onclick=function(ev){ev.stopPropagation();b.click()};lab.addEventListener('pointerdown',function(){b.classList.add('press')});['pointerup','pointercancel','pointerleave'].forEach(function(t){lab.addEventListener(t,function(){b.classList.remove('press')})});
     b.setAttribute('aria-label',VLABEL[v.id]);
     b.onclick=function(){if(v.id==='boat'){if(gateLocked('enter')){gateSheet('enter');return}tone([392,523,659],'sine',.12);cloudWipe(function(){islandScreen(false)})}else LMACT[v.id]()};
-    scene.appendChild(b);lw.style.left=b.style.left;lw.style.top=b.style.top;lw.style.zIndex=900;scene.appendChild(lw);
+    if(v.id===nxid_){b.className+=' lmnext';lw.className+=' lmnext'}scene.appendChild(b);lw.style.left=b.style.left;lw.style.top=b.style.top;lw.style.zIndex=900;scene.appendChild(lw);
   });
   if(bossOn()){var BB=bossNow(),bb=el('button','v3 vboss');bb.style.left=BOSS_XY[0]+'px';bb.style.top=BOSS_XY[1]+'px';bb.style.zIndex=BOSS_XY[1];bb.appendChild(el('i','vbossring'));bb.appendChild(el('i','vbossring r2'));var bi_=el('i','vbosswrap');bi_.appendChild(img(BB.id,'vbossimg'));bb.appendChild(bi_);bb.appendChild(el('i','vbossex','!'));bb.appendChild(el('i','vbosssplash'));bb.setAttribute('aria-label','주말 보스 '+BB.name);bb.onclick=function(){bossIntro()};scene.appendChild(bb);
     var lw2=el('div','v3 v3lw');lw2.setAttribute('aria-hidden','true');var lb2=el('span','lmlabel v3lab bosslab',bossS().tries?BB.name:'보스 등장!');lw2.appendChild(lb2);lb2.onclick=function(ev){ev.stopPropagation();bossIntro()};lw2.style.left=bb.style.left;lw2.style.top=bb.style.top;lw2.style.zIndex=900;scene.appendChild(lw2)}
@@ -20216,7 +20811,7 @@ function villageScreen(){
   // 화면 크기에 맞춰 장면을 키우거나 줄여요
   function fit(){
     try{stg.style.bottom=Math.max(120,bottom.getBoundingClientRect().height+14)+'px'}catch(e){}
-    var aw=Math.min(stg.clientWidth||1e9,innerWidth||1e9,document.documentElement.clientWidth||1e9);if(aw>1e8)aw=375;var ah=stg.clientHeight||500,CT=78,CB=572,s=Math.min(aw/530,ah/(CB-CT),2.4);
+    var aw=Math.min(stg.clientWidth||1e9,innerWidth||1e9,document.documentElement.clientWidth||1e9);if(aw>1e8)aw=375;var ah=stg.clientHeight||500,CT=78,CB=572,s=Math.min(aw/480,ah/(CB-CT),2.4);
     scene.style.transform='translate(-50%,-50%) scale('+s+') translateY('+(VH/2-(CT+CB)/2)+'px)';
   }
   fit();requestAnimationFrame(fit);window.onresize=fit;[300,900,2000].forEach(function(t){setTimeout(function(){if(root.isConnected)fit()},t)});try{if(window.visualViewport)visualViewport.addEventListener('resize',function(){if(root.isConnected)fit()});if(window.ResizeObserver){var ro=new ResizeObserver(function(){if(root.isConnected)fit()});ro.observe(stg)}}catch(e){}try{if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);if(window.ResizeObserver){var ro=new ResizeObserver(function(){if(!document.body.contains(bottom)){ro.disconnect();return}fit()});ro.observe(bottom)}}catch(e){}setTimeout(fit,600);
