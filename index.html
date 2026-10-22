@@ -3410,6 +3410,225 @@ body .qscreen.tchscr .dock .cta.tchno{color:#fff;text-shadow:var(--stroke);backg
 html body .qscreen.tchscr .dock .cta.tchyes::before{background:linear-gradient(#7cc4ff,#3c97ea)!important}
 html body .qscreen.tchscr .dock .cta.tchno::before{background:linear-gradient(#ff9d8d,#f0675a)!important}
 .ddcard.tchdone h3{word-break:keep-all}
+/* ===== 40 나의 섬 새 화면 틀 (1차 리스킨 덮어쓰기 층) =====
+   기준: Figma AI 시안(크림 판 + 청록 주 버튼 + 남색 아이콘). 기존 규칙을 이기려고
+   html:root body:not(#z) 로 시작하고 !important를 써요. 부모 화면(.screen.pv)은 범위 밖이라 :not(.pv *)로 비켜 가요.
+   정리(기존 05·09·11·15·16의 면 칠하기 제거)는 2차에서 해요. */
+:root{
+  --c-sky1:#8ec5ef;--c-sky2:#dcf0fb;
+  --c-cream:#f7f0df;--c-cream-2:#efe5d0;--c-cream-edge:#e2d5b8;--c-paper:#fbf8f1;
+  --c-teal:#1e6d79;--c-teal-2:#165862;--c-teal-tint:#d6ebe9;
+  --c-navy:#2b4a63;--c-ink:#2e3a46;--c-ink-2:#6b7683;
+  --c-ok:#4fa148;--c-bad:#e2735f;--c-bad-tint:#fbe1db;--c-sun:#f2b92e;
+  --c-night:#22314f;--c-night-edge:#17223a;--c-night-2:#2c3e62;--c-night-ink:#e9eef6;
+  --r-sm:12px;--r-btn:16px;--r-cta:18px;--r-panel:24px;--r-sheet:28px;
+  --sh-cream:0 4px 0 var(--c-cream-edge),0 8px 18px rgba(40,60,80,.10);
+  --sh-cream-on:0 1px 0 var(--c-cream-edge),0 3px 8px rgba(40,60,80,.08);
+  --sh-teal:0 4px 0 var(--c-teal-2),0 8px 18px rgba(22,88,98,.22);
+  --sh-teal-on:0 1px 0 var(--c-teal-2),0 3px 8px rgba(22,88,98,.18);
+  --in-line:inset 0 0 0 1px rgba(120,100,60,.08);
+  --face-cream:linear-gradient(#faf5e8,var(--c-cream));
+  --face-teal:linear-gradient(#237784,var(--c-teal));
+  --ic-check:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --ic-x:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 7l10 10M17 7L7 17' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  --ic-del:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 5h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-6-7z' fill='none' stroke='%232b4a63' stroke-width='2.2' stroke-linejoin='round'/%3E%3Cpath d='M11.5 9.5l5 5M16.5 9.5l-5 5' fill='none' stroke='%232b4a63' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* ---------- 1. 버튼: 면을 칠하던 의사 요소를 끄고, 버튼 자체에 면과 두께를 줘요 ---------- */
+html:root body:not(#z) .cta:not(.pv *)::before,html:root body:not(#z) .cta:not(.pv *)::after,
+html:root body:not(#z) .village .advbtn::before,html:root body:not(#z) .village .advbtn::after,
+html:root body:not(#z) .ibig::before,html:root body:not(#z) .tacts .tundo::before{content:none!important;display:none!important}
+/* 자동 다음 문제 진행 표시(.autoq:after)는 기능이라 남겨요 */
+html:root body:not(#z) .qscreen>.cta.autoq::after{content:""!important;display:block!important}
+
+/* 주 버튼: 청록 (화면마다 하나) */
+html:root body:not(#z) .cta:not(.light):not(.warn):not(:disabled):not(.pv *),
+html:root body:not(#z) .qscreen>.cta:not(:disabled),
+html:root body:not(#z) .sheet .cta.green,
+html:root body:not(#z) .village .advbtn,html:root body:not(#z) .village .advbtn.cont{
+  background:var(--face-teal)!important;color:#fff!important;border:0!important;border-radius:var(--r-cta)!important;
+  box-shadow:var(--sh-teal)!important;min-height:56px;padding:0 18px!important;text-shadow:none!important;
+  font-family:var(--title,Jua),'Noto Sans KR',sans-serif;letter-spacing:.01em;transform:none;transition:transform .08s ease,box-shadow .08s ease}
+html:root body:not(#z) .cta:not(.light):not(.warn):not(:disabled):not(.pv *):active,
+html:root body:not(#z) .qscreen>.cta:not(:disabled):active,html:root body:not(#z) .sheet .cta.green:active,
+html:root body:not(#z) .village .advbtn:active{transform:translateY(3px)!important;box-shadow:var(--sh-teal-on)!important}
+
+/* 보조 버튼: 크림 + 남색 글자 / 경고: 같은 면, 글자만 --c-bad */
+html:root body:not(#z) .cta.light:not(.pv *),html:root body:not(#z) .cta.warn:not(:disabled):not(.pv *),html:root body:not(#z) .tacts .tundo,html:root body:not(#z) .ibig{
+  background:var(--face-cream)!important;color:var(--c-navy)!important;border:0!important;border-radius:var(--r-cta)!important;
+  box-shadow:var(--sh-cream),var(--in-line)!important;text-shadow:none!important;padding-top:0!important;padding-bottom:0!important;transform:none}
+html:root body:not(#z) .cta.warn:not(:disabled):not(.pv *){color:var(--c-bad)!important}
+html:root body:not(#z) .cta.light:not(.pv *):active:not(:disabled),html:root body:not(#z) .cta.warn:not(.pv *):active:not(:disabled),html:root body:not(#z) .tacts .tundo:active,html:root body:not(#z) .ibig:active{
+  transform:translateY(3px)!important;box-shadow:var(--sh-cream-on),var(--in-line)!important;background:var(--c-cream-2)!important}
+
+/* 잠긴 버튼: 회색 면 */
+html:root body:not(#z) .cta:disabled:not(.pv *),html:root body:not(#z) .qscreen>.cta:disabled{
+  background:#dde0e2!important;color:#98a1a9!important;border:0!important;border-radius:var(--r-cta)!important;
+  box-shadow:0 4px 0 #c9ced2!important;text-shadow:none!important;padding-top:0!important;padding-bottom:0!important;transform:none!important}
+
+/* ---------- 2. 원형 아이콘 버튼 ---------- */
+html:root body:not(#z) .x:not(.pv *),html:root body:not(#z) .hbtn{
+  width:46px!important;height:46px!important;min-width:46px;border-radius:50%!important;border:0!important;
+  background:var(--face-cream)!important;color:var(--c-navy)!important;box-shadow:var(--sh-cream),var(--in-line)!important}
+html:root body:not(#z) .x:not(.pv *) svg,html:root body:not(#z) .hbtn svg{color:var(--c-navy)}
+html:root body:not(#z) .x:not(.pv *) svg *,html:root body:not(#z) .hbtn:not(.avbtn2) svg *{stroke:var(--c-navy)}
+html:root body:not(#z) .x:not(.pv *):active,html:root body:not(#z) .hbtn:active{transform:translateY(3px);box-shadow:var(--sh-cream-on),var(--in-line)!important}
+
+/* ---------- 3. 재화 칩 ---------- */
+html:root body:not(#z) .hchip,html:root body:not(#z) .qwallet,html:root body:not(#z) .balance{
+  background:var(--face-cream)!important;color:var(--c-ink)!important;border:0!important;border-radius:18px!important;
+  box-shadow:var(--sh-cream),var(--in-line)!important;min-height:36px}
+html:root body:not(#z) .hchip b,html:root body:not(#z) .qwallet b,html:root body:not(#z) .balance b{color:var(--c-ink)!important}
+
+/* ---------- 4. 시트 ---------- */
+html:root body:not(#z) #scrim.scrim.show,html:root body:not(#z) .scrim.show{background:rgba(30,50,70,.35)!important}
+html:root body:not(#z) #sheet.sheet>.in{
+  background:var(--c-cream)!important;background-image:none!important;border-radius:var(--r-sheet) var(--r-sheet) 0 0!important;
+  box-shadow:0 -6px 24px rgba(30,50,70,.16)!important;padding-top:30px!important;position:relative}
+html:root body:not(#z) #sheet.sheet>.in::before{content:""!important;display:block!important;position:absolute!important;left:50%;top:10px;width:36px;height:5px;margin-left:-18px;border-radius:3px;background:#d9ccb0!important;inset:10px auto auto 50%!important;z-index:1;pointer-events:none;border:0!important;box-shadow:none!important}
+html:root body:not(#z) #sheet.sheet>.in>p{background:var(--c-paper)!important;color:var(--c-ink)!important;box-shadow:var(--in-line)!important;border-radius:var(--r-btn)!important}
+html:root body:not(#z) #sheet .hd small{color:var(--c-teal)!important}
+html:root body:not(#z) #sheet .hd h3{color:var(--c-ink)!important}
+
+/* ---------- 5. 탭 ---------- */
+html:root body:not(#z) .seg:not(.pv *),html:root body:not(#z) .mseg{background:var(--c-cream-2)!important;box-shadow:inset 0 2px 3px rgba(120,100,60,.12)!important;border-radius:var(--r-btn)!important;padding:4px!important;gap:4px!important}
+html:root body:not(#z) .seg:not(.pv *) button,html:root body:not(#z) .mseg button{background:transparent!important;color:var(--c-navy)!important;box-shadow:none!important;border-radius:var(--r-sm)!important;min-height:44px}
+html:root body:not(#z) .seg:not(.pv *) button.on,html:root body:not(#z) .mseg button.on{background:var(--face-teal)!important;color:#fff!important;box-shadow:0 3px 0 var(--c-teal-2)!important}
+
+/* ---------- 6. 칩 ---------- */
+html:root body:not(#z) .catchip,html:root body:not(#z) .chip:not(.pv *){background:var(--face-cream)!important;color:var(--c-navy)!important;border-radius:var(--r-btn)!important;box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)!important;border:0!important}
+html:root body:not(#z) .catchip::before,html:root body:not(#z) .catchip::after{content:none!important;display:none!important}
+html:root body:not(#z) .catchip.on,html:root body:not(#z) .chip.on:not(.pv *){background:var(--face-teal)!important;color:#fff!important;box-shadow:0 3px 0 var(--c-teal-2)!important}
+
+/* ---------- 7. 토글 (부모 화면에서만 쓰여요: 색만 바꿔요) ---------- */
+html:root body:not(#z) .pvtog{background:#cfd5d9!important}
+html:root body:not(#z) .pvtog.on{background:var(--c-teal)!important}
+html:root body:not(#z) .pvtog i{background:#fff!important}
+
+/* ---------- 8. 진행 막대 ---------- */
+html:root body:not(#z) .qdots{background:#e7dcc4!important;box-shadow:inset 0 1px 2px rgba(120,100,60,.15)!important;border-radius:999px!important;padding:4px!important}
+html:root body:not(#z) .qdots i{background:rgba(255,255,255,.55)!important;background-image:none!important;box-shadow:none!important;border-radius:999px!important}
+html:root body:not(#z) .qdots i.done{background:var(--c-teal)!important}
+html:root body:not(#z) .qdots i.now{background:#6fb0b3!important}
+html:root body:not(#z) .qdots i.w{background:var(--c-bad)!important}
+html:root body:not(#z) .prog .bar{background:#e7dcc4!important;border-radius:999px!important}
+html:root body:not(#z) .prog .bar i{background:var(--c-teal)!important;border-radius:999px!important}
+
+/* ---------- 9. 문제 화면 ---------- */
+html:root body:not(#z) .qscreen .qtag{background:var(--c-cream-2)!important;color:var(--c-navy)!important;box-shadow:none!important;border-radius:var(--r-sm)!important}
+html:root body:not(#z) .qscreen .qbody{background:var(--c-cream)!important;background-image:none!important;border-radius:var(--r-panel)!important;box-shadow:var(--sh-cream),var(--in-line)!important}
+html:root body:not(#z) .qscreen .qbody::before,html:root body:not(#z) .qscreen .qbody::after{display:none!important}
+/* 보기 */
+html:root body:not(#z) .qscreen .choice{background:var(--face-cream)!important;color:var(--c-ink)!important;border:0!important;border-radius:var(--r-btn)!important;box-shadow:var(--sh-cream),var(--in-line)!important;position:relative}
+html:root body:not(#z) .qscreen .choice::before{content:none!important;display:none!important}
+html:root body:not(#z) .qscreen .choice:active:not(:disabled){transform:translateY(3px);box-shadow:var(--sh-cream-on),var(--in-line)!important}
+html:root body:not(#z) .qscreen .choice.on{background:var(--c-teal-tint)!important;box-shadow:inset 0 0 0 2px var(--c-teal),0 4px 0 #b5d6d3!important;color:var(--c-teal-2)!important}
+html:root body:not(#z) .qscreen .choice.right{background:var(--c-ok)!important;color:#fff!important;box-shadow:0 4px 0 #3b8236!important}
+html:root body:not(#z) .qscreen .choice.wrong{background:var(--c-bad-tint)!important;color:#b5503e!important;box-shadow:inset 0 0 0 2px var(--c-bad),0 4px 0 #f1c3b8!important}
+html:root body:not(#z) .qscreen .choice.right::after,html:root body:not(#z) .qscreen .choice.wrong::after{content:""!important;display:block!important;position:absolute;right:10px;top:10px;width:22px;height:22px;border-radius:50%;background:var(--ic-check) center/16px no-repeat,rgba(255,255,255,.22)}
+html:root body:not(#z) .qscreen .choice.wrong::after{background:var(--ic-x) center/14px no-repeat,var(--c-bad)}
+/* 숫자 패드 */
+html:root body:not(#z) .qscreen .keys button{background:var(--face-cream)!important;color:var(--c-ink)!important;border:0!important;border-radius:14px!important;box-shadow:var(--sh-cream),var(--in-line)!important}
+html:root body:not(#z) .qscreen .keys button::before{content:none!important;display:none!important}
+html:root body:not(#z) .qscreen .keys button:active{transform:translateY(3px);box-shadow:var(--sh-cream-on),var(--in-line)!important;background:var(--c-cream-2)!important}
+html:root body:not(#z) .qscreen .keys .del{font-size:0!important;color:var(--c-navy)!important}
+html:root body:not(#z) .qscreen .keys .del::after{content:""!important;display:block!important;width:26px;height:26px;background:var(--ic-del) center/contain no-repeat}
+/* 답 칸 */
+html:root body:not(#z) .slot{background:var(--c-cream-2)!important;color:var(--c-ink)!important;box-shadow:inset 0 2px 4px rgba(120,100,60,.16)!important;border-radius:var(--r-sm)!important;border:0!important}
+html:root body:not(#z) .slot.act{box-shadow:inset 0 0 0 2px var(--c-teal),inset 0 2px 4px rgba(120,100,60,.12)!important}
+html:root body:not(#z) .slot.empty::after{background:var(--c-teal)!important}
+html:root body:not(#z) .slot.right{background:#e3f1df!important;box-shadow:inset 0 0 0 2px var(--c-ok)!important;color:#2f6e2a!important}
+html:root body:not(#z) .slot.wrong{background:var(--c-bad-tint)!important;box-shadow:inset 0 0 0 2px var(--c-bad)!important;color:#b5503e!important}
+
+/* ---------- 10. 홈: 오늘의 할 일 판 ---------- */
+html:root body:not(#z) .village .vtoday{
+  background:var(--c-cream)!important;background-image:none!important;border-radius:var(--r-sheet) var(--r-sheet) 0 0!important;
+  box-shadow:0 -6px 24px rgba(30,60,90,.14),inset 0 1px 0 rgba(255,255,255,.7)!important;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px))!important}
+html:root body:not(#z) .village .vtoday .wschip{background:var(--c-paper)!important;color:var(--c-ink)!important;box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)!important;border-radius:var(--r-btn)!important}
+html:root body:not(#z) .village .vtoday .wschip::before{content:none!important;display:none!important}
+html:root body:not(#z) .village .vtoday .wschip .vtcnt{background:var(--c-cream-2)!important;color:var(--c-navy)!important;box-shadow:none!important}
+html:root body:not(#z) .village .vtoday .wschip .vtcnt.all{background:var(--c-teal-tint)!important;color:var(--c-teal-2)!important}
+html:root body:not(#z) .village .advbtn .advic{background:rgba(255,255,255,.16)!important;box-shadow:none!important}
+html:root body:not(#z) .village .advbtn .advgo{background:rgba(255,255,255,.18)!important;box-shadow:none!important}
+html:root body:not(#z) .village .advbtn small{color:rgba(255,255,255,.82)!important}
+html:root body:not(#z) .village .vtask{background:var(--c-paper)!important;color:var(--c-navy)!important;border:0!important;border-radius:var(--r-btn)!important;box-shadow:0 4px 0 var(--c-cream-edge),var(--in-line)!important}
+html:root body:not(#z) .village .vtask::before,html:root body:not(#z) .village .vtask::after{content:none!important;display:none!important}
+html:root body:not(#z) .village .vtask:active{transform:translateY(3px);box-shadow:0 1px 0 var(--c-cream-edge),var(--in-line)!important}
+html:root body:not(#z) .village .vtask .vok{background:var(--c-ok)!important;box-shadow:0 0 0 2px var(--c-paper)!important}
+html:root body:not(#z) .village .advdone0{background:var(--c-paper)!important;box-shadow:0 4px 0 var(--c-cream-edge),var(--in-line)!important;border-radius:var(--r-cta)!important;color:var(--c-ink)!important}
+
+/* 건물 이름표: 크림, 알림 점은 '지금 할 곳' 하나만 빨강 */
+html:root body:not(#z) .village .lmlabel:not(.bosslab){background:var(--c-cream)!important;color:var(--c-navy)!important;box-shadow:0 3px 0 var(--c-cream-edge),0 4px 10px rgba(30,60,90,.14)!important}
+html:root body:not(#z) .village .lm-boat .lmlabel{background:var(--c-teal)!important;color:#fff!important;box-shadow:0 3px 0 var(--c-teal-2),0 4px 10px rgba(30,60,90,.18)!important}
+html:root body:not(#z) .village .lmbadge{border-color:var(--c-cream)!important}
+html:root body:not(#z) .village .lmbadge:not(.dot){background:var(--c-navy)!important}
+html:root body:not(#z) .village .vscene:has(:is(.lm-book,.lm-pot,.lm-bee,.lm-tree) .lmbadge.dot) :is(.lm-mail,.lm-mailp,.lm-fish,.lm-boat,.lm-home) .lmbadge.dot{display:none!important}
+html:root body:not(#z) .village .vscene:has(.lm-book .lmbadge.dot) :is(.lm-pot,.lm-bee,.lm-tree) .lmbadge.dot,
+html:root body:not(#z) .village .vscene:has(.lm-pot .lmbadge.dot) :is(.lm-bee,.lm-tree) .lmbadge.dot,
+html:root body:not(#z) .village .vscene:has(.lm-bee .lmbadge.dot) .lm-tree .lmbadge.dot{display:none!important}
+html:root body:not(#z) .hbtn .lmbadge.dot{background:var(--c-navy)!important}
+
+/* ---------- 11. 밤 ---------- */
+html:root body:not(#z) .village.tod-night .vtoday{background:var(--c-night)!important;box-shadow:0 -6px 24px rgba(5,10,30,.35),inset 0 1px 0 rgba(255,255,255,.06)!important;color:var(--c-night-ink)!important}
+html:root body:not(#z) .village.tod-night .vtoday .wschip,html:root body:not(#z) .village.tod-night .vtask{background:var(--c-night-2)!important;color:var(--c-night-ink)!important;box-shadow:0 4px 0 var(--c-night-edge),inset 0 0 0 1px rgba(255,255,255,.05)!important}
+html:root body:not(#z) .village.tod-night .vtoday .wschip *{color:inherit}
+html:root body:not(#z) .village.tod-night .vtoday .wschip small{color:rgba(233,238,246,.7)!important}
+html:root body:not(#z) .village.tod-night .vtoday .wschip .vtcnt{background:rgba(255,255,255,.1)!important;color:var(--c-night-ink)!important}
+html:root body:not(#z) .village.tod-night .vtask .vok{box-shadow:0 0 0 2px var(--c-night-2)!important}
+html:root body:not(#z) .village.tod-night .advdone0{background:var(--c-night-2)!important;color:var(--c-night-ink)!important;box-shadow:0 4px 0 var(--c-night-edge)!important}
+html:root body:not(#z) .village.tod-night .advbtn{box-shadow:0 4px 0 var(--c-teal-2),0 0 22px rgba(70,200,210,.28)!important}
+html:root body:not(#z) .village.tod-night .hchip,html:root body:not(#z) .village.tod-night .hbtn{background:rgba(34,49,79,.92)!important;color:var(--c-night-ink)!important;box-shadow:0 4px 0 var(--c-night-edge)!important}
+html:root body:not(#z) .village.tod-night .hchip b{color:var(--c-night-ink)!important}
+html:root body:not(#z) .village.tod-night .hbtn svg *{stroke:var(--c-night-ink)}
+
+/* ---------- 12. 1회차 비평 반영 ---------- */
+/* 모험 버튼 안 캐릭터: 크림 칸에 앉혀 어두운 캐릭터도 보이게 */
+html:root body:not(#z) .village .advbtn .advic{background:var(--c-paper)!important;box-shadow:0 2px 0 var(--c-teal-2)!important;border-radius:14px!important}
+/* 행사 칩도 재화 칩과 같게 */
+html:root body:not(#z) .evchip{background:var(--face-cream)!important;color:var(--c-ink)!important;border:0!important;border-radius:18px!important;box-shadow:var(--sh-cream),var(--in-line)!important;min-height:36px}
+html:root body:not(#z) .evchip::before,html:root body:not(#z) .evchip::after{content:none!important;display:none!important}
+html:root body:not(#z) .evchip b{color:var(--c-ink)!important}
+html:root body:not(#z) .evchip small{background:var(--c-cream-2)!important;color:var(--c-navy)!important}
+html:root body:not(#z) .village.tod-night .evchip{background:rgba(34,49,79,.92)!important;color:var(--c-night-ink)!important;box-shadow:0 4px 0 var(--c-night-edge)!important}
+html:root body:not(#z) .village.tod-night .evchip b{color:var(--c-night-ink)!important}
+/* 문제 신고 깃발: 크림 원, 터치 44 */
+html:root body:not(#z) .qscreen .qrep{width:44px!important;height:44px!important;border-radius:50%!important;background:var(--face-cream)!important;color:var(--c-ink-2)!important;box-shadow:var(--sh-cream),var(--in-line)!important;border:0!important}
+/* 꼬리표 안 Lv·새 표시: 노랑 대신 청록 옅은 면 */
+html:root body:not(#z) .qscreen .qtag :is(.qlv,.qnew,.qch){background:var(--c-teal-tint)!important;color:var(--c-teal-2)!important;box-shadow:none!important}
+/* 결과 화면: 하나뿐인 '다 했어요'는 주 버튼 */
+html:root body:not(#z) .screen:has(.rainstage)>.dock>.cta.light{background:var(--face-teal)!important;color:#fff!important;box-shadow:var(--sh-teal)!important}
+html:root body:not(#z) .screen:has(.rainstage)>.dock>.cta.light:active{background:var(--c-teal-2)!important;box-shadow:var(--sh-teal-on)!important}
+html:root body:not(#z) .screen:has(.rainstage)>.dock{background:none!important}
+/* 연습장 말풍선: 검정 대신 남색 */
+html:root body:not(#z) .scrtip{background:var(--c-navy)!important;color:#fff!important}
+html:root body:not(#z) .scrtip::before,html:root body:not(#z) .scrtip::after{border-color:transparent!important;background:var(--c-navy)!important}
+
+/* ---------- 13. 2회차 비평 반영 ---------- */
+html:root body:not(#z) .qscreen .keys .del{display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important}
+html:root body:not(#z) .village .advbtn .advgo svg path{stroke:#fff!important}
+/* 정답·오답 표시는 카드 모서리 밖 스티커로 (글자를 가리지 않게) */
+html:root body:not(#z) .qscreen .choice.right::after,html:root body:not(#z) .qscreen .choice.wrong::after{right:-6px!important;top:-8px!important;width:24px!important;height:24px!important;z-index:2}
+html:root body:not(#z) .qscreen .choice.right::after{background:var(--ic-check) center/15px no-repeat,var(--c-ok)!important;box-shadow:0 0 0 2.5px #fff!important}
+html:root body:not(#z) .qscreen .choice.wrong::after{box-shadow:0 0 0 2.5px #fff!important}
+/* 듣기 버튼: 노랑은 보상 전용이라 크림 보조 면으로 */
+html:root body:not(#z) .enspeak{background:var(--face-cream)!important;color:var(--c-navy)!important;box-shadow:var(--sh-cream),var(--in-line)!important;border:0!important;min-height:44px}
+html:root body:not(#z) .enspeak::before,html:root body:not(#z) .enspeak::after{content:none!important;display:none!important}
+html:root body:not(#z) .enspeak svg *{stroke:var(--c-navy)}
+/* 한자 나무 위 칩 */
+html:root body:not(#z) .tpill{background:var(--face-cream)!important;color:var(--c-navy)!important;box-shadow:0 3px 0 var(--c-cream-edge),var(--in-line)!important;border:0!important}
+
+/* ---------- 14. 3회차 비평 반영 ---------- */
+/* 모험 버튼은 원래 안쪽 여백으로 (360폭에서 부제가 두 줄로 꺾이지 않게) */
+html:root body:not(#z) .village .advbtn{padding:10px 12px 10px 10px!important}
+/* 과외의 맞아요/틀렸어요는 같은 무게의 판정 버튼: 청록 주 버튼 두 개가 되지 않게 크림으로 */
+html:root body:not(#z) .qscreen.tchscr .dock .cta.tchyes,html:root body:not(#z) .qscreen.tchscr .dock .cta.tchno{background:var(--face-cream)!important;box-shadow:var(--sh-cream),var(--in-line)!important}
+html:root body:not(#z) .qscreen.tchscr .dock .cta.tchyes{color:#3b8236!important}
+html:root body:not(#z) .qscreen.tchscr .dock .cta.tchno{color:#c4523e!important}
+html:root body:not(#z) .qscreen.tchscr .dock .cta:is(.tchyes,.tchno):active{background:var(--c-cream-2)!important;box-shadow:var(--sh-cream-on),var(--in-line)!important}
+/* 작은 칩의 터치 영역을 44 이상으로 (보이는 크기는 그대로) */
+html:root body:not(#z) :is(.catchip,.evchip,.tpill,.hchip.tap,.scrtog){position:relative}
+html:root body:not(#z) :is(.evchip,.tpill,.hchip.tap,.scrtog)::after{content:""!important;display:block!important;position:absolute!important;inset:-5px!important;background:none!important;box-shadow:none!important;border:0!important}
+html:root body:not(#z) .catchip::after{content:""!important;display:block!important;position:absolute!important;inset:-4px -2px!important;background:none!important;box-shadow:none!important}
 </style>
 
 <div id="app"></div>
@@ -4280,7 +4499,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.113";
+var APP_VER="1.0.114";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
