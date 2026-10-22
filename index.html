@@ -3341,6 +3341,12 @@ html body .village .vthead .wschip:not(.on):active{box-shadow:0 1px 0 #dfe5ec!im
 .ibig.locked{opacity:.92;filter:saturate(.6)}
 .ibig .glock{margin-left:6px;padding:2px 8px;border-radius:999px;background:#28385a;color:#fff;font-size:12px;font-weight:800;line-height:1.4}
 .island .hud .hchip.decoleft{padding:0 14px;font-size:1rem;color:#2b6a3a}
+/* 오늘의 할 일 칩: 날짜·제목 두 줄이 숨 쉴 수 있게 높이와 안쪽 여백을 넉넉히 */
+html body .village .vthead .wschip{height:auto;min-height:52px;padding:7px 14px 7px 11px;border-radius:20px}
+html body .village .vthead .todaychip{gap:10px}
+html body .village .vthead .todaychip .tdtx{gap:2px;line-height:1.2}
+html body .village .vthead .todaychip .tdtx small{font-size:.7rem}
+html body .village .vthead .todaychip img{width:24px;height:24px}
 /* 섬 친구 과외 (오늘은 내가 선생님) */
 .museumscr .mseg{grid-template-columns:repeat(4,1fr)}
 .museumscr .mseg button b{white-space:nowrap}
@@ -4274,7 +4280,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.112";
+var APP_VER="1.0.113";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
