@@ -2387,6 +2387,11 @@ body .tacts .trot{background:none!important;box-shadow:none!important}
 .fprev .spr.g3t img,.setpv .spr.g3t img{width:auto;height:auto}
 .spr.g3t img{display:block}
 
+/* 읽기만 해도 되는 우체통: 새 편지만 노랗게, 읽은 편지는 차분하게 */
+.mlet:not(.new):not(.done) .mlst{background:#eef2f6;color:#4a5a6e}
+.mlet.new .mlst{background:#ffd43b;color:#5a3d00}
+.mlet.note.done .mlst{background:#f1f3f5;color:#868e96}
+.mlk.tch{background:#fff4d6;color:#8a5a00}
 /* ===== 항구: 모래섬 우체통 · 선착장 · 바다 보스 ===== */
 .visl{position:absolute;width:92px;height:91px;left:-46px;top:-65px}
 .visl img{width:100%;height:auto;display:block}
@@ -4269,7 +4274,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.111";
+var APP_VER="1.0.112";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -18329,13 +18334,30 @@ function mailSync(){var m=mailS(),ch=false;if(!m.q){m.q=[];for(var w=0;w<=mailWe
   function cnt(pre){return m.q.filter(function(a){return mailPre(a.id)===pre}).length}
   function add(id,d){if(has[id])return;has[id]=1;m.q.push({id:id,d:d});ch=true}
   Object.keys(m.rep||{}).forEach(function(id){if(!has[id])add(id,m.rep[id].d||dnum())});
-  var wk=mailWeek();if(m.lw==null)m.lw=wk;while(m.lw<wk){m.lw++;var pre=mailEnTier()===2?'E2_':'L';add(pre+cnt(pre),m.start+m.lw*7)}
-  var kt=mailKoTier();if(kt){var kw=Math.floor((dnum()-m.start-3)/7);if(m.kw==null){m.kw=kw-1;ch=true}while(m.kw<kw){m.kw++;var kp='K'+mailKoTier()+'_';add(kp+cnt(kp),m.start+3+m.kw*7)}}
+  function unread(ko){return m.q.filter(function(a){return (mailPre(a.id).charAt(0)==='K')===ko&&!(m.rep&&m.rep[a.id])&&!(m.rd&&m.rd[a.id])}).length}
+  var wk=mailWeek();if(m.lw==null)m.lw=wk;while(m.lw<wk){m.lw++;if(unread(false)>=MAIL_UNREAD)continue;var pre=mailEnTier()===2?'E2_':'L';add(pre+cnt(pre),m.start+m.lw*7)}
+  var kt=mailKoTier();if(kt){var kw=Math.floor((dnum()-m.start-3)/7);if(m.kw==null){m.kw=kw-1;ch=true}while(m.kw<kw){m.kw++;if(unread(true)>=MAIL_UNREAD)continue;var kp='K'+mailKoTier()+'_';add(kp+cnt(kp),m.start+3+m.kw*7)}}
   // 학년·단계가 바뀌면 아직 답장 안 한 편지를 지금 수준 편지로 바꿔요
   var et=mailEnTier()===2?'E2_':'L',kt2=mailKoTier()?'K'+mailKoTier()+'_':null,rep_=m.rep||{};m.q.forEach(function(a){if(rep_[a.id])return;var pre=mailPre(a.id),ko=pre.charAt(0)==='K',want=ko?kt2:et;if(!want||pre===want)return;var nid=want+cnt(want);if(has[nid])return;has[nid]=1;if(m.rd&&m.rd[a.id]){m.rd[nid]=m.rd[a.id];delete m.rd[a.id]}a.id=nid;ch=true});
   if(ch)save()}
 function mailList(){mailSync();var m=mailS(),no={en:0,ko:0};var L=m.q.slice().sort(function(a,b){return a.d-b.d}).map(function(a){var pre=mailPre(a.id),i=+a.id.slice(pre.length),A=mailSrc(pre),kind=pre.charAt(0)==='K'?'ko':'en';no[kind]++;return {id:a.id,n:i,no:no[kind],kind:kind,tier:pre==='L'?1:pre==='E2_'?2:+pre.charAt(1),L:A[i%A.length],rep:m.rep[a.id]||null,d:a.d}});return L.reverse()}
 function mailUnreplied(){return mailList().filter(function(x){return !x.rep})}
+// 동물의 숲처럼: 받은 편지는 읽기만 해도 돼요. 답장은 쓰고 싶을 때 쓰고, 쓰면 다음 날 친구가 답장해 줘요.
+var MAIL_UNREAD=2;
+var MAIL_THX=[{en:['Thank you for your letter!','I read it again and again. It made me smile.','See you soon!'],ko:'편지 고마워! 몇 번이나 읽었어. 덕분에 웃었어. 또 만나!'},
+ {en:['I got your letter today!','You write so well. I am so happy.','Let\'s play together this weekend!'],ko:'오늘 네 편지 받았어! 정말 잘 썼더라. 너무 기뻐. 이번 주말에 같이 놀자!'},
+ {en:['Wow, a letter from you!','I put it on my wall.','Write to me again!'],ko:'와, 네 편지다! 벽에 붙여 놨어. 또 써 줘!'},
+ {en:['Thanks for writing back!','Your letter is my treasure.','Have a great day!'],ko:'답장해 줘서 고마워! 네 편지는 내 보물이야. 좋은 하루 보내!'}];
+var MAIL_THX_KO=[['편지 잘 받았어!','네가 쓴 문장을 소리 내어 읽어 봤어. 정말 멋지더라.','또 편지 써 줘!'],['네 편지 받고 깜짝 놀랐어!','글씨에서 네 목소리가 들리는 것 같았어.','다음에 또 이야기해 줘!'],['답장 고마워!','네 편지를 책상 위에 올려 두었어.','오늘도 좋은 하루 보내!']];
+function mailNotes(){var m=mailS();if(!m.notes)m.notes=[];var d=dnum();return m.notes.filter(function(n){return n.d<=d}).sort(function(a,b){return b.d-a.d})}
+function mailNote(o){var m=mailS();if(!m.notes)m.notes=[];o.id='n'+(m.nid=(m.nid||0)+1);if(o.d==null)o.d=dnum()+1;m.notes.push(o);if(m.notes.length>60)m.notes=m.notes.slice(-60);save();return o}
+function mailNewN(){var m=mailS(),rd=m.rd||{};return mailList().filter(function(x){return !x.rep&&!rd[x.id]}).length+mailNotes().filter(function(n){return !n.rd}).length}
+function mailNoteRead(n){clear();var sc=el('div','screen mailscr'),top=el('div','qtop');var b=el('button','x');b.setAttribute('aria-label','돌아가기');b.innerHTML=BACK_SVG;b.onclick=function(){mailScreen()};top.appendChild(b);top.appendChild(el('h2','mtitle',n.name+'의 편지'));top.appendChild(el('div','spacer'));sc.appendChild(top);
+  var p=el('div','paper'+(n.en?'':' kop'));var hd=el('div','phd');hd.appendChild(n.av?avImg(n.from,'pav'):img(n.from,'pav'));var ht=el('div');ht.appendChild(el('b',null,n.en?'From '+(MAIL_NAME[n.from]||n.name):josa(n.name,'이','가')+' 보낸 편지'));ht.appendChild(el('small',null,n.sub||'답장 편지'));hd.appendChild(ht);p.appendChild(hd);
+  var body=el('div','pbody');(n.en||n.ko).forEach(function(t){body.appendChild(el('p',null,t))});p.appendChild(body);if(n.en)p.appendChild(el('p','pko',n.kot));sc.appendChild(p);
+  if(n.en){var row=el('div','dockrow');var say=el('button','cta light','🔊 듣기');say.onclick=function(){ttsEn(n.en.join(' '))};row.appendChild(say);var tr=el('button','cta light','뜻 보기');tr.onclick=function(){p.classList.toggle('ko');tr.textContent=p.classList.contains('ko')?'뜻 숨기기':'뜻 보기'};row.appendChild(tr);sc.appendChild(row)}
+  var dn=el('button','cta light','우체통으로');dn.onclick=function(){mailScreen()};sc.appendChild(dn);app.appendChild(sc);zMark&&zMark();
+  if(!n.rd){n.rd=1;if(n.gift){S.sun+=n.gift;setTimeout(function(){miniToast('편지에 햇살 '+n.gift+'개가 들어 있었어요!')},300)}save()}}
 function mailSayX(x){if(x.kind==='ko')ttsKo(x.L.ko.join(' '));else mailSay(x.L)}
 function mailSay(L){ttsEn(L.en.join(' '))}
 function mailStampEl(n,L,big){var st=el('i','stamp'+(big?' big':''));st.style.setProperty('--sc',MAIL_COL[n%MAIL_COL.length]);var inr=el('span','stin');inr.appendChild(img(L.from));st.appendChild(inr);var no=el('b','stno','No.'+(n+1));st.appendChild(no);return st}
@@ -18344,12 +18366,13 @@ function mailScreen(tab){audPrefetch(['se']);
   if(tab)MAIL_TAB=tab;clear();var m=mailS();var sc=el('div','screen mailscr'),top=el('div','qtop');
   var b=el('button','x');b.setAttribute('aria-label','나가기');b.innerHTML=BACK_SVG;b.onclick=villageScreen;top.appendChild(b);top.appendChild(el('h2','mtitle','섬 우체통'));
   var wal=el('div','qwallet stampw');var si=el('i','stamp mini');si.style.setProperty('--sc','#ff8787');var sii=el('span','stin');sii.appendChild(img('rabbit'));si.appendChild(sii);wal.appendChild(si);wal.appendChild(el('b','tnum',String(m.stamps||0)));top.appendChild(wal);sc.appendChild(top);
-  var cur=el('div','mcur');cur.appendChild(img('duck'));var un=mailUnreplied().length;cur.appendChild(el('p',null,un?'새 편지가 '+un+'통 왔어! 읽고 답장을 써 보자.':'답장을 다 썼구나! 곧 새 편지가 올 거야.'));sc.appendChild(cur);
-  var seg=el('div','mseg two');[['letters','편지',mailList().length+'통'],['stamps','우표 앨범',(m.stamps||0)+'장']].forEach(function(t){var bt=el('button',MAIL_TAB===t[0]?'on':null);bt.appendChild(el('b',null,t[1]));bt.appendChild(el('small',null,t[2]));bt.onclick=function(){mailScreen(t[0])};seg.appendChild(bt)});sc.appendChild(seg);
+  var cur=el('div','mcur');cur.appendChild(img('duck'));var un=mailNewN();cur.appendChild(el('p',null,un?'새 편지가 왔어! 읽어 볼래?':['편지는 언제든 다시 읽을 수 있어. 쓰고 싶은 편지에 답장해 봐!','답장을 쓰면 다음 날 친구가 꼭 답장해 줘.'][R(0,1)]));sc.appendChild(cur);
+  var seg=el('div','mseg two');[['letters','편지',(mailList().length+mailNotes().length)+'통'],['stamps','우표 앨범',(m.stamps||0)+'장']].forEach(function(t){var bt=el('button',MAIL_TAB===t[0]?'on':null);bt.appendChild(el('b',null,t[1]));bt.appendChild(el('small',null,t[2]));bt.onclick=function(){mailScreen(t[0])};seg.appendChild(bt)});sc.appendChild(seg);
   if(MAIL_TAB==='letters'){
-    var ls=el('div','mlist');
-    mailList().forEach(function(x){var c=el('button','mlet'+(x.rep?' done':''));var av=avImg(x.L.from,'mlav');c.appendChild(av);var t=el('div','mltx');var tb_=el('b');tb_.appendChild(el('em','mlk '+x.kind,x.kind==='ko'?'국어':'영어'));tb_.appendChild(el('span',null,MAIL_KO[x.L.from]+'의 편지'));tb_.appendChild(el('em','mln',x.no+'번째'));t.appendChild(tb_);t.appendChild(el('small',null,x.kind==='ko'?x.L.ko[0]:x.L.en[0]));c.appendChild(t);
-      c.appendChild(el('em','mlst',x.rep?'답장 완료':'답장 쓰기'));c.onclick=function(){mailRead(x)};ls.appendChild(c)});
+    var ls=el('div','mlist'),rd_=m.rd||{},IT=mailList().map(function(x){return {d:x.d,x:x}}).concat(mailNotes().map(function(n){return {d:n.d,n:n}})).sort(function(a,b){return b.d-a.d});
+    IT.forEach(function(it){if(it.n){var n=it.n,c0=el('button','mlet note'+(n.rd?' done':' new'));c0.appendChild(n.av?avImg(n.from,'mlav'):img(n.from,'mlav'));var t0=el('div','mltx'),b0=el('b');b0.appendChild(el('em','mlk '+(n.en?'en':n.tag||'ko'),n.chip||'답장'));b0.appendChild(el('span',null,n.name+'의 편지'));t0.appendChild(b0);var pv_=(n.en||n.ko);t0.appendChild(el('small',null,/,$/.test(pv_[0])&&pv_[1]?pv_[1]:pv_[0]));c0.appendChild(t0);c0.appendChild(el('em','mlst',n.rd?'읽음':'새 편지'));c0.onclick=function(){mailNoteRead(n)};ls.appendChild(c0);return}
+      var x=it.x,c=el('button','mlet'+(x.rep?' done':rd_[x.id]?'':' new'));var av=avImg(x.L.from,'mlav');c.appendChild(av);var t=el('div','mltx');var tb_=el('b');tb_.appendChild(el('em','mlk '+x.kind,x.kind==='ko'?'국어':'영어'));tb_.appendChild(el('span',null,MAIL_KO[x.L.from]+'의 편지'));tb_.appendChild(el('em','mln',x.no+'번째'));t.appendChild(tb_);t.appendChild(el('small',null,x.kind==='ko'?x.L.ko[0]:x.L.en[0]));c.appendChild(t);
+      c.appendChild(el('em','mlst',x.rep?'답장 완료':rd_[x.id]?'답장 쓰기':'새 편지'));c.onclick=function(){mailRead(x)};ls.appendChild(c)});
     sc.appendChild(ls);
   } else {
     var g=el('div','stgrid');var QL=mailList().slice().reverse();
@@ -18361,13 +18384,13 @@ function mailScreen(tab){audPrefetch(['se']);
 }
 function mailPaper(x){var L=x.L,ko=x.kind==='ko';var p=el('div','paper'+(ko?' kop':''));var hd=el('div','phd');hd.appendChild(avImg(L.from,'pav'));var ht=el('div');ht.appendChild(el('b',null,ko?josa(MAIL_KO[L.from],'이','가')+' 보낸 편지':'From '+MAIL_NAME[L.from]));ht.appendChild(el('small',null,ko?'국어 편지 · '+x.no+'번째':josa(MAIL_KO[L.from],'이','가')+' 보낸 '+x.no+'번째 편지'));hd.appendChild(ht);p.appendChild(hd);
   var body=el('div','pbody');(ko?L.ko:L.en).forEach(function(t){body.appendChild(el('p',null,t))});p.appendChild(body);if(!ko){var kp=el('p','pko',L.ko);p.appendChild(kp)}return p}
-function mailRead(x){
+function mailRead(x){var mr_=mailS();if(!mr_.rd)mr_.rd={};if(!mr_.rd[x.id]){mr_.rd[x.id]=1;save()}
   clear();var sc=el('div','screen mailscr'),top=el('div','qtop');
   var b=el('button','x');b.setAttribute('aria-label','돌아가기');b.innerHTML=BACK_SVG;b.onclick=function(){mailScreen()};top.appendChild(b);top.appendChild(el('h2','mtitle',MAIL_KO[x.L.from]+'의 편지'));top.appendChild(el('div','spacer'));sc.appendChild(top);
   var p=mailPaper(x);sc.appendChild(p);
   var row=el('div','dockrow');if(x.kind!=='ko'){var say=el('button','cta light','🔊 듣기');say.onclick=function(){mailSayX(x)};row.appendChild(say)}if(x.kind!=='ko'){var tr=el('button','cta light','뜻 보기');tr.onclick=function(){p.classList.toggle('ko');tr.textContent=p.classList.contains('ko')?'뜻 숨기기':'뜻 보기'};row.appendChild(tr)}sc.appendChild(row);
   if(x.rep){var rp=mailReplyPaper(x);sc.appendChild(rp);var m_=mailS();m_.rl=m_.rl||{};var td_=dayKey();if(x.kind!=='ko'&&m_.rl[x.id]!==td_){var rl=el('button','cta','편지 다시 듣기 · 햇살 +5');rl.onclick=function(){mailSayX(x);m_.rl[x.id]=td_;S.sun+=5;save();rl.disabled=true;rl.textContent='오늘 복습 완료!';miniToast('햇살 5개를 받았어요')};sc.appendChild(rl)}var dn=el('button','cta light','우체통으로');dn.onclick=function(){mailScreen()};sc.appendChild(dn)}
-  else{var go=el('button','cta','답장 쓰기');go.onclick=function(){x.kind==='ko'?kmailWrite(x):mailWrite(x)};sc.appendChild(go)}
+  else{sc.appendChild(el('p','mnote','답장은 쓰고 싶을 때 써도 돼요. 답장을 쓰면 다음 날 '+josa(MAIL_KO[x.L.from],'이','가')+' 답장해 줘요.'));var go=el('button','cta','답장 쓰기');go.onclick=function(){x.kind==='ko'?kmailWrite(x):mailWrite(x)};sc.appendChild(go);var lt=el('button','cta light','우체통으로');lt.onclick=function(){mailScreen()};sc.appendChild(lt)}
   app.appendChild(sc);zMark&&zMark();
 }
 function mailSent1(L,a){var o=L.o[a][0];return L.q[2]?o:L.q[0]+o+L.q[1]}
@@ -18420,10 +18443,10 @@ function mailWrite(x){
   render();
 }
 function mailSend(x,ans){
-  var m=mailS();if(m.rep[x.id])return;var rec={free:ans.free||'',d:dnum()};['a','b','k1','k2','hi','body','bye'].forEach(function(k){if(ans[k]!=null&&ans[k]!==''&&ans[k]!==-1)rec[k]=ans[k]});if(rec.a==null&&ans.a!=null)rec.a=ans.a;m.rep[x.id]=rec;try{stdLog(x.kind==='ko'?(x.tier===1?['[2국03-01]','[2국03-02]']:x.tier===2?['[2국03-04]']:['[4국03-04]']):[x.tier===2?'[6영02-08]':'[4영02-05]'],true)}catch(e){}m.stamps=(m.stamps||0)+1;S.sun+=20;save();x.rep=m.rep[x.id];
+  var m=mailS();if(m.rep[x.id])return;var rec={free:ans.free||'',d:dnum()};['a','b','k1','k2','hi','body','bye'].forEach(function(k){if(ans[k]!=null&&ans[k]!==''&&ans[k]!==-1)rec[k]=ans[k]});if(rec.a==null&&ans.a!=null)rec.a=ans.a;m.rep[x.id]=rec;try{stdLog(x.kind==='ko'?(x.tier===1?['[2국03-01]','[2국03-02]']:x.tier===2?['[2국03-04]']:['[4국03-04]']):[x.tier===2?'[6영02-08]':'[4영02-05]'],true)}catch(e){}m.stamps=(m.stamps||0)+1;S.sun+=20;var nn=(m.nid||0);if(x.kind==='ko'){mailNote({from:x.L.from,av:1,name:MAIL_KO[x.L.from],ko:MAIL_THX_KO[nn%MAIL_THX_KO.length].slice(),sub:'국어 편지 답장',gift:10,tag:'ko'})}else{var T_=MAIL_THX[nn%MAIL_THX.length];mailNote({from:x.L.from,av:1,name:MAIL_KO[x.L.from],en:T_.en,kot:T_.ko,sub:'영어 편지 답장',gift:10})}save();x.rep=m.rep[x.id];
   clear();var sc=el('div','screen mailscr');var fly=el('div','mfly');var env=el('i','menv');fly.appendChild(env);sc.appendChild(fly);app.appendChild(sc);tone([523,659,784,1047],'sine',.1);
   setTimeout(function(){
-    showSheet('good','sun','답장을 보냈어요!','우표 1장과 햇살 20개를 받았어요','편지는 우체통에서 다시 읽을 수 있어요. 다음 편지도 곧 와요.','좋아요',function(){mailRead(x)});
+    showSheet('good','sun','답장을 보냈어요!','우표 1장과 햇살 20개를 받았어요','내일 '+josa(MAIL_KO[x.L.from],'이','가')+' 답장을 보내 줄 거예요. 우체통에 깃발이 올라가면 열어 봐요.','좋아요',function(){mailRead(x)});
   },900);
 }
 
@@ -18912,13 +18935,13 @@ function tchQ(){var T=TCH,q=T.qs[T.i],pz=q.pz;clear();document.body.classList.ad
     else{var row=el('div','tchopts');q.opts.forEach(function(v){if(v===q.fa)return;var b=el('button','cta light',String(v));b.onclick=function(){result(v===pz.answer)};row.appendChild(b)});
       if(row.children.length<2){var b2=el('button','cta light',String(q.fa));b2.onclick=function(){result(false)};row.appendChild(b2)}dock.appendChild(row)}}}
 function tchFinish(u,ok,back,quiet){var T=tchS(),d=dnum();T.log.push([d,u.id,ok?1:0]);if(T.log.length>200)T.log=T.log.slice(-200);
-  if(ok){T.done[u.id]=d}else T.tried[u.id]=d;save();TCH=null;document.body.classList.remove('qmode');
+  if(ok){T.done[u.id]=d;try{mailNote({from:TCH_FR[0],name:TCH_FR[1],ko:['선생님께,','오늘 ‘'+u.name+'’ 알려 줘서 정말 고마워!','처음엔 헷갈렸는데 이제 친구들한테도 설명할 수 있어.','다음에 또 공책 봐 줄 거지?','— '+TCH_FR[1]+' 드림'],sub:'고마운 마음',chip:'감사',tag:'tch',gift:10})}catch(e){}}else T.tried[u.id]=d;save();TCH=null;document.body.classList.remove('qmode');
   var go=function(){(back||home)()};go();if(quiet&&ok){gemGain(TCH_GEM);return}
   var lay=el('div','daydone'),card=el('div','ddcard tchdone'+(ok?'':' fail'));card.appendChild(el('i','ddrays'));var pic=img(TCH_FR[0],'ddpic');card.appendChild(pic);
   card.appendChild(el('small',null,ok?'오늘은 내가 선생님 · 가르친 단원 '+tchCount(u.g)[0]+' / '+tchCount(u.g)[1]:'오늘은 내가 선생님'));
   card.appendChild(el('h3',null,ok?TCH_FR[1]+'에게 ‘'+u.name+'’'+josa(u.name,'을','를').slice(-1)+' 가르쳐 줬어요!':TCH_FR[1]+'가 “내일 또 알려 줘!”래요'));
   card.appendChild(el('p','tchline','“'+(ok?tchSay(u):'오늘 같이 본 거 잊지 않을게. 내일 또 공책 봐 줘!')+'”'));
-  if(ok)card.appendChild(el('p',null,'보석 '+TCH_GEM+'개를 받았어요. 섬 학교 ‘우리 반’에서 가르친 단원을 볼 수 있어요.'));
+  if(ok)card.appendChild(el('p',null,'보석 '+TCH_GEM+'개를 받았어요. 내일 '+TCH_FR[1]+'가 우체통으로 감사 편지를 보낼 거예요.'));
   var b=el('button','cta green','좋아요');b.onclick=function(){lay.remove()};card.appendChild(b);
   if(ok){var c=el('button','cta light','우리 반 보기');c.onclick=function(){lay.remove();SCH_TAB='class';schoolScreen(back||home)};card.appendChild(c)}
   lay.appendChild(card);document.body.appendChild(lay);
@@ -19900,7 +19923,7 @@ function villageScreen(){
     if(id==='mail'){if(!S.path.char)return true;if(S.path.walk)return '완료';return chAvail()}
     if(id==='book')return koReady()&&S.ko.today!==today;
     if(id==='fish')return fishS().tk>0?String(fishS().tk):false;
-    if(id==='mailp'){var mu=mailUnreplied().length;return mu?String(mu):false}
+    if(id==='mailp'){return mailNewN()>0}
     if(id==='boat'){var t=totals(),p=placedCount(),n=0;for(var k in t)n+=Math.max(0,t[k]-(p[k]||0));n+=digSpots().length;return n?String(n):false}
     return false;
   }
