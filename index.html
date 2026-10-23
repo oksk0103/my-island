@@ -4495,6 +4495,12 @@ html:root body:not(#z) .waterstage .islon .rainfall{position:absolute!important;
 html:root body:not(#z) .waterstage .sidecloud{width:32%}
 html:root body:not(#z) .waterstage .sidecloud.l{left:-12%;top:30%}
 html:root body:not(#z) .waterstage .sidecloud.r{right:-12%;top:56%;width:36%}
+/* 홈: 빈 잔디 꽃밭·덤불, 위쪽 숫자 없앰, 연속 일수 칩 */
+html:root body:not(#z) .vdeco{position:absolute;pointer-events:none;filter:drop-shadow(0 3px 3px rgba(40,70,40,.18))}
+html:root body:not(#z) .vstk{display:inline-flex;align-items:center;gap:4px;padding-left:8px!important;padding-right:10px!important;flex:none}
+html:root body:not(#z) .vstk img{width:20px;height:20px}
+html:root body:not(#z) .vstk b{font-size:14px;color:var(--c-ink)}
+html:root body:not(#z) .vhud .evchip{background:var(--c-paper)!important;box-shadow:0 3px 0 var(--c-cream-edge)!important}
 </style>
 
 <div id="app"></div>
@@ -4702,6 +4708,8 @@ A["n_spine3"]="b/ab6cafdf9fb4.webp";
 A["n_spine4"]="b/85fc21799495.webp";
 A["n_bluecloud"]="b/a1a21a7c716c.webp";
 A["n_softcloud"]="b/5b0b264a8594.webp";
+A["n_bush"]="b/a66daa1a3b56.webp";
+A["n_fbed"]="b/08a3792846d8.webp";
 A["n_bookint"]="b/f29544f09728.webp";
 A["t_dig"]="b/13cbbf71b7fa.webp";
 A["t_under"]="b/4387e38d487e.webp";
@@ -5387,7 +5395,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.133";
+var APP_VER="1.0.134";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -21128,6 +21136,8 @@ function villageScreen(){
   var stg=el('div','vstage');root.appendChild(stg);
   var scene=el('div','vscene');scene.style.width=VW+'px';scene.style.height=VH+'px';stg.appendChild(scene);
   var bg=img('n_base','vbg nbase');bg.draggable=false;bg.style.left=NB_X+'px';bg.style.top=NB_Y+'px';bg.style.width=NB_W+'px';scene.appendChild(bg);
+  // 앞쪽 양옆 빈 잔디: 꽃밭과 덤불 (좌우 대칭)
+  [['n_fbed',180,276,74,0],['n_fbed',378,276,74,1],['n_bush',126,284,40,0],['n_bush',432,284,40,1]].forEach(function(d){var im=img(d[0],'vdeco');im.draggable=false;im.alt='';im.style.width=d[3]+'px';im.style.left=(d[1]-d[3]/2)+'px';im.style.top=(d[2]-d[3]*.62)+'px';im.style.zIndex=Math.round(d[2]);if(d[4])im.style.transform='scaleX(-1)';scene.appendChild(im)});
   function onCell(c,r,dx,dy){var p=vC(c,r);return [p[0]+(dx||0),p[1]+(dy||0)]}
     if(S.path.char){
     var wk=el('div','vwalker');var wi=avImg(S.path.char);wk.appendChild(el('i','cshadow'));wk.appendChild(wi);scene.appendChild(wk);villagePetTap(wk,S.path.char);
@@ -21194,7 +21204,8 @@ function villageScreen(){
   var left=el('div','hudl');
   stkAward();missionCheck();evSettle();
   function chip(icon,val,label){var c=el('div','hchip');c.appendChild(img(icon));c.appendChild(el('b','tnum',val));c.setAttribute('aria-label',label);return c}
-  var fc=chip('fire',streak()+'일','연속 '+streak()+'일, 눌러서 자세히 보기');fc.className+=' tap';fc.onclick=stkSheet;left.appendChild(fc);setTimeout(stkShow,900);left.appendChild(sunTap(chip('sun',S.sun,'햇살 '+S.sun+'개')));hud.appendChild(left);
+  // 시안 A: 위쪽엔 숫자 없이 우체통·캐릭터·설정만. 연속 일수는 아래 '오늘의 할 일' 줄로, 햇살은 상점·결과 화면에서 보여요
+  setTimeout(stkShow,900);hud.appendChild(left);void chip;
   var snd=el('button','hbtn');snd.appendChild(spkIcon());snd.setAttribute('aria-label',S.sound?'소리 끄기':'소리 켜기');snd.onclick=function(){S.sound=!S.sound;save();villageScreen()};var hr_=el('div','hudr2');var mb_=el('button','hbtn vmailbtn');mb_.appendChild(img('n_mailbox'));mb_.setAttribute('aria-label','우체통'+(mailNewN()>0?', 새 편지 있음':''));if(mailNewN()>0)mb_.appendChild(el('em','lmbadge dot'));mb_.onclick=function(){LMACT.mailp()};hr_.appendChild(mb_);if(S.path.char){var ab=el('button','hbtn avbtn2');ab.setAttribute('aria-label','내 캐릭터 꾸미기');ab.appendChild(img(S.path.char,'avbimg'));if(avBadge())ab.appendChild(el('em','lmbadge dot'));ab.onclick=function(){AVBACK=villageScreen;avScreen()};hr_.appendChild(ab)}var hm_=el('button','hbtn vhomebtn');hm_.innerHTML=GEAR_SVG;hm_.setAttribute('aria-label','우리 집 · 부모님 보기와 설정');hm_.onclick=function(){LMACT.home()};hr_.appendChild(hm_);void snd;hud.appendChild(hr_);setTimeout(introVillage,1400);
   root.appendChild(hud);
   (function(){var e=evNow();if(!e)return;var b=el('button','evchip');b.appendChild(img(e.tok));var tx=el('span');tx.appendChild(el('b',null,String(S.ev.tok)));tx.appendChild(el('small',null,e.left?'D-'+e.left:'D-DAY'));b.appendChild(tx);b.setAttribute('aria-label',e.name+', '+e.tokName+' '+S.ev.tok+'개');b.onclick=evSheet;left.appendChild(b);
@@ -21204,7 +21215,7 @@ function villageScreen(){
   var bottom=el('div','vtoday');
   var md=S.math.today===today,hd=S.hz.today===today;
   function pill(icon,txt,done,act,sub){if(sub&&txt.replace(/\s/g,'').length>4)sub=null;var b=el('button','vtask'+(done?' done':'')+(sub?' trailp':''));b.appendChild(img(icon));var sp=el('span',null,txt);if(sub){sp.textContent='';sp.appendChild(el('small',null,sub));sp.appendChild(el('b',null,txt))}b.appendChild(sp);if(done){var c=el('i','vok');c.innerHTML=CHECK_SVG;b.appendChild(c)}b.onclick=act;return b}
-  (function(){var hd_=el('div','vthead');var vt_=el('button','wschip todaychip');var TL=todayList(),tn=TL.filter(function(x){return x.done}).length;vt_.appendChild(img('check_mark_button'));var vtx=el('span','tdtx');vtx.appendChild(el('small',null,todayLabel()));vtx.appendChild(el('b',null,'오늘의 할 일'));vt_.appendChild(vtx);vt_.appendChild(el('em','vtcnt'+(tn===TL.length?' all':''),tn+'/'+TL.length));vt_.onclick=todaySheet;vt_.setAttribute('aria-label','오늘의 할 일 '+tn+'개 중 '+TL.length+'개 완료, 눌러서 보기');hd_.appendChild(vt_);var W=wsS(),wc=el('button','wschip'+(W.cur?' on':''));var wn_=wsDoneN();wc.appendChild(img(W.cur?'sprout':'pencil'));wc.appendChild(el('span',null,W.cur?'숙제 이어서':'숙제'+(wn_&&wn_<wsCoreN()?' '+wn_+'/'+wsCoreN():'')));if(!W.cur&&wsCoreN()&&wn_>=wsCoreN()){var ok=el('i','vok');ok.innerHTML=CHECK_SVG;wc.appendChild(ok)}wc.setAttribute('aria-label','숙제 타이머');wc.onclick=function(){wsOpen(villageScreen)};hd_.appendChild(wc);bottom.appendChild(hd_)})();
+  (function(){var hd_=el('div','vthead');var vt_=el('button','wschip todaychip');var TL=todayList(),tn=TL.filter(function(x){return x.done}).length;vt_.appendChild(img('check_mark_button'));var vtx=el('span','tdtx');vtx.appendChild(el('small',null,todayLabel()));vtx.appendChild(el('b',null,'오늘의 할 일'));vt_.appendChild(vtx);vt_.appendChild(el('em','vtcnt'+(tn===TL.length?' all':''),tn+'/'+TL.length));vt_.onclick=todaySheet;vt_.setAttribute('aria-label','오늘의 할 일 '+tn+'개 중 '+TL.length+'개 완료, 눌러서 보기');hd_.appendChild(vt_);var sk_=el('button','wschip vstk');sk_.appendChild(img('fire'));sk_.appendChild(el('b','tnum',streak()+'일'));sk_.setAttribute('aria-label','연속 '+streak()+'일, 눌러서 자세히 보기');sk_.onclick=stkSheet;hd_.appendChild(sk_);var W=wsS(),wc=el('button','wschip'+(W.cur?' on':''));var wn_=wsDoneN();wc.appendChild(img(W.cur?'sprout':'pencil'));wc.appendChild(el('span',null,W.cur?'숙제 이어서':'숙제'+(wn_&&wn_<wsCoreN()?' '+wn_+'/'+wsCoreN():'')));if(!W.cur&&wsCoreN()&&wn_>=wsCoreN()){var ok=el('i','vok');ok.innerHTML=CHECK_SVG;wc.appendChild(ok)}wc.setAttribute('aria-label','숙제 타이머');wc.onclick=function(){wsOpen(villageScreen)};hd_.appendChild(wc);bottom.appendChild(hd_)})();
   (function(){var left=advLeft();
     if(ADV||left.length){var b=el('button','advbtn'+(ADV?' cont':''));var ic=el('span','advic');ic.appendChild(avImg(S.path.char||'cat'));b.appendChild(ic);
       var tx=el('span','advtx');tx.appendChild(el('b',null,ADV?'모험 이어서 하기':'오늘의 모험 시작'));
