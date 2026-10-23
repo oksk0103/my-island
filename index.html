@@ -4298,6 +4298,51 @@ html:root body:not(#z):not(#a) .island.edit .titem .tc{position:absolute!importa
 html:root body:not(#z):not(#a) .island.edit .titem .bigtag{display:none!important}
 html:root body:not(#z):not(#a) .island.edit .tacts .tdone{min-width:120px!important;height:52px!important;border-radius:26px!important;background:var(--c-teal)!important;box-shadow:0 4px 0 var(--c-teal-2)!important;display:flex!important;align-items:center;justify-content:center}
 html:root body:not(#z):not(#a) .island.edit .tacts .tdone::before{display:none!important}
+/* ===== 과목 공간: 떠 있는 작은 섬 무대 ===== */
+html:root body:not(#z) .islstage{position:relative;width:min(280px,72vw);margin:0 auto;display:block}
+html:root body:not(#z) .islstage .islbase{position:relative;z-index:1;width:100%;height:auto;display:block;filter:drop-shadow(0 14px 18px rgba(40,90,140,.16))}
+html:root body:not(#z) .islstage .islon{position:absolute;z-index:2;left:0;right:0;bottom:64%;display:flex;justify-content:center;align-items:flex-end;pointer-events:none}
+html:root body:not(#z) .islstage .islon>*{pointer-events:auto}
+html:root body:not(#z) .islstage{animation:islBob 5s ease-in-out infinite}
+@keyframes islBob{0%,100%{translate:0 0}50%{translate:0 -4px}}
+@media (prefers-reduced-motion:reduce){html:root body:not(#z) .islstage{animation:none}}
+/* 한자 나무 */
+html:root body:not(#z) .treestage{width:min(300px,80vw);margin-top:calc(min(300px,80vw)*.95)}
+html:root body:not(#z) .treestage .islon{bottom:56%}
+/* 영어 벌집 */
+html:root body:not(#z) .beestage{margin-top:120px}
+html:root body:not(#z) .beestage .jarhive{width:120px!important;height:auto!important;display:block;position:static!important}
+html:root body:not(#z) .beestage .honeyjar{position:absolute;z-index:3;right:14%;bottom:60%;width:40px;height:48px;border-radius:12px 12px 14px 14px;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 2.5px rgba(255,255,255,.95),0 4px 8px rgba(120,80,0,.18);overflow:hidden}
+html:root body:not(#z) .beestage .honeyjar>i{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(#f7c24a,#e79a1e);transition:height .6s}
+html:root body:not(#z) .beestage .honeyjar .hjlid{position:absolute;left:-2px;right:-2px;top:-2px;height:10px;border-radius:6px;background:#c98a3d}
+html:root body:not(#z) .beestage .beefly{position:absolute;z-index:4;width:14px;height:11px;border-radius:50%;background:repeating-linear-gradient(90deg,#f2b92e 0 4px,#3a2f2a 4px 6px);box-shadow:-3px -4px 0 -1px rgba(255,255,255,.9);animation:beeFly 6s ease-in-out infinite}
+html:root body:not(#z) .beestage .beefly.b0{left:18%;bottom:120%}
+html:root body:not(#z) .beestage .beefly.b1{left:74%;bottom:130%;animation-delay:-2s}
+html:root body:not(#z) .beestage .beefly.b2{left:28%;bottom:80%;animation-delay:-4s}
+@keyframes beeFly{0%,100%{translate:0 0}25%{translate:16px -8px}50%{translate:4px -16px}75%{translate:-14px -6px}}
+@media (prefers-reduced-motion:reduce){html:root body:not(#z) .beestage .beefly{animation:none}}
+html:root body:not(#z) .beescr .jar{display:none!important}
+/* 수학 화분 */
+html:root body:not(#z) .potscr .potcenter{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px}
+html:root body:not(#z) .potstage{margin-top:150px}
+html:root body:not(#z) .potstage .islon{bottom:58%}
+html:root body:not(#z) .potstage .potdots{position:absolute;z-index:3;left:50%;bottom:44%;transform:translateX(-50%);display:flex;gap:8px}
+html:root body:not(#z) .potstage .potdots i{width:16px;height:11px;border-radius:50%;background:#c9b896;box-shadow:inset 0 2px 2px rgba(0,0,0,.18)}
+html:root body:not(#z) .potstage .potdots i.on{background:radial-gradient(circle at 40% 35%,#8fcf6e,#4f9a3c);box-shadow:0 2px 0 rgba(40,80,30,.3)}
+html:root body:not(#z) .potstage .potshelf{position:absolute;z-index:2;right:4%;bottom:68%;display:flex;gap:2px;padding:4px 6px 6px;border-radius:8px;background:linear-gradient(#d9b27f,#b98d58);box-shadow:0 3px 0 #9a6f40}
+html:root body:not(#z) .potstage .potshelf .pshp img{width:22px;height:22px;object-fit:contain;display:block}
+html:root body:not(#z) .potscr .potbtns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+html:root body:not(#z) .potscr .potbtns .tpill{display:inline-flex;align-items:center;gap:6px}
+html:root body:not(#z) .potscr .potbtns .tpill img{width:22px;height:22px}
+/* 국어 서점: 위쪽 서점 안 그림 */
+html:root body:not(#z) .koscr .kobanner{display:block;width:calc(100% + 0px);max-width:520px;margin:-6px auto 6px;border-radius:22px;aspect-ratio:16/8;object-fit:cover;object-position:50% 35%;box-shadow:0 4px 0 var(--c-cream-edge)}
+html:root body:not(#z) .beestage .islon{bottom:50%}
+html:root body:not(#z) .beestage .islon{bottom:38%}
+html:root body:not(#z) .treestage{width:min(250px,66vw);margin-top:calc(min(250px,66vw)*.9)}
+html:root body:not(#z) .treestage .islon{bottom:50%}
+html:root body:not(#z) .beestage .stagehive{width:118px;height:auto;display:block}
+html:root body:not(#z) .beestage .islon{bottom:46%}
+html:root body:not(#z) .treestage{margin-top:calc(min(250px,66vw)*.78)}
 </style>
 
 <div id="app"></div>
@@ -4305,7 +4350,7 @@ html:root body:not(#z):not(#a) .island.edit .tacts .tdone::before{display:none!i
 <div class="sheet" id="sheet" aria-live="polite"><div class="in"></div></div>
 
 <script>
-var A={"pot":"b/fb6c2af9f554.webp","fol":"b/ef40cb10455e.webp","sprout":"b/4e959e69adfb.webp","seedling":"b/4e959e69adfb.webp","blossom":"b/5e888fd3f2c6.webp","tulip":"b/aa514e71ca51.webp","sunflower":"b/5baf87bbffcf.webp","rose":"b/922084613d8e.webp","hibiscus":"b/3a9b332021dd.webp","cherry_blossom":"b/c76696a8fa25.webp","droplet":"b/afb806f78742.webp","fire":"b/1708c445dad2.png","sparkles":"b/14bdfc93156d.png","check_mark_button":"b/84b182e42ffa.png","light_bulb":"b/ea857031b97e.png","speaker_high_volume":"b/84ed11d97781.png","muted_speaker":"b/d0d9b8f98351.png","rare_blossom":"b/89ba679f6d65.webp","rare_tulip":"b/78fa22e63ec1.webp","rare_sunflower":"b/a1977ff43d62.webp","rare_rose":"b/f33232bf4df0.webp","rare_hibiscus":"b/111cca8593c3.webp","rare_cherry_blossom":"b/377d7aa63ee8.webp","pot_gold":"b/5d893cae4724.webp","red_apple":"b/69f26295ade1.webp","peach":"b/c22057201d2f.webp","tangerine":"b/ce7c6218b843.webp","cherries":"b/cd507c15137a.webp","lemon":"b/d0eca1d1b06a.webp","grapes":"b/7a6362f49cbe.webp","rare_red_apple":"b/aee9a71c3ba0.webp","rare_peach":"b/abab150fd8f5.webp","rare_tangerine":"b/b1ce2a5a59c9.webp","rare_cherries":"b/c437de206848.webp","rare_lemon":"b/6bae98fbd847.webp","rare_grapes":"b/2a65c74daa97.webp","books":"b/dd5ecc8f9231.png","pot_sky":"b/20e71dbdee72.webp","pot_pink":"b/ffecd648a6fd.webp","pot_violet":"b/f6df9ff49da5.webp","pot_mint":"b/8e6c0ed19933.webp","pot_white":"b/b76e7356807d.webp","sun":"b/c3f5cc28eaa0.png","lady_beetle":"b/f7065fbd7d5d.webp","butterfly":"b/f182f95f84fd.webp","snail":"b/7aca81e92a12.webp","mushroom":"b/b5e6352df04a.webp","four_leaf_clover":"b/a38cf93e89a8.webp","rainbow":"b/0fef91acb565.webp","shopping_bags":"b/166dbd4854c2.png","rabbit":"b/bb86154ce2c7.webp","cat":"b/45fd4ba40686.webp","penguin":"b/323177dc545a.webp","chipmunk":"b/ea359ef62916.webp","hedgehog":"b/6f62cc83e9df.webp","turtle":"b/65d1acda2b53.webp","owl":"b/6b6e8d11bcc9.webp","hatching_chick":"b/4adfe66bafff.webp","wrapped_gift":"b/416b1375f11a.png","footprints":"b/ca49a2d65fe6.png","cloud":"b/e74c1fb9f0d4.webp","cloud_with_rain":"b/778f39b59c79.webp","evergreen_tree":"b/d196ec2eed3d.webp","fountain":"b/1a3d2241e26e.webp","chair":"b/616acb8c7fc8.webp","tent":"b/4a1934081b08.webp","house_with_garden":"b/7b642b1dcb07.webp","rock":"b/b638a5fb4e0f.webp","wood":"b/eead985eb68c.webp","jack-o-lantern":"b/2c9a23643877.webp","snowman":"b/5c48f968a8cb.webp","red_paper_lantern":"b/c1fc89120bdd.webp","playground_slide":"b/f4423425e414.webp","umbrella_on_ground":"b/fb506422a896.webp","teddy_bear":"b/f3ccb6c964e8.webp","cactus":"b/d28e37abee65.webp","palm_tree":"b/a7539d2c63bb.webp","postbox":"b/0b91780d718b.webp","pencil":"b/3d8782d79009.png","k3_house":"b/7b642b1dcb07.webp","k3_shop":"b/e485b6c34206.webp","k3_sign":"b/c6b9aa2bfe22.webp","k3_bookshop":"b/4fa967529d47.webp","pl_succ":"b/1bf86fb376fb.webp","pl_aloe":"b/c53c3c9b771a.webp","pl_fern":"b/425e54f0985a.webp","pl_lav":"b/72990a54538f.webp","pl_mimo":"b/33c5508b8c8e.webp","pl_hydr":"b/f2775b654d87.webp","pl_saguaro":"b/8ff009c51ed5.webp","pl_ballcac":"b/4263b5a1a022.webp","pl_baobab":"b/72bd37f3a6f6.webp","pl_monst":"b/a595e16d5243.webp","pl_coffee":"b/fd296d8793cb.webp","pl_bird":"b/319830325813.webp","pl_flytrap":"b/66bc0ea98119.webp","pl_pitcher":"b/50c60beed2b8.webp","pl_sundew":"b/1d96e595a518.webp","pl_lotus":"b/b2e512b36207.webp","pl_hyacinth":"b/706bdbc3ebbf.webp","pl_rafflesia":"b/86188fb0707c.webp","bld_botanic":"b/a96785d14071.webp","k3_cart":"b/09fb5e5e68fe.webp","k3_tree":"b/494c1911fb78.webp","k3_boat":"b/2b9f04fac32d.webp","k3_village":"b/d37f562fc6ee.webp","n_base":"b/25564f795c1d.webp","n_tree":"b/b4ae771aafea.webp","n_book":"b/bc31da10bc6d.webp","n_hive":"b/95dd4e79d39a.webp","n_pot":"b/098ff8ac7afd.webp","n_pot0":"b/dde4731eb6a3.webp","n_myisl":"b/fb5e08c95e32.webp","n_mailbox":"b/74efffdd8bfe.webp","n_ico_ko":"b/72b00aa5600d.webp","n_ico_math":"b/02ace656e90a.webp","n_ico_en":"b/a422552e1933.webp","n_ico_hz":"b/84a6f451d9f6.webp",};
+var A={"pot":"b/2e0a2522e89e.webp","fol":"b/f9e6623b4993.webp","sprout":"b/578e10762307.webp","seedling":"b/4e959e69adfb.webp","blossom":"b/5e888fd3f2c6.webp","tulip":"b/aa514e71ca51.webp","sunflower":"b/5baf87bbffcf.webp","rose":"b/922084613d8e.webp","hibiscus":"b/3a9b332021dd.webp","cherry_blossom":"b/c76696a8fa25.webp","droplet":"b/afb806f78742.webp","fire":"b/1708c445dad2.png","sparkles":"b/14bdfc93156d.png","check_mark_button":"b/84b182e42ffa.png","light_bulb":"b/ea857031b97e.png","speaker_high_volume":"b/84ed11d97781.png","muted_speaker":"b/d0d9b8f98351.png","rare_blossom":"b/89ba679f6d65.webp","rare_tulip":"b/78fa22e63ec1.webp","rare_sunflower":"b/a1977ff43d62.webp","rare_rose":"b/f33232bf4df0.webp","rare_hibiscus":"b/111cca8593c3.webp","rare_cherry_blossom":"b/377d7aa63ee8.webp","pot_gold":"b/5d893cae4724.webp","red_apple":"b/45ef2a1f541e.webp","peach":"b/c22057201d2f.webp","tangerine":"b/ce7c6218b843.webp","cherries":"b/cd507c15137a.webp","lemon":"b/d0eca1d1b06a.webp","grapes":"b/7a6362f49cbe.webp","rare_red_apple":"b/aee9a71c3ba0.webp","rare_peach":"b/abab150fd8f5.webp","rare_tangerine":"b/b1ce2a5a59c9.webp","rare_cherries":"b/c437de206848.webp","rare_lemon":"b/6bae98fbd847.webp","rare_grapes":"b/2a65c74daa97.webp","books":"b/dd5ecc8f9231.png","pot_sky":"b/20e71dbdee72.webp","pot_pink":"b/ffecd648a6fd.webp","pot_violet":"b/f6df9ff49da5.webp","pot_mint":"b/8e6c0ed19933.webp","pot_white":"b/b76e7356807d.webp","sun":"b/c3f5cc28eaa0.png","lady_beetle":"b/f7065fbd7d5d.webp","butterfly":"b/f182f95f84fd.webp","snail":"b/7aca81e92a12.webp","mushroom":"b/b5e6352df04a.webp","four_leaf_clover":"b/a38cf93e89a8.webp","rainbow":"b/0fef91acb565.webp","shopping_bags":"b/166dbd4854c2.png","rabbit":"b/bb86154ce2c7.webp","cat":"b/45fd4ba40686.webp","penguin":"b/323177dc545a.webp","chipmunk":"b/ea359ef62916.webp","hedgehog":"b/6f62cc83e9df.webp","turtle":"b/65d1acda2b53.webp","owl":"b/6b6e8d11bcc9.webp","hatching_chick":"b/4adfe66bafff.webp","wrapped_gift":"b/416b1375f11a.png","footprints":"b/ca49a2d65fe6.png","cloud":"b/e74c1fb9f0d4.webp","cloud_with_rain":"b/778f39b59c79.webp","evergreen_tree":"b/d196ec2eed3d.webp","fountain":"b/1a3d2241e26e.webp","chair":"b/616acb8c7fc8.webp","tent":"b/4a1934081b08.webp","house_with_garden":"b/7b642b1dcb07.webp","rock":"b/b638a5fb4e0f.webp","wood":"b/eead985eb68c.webp","jack-o-lantern":"b/2c9a23643877.webp","snowman":"b/5c48f968a8cb.webp","red_paper_lantern":"b/c1fc89120bdd.webp","playground_slide":"b/f4423425e414.webp","umbrella_on_ground":"b/fb506422a896.webp","teddy_bear":"b/f3ccb6c964e8.webp","cactus":"b/d28e37abee65.webp","palm_tree":"b/a7539d2c63bb.webp","postbox":"b/0b91780d718b.webp","pencil":"b/3d8782d79009.png","k3_house":"b/7b642b1dcb07.webp","k3_shop":"b/e485b6c34206.webp","k3_sign":"b/c6b9aa2bfe22.webp","k3_bookshop":"b/4fa967529d47.webp","pl_succ":"b/1bf86fb376fb.webp","pl_aloe":"b/c53c3c9b771a.webp","pl_fern":"b/425e54f0985a.webp","pl_lav":"b/72990a54538f.webp","pl_mimo":"b/33c5508b8c8e.webp","pl_hydr":"b/f2775b654d87.webp","pl_saguaro":"b/8ff009c51ed5.webp","pl_ballcac":"b/4263b5a1a022.webp","pl_baobab":"b/72bd37f3a6f6.webp","pl_monst":"b/a595e16d5243.webp","pl_coffee":"b/fd296d8793cb.webp","pl_bird":"b/319830325813.webp","pl_flytrap":"b/66bc0ea98119.webp","pl_pitcher":"b/50c60beed2b8.webp","pl_sundew":"b/1d96e595a518.webp","pl_lotus":"b/b2e512b36207.webp","pl_hyacinth":"b/706bdbc3ebbf.webp","pl_rafflesia":"b/86188fb0707c.webp","bld_botanic":"b/a96785d14071.webp","k3_cart":"b/09fb5e5e68fe.webp","k3_tree":"b/6599c050abf7.webp","k3_boat":"b/2b9f04fac32d.webp","k3_village":"b/d37f562fc6ee.webp","n_base":"b/25564f795c1d.webp","n_tree":"b/b4ae771aafea.webp","n_book":"b/bc31da10bc6d.webp","n_hive":"b/95dd4e79d39a.webp","n_pot":"b/098ff8ac7afd.webp","n_pot0":"b/dde4731eb6a3.webp","n_myisl":"b/fb5e08c95e32.webp","n_mailbox":"b/74efffdd8bfe.webp","n_ico_ko":"b/72b00aa5600d.webp","n_ico_math":"b/02ace656e90a.webp","n_ico_en":"b/a422552e1933.webp","n_ico_hz":"b/84a6f451d9f6.webp",};
 var K3={"bookshop": {"w": 141, "h": 153, "bx": 0.5, "by": 0.7476}, "cart": {"w": 84, "h": 88, "bx": 0.5, "by": 0.7936}, "house": {"w": 168.7, "h": 178.7, "bx": 0.5, "by": 0.6996}, "shop": {"w": 161.4, "h": 166.4, "bx": 0.5, "by": 0.6442}, "sign": {"w": 67.2, "h": 82.9, "bx": 0.5, "by": 0.6991}, "tree": {"w": 130.4, "h": 205.0, "bx": 0.5, "by": 0.8097}, "boat": {"w": 134.8, "h": 83.2, "bx": 0.5, "by": 0.5396}, "canopy": [0.499, 0.365, 0.304, 0.2], "anch": {"home": [165, 245.5], "tree": [293.8, 236.3], "shop": [427.2, 261.6], "mail": [188, 372], "pot": [326, 395], "boat": [280, 537.2]}};
 var POT_AR=1.03,POT_SOIL=.76;
 K3.pond=["16,9", "17,9", "16,10", "17,10", "15,10"];K3.nat=["3,8", "2,10", "3,11", "8,2", "10,1", "11,2", "9,18", "11,17", "17,13", "16,15", "3,14", "14,3", "16,4", "4,16", "18,8", "16,11", "15,9", "17,11", "2,9", "9,2"];
@@ -4492,6 +4537,8 @@ A["umbrella_on_ground_r1"]="b/dd5afb1c15a1.webp";
 A["umbrella_on_ground_r2"]="b/38b807b2ac87.webp";
 A["umbrella_on_ground_r3"]="b/0350f4ff7605.webp";
 A["t_rock"]="b/fac91c77349e.webp";
+A["n_islet"]="b/f5cf377e6143.webp";
+A["n_bookint"]="b/f29544f09728.webp";
 A["t_dig"]="b/13cbbf71b7fa.webp";
 A["t_under"]="b/4387e38d487e.webp";
 A["t_dc1"]="b/c47d75f04931.webp";
@@ -4686,7 +4733,7 @@ A["t_pond"]="b/16b0f822951a.webp";
 A["t_foam"]="b/4bda579ac02a.webp";
 A["t_shadow"]="b/6d4ac60d2c76.webp";
 var TILE={"g1": [92, 46.6], "g2": [92, 46.6], "sand": [92, 46.6], "pond": [92, 46.6], "foam": [115.5, 15.3], "shadow": [134.5, 38.8], "g3": [92, 46.6], "shallow": [186, 48.4], "path": [92, 46.6], "dirt": [92, 46.6], "canal": [92, 46.6], "rim_px": [92, 46.6], "rim_nx": [92, 46.6], "rim_pz": [92, 46.6], "rim_nz": [92, 46.6], "hedge": [92, 73.5], "plate2": [177, 94.6]};
-A["k3_hive"]="b/226d20889872.webp";
+A["k3_hive"]="b/1419951ea992.webp";
 K3.hive={"w": 86.8, "h": 113.8, "bx": 0.5, "by": 0.7947};K3.anch.bee=[117.3,362.8];K3.hive.w*=.85;K3.hive.h*=.85;
 A["fire"]="b/0ca984646027.webp";
 A["sun"]="b/9dd18f19dd3c.webp";
@@ -5176,7 +5223,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.125";
+var APP_VER="1.0.126";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -10006,7 +10053,7 @@ function koAdvance(){var k=koS(),b=koBand(),pg=KOR&&KOR.pg;KOR=null;if(!pg)retur
 var KO_COV=[['#ffd8a8','#e8590c'],['#c5f6fa','#1c7ed6'],['#ffe3e3','#c92a2a'],['#d3f9d8','#2b8a3e'],['#e5dbff','#7048e8'],['#fff3bf','#e67700']];
 function koCover(bk,i,small){var c=el('div','kcov'+(small?' sm':''));var cc=KO_COV[i%KO_COV.length];c.style.background=cc[0];c.style.borderColor=cc[1];c.style.color=cc[1];c.appendChild(el('b',null,bk.title));return c}
 // 국어 서점 화면
-function koScreen(fromRound){clear();document.body.classList.remove('qmode');var sc=el('div','screen koscr'),top=el('div','qtop');var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=BACK_SVG;back.onclick=home;top.appendChild(back);top.appendChild(el('h3','wtitle','국어 서점'));sc.appendChild(top);
+function koScreen(fromRound){clear();document.body.classList.remove('qmode');var sc=el('div','screen koscr'),top=el('div','qtop');var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=BACK_SVG;back.onclick=home;top.appendChild(back);top.appendChild(el('h3','wtitle','국어 서점'));sc.appendChild(top);if(!fromRound){var kb=img('n_bookint','kobanner');kb.alt='';sc.appendChild(kb)}
   var c=el('div','center kocenter'),b=koBand(),books=KOB[b]||[];
   if(!books.length){c.appendChild(img('k3_bookshop','kohero'));c.appendChild(el('h2',null,KO_BANDS[b]+' 책을 준비하고 있어요'));c.appendChild(el('p','sub','지금은 1~2학년 이야기책이 먼저 열렸어요. 우리 집 › 국어에서 1~2학년 책으로 읽게 바꿀 수 있어요.'));var pb=el('button','cta light','1~2학년 책으로 읽기');pb.onclick=function(){koSetGrade(2);koScreen()};c.appendChild(pb);sc.appendChild(c);var dk0=el('div','dock'),h0=el('button','cta','마을로');h0.onclick=home;dk0.appendChild(h0);sc.appendChild(dk0);app.appendChild(sc);return}
   var R_=fromRound&&G&&G.kres;
@@ -18652,10 +18699,10 @@ function treeScreen(fromRound){if(fromRound)TREEP=null;
   }
   var info=el('p','fruitinfo');info.hidden=true;
   var zz=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z'))||1;var tw=Math.max(170,Math.min((app.clientWidth||375)-40,320,(innerHeight/(document.body.classList.contains('big')?zz:1)-(fromRound?380:330)-(!fromRound&&wiltedList().some(function(ch){return gradeOf(ch)===tg})?150:0))/TREE_AR));
-  c.appendChild(treeEl(tw,{grade:tg,part:gradeCap(tg)>100?TREEP:null,labels:true,hi:fromRound&&G?G.newFruits.concat(G.grown||[]):[],onFruit:function(ch){
+  tw=Math.round(tw*.8);  c.appendChild(subjStage(treeEl(tw,{grade:tg,part:gradeCap(tg)>100?TREEP:null,labels:true,hi:fromRound&&G?G.newFruits.concat(G.grown||[]):[],onFruit:function(ch){
     var h=H8[HIDX[ch]],ex=exampleWord(ch);info.hidden=false;info.innerHTML='';
     info.appendChild(el('b','hz',ch));var t=el('span');t.appendChild(el('strong',null,hzName(h)));var sr_=hzSrGet(ch),lf=hzSrLeft(ch);if(sr_)t.appendChild(el('em','srst st'+sr_.s,SR_NAME[sr_.s]+' · '+(lf<=0?'오늘 복습해요':lf+'일 뒤 복습')));else if(ex)t.appendChild(el('small',null,ex[0]+'('+ex[1]+')'));info.appendChild(t);var cb=el('button','cta light hzcardbtn','카드');cb.onclick=function(){hzBrowse(tg,ch,function(){treeScreen(false)})};info.appendChild(cb);
-  }}));
+  }}),'treestage'));
   c.appendChild(info);
   if(n){var lg=el('div','srlegend'),cnt=[0,0,0,0,0,0];hzOrder().forEach(function(ch){if(gradeOf(ch)===tg){var r=hzSrGet(ch);cnt[r?r.s:3]++}});for(var si=1;si<=5;si++){var it=el('span','st'+si);it.appendChild(el('i'));it.appendChild(document.createTextNode(SR_NAME[si]+' '+cnt[si]));lg.appendChild(it)}c.appendChild(lg)}
   var bar=el('div','prog'),b2=el('div','bar'),fi=el('i');fi.style.width=(n/gradeCap(tg)*100)+'%';b2.appendChild(fi);bar.appendChild(b2);bar.appendChild(el('span','tnum',GRADES[tg]+' '+n+' / '+gradeCap(tg)));bar.style.width='100%';c.appendChild(bar);
@@ -19144,19 +19191,7 @@ var LMACT={
   shop:function(){shop('decor')},
   mail:function(){S.path.char?trail():chooseFriend()},
   home:function(){houseScreen()},
-  pot:function(){
-    var m=SUBJ.math,st=stage(m),inn=sheet.firstChild;inn.innerHTML='';
-    var hd=el('div','hd');var pv=el('div','sheetpot');pv.appendChild(potBox(null,st,64,potKey(m)));hd.appendChild(pv);
-    var t=el('div');t.appendChild(el('small',null,'수학 화분 · '+st+' / '+PER));t.appendChild(el('h3',null,m.stage[st]));hd.appendChild(t);inn.appendChild(hd);
-    inn.appendChild(el('p',null,'수학 문제를 맞힐 때마다 꽃이 한 단계 자라요. '+(PER-st)+'문제만 더 맞히면 꽃이 펴요.'));
-    var row=el('div','dockrow');
-    var a=el('button','cta light','닫기');a.onclick=hideSheet;
-    var b=el('button','cta green','수학 문제 풀기');b.onclick=function(){hideSheet();startRound(m)};
-    row.appendChild(a);row.appendChild(b);inn.appendChild(row);
-    var row2=el('div','dockrow');var gb=el('button','cta light','꽃 도감');gb.onclick=function(){hideSheet();greenhouse('math')};var pb=el('button','cta light','화분 꾸미기');pb.onclick=function(){hideSheet();shop('pot')};row2.appendChild(gb);row2.appendChild(pb);inn.appendChild(row2);var uc_=tchCount(curGrade()),ub=el('button','cta light tchpotbtn');ub.appendChild(img(TCH_FR[0]));ub.appendChild(document.createTextNode(TCH_FR[1]+'에게 가르친 단원 '+uc_[0]+' / '+uc_[1]));ub.onclick=function(){hideSheet();SCH_TAB='class';schoolScreen(function(){islandScreen(false)})};inn.appendChild(ub);
-    sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;
-    requestAnimationFrame(function(){sheet.className='sheet good show'});
-  }
+  pot:function(){potScreen()}
 };
 
 function enStats(){var n={1:0,2:0,4:0,all:0};EN.words.forEach(function(x){var p=enBits(x.w);if(p&1)n[1]++;if(p&2)n[2]++;if(p&4)n[4]++;if(p===7)n.all++});return n}
@@ -19168,7 +19203,7 @@ function beeScreen(fromRound){
   if(fromRound&&G){c.appendChild(el('div','eyebrow',G.got+' / '+ROUND+' 정답'+sunTxt()));c.appendChild(el('h2',null,G.jarFull?'꿀단지 '+G.jarFull+'개째 완성!':(G.mastered&&G.mastered.length)?'꿀이 가득 찬 단어 '+G.mastered.length+'개!':'꿀이 차오르고 있어요'));if(G.jarFull){SND.bloom();setTimeout(function(){burst(innerWidth/2,innerHeight*.35,46,true)},300)}
     var nt=[];if(G.mastered&&G.mastered.length)nt.push(G.mastered.join(', ')+'.');if(G.jarFull)nt.push('꿀단지 하나 완성! 햇살 +20, 보석 +2. 다음 꿀단지를 채워 봐요.');else nt.push(enTrack()==='s'?'들은 문장을 소리 내어 따라 말해 보면 더 빨리 늘어요.':enTrack()==='ph'?'소리와 글자를 함께 익히고 있어요.':'한 단어를 뜻, 글자, 듣고 쓰기 세 가지 모두 한 번에 맞히면 꿀이 가득 차요.');c.appendChild(el('p','sub',nt.join(' ')))}
   else{var J=enJar();c.appendChild(el('div','eyebrow','영어 벌집 · '+(EN.title||'이번 주 단어')));if(enTrack()==='s'){c.appendChild(el('h2',null,'문장·대화 연습 중'));c.appendChild(el('p','sub','교과서 핵심 표현으로 묻고 답하기를 익혀요. 듣기 버튼을 누르고 따라 말해 보세요.'))}else if(enTrack()==='ph'){c.appendChild(el('h2',null,'파닉스 연습 중'));c.appendChild(el('p','sub','알파벳, 소리 단어, 사이트 워드를 익혀요. 잘하게 되면 저절로 다음 단계로 올라가요.'))}else{c.appendChild(el('h2',null,'꿀단지 '+J.no+' · '+jarDone()+' / '+J.ws.length));c.appendChild(el('p','sub','이 꿀단지 단어 '+J.ws.length+'개를 뜻, 글자, 듣고 쓰기로 모두 맞히면 꿀단지가 가득 차요.'))}var tot_=el('div','entot');tot_.appendChild(el('span',null,'지금까지 익힌 단어'));tot_.appendChild(el('b',null,st.all+'\u00a0/\u00a0'+N));c.appendChild(tot_)}
-  var JJ=enJar(),jarIn={};JJ.ws.forEach(function(w){jarIn[w]=1});var jar=el('div','jar');var fill=el('i');fill.style.height=Math.round(jarDone()/JJ.ws.length*100)+'%';jar.appendChild(fill);var hv=img('k3_hive','jarhive');jar.appendChild(hv);c.appendChild(jar);
+  var JJ=enJar(),jarIn={};JJ.ws.forEach(function(w){jarIn[w]=1});var hv=img('n_hive','stagehive');var bst=subjStage(hv,'beestage');var jar=el('div','honeyjar');var fill=el('i');fill.style.height=Math.round(jarDone()/JJ.ws.length*100)+'%';jar.appendChild(fill);jar.appendChild(el('b','hjlid'));jar.setAttribute('aria-label','꿀단지 '+jarDone()+' / '+JJ.ws.length);bst.appendChild(jar);for(var bi=0;bi<3;bi++){var bz=el('i','beefly b'+bi);bst.appendChild(bz)}c.appendChild(bst);
   var bars=el('div','enbars');[[1,'뜻 고르기'],[2,'글자 맞추기'],[4,'듣고 쓰기']].forEach(function(x){var n_=JJ.ws.filter(function(w){return enBits(w)&x[0]}).length,T_=JJ.ws.length;var r=el('div','enbar');r.appendChild(el('span',null,x[1]));var b2=el('div','bar');var f=el('i');f.style.width=(n_/T_*100)+'%';b2.appendChild(f);r.appendChild(b2);r.appendChild(el('b','tnum',n_+'/'+T_));bars.appendChild(r)});if(enTrack()==='w')c.appendChild(bars);if(!fromRound)c.appendChild(enTrackBar());
   var det=el('details','enlist');det.appendChild(el('summary',null,'단어 '+N+'개 보기'));var ul=el('div','enwords');
   EN.words.slice().sort(function(a,b){return (jarIn[b.w]?1:0)-(jarIn[a.w]?1:0)}).forEach(function(x){var p=enBits(x.w),b=el('button','enw'+(p===7?' full':'')+(jarIn[x.w]?' injar':''));b.appendChild(el('b',null,x.w));b.appendChild(el('span',null,x.k));var d=el('i','dots3');[1,2,4].forEach(function(k){d.appendChild(el('em',p&k?'on':''))});b.appendChild(d);b.onclick=function(){sayEn(x.w)};ul.appendChild(b)});
@@ -19942,6 +19977,34 @@ function tchClassTab(sc){var T=tchS(),g=curGrade(),U=UNITS.filter(function(u){re
       tx.appendChild(el('small',null,dn?'가르쳐 줬어요':rd?'다 익혔어요! '+TCH_FR[1]+'가 물으러 와요':off?'아직 안 배우는 단원':'익히는 중'));r.appendChild(tx);
       if(!dn&&!rd&&!off){var b=el('i','tchbar sm'),f=el('em');f.style.width=Math.round(p*100)+'%';b.appendChild(f);r.appendChild(b)}l.appendChild(r)});sc.appendChild(l)});
   sc.appendChild(el('p','mtip','단원 문제를 다른 날에 두 번 한 번에 맞히면 다 익힌 거예요. 그러면 '+TCH_FR[1]+'가 공책을 들고 찾아와요. 한자·영어·국어 친구도 곧 우리 반에 와요.'))}
+// ================= 과목 공간: 떠 있는 작은 섬 무대 =================
+// node(나무·벌집·화분)를 작은 섬 위에 올려요. h: 무대 높이
+function subjStage(node,cls){var s=el('div','islstage'+(cls?' '+cls:''));var b=img('n_islet','islbase');b.draggable=false;s.appendChild(b);var top=el('div','islon');top.appendChild(node);s.appendChild(top);return s}
+// 수학 화분 공간
+function potScreen(){
+  clear();document.body.classList.remove('qmode');
+  var m=SUBJ.math,st=stage(m),sc=el('div','screen potscr'),top=el('div','qtop');
+  var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=BACK_SVG;back.onclick=home;top.appendChild(back);top.appendChild(el('h3','wtitle','수학 화분'));sc.appendChild(top);
+  var c=el('div','center potcenter');
+  c.appendChild(el('div','eyebrow','수학 화분 · '+st+' / '+PER));
+  c.appendChild(el('h2',null,m.stage[st]));
+  c.appendChild(el('p','sub','수학 문제를 맞힐 때마다 꽃이 한 단계 자라요. '+(PER-st)+'문제만 더 맞히면 꽃이 펴요.'));
+  var pw=Math.min(190,(app.clientWidth||375)*.46),pb=potBox(null,st,pw,potKey(m),S.equip.friend);
+  var stg=subjStage(pb,'potstage');
+  // 씨앗 자리: 맞힌 만큼 초록으로
+  var dots=el('div','potdots');for(var i=0;i<PER;i++)dots.appendChild(el('i',i<st?'on':null));dots.setAttribute('aria-label',PER+'문제 중 '+st+'문제');stg.appendChild(dots);
+  // 꽃 선반: 지금까지 피운 꽃
+  var hist=(stOf(m).hist||[]).slice().reverse(),seen={},shown=[];hist.forEach(function(k){if(seen[k]||shown.length>=3)return;seen[k]=1;var it=m.items[k]||itemOf(m,k);if(it&&it.img)shown.push(it)});
+  if(shown.length){var sh=el('div','potshelf');shown.forEach(function(it){var p=el('span','pshp');p.appendChild(img(it.img));sh.appendChild(p)});stg.appendChild(sh)}
+  c.appendChild(stg);
+  var row=el('div','potbtns');
+  var gb=el('button','tpill','꽃 도감');gb.onclick=function(){greenhouse('math')};row.appendChild(gb);
+  var pbtn=el('button','tpill','화분 꾸미기');pbtn.onclick=function(){shop('pot')};row.appendChild(pbtn);
+  var uc_=tchCount(curGrade()),ub=el('button','tpill tchpotbtn');ub.appendChild(img(TCH_FR[0]));ub.appendChild(document.createTextNode('가르친 단원 '+uc_[0]+' / '+uc_[1]));ub.onclick=function(){SCH_TAB='class';schoolScreen(potScreen)};row.appendChild(ub);
+  c.appendChild(row);sc.appendChild(c);
+  var dk=el('div','dock');var go=el('button','cta','수학 문제 풀기');go.onclick=function(){startRound(m)};dk.appendChild(go);sc.appendChild(dk);
+  app.appendChild(sc);
+}
 // ================= 섬 식물원: 숙제 시간으로 식물을 키워 전시해요 =================
 // 퀴즈 보상(꽃·열매·소품)은 섬을 꾸미는 재료, 숙제는 식물원에만 전시되는 식물이에요. 섬 꾸미기와 겹치지 않아요.
 // - 숙제를 끝낼 때마다 그 시간이 지금 키우는 화분에 쌓여요(하루 최대 BOT_CAP분). 필요한 시간이 차면 피어서 전시돼요.
