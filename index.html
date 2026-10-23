@@ -4276,6 +4276,14 @@ html:root body:not(#z) .island .wave,html:root body:not(#z) .island .searock{dis
 html:root body:not(#z) .island.tod-night,html:root body:not(#z) .island.night{background:linear-gradient(180deg,#1d2a4a 0%,#2b3c63 55%,#3a4f78 100%)!important}
 /* 점토 그림에는 스티커 테두리 대신 부드러운 그림자만 */
 html:root{--ico:drop-shadow(0 2px 3px rgba(40,50,70,.16))!important}
+/* 모험 완료 줄: 크림 바탕이라 글자는 진한 색 */
+html:root body:not(#z):not(#a) .village .advdone0 b{color:var(--c-ink)!important;text-shadow:none!important}
+html:root body:not(#z):not(#a) .village .advdone0 small{color:var(--c-ink-2)!important;text-shadow:none!important}
+html:root body:not(#z):not(#a) .village .advdone0 .advstars{color:var(--c-sun)!important;text-shadow:0 1px 0 rgba(120,80,0,.25)!important}
+html:root body:not(#z):not(#a) .village.tod-night .advdone0 b{color:var(--c-night-ink)!important}
+html:root body:not(#z):not(#a) .village.tod-night .advdone0 small{color:rgba(230,237,247,.75)!important}
+/* 상점 가격표: 한 줄로 */
+html:root body:not(#z) .shopscr .shopc .tag{white-space:nowrap}
 </style>
 
 <div id="app"></div>
@@ -5154,7 +5162,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.123";
+var APP_VER="1.0.124";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -17941,7 +17949,7 @@ function shop(tab){
       var have=t[d.id]||0,card=el('button','ghc shopc'+(S.sun<d.price?' need':''));
       var pv=el('div','fprev');if(SPR3[d.id]){pv.appendChild(itemSprite(d.id,d.sz>1?84:68))}else{var im=img(d.id);im.style.width=Math.min(84,60*d.s)+'px';im.style.height='auto';pv.appendChild(im)}card.appendChild(pv);
       card.appendChild(el('b',null,d.name));
-      var tag=el('small','tag');tag.appendChild(img('sun'));tag.appendChild(document.createTextNode(d.price+(d.pack?' · '+d.pack+'칸':'')+(have?'  ·  '+have+(d.pack?'칸':'개'):'')));card.appendChild(tag);if(d.sz>1){card.appendChild(el('em','bigtag','큰 소품 '+d.sz+'×'+d.sz));card.className+=' bigc'}
+      var tag=el('small','tag');tag.appendChild(img('sun'));tag.appendChild(document.createTextNode(d.price+(d.pack?' · '+d.pack+'칸':'')+(have?'  ·  '+have+(d.pack?'칸':'개'):'')));card.appendChild(tag);if(d.sz>1){card.className+=' bigc'}
       card.onclick=function(){
         if(S.sun<d.price){msg.textContent='햇살이 '+(d.price-S.sun)+'개 더 필요해요. 문제를 풀면 햇살이 모여요.';msg.className='sum warn';return}
         S.sun-=d.price;S.gd.bought[d.id]=(S.gd.bought[d.id]||0)+(d.pack||1);save();tone([659,880,1175],'sine',.08);
