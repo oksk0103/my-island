@@ -4667,6 +4667,11 @@ html:root body:not(#z) .potscr .potcard .pothint{font-size:12.5px;color:var(--c-
 html:root body:not(#z) .potwrap.pop .mpot{animation:potpop .5s cubic-bezier(.3,1.6,.5,1)}
 html:root body:not(#z) .village .nart.npb .mpot{position:absolute;left:0;bottom:0;filter:drop-shadow(0 4px 3px rgba(60,50,30,.18))}
 @media (max-height:780px){html:root body:not(#z) .potscr .mpstage{width:min(290px,74vw)!important}}
+html:root body:not(#z) .village .nart.npb .vmound{position:absolute;left:50%;bottom:-14%;width:190%;transform:translateX(-50%);z-index:0;filter:drop-shadow(0 3px 3px rgba(40,70,40,.15))}
+html:root body:not(#z) .village .nart.npb .mpot{z-index:1}
+html:root body:not(#z) .village.tod-night .nart.npb .mpot,html:root body:not(#z) .village.tod-night .nart.npb .vmound{filter:brightness(.66) saturate(.85) hue-rotate(-6deg)}
+html:root body:not(#z) .village.tod-night .nart.npb .potbox{filter:none}
+html:root body:not(#z) .village.tod-night .nart.npb .mpot{filter:brightness(.62) saturate(.6) hue-rotate(-6deg)!important}
 </style>
 
 <div id="app"></div>
@@ -4877,6 +4882,7 @@ A["n_softcloud"]="b/5b0b264a8594.webp";
 A["n_bush"]="b/a66daa1a3b56.webp";
 A["n_fbed"]="b/08a3792846d8.webp";
 A["n_rsch"]="b/d39306504719.webp";
+A["mp_mound"]="b/d04f1fdd8f14.webp";
 A["mp_gold"]="b/aafe15dc3268.webp";
 A["mp_white"]="b/9a4b842a4614.webp";
 A["mp_violet"]="b/bb9d597b3a66.webp";
@@ -5582,7 +5588,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.140";
+var APP_VER="1.0.141";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -21368,7 +21374,7 @@ function villageScreen(){
     var b=el('button','v3 lm-'+v.id);b.style.left=v.x+'px';b.style.top=v.y+'px';b.style.zIndex=Math.round(v.y);
     var art;
     if(v.id==='tree')art=nart('n_tree',150,.86);
-    else if(v.id==='pot'){var st_=stage_(),pw_=74,ph_=Math.round(pw_*MP_AR);art=el('div','v3art nart pot npb');art.style.width=pw_+'px';art.style.height=ph_+'px';art.style.left=(-pw_/2)+'px';art.style.top=(-ph_*.95)+'px';art.appendChild(mathPot(st_,pw_,potKey(SUBJ.math)))}
+    else if(v.id==='pot'){var st_=stage_(),pw_=74,ph_=Math.round(pw_*MP_AR);art=el('div','v3art nart pot npb');art.style.width=pw_+'px';art.style.height=ph_+'px';art.style.left=(-pw_/2)+'px';art.style.top=(-ph_*.95)+'px';var md_=img('mp_mound','vmound');md_.alt='';art.appendChild(md_);art.appendChild(mathPot(st_,pw_,potKey(SUBJ.math)))}
     else if(v.id==='bee')art=nart('n_hive',112,.88);
     else if(v.id==='book')art=nart('n_book',140,.86);
     else if(v.id==='boat'){art=nart('n_myisl',150,.5);art.className+=' vmyisl'}
