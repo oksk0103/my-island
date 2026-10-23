@@ -4422,6 +4422,49 @@ html:root body:not(#z) .treecenter>.treestage{width:min(320px,80vw)}
 html:root body:not(#z) .treestage .islon{bottom:46%}
 html:root body:not(#z) .spcard-sum .srdue-chip{padding:2px 8px!important;font-size:11.5px!important}
 html:root body:not(#z) .spcard-sum .srdue-chip b{font-size:15px!important}
+/* 국어 서점: 시안(방 안 + 큰 크림 판 + 펼친 책 + 나무 책장) */
+html:root body:not(#z):has(.koscr:not(.krev)),html:root body:not(#z) .koscr:not(.krev){background:linear-gradient(180deg,#e9cfa9 0%,#efd9b8 60%,#f3e3c8 100%)!important}
+html:root body:not(#z) .koscr:not(.krev){position:relative}
+html:root body:not(#z) .koscr>.qtop{position:relative;z-index:3}
+html:root body:not(#z) .koscr>.qtop .wtitle{background:rgba(255,250,240,.88);padding:6px 14px;border-radius:999px;box-shadow:0 3px 0 rgba(150,110,60,.18)}
+html:root body:not(#z) .koscr .kobanner{position:absolute!important;z-index:0;top:0;left:0;right:0;width:100%!important;max-width:none!important;height:min(44vh,360px);object-fit:cover;object-position:50% 40%;margin:0!important;border-radius:0!important;box-shadow:none!important;-webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent)}
+html:root body:not(#z) .koscr:has(.kobanner) .kocenter{position:relative;z-index:2;padding-top:calc(min(44vh,360px) - 120px)}
+html:root body:not(#z) .kopanel{width:min(370px,92vw);box-sizing:border-box;padding:16px 16px 14px;border-radius:30px;background:linear-gradient(180deg,#fffaf0,#fbf3e3);box-shadow:0 6px 0 #e3d2b4,0 14px 30px rgba(120,80,30,.16);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+html:root body:not(#z) .kopanel>.eyebrow{margin:0!important}
+html:root body:not(#z) .kopanel>h2{font-size:19px!important;margin:0!important;line-height:1.35}
+html:root body:not(#z) .kopanel>p.sub{font-size:13px!important;margin:0!important}
+html:root body:not(#z) .kopanel .kcur2{all:unset;display:flex;flex-direction:column;align-items:center;width:100%;gap:6px;padding:10px 12px 12px;box-sizing:border-box;border-radius:22px;background:#f6ecd9;box-shadow:inset 0 2px 6px rgba(150,110,60,.12)}
+html:root body:not(#z) .kopanel .kcur2::before,html:root body:not(#z) .kopanel .kcur2::after{display:none!important}
+html:root body:not(#z) .kopanel .kobook{width:62%;max-width:220px;display:block;filter:drop-shadow(0 6px 8px rgba(90,70,40,.18))}
+html:root body:not(#z) .kopanel .kcurr{align-items:center;text-align:center;width:100%}
+html:root body:not(#z) .kopanel .kcurr b{font-size:17px}
+html:root body:not(#z) .kopanel .kbar{width:80%;margin:2px auto}
+html:root body:not(#z) .kopanel .kdots{display:none!important}
+html:root body:not(#z) .kopanel .kwshelf{position:relative;max-width:none;width:100%;margin-top:4px;padding-bottom:0}
+html:root body:not(#z) .kopanel .kwshelf>small{text-align:left;padding-left:4px}
+html:root body:not(#z) .kopanel .kwshelf .kshrow{position:relative;z-index:1;background:none!important;box-shadow:none!important;border:0!important;height:92px;align-items:flex-end;gap:4px;padding:0 9% 0!important;margin-bottom:-6px;overflow-x:auto;scrollbar-width:none}
+html:root body:not(#z) .kopanel .kwshelf .kshrow::-webkit-scrollbar{display:none}
+html:root body:not(#z) .kopanel .kshb{flex:none;width:30px;height:100%;display:flex;align-items:flex-end;justify-content:center;padding:0;border:0;background:none}
+html:root body:not(#z) .kopanel .kshb .kspine{width:auto;max-width:100%;display:block;filter:drop-shadow(0 2px 2px rgba(80,60,30,.2))}
+html:root body:not(#z) .kopanel .kshb:not(.done){height:78%;width:34px;border:2px dashed #cdb48e;border-radius:9px;box-sizing:border-box;align-items:center;color:#b39871;font-size:12px;font-weight:800;margin:0 1px}
+html:root body:not(#z) .kopanel .kshb.now:not(.done){border-style:solid;border-color:var(--c-teal);color:var(--c-teal-2);background:rgba(90,170,170,.08)}
+html:root body:not(#z) .kopanel .kplank{position:relative;z-index:0;display:block;width:100%;height:auto;pointer-events:none}
+html:root body:not(#z) .koscr .dictcard{width:min(370px,92vw)}
+html:root body:not(#z) .koscr:has(.kobanner) .kocenter{padding-top:calc(min(44vh,360px) - 150px)}
+html:root body:not(#z) .kopanel{gap:6px;padding-top:12px}
+html:root body:not(#z) .koscr:has(.kobanner) .kopanel>.eyebrow{display:none!important}
+html:root body:not(#z) .kopanel>h2{font-size:17px!important}
+html:root body:not(#z) .kopanel .kobook{width:50%;max-width:180px}
+html:root body:not(#z) .kopanel .kcur2{padding:8px 12px 10px;gap:3px}
+html:root body:not(#z) .kopanel .kcurr{gap:3px}
+html:root body:not(#z) .kopanel .kwshelf .kshrow{height:80px}
+html:root body:not(#z):has(.koscr) .dock::before,html:root body:not(#z):has(.koscr) .dock::after{display:none!important}
+html:root body:not(#z):has(:is(.koscr,.potscr,.beescr,.treecenter))::after{display:none!important}
+html:root body:not(#z) :is(.koscr,.potscr,.beescr,.screen:has(>.treecenter))>.dock{background:none!important}
+html:root body:not(#z) .kopanel .kwshelf .kshrow{margin-bottom:-54px;height:84px;gap:2px}
+html:root body:not(#z) .kopanel .kshb{width:34px}
+html:root body:not(#z) .kopanel .kshb:not(.done){height:74%}
+html:root body:not(#z) .kopanel .kwshelf .kshrow{margin-bottom:-46px}
 </style>
 
 <div id="app"></div>
@@ -4620,6 +4663,13 @@ A["n_islet"]="b/f5cf377e6143.webp";
 A["n_can"]="b/ad9e13ff3e46.webp";
 A["n_shelf"]="b/1611511f53aa.webp";
 A["n_minipot"]="b/67c229d828ed.webp";
+A["n_openbook"]="b/237d550bc751.webp";
+A["n_woodshelf"]="b/9878522d623d.webp";
+A["n_spine0"]="b/5d2435644afa.webp";
+A["n_spine1"]="b/02e08a66ba71.webp";
+A["n_spine2"]="b/26de83b65907.webp";
+A["n_spine3"]="b/ab6cafdf9fb4.webp";
+A["n_spine4"]="b/85fc21799495.webp";
 A["n_bookint"]="b/f29544f09728.webp";
 A["t_dig"]="b/13cbbf71b7fa.webp";
 A["t_under"]="b/4387e38d487e.webp";
@@ -5305,7 +5355,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.129";
+var APP_VER="1.0.130";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -10143,16 +10193,19 @@ function koScreen(fromRound){clear();document.body.classList.remove('qmode');var
     var nt=[];if(R_&&R_.book)nt.push('이야기책 한 권을 다 읽었어요! 보석 '+KO_GEM+'개를 받았어요. 책장에 꽂아 두었어요.');if(G.ups&&G.ups.length)nt.push(G.ups.join(', ')+' 단계가 올랐어요.');if(R_&&R_.lap)nt.push('책장의 책을 모두 다 읽었어요! 이제 1권부터 다시 읽으며 다른 문제를 풀어요.');if(!nt.length)nt.push('다음 쪽에서 이야기가 이어져요. 어떻게 될까요?');c.appendChild(el('p','sub',nt.join(' ')));
     if(R_&&R_.book){SND.bloom();setTimeout(function(){burst(innerWidth/2,innerHeight*.35,46,true)},300)}}
   else{c.appendChild(el('div','eyebrow','국어 서점 · '+KO_BANDS[b]+' 책 '+books.length+'권'));c.appendChild(el('h2',null,'이야기, 동시, 설명하는 글을 읽어요'))}
-  // 지금 읽는 책
+  // 지금 읽는 책 (시안: 크림 판 위에 펼친 책 + 진행 막대 + 나무 책장)
   var cur=koCur(),L=koPages(b),pos=koPos()%L.length,lap=koLap();
-  var cb=el('div','card kcur');var cvw=el('div','kcurl');cvw.appendChild(koCover(cur.bk,cur.bi));cb.appendChild(cvw);var cr=el('div','kcurr');cr.appendChild(el('small',null,(lap?'다시 읽기 · ':'')+'지금 읽는 책 · '+(cur.bi+1)+'권'));cr.appendChild(el('b',null,cur.bk.title));
-  var dots=el('div','kdots');for(var i=0;i<cur.bk.pages.length;i++)dots.appendChild(el('i',i<cur.pi?'on':i===cur.pi?'now':''));cr.appendChild(dots);cr.appendChild(el('small','knext','다음: '+(cur.pi+1)+'쪽 「'+cur.p.title+'」'));cb.appendChild(cr);c.appendChild(cb);
+  var pan=el('div','kopanel');Array.prototype.slice.call(c.children).forEach(function(n){pan.appendChild(n)});
+  var cb=el('div','kcur kcur2');cb.appendChild(img('n_openbook','kobook'));var cr=el('div','kcurr');cr.appendChild(el('small',null,(lap?'다시 읽기 · ':'')+'지금 읽는 책 · '+(cur.bi+1)+'권'));cr.appendChild(el('b',null,cur.bk.title));
+  var kb_=el('div','spbar kbar');var kf=el('i');kf.style.width=Math.round(cur.pi/cur.bk.pages.length*100)+'%';kb_.appendChild(kf);cr.appendChild(kb_);
+  var dots=el('div','kdots');for(var i=0;i<cur.bk.pages.length;i++)dots.appendChild(el('i',i<cur.pi?'on':i===cur.pi?'now':''));cr.appendChild(dots);cr.appendChild(el('small','knext','다음: '+(cur.pi+1)+'쪽 「'+cur.p.title+'」'));cb.appendChild(cr);pan.appendChild(cb);
   // 책장
-  var sh=el('div','kshelf'),inB=books.filter(function(bk){return koS().books[bk.id]}).length,allB=Object.keys(koS().books).length;sh.appendChild(el('small',null,'내 책장 · '+inB+' / '+books.length+'권'+(allB>inB?' · 다른 학년 책 '+(allB-inB)+'권도 다 읽었어요':'')));var row=el('div','kshrow');
-  books.forEach(function(bk,i){var done=!!koS().books[bk.id],w=el('button','kshb'+(done?' done':''));if(done)w.appendChild(koCover(bk,i,true));else{var lk=el('div','kcov sm lock');lk.appendChild(el('b',null,(i+1)+'권'));w.appendChild(lk)}w.setAttribute('aria-label',done?bk.title+' 다시 읽기':(i+1)+'권, 아직 읽는 중');w.onclick=function(){if(done)koBook(bk,i);else miniToast(i===cur.bi?'지금 읽고 있는 책이에요':'앞의 책을 다 읽으면 열려요')};row.appendChild(w)});sh.appendChild(row);c.appendChild(sh);
+  var sh=el('div','kshelf kwshelf'),inB=books.filter(function(bk){return koS().books[bk.id]}).length,allB=Object.keys(koS().books).length;sh.appendChild(el('small',null,'내 책장 · '+inB+' / '+books.length+'권'+(allB>inB?' · 다른 학년 책 '+(allB-inB)+'권도 다 읽었어요':'')));var row=el('div','kshrow');
+  books.forEach(function(bk,i){var done=!!koS().books[bk.id],w=el('button','kshb'+(done?' done':'')+(i===cur.bi?' now':''));if(done){var sp=img('n_spine'+(i%5),'kspine');sp.style.height=(78+((i*37)%5)*5)+'%';w.appendChild(sp)}else w.appendChild(el('b',null,(i+1)));w.setAttribute('aria-label',done?bk.title+' 다시 읽기':(i+1)+'권, 아직 읽는 중');w.onclick=function(){if(done)koBook(bk,i);else miniToast(i===cur.bi?'지금 읽고 있는 책이에요':'앞의 책을 다 읽으면 열려요')};row.appendChild(w)});sh.appendChild(row);var plank=img('n_woodshelf','kplank');plank.alt='';sh.appendChild(plank);pan.appendChild(sh);
+  c.appendChild(pan);setTimeout(function(){var nw=row.querySelector('.now');if(nw)row.scrollLeft=Math.max(0,nw.offsetLeft-row.clientWidth/2)},0);
   if(!fromRound&&dictOn()){var dcc=dictCard();if(dcc)c.appendChild(dcc)}
   sc.appendChild(c);
-  var dk=el('div','dock');if(fromRound){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;dk.appendChild(ok)}else{var go=el('button','cta green',S.ko&&S.ko.today===dayKey()?'한 쪽 더 읽기':'오늘의 이야기 읽기');go.onclick=function(){startRound(SUBJ.ko)};dk.appendChild(go)}
+  var dk=el('div','dock');if(fromRound){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;dk.appendChild(ok)}else{var go=el('button','cta',S.ko&&S.ko.today===dayKey()?'한 쪽 더 읽기':'오늘의 이야기 읽기');go.onclick=function(){startRound(SUBJ.ko)};dk.appendChild(go)}
   sc.appendChild(dk);app.appendChild(sc)}
 // 다 읽은 책은 처음부터 다시 볼 수 있어요 (글만)
 function koBook(bk,bi,pi){pi=pi||0;var p=bk.pages[pi],inn=sheet.firstChild;inn.innerHTML='';var w=el('div','kpeek');var h=el('div','khead');h.appendChild(el('small','kbk',bk.title+' · '+(pi+1)+' / '+bk.pages.length+'쪽'));h.appendChild(el('em','kkind',p.kind));w.appendChild(h);w.appendChild(el('h2','ktitle',p.title));var t=koText(w,p,false,{id:bk.id+'-'+(pi+1)});inn.appendChild(w);
