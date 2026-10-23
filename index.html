@@ -4467,7 +4467,8 @@ A["tent_r3"]="b/f41f2f657725.webp";
 A["umbrella_on_ground_r1"]="b/c98787e81d3d.webp";
 A["umbrella_on_ground_r2"]="b/83356f49986f.webp";
 A["umbrella_on_ground_r3"]="b/4cfb2d6ac9a5.webp";
-A["t_rock"]="b/ebbae9a45863.webp";
+A["t_rock"]="b/fac91c77349e.webp";
+A["t_under"]="b/4387e38d487e.webp";
 A["t_path"]="b/627978661fff.webp";
 A["t_dirt"]="b/f063b698d9a9.webp";
 A["t_canal"]="b/6c7b0092f767.webp";
@@ -5145,7 +5146,7 @@ A["library"]="b/d08a9f227805.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.119";
+var APP_VER="1.0.120";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -18689,32 +18690,52 @@ function gdInit(){
     var p=k.split(',').map(Number);for(var d=1;d<8;d++)for(var dr=-d;dr<=d;dr++)for(var dc=-d;dc<=d;dc++){if(Math.max(Math.abs(dr),Math.abs(dc))!==d)continue;var nk=(p[0]+dc)+','+(p[1]+dr);if(!fits(nk,v)){S.gd.cells[nk]=v;return}}});
 }
 var TIMG={};function tImg(k){if(!TIMG[k]){TIMG[k]=new Image();TIMG[k].src=A['t_'+k]}return TIMG[k]}
-// 절벽: 섬 가운데 아래로 갈수록 깊고, 바닥선은 부드럽게 울퉁불퉁
+// 섬 가장자리: 칸 모양 테두리를 둥글게 이어서(홈 섬처럼) 풀 가장자리 + 흙 띠 + 바위 절벽을 그려요
+function islLoops(P,HAS){var hw=ITW/2,hh=ITH/2,E={},n=0;
+  function K(p){return Math.round(p[0])+','+Math.round(p[1])}
+  P.forEach(function(q){var c=iCtr(q[0],q[1]),x=c[0],y=c[1],T=[x,y-hh],R=[x+hw,y],B=[x,y+hh],L=[x-hw,y];
+    [[T,R,q[0],q[1]-1],[R,B,q[0]+1,q[1]],[B,L,q[0],q[1]+1],[L,T,q[0]-1,q[1]]].forEach(function(e){if(HAS[e[2]+','+e[3]])return;E[K(e[0])]=(E[K(e[0])]||[]).concat([[e[0],e[1]]]);n++})});
+  var loops=[];
+  Object.keys(E).forEach(function(k){while(E[k]&&E[k].length){var e=E[k].pop(),lp=[e[0]],cur=e[1],g=0;
+    while(K(cur)!==K(lp[0])&&g++<20000){lp.push(cur);var nx=E[K(cur)];if(!nx||!nx.length)break;cur=nx.pop()[1]}
+    if(lp.length>2)loops.push(lp)}});
+  return loops}
+function islSmooth(lp,off){var N=lp.length,o=[];
+  for(var i=0;i<N;i++){var a=lp[(i-1+N)%N],b=lp[i],c=lp[(i+1)%N];
+    var n1=[b[1]-a[1],-(b[0]-a[0])],n2=[c[1]-b[1],-(c[0]-b[0])],l1=Math.hypot(n1[0],n1[1])||1,l2=Math.hypot(n2[0],n2[1])||1;
+    var nx=n1[0]/l1+n2[0]/l2,ny=n1[1]/l1+n2[1]/l2,l=Math.hypot(nx,ny)||1;o.push([b[0]+nx/l*off,b[1]+ny/l*off])}
+  for(var it=0;it<3;it++){var q=[];for(var j=0;j<o.length;j++){var p0=o[j],p1=o[(j+1)%o.length];q.push([p0[0]*.75+p1[0]*.25,p0[1]*.75+p1[1]*.25]);q.push([p0[0]*.25+p1[0]*.75,p0[1]*.25+p1[1]*.75])}o=q}
+  return o}
 function cliffPaint(ctx,CS,bx0,by0,P,HAS){
-  var hw=ITW/2,hh=ITH/2,CMP={},CI=[];
-  // 이어진 땅끼리 묶어서(큰 섬·건물 섬) 각자 가운데가 가장 깊게
-  P.forEach(function(q){var k=q[0]+','+q[1];if(CMP[k]!=null)return;var id=CI.length,st=[q],xs=[];CMP[k]=id;
-    while(st.length){var c=st.pop();xs.push(iCtr(c[0],c[1])[0]);[[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){var n=[c[0]+d[0],c[1]+d[1]],nk=n[0]+','+n[1];if(HAS[nk]&&CMP[nk]==null){CMP[nk]=id;st.push(n)}})}
-    var cx=0;xs.forEach(function(x){cx+=x});cx/=xs.length;CI.push({cx:cx,half:Math.max(hw*1.5,Math.max.apply(null,xs.map(function(x){return Math.abs(x-cx)}))+hw),D:Math.min(150,30+14*Math.sqrt(xs.length))})});
-  function dep(x,ci){var C=CI[ci],t=Math.max(0,1-Math.abs(x-C.cx)/C.half);return 22+C.D*Math.pow(t,1.15)+8*Math.sin(x*.071)+5*Math.sin(x*.173+1.3)}
-  var pat=ctx.createPattern(TIMG.rock,'repeat'),faces=[];
-  P.forEach(function(q){var p=iCtr(q[0],q[1]),x=p[0],y=p[1];
-    if(!HAS[(q[0]+1)+','+q[1]])faces.push({o:q[0]+q[1],sl:-.5,a:[x+hw,y],b:[x,y+hh],dk:.3,ci:CMP[q[0]+','+q[1]]});
-    if(!HAS[q[0]+','+(q[1]+1)])faces.push({o:q[0]+q[1],sl:.5,a:[x,y+hh],b:[x-hw,y],dk:.08,ci:CMP[q[0]+','+q[1]]})});
-  faces.sort(function(m,n){return m.o-n.o});
-  faces.forEach(function(f){var pts=[f.a,f.b],N=6,bot=[];
-    for(var i=N;i>=0;i--){var t=i/N,x=f.a[0]+(f.b[0]-f.a[0])*t,y=f.a[1]+(f.b[1]-f.a[1])*t;bot.push([x,y+dep(x,f.ci)])}
-    pts=pts.concat(bot.reverse().reverse());
-    function path(){ctx.beginPath();pts.forEach(function(p,i){var X=(p[0]-bx0)*CS,Y=(p[1]-by0)*CS;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.closePath()}
-    // 바위 무늬: 면의 기울기를 따라 줄이 이어지게
-    ctx.save();path();ctx.clip();
-    var k=CS*.34;ctx.setTransform(k,f.sl*k,0,k,-bx0*CS,-by0*CS);ctx.fillStyle=pat;ctx.fillRect(-4000,-4000,16000,16000);ctx.restore();
-    ctx.save();path();var y0=(Math.min(f.a[1],f.b[1])-by0)*CS,y1=y0+190*CS,g=ctx.createLinearGradient(0,y0,0,y1);
-    g.addColorStop(0,'rgba(80,62,44,'+f.dk+')');g.addColorStop(1,'rgba(70,56,48,'+(f.dk+.3)+')');ctx.fillStyle=g;ctx.fill();ctx.restore();
-    // 풀 아래 흙 띠 (홈 섬처럼)
-    ctx.save();ctx.beginPath();[[f.a[0],f.a[1]],[f.b[0],f.b[1]],[f.b[0],f.b[1]+15],[f.a[0],f.a[1]+15]].forEach(function(p,i){var X=(p[0]-bx0)*CS,Y=(p[1]-by0)*CS;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.closePath();
-    var sg=ctx.createLinearGradient(0,(Math.min(f.a[1],f.b[1])-by0)*CS,0,(Math.max(f.a[1],f.b[1])+15-by0)*CS);sg.addColorStop(0,'rgba(196,174,132,'+(1-f.dk)+')');sg.addColorStop(1,'rgba(150,128,96,'+(1-f.dk)*.85+')');ctx.fillStyle=sg;ctx.fill();ctx.restore()});
-}
+  var loops=islLoops(P,HAS),pat=ctx.createPattern(TIMG.rock,'repeat'),SH=[];
+  function X(p){return (p[0]-bx0)*CS}function Y(p){return (p[1]-by0)*CS}
+  loops.forEach(function(lp){var A=0;for(var i=0;i<lp.length;i++){var a=lp[i],b=lp[(i+1)%lp.length];A+=a[0]*b[1]-b[0]*a[1]}if(A<=0)return; // 구멍은 건너뛰어요
+    var sm=islSmooth(lp,ITH*.26),xs=sm.map(function(p){return p[0]}),cx=0;xs.forEach(function(x){cx+=x});cx/=xs.length;
+    var half=Math.max.apply(null,xs.map(function(x){return Math.abs(x-cx)}))+8,D=Math.min(170,26+15*Math.sqrt(lp.length));
+    SH.push({sm:sm,cx:cx,half:half,D:D,cy:sm.reduce(function(s,p){return s+p[1]},0)/sm.length})});
+  SH.sort(function(a,b){return a.cy-b.cy});
+  SH.forEach(function(S_){var sm=S_.sm,N=sm.length;
+    function dep(x){var t=Math.max(0,1-Math.abs(x-S_.cx)/S_.half);return 30+S_.D*Math.pow(t,1.25)+9*Math.sin(x*.061)+6*Math.sin(x*.149+1.3)+4*Math.sin(x*.37)}
+    // 앞쪽(아래를 향한) 테두리 구간
+    var fr=[];for(var i=0;i<N;i++){var a=sm[i],b=sm[(i+1)%N],ny=-(b[0]-a[0]);if(ny>0)fr.push(i)}
+    // 풀 밑면을 칸 바깥까지 채워 둥근 모양을 만들어요
+    ctx.save();ctx.beginPath();sm.forEach(function(p,i){i?ctx.lineTo(X(p),Y(p)):ctx.moveTo(X(p),Y(p))});ctx.closePath();ctx.fillStyle='#a8c66f';ctx.fill();ctx.restore();
+    if(!fr.length)return;
+    // 앞쪽 테두리(왼→오른쪽 순)
+    var st=0;for(var t=0;t<fr.length;t++){if(fr[(t-1+fr.length)%fr.length]!==(fr[t]-1+N)%N){st=t;break}}
+    var seq=[];for(var t=0;t<fr.length;t++)seq.push(fr[(st+t)%fr.length]);var top=seq.map(function(i){return sm[i]});top.push(sm[(seq[seq.length-1]+1)%N]);
+    top.sort(function(a,b){return a[0]-b[0]});
+    function cy(x){if(x<=top[0][0])return top[0][1];for(var i=1;i<top.length;i++){if(x<=top[i][0]){var a=top[i-1],b=top[i],t=(x-a[0])/((b[0]-a[0])||1);return a[1]+(b[1]-a[1])*t}}return top[top.length-1][1]}
+    // 홈 섬의 아랫부분 그림을 세로 조각으로 나눠, 각 조각의 테두리선을 이 섬의 테두리에 맞춰 붙여요
+    var U=TIMG.under,UW=U.naturalWidth,UH=U.naturalHeight,UL=5,UR=816,UA=410,UV0=50,UV1=265;
+    var minX=top[0][0]-6,maxX=top[top.length-1][0]+6,sx=(maxX-minX)/(UR-UL),sy=sx*.85,step=4;
+    for(var ix=0;ix<UW;ix+=step){var vy=ix<=UA?UV0+(ix-UL)*(UV1-UV0)/(UA-UL):UV0+(UR-ix)*(UV1-UV0)/(UR-UA),dx=minX+(ix-UL)*sx,dy=cy(dx+step*sx/2)-vy*sy+6;
+      ctx.drawImage(U,ix,0,Math.min(step+1,UW-ix),UH,X([dx,0]),Y([0,dy]),(step+1)*sx*CS,UH*sy*CS)}
+  });
+  return SH}
+// 풀 윗면 가장자리: 둥근 점토 느낌의 밝은 테
+function islBevel(ctx,CS,bx0,by0,SH){(SH||[]).forEach(function(S_){var sm=S_.sm;ctx.save();ctx.beginPath();sm.forEach(function(p,i){var X=(p[0]-bx0)*CS,Y=(p[1]-by0)*CS;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.closePath();
+  ctx.lineJoin='round';ctx.strokeStyle='rgba(255,255,230,.28)';ctx.lineWidth=5*CS;ctx.stroke();ctx.strokeStyle='rgba(96,132,66,.55)';ctx.lineWidth=2*CS;ctx.stroke();ctx.restore()})}
 // 섬 전체에 부드러운 빛(위는 밝게, 가장자리는 살짝 어둡게): 그린 곳에만
 function islLight(ctx,cv,P,bx0,by0,CS){var xs=P.map(function(q){return iCtr(q[0],q[1])}),cx=0,cy=0;xs.forEach(function(p){cx+=p[0];cy+=p[1]});cx/=xs.length;cy/=xs.length;
   ctx.save();ctx.globalCompositeOperation='source-atop';var R=Math.max(cv.width,cv.height)*.55,g=ctx.createRadialGradient((cx-bx0-60)*CS,(cy-by0-80)*CS,10,(cx-bx0)*CS,(cy-by0)*CS,R);
@@ -18727,17 +18748,17 @@ function rimDeco(ctx,CS,bx0,by0,P,HAS){var hw=ITW/2,hh=ITH/2;
     E.forEach(function(e,j){var h=hsh(q[0]*13+j*7,q[1]*17+3);if(h>.62)return;var key=RIMK[Math.floor(h*97)%RIMK.length],im=RIMI[key];if(!im){im=RIMI[key]=new Image();im.src=A[key]}
       if(!im.complete||!im.naturalWidth)return;var w=ITW*(1.7+h*.7),hgt=w*im.naturalHeight/im.naturalWidth;ctx.drawImage(im,(e[0]-w/2-bx0)*CS,(e[1]-hgt*.86-by0)*CS,w*CS,hgt*CS)})})}
 function drawGround(cv,CS,bx0,by0,cells){
-  var ks=['g1','g2','sand','pond','path','dirt','canal','rim_px','rim_nx','rim_pz','rim_nz','rock'];ks.forEach(tImg);
+  var ks=['g1','g2','sand','pond','path','dirt','canal','rim_px','rim_nx','rim_pz','rim_nz','rock','under'];ks.forEach(tImg);
   function go(){
     var ctx=cv.getContext('2d'),sc=CS/2;
     function put(k,c,r,dy){var im=TIMG[k],a=TILE[k],p=iCtr(c,r);ctx.drawImage(im,((p[0]-bx0)-a[0]/2)*CS,((p[1]-by0)-a[1]/2+(dy||0))*CS,im.width*sc,im.height*sc)}
     var P=cells.map(function(k){return k.split(',').map(Number)});P.sort(function(a,b){return (a[0]+a[1])-(b[0]+b[1])||a[0]-b[0]});
     // 하늘에 떠 있는 섬: 가장자리 아래로 바위 절벽을 이어 그려요 (무늬가 이어지게 한 장의 패턴으로)
     var HAS={};P.forEach(function(q){HAS[q[0]+','+q[1]]=1});
-    cliffPaint(ctx,CS,bx0,by0,P,HAS);
+    var SH_=cliffPaint(ctx,CS,bx0,by0,P,HAS);
     var GD=S.gd.ground||{},W_=function(c,r){return GROUND[GD[c+','+r]]==='canal'};
     P.forEach(function(q){var k=q[0]+','+q[1],h=hsh(q[0]*3+1,q[1]*5+2),h2=hsh(q[0]*7+3,q[1]*11+5),g=GROUND[GD[k]];put(g&&g!=='hedge'&&!POND[k]?g:POND[k]?'pond':(BLDC.path&&BLDC.path[k])?'path':ISLS[k]?'sand':(h2<.3?'g2':'g1'),q[0],q[1])});
-    islLight(ctx,cv,P,bx0,by0,CS);rimDeco(ctx,CS,bx0,by0,P,HAS);
+    islLight(ctx,cv,P,bx0,by0,CS);islBevel(ctx,CS,bx0,by0,SH_);rimDeco(ctx,CS,bx0,by0,P,HAS);
     P.forEach(function(q){var k=q[0]+','+q[1];if(GROUND[GD[k]]!=='canal')return;if(!W_(q[0]+1,q[1]))put('rim_px',q[0],q[1]);if(!W_(q[0],q[1]+1))put('rim_pz',q[0],q[1]);if(!W_(q[0]-1,q[1]))put('rim_nx',q[0],q[1]);if(!W_(q[0],q[1]-1))put('rim_nz',q[0],q[1])});
   }
   RIMK.forEach(function(k){if(!RIMI[k]){RIMI[k]=new Image();RIMI[k].src=A[k]}});
@@ -18769,7 +18790,7 @@ function buildWorld(edit,onLm){
   // 땅이 있는 범위
   var bx0=1e9,by0=1e9,bx1=-1e9,by1=-1e9,cells=Object.keys(LAND).concat(Object.keys(POND)),BI=(S.bld&&bldList().length)?bldCalc():{isl:{},br:[],deco:[],land:{}};cells=cells.concat(Object.keys(BI.isl));
   cells.forEach(function(k){var p=k.split(',').map(Number),q=iCtr(p[0],p[1]);bx0=Math.min(bx0,q[0]-100);bx1=Math.max(bx1,q[0]+100);by0=Math.min(by0,q[1]-60);by1=Math.max(by1,q[1]+80)});
-  bx0-=40;by0-=150;bx1+=40;by1+=220;world.__box=[bx0,by0,bx1,by1];
+  bx0-=60;by0-=150;bx1+=60;by1+=Math.min(900,60+(bx1-bx0)*.62);world.__box=[bx0,by0,bx1,by1];
   // 바다 물결
   for(var wv=0;wv<18;wv++){var s=el('i','wave');s.style.left=(bx0+(wv*137)%(bx1-bx0))+'px';s.style.top=(by0+40+(wv*89)%(by1-by0-60))+'px';s.style.animationDelay=(wv*.37)+'s';world.appendChild(s)}
   // 땅: 미리 찍어 둔 3D 조각을 이어 붙여요
