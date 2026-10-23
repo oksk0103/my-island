@@ -4557,6 +4557,53 @@ html:root body:not(#z) .roompanel .mgrid>*{background:none!important;box-shadow:
 html:root body:not(#z) .roompanel .mcase .mglass{background:linear-gradient(#fffdf8,#f2e8d6)!important;box-shadow:inset 0 0 0 4px #fff,inset 0 0 0 5px #e5d6bb,0 3px 0 #e0cdaa!important;border-radius:18px 18px 8px 8px!important}
 html:root body:not(#z) .roompanel .mcase.lock .mglass img{filter:brightness(0) invert(.82) sepia(.25)!important;opacity:.55!important}
 html:root body:not(#z) .roompanel .mcase .mplate,html:root body:not(#z) .roompanel .mcase.lock .mplate{background:#f1e5cf!important;box-shadow:0 2px 0 #e0cfae!important;color:#9a8466!important;border-radius:0 0 12px 12px!important}
+/* 꽃 도감: 카드마다 작은 떠 있는 섬 위 화분 */
+html:root body:not(#z):has(.ghscr),html:root body:not(#z) .ghscr,html:root body:not(#z):has(.bloomscr),html:root body:not(#z) .bloomscr{background:linear-gradient(180deg,#d3e4ec 0%,#e6ecec 55%,#f0e7d6 100%)!important}
+html:root body:not(#z):has(.ghscr)::after,html:root body:not(#z):has(.bloomscr)::after{display:none!important}
+html:root body:not(#z) .ghcard{width:auto!important;margin:4px 0 8px!important;display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+html:root body:not(#z) .ghcard .spbar{width:100%;margin-top:4px}
+html:root body:not(#z) .ghscr .ghc{background:linear-gradient(180deg,#fffaf0,#fbf3e3)!important;box-shadow:0 4px 0 #e6d6b8,0 8px 16px rgba(120,80,30,.08)!important;border-radius:22px!important;padding:10px 10px 14px!important}
+html:root body:not(#z) .ghisl{position:relative;width:118px;height:118px;margin:0 auto}
+html:root body:not(#z) .ghisl .ghislimg{position:absolute;left:0;right:0;bottom:0;width:100%;filter:drop-shadow(0 6px 8px rgba(60,90,120,.14))}
+html:root body:not(#z) .ghisl .ghpot{position:absolute!important;left:50%;bottom:42%;transform:translateX(-50%);width:92px!important;height:auto!important}
+html:root body:not(#z) .ghisl .ghpot .pot{width:58px!important}
+html:root body:not(#z) .ghisl .ghq{position:absolute;left:50%;bottom:50%;transform:translateX(-50%);font-style:normal;font:800 20px/1 var(--f-display,inherit);color:#a8774f;opacity:.75;z-index:3}
+html:root body:not(#z) .ghscr .ghc.lock .ghisl{opacity:.92;filter:saturate(.7)}
+/* 꽃 핀 화면 */
+html:root body:not(#z) .bloomstage{width:min(330px,84vw)!important;margin-top:10px}
+html:root body:not(#z) .bloomstage .islon{bottom:48%}
+html:root body:not(#z) .bloomstage .bglow{position:absolute;left:50%;bottom:30%;width:220px;height:220px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(255,236,170,.75),rgba(255,236,170,0));z-index:-1;animation:bglow 3s ease-in-out infinite}
+@keyframes bglow{50%{transform:translateX(-50%) scale(1.08);opacity:.85}}
+@media (prefers-reduced-motion:reduce){html:root body:not(#z) .bloomstage .bglow{animation:none}}
+html:root body:not(#z) .bloomstage .sidecloud{position:absolute;z-index:3;width:30%;pointer-events:none}
+html:root body:not(#z) .bloomstage .sidecloud.l{left:-12%;top:-8%}
+html:root body:not(#z) .bloomstage .sidecloud.r{right:-12%;top:-2%;width:34%}
+html:root body:not(#z) .bloomscr .factcard,html:root body:not(#z) .bloomscr .card{background:linear-gradient(180deg,#fffaf0,#fbf3e3)!important;box-shadow:0 4px 0 #e6d6b8!important;border-radius:22px!important}
+html:root body:not(#z) .ghisl .ghpot{width:92px!important;height:104px!important;bottom:36%!important}
+html:root body:not(#z) .ghscr .ghc.lock{opacity:1!important}
+html:root body:not(#z) .ghscr .ghc.lock .ghpot{opacity:.75}
+html:root body:not(#z) .ghscr .ghc{overflow:hidden;padding-top:34px!important}
+html:root body:not(#z) .ghisl{height:110px}
+html:root body:not(#z) .ghscr .ghc.lock .ghpot>*:not(.pot):not(.soil){visibility:hidden}
+/* 상점: 흰 원판 대신 점토 잔디 받침 */
+html:root body:not(#z):not(#a) .shopscr .shopc .fprev::before{background:var(--gbase) center/contain no-repeat!important;border-radius:0!important;box-shadow:none!important;width:86px!important;height:56px!important;margin-left:-43px!important;bottom:-6px!important;opacity:1!important}
+html:root body:not(#z) .roompanel .shopc,html:root body:not(#z) .roompanel .ghc{background:linear-gradient(180deg,#fffdf7,#f7efdf)!important;box-shadow:0 3px 0 #e6d6b8,inset 0 0 0 1px #efe3cb!important;border-radius:20px!important}
+html:root body:not(#z) .roompanel .seg{background:#f1e6d1!important;box-shadow:none!important}
+html:root body:not(#z) .roompanel .seg button.on{background:var(--c-teal)!important;color:#fff!important}
+html:root body:not(#z) .roompanel .qhead{margin:0!important}
+html:root body:not(#z) .roompanel .qhead h2{font-size:18px!important}
+/* 우체통 편지 카드 */
+html:root body:not(#z) .roompanel .mletter,html:root body:not(#z) .roompanel .mlist>*{background:linear-gradient(180deg,#fffdf7,#f7efdf)!important;box-shadow:0 3px 0 #e6d6b8!important;border-radius:18px!important}
+/* 연속 기록 창 */
+html:root body:not(#z) .stkweek{display:flex;justify-content:space-between;gap:6px;margin:4px 0 12px;padding:10px 12px;border-radius:999px;background:#f1e6d1;box-shadow:inset 0 2px 4px rgba(120,80,30,.12)}
+html:root body:not(#z) .stkweek i{flex:1;aspect-ratio:1;max-width:34px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fffaf0,#eadcc2);box-shadow:0 2px 0 #d8c6a4}
+html:root body:not(#z) .stkweek i.on{background:radial-gradient(circle at 40% 35%,#ffc58a,#ee9450);box-shadow:0 2px 0 #c9733a}
+html:root body:not(#z) .stkm{background:linear-gradient(180deg,#fffdf7,#f7efdf)!important;box-shadow:0 3px 0 #e6d6b8,inset 0 0 0 1px #efe3cb!important;border-radius:18px!important;opacity:1!important}
+html:root body:not(#z) .stkm img{width:44px!important;height:44px!important}
+html:root body:not(#z) .stkm.next{box-shadow:0 0 0 2.5px var(--c-teal),0 3px 0 #e6d6b8!important}
+html:root body:not(#z) .shopscr .roomban,html:root body:not(#z) .mailscr .roomban{height:min(26vh,220px);margin-top:-40px}
+html:root body:not(#z) .shopscr .roompanel,html:root body:not(#z) .mailscr .roompanel{margin-top:-14px}
+html:root body:not(#z) .mailscr .roomban{margin-top:-14px;height:min(24vh,200px)}
 </style>
 
 <div id="app"></div>
@@ -4767,6 +4814,9 @@ A["n_softcloud"]="b/5b0b264a8594.webp";
 A["n_bush"]="b/a66daa1a3b56.webp";
 A["n_fbed"]="b/08a3792846d8.webp";
 A["n_rsch"]="b/d39306504719.webp";
+A["n_gbase"]="b/38cfe7facc84.webp";
+A["n_rshop"]="b/c013f2a89059.webp";
+A["n_rmail"]="b/b846bd6a84ae.webp";
 A["n_rmus"]="b/26de11839d05.webp";
 A["n_rbot"]="b/43c9019731db.webp";
 A["n_rlib"]="b/f05154bde995.webp";
@@ -5455,7 +5505,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.136";
+var APP_VER="1.0.137";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -8383,8 +8433,9 @@ function sunTap(c){c.className+=' tap';c.onclick=sunSheet;c.setAttribute('aria-l
 function stkSheet(){var I=stkInfo(),n=I.n,gt=(S.stk&&S.stk.got)||[],nx=STK.filter(function(m){return m.d>n&&gt.indexOf(m.d)<0})[0],inn=sheet.firstChild;inn.innerHTML='';
   var hd=el('div','hd');hd.appendChild(img('fire'));var t=el('div');t.appendChild(el('small',null,'연속 기록'));t.appendChild(el('h3',null,n?n+'일째 매일 공부 중':'오늘 한 판 하면 시작돼요'));hd.appendChild(t);inn.appendChild(hd);
   inn.appendChild(el('p',null,'매일 한 판씩 하면 하루씩 늘어요. 일주일에 하루는 쉬어도 이어져요.'));
+  var wk=el('div','stkweek'),fw=n?((n-1)%7)+1:0;for(var wi=0;wi<7;wi++)wk.appendChild(el('i',wi<fw?'on':''));wk.setAttribute('aria-label','이번 7일 중 '+fw+'일');inn.appendChild(wk);
   var row=el('div','stkrow');STK.slice(0,4).forEach(function(m){var gm=n>=m.d||gt.indexOf(m.d)>=0,c=el('div','stkm'+(gm?' ok':(nx&&nx.d===m.d?' next':'')));
-    c.appendChild(img(m.item||'sun'));c.appendChild(el('b',null,m.d+'일'));c.appendChild(el('small',null,gm?'받았어요':(nx&&nx.d===m.d?(m.d-n)+'일 남음':(m.item?'선물':'햇살 '+m.sun))));row.appendChild(c)});inn.appendChild(row);
+    c.appendChild(img(m.item?(A[m.item+'_t']?m.item+'_t':m.item):'sun'));c.appendChild(el('b',null,m.d+'일'));c.appendChild(el('small',null,gm?'받았어요':(nx&&nx.d===m.d?(m.d-n)+'일 남음':(m.item?'선물':'햇살 '+m.sun))));row.appendChild(c)});inn.appendChild(row);
   var c=el('button','cta light','닫기');c.onclick=hideSheet;inn.appendChild(c);
   sheet.className='sheet good';scrim.className='scrim show';scrim.onclick=hideSheet;requestAnimationFrame(function(){sheet.className='sheet good show'})}
 
@@ -18284,6 +18335,7 @@ function shop(tab){
     });
   }
   sc.appendChild(g);
+  try{document.documentElement.style.setProperty('--gbase','url('+A.n_gbase+')')}catch(e){}roomify(sc,'n_rshop');
   app.appendChild(sc);
 }
 
@@ -18654,8 +18706,9 @@ function bloomScene(sub,code,unlocked){
   c.appendChild(el('div','eyebrow'+(f.rare?' gold':''),f.rare?sub.rareNoun+' 발견! 햇살 +15':'햇살 +5'));
   c.appendChild(el('h2',null,josa(f.name,'이','가')+' '+sub.bloomed));
   var pb=potBox(f,'bloom',200,f.rare?'pot_gold':potKey(sub),S.equip.friend);sparkles(pb,[[0,30],[140,10],[150,110]]);
-  var halo=el('div','bloomhalo'+(f.rare?' rare':''));halo.appendChild(el('i','rays'));halo.appendChild(pb);
-  c.appendChild(halo);setTimeout(function(){var r=pb.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height*.35,f.rare?40:28,true)},250);c.appendChild(factCard(f));
+  // 시안: 떠 있는 섬 위 화분 + 금빛 반짝이 + 양옆 구름
+  var halo=subjStage(pb,'bloomstage'+(f.rare?' rare':''));halo.querySelector('.islon').insertBefore(el('i','bglow'),pb);var cl1=img('n_softcloud','sidecloud l'),cl2=img('n_softcloud','sidecloud r');cl1.alt=cl2.alt='';halo.appendChild(cl1);halo.appendChild(cl2);
+  c.appendChild(halo);sc.className+=' bloomscr';setTimeout(function(){var r=pb.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height*.35,f.rare?40:28,true)},250);c.appendChild(factCard(f));
   sc.appendChild(c);
   var key='f'+code,d=el('div','dock');
   if(unlocked){var nb=el('button','cta','다음');nb.onclick=function(){goldScene(sub,key)};d.appendChild(nb)}
@@ -18689,17 +18742,17 @@ function factCard(f){
 function greenhouse(which){
   clear();
   var sub=SUBJ.math;
-  var sc=el('div','screen'),top=el('div','qtop');
+  var sc=el('div','screen ghscr'),top=el('div','qtop');
   var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML='<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M11.5 3L5.5 9l6 6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';back.onclick=home;
   top.appendChild(back);sc.appendChild(top);
   var n=stOf(sub).hist.length,c=counts(sub),gold=hasGold(sub);
-  var hd=el('div','qhead');hd.appendChild(el('small',null,'꽃 도감'));hd.appendChild(el('h2',null,n?sub.noun+' '+n+'송이를 피웠어요':'아직 키운 '+josa(sub.noun,'이','가')+' 없어요'));sc.appendChild(hd);
+  var hd=el('div','qhead');hd.appendChild(el('small',null,'꽃 도감'));hd.appendChild(el('h2',null,n?sub.noun+' '+n+'송이를 피웠어요':'아직 키운 '+josa(sub.noun,'이','가')+' 없어요'));var gbar=el('div','spbar');var gfi=el('i');gfi.style.width=Math.round(normalsGot(sub)/sub.items.length*100)+'%';gbar.appendChild(gfi);hd.appendChild(gbar);hd.className+=' spcard ghcard';sc.appendChild(hd);
   function grid(codes,goldPot){
     var g=el('div','gh');
     codes.forEach(function(code){
       var f=itemOf(sub,code),got=!!c[code];
       var card=el(got?'button':'div','ghc'+(got?'':' lock'));
-      card.appendChild(potBox(f,got?'bloom':'lock',120,goldPot));
+      var gi_=el('div','ghisl');var gim=img('n_islet','ghislimg');gim.alt='';gi_.appendChild(gim);var gpb=potBox(f,got?'bloom':'lock',92,goldPot);gpb.classList.add('ghpot');gi_.appendChild(gpb);if(!got)gi_.appendChild(el('i','ghq','?'));card.appendChild(gi_);
       card.appendChild(el('b',null,got?f.name:'아직 몰라요'));
       card.appendChild(el('small',null,got?(c[code]>1?c[code]+'번 키웠어요':f.season):(goldPot?sub.rareNoun:'다음 '+sub.noun)));
       if(got)card.onclick=function(){itemView(sub,code)};
@@ -19637,7 +19690,7 @@ function mailScreen(tab){audPrefetch(['se']);
     sc.appendChild(g);
     sc.appendChild(el('p','mnote',m.stamps?'답장을 쓸 때마다 우표가 한 장씩 붙어요.':'아직 우표가 없어요. 편지에 답장을 쓰면 첫 우표를 받아요.'));
   }
-  app.appendChild(sc);zMark&&zMark();
+  roomify(sc,'n_rmail');app.appendChild(sc);zMark&&zMark();
 }
 function mailPaper(x){var L=x.L,ko=x.kind==='ko';var p=el('div','paper'+(ko?' kop':''));var hd=el('div','phd');hd.appendChild(avImg(L.from,'pav'));var ht=el('div');ht.appendChild(el('b',null,ko?josa(MAIL_KO[L.from],'이','가')+' 보낸 편지':'From '+MAIL_NAME[L.from]));ht.appendChild(el('small',null,ko?'국어 편지 · '+x.no+'번째':josa(MAIL_KO[L.from],'이','가')+' 보낸 '+x.no+'번째 편지'));hd.appendChild(ht);p.appendChild(hd);
   var body=el('div','pbody');(ko?L.ko:L.en).forEach(function(t){body.appendChild(el('p',null,t))});p.appendChild(body);if(!ko){var kp=el('p','pko',L.ko);p.appendChild(kp)}return p}
