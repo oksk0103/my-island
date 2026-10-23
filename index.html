@@ -4322,16 +4322,30 @@ html:root body:not(#z) .beestage .beefly.b2{left:28%;bottom:80%;animation-delay:
 @keyframes beeFly{0%,100%{translate:0 0}25%{translate:16px -8px}50%{translate:4px -16px}75%{translate:-14px -6px}}
 @media (prefers-reduced-motion:reduce){html:root body:not(#z) .beestage .beefly{animation:none}}
 html:root body:not(#z) .beescr .jar{display:none!important}
-/* 수학 화분 */
-html:root body:not(#z) .potscr .potcenter{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px}
-html:root body:not(#z) .potstage{margin-top:150px}
-html:root body:not(#z) .potstage .islon{bottom:58%}
-html:root body:not(#z) .potstage .potdots{position:absolute;z-index:3;left:50%;bottom:44%;transform:translateX(-50%);display:flex;gap:8px}
-html:root body:not(#z) .potstage .potdots i{width:16px;height:11px;border-radius:50%;background:#c9b896;box-shadow:inset 0 2px 2px rgba(0,0,0,.18)}
+/* 수학 화분 (시안 맞춤) */
+html:root body:not(#z) .spcard{width:min(340px,88vw);margin:6px auto 0;padding:14px 16px 12px;border-radius:22px;background:var(--c-paper);box-shadow:0 4px 0 var(--c-cream-edge),0 8px 18px rgba(40,70,100,.08);text-align:left}
+html:root body:not(#z) .spcard-hd{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+html:root body:not(#z) .spcard-hd b{font-size:19px;color:var(--c-ink)}
+html:root body:not(#z) .spcard-hd span{font-size:15px;font-weight:800;color:var(--c-teal)}
+html:root body:not(#z) .spbar{height:12px;border-radius:8px;background:var(--c-cream-2);margin:10px 0 8px;overflow:hidden;box-shadow:inset 0 2px 3px rgba(120,100,60,.15)}
+html:root body:not(#z) .spbar i{display:block;height:100%;border-radius:8px;background:linear-gradient(#3a9aa7,var(--c-teal))}
+html:root body:not(#z) .spcard small{font-size:13px;color:var(--c-ink-2)}
+html:root body:not(#z) .potscr .potcenter{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 12px 130px!important}
+html:root body:not(#z) .potstage{width:min(340px,88vw);margin-top:150px}
+html:root body:not(#z) .potstage .islon{bottom:52%}
+html:root body:not(#z) .potstage .spcan{position:absolute;z-index:3;width:28%;right:8%;bottom:118%;transform:rotate(-4deg);animation:canTip 3.6s ease-in-out infinite;pointer-events:none}
+@keyframes canTip{0%,100%{rotate:0deg}50%{rotate:-6deg}}
+html:root body:not(#z) .potstage .spshelf{position:absolute;z-index:1;right:5%;bottom:56%;width:30%}
+html:root body:not(#z) .potstage .spshelf .shelfimg{width:100%;display:block}
+html:root body:not(#z) .potstage .spshelf .shelfrow{position:absolute;left:10%;right:6%;top:-4%;display:flex;justify-content:space-around;align-items:flex-end}
+html:root body:not(#z) .potstage .minip{position:relative;width:28%}
+html:root body:not(#z) .potstage .minip>img:first-child{width:100%;display:block}
+html:root body:not(#z) .potstage .minip .minifl{position:absolute;left:50%;bottom:62%;width:110%;transform:translateX(-50%)}
+html:root body:not(#z) .potstage .minip.empty{opacity:.45;filter:grayscale(.5)}
+html:root body:not(#z) .potstage .potdots{position:absolute;z-index:3;left:50%;bottom:38%;transform:translateX(-50%);display:flex;gap:10px}
+html:root body:not(#z) .potstage .potdots i{width:20px;height:13px;border-radius:50%;background:#c9b896;box-shadow:inset 0 2px 3px rgba(0,0,0,.2)}
 html:root body:not(#z) .potstage .potdots i.on{background:radial-gradient(circle at 40% 35%,#8fcf6e,#4f9a3c);box-shadow:0 2px 0 rgba(40,80,30,.3)}
-html:root body:not(#z) .potstage .potshelf{position:absolute;z-index:2;right:4%;bottom:68%;display:flex;gap:2px;padding:4px 6px 6px;border-radius:8px;background:linear-gradient(#d9b27f,#b98d58);box-shadow:0 3px 0 #9a6f40}
-html:root body:not(#z) .potstage .potshelf .pshp img{width:22px;height:22px;object-fit:contain;display:block}
-html:root body:not(#z) .potscr .potbtns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+html:root body:not(#z) .potscr .potbtns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
 html:root body:not(#z) .potscr .potbtns .tpill{display:inline-flex;align-items:center;gap:6px}
 html:root body:not(#z) .potscr .potbtns .tpill img{width:22px;height:22px}
 /* 국어 서점: 위쪽 서점 안 그림 */
@@ -4344,6 +4358,70 @@ html:root body:not(#z) .beestage .stagehive{width:118px;height:auto;display:bloc
 html:root body:not(#z) .beestage .islon{bottom:46%}
 html:root body:not(#z) .treestage{margin-top:calc(min(250px,66vw)*.78)}
 html:root body:not(#z) .potscr .potcenter{padding-bottom:130px!important}
+html:root body:not(#z) .potstage .spshelf{width:22%;right:9%;bottom:58%}
+html:root body:not(#z) .potstage .spshelf .shelfrow{top:auto;bottom:62%;left:4%;right:14%}
+html:root body:not(#z) .potstage .spcan{width:26%;right:18%;bottom:98%}
+html:root body:not(#z) .potstage .islon{bottom:50%}
+html:root body:not(#z) .potstage .islon::before{content:"";position:absolute;z-index:-1;left:50%;bottom:-6px;width:46%;height:26px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,#9fc077,#8db166);box-shadow:0 3px 0 #7c9f58}
+html:root body:not(#z) .potstage .potdots{bottom:33%}
+/* pot screen v3: closer to mockup */
+html:root body:not(#z) .potscr{background:linear-gradient(180deg,#d6e6ef 0%,#e8eef0 45%,#f1ebdf 100%)!important}
+html:root body:not(#z) .potscr::before,html:root body:not(#z) .potscr::after{display:none!important}
+html:root body:not(#z) .potscr .qtop{display:flex;align-items:center;gap:8px}
+html:root body:not(#z) .potscr .qtop .potbtns{margin:0 0 0 auto;display:flex;gap:6px;flex-wrap:nowrap}
+html:root body:not(#z) .potscr .qtop .potbtns .tpill{padding:6px 11px;font-size:13px;min-height:0}
+html:root body:not(#z) .spcard .tchpotbtn{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:4px 10px 4px 4px;font-size:12.5px;min-height:0;background:#f3ead8;box-shadow:none}
+html:root body:not(#z) .spcard .tchpotbtn img{width:20px;height:20px}
+html:root body:not(#z) .potstage{width:min(360px,92vw);margin-top:118px}
+html:root body:not(#z) .potstage .islon{bottom:49%}
+html:root body:not(#z) .potstage .islon::before{width:58%;height:34px;bottom:-12px;background:radial-gradient(closest-side,#a9c97f 60%,#97bb6c);box-shadow:0 4px 0 #7fa35a,0 8px 10px rgba(60,90,40,.18)}
+html:root body:not(#z) .potstage .spcan{width:30%;right:9%;bottom:104%;transform:rotate(-10deg)}
+html:root body:not(#z) .potstage .spdrops{position:absolute;z-index:3;right:33%;bottom:92%;width:24px;height:60px;pointer-events:none}
+html:root body:not(#z) .potstage .spdrops i{position:absolute;top:0;width:6px;height:9px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 35% 35%,#fff,#a8d8f0 60%,#6fb6dc);opacity:0;animation:spDrop 1.6s linear infinite}
+@keyframes spDrop{0%{transform:translate(0,0);opacity:0}15%{opacity:.95}100%{transform:translate(-14px,52px);opacity:0}}
+@media (prefers-reduced-motion:reduce){html:root body:not(#z) .potstage .spdrops i{animation:none;opacity:.8}}
+html:root body:not(#z) .potstage .spshelf{width:25%;right:6%;bottom:55%}
+html:root body:not(#z) .potstage .potdots{position:absolute;inset:0;transform:none;display:block;bottom:auto;left:0}
+html:root body:not(#z) .potstage .potdots i{position:absolute;width:26px;height:15px;margin-left:-13px;border-radius:50%;background:radial-gradient(ellipse at 50% 60%,#6d5236 0 45%,#c7a77c 50%,#b8946a 100%);box-shadow:0 2px 0 rgba(90,70,40,.35)}
+html:root body:not(#z) .potstage .potdots i.on{background:radial-gradient(ellipse at 50% 70%,#c7a77c 0 0) ,#b8946a}
+html:root body:not(#z) .potstage .potdots i.on::after{content:"";position:absolute;left:3px;right:3px;bottom:5px;height:12px;border-radius:50% 50% 40% 40%;background:radial-gradient(circle at 38% 30%,#a6dc84,#5aa543 70%,#3f8a33);box-shadow:0 1px 0 rgba(40,80,30,.35)}
+html:root body:not(#z) .potscr .dock .cta{border-radius:999px}
+html:root body:not(#z):has(.potscr),html:root body:not(#z):has(.potscr) #app{background:linear-gradient(180deg,#d6e6ef 0%,#e8eef0 45%,#f1ebdf 100%)!important}
+html:root body:not(#z) .potscr .center{background:none!important;box-shadow:none!important}
+html:root body:not(#z) .spcard-ft{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:2px}
+html:root body:not(#z) .spcard-ft .tchpotbtn{margin-top:0;flex:none}
+html:root body:not(#z) .potstage{width:min(320px,80vw);margin-top:150px}
+html:root body:not(#z) .potstage .potdots{inset:0}
+html:root body:not(#z) .potstage .islon::before{width:50%;height:40px;bottom:-14px}
+html:root body:not(#z) .potstage .spcan{width:27%;right:13%;bottom:92%}
+html:root body:not(#z) .potstage .spdrops{right:36%;bottom:80%}
+html:root body:not(#z) .potstage .spshelf{width:27%;right:4%;bottom:54%}
+html:root body:not(#z) .spcard-ft small{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html:root body:not(#z) .spcard-ft .tchpotbtn{width:auto!important;max-width:none}
+html:root body:not(#z) .potstage .potdots i{width:30px;height:17px;margin-left:-15px}
+html:root body:not(#z) .potstage .potdots i.on::after{bottom:6px;height:14px}
+html:root body:not(#z):has(.potscr) .dock::before,html:root body:not(#z):has(.potscr) .dock::after{display:none!important}
+html:root body:not(#z) .potstage{width:min(345px,86vw);margin-top:190px}
+@media (max-height:700px){html:root body:not(#z) .potstage{margin-top:120px;width:min(300px,78vw)}}
+/* tree / bee: 시안처럼 위 카드 + 큰 섬 */
+html:root body:not(#z) :is(.beescr,.screen:has(>.treecenter)),html:root body:not(#z):has(.beescr),html:root body:not(#z):has(.treecenter){background:linear-gradient(180deg,#d6e6ef 0%,#e8eef0 45%,#f1ebdf 100%)!important}
+html:root body:not(#z) .spcard-sum{order:-1!important;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px 16px}
+html:root body:not(#z) .spcard-sum .eyebrow{margin:0!important;font-size:12px!important;padding:3px 9px!important}
+html:root body:not(#z) .spcard-sum h2{font-size:19px!important;margin:2px 0 0!important;text-align:left!important;line-height:1.3}
+html:root body:not(#z) .spcard-sum p.sub{font-size:12.5px!important;margin:0!important;text-align:left!important;line-height:1.45}
+html:root body:not(#z) .spcard-sum .srdue-list{justify-content:flex-start!important;margin:4px 0 0!important}
+html:root body:not(#z) .spcard-sum .entot{margin:4px 0 0!important;box-shadow:none!important;background:#f3ead8!important}
+html:root body:not(#z) .spcard-sum .prog{order:0!important;width:100%!important;margin:6px 0 0!important;padding:0!important;background:none!important;box-shadow:none!important}
+html:root body:not(#z) :is(.treecenter,.beecenter)>.islstage{order:1!important;width:min(345px,86vw);margin-top:18px}
+html:root body:not(#z) :is(.treecenter,.beecenter)>.islstage~*{order:2}
+html:root body:not(#z) .beestage .stagehive{width:44%!important}
+html:root body:not(#z) .spcard-sum .eyebrow{align-self:flex-start!important}
+html:root body:not(#z) .beestage .stagehive{width:56%!important}
+html:root body:not(#z) :is(.treecenter,.beecenter)>.islstage{margin-top:18px}
+html:root body:not(#z) .treecenter>.treestage{width:min(320px,80vw)}
+html:root body:not(#z) .treestage .islon{bottom:46%}
+html:root body:not(#z) .spcard-sum .srdue-chip{padding:2px 8px!important;font-size:11.5px!important}
+html:root body:not(#z) .spcard-sum .srdue-chip b{font-size:15px!important}
 </style>
 
 <div id="app"></div>
@@ -4539,6 +4617,9 @@ A["umbrella_on_ground_r2"]="b/38b807b2ac87.webp";
 A["umbrella_on_ground_r3"]="b/0350f4ff7605.webp";
 A["t_rock"]="b/fac91c77349e.webp";
 A["n_islet"]="b/f5cf377e6143.webp";
+A["n_can"]="b/ad9e13ff3e46.webp";
+A["n_shelf"]="b/1611511f53aa.webp";
+A["n_minipot"]="b/67c229d828ed.webp";
 A["n_bookint"]="b/f29544f09728.webp";
 A["t_dig"]="b/13cbbf71b7fa.webp";
 A["t_under"]="b/4387e38d487e.webp";
@@ -5224,7 +5305,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.127";
+var APP_VER="1.0.128";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -18700,14 +18781,14 @@ function treeScreen(fromRound){if(fromRound)TREEP=null;
   }
   var info=el('p','fruitinfo');info.hidden=true;
   var zz=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z'))||1;var tw=Math.max(170,Math.min((app.clientWidth||375)-40,320,(innerHeight/(document.body.classList.contains('big')?zz:1)-(fromRound?380:330)-(!fromRound&&wiltedList().some(function(ch){return gradeOf(ch)===tg})?150:0))/TREE_AR));
-  tw=Math.round(tw*.8);  c.appendChild(subjStage(treeEl(tw,{grade:tg,part:gradeCap(tg)>100?TREEP:null,labels:true,hi:fromRound&&G?G.newFruits.concat(G.grown||[]):[],onFruit:function(ch){
+  tw=Math.round(tw*(fromRound?.8:.9));  c.appendChild(subjStage(treeEl(tw,{grade:tg,part:gradeCap(tg)>100?TREEP:null,labels:true,hi:fromRound&&G?G.newFruits.concat(G.grown||[]):[],onFruit:function(ch){
     var h=H8[HIDX[ch]],ex=exampleWord(ch);info.hidden=false;info.innerHTML='';
     info.appendChild(el('b','hz',ch));var t=el('span');t.appendChild(el('strong',null,hzName(h)));var sr_=hzSrGet(ch),lf=hzSrLeft(ch);if(sr_)t.appendChild(el('em','srst st'+sr_.s,SR_NAME[sr_.s]+' · '+(lf<=0?'오늘 복습해요':lf+'일 뒤 복습')));else if(ex)t.appendChild(el('small',null,ex[0]+'('+ex[1]+')'));info.appendChild(t);var cb=el('button','cta light hzcardbtn','카드');cb.onclick=function(){hzBrowse(tg,ch,function(){treeScreen(false)})};info.appendChild(cb);
   }}),'treestage'));
   c.appendChild(info);
   if(n){var lg=el('div','srlegend'),cnt=[0,0,0,0,0,0];hzOrder().forEach(function(ch){if(gradeOf(ch)===tg){var r=hzSrGet(ch);cnt[r?r.s:3]++}});for(var si=1;si<=5;si++){var it=el('span','st'+si);it.appendChild(el('i'));it.appendChild(document.createTextNode(SR_NAME[si]+' '+cnt[si]));lg.appendChild(it)}c.appendChild(lg)}
   var bar=el('div','prog'),b2=el('div','bar'),fi=el('i');fi.style.width=(n/gradeCap(tg)*100)+'%';b2.appendChild(fi);bar.appendChild(b2);bar.appendChild(el('span','tnum',GRADES[tg]+' '+n+' / '+gradeCap(tg)));bar.style.width='100%';c.appendChild(bar);
-  sc.appendChild(c);
+  if(!fromRound)spCardify(c);sc.appendChild(c);
   var d=el('div','dock');
   if(fromRound){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;d.appendChild(ok)}
   else{var dueL=wiltedList().filter(function(ch){return gradeOf(ch)===tg});
@@ -19209,7 +19290,7 @@ function beeScreen(fromRound){
   var det=el('details','enlist');det.appendChild(el('summary',null,'단어 '+N+'개 보기'));var ul=el('div','enwords');
   EN.words.slice().sort(function(a,b){return (jarIn[b.w]?1:0)-(jarIn[a.w]?1:0)}).forEach(function(x){var p=enBits(x.w),b=el('button','enw'+(p===7?' full':'')+(jarIn[x.w]?' injar':''));b.appendChild(el('b',null,x.w));b.appendChild(el('span',null,x.k));var d=el('i','dots3');[1,2,4].forEach(function(k){d.appendChild(el('em',p&k?'on':''))});b.appendChild(d);b.onclick=function(){sayEn(x.w)};ul.appendChild(b)});
   det.appendChild(ul);c.appendChild(det);
-  sc.appendChild(c);
+  if(!fromRound)spCardify(c);sc.appendChild(c);
   var dk=el('div','dock');if(fromRound){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;dk.appendChild(ok)}else{var go=el('button','cta','영어 문제 풀기');go.onclick=function(){startRound(SUBJ.en)};dk.appendChild(go)}
   sc.appendChild(dk);app.appendChild(sc);
 }
@@ -19980,31 +20061,38 @@ function tchClassTab(sc){var T=tchS(),g=curGrade(),U=UNITS.filter(function(u){re
   sc.appendChild(el('p','mtip','단원 문제를 다른 날에 두 번 한 번에 맞히면 다 익힌 거예요. 그러면 '+TCH_FR[1]+'가 공책을 들고 찾아와요. 한자·영어·국어 친구도 곧 우리 반에 와요.'))}
 // ================= 과목 공간: 떠 있는 작은 섬 무대 =================
 // node(나무·벌집·화분)를 작은 섬 위에 올려요. h: 무대 높이
-function subjStage(node,cls){var s=el('div','islstage'+(cls?' '+cls:''));var b=img('n_islet','islbase');b.draggable=false;s.appendChild(b);var top=el('div','islon');top.appendChild(node);s.appendChild(top);return s}
-// 수학 화분 공간
+function subjStage(node,cls){var s=el('div','islstage'+(cls?' '+cls:''));var b=img('n_islet','islbase');b.draggable=false;s.appendChild(b);var top=el('div','islon');top.appendChild(node);s.appendChild(top);
+  if(cls!=='potstage'){var fit_=function(){if(!s.isConnected)return;var o=top.firstChild&&top.firstChild.getBoundingClientRect(),r=s.getBoundingClientRect();if(!o||!r.height)return;var need=Math.max(14,Math.round(r.top-o.top+8));s.style.marginTop=need+'px'};requestAnimationFrame(function(){requestAnimationFrame(fit_)});Array.prototype.forEach.call(s.getElementsByTagName('img'),function(im){im.addEventListener('load',fit_)});setTimeout(fit_,400)}
+  return s}
+// 수학 화분 공간 (시안: 위 크림 카드 + 큰 떠 있는 섬 + 화분·물뿌리개·꽃 선반·씨앗 점)
 function potScreen(){
   clear();document.body.classList.remove('qmode');
   var m=SUBJ.math,st=stage(m),sc=el('div','screen potscr'),top=el('div','qtop');
   var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=BACK_SVG;back.onclick=home;top.appendChild(back);top.appendChild(el('h3','wtitle','수학 화분'));sc.appendChild(top);
   var c=el('div','center potcenter');
-  c.appendChild(el('div','eyebrow','수학 화분 · '+st+' / '+PER));
-  c.appendChild(el('h2',null,m.stage[st]));
-  c.appendChild(el('p','sub','수학 문제를 맞힐 때마다 꽃이 한 단계 자라요. '+(PER-st)+'문제만 더 맞히면 꽃이 펴요.'));
-  var pw=Math.min(190,(app.clientWidth||375)*.46),pb=potBox(null,st,pw,potKey(m),S.equip.friend);
+  var card=el('div','spcard');var hd=el('div','spcard-hd');hd.appendChild(el('b',null,m.stage[st]));hd.appendChild(el('span','tnum',st+' / '+PER));card.appendChild(hd);
+  var bar=el('div','spbar');var f=el('i');f.style.width=(st/PER*100)+'%';bar.appendChild(f);card.appendChild(bar);
+  var cft=el('div','spcard-ft');cft.appendChild(el('small',null,(PER-st)+'문제만 더 맞히면 꽃이 펴요'));card.appendChild(cft);c.appendChild(card);
+  var pw=Math.round(Math.min(170,(app.clientWidth||375)*.42)),pb=potBox(null,st,pw,potKey(m),S.equip.friend);
   var stg=subjStage(pb,'potstage');
-  // 씨앗 자리: 맞힌 만큼 초록으로
-  var dots=el('div','potdots');for(var i=0;i<PER;i++)dots.appendChild(el('i',i<st?'on':null));dots.setAttribute('aria-label',PER+'문제 중 '+st+'문제');stg.appendChild(dots);
-  // 꽃 선반: 지금까지 피운 꽃
+  var can=img('n_can','spcan');can.alt='';stg.appendChild(can);var drp=el('div','spdrops');for(var q=0;q<5;q++){var dq=el('i');dq.style.animationDelay=(q*.32)+'s';dq.style.left=(q%3*7)+'px';drp.appendChild(dq)}stg.appendChild(drp);
   var hist=(stOf(m).hist||[]).slice().reverse(),seen={},shown=[];hist.forEach(function(k){if(seen[k]||shown.length>=3)return;seen[k]=1;var it=m.items[k]||itemOf(m,k);if(it&&it.img)shown.push(it)});
-  if(shown.length){var sh=el('div','potshelf');shown.forEach(function(it){var p=el('span','pshp');p.appendChild(img(it.img));sh.appendChild(p)});stg.appendChild(sh)}
+  var sh=el('div','spshelf');sh.appendChild(img('n_shelf','shelfimg'));var row_=el('div','shelfrow');for(var i=0;i<3;i++){var mp=el('span','minip');mp.appendChild(img('n_minipot'));if(shown[i]){var fl=img(shown[i].img,'minifl');mp.appendChild(fl)}else mp.className+=' empty';row_.appendChild(mp)}sh.appendChild(row_);sh.setAttribute('aria-label','피운 꽃 '+shown.length+'개');stg.appendChild(sh);
+  var dots=el('div','potdots');for(var j=0;j<PER;j++){var a=Math.PI*(1.12+.76*(PER>1?j/(PER-1):.5)),d_=el('i',j<st?'on':null);d_.style.left=(50+38*Math.cos(a)).toFixed(1)+'%';d_.style.bottom=(53+13*Math.sin(a)).toFixed(1)+'%';dots.appendChild(d_)}dots.setAttribute('aria-label',PER+'문제 중 '+st+'문제');stg.appendChild(dots);
   c.appendChild(stg);
-  var row=el('div','potbtns');
+  var row=el('div','potbtns');top.appendChild(row);
   var gb=el('button','tpill','꽃 도감');gb.onclick=function(){greenhouse('math')};row.appendChild(gb);
   var pbtn=el('button','tpill','화분 꾸미기');pbtn.onclick=function(){shop('pot')};row.appendChild(pbtn);
-  var uc_=tchCount(curGrade()),ub=el('button','tpill tchpotbtn');ub.appendChild(img(TCH_FR[0]));ub.appendChild(document.createTextNode('가르친 단원 '+uc_[0]+' / '+uc_[1]));ub.onclick=function(){SCH_TAB='class';schoolScreen(potScreen)};row.appendChild(ub);
-  c.appendChild(row);sc.appendChild(c);
+  var uc_=tchCount(curGrade()),ub=el('button','tpill tchpotbtn');ub.appendChild(img(TCH_FR[0]));ub.appendChild(document.createTextNode('가르친 단원 '+uc_[0]+' / '+uc_[1]));ub.onclick=function(){SCH_TAB='class';schoolScreen(potScreen)};cft.appendChild(ub);
+  sc.appendChild(c);
   var dk=el('div','dock');var go=el('button','cta','수학 문제 풀기');go.onclick=function(){startRound(m)};dk.appendChild(go);sc.appendChild(dk);
   app.appendChild(sc);
+}
+// 시안처럼: 머리 글(작은 제목·설명·진행)을 위쪽 크림 카드 하나로 모아요
+function spCardify(c){
+  var card=el('div','spcard spcard-sum');
+  ['.eyebrow','h2','p.sub','.srdue-list','.entot','.prog'].forEach(function(q){Array.prototype.forEach.call(c.querySelectorAll(':scope > '+q),function(n){card.appendChild(n)})});
+  if(card.firstChild)c.insertBefore(card,c.firstChild);return card;
 }
 // ================= 섬 식물원: 숙제 시간으로 식물을 키워 전시해요 =================
 // 퀴즈 보상(꽃·열매·소품)은 섬을 꾸미는 재료, 숙제는 식물원에만 전시되는 식물이에요. 섬 꾸미기와 겹치지 않아요.
