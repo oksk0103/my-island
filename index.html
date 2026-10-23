@@ -4270,6 +4270,10 @@ html:root body:not(#z) .village .vmailbtn img{width:26px!important;height:26px!i
 /* 과목 타일: 새 점토 아이콘에 받침이 들어 있어서 CSS 받침은 숨겨요 */
 html:root body:not(#z):not(#a) .village .vtask::before{display:none!important}
 html:root body:not(#z):not(#a) .village .vtask>img{width:64%!important;margin:0!important;filter:none!important}
+/* ===== 내 섬: 하늘에 떠 있는 섬 ===== */
+html:root body:not(#z) .island{background:linear-gradient(180deg,#8ec5ef 0%,#b7dcf5 45%,#dcf0fb 100%)!important}
+html:root body:not(#z) .island .wave,html:root body:not(#z) .island .searock{display:none!important}
+html:root body:not(#z) .island.tod-night,html:root body:not(#z) .island.night{background:linear-gradient(180deg,#1d2a4a 0%,#2b3c63 55%,#3a4f78 100%)!important}
 </style>
 
 <div id="app"></div>
@@ -4277,7 +4281,7 @@ html:root body:not(#z):not(#a) .village .vtask>img{width:64%!important;margin:0!
 <div class="sheet" id="sheet" aria-live="polite"><div class="in"></div></div>
 
 <script>
-var A={"pot":"b/fb6c2af9f554.webp","fol":"b/ef40cb10455e.webp","sprout":"b/4e959e69adfb.webp","seedling":"b/4e959e69adfb.webp","blossom":"b/5e888fd3f2c6.webp","tulip":"b/aa514e71ca51.webp","sunflower":"b/5baf87bbffcf.webp","rose":"b/922084613d8e.webp","hibiscus":"b/3a9b332021dd.webp","cherry_blossom":"b/c76696a8fa25.webp","droplet":"b/afb806f78742.webp","fire":"b/1708c445dad2.png","sparkles":"b/14bdfc93156d.png","check_mark_button":"b/84b182e42ffa.png","light_bulb":"b/ea857031b97e.png","speaker_high_volume":"b/84ed11d97781.png","muted_speaker":"b/d0d9b8f98351.png","rare_blossom":"b/89ba679f6d65.webp","rare_tulip":"b/78fa22e63ec1.webp","rare_sunflower":"b/a1977ff43d62.webp","rare_rose":"b/f33232bf4df0.webp","rare_hibiscus":"b/111cca8593c3.webp","rare_cherry_blossom":"b/377d7aa63ee8.webp","pot_gold":"b/5d893cae4724.webp","red_apple":"b/69f26295ade1.webp","peach":"b/c22057201d2f.webp","tangerine":"b/ce7c6218b843.webp","cherries":"b/cd507c15137a.webp","lemon":"b/d0eca1d1b06a.webp","grapes":"b/7a6362f49cbe.webp","rare_red_apple":"b/aee9a71c3ba0.webp","rare_peach":"b/abab150fd8f5.webp","rare_tangerine":"b/b1ce2a5a59c9.webp","rare_cherries":"b/c437de206848.webp","rare_lemon":"b/6bae98fbd847.webp","rare_grapes":"b/2a65c74daa97.webp","books":"b/dd5ecc8f9231.png","pot_sky":"b/20e71dbdee72.webp","pot_pink":"b/ffecd648a6fd.webp","pot_violet":"b/f6df9ff49da5.webp","pot_mint":"b/8e6c0ed19933.webp","pot_white":"b/b76e7356807d.webp","sun":"b/c3f5cc28eaa0.png","lady_beetle":"b/f7065fbd7d5d.webp","butterfly":"b/f182f95f84fd.webp","snail":"b/7aca81e92a12.webp","mushroom":"b/b5e6352df04a.webp","four_leaf_clover":"b/a38cf93e89a8.webp","rainbow":"b/0fef91acb565.webp","shopping_bags":"b/166dbd4854c2.png","rabbit":"b/bb86154ce2c7.webp","cat":"b/45fd4ba40686.webp","penguin":"b/323177dc545a.webp","chipmunk":"b/ea359ef62916.webp","hedgehog":"b/6f62cc83e9df.webp","turtle":"b/65d1acda2b53.webp","owl":"b/6b6e8d11bcc9.webp","hatching_chick":"b/4adfe66bafff.webp","wrapped_gift":"b/416b1375f11a.png","footprints":"b/ca49a2d65fe6.png","cloud":"b/e74c1fb9f0d4.webp","cloud_with_rain":"b/778f39b59c79.webp","evergreen_tree":"b/d196ec2eed3d.webp","fountain":"b/1a3d2241e26e.webp","chair":"b/616acb8c7fc8.webp","tent":"b/4a1934081b08.webp","house_with_garden":"b/7b642b1dcb07.webp","rock":"b/b638a5fb4e0f.webp","wood":"b/eead985eb68c.webp","jack-o-lantern":"b/2c9a23643877.webp","snowman":"b/5c48f968a8cb.webp","red_paper_lantern":"b/c1fc89120bdd.webp","playground_slide":"b/f4423425e414.webp","umbrella_on_ground":"b/fb506422a896.webp","teddy_bear":"b/f3ccb6c964e8.webp","cactus":"b/d28e37abee65.webp","palm_tree":"b/a7539d2c63bb.webp","postbox":"b/0b91780d718b.webp","pencil":"b/3d8782d79009.png","k3_house":"b/7b642b1dcb07.webp","k3_shop":"b/e485b6c34206.webp","k3_sign":"b/c6b9aa2bfe22.webp","k3_bookshop":"b/4fa967529d47.webp","pl_succ":"b/1bf86fb376fb.webp","pl_aloe":"b/c53c3c9b771a.webp","pl_fern":"b/425e54f0985a.webp","pl_lav":"b/72990a54538f.webp","pl_mimo":"b/33c5508b8c8e.webp","pl_hydr":"b/f2775b654d87.webp","pl_saguaro":"b/8ff009c51ed5.webp","pl_ballcac":"b/4263b5a1a022.webp","pl_baobab":"b/72bd37f3a6f6.webp","pl_monst":"b/a595e16d5243.webp","pl_coffee":"b/fd296d8793cb.webp","pl_bird":"b/319830325813.webp","pl_flytrap":"b/66bc0ea98119.webp","pl_pitcher":"b/50c60beed2b8.webp","pl_sundew":"b/1d96e595a518.webp","pl_lotus":"b/b2e512b36207.webp","pl_hyacinth":"b/706bdbc3ebbf.webp","pl_rafflesia":"b/86188fb0707c.webp","bld_botanic":"b/3fc267617b26.webp","k3_cart":"b/09fb5e5e68fe.webp","k3_tree":"b/494c1911fb78.webp","k3_boat":"b/2b9f04fac32d.webp","k3_village":"b/d37f562fc6ee.webp","n_base":"b/25564f795c1d.webp","n_tree":"b/b4ae771aafea.webp","n_book":"b/bc31da10bc6d.webp","n_hive":"b/95dd4e79d39a.webp","n_pot":"b/098ff8ac7afd.webp","n_pot0":"b/dde4731eb6a3.webp","n_myisl":"b/fb5e08c95e32.webp","n_mailbox":"b/74efffdd8bfe.webp","n_ico_ko":"b/72b00aa5600d.webp","n_ico_math":"b/02ace656e90a.webp","n_ico_en":"b/a422552e1933.webp","n_ico_hz":"b/84a6f451d9f6.webp",};
+var A={"pot":"b/fb6c2af9f554.webp","fol":"b/ef40cb10455e.webp","sprout":"b/4e959e69adfb.webp","seedling":"b/4e959e69adfb.webp","blossom":"b/5e888fd3f2c6.webp","tulip":"b/aa514e71ca51.webp","sunflower":"b/5baf87bbffcf.webp","rose":"b/922084613d8e.webp","hibiscus":"b/3a9b332021dd.webp","cherry_blossom":"b/c76696a8fa25.webp","droplet":"b/afb806f78742.webp","fire":"b/1708c445dad2.png","sparkles":"b/14bdfc93156d.png","check_mark_button":"b/84b182e42ffa.png","light_bulb":"b/ea857031b97e.png","speaker_high_volume":"b/84ed11d97781.png","muted_speaker":"b/d0d9b8f98351.png","rare_blossom":"b/89ba679f6d65.webp","rare_tulip":"b/78fa22e63ec1.webp","rare_sunflower":"b/a1977ff43d62.webp","rare_rose":"b/f33232bf4df0.webp","rare_hibiscus":"b/111cca8593c3.webp","rare_cherry_blossom":"b/377d7aa63ee8.webp","pot_gold":"b/5d893cae4724.webp","red_apple":"b/69f26295ade1.webp","peach":"b/c22057201d2f.webp","tangerine":"b/ce7c6218b843.webp","cherries":"b/cd507c15137a.webp","lemon":"b/d0eca1d1b06a.webp","grapes":"b/7a6362f49cbe.webp","rare_red_apple":"b/aee9a71c3ba0.webp","rare_peach":"b/abab150fd8f5.webp","rare_tangerine":"b/b1ce2a5a59c9.webp","rare_cherries":"b/c437de206848.webp","rare_lemon":"b/6bae98fbd847.webp","rare_grapes":"b/2a65c74daa97.webp","books":"b/dd5ecc8f9231.png","pot_sky":"b/20e71dbdee72.webp","pot_pink":"b/ffecd648a6fd.webp","pot_violet":"b/f6df9ff49da5.webp","pot_mint":"b/8e6c0ed19933.webp","pot_white":"b/b76e7356807d.webp","sun":"b/c3f5cc28eaa0.png","lady_beetle":"b/f7065fbd7d5d.webp","butterfly":"b/f182f95f84fd.webp","snail":"b/7aca81e92a12.webp","mushroom":"b/b5e6352df04a.webp","four_leaf_clover":"b/a38cf93e89a8.webp","rainbow":"b/0fef91acb565.webp","shopping_bags":"b/166dbd4854c2.png","rabbit":"b/bb86154ce2c7.webp","cat":"b/45fd4ba40686.webp","penguin":"b/323177dc545a.webp","chipmunk":"b/ea359ef62916.webp","hedgehog":"b/6f62cc83e9df.webp","turtle":"b/65d1acda2b53.webp","owl":"b/6b6e8d11bcc9.webp","hatching_chick":"b/4adfe66bafff.webp","wrapped_gift":"b/416b1375f11a.png","footprints":"b/ca49a2d65fe6.png","cloud":"b/e74c1fb9f0d4.webp","cloud_with_rain":"b/778f39b59c79.webp","evergreen_tree":"b/d196ec2eed3d.webp","fountain":"b/1a3d2241e26e.webp","chair":"b/616acb8c7fc8.webp","tent":"b/4a1934081b08.webp","house_with_garden":"b/7b642b1dcb07.webp","rock":"b/b638a5fb4e0f.webp","wood":"b/eead985eb68c.webp","jack-o-lantern":"b/2c9a23643877.webp","snowman":"b/5c48f968a8cb.webp","red_paper_lantern":"b/c1fc89120bdd.webp","playground_slide":"b/f4423425e414.webp","umbrella_on_ground":"b/fb506422a896.webp","teddy_bear":"b/f3ccb6c964e8.webp","cactus":"b/d28e37abee65.webp","palm_tree":"b/a7539d2c63bb.webp","postbox":"b/0b91780d718b.webp","pencil":"b/3d8782d79009.png","k3_house":"b/7b642b1dcb07.webp","k3_shop":"b/e485b6c34206.webp","k3_sign":"b/c6b9aa2bfe22.webp","k3_bookshop":"b/4fa967529d47.webp","pl_succ":"b/1bf86fb376fb.webp","pl_aloe":"b/c53c3c9b771a.webp","pl_fern":"b/425e54f0985a.webp","pl_lav":"b/72990a54538f.webp","pl_mimo":"b/33c5508b8c8e.webp","pl_hydr":"b/f2775b654d87.webp","pl_saguaro":"b/8ff009c51ed5.webp","pl_ballcac":"b/4263b5a1a022.webp","pl_baobab":"b/72bd37f3a6f6.webp","pl_monst":"b/a595e16d5243.webp","pl_coffee":"b/fd296d8793cb.webp","pl_bird":"b/319830325813.webp","pl_flytrap":"b/66bc0ea98119.webp","pl_pitcher":"b/50c60beed2b8.webp","pl_sundew":"b/1d96e595a518.webp","pl_lotus":"b/b2e512b36207.webp","pl_hyacinth":"b/706bdbc3ebbf.webp","pl_rafflesia":"b/86188fb0707c.webp","bld_botanic":"b/61c199b0dba9.webp","k3_cart":"b/09fb5e5e68fe.webp","k3_tree":"b/494c1911fb78.webp","k3_boat":"b/2b9f04fac32d.webp","k3_village":"b/d37f562fc6ee.webp","n_base":"b/25564f795c1d.webp","n_tree":"b/b4ae771aafea.webp","n_book":"b/bc31da10bc6d.webp","n_hive":"b/95dd4e79d39a.webp","n_pot":"b/098ff8ac7afd.webp","n_pot0":"b/dde4731eb6a3.webp","n_myisl":"b/fb5e08c95e32.webp","n_mailbox":"b/74efffdd8bfe.webp","n_ico_ko":"b/72b00aa5600d.webp","n_ico_math":"b/02ace656e90a.webp","n_ico_en":"b/a422552e1933.webp","n_ico_hz":"b/84a6f451d9f6.webp",};
 var K3={"bookshop": {"w": 141, "h": 153, "bx": 0.5, "by": 0.7476}, "cart": {"w": 84, "h": 88, "bx": 0.5, "by": 0.7936}, "house": {"w": 168.7, "h": 178.7, "bx": 0.5, "by": 0.6996}, "shop": {"w": 161.4, "h": 166.4, "bx": 0.5, "by": 0.6442}, "sign": {"w": 67.2, "h": 82.9, "bx": 0.5, "by": 0.6991}, "tree": {"w": 130.4, "h": 205.0, "bx": 0.5, "by": 0.8097}, "boat": {"w": 134.8, "h": 83.2, "bx": 0.5, "by": 0.5396}, "canopy": [0.499, 0.365, 0.304, 0.2], "anch": {"home": [165, 245.5], "tree": [293.8, 236.3], "shop": [427.2, 261.6], "mail": [188, 372], "pot": [326, 395], "boat": [280, 537.2]}};
 var POT_AR=1.03,POT_SOIL=.76;
 K3.pond=["16,9", "17,9", "16,10", "17,10", "15,10"];K3.nat=["3,8", "2,10", "3,11", "8,2", "10,1", "11,2", "9,18", "11,17", "17,13", "16,15", "3,14", "14,3", "16,4", "4,16", "18,8", "16,11", "15,9", "17,11", "2,9", "9,2"];
@@ -4287,9 +4291,9 @@ A["duck"]="b/57ec5a08d9ec.webp";
 A["frog"]="b/32b82d35ebf7.webp";
 A["sheep"]="b/3e3061b90e73.webp";
 A["panda"]="b/09e39e7aa8d4.webp";
-A["d_oak"]="b/2cbfad3364c9.webp";
-A["d_round"]="b/cd7e51322737.webp";
-A["d_fat"]="b/f968808117d1.webp";
+A["d_oak"]="b/7f68977c1970.webp";
+A["d_round"]="b/f5c8ec8556a9.webp";
+A["d_fat"]="b/a51aa3a01f23.webp";
 A["d_maple"]="b/8ca61a46f617.webp";
 A["d_oak_fall"]="b/48cc5c990fd6.webp";
 A["d_pine_tall"]="b/5119b8fc6c5c.webp";
@@ -4298,20 +4302,20 @@ A["d_blocks"]="b/d38b85a310c4.webp";
 A["d_palm_bend"]="b/fe059eebc0c5.webp";
 A["d_cactus_short"]="b/f1e7fdc9759d.webp";
 A["d_bamboo"]="b/fdc60b3f1bf1.webp";
-A["d_pine_round"]="b/1c993c6c5145.webp";
+A["d_pine_round"]="b/054d58f1fe70.webp";
 A["d_cherry"]="b/131ba79aaf92.webp";
-A["d_bush"]="b/cc0a094bc521.webp";
-A["d_bush_large"]="b/2215c98c05fc.webp";
+A["d_bush"]="b/cd6c6c344009.webp";
+A["d_bush_large"]="b/7e4a92dfeb47.webp";
 A["d_grass"]="b/271cd845e8c7.webp";
-A["d_mushrooms"]="b/bf7648c27408.webp";
-A["d_flowers_red"]="b/39092970df48.webp";
-A["d_flowers_yellow"]="b/4d85b4f37f46.webp";
-A["d_flowers_purple"]="b/b32bcbe47340.webp";
+A["d_mushrooms"]="b/3b151492ca66.webp";
+A["d_flowers_red"]="b/d011337a6901.webp";
+A["d_flowers_yellow"]="b/09f19590af5a.webp";
+A["d_flowers_purple"]="b/cbea38b5aa2a.webp";
 A["d_flowerbed"]="b/36dffb581cb1.webp";
 A["d_planter"]="b/f22a7b60a2ce.webp";
 A["d_arch"]="b/1c788f067e02.webp";
 A["d_rock_tall"]="b/d22095f7cfbd.webp";
-A["d_stones"]="b/017e81317221.webp";
+A["d_stones"]="b/b7f7fe9fbfca.webp";
 A["d_column"]="b/2c45c009dd8a.webp";
 A["d_obelisk"]="b/5cfdbf181deb.webp";
 A["d_statue_head"]="b/f2aa478894f5.webp";
@@ -4463,14 +4467,15 @@ A["tent_r3"]="b/f41f2f657725.webp";
 A["umbrella_on_ground_r1"]="b/c98787e81d3d.webp";
 A["umbrella_on_ground_r2"]="b/83356f49986f.webp";
 A["umbrella_on_ground_r3"]="b/4cfb2d6ac9a5.webp";
-A["t_path"]="b/d031221a098e.webp";
-A["t_dirt"]="b/69a84ac5abee.webp";
-A["t_canal"]="b/975965c5192e.webp";
-A["t_rim_px"]="b/5f90243df324.webp";
-A["t_rim_nx"]="b/19d89f5b5d98.webp";
-A["t_rim_pz"]="b/79eb005204da.webp";
-A["t_rim_nz"]="b/56cc9bc02697.webp";
-A["t_hedge"]="b/70137b742962.webp";
+A["t_rock"]="b/274d9ea3c3bb.webp";
+A["t_path"]="b/ff6681164418.webp";
+A["t_dirt"]="b/f6687181ff7c.webp";
+A["t_canal"]="b/9d6b797ae2d6.webp";
+A["t_rim_px"]="b/cadaa8bc835c.webp";
+A["t_rim_nx"]="b/35684837036a.webp";
+A["t_rim_pz"]="b/349db37dff99.webp";
+A["t_rim_nz"]="b/40cce8e433d3.webp";
+A["t_hedge"]="b/a5f6ecc1b91b.webp";
 A["t_plate2"]="b/bed9aea47de3.webp";
 A["d_pot_small"]="b/a362724eae59.webp";
 A["d_pot_large"]="b/4c2a9534ac87.webp";
@@ -4486,7 +4491,7 @@ A["d_grass_s"]="b/92336ccd2118.webp";
 A["d_pillar_w"]="b/7769185182e2.webp";
 A["d_crate"]="b/f01f7856c999.webp";
 A["d_barrel"]="b/f0b351e67fc6.webp";
-A["rock"]="b/6edde14f5531.webp";
+A["rock"]="b/559dcacfb4e1.webp";
 A["wood"]="b/97cd2dbf2473.webp";
 A["chair"]="b/6abe6e0d9dbd.webp";
 A["postbox"]="b/0b2f82cf7c34.webp";
@@ -4494,9 +4499,9 @@ A["red_paper_lantern"]="b/98ec383ce0a7.webp";
 A["teddy_bear"]="b/edc0c389def6.webp";
 A["cactus"]="b/e99a4a71ae45.webp";
 A["jack-o-lantern"]="b/8fd0623a1735.webp";
-A["evergreen_tree"]="b/9107a7ba409a.webp";
+A["evergreen_tree"]="b/034a282cc9e6.webp";
 A["umbrella_on_ground"]="b/20d6262713e3.webp";
-A["palm_tree"]="b/92273905c2a9.webp";
+A["palm_tree"]="b/0b512c4e9ce0.webp";
 A["snowman"]="b/c90ffc3d8ba5.webp";
 A["fountain"]="b/c08765a822b2.webp";
 A["playground_slide"]="b/a9a5ea7190cb.webp";
@@ -4643,10 +4648,10 @@ A["d_sign"]="b/76092ca20bac.webp";
 A["d_fence"]="b/1e8a580f65a3.webp";
 A["d_gate"]="b/01368eef17ae.webp";
 A["d_birdhouse"]="b/818ed8e201c1.webp";
-A["t_g1"]="b/f3dde6d43410.webp";
-A["t_g2"]="b/6d3a81346904.webp";
-A["t_sand"]="b/95dd961e0203.webp";
-A["t_pond"]="b/840f0e9b84a8.webp";
+A["t_g1"]="b/622442e40953.webp";
+A["t_g2"]="b/5929e4988a22.webp";
+A["t_sand"]="b/5bfb976fa2f8.webp";
+A["t_pond"]="b/81b2b095a785.webp";
 A["t_foam"]="b/4bda579ac02a.webp";
 A["t_shadow"]="b/6d4ac60d2c76.webp";
 var TILE={"g1": [92, 46.6], "g2": [92, 46.6], "sand": [92, 46.6], "pond": [92, 46.6], "foam": [115.5, 15.3], "shadow": [134.5, 38.8], "g3": [92, 46.6], "shallow": [186, 48.4], "path": [92, 46.6], "dirt": [92, 46.6], "canal": [92, 46.6], "rim_px": [92, 46.6], "rim_nx": [92, 46.6], "rim_pz": [92, 46.6], "rim_nz": [92, 46.6], "hedge": [92, 73.5], "plate2": [177, 94.6]};
@@ -4948,10 +4953,10 @@ A["fd_bird"]="b/e30a688b9207.webp";
 A["fd_gold"]="b/be106eed550c.webp";
 A["fd_rex"]="b/c85496ece6ed.webp";
 ;
-A["museum"]="b/0623b005380d.webp";
+A["museum"]="b/b6264756164d.webp";
 ;
-A["library"]="b/00f58c19de4f.webp";
-;A["br2_c_3"]="b/835d38ab80e7.webp";A["br2_r_3"]="b/fc5191d6cb47.webp";A["br2_c_4"]="b/7c62b02631f0.webp";A["br2_r_4"]="b/f00f5283d517.webp";A["br2_c_5"]="b/d1dc04241f51.webp";A["br2_r_5"]="b/af4e3dce6656.webp";A["br2_c_6"]="b/8d55f1bb8d41.webp";A["br2_r_6"]="b/346c15c0f637.webp";A["school"]="b/04873369f1ff.webp";A["br2d_2"]="b/0217d95c5e9c.webp";A["br2d_3"]="b/bb502afab636.webp";A["br2d_4"]="b/160aea34bd93.webp";A["br2d_5"]="b/95d1fd2e7166.webp";A["t_g3"]="b/897cbf2bda96.webp";A["t_shallow"]="b/e10fd2fba426.webp";A["hive_ico"]="b/182dc4af072a.webp";A["droplet"]="b/4471cfcd3bca.webp"
+A["library"]="b/d08a9f227805.webp";
+;A["br2_c_3"]="b/835d38ab80e7.webp";A["br2_r_3"]="b/fc5191d6cb47.webp";A["br2_c_4"]="b/7c62b02631f0.webp";A["br2_r_4"]="b/f00f5283d517.webp";A["br2_c_5"]="b/d1dc04241f51.webp";A["br2_r_5"]="b/af4e3dce6656.webp";A["br2_c_6"]="b/8d55f1bb8d41.webp";A["br2_r_6"]="b/346c15c0f637.webp";A["school"]="b/5bf6ebf001c0.webp";A["br2d_2"]="b/0217d95c5e9c.webp";A["br2d_3"]="b/bb502afab636.webp";A["br2d_4"]="b/160aea34bd93.webp";A["br2d_5"]="b/95d1fd2e7166.webp";A["t_g3"]="b/4a44a9f24f8e.webp";A["t_shallow"]="b/e10fd2fba426.webp";A["hive_ico"]="b/182dc4af072a.webp";A["droplet"]="b/4471cfcd3bca.webp"
 ;A.avb_rabbit="b/c37f098bbfd1.webp";
 ;A.avb_cat="b/92019fe99c0a.webp";
 ;A.avb_penguin="b/79cbe6f016d6.webp";
@@ -5140,7 +5145,7 @@ A["library"]="b/00f58c19de4f.webp";
 ;A.weed2="b/cced58285b90.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/40b8011c5408.webp";
-var APP_VER="1.0.117";
+var APP_VER="1.0.118";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -18684,19 +18689,38 @@ function gdInit(){
     var p=k.split(',').map(Number);for(var d=1;d<8;d++)for(var dr=-d;dr<=d;dr++)for(var dc=-d;dc<=d;dc++){if(Math.max(Math.abs(dr),Math.abs(dc))!==d)continue;var nk=(p[0]+dc)+','+(p[1]+dr);if(!fits(nk,v)){S.gd.cells[nk]=v;return}}});
 }
 var TIMG={};function tImg(k){if(!TIMG[k]){TIMG[k]=new Image();TIMG[k].src=A['t_'+k]}return TIMG[k]}
+// 절벽: 섬 가운데 아래로 갈수록 깊고, 바닥선은 부드럽게 울퉁불퉁
+function cliffPaint(ctx,CS,bx0,by0,P,HAS){
+  var hw=ITW/2,hh=ITH/2,CMP={},CI=[];
+  // 이어진 땅끼리 묶어서(큰 섬·건물 섬) 각자 가운데가 가장 깊게
+  P.forEach(function(q){var k=q[0]+','+q[1];if(CMP[k]!=null)return;var id=CI.length,st=[q],xs=[];CMP[k]=id;
+    while(st.length){var c=st.pop();xs.push(iCtr(c[0],c[1])[0]);[[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){var n=[c[0]+d[0],c[1]+d[1]],nk=n[0]+','+n[1];if(HAS[nk]&&CMP[nk]==null){CMP[nk]=id;st.push(n)}})}
+    var cx=0;xs.forEach(function(x){cx+=x});cx/=xs.length;CI.push({cx:cx,half:Math.max(hw*1.5,Math.max.apply(null,xs.map(function(x){return Math.abs(x-cx)}))+hw),D:Math.min(150,30+14*Math.sqrt(xs.length))})});
+  function dep(x,ci){var C=CI[ci],t=Math.max(0,1-Math.abs(x-C.cx)/C.half);return 22+C.D*Math.pow(t,1.15)+8*Math.sin(x*.071)+5*Math.sin(x*.173+1.3)}
+  var pat=ctx.createPattern(TIMG.rock,'repeat'),faces=[];
+  P.forEach(function(q){var p=iCtr(q[0],q[1]),x=p[0],y=p[1];
+    if(!HAS[(q[0]+1)+','+q[1]])faces.push({o:q[0]+q[1],sl:-.5,a:[x+hw,y],b:[x,y+hh],dk:.3,ci:CMP[q[0]+','+q[1]]});
+    if(!HAS[q[0]+','+(q[1]+1)])faces.push({o:q[0]+q[1],sl:.5,a:[x,y+hh],b:[x-hw,y],dk:.08,ci:CMP[q[0]+','+q[1]]})});
+  faces.sort(function(m,n){return m.o-n.o});
+  faces.forEach(function(f){var pts=[f.a,f.b],N=6,bot=[];
+    for(var i=N;i>=0;i--){var t=i/N,x=f.a[0]+(f.b[0]-f.a[0])*t,y=f.a[1]+(f.b[1]-f.a[1])*t;bot.push([x,y+dep(x,f.ci)])}
+    pts=pts.concat(bot.reverse().reverse());
+    function path(){ctx.beginPath();pts.forEach(function(p,i){var X=(p[0]-bx0)*CS,Y=(p[1]-by0)*CS;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.closePath()}
+    // 바위 무늬: 면의 기울기를 따라 줄이 이어지게
+    ctx.save();path();ctx.clip();
+    var k=CS*.62;ctx.setTransform(k,f.sl*k,0,k,-bx0*CS,-by0*CS);ctx.fillStyle=pat;ctx.fillRect(-4000,-4000,16000,16000);ctx.restore();
+    ctx.save();path();var y0=(Math.min(f.a[1],f.b[1])-by0)*CS,y1=y0+190*CS,g=ctx.createLinearGradient(0,y0,0,y1);
+    g.addColorStop(0,'rgba(80,62,44,'+f.dk+')');g.addColorStop(1,'rgba(70,56,48,'+(f.dk+.3)+')');ctx.fillStyle=g;ctx.fill();ctx.restore()});
+}
 function drawGround(cv,CS,bx0,by0,cells){
-  var ks=['g1','g2','sand','pond','foam','shadow','shallow','path','dirt','canal','rim_px','rim_nx','rim_pz','rim_nz'];ks.forEach(tImg);
+  var ks=['g1','g2','sand','pond','path','dirt','canal','rim_px','rim_nx','rim_pz','rim_nz','rock'];ks.forEach(tImg);
   function go(){
     var ctx=cv.getContext('2d'),sc=CS/2;
     function put(k,c,r,dy){var im=TIMG[k],a=TILE[k],p=iCtr(c,r);ctx.drawImage(im,((p[0]-bx0)-a[0]/2)*CS,((p[1]-by0)-a[1]/2+(dy||0))*CS,im.width*sc,im.height*sc)}
     var P=cells.map(function(k){return k.split(',').map(Number)});P.sort(function(a,b){return (a[0]+a[1])-(b[0]+b[1])||a[0]-b[0]});
-    var sh=document.createElement('canvas');sh.width=cv.width;sh.height=cv.height;var sx=sh.getContext('2d');
-    P.forEach(function(q){var im=TIMG.shadow,a=TILE.shadow,p=iCtr(q[0],q[1]);sx.drawImage(im,((p[0]-bx0)-a[0]/2)*CS,((p[1]-by0)-a[1]/2+14)*CS,im.width*sc,im.height*sc)});
-    ctx.globalAlpha=.42;ctx.drawImage(sh,0,0);ctx.globalAlpha=1;
-    // 얕은 바다: 가장자리 칸 둘레만 밝게
+    // 하늘에 떠 있는 섬: 가장자리 아래로 바위 절벽을 이어 그려요 (무늬가 이어지게 한 장의 패턴으로)
     var HAS={};P.forEach(function(q){HAS[q[0]+','+q[1]]=1});
-    ctx.globalAlpha=.5;P.forEach(function(q){if(HAS[(q[0]+1)+','+q[1]]&&HAS[(q[0]-1)+','+q[1]]&&HAS[q[0]+','+(q[1]+1)]&&HAS[q[0]+','+(q[1]-1)])return;put('shallow',q[0],q[1],6)});ctx.globalAlpha=1;
-    P.forEach(function(q){put('foam',q[0],q[1])});
+    cliffPaint(ctx,CS,bx0,by0,P,HAS);
     var GD=S.gd.ground||{},W_=function(c,r){return GROUND[GD[c+','+r]]==='canal'};
     P.forEach(function(q){var k=q[0]+','+q[1],h=hsh(q[0]*3+1,q[1]*5+2),h2=hsh(q[0]*7+3,q[1]*11+5),g=GROUND[GD[k]];put(g&&g!=='hedge'&&!POND[k]?g:POND[k]?'pond':(BLDC.path&&BLDC.path[k])?'path':(SAND[k]||ISLS[k])?'sand':(h2<.3?'g2':'g1'),q[0],q[1])});
     P.forEach(function(q){var k=q[0]+','+q[1];if(GROUND[GD[k]]!=='canal')return;if(!W_(q[0]+1,q[1]))put('rim_px',q[0],q[1]);if(!W_(q[0],q[1]+1))put('rim_pz',q[0],q[1]);if(!W_(q[0]-1,q[1]))put('rim_nx',q[0],q[1]);if(!W_(q[0],q[1]-1))put('rim_nz',q[0],q[1])});
@@ -18729,7 +18753,7 @@ function buildWorld(edit,onLm){
   // 땅이 있는 범위
   var bx0=1e9,by0=1e9,bx1=-1e9,by1=-1e9,cells=Object.keys(LAND).concat(Object.keys(POND)),BI=(S.bld&&bldList().length)?bldCalc():{isl:{},br:[],deco:[],land:{}};cells=cells.concat(Object.keys(BI.isl));
   cells.forEach(function(k){var p=k.split(',').map(Number),q=iCtr(p[0],p[1]);bx0=Math.min(bx0,q[0]-100);bx1=Math.max(bx1,q[0]+100);by0=Math.min(by0,q[1]-60);by1=Math.max(by1,q[1]+80)});
-  bx0-=40;by0-=150;bx1+=40;by1+=40;world.__box=[bx0,by0,bx1,by1];
+  bx0-=40;by0-=150;bx1+=40;by1+=220;world.__box=[bx0,by0,bx1,by1];
   // 바다 물결
   for(var wv=0;wv<18;wv++){var s=el('i','wave');s.style.left=(bx0+(wv*137)%(bx1-bx0))+'px';s.style.top=(by0+40+(wv*89)%(by1-by0-60))+'px';s.style.animationDelay=(wv*.37)+'s';world.appendChild(s)}
   // 땅: 미리 찍어 둔 3D 조각을 이어 붙여요
