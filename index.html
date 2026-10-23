@@ -4633,6 +4633,27 @@ html:root body:not(#z) .potscr .potcard{width:min(342px,calc(100vw - 48px))!impo
 html:root body:not(#z) .potscr .potstage .islon::after{content:"";position:absolute;z-index:-1;left:50%;bottom:-4px;width:50%;height:16px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.15),rgba(0,0,0,0))}
 html:root body:not(#z) .potbox img.pot.tinted{filter:saturate(.5) brightness(1.02)}
 html:root body:not(#z) .potbox img.pot.tinted{filter:none}
+/* 수학 화분 시안 v2-1: 나무 받침대 위 화분 + 발밑 물뿌리개 */
+html:root body:not(#z) .potscr .potgrp{position:relative;display:flex;flex-direction:column;align-items:center}
+html:root body:not(#z) .potscr .potgrp .potbox{position:relative;z-index:2;margin-bottom:-22%}
+html:root body:not(#z) .potscr .potgrp .pstool{position:relative;z-index:1;width:68%;display:block;filter:drop-shadow(0 6px 5px rgba(70,50,20,.18))}
+html:root body:not(#z) .potscr .potgrp .pcan{position:absolute;z-index:3;right:-26%;bottom:2%;width:30%;filter:drop-shadow(0 3px 3px rgba(40,50,60,.18))}
+html:root body:not(#z) .potscr .potstage .islon{bottom:42%!important}
+html:root body:not(#z) .potscr .potstage .islon::after{display:none}
+html:root body:not(#z) .potscr .potgrp .pstool{width:auto;height:auto;transform:scaleY(.78);transform-origin:50% 100%;margin-top:0}
+html:root body:not(#z) .potscr .potgrp .potbox{margin-bottom:-9%}
+html:root body:not(#z) .potscr .potgrp .pcan{right:-4%;bottom:1%;width:auto}
+html:root body:not(#z) .potscr .potgrp{display:block!important}
+html:root body:not(#z) .potscr .potgrp .potbox{margin:0!important}
+html:root body:not(#z) .potscr .potgrp .pstool{position:absolute!important;left:50%;bottom:0;transform:translateX(-50%)!important;object-fit:fill}
+html:root body:not(#z) .potscr .potstage .islon{bottom:37%!important}
+html:root body:not(#z) .potscr .potstage .islon{bottom:43%!important}
+html:root body:not(#z) .potscr .potgrp .pcan{right:-30%!important;bottom:-6%!important}
+html:root body:not(#z) .potscr .potgrp .pstool,html:root body:not(#z) .potscr .potgrp .pcan{filter:drop-shadow(0 4px 3px rgba(40,40,20,.2))}
+html:root body:not(#z) .potscr .potdots i{width:28px!important;height:19px!important;margin-left:-14px!important}
+html:root body:not(#z) .potscr .potstage .islon{bottom:51%!important}
+html:root body:not(#z) .potscr .potgrp .pcan{right:-24%!important;bottom:-2%!important}
+html:root body:not(#z) .potscr .potgrp .pcan{right:-17%!important;bottom:3%!important}
 </style>
 
 <div id="app"></div>
@@ -4843,6 +4864,8 @@ A["n_softcloud"]="b/5b0b264a8594.webp";
 A["n_bush"]="b/a66daa1a3b56.webp";
 A["n_fbed"]="b/08a3792846d8.webp";
 A["n_rsch"]="b/d39306504719.webp";
+A["n_can2"]="b/86402603f25a.webp";
+A["n_stool"]="b/80c57d9794a6.webp";
 A["g_st5"]="b/5a680d886a4b.webp";
 A["g_st4"]="b/404d5bf2e899.webp";
 A["g_st3"]="b/b4a2bed2b781.webp";
@@ -5538,7 +5561,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.138";
+var APP_VER="1.0.139";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -20314,9 +20337,10 @@ function potScreen(){
   var c=el('div','center potcenter');
   var card=el('div','spcard spcard-sum potcard');card.appendChild(el('div','eyebrow','수학 화분'));var hd=el('div','spcard-hd');hd.appendChild(el('b',null,m.stage[st]));hd.appendChild(el('span','tnum',st+' / '+PER));card.appendChild(hd);
   var cft=el('div','spcard-ft');cft.appendChild(el('small',null,st?(PER-st)+'문제만 더 맞히면 꽃이 펴요':'수학 문제를 맞힐 때마다 돌이 하나씩 빛나요'));card.appendChild(cft);c.appendChild(card);
-  var iw=Math.min(345,(app.clientWidth||375)*.86),pb=potBox(null,st,Math.round(iw*.78),potKey(m),S.equip.friend);pb.style.height=Math.round(262*iw*.78/200)+'px';
-  var stg=subjStage(pb,'potstage');
-  var dots=el('div','potdots');for(var j=0;j<PER;j++){var a=Math.PI*(1.14+.72*(PER>1?j/(PER-1):.5)),d_=el('i',j<st?'on':j===st?'next':null);d_.appendChild(el('b',null,String(j+1)));d_.style.left=(50+36*Math.cos(a)).toFixed(1)+'%';d_.style.bottom=(46.5+10*Math.sin(a)).toFixed(1)+'%';dots.appendChild(d_)}dots.setAttribute('aria-label',PER+'문제 중 '+st+'문제');stg.appendChild(dots);
+  var iw=Math.min(345,(app.clientWidth||375)*.86),pb=potBox(null,st,Math.round(iw*.68),potKey(m),S.equip.friend);pb.style.height=Math.round(262*iw*.68/200)+'px';
+  var grp=el('div','potgrp'),PW=Math.round(iw*.68),SW=Math.round(PW*.62*1.02),SH=Math.round(SW*1.108*.62);grp.style.width=PW+'px';grp.style.height=(Math.round(262*PW/200)+SH*.74)+'px';pb.style.position='absolute';pb.style.left='0';pb.style.bottom=Math.round(SH*.70)+'px';grp.appendChild(pb);var stl=img('n_stool','pstool');stl.alt='';stl.style.width=SW+'px';stl.style.height=SH+'px';grp.appendChild(stl);var can2=img('n_can2','pcan');can2.alt='';can2.style.width=Math.round(iw*.15)+'px';grp.appendChild(can2);
+  var stg=subjStage(grp,'potstage');
+  var dots=el('div','potdots');for(var j=0;j<PER;j++){var a=Math.PI*(1.08+.84*(PER>1?j/(PER-1):.5)),d_=el('i',j<st?'on':j===st?'next':null);d_.appendChild(el('b',null,String(j+1)));d_.style.left=(50+40*Math.cos(a)).toFixed(1)+'%';d_.style.bottom=(45+9*Math.sin(a)).toFixed(1)+'%';dots.appendChild(d_)}dots.setAttribute('aria-label',PER+'문제 중 '+st+'문제');stg.appendChild(dots);
   c.appendChild(stg);
   var row=el('div','potbtns');top.appendChild(row);
   var gb=el('button','tpill','꽃 도감');gb.onclick=function(){greenhouse('math')};row.appendChild(gb);
