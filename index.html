@@ -4883,6 +4883,10 @@ A["n_softcloud"]="b/5b0b264a8594.webp";
 A["n_bush"]="b/a66daa1a3b56.webp";
 A["n_fbed"]="b/08a3792846d8.webp";
 A["n_rsch"]="b/d39306504719.webp";
+A["n_book2"]="b/d5ccf9e0da8d.webp";
+A["n_hive2"]="b/891bee9645f5.webp";
+A["n_tree2"]="b/a8fb1962fb58.webp";
+A["n_base2"]="b/6cfe6c53fc0e.webp";
 A["mp_mound"]="b/d04f1fdd8f14.webp";
 A["mp_gold"]="b/aafe15dc3268.webp";
 A["mp_white"]="b/9a4b842a4614.webp";
@@ -5589,7 +5593,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.142";
+var APP_VER="1.0.143";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -21328,16 +21332,16 @@ function vC(c,r){return [VW/2+(c-r)*VTW/2,VY0+(c+r)*VTH/2+VTH/2]}
 var VCELL={tree:[1,1],home:[0,3],shop:[3,0],mail:[3,5],pot:[5,4]};
 var VPATH={'5,5':1,'4,4':1,'3,3':1,'2,2':1,'2,3':1,'1,3':1,'3,2':1,'3,1':1,'3,4':1};
 // 홈 섬에는 네 과목 장소와 '내 섬'(작은 섬)만 있어요. 좌표는 n_base 그림의 빈터 위치예요.
-var NB_X=49,NB_Y=60,NB_W=460,VB=[{id:'tree',x:279,y:126},{id:'bee',x:152,y:194},{id:'book',x:406,y:194},{id:'pot',x:279,y:316},{id:'boat',x:112,y:446}];
-var NART_AR={n_tree:1.383,n_book:1.029,n_hive:1.294,n_pot:1.346,n_pot0:1.035,n_myisl:1.126},GEAR_SVG='<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8Zm8.4 4.6-1.9.4a6.7 6.7 0 0 1-.7 1.7l1.1 1.6-1.6 1.6-1.6-1.1c-.5.3-1.1.6-1.7.7l-.4 1.9h-2.2l-.4-1.9a6.7 6.7 0 0 1-1.7-.7l-1.6 1.1-1.6-1.6 1.1-1.6a6.7 6.7 0 0 1-.7-1.7l-1.9-.4v-2.2l1.9-.4c.1-.6.4-1.2.7-1.7L4.1 6.7l1.6-1.6 1.6 1.1c.5-.3 1.1-.6 1.7-.7l.4-1.9h2.2l.4 1.9c.6.1 1.2.4 1.7.7l1.6-1.1 1.6 1.6-1.1 1.6c.3.5.6 1.1.7 1.7l1.9.4v2.2Z" fill="currentColor"/></svg>';
-var V_BOSS=[200,256],V_WALK=[[279,198],[240,180],[205,160],[279,176],[320,182],[356,156],[279,222],[330,242],[232,240],[200,254],[250,214]];
+var NB_X=20,NB_Y=60,NB_W=500,VB=[{id:'tree',x:268,y:146},{id:'bee',x:140,y:228},{id:'book',x:405,y:220},{id:'pot',x:268,y:314},{id:'boat',x:86,y:470}];
+var NART_AR={n_tree2:1.219,n_hive2:1.574,n_book2:1.134,n_tree:1.383,n_book:1.029,n_hive:1.294,n_pot:1.346,n_pot0:1.035,n_myisl:1.126},GEAR_SVG='<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8Zm8.4 4.6-1.9.4a6.7 6.7 0 0 1-.7 1.7l1.1 1.6-1.6 1.6-1.6-1.1c-.5.3-1.1.6-1.7.7l-.4 1.9h-2.2l-.4-1.9a6.7 6.7 0 0 1-1.7-.7l-1.6 1.1-1.6-1.6 1.1-1.6a6.7 6.7 0 0 1-.7-1.7l-1.9-.4v-2.2l1.9-.4c.1-.6.4-1.2.7-1.7L4.1 6.7l1.6-1.6 1.6 1.1c.5-.3 1.1-.6 1.7-.7l.4-1.9h2.2l.4 1.9c.6.1 1.2.4 1.7.7l1.6-1.1 1.6 1.6-1.1 1.6c.3.5.6 1.1.7 1.7l1.9.4v2.2Z" fill="currentColor"/></svg>';
+var V_BOSS=[205,242],V_WALK=[[266,226],[232,212],[205,203],[266,196],[300,212],[328,203],[266,256],[300,248],[232,248],[205,242],[248,220]];
 var VLABEL={book:'국어 서점',bee:'영어 벌집',tree:'한자 나무',home:'우리 집',pot:'수학 화분',mail:'오솔길',boat:'내 섬',fish:'낚시터',mailp:'우체통'};
 function villageScreen(){
   HUB='village';clear();gdInit();try{var fp_=fishS();if(fp_.pend){fp_.pend=0;fp_.tk++;save()}}catch(e){}if(ADV&&ADV.day!==dayKey())ADV=null;var advDone_=ADV&&ADV.i>=ADV.q.length;if(advDone_)setTimeout(advFinish,0);else fishCatchUp();
   var root=el('div','village');skyFx(root);if(typeof DBG!=='undefined'&&(DBG.off||DBG.hour!=null)){var dc=el('button','dbgchip','테스트 모드'+(DBG.off?' · 날짜 '+(DBG.off>0?'+':'')+DBG.off+'일':'')+(DBG.hour!=null?' · '+DBG.hour+'시':''));dc.onclick=dbgSheet;root.appendChild(dc)}
   var stg=el('div','vstage');root.appendChild(stg);
   var scene=el('div','vscene');scene.style.width=VW+'px';scene.style.height=VH+'px';stg.appendChild(scene);
-  var bg=img('n_base','vbg nbase');bg.draggable=false;bg.style.left=NB_X+'px';bg.style.top=NB_Y+'px';bg.style.width=NB_W+'px';scene.appendChild(bg);
+  var bg=img('n_base2','vbg nbase');bg.draggable=false;bg.style.left=NB_X+'px';bg.style.top=NB_Y+'px';bg.style.width=NB_W+'px';scene.appendChild(bg);
   function onCell(c,r,dx,dy){var p=vC(c,r);return [p[0]+(dx||0),p[1]+(dy||0)]}
     if(S.path.char){
     var wk=el('div','vwalker');var wi=avImg(S.path.char);wk.appendChild(el('i','cshadow'));wk.appendChild(wi);scene.appendChild(wk);villagePetTap(wk,S.path.char);
@@ -21374,10 +21378,10 @@ function villageScreen(){
   VB.forEach(function(v){
     var b=el('button','v3 lm-'+v.id);b.style.left=v.x+'px';b.style.top=v.y+'px';b.style.zIndex=Math.round(v.y);
     var art;
-    if(v.id==='tree')art=nart('n_tree',150,.86);
-    else if(v.id==='pot'){var st_=stage_(),pw_=62,ph_=Math.round(pw_*MP_AR);art=el('div','v3art nart pot npb');art.style.width=pw_+'px';art.style.height=ph_+'px';art.style.left=(-pw_/2)+'px';art.style.top=(-ph_*.95)+'px';var md_=img('mp_mound','vmound');md_.alt='';art.appendChild(md_);art.appendChild(mathPot(st_,pw_,potKey(SUBJ.math)))}
-    else if(v.id==='bee')art=nart('n_hive',112,.88);
-    else if(v.id==='book')art=nart('n_book',140,.86);
+    if(v.id==='tree')art=nart('n_tree2',140,.95);
+    else if(v.id==='pot'){var st_=stage_(),pw_=62,ph_=Math.round(pw_*MP_AR);art=el('div','v3art nart pot npb');art.style.width=pw_+'px';art.style.height=ph_+'px';art.style.left=(-pw_/2)+'px';art.style.top=(-ph_*.95)+'px';art.appendChild(mathPot(st_,pw_,potKey(SUBJ.math)))}
+    else if(v.id==='bee')art=nart('n_hive2',82,.96);
+    else if(v.id==='book')art=nart('n_book2',118,.9);
     else if(v.id==='boat'){art=nart('n_myisl',150,.5);art.className+=' vmyisl'}
     else if(v.id==='home')art=sprite('house');
     else if(v.id==='bee')art=sprite('hive');
