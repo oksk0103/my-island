@@ -4873,6 +4873,35 @@ html:root body:not(#z) .avscr .sum{background:#fffaf0!important;color:var(--c-in
 html:root body:not(#z) .avscr .avbtn.buy{background:#fffaf0!important;color:#23344a!important;box-shadow:0 3px 0 #e2d2b4!important;border:0!important}
 html:root body:not(#z) .avscr .avc,html:root body:not(#z) .avscr .ghc{background:#fffaf0!important;box-shadow:0 4px 0 #e6d6b8!important}
 html:root body:not(#z) .pvtoday{font-size:13px;color:#6b6457;margin:14px 0 6px}
+/* 한자 화면 사과색 띠 (시안) */
+html:root body:not(#z) .screen.hzband>.qtop{position:relative}
+html:root body:not(#z) .screen.hzband>.qtop::before{content:"";position:absolute;left:-30px;right:-30px;top:-40px;bottom:-10px;background:#eba08f;border-radius:0 0 26px 26px;box-shadow:0 3px 0 #cf6f5c;z-index:-1}
+html:root body:not(#z) .screen.hzband{isolation:isolate}
+html:root body:not(#z) .screen.hzband>.qtop .wtitle{color:#fff!important}
+html:root body:not(#z) .screen.hzband>.qtop .x{background:#fffaf0!important;box-shadow:0 3px 0 #cf6f5c!important}
+html:root body:not(#z) .wrongscr .wrow{background:#fffaf0;border-radius:18px;box-shadow:0 3px 0 #e6d6b8;padding:6px 8px;margin:8px 0}
+html:root body:not(#z) .wrongscr .wmain .hz{font-size:44px!important;font-family:"Noto Serif KR",serif;width:60px;text-align:center}
+html:root body:not(#z) .wnote{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--c-ink-2)}
+html:root body:not(#z) .wdots{display:flex;gap:3px}
+html:root body:not(#z) .wdots i{width:9px;height:9px;border-radius:50%;background:#e07a62}
+html:root body:not(#z) .wrongscr .wsec{background:none!important;box-shadow:none!important;padding:0!important}
+/* 처음 시작 (시안) */
+html:root body:not(#z) .onbw{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;background:linear-gradient(#d9ecf4,#eef4f2)}
+html:root body:not(#z) .onbwtop{flex:1;position:relative;display:flex;align-items:center;justify-content:center;min-height:0}
+html:root body:not(#z) .onbwisl{max-width:78%;max-height:92%;object-fit:contain;filter:drop-shadow(0 18px 24px rgba(60,80,100,.18))}
+html:root body:not(#z) .onbwpg{position:absolute;right:16%;bottom:-6px;width:96px}
+html:root body:not(#z) .onbwp{background:#fbf3e3;border-radius:30px 30px 0 0;padding:28px 22px calc(28px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+html:root body:not(#z) .onbwp h2{font-family:var(--title,Jua),sans-serif;font-size:1.7rem;color:#6b4a2c;margin:0}
+html:root body:not(#z) .onbwrow{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:420px;margin-top:12px}
+html:root body:not(#z) .onbwc{display:flex;flex-direction:column;align-items:center;gap:8px;padding:22px 10px;border:0;border-radius:24px;font-size:18px;color:#4a3a28}
+html:root body:not(#z) .onbwc.kid{background:#c9daf2;box-shadow:0 5px 0 #9fb6d9}
+html:root body:not(#z) .onbwc.par{background:#cfe5b8;box-shadow:0 5px 0 #a7c78a}
+html:root body:not(#z) .onbwc img{width:64px;height:64px;object-fit:contain}
+html:root body:not(#z) .onbwp .cta{width:100%;max-width:420px;margin-top:12px}
+html:root body:not(#z) .wdots{flex-direction:row!important;display:inline-flex!important}
+html:root body:not(#z) .wnote{flex-direction:row!important}
+html:root body:not(#z) .onbwisl{-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 46%,#000 62%,transparent 78%);mask-image:radial-gradient(ellipse 50% 50% at 50% 46%,#000 62%,transparent 78%);filter:none!important}
+html:root body:not(#z) .wrongscr>.dock{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:480px;margin:0 auto}
 </style>
 
 <div id="app"></div>
@@ -5812,7 +5841,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.164";
+var APP_VER="1.0.165";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -10303,7 +10332,7 @@ var HZHIDE=false,HZMODE='learn';
 // 문제 보기 4개: 같은 급수에서 뜻·음이 겹치지 않게
 function hzQuizOpts(c,list){var h=H8[HIDX[c]],g=gradeOf(c),pool=(list.length>=6?list.map(function(x){return H8[HIDX[x]]}):H8.slice(GB[g],GB[g+1]||H8.length)),o=[h];shuffle(pool.slice()).forEach(function(x){if(o.length<4&&o.every(function(y){return y[1]!==x[1]&&hzName(y)!==hzName(x)}))o.push(x)});return shuffle(o)}
 function hzCards(list,opts,done){opts=opts||{};var idx=opts.start||0;
-  function show(){clear();document.body.classList.add('qmode');var c=list[idx],h=H8[HIDX[c]],sc=el('div','screen hzcardscr'),top=el('div','qtop');
+  function show(){clear();document.body.classList.add('qmode');var c=list[idx],h=H8[HIDX[c]],sc=el('div','screen hzcardscr hzband'),top=el('div','qtop');
     var x=el('button','x');x.setAttribute('aria-label','닫기');x.innerHTML=BACK_SVG;x.onclick=function(){document.body.classList.remove('qmode');(opts.back||home)()};top.appendChild(x);
     if(opts.browse){top.appendChild(el('span','hzccount tnum',(idx+1)+' / '+list.length));var tr=el('div','hzctr');
       if(HZMODE==='learn'){var eye=el('button','tpill'+(HZHIDE?' on':''),HZHIDE?'뜻 보이기':'뜻 가리기');eye.onclick=function(){HZHIDE=!HZHIDE;show()};tr.appendChild(eye)}
@@ -10369,7 +10398,7 @@ function hzReviewRound(g,list){if(g!==S.hz.cg){HZBACKG=S.hz.cg;hzSelect(g)}TREEG
 function hzRestoreGrade(){if(HZBACKG==null)return;var g=HZBACKG,t=TREEG;HZBACKG=null;hzSelect(g);TREEG=t}
 function hzWrongRound(g,list){if(g!==S.hz.cg)hzSelect(g);HZWQ=shuffle(list.slice()).slice(0,ROUND);_startRound(SUBJ.hz)}
 function wrongScreen(back){clear();
-  var sc=el('div','screen wrongscr'),top=el('div','qtop'),x=el('button','x');x.setAttribute('aria-label','돌아가기');x.innerHTML=BACK_SVG;x.onclick=back||home;top.appendChild(x);top.appendChild(el('h3','wtitle','한자 오답노트'));sc.appendChild(top);
+  var sc=el('div','screen wrongscr hzband'),top=el('div','qtop'),x=el('button','x');x.setAttribute('aria-label','돌아가기');x.innerHTML=BACK_SVG;x.onclick=back||home;top.appendChild(x);top.appendChild(el('h3','wtitle','한자 오답노트'));sc.appendChild(top);
   var all=hzWrongList();
   if(!all.length){var e=el('div','center');e.appendChild(el('h2',null,'틀린 한자가 없어요'));e.appendChild(el('p','sub','한자 문제에서 틀린 글자가 여기에 모여요. 두 번 연속 맞히면 저절로 빠져요.'));sc.appendChild(e);app.appendChild(sc);return}
   sc.appendChild(el('p','sub wsub','틀린 한자가 모여 있어요. 두 번 연속 한 번에 맞히면 저절로 빠지고, 별표한 한자는 계속 남아요.'));
@@ -10377,13 +10406,14 @@ function wrongScreen(back){clear();
     var sec=el('div','wsec'),hd=el('div','wsechd');hd.appendChild(el('b',null,gn));hd.appendChild(el('small',null,L.length+'자'));
     var go=el('button','cta green wgo','다시 풀기');go.onclick=function(){hzWrongRound(g,L)};hd.appendChild(go);sec.appendChild(hd);
     L.forEach(function(c){var h=H8[HIDX[c]],row=el('div','wrow'),w=S.hz.wn[c];
-      var main=el('button','wmain');main.appendChild(el('b','hz',c));var t=el('span');t.appendChild(el('strong',null,hzName(h)));t.appendChild(el('small',null,w?'틀린 횟수 '+w.n+'번'+(w.ok?' · 이어서 '+w.ok+'번 맞힘':''):'별표한 한자'));main.appendChild(t);
+      var main=el('button','wmain');main.appendChild(el('b','hz',c));var t=el('span');t.appendChild(el('strong',null,hzName(h)));var wi=el('small','wnote');if(w){var dt=el('span','wdots');for(var di=0;di<Math.min(3,w.n||1);di++)dt.appendChild(el('i'));wi.appendChild(dt);wi.appendChild(document.createTextNode((w.ok||0)+' / 2 연속 맞힘'))}else wi.textContent='별표한 한자';t.appendChild(wi);main.appendChild(t);
       main.onclick=function(){hzCards(L,{browse:true,start:L.indexOf(c),back:function(){wrongScreen(back)}})};row.appendChild(main);
       var st=el('button','wstar'+(S.hz.pin[c]?' on':''),S.hz.pin[c]?'★':'☆');st.setAttribute('aria-label','별표');st.onclick=function(){if(S.hz.pin[c])delete S.hz.pin[c];else S.hz.pin[c]=1;save();wrongScreen(back)};row.appendChild(st);
       var del=el('button','wdel');del.setAttribute('aria-label','오답노트에서 빼기');del.innerHTML='<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';del.onclick=function(){delete S.hz.wn[c];delete S.hz.pin[c];save();wrongScreen(back)};row.appendChild(del);
       sec.appendChild(row)});
     sc.appendChild(sec)});
-  app.appendChild(sc)}
+  var gAll=all.filter(function(c){return gradeOf(c)===(S.hz.cg||0)});if(!gAll.length)gAll=all;var dk=el('div','dock');var gb=el('button','cta','이 '+Math.min(gAll.length,ROUND)+'자 복습');gb.onclick=function(){hzWrongRound(gradeOf(gAll[0]),gAll)};dk.appendChild(gb);sc.appendChild(dk);
+  app.appendChild(sc);dockPad(sc)}
 // ================= 한자 급수 연습 시험 =================
 // 실제 한국어문회 시험은 답을 직접 쓰는 시험이라, 보기에서 고르는 이 연습 시험으로 합격을 '예측'하지 않아요. 점수와 다음 할 일만 알려 줘요
 // 진짜 급수 시험처럼 그 급수 전체에서 골고루 내요. 다 풀고 나서 점수·다음 할 일·틀린 문제를 보여 줘요.
@@ -10415,7 +10445,7 @@ function exPrepStroke(Q,g,done){var P=Q.filter(function(q){return q.stroke}),lef
       else{var L=exGradeChars(g),h=H8[HIDX[q.stroke]],o=shuffle(exUniq(L,function(x){return hzName(x)},4,h));q.sec='훈음';q.stroke=null;q.big=h[0];q.q='다음 한자의 훈(뜻)과 음(소리)은?';q.opts=o.map(hzName);q.ans=o.indexOf(h);q.why=h[0]+' = '+hzName(h)}
       if(--left===0)end()})})}
 // 시험 첫 화면: 급수 고르기·기록
-function examHome(g,back){EXB=back||EXB;clear();if(g==null)g=S.hz.cg||0;var sc=el('div','screen examscr'),top=el('div','qtop'),x=el('button','x');x.setAttribute('aria-label','돌아가기');x.innerHTML=BACK_SVG;x.onclick=function(){(EXB||home)()};top.appendChild(x);top.appendChild(el('h3','wtitle','한자 급수 연습 시험'));sc.appendChild(top);
+function examHome(g,back){EXB=back||EXB;clear();if(g==null)g=S.hz.cg||0;var sc=el('div','screen examscr hzband'),top=el('div','qtop'),x=el('button','x');x.setAttribute('aria-label','돌아가기');x.innerHTML=BACK_SVG;x.onclick=function(){(EXB||home)()};top.appendChild(x);top.appendChild(el('h3','wtitle','한자 급수 연습 시험'));sc.appendChild(top);
   var card=el('div','excard');card.appendChild(el('small','exg',GRADES[g]+' 연습 시험'));card.appendChild(el('h2',null,EX_N+'문제 · '+EX_PASS+'점이면 통과'));
   card.appendChild(el('p','sub',GRADES[g]+' 한자 '+gradeCap(g)+'자 전체에서 골고루 나와요. 훈음, 한자 찾기, 독음, 한자어 완성'+(g<=6?', 필순':'')+' 문제를 보기에서 골라 풀어요. 실제 급수 시험은 답을 직접 써야 해서 이보다 어려워요. 한자 카드의 따라 쓰기로 함께 연습해요.'));
   var go=el('button','cta green','시험 시작');go.onclick=function(){examStart(g)};card.appendChild(go);
@@ -10727,7 +10757,10 @@ function onbSheet(build){var inn=sheet.firstChild;inn.innerHTML='';build(inn);sh
 // 처음 설정: 부모님이 1분 동안 고르고, 아이는 바로 섬으로. 과목별 첫 판이 실력 알아보기를 대신해요.
 var PSET=null;
 function onbStart(tries){if(G||document.querySelector('.sheet.show,.guide,.daydone')||!document.querySelector('.village')){if((tries||0)<20)setTimeout(function(){onbStart((tries||0)+1)},1500);return}
-  onbDraw()}
+  onbWelcome()}
+function onbWelcome(){var w=el('div','onbw');var top=el('div','onbwtop');top.appendChild(img('n_village','onbwisl'));top.appendChild(img('penguin','onbwpg'));w.appendChild(top);
+  var p=el('div','onbwp');p.appendChild(el('h2',null,'나의 섬에 온 걸 환영해요'));p.appendChild(el('p','sub','누가 시작하나요?'));var row=el('div','onbwrow');
+  [['kid','아이예요','penguin'],['par','부모님이에요','house_with_garden']].forEach(function(x){var b=el('button','onbwc '+x[0]);b.appendChild(img(x[2]));b.appendChild(el('b',null,x[1]));b.onclick=function(){if(x[0]==='kid'){p.innerHTML='';p.appendChild(el('h2',null,'부모님을 불러 줄래?'));p.appendChild(el('p','sub','처음 한 번만 부모님이 1분 동안 설정해 주시면 바로 섬으로 갈 수 있어.'));var ok=el('button','cta','부모님이 왔어요');ok.onclick=function(){w.remove();onbDraw()};p.appendChild(ok)}else{w.remove();onbDraw()}};row.appendChild(b)});p.appendChild(row);w.appendChild(p);document.body.appendChild(w)}
 function onbDraw(){if(!PSET)PSET={g:0,en:-1,hz:-1};onbSheet(function(inn){var hd=el('div','hd');hd.appendChild(img('blossom'));var t=el('div');t.appendChild(el('small',null,'나의 섬에 온 걸 환영해요'));t.appendChild(el('h3',null,'부모님, 처음 설정을 도와주세요'));hd.appendChild(t);inn.appendChild(hd);
     inn.appendChild(el('p','sub','1분이면 끝나요. 아이 수준은 첫 모험에서 저절로 더 맞춰져요.'));
     function sec(lab){var s=el('div','psec');s.appendChild(el('b',null,lab));inn.appendChild(s);return s}
