@@ -4731,6 +4731,58 @@ html:root body:not(#z) .resscr>.qtop::after{content:none!important}html:root bod
 /* 넓은 화면(아이패드): 장면 그림 가장자리를 하늘색으로 부드럽게 녹여요 */
 html:root body:not(#z) .village{background:radial-gradient(120% 70% at 50% 35%,#e3f1f4 0%,#cfe6ee 45%,#bcd7e4 100%)!important}
 html:root body:not(#z) .vbg.nvillage{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%),linear-gradient(180deg,#000 82%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%),linear-gradient(180deg,#000 82%,transparent 100%);mask-composite:intersect}
+html:root body:not(#z) .kopanel .kwshelf .kshrow{-webkit-mask-image:linear-gradient(90deg,#000 86%,transparent);mask-image:linear-gradient(90deg,#000 86%,transparent)}
+html:root body:not(#z) .vhud .sunchip img{width:26px;height:26px}
+html:root body:not(#z) .vhud .sunchip b{font-size:18px}
+html:root body:not(#z) .vhud .evmini{padding:0 10px 0 6px!important;min-width:0}
+html:root body:not(#z) .vhud .evmini img{width:24px;height:24px}
+/* 결과 머리: 네 과목 공통 */
+html:root body:not(#z) .reshead{display:flex;flex-direction:column;align-items:center;gap:4px;margin:2px 0 6px}
+html:root body:not(#z) .rsdots{display:flex;gap:6px}
+html:root body:not(#z) .rsdots i{width:14px;height:14px;border-radius:50%;background:#e8dcc6;box-shadow:inset 0 1px 0 rgba(0,0,0,.06)}
+html:root body:not(#z) .rsdots i.on{background:#8fb36a;box-shadow:0 2px 0 #6b8f4c}
+html:root body:not(#z) .rsgot{font-size:13px;color:var(--c-ink-2);font-weight:700}
+html:root body:not(#z) .rssun{display:flex;align-items:center;gap:6px;margin-top:2px}
+html:root body:not(#z) .rssun img{width:40px;height:40px}
+html:root body:not(#z) .rssun b{font-family:var(--title,Jua),sans-serif;font-size:44px;line-height:1;color:#e8930c}
+html:root body:not(#z) .rssun.pop{animation:rsPop .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes rsPop{0%{transform:scale(.6);opacity:.3}100%{transform:scale(1);opacity:1}}
+html:root body:not(#z) .rsnote{font-size:12px;color:var(--c-ink-2)}
+html:root body:not(#z) .spcard .reshead{align-self:stretch;width:100%}
+/* ===== 문제 화면: 장소 안에서 풀어요 (시안: 흐린 장소 배경 + 과목 색 띠 + 크림 카드) ===== */
+html:root body.qmode:not(#z),html:root:has(body.qmode){background:#f5e8d3!important}
+html:root body:not(#z) .qscreen.thm{--qc:#b9cf9a;--qc2:#8fae6c;background:transparent!important;position:relative;isolation:isolate}
+html:root body:not(#z) .qscreen.q-en{--qc:#f2d27e;--qc2:#d9ae3f}
+html:root body:not(#z) .qscreen.q-hz{--qc:#eba08f;--qc2:#cf6f5c}
+html:root body:not(#z) .qscreen.q-ko{--qc:#f2b3a5;--qc2:#d9806d}
+html:root body:not(#z) .qscreen.thm::before{content:"";position:fixed;inset:-60px;background:#f5e8d3 var(--qbg) center 30%/160% auto no-repeat;filter:blur(20px) saturate(1.05);opacity:.5;z-index:-2;pointer-events:none}
+html:root body:not(#z) .qscreen.thm::after{content:"";position:fixed;inset:0;background:linear-gradient(rgba(245,232,211,.15),rgba(245,232,211,.55) 60%,rgba(245,232,211,.85));z-index:-1;pointer-events:none}
+html:root body:not(#z) .qscreen.thm>.qtop{position:relative}
+html:root body:not(#z) .qscreen.thm>.qtop::before{content:"";position:absolute;left:-30px;right:-30px;top:-40px;bottom:-10px;background:var(--qc);border-radius:0 0 26px 26px;box-shadow:0 3px 0 var(--qc2);z-index:-1}
+html:root body:not(#z) .qscreen.thm .qdots i{background:rgba(255,255,255,.55)!important;box-shadow:none!important}
+html:root body:not(#z) .qscreen.thm .qdots i.done{background:#fff!important}
+html:root body:not(#z) .qscreen.thm .qdots i.now{background:#fff!important;box-shadow:0 0 0 2.5px var(--qc2)!important}
+html:root body:not(#z) .qscreen.thm .qwallet,html:root body:not(#z) .qscreen.thm .x,html:root body:not(#z) .qscreen.thm .qrep{background:#fffaf0!important;box-shadow:0 3px 0 var(--qc2)!important}
+html:root body:not(#z) .qscreen.thm .qhead{margin-top:6px}
+html:root body:not(#z) .qscreen.thm .qhead h2{font-size:1.5rem!important;color:#23344a!important}
+html:root body:not(#z) .qscreen.thm .qbody{background:#fffaf0!important;border:0!important;box-shadow:0 4px 0 #e6d6b8,0 12px 26px rgba(120,80,30,.10)!important;border-radius:26px!important}
+html:root body:not(#z) .qscreen.thm .keys button{background:#fffaf0!important;box-shadow:0 3px 0 #e2d2b4!important;color:#23344a!important;border:0!important}
+html:root body:not(#z) .qscreen.thm .choice{background:#fffaf0!important;box-shadow:0 4px 0 #e2d2b4!important;color:#23344a!important;border:0!important}
+html:root body:not(#z) .qscreen.thm .choice.on{background:linear-gradient(#3f9ea6,#1f6f78)!important;color:#fff!important;box-shadow:0 4px 0 #15545b!important}
+html:root body:not(#z) .qscreen.thm .choice.right{background:linear-gradient(#a6cf7f,#7fb05a)!important;color:#fff!important;box-shadow:0 4px 0 #5d8a3d!important}
+html:root body:not(#z) .qscreen.thm .choice.wrong{background:linear-gradient(#f2a28d,#e07a62)!important;color:#fff!important;box-shadow:0 4px 0 #b9563f!important}
+html:root body:not(#z) .qscreen.thm>.cta:disabled{background:var(--c-teal)!important;color:#fff!important;opacity:.45;box-shadow:0 4px 0 var(--c-teal-2)!important}
+html:root body:not(#z) .qscreen.thm .choices:has(>.choice:nth-child(3):last-child){grid-template-columns:1fr!important}
+html:root body:not(#z) .qscreen.thm .choice{min-height:60px;font-size:1.3rem!important}
+html:root body:not(#z) .qscreen.thm .choice.hzc{font-family:"Noto Serif KR","Nanum Myeongjo",serif!important;font-weight:700!important;font-size:2.4rem!important}
+html:root body:not(#z) .qscreen.q-math .qbody svg{filter:saturate(.72) brightness(1.04)}
+html:root body:not(#z) .qscreen.thm .kmini{position:relative;background:#fff!important;border-radius:16px!important}
+html:root body:not(#z) .qscreen.thm .kmini::after{content:"눌러서 글 크게 보기";position:absolute;left:0;right:0;bottom:0;height:54px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;border-radius:0 0 16px 16px;background:linear-gradient(rgba(255,255,255,0),#fff 70%);font-size:13px;font-weight:800;color:var(--c-teal-2)}
+html:root body:not(#z) .qscreen.thm .kmini .ktext{font-size:16px!important;line-height:1.75!important}
+/* 기본 바탕: 하늘+언덕 대신 섬 세계의 크림색 (홈·내 섬은 자기 하늘을 따로 그려요) */
+html:root body.zscr:not(#z){background:linear-gradient(#f7ecda,#f3e5cd) fixed!important}
+html:root body.zscr:not(#z)::after{display:none!important}
+html:root body.zscr:not(#z) .card,html:root body.zscr:not(#z) .fact{background:#fffaf0!important;box-shadow:0 4px 0 #e6d6b8,0 8px 18px rgba(120,80,30,.06)!important}
 </style>
 
 <div id="app"></div>
@@ -5670,7 +5722,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.155";
+var APP_VER="1.0.159";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -8585,7 +8637,7 @@ function stkShow(tries){if(!S.stk||!S.stk.pend||!S.stk.pend.length)return;if(!do
   if(document.querySelector('.sheet.show')||document.querySelector('.guide,.tg-wrap,.daydone')){if((tries||0)<20)setTimeout(function(){stkShow((tries||0)+1)},1500);return}
   var d=S.stk.pend.shift(),m=STK.filter(function(x){return x.d===d})[0];save();
   SND.bloom();burst(innerWidth/2,innerHeight*.4,40,true);
-  showSheet('good',m.item||'fire',d+'일 연속 · 햇살 +'+m.sun+' · 보석 +3',m.item?josa(itemName(m.item),'을','를')+' 받았어요':d+'일 동안 매일 했어요!',m.item?'섬 꾸미기에서 놓을 수 있어요.':'',m.item?'좋아요':'좋아요',function(){villageScreen()})}
+  showSheet('good',m.item||'fire',d+'일 연속 · 햇살 +'+(m.sun+3*GS),m.item?josa(itemName(m.item),'을','를')+' 받았어요':d+'일 동안 매일 했어요!',m.item?'섬 꾸미기에서 놓을 수 있어요.':'',m.item?'좋아요':'좋아요',function(){villageScreen()})}
 // 불 아이콘을 누르면
 function sunSheet(){var inn=sheet.firstChild;inn.innerHTML='';
   var hd=el('div','hd');hd.appendChild(img('sun'));var t=el('div');t.appendChild(el('small',null,'햇살'));t.appendChild(el('h3',null,'햇살 '+S.sun+'개'));hd.appendChild(t);inn.appendChild(hd);
@@ -10306,7 +10358,7 @@ function examEnd(E){document.body.classList.remove('qmode');var ok=0,wrong=[];E.
   card.appendChild(el('p','sub',E.Q.length+'문제 중 '+ok+'문제를 맞혔어요 · '+Math.max(1,Math.round(ms/6e4))+'분'));
   var pred=sc_>=85?'보기에서 고르는 문제는 잘 풀어요. 실제 시험은 답을 직접 써야 하니, 한자와 한자어를 직접 써 보며 준비해요.':sc_>=EX_PASS?'통과 점수예요. 틀린 한자를 복습하고, 한자어를 직접 써 보는 연습도 해요.':sc_>=55?'통과 점수('+EX_PASS+'점)까지 '+(EX_PASS-sc_)+'점 남았어요. 오답노트로 복습해 봐요.':'이 급수 한자를 조금 더 공부한 뒤 다시 봐요.';
   var pd=el('div','expred');pd.appendChild(el('b',null,'다음 할 일'));pd.appendChild(el('span',null,pred));card.appendChild(pd);
-  if(gem)card.appendChild(el('p','exgem','통과 선물로 보석 '+gem+'개를 받았어요!'));
+  if(gem)card.appendChild(el('p','exgem','통과 선물로 햇살 '+(gem*GS)+'개를 받았어요!'));
   var secs={};E.Q.forEach(function(q,i){var s=secs[q.sec]=secs[q.sec]||[0,0];s[1]++;if(E.ans[i]===q.ans)s[0]++});var sr=el('div','exsecs');Object.keys(secs).forEach(function(k){var d=el('div');d.appendChild(el('small',null,k));d.appendChild(el('b',null,secs[k][0]+' / '+secs[k][1]));sr.appendChild(d)});card.appendChild(sr);sc.appendChild(card);
   if(wrong.length){var wl=el('div','wsec');var hd=el('div','wsechd');hd.appendChild(el('b',null,'틀린 문제 '+wrong.length+'개'));hd.appendChild(el('small',null,'오답노트에 담았어요'));wl.appendChild(hd);
     wrong.forEach(function(i){var q=E.Q[i],r=el('div','wrow');var m=el('div','wmain');m.appendChild(el('b','hz',q.stroke||q.big||q.label&&q.ch||q.ch));var t=el('span');t.appendChild(el('strong',null,q.why||''));t.appendChild(el('small',null,q.sec+(E.ans[i]!=null&&q.opts[E.ans[i]]?' · 고른 답: '+q.opts[E.ans[i]]:'')));m.appendChild(t);r.appendChild(m);wl.appendChild(r)});sc.appendChild(wl)}
@@ -10505,8 +10557,8 @@ function koScreen(fromRound){clear();document.body.classList.remove('qmode');var
   var c=el('div','center kocenter'),b=koBand(),books=KOB[b]||[];
   if(!books.length){c.appendChild(img('k3_bookshop','kohero'));c.appendChild(el('h2',null,KO_BANDS[b]+' 책을 준비하고 있어요'));c.appendChild(el('p','sub','지금은 1~2학년 이야기책이 먼저 열렸어요. 우리 집 › 국어에서 1~2학년 책으로 읽게 바꿀 수 있어요.'));var pb=el('button','cta light','1~2학년 책으로 읽기');pb.onclick=function(){koSetGrade(2);koScreen()};c.appendChild(pb);sc.appendChild(c);var dk0=el('div','dock'),h0=el('button','cta','마을로');h0.onclick=home;dk0.appendChild(h0);sc.appendChild(dk0);app.appendChild(sc);return}
   var R_=fromRound&&G&&G.kres;
-  if(fromRound&&G){c.appendChild(el('div','eyebrow',G.got+' / '+KO_QN+' 정답'+sunTxt()));c.appendChild(el('h2',null,R_&&R_.book?'『'+R_.book.title+'』 완성!':R_?R_.pg.bk.title+' '+(R_.pg.pi+1)+'쪽을 읽었어요':'이야기를 읽었어요'));
-    var nt=[];if(R_&&R_.book)nt.push('이야기책 한 권을 다 읽었어요! 보석 '+KO_GEM+'개를 받았어요. 책장에 꽂아 두었어요.');if(G.ups&&G.ups.length)nt.push(G.ups.join(', ')+' 단계가 올랐어요.');if(R_&&R_.lap)nt.push('책장의 책을 모두 다 읽었어요! 이제 1권부터 다시 읽으며 다른 문제를 풀어요.');if(!nt.length)nt.push('다음 쪽에서 이야기가 이어져요. 어떻게 될까요?');c.appendChild(el('p','sub',nt.join(' ')));
+  if(fromRound&&G){c.appendChild(resHead(KO_QN));c.appendChild(el('h2',null,R_&&R_.book?'『'+R_.book.title+'』 완성!':R_?R_.pg.bk.title+' '+(R_.pg.pi+1)+'쪽을 읽었어요':'이야기를 읽었어요'));
+    var nt=[];if(R_&&R_.book)nt.push('이야기책 한 권을 다 읽었어요! 햇살 '+(KO_GEM*GS)+'개를 받았어요. 책장에 꽂아 두었어요.');if(G.ups&&G.ups.length)nt.push(G.ups.join(', ')+' 단계가 올랐어요.');if(R_&&R_.lap)nt.push('책장의 책을 모두 다 읽었어요! 이제 1권부터 다시 읽으며 다른 문제를 풀어요.');if(!nt.length)nt.push('다음 쪽에서 이야기가 이어져요. 어떻게 될까요?');c.appendChild(el('p','sub',nt.join(' ')));
     if(R_&&R_.book){SND.bloom();setTimeout(function(){burst(innerWidth/2,innerHeight*.35,46,true)},300)}}
   else{c.appendChild(el('div','eyebrow','국어 서점 · '+KO_BANDS[b]+' 책 '+books.length+'권'));c.appendChild(el('h2',null,'이야기, 동시, 설명하는 글을 읽어요'))}
   // 지금 읽는 책 (시안: 크림 판 위에 펼친 책 + 진행 막대 + 나무 책장)
@@ -10517,7 +10569,7 @@ function koScreen(fromRound){clear();document.body.classList.remove('qmode');var
   var dots=el('div','kdots');for(var i=0;i<cur.bk.pages.length;i++)dots.appendChild(el('i',i<cur.pi?'on':i===cur.pi?'now':''));cr.appendChild(dots);cr.appendChild(el('small','knext','다음: '+(cur.pi+1)+'쪽 「'+cur.p.title+'」'));cb.appendChild(cr);pan.appendChild(cb);
   // 책장
   var sh=el('div','kshelf kwshelf'),inB=books.filter(function(bk){return koS().books[bk.id]}).length,allB=Object.keys(koS().books).length;sh.appendChild(el('small',null,'내 책장 · '+inB+' / '+books.length+'권'+(allB>inB?' · 다른 학년 책 '+(allB-inB)+'권도 다 읽었어요':'')));var row=el('div','kshrow');
-  books.forEach(function(bk,i){var done=!!koS().books[bk.id],w=el('button','kshb'+(done?' done':'')+(i===cur.bi?' now':''));if(done){var sp=img('n_spine'+(i%5),'kspine');sp.style.height=(78+((i*37)%5)*5)+'%';w.appendChild(sp)}else w.appendChild(el('b',null,(i+1)));w.setAttribute('aria-label',done?bk.title+' 다시 읽기':(i+1)+'권, 아직 읽는 중');w.onclick=function(){if(done)koBook(bk,i);else miniToast(i===cur.bi?'지금 읽고 있는 책이에요':'앞의 책을 다 읽으면 열려요')};row.appendChild(w)});sh.appendChild(row);var plank=img('n_woodshelf','kplank');plank.alt='';sh.appendChild(plank);pan.appendChild(sh);
+  books.forEach(function(bk,i){var done=!!koS().books[bk.id],w=el('button','kshb'+(done?' done':'')+(i===cur.bi?' now':''));if(done){var sp=img('n_spine'+(i%5),'kspine');sp.style.height=(78+((i*37)%5)*5)+'%';w.appendChild(sp)}else w.appendChild(el('b',null,(i+1)));w.setAttribute('aria-label',done?bk.title+' 다시 읽기':(i+1)+'권, 아직 읽는 중');w.onclick=function(){if(done)koBook(bk,i);else miniToast(i===cur.bi?'지금 읽고 있는 책이에요':'앞의 책을 다 읽으면 열려요')};row.appendChild(w)});sh.appendChild(row);setTimeout(function(){var nw=row.querySelector('.now');if(nw&&row.scrollWidth>row.clientWidth)row.scrollLeft=Math.max(0,nw.offsetLeft-row.clientWidth*.4)},50);var plank=img('n_woodshelf','kplank');plank.alt='';sh.appendChild(plank);pan.appendChild(sh);
   c.appendChild(pan);setTimeout(function(){var nw=row.querySelector('.now');if(nw)row.scrollLeft=Math.max(0,nw.offsetLeft-row.clientWidth/2)},0);
   if(!fromRound&&dictOn()){var dcc=dictCard();if(dcc)c.appendChild(dcc)}
   sc.appendChild(c);
@@ -18548,7 +18600,7 @@ function play(){
   clear();if(G.qs)G.sub=SUBJ[G.qs[G.idx]];if(G.fq)FORCE=G.fq[G.idx]||null;
   var sub=G.sub,st=stOf(sub),type=G.q[G.idx],base=st.lv[type]||1,lv=G.ch?Math.min(sub.key==='ko'&&type!=='read'?KO_LVMAX:5,base+1):base,pz=josaFixPz(sub.gen[type](lv)),tries=0,done=false,tq0=Date.now();
   document.body.classList.add('qmode');if(sub.key==='en')audPrefetch(G.lvl?['ph','wa','wb']:audTrack());
-  var sc=el('div','screen qscreen q-'+sub.key+(sub.key==='math'||sub.key==='hz'||sub.key==='en'||sub.key==='ko'?' thm':'')+(G.ch?' ch':'')+(G.boss?' boss':'')+(G.dig?' dig':'')),top=el('div','qtop');
+  var sc=el('div','screen qscreen q-'+sub.key+(sub.key==='math'||sub.key==='hz'||sub.key==='en'||sub.key==='ko'?' thm':'')+(G.ch?' ch':'')+(G.boss?' boss':'')+(G.dig?' dig':'')),top=el('div','qtop');try{var DK_={math:'dio_math',en:'dio_en',hz:'dio_hz',ko:'dio_ko'}[sub.key];if(DK_&&A[DK_])sc.style.setProperty('--qbg','url("'+A[DK_]+'")')}catch(e){}
   var x=el('button','x');x.setAttribute('aria-label','그만하기');x.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';x.onclick=G.sch?function(){HZWQ=null;document.body.classList.remove('qmode');G=null;FORCE=null;schoolScreen(SCH_BACK)}:function(){HZWQ=null;home()};
   var tr=el('div','track'),fill=el('i');fill.style.width=(G.idx/(G.n||ROUND)*100)+'%';tr.appendChild(fill);
     var NQ=G.n||ROUND;var dots=el('div','qdots');for(var di=0;di<NQ;di++){var dd=el('i',(di<G.idx?'done':di===G.idx?'now':'')+(G.q[di]==='write'?' w':''));dots.appendChild(dd)}
@@ -18753,19 +18805,20 @@ function advDoneScene(a,bonus,ft0){
 }
 var EVTS=[{id:'hw26',from:[2026,10,1],to:[2026,11,2],name:'할로윈 축제',tok:'x_candy',tokName:'호박 사탕',
   items:[{id:'x_candybasket',kind:'decor',cost:8},{id:'x_pumpkins',kind:'decor',cost:18},{id:'x_cauldron',kind:'decor',cost:28},{id:'x_ghost',kind:'friend',cost:40}]}];
-function evSettle(){if(!S.ev||S.ev.settled||evNow())return;var n=S.ev.tok||0;S.ev.settled=1;S.ev.tok=0;if(!n){save();return}var sun=n*2;S.sun+=sun;save();
+function evMig(){if(S.ev&&S.ev.tok>0&&!S.ev.mig){S.sun+=S.ev.tok*5;S.ev.tok=0;S.ev.mig=1;try{save()}catch(e){}}}
+function evSettle(){evMig();if(!S.ev||S.ev.settled||evNow())return;var n=S.ev.tok||0;S.ev.settled=1;S.ev.tok=0;if(!n){save();return}var sun=n*2;S.sun+=sun;save();
   var tries_=0;setTimeout(function sh(){if(!document.querySelector('.village')||document.querySelector('.sheet.show')){if(tries_++<40)setTimeout(sh,1500);return}showSheet('good','sun','축제가 끝났어요','남은 사탕 '+n+'개가 햇살 '+sun+'개로 바뀌었어요','다음 축제도 기대해 주세요!','좋아요',function(){villageScreen()})},800)}
 function evNow(){var d=window.__evDate?new Date(window.__evDate):new Date();d.setHours(12);for(var i=0;i<EVTS.length;i++){var e=EVTS[i],a=new Date(e.from[0],e.from[1]-1,e.from[2],0),b=new Date(e.to[0],e.to[1]-1,e.to[2],23,59);if(d>=a&&d<=b){if(!S.ev||S.ev.id!==e.id)S.ev={id:e.id,tok:0,got:{}};e.left=Math.floor((b-d)/864e5);return e}}return null}
-function evGain(n){var e=evNow();if(!e||!n)return 0;S.ev.tok+=n;save();return n}
+function evGain(n){return 0} // 화폐는 햇살 하나: 축제 사탕은 더 주지 않아요
 function miniToast(t){var e=el('div','minitoast',t);document.body.appendChild(e);setTimeout(function(){e.classList.add('out')},3200);setTimeout(function(){e.remove()},3700)}
 function evToast(n){var e=evNow();if(!e||!n)return;var t=el('div','evtoast');t.appendChild(img(e.tok));t.appendChild(el('b',null,e.tokName+' +'+n));document.body.appendChild(t);setTimeout(function(){t.remove()},2600)}
 function evSheet(){var e=evNow();if(!e)return;var inn=sheet.firstChild;inn.innerHTML='';
-  var hd=el('div','hd');hd.appendChild(img(e.tok));var t=el('div');t.appendChild(el('small',null,e.name+' · '+(e.left?e.left+'일 남음':'오늘이 마지막 날')));t.appendChild(el('h3',null,e.tokName+' '+S.ev.tok+'개'));hd.appendChild(t);inn.appendChild(hd);
-  inn.appendChild(el('p',null,'문제 한 판마다 1개, 다 맞히면 2개! 오늘의 모험을 끝내면 2개 더 받아요.'));
-  var g=el('div','evgrid');e.items.forEach(function(it){var got=!!S.ev.got[it.id],ok=S.ev.tok>=it.cost,c=el('button','evit'+(got?' got':ok?' ok':''));c.appendChild(img(it.id));c.appendChild(el('b',null,itemName(it.kind==='friend'?'a:'+it.id:it.id)));
-    var tg=el('small');if(got)tg.textContent='받았어요';else{tg.appendChild(img(e.tok));tg.appendChild(document.createTextNode(it.cost))}c.appendChild(tg);
-    c.onclick=function(){if(S.ev.got[it.id])return;if(S.ev.tok<it.cost){tone([330],'triangle');c.className='evit no';setTimeout(function(){c.className='evit'},400);return}
-      S.ev.tok-=it.cost;S.ev.got[it.id]=1;if(it.kind==='friend')S.own[it.id]=1;else S.gd.bought[it.id]=(S.gd.bought[it.id]||0)+1;save();SND.bloom();var r=c.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,30,true);setTimeout(evSheet,500)};g.appendChild(c)});inn.appendChild(g);
+  var hd=el('div','hd');hd.appendChild(img(e.tok));var t=el('div');t.appendChild(el('small',null,e.name+' · '+(e.left?e.left+'일 남음':'오늘이 마지막 날')));t.appendChild(el('h3',null,'햇살 '+S.sun+'개'));hd.appendChild(t);inn.appendChild(hd);
+  inn.appendChild(el('p',null,'축제 기간에만 살 수 있는 물건이에요. 햇살로 사요.'));
+  var g=el('div','evgrid');e.items.forEach(function(it){var got=!!S.ev.got[it.id],ok=S.sun>=it.cost*5,c=el('button','evit'+(got?' got':ok?' ok':''));c.appendChild(img(it.id));c.appendChild(el('b',null,itemName(it.kind==='friend'?'a:'+it.id:it.id)));
+    var tg=el('small');if(got)tg.textContent='받았어요';else{tg.appendChild(img('sun'));tg.appendChild(document.createTextNode(it.cost*5))}c.appendChild(tg);
+    c.onclick=function(){if(S.ev.got[it.id])return;if(S.sun<it.cost*5){tone([330],'triangle');c.className='evit no';setTimeout(function(){c.className='evit'},400);return}
+      S.sun-=it.cost*5;S.ev.got[it.id]=1;if(it.kind==='friend')S.own[it.id]=1;else S.gd.bought[it.id]=(S.gd.bought[it.id]||0)+1;save();SND.bloom();var r=c.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,30,true);setTimeout(evSheet,500)};g.appendChild(c)});inn.appendChild(g);
   inn.appendChild(el('div','evnote','받은 물건은 섬 꾸미기의 ‘특별’ 칸에 있어요.'));
   var c=el('button','cta light','닫기');c.onclick=function(){hideSheet();if(document.querySelector('.village'))villageScreen()};inn.appendChild(c);
   sheet.className='sheet good ev';scrim.className='scrim show';scrim.onclick=hideSheet;requestAnimationFrame(function(){sheet.className='sheet good ev show'})}
@@ -18811,7 +18864,7 @@ function roundEnd(){HZWQ=null;
   if(G.first===ROUND)gemGain(1)
   if(sub.key==='hz'){G.unlocked=hzUnlockCheck();
     var cnt=hzOrder().length;if(S.hz.given==null)S.hz.given=Math.floor((cnt-G.newFruits.length)/5);
-    G.gifts=[];while(Math.floor(cnt/5)>S.hz.given){S.hz.given++;G.gifts.push(decideBloom(SUBJ.hz,G.first===ROUND))}}
+    G.gifts=[];while(Math.floor(cnt/5)>S.hz.given){S.hz.given++;S.sun+=10;G.sunGot=(G.sunGot||0)+10;G.gifts.push(1)}} // 열매 5개마다 햇살 +10 (화폐는 햇살 하나)
   if(G.place&&S.place){delete S.place[sub.key];if(sub.key==='en'){var acc_=G.first/(G.n||ROUND),st_=enStage();if(acc_>=.9&&st_<9)enSetStage(st_+1,true);else if(acc_<=.4&&st_>1)enSetStage(st_-1,true)}}
   var before=S.path.step;track('round',{sub:sub,got:G.got,first:G.first,maxCombo:G.maxCombo||0});G.mission=S.path.step>before;
   save();
@@ -19141,7 +19194,7 @@ function treeScreen(fromRound){if(fromRound)TREEP=null;
   if(gradeCap(tg)>100){var pn=partNow(tg);if(TREEP==null||TREEP>pn)TREEP=pn;if(pn>0){var ps=el('div','seg treeseg treeparts');for(var pi=0;pi<=pn;pi++)(function(pi){var b=el('button',pi===TREEP?'on':null,(pi*100+1)+'~'+Math.min(gradeCap(tg),(pi+1)*100));b.onclick=function(){TREEP=pi;treeScreen(fromRound)};ps.appendChild(b)})(pi);sc.appendChild(ps);setTimeout(function(){var o=ps.querySelector('.on');if(o)ps.scrollLeft=o.offsetLeft-ps.clientWidth/2+o.offsetWidth/2},0)}}
   if(fromRound&&G){
     var nf=G.newFruits||[];
-    c.appendChild(el('div','eyebrow',G.got+' / '+ROUND+' 정답'+sunTxt()));
+    c.appendChild(resHead(ROUND));
     c.appendChild(el('h2',null,nf.length?'한자 열매 '+nf.length+'개가 열렸어요':'열매가 익어 가고 있어요'));
     var notes=[];
     if(nf.length)notes.push(nf.map(function(ch){return ch+'('+H8[HIDX[ch]][2]+')'}).join(', ')+'.');
@@ -19150,7 +19203,7 @@ function treeScreen(fromRound){if(fromRound)TREEP=null;
     if(G.unlocked)notes.push(gradeDone());
     if(G.mission)notes.push('오솔길 친구가 한 칸 앞으로 갔어요.');
     if(G.grown&&G.grown.length)notes.push('복습한 열매 '+G.grown.length+'개가 한 단계 자랐어요'+(G.grown.some(function(c){return (hzSrGet(c)||{}).s===5})?'. 황금 열매도 생겼어요!':'.'));
-    if(G.gifts&&G.gifts.length)notes.push('한자 열매 5개마다 주는 선물로 섬에 놓을 '+G.gifts.map(function(cd){return itemOf(SUBJ.hz,cd).name}).join(', ')+josa(itemOf(SUBJ.hz,G.gifts[G.gifts.length-1]).name,'을','를').slice(-1)+' 받았어요.');
+    if(G.gifts&&G.gifts.length)notes.push('익힌 한자 5자마다 햇살 +10을 더 받아요!');
     c.appendChild(el('p','sub',notes.join(' ')));
   }else{
     c.appendChild(el('div','eyebrow','한자 나무'));
@@ -19170,7 +19223,7 @@ function treeScreen(fromRound){if(fromRound)TREEP=null;
   c.appendChild(info);
   if(n){var lg=el('div','srlegend'),cnt=[0,0,0,0,0,0];hzOrder().forEach(function(ch){if(gradeOf(ch)===tg){var r=hzSrGet(ch);cnt[r?r.s:3]++}});for(var si=1;si<=5;si++){var it=el('span','st'+si);it.appendChild(el('i'));it.appendChild(document.createTextNode(SR_NAME[si]+' '+cnt[si]));lg.appendChild(it)}c.appendChild(lg)}
   var bar=el('div','prog'),b2=el('div','bar'),fi=el('i');fi.style.width=(n/gradeCap(tg)*100)+'%';b2.appendChild(fi);bar.appendChild(b2);bar.appendChild(el('span','tnum',GRADES[tg]+' '+n+' / '+gradeCap(tg)));bar.style.width='100%';c.appendChild(bar);
-  if(!fromRound)spCardify(c);sc.appendChild(c);spaceDio(sc,'dio_hz');
+  spCardify(c);sc.appendChild(c);spaceDio(sc,'dio_hz');if(fromRound)resTop(sc);
   var d=el('div','dock');
   if(fromRound){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;d.appendChild(ok)}
   else{var dueL=wiltedList().filter(function(ch){return gradeOf(ch)===tg});
@@ -19451,7 +19504,7 @@ function petLines(){var L=[],t=dayKey();
   var tt=totals(),pc=placedCount(),inv=0;for(var k in tt)inv+=Math.max(0,tt[k]-(pc[k]||0));if(inv)L.push('보관함에 놓을 물건이 '+inv+'개 있대. 어디에 놓을지 궁금해!');
   var ph=skyPhase();if(ph==='night')L.push('졸려… 하암. 별이 예쁘다.');if(ph==='eve')L.push('노을이 진짜 예쁘다!');
   if(season()==='autumn')L.push('낙엽 밟으면 바스락 소리가 나!');if(season()==='winter')L.push('눈사람 만들고 싶다!');
-  var ev=evNow();if(ev)L.push(ev.tokName+' '+S.ev.tok+'개 모았어? 나도 사탕 좋아해!');
+  var ev=evNow();if(ev)L.push(ev.name+' 축제 물건 봤어? 햇살로 살 수 있대!');
   if(S.en&&S.en.today===t)L.push('오늘 영어 단어도 했다며? 멋지다!');
   if(S.math.today===t&&S.hz.today===t)L.push('오늘 공부 다 했구나! 이제 같이 놀자!');
   var nb=(S.nb&&S.nb.done)||[];if(nb.length)L.push('이웃 '+nb.length+'명이 우리 섬에 이사 왔어. 북적북적해!');
@@ -19704,18 +19757,19 @@ function beeScreen(fromRound){
   var sc=el('div','screen beescr'),top=el('div','qtop');
   var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=BACK_SVG;back.onclick=home;top.appendChild(back);sc.appendChild(top);
   var N=EN.words.length,st=enStats(),c=el('div','center beecenter');
-  if(fromRound&&G){c.appendChild(el('div','eyebrow',G.got+' / '+ROUND+' 정답'+sunTxt()));c.appendChild(el('h2',null,G.jarFull?'단어 묶음 '+G.jarFull+'개째 완성!':(G.mastered&&G.mastered.length)?'새로 익힌 단어 '+G.mastered.length+'개!':'햇살 '+(G.sunGot||0)+'개를 받았어요'));if(G.jarFull){SND.bloom();setTimeout(function(){burst(innerWidth/2,innerHeight*.35,46,true)},300)}
-    var nt=[];if(G.mastered&&G.mastered.length)nt.push(G.mastered.join(', ')+'.');if(G.jarFull)nt.push('단어 묶음 하나 완성! 햇살 +20, 보석 +2. 다음 묶음도 해 봐요.');else nt.push(enTrack()==='s'?'들은 문장을 소리 내어 따라 말해 보면 더 빨리 늘어요.':enTrack()==='ph'?'소리와 글자를 함께 익히고 있어요.':'한 단어를 뜻, 글자, 듣고 쓰기 세 가지 모두 한 번에 맞히면 그 단어를 익힌 거예요.');c.appendChild(el('p','sub',nt.join(' ')))}
+  if(fromRound&&G){c.appendChild(resHead(ROUND));c.appendChild(el('h2',null,G.jarFull?'단어 묶음 '+G.jarFull+'개째 완성!':(G.mastered&&G.mastered.length)?'새로 익힌 단어 '+G.mastered.length+'개!':'영어 단어를 연습했어요'));if(G.jarFull){SND.bloom();setTimeout(function(){burst(innerWidth/2,innerHeight*.35,46,true)},300)}
+    var nt=[];if(G.mastered&&G.mastered.length)nt.push(G.mastered.join(', ')+'.');if(G.jarFull)nt.push('단어 묶음 하나 완성! 햇살 +40. 다음 묶음도 해 봐요.');else nt.push(enTrack()==='s'?'들은 문장을 소리 내어 따라 말해 보면 더 빨리 늘어요.':enTrack()==='ph'?'소리와 글자를 함께 익히고 있어요.':'한 단어를 뜻, 글자, 듣고 쓰기 세 가지 모두 한 번에 맞히면 그 단어를 익힌 거예요.');c.appendChild(el('p','sub',nt.join(' ')))}
   else{var J=enJar();c.appendChild(el('div','eyebrow','영어 벌집 · '+(EN.title||'이번 주 단어')));if(enTrack()==='s'){c.appendChild(el('h2',null,'문장·대화 연습 중'));c.appendChild(el('p','sub','교과서 핵심 표현으로 묻고 답하기를 익혀요. 듣기 버튼을 누르고 따라 말해 보세요.'))}else if(enTrack()==='ph'){c.appendChild(el('h2',null,'파닉스 연습 중'));c.appendChild(el('p','sub','알파벳, 소리 단어, 사이트 워드를 익혀요. 잘하게 되면 저절로 다음 단계로 올라가요.'))}else{c.appendChild(el('h2',null,'단어 묶음 '+J.no+' · '+jarDone()+' / '+J.ws.length));c.appendChild(el('p','sub','이 묶음 단어 '+J.ws.length+'개를 뜻, 글자, 듣고 쓰기로 모두 맞히면 묶음 완성! 햇살 +20을 받아요.'))}var tot_=el('div','entot');tot_.appendChild(el('span',null,'지금까지 익힌 단어'));tot_.appendChild(el('b',null,st.all+'\u00a0/\u00a0'+N));c.appendChild(tot_)}
   var JJ=enJar(),jarIn={};JJ.ws.forEach(function(w){jarIn[w]=1});
   var bars=el('div','enbars');[[1,'뜻 고르기'],[2,'글자 맞추기'],[4,'듣고 쓰기']].forEach(function(x){var n_=JJ.ws.filter(function(w){return enBits(w)&x[0]}).length,T_=JJ.ws.length;var r=el('div','enbar');r.appendChild(el('span',null,x[1]));var b2=el('div','bar');var f=el('i');f.style.width=(n_/T_*100)+'%';b2.appendChild(f);r.appendChild(b2);r.appendChild(el('b','tnum',n_+'/'+T_));bars.appendChild(r)});if(enTrack()==='w')c.appendChild(bars);if(!fromRound)c.appendChild(enTrackBar());
   var det=el('details','enlist');det.appendChild(el('summary',null,'단어 '+N+'개 보기'));var ul=el('div','enwords');
   EN.words.slice().sort(function(a,b){return (jarIn[b.w]?1:0)-(jarIn[a.w]?1:0)}).forEach(function(x){var p=enBits(x.w),b=el('button','enw'+(p===7?' full':'')+(jarIn[x.w]?' injar':''));b.appendChild(el('b',null,x.w));b.appendChild(el('span',null,x.k));var d=el('i','dots3');[1,2,4].forEach(function(k){d.appendChild(el('em',p&k?'on':''))});b.appendChild(d);b.onclick=function(){sayEn(x.w)};ul.appendChild(b)});
   det.appendChild(ul);c.appendChild(det);
-  if(!fromRound)spCardify(c);sc.appendChild(c);spaceDio(sc,'dio_en');if(fromRound)resTop(sc);
+  spCardify(c);sc.appendChild(c);spaceDio(sc,'dio_en');if(fromRound)resTop(sc);
   var dk=el('div','dock');if(fromRound){var ok=el('button','cta'+(ADV?' green':''),advNextLabel()||'확인');ok.onclick=resultDone;dk.appendChild(ok)}else{var go=el('button','cta','영어 문제 풀기');go.onclick=function(){startRound(SUBJ.en)};dk.appendChild(go)}
   sc.appendChild(dk);app.appendChild(sc);
 }
+var GS=10; // 예전 보석 1개 = 햇살 10개 (화폐는 햇살 하나)
 
 // ================= 내 캐릭터 꾸미기 =================
 var AV_SLOTS=[['hat','모자'],['cloth','옷'],['hand','손'],['back','등']];
@@ -19724,10 +19778,10 @@ var AV_ITEMS=[
  {id:'cloth_bow',slot:'cloth',name:'나비넥타이',price:40},{id:'cloth_scarf',slot:'cloth',name:'목도리',price:60},{id:'cloth_pearl',slot:'cloth',name:'진주 목걸이',price:90},{id:'cloth_medal',slot:'cloth',name:'메달',price:110},{id:'cloth_cape',slot:'cloth',name:'망토',price:120},
  {id:'hand_flag',slot:'hand',name:'깃발',price:40},{id:'hand_lollipop',slot:'hand',name:'막대사탕',price:50},{id:'hand_umbrella',slot:'hand',name:'우산',price:80},{id:'hand_net',slot:'hand',name:'잠자리채',price:90},{id:'hand_wand',slot:'hand',name:'요술봉',price:100},
  {id:'back_bag',slot:'back',name:'가방',price:60},{id:'back_balloon',slot:'back',name:'풍선',price:80},{id:'back_kite',slot:'back',name:'연',price:90},{id:'back_rocket',slot:'back',name:'로켓',price:150},{id:'back_wings',slot:'back',name:'요정 날개',price:180},
- // 희귀 장비: 햇살 대신 보석으로 사고, 강화도 더 많이 들어요
+ // 희귀 장비: 값이 더 비싸요(gem×GS 햇살)
  {id:'hat_halo',slot:'hat',name:'천사 고리',gem:25,rare:1},{id:'cloth_rainbow',slot:'cloth',name:'무지개 목도리',gem:30,rare:1},{id:'hand_lantern',slot:'hand',name:'별빛 등불',gem:30,rare:1},{id:'back_dragon',slot:'back',name:'용 날개',gem:40,rare:1}];
 var AV_UP=[0,4,8],AV_UPR=[0,6,12],AVK=2,AVC={},AVTAB='hat',AVBACK=null;
-function avS(){if(!S.av)S.av={gem:0,own:{},eqc:{}};if(!S.av.own)S.av.own={};if(!S.av.eqc){var o=S.av.eq||{};S.av.eqc={};CHARS.forEach(function(ch){S.av.eqc[ch.id]=JSON.parse(JSON.stringify(o))})}else if(S.av.eq&&S.path&&S.path.char){S.av.eqc[S.path.char]=S.av.eq}delete S.av.eq;if(S.av.gem==null||!isFinite(S.av.gem))S.av.gem=0;return S.av}
+function avS(){if(!S.av)S.av={gem:0,own:{},eqc:{}};if(S.av.gem>0){S.sun=(S.sun||0)+S.av.gem*GS;S.av.gem=0;try{save()}catch(e){}}if(!S.av.own)S.av.own={};if(!S.av.eqc){var o=S.av.eq||{};S.av.eqc={};CHARS.forEach(function(ch){S.av.eqc[ch.id]=JSON.parse(JSON.stringify(o))})}else if(S.av.eq&&S.path&&S.path.char){S.av.eqc[S.path.char]=S.av.eq}delete S.av.eq;if(S.av.gem==null||!isFinite(S.av.gem))S.av.gem=0;return S.av}
 function avEq(c){var a=avS();if(!a.eqc[c])a.eqc[c]={};return a.eqc[c]}
 function avItem(id){return AV_ITEMS.filter(function(x){return x.id===id})[0]}
 function avUpCost(it,t){return (it.rare?AV_UPR:AV_UP)[t]}
@@ -19754,48 +19808,46 @@ function avDress(im,c,force){if(!im||!c||(c!==S.path.char&&!force)||!AV_OK)retur
     im.style.pointerEvents='none'})()});return im}
 function avImg(key,cls){return avDress(img(key,cls),key)}
 function avStars(t){var w=el('span','avstars');for(var i=1;i<=3;i++)w.appendChild(el('i',i<=t?'on':null,'★'));w.setAttribute('aria-label','별 '+t+'개');return w}
-function avCanUp(){var a=avS();return AV_ITEMS.some(function(it){var t=a.own[it.id];return t&&t<3&&a.gem>=avUpCost(it,t)})}
-function avBadge(){var a=avS();if(avCanUp())return true;if(!a.visited&&(a.gem>0||S.sun>=40))return true;return false}
+function avCanUp(){var a=avS();return AV_ITEMS.some(function(it){var t=a.own[it.id];return t&&t<3&&S.sun>=avUpCost(it,t)*GS})}
+function avBadge(){var a=avS();if(avCanUp())return true;if(!a.visited&&S.sun>=40)return true;return false}
 var GEMQ={n:0,t:null,first:false};
-function gemGain(n){if(!n)return;var a=avS();if(!a.seen)GEMQ.first=true;a.gem+=n;a.seen=1;save();GEMQ.n+=n;clearTimeout(GEMQ.t);
-  GEMQ.t=setTimeout(function(){var n=GEMQ.n,first=GEMQ.first;GEMQ.n=0;GEMQ.first=false;var t=el('div','evtoast gemtoast');t.appendChild(img('gem'));t.appendChild(el('b',null,'보석 +'+n));if(first)t.appendChild(el('small',null,'위쪽 캐릭터 버튼을 눌러 꾸며요'));document.body.appendChild(t);setTimeout(function(){t.remove()},first?3800:2600)},1250)}
+function gemGain(n){if(!n)return;var a=avS();if(!a.seen)GEMQ.first=true;S.sun+=n*GS;try{if(G&&typeof G.sunGot==='number')G.sunGot+=n*GS}catch(e){}a.seen=1;save();GEMQ.n+=n;clearTimeout(GEMQ.t);
+  GEMQ.t=setTimeout(function(){var n=GEMQ.n,first=GEMQ.first;GEMQ.n=0;GEMQ.first=false;var t=el('div','evtoast gemtoast');t.appendChild(img('sun'));t.appendChild(el('b',null,'햇살 +'+((n)*GS)));document.body.appendChild(t);setTimeout(function(){t.remove()},first?3800:2600)},1250)}
 var AVL=0;function avLock(){var n=Date.now();if(AVL>n)return true;AVL=n+450;return false}
 function avScreen(keep){
   var y_=keep?window.scrollY:0;clear();var a=avS(),c=S.path.char||'rabbit',E_=avEq(c);a.visited=1;save();
   var sc=el('div','screen avscr'),top=el('div','qtop');
   var back=el('button','x');back.setAttribute('aria-label','돌아가기');back.innerHTML=BACK_SVG;back.onclick=function(){(AVBACK||villageScreen)()};top.appendChild(back);top.appendChild(el('div','spacer'));
-  var gb=el('div','balance gembal');gb.appendChild(img('gem'));gb.appendChild(el('b','tnum',a.gem));top.appendChild(gb);
   var bal=el('div','balance');bal.appendChild(img('sun'));bal.appendChild(el('b','tnum',S.sun));top.appendChild(bal);sc.appendChild(top);
   var hd=el('div','qhead');hd.appendChild(el('small',null,'우리 집'));hd.appendChild(el('h2',null,'내 캐릭터 꾸미기'));sc.appendChild(hd);
   var shine=['hat','cloth','hand','back'].some(function(sl){var id=E_[sl];return id&&a.own[id]===3});
   var stg=el('div','avstage'+(shine?' shine':''));stg.appendChild(el('i','avped'));var big=avImg(c,'avbig');stg.appendChild(big);sc.appendChild(stg);
   var chs=el('div','avchars');CHARS.forEach(function(ch){var b=el('button','avch'+(ch.id===c?' on':''));b.appendChild(avDress(img(ch.id),ch.id,1));b.setAttribute('aria-label',ch.name);b.onclick=function(){if(ch.id===c||avLock())return;setChar(ch.id);save();tone([660],'sine',.06);avScreen(1)};chs.appendChild(b)});sc.appendChild(chs);
   var seg=el('div','seg seg4');AV_SLOTS.forEach(function(x){var b=el('button',x[0]===AVTAB?'on':null,x[1]);b.onclick=function(){AVTAB=x[0];avScreen(1)};seg.appendChild(b)});var stk_=el('div','stickhd');stk_.appendChild(seg);sc.appendChild(stk_);
-  var msg=el('p','sum','산 장비는 네 친구가 함께 쓰고, 옷은 친구마다 따로 입혀요. 보석으로 강화해서 ★★★이 되면 반짝반짝 빛나요.');msg.setAttribute('aria-live','polite');stk_.appendChild(msg);
+  var msg=el('p','sum','산 장비는 네 친구가 함께 쓰고, 옷은 친구마다 따로 입혀요. 햇살로 반짝이를 달아 ★★★이 되면 반짝반짝 빛나요.');msg.setAttribute('aria-live','polite');stk_.appendChild(msg);
   var g=el('div','gh gh3 avgrid');
   AV_ITEMS.filter(function(it){return it.slot===AVTAB}).forEach(function(it){
     var t=a.own[it.id]||0,on=E_[it.slot]===it.id&&t>0,card=el('div','ghc shopc avc'+(on?' on':'')+(it.rare?' rare':''));if(it.rare)card.appendChild(el('em','avrare','희귀'));
     var pv=el('div','fprev');var pi=img('avi_'+it.id+'_'+(t||1));if(!t)pi.className='lockimg';pv.appendChild(pi);card.appendChild(pv);
     card.appendChild(el('b',null,it.name));card.appendChild(avStars(t));
     var bs=el('div','avbtns');
-    if(!t){var buy=el('button','avbtn buy'+(it.rare?' gemb':''));buy.appendChild(img(it.rare?'gem':'sun'));buy.appendChild(document.createTextNode(it.rare?it.gem:it.price));buy.setAttribute('aria-label',it.name+(it.rare?' 보석 '+it.gem:' 햇살 '+it.price)+'개로 사기');
+    if(!t){var buy=el('button','avbtn buy'+(it.rare?' gemb':''));var pr_=it.rare?it.gem*GS:it.price;buy.appendChild(img('sun'));buy.appendChild(document.createTextNode(pr_));buy.setAttribute('aria-label',it.name+' 햇살 '+pr_+'개로 사기');
       buy.onclick=function(){if(avLock())return;
-        if(it.rare){if(a.gem<it.gem){msg.textContent='희귀 장비는 보석으로 사요. 보석이 '+(it.gem-a.gem)+'개 더 필요해요.';msg.className='sum warn';tone([330],'triangle');return}a.gem-=it.gem}
-        else{if(S.sun<it.price){msg.textContent='햇살이 '+(it.price-S.sun)+'개 더 필요해요. 문제를 풀면 햇살이 모여요.';msg.className='sum warn';tone([330],'triangle');return}S.sun-=it.price}
+        if(S.sun<pr_){msg.textContent='햇살이 '+(pr_-S.sun)+'개 더 필요해요. 문제를 풀면 햇살이 모여요.';msg.className='sum warn';tone([330],'triangle');return}S.sun-=pr_;
         a.own[it.id]=1;E_[it.slot]=it.id;save();tone([659,880,1175],'sine',.08);avScreen(1);var r=document.querySelector('.avbig');if(r){var rc=r.getBoundingClientRect();burst(rc.left+rc.width/2,rc.top+rc.height*.3,it.rare?48:30,true)}
         if(it.rare){var m3=document.querySelector('.avscr .sum');if(m3){m3.textContent='희귀 장비 '+josa(it.name,'을','를')+' 얻었어요!';m3.className='sum good'}}};bs.appendChild(buy)}
     else{var w=el('button','avbtn '+(on?'off':'wear'),on?'벗기':'입기');w.onclick=function(){if(avLock())return;if(on)delete E_[it.slot];else E_[it.slot]=it.id;save();tone(on?[523]:[659,784],'sine',.06);avScreen(1)};bs.appendChild(w);
-      if(t<3){var cost=avUpCost(it,t),up=el('button','avbtn up');up.appendChild(img('gem'));up.appendChild(document.createTextNode(cost+' 강화'));up.setAttribute('aria-label','보석 '+cost+'개로 강화');if(a.gem<cost)up.className+=' need';
-        up.onclick=function(){if(avLock())return;if(a.gem<cost){msg.textContent='보석이 '+(cost-a.gem)+'개 더 필요해요. 한 판을 다 맞히거나 도전에 성공하면 보석을 받아요.';msg.className='sum warn';tone([330],'triangle');return}
-          a.gem-=cost;a.own[it.id]=t+1;E_[it.slot]=it.id;save();SND.bloom();avScreen(1);var r=document.querySelector('.avbig');if(r){var rc=r.getBoundingClientRect();burst(rc.left+rc.width/2,rc.top+rc.height*.3,48,true)}
+      if(t<3){var cost=avUpCost(it,t)*GS,up=el('button','avbtn up');up.appendChild(img('sun'));up.appendChild(document.createTextNode(cost+' 반짝이'));up.setAttribute('aria-label','햇살 '+cost+'개로 반짝이 달기');if(S.sun<cost)up.className+=' need';
+        up.onclick=function(){if(avLock())return;if(S.sun<cost){msg.textContent='햇살이 '+(cost-S.sun)+'개 더 필요해요. 문제를 풀면 햇살이 모여요.';msg.className='sum warn';tone([330],'triangle');return}
+          S.sun-=cost;a.own[it.id]=t+1;E_[it.slot]=it.id;save();SND.bloom();avScreen(1);var r=document.querySelector('.avbig');if(r){var rc=r.getBoundingClientRect();burst(rc.left+rc.width/2,rc.top+rc.height*.3,48,true)}
           var m2=document.querySelector('.avscr .sum');if(m2){m2.textContent=josa(it.name,'이','가')+' ★'+(t+1)+'이 됐어요!'+(t+1===3?' 이제 반짝반짝 빛나요.':'');m2.className='sum good'}};bs.appendChild(up)}
       else bs.appendChild(el('span','avmax','최고 단계'))}
     card.appendChild(bs);g.appendChild(card)});
   sc.appendChild(g);
-  var nt=el('div','evnote avnote');nt.appendChild(img('gem'));nt.appendChild(el('span',null,'보석 받는 법 · 오늘 과목 다 하기 2개, 한 판 다 맞히기 1개, 도전 성공 1개, 영어 단어 묶음 완성 2개, 보스 이기기 3개, 연속 기록 3개, 새 상장·화석·물고기도 보석을 줘요. 희귀 장비는 보석으로 사요.'));sc.appendChild(nt);
+  var nt=el('div','evnote avnote');nt.appendChild(img('sun'));nt.appendChild(el('span',null,'햇살 하나로 다 사요. 문제를 풀고, 오늘 과목을 다 하고, 한 판을 다 맞히면 햇살이 더 많이 모여요.'));sc.appendChild(nt);
   try{var cb_=cheerBoard();if(cb_)sc.appendChild(cb_)}catch(e){}
   app.appendChild(sc);zMark&&zMark();if(keep)window.scrollTo(0,y_);
-  if(!introS().avs){setTimeout(function(){if(!document.querySelector('.avscr')||introS().avs)return;introS().avs=1;introS().av=1;save();coachRun([[null,'여기는 나를 꾸미는 곳이야!'],['.avgrid','햇살로 모자, 옷, 손, 등에 달 장비를 살 수 있어.'],['.gembal','공부로 모은 보석으로 장비를 강화하면 ★이 올라가고 점점 반짝반짝해져.'],['.avchars','친구를 바꾸면 옷도 친구마다 따로 입힐 수 있어. 산 장비는 모두 같이 써!','꾸미러 가자!']])},400)}
+  if(!introS().avs){setTimeout(function(){if(!document.querySelector('.avscr')||introS().avs)return;introS().avs=1;introS().av=1;save();coachRun([[null,'여기는 나를 꾸미는 곳이야!'],['.avgrid','햇살로 모자, 옷, 손, 등에 달 장비를 살 수 있어.'],['.avgrid','햇살로 반짝이를 달면 ★이 올라가고 점점 반짝반짝해져.'],['.avchars','친구를 바꾸면 옷도 친구마다 따로 입힐 수 있어. 산 장비는 모두 같이 써!','꾸미러 가자!']])},400)}
 }
 function setChar(id){S.path.char=id;gdInit();var placed=false;for(var k in S.gd.cells)if(S.gd.cells[k].indexOf('a:')===0&&CHARS.some(function(c){return 'a:'+c.id===S.gd.cells[k]})){S.gd.cells[k]='a:'+id;placed=true}return placed}
 
@@ -19888,7 +19940,7 @@ var MAIL_TAB='letters';
 function mailScreen(tab){audPrefetch(['se']);
   if(tab)MAIL_TAB=tab;clear();var m=mailS();var sc=el('div','screen mailscr'),top=el('div','qtop');
   var b=el('button','x');b.setAttribute('aria-label','나가기');b.innerHTML=BACK_SVG;b.onclick=villageScreen;top.appendChild(b);top.appendChild(el('h2','mtitle','섬 우체통'));
-  var wal=el('div','qwallet stampw');var si=el('i','stamp mini');si.style.setProperty('--sc','#ff8787');var sii=el('span','stin');sii.appendChild(img('rabbit'));si.appendChild(sii);wal.appendChild(si);wal.appendChild(el('b','tnum',String(m.stamps||0)));top.appendChild(wal);sc.appendChild(top);
+  var wal=el('div','balance');wal.appendChild(img('sun'));wal.appendChild(el('b','tnum',String(S.sun)));wal.setAttribute('aria-label','햇살 '+S.sun+'개');top.appendChild(wal);sc.appendChild(top);
   var cur=el('div','mcur');cur.appendChild(img('duck'));var un=mailNewN();cur.appendChild(el('p',null,un?'새 편지가 왔어! 읽어 볼래?':['편지는 언제든 다시 읽을 수 있어. 쓰고 싶은 편지에 답장해 봐!','답장을 쓰면 다음 날 친구가 꼭 답장해 줘.'][R(0,1)]));sc.appendChild(cur);
   var seg=el('div','mseg two');[['letters','편지',(mailList().length+mailNotes().length)+'통'],['stamps','우표 앨범',(m.stamps||0)+'장']].forEach(function(t){var bt=el('button',MAIL_TAB===t[0]?'on':null);bt.appendChild(el('b',null,t[1]));bt.appendChild(el('small',null,t[2]));bt.onclick=function(){mailScreen(t[0])};seg.appendChild(bt)});sc.appendChild(seg);
   if(MAIL_TAB==='letters'){
@@ -20014,7 +20066,7 @@ function fishScreen(){
     var row=el('div','fishrow');caught.forEach(function(id){row.appendChild(img(id,'fic'))});cd.appendChild(row);
     cd.appendChild(el('small',null,'섬 낚시 · '+caught.length+'마리'));cd.appendChild(el('h3',null,caught.length>=Q.length?'만선이에요!':'수고했어요!'));
     var tb=el('div','advsum');var r1=el('div','advrow');r1.appendChild(img('sun'));r1.appendChild(el('span',null,'한 번에 낚은 물고기'));r1.appendChild(el('em',null,first+'마리'));var b1=el('b');b1.appendChild(img('sun'));b1.appendChild(document.createTextNode('+'+sun));r1.appendChild(b1);tb.appendChild(r1);
-    if(gem){var r2=el('div','advrow bonus');r2.appendChild(img('gem'));r2.appendChild(el('span',null,'새 물고기 '+gem+'종'));r2.appendChild(el('em',null,''));var b2=el('b');b2.appendChild(img('gem'));b2.appendChild(document.createTextNode('+'+gem));r2.appendChild(b2);tb.appendChild(r2)}
+    if(gem){var r2=el('div','advrow bonus');r2.appendChild(img('sun'));r2.appendChild(el('span',null,'새 물고기 '+gem+'종'));r2.appendChild(el('em',null,''));var b2=el('b');b2.appendChild(img('sun'));b2.appendChild(document.createTextNode('+'+gem*GS));r2.appendChild(b2);tb.appendChild(r2)}
     var rws=fishRewards();rws.forEach(function(r){var r3=el('div','advrow bonus');r3.appendChild(img(r.id));r3.appendChild(el('span',null,'도감 '+r.n+'종 선물'));r3.appendChild(el('em',null,''));r3.appendChild(el('b',null,itemName(r.id)));tb.appendChild(r3)});
     cd.appendChild(tb);if(rws.length)cd.appendChild(el('p','fishrwnote','선물은 섬 꾸미기의 ‘특별’ 칸에 있어요.'));
     var dx=el('button','cta','물고기 도감');dx.onclick=function(){lay.remove();fishDex(villageScreen)};cd.appendChild(dx);
@@ -20228,7 +20280,7 @@ function bossEnd(){var bs=bossS(),B=G.boss,win=G.hp<=0,t=dayKey(),done=Math.min(
   var lay=el('div','daydone'),card=el('div','ddcard bossdone'+(win?'':' fail'));card.appendChild(el('i','ddrays'));var pic=img(B.id,'ddpic bosspic'+(win?' beat':''));card.appendChild(pic);
   card.appendChild(el('small',null,'주말 보스 · '+B.name+' · '+G.got+' / '+done+' 정답'));
   card.appendChild(el('h3',null,win?'보스를 물리쳤어요!':'아깝다! 보스가 도망갔어요'));
-  var msg=win?'햇살 '+BOSS_SUN+'개, 보석 '+BOSS_GEM+'개, 그리고 '+B.name+' 인형을 받았어요. 인형은 섬 꾸미기 보관함에 있어요!':(bs.tries<BOSS_TRY?'이번 주말에 '+(BOSS_TRY-bs.tries)+'번 더 도전할 수 있어요.':'다음 주말에 새로운 보스가 나타나요.');
+  var msg=win?'햇살 '+(BOSS_SUN+BOSS_GEM*GS)+'개, 그리고 '+B.name+' 인형을 받았어요. 인형은 섬 꾸미기 보관함에 있어요!':(bs.tries<BOSS_TRY?'이번 주말에 '+(BOSS_TRY-bs.tries)+'번 더 도전할 수 있어요.':'다음 주말에 새로운 보스가 나타나요.');
   if(G.ups.length)msg+=' '+G.ups.join(', ')+' 레벨도 올랐어요!';
   card.appendChild(el('p',null,msg));
   var b=el('button','cta green',win?'인형 놓으러 가기':'좋아요');b.onclick=function(){lay.remove();G=null;if(win)gardenScreen(true,B.id);else home()};card.appendChild(b);
@@ -20293,7 +20345,7 @@ function digEnd(){var win=G.got>0,key=G.digKey,ups=G.ups.slice(),s=digS(),t=dayK
   card.appendChild(el('small',null,dup?'화석 발굴 · 이미 가진 화석':'화석 발굴 · 새 화석! '+(before+1)+' / '+FOSSILS.length));
   card.appendChild(el('h3',null,f.name+(dup?'':' 발견!')));
   card.appendChild(el('p',null,f.fact));
-  card.appendChild(el('p','fogain',ms?(all?'화석을 모두 모았어요! ':'화석 '+ms.n+'종을 모았어요! ')+'보석 '+(1+ms.gem)+'개를 받았어요. 화석은 섬 꾸미기 보관함에 있어요.':dup?'이미 있는 화석이라 햇살 5개로 바꿔 줬어요.':'보석 1개를 받았어요. 화석은 섬 꾸미기 보관함에 있어요.'+(ups.length?' '+ups.join(', ')+' 레벨도 올랐어요!':'')));
+  card.appendChild(el('p','fogain',ms?(all?'화석을 모두 모았어요! ':'화석 '+ms.n+'종을 모았어요! ')+'햇살 '+(((1+ms.gem))*GS)+'개를 받았어요. 화석은 섬 꾸미기 보관함에 있어요.':dup?'이미 있는 화석이라 햇살 5개로 바꿔 줬어요.':'보석 1개를 받았어요. 화석은 섬 꾸미기 보관함에 있어요.'+(ups.length?' '+ups.join(', ')+' 레벨도 올랐어요!':'')));
   var b=el('button','cta green','좋아요');b.onclick=function(){lay.remove()};card.appendChild(b);
   var b2=el('button','cta light','화석 도감');b2.onclick=function(){lay.remove();fossilDex(function(){islandScreen(false)})};card.appendChild(b2);
   lay.appendChild(card);document.body.appendChild(lay);tone([392,330,262],'square',.06);setTimeout(function(){pw.classList.add('open');SND.bloom();var r=pw.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,f.rare?44:26,!!f.rare)},650)}
@@ -20369,7 +20421,7 @@ function bldCalc(){var key=Object.keys(LAND).length+'|'+JSON.stringify(bldS());i
 function bldCells(){if(typeof LAND==='undefined'||!S||!S.bld)return {};return bldCalc().m}
 function bldLot(id){return bldCalc().lots[id]}
 function museumCounts(){var f=fishS(),fn=FISH_SP.filter(function(x){return f.dex[x.id]}).length,fo=fossilCount(),bw=(S.boss&&S.boss.wins)||[];return {fish:fn,fossil:fo,doll:BOSSES.filter(function(B){return bw.indexOf(B.id)>=0}).length}}
-function bldUnlock(){var b=bldS();if(!b.school&&!document.querySelector('.sheet.show,.daydone,.guide')){b.school=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','panda','판다 선생님','섬 한가운데에 학교가 생겼어요!','틀렸던 문제를 다시 풀어 칠판을 깨끗하게 만들고, 이번 주 성적표와 상장도 볼 수 있어요.','구경하러 가기',function(){schoolScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300);return}if(!b.library&&!document.querySelector('.sheet.show,.daydone,.guide')){b.library=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','hedgehog','고슴도치 사서','섬 도서관이 생겼어요!','집이나 학교에서 읽은 책을 도서관 책장에 꽂아 봐요. 한국어 책도 영어 책도 좋아요. 책마다 한마디를 쓰면 햇살과 보석을 받아요.','구경하러 가기',function(){libScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300);return}if(b.museum)return;var m=museumCounts();if(m.fish<5&&m.fossil<5)return;if(document.querySelector('.sheet.show,.daydone,.guide'))return;
+function bldUnlock(){var b=bldS();if(!b.school&&!document.querySelector('.sheet.show,.daydone,.guide')){b.school=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','panda','판다 선생님','섬 한가운데에 학교가 생겼어요!','틀렸던 문제를 다시 풀어 칠판을 깨끗하게 만들고, 이번 주 성적표와 상장도 볼 수 있어요.','구경하러 가기',function(){schoolScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300);return}if(!b.library&&!document.querySelector('.sheet.show,.daydone,.guide')){b.library=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','hedgehog','고슴도치 사서','섬 도서관이 생겼어요!','집이나 학교에서 읽은 책을 도서관 책장에 꽂아 봐요. 한국어 책도 영어 책도 좋아요. 책마다 한마디를 쓰면 햇살을 받아요.','구경하러 가기',function(){libScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300);return}if(b.museum)return;var m=museumCounts();if(m.fish<5&&m.fossil<5)return;if(document.querySelector('.sheet.show,.daydone,.guide'))return;
   b.museum=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','owl','부엉이 박사','섬 박물관이 생겼어요!','물고기와 화석을 많이 모아서 부엉이 박사가 섬에 박물관을 지어 줬어요. 박물관을 누르면 모은 것들을 구경할 수 있어요.','구경하러 가기',function(){museumScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300)}
 var MUSE_TAB='fish';
 function museumScreen(back){if(MUSE_TAB==='unit')MUSE_TAB='fish';clear();var sc=el('div','screen museumscr'),top=el('div','qtop');
@@ -20383,7 +20435,7 @@ function museumScreen(back){if(MUSE_TAB==='unit')MUSE_TAB='fish';clear();var sc=
   else if(MUSE_TAB==='fossil')FOSSILS.forEach(function(x){var n=dg[x.id]||0;cas(n,x.id,x.name,'',function(){showSheet('good',x.id,'화석관',x.name,x.fact,'좋아요',function(){})},x.rare)});
   else if(MUSE_TAB==='doll')BOSSES.forEach(function(B){var ok=bw.indexOf(B.id)>=0;cas(ok,B.id,B.name,'',function(){showSheet('good',B.id,'인형관',B.name+' 인형','주말 보스 '+josa(B.name,'을','를')+' 물리치고 받은 인형이에요. "'+B.say+'"','좋아요',function(){})})});
   if(MUSE_TAB==='fish'){fishRewards();var rw1=el('div','dexrw');FISH_RW.forEach(function(r){var on=f.rw&&f.rw[r.id],c=el('div','dexrwi'+(on?' on':''));c.appendChild(img(r.id));c.appendChild(el('b',null,r.n+'종'));c.appendChild(el('small',null,on?'받았어요':itemName(r.id)));rw1.appendChild(c)});sc.appendChild(rw1)}
-  else if(MUSE_TAB==='fossil'){var rw2=el('div','dexrw');FO_RW.forEach(function(r){var on=m.fossil>=r.n,c=el('div','dexrwi'+(on?' on':''));c.appendChild(img('gem'));c.appendChild(el('b',null,r.n+'종'));c.appendChild(el('small',null,on?'받았어요':'보석 '+r.gem+'개'));rw2.appendChild(c)});sc.appendChild(rw2)}
+  else if(MUSE_TAB==='fossil'){var rw2=el('div','dexrw');FO_RW.forEach(function(r){var on=m.fossil>=r.n,c=el('div','dexrwi'+(on?' on':''));c.appendChild(img('sun'));c.appendChild(el('b',null,r.n+'종'));c.appendChild(el('small',null,on?'받았어요':'햇살 '+((r.gem)*GS)+'개'));rw2.appendChild(c)});sc.appendChild(rw2)}
   sc.appendChild(g);
   var tip={fish:'낚시터에서 새 물고기를 낚으면 전시돼요.',fossil:'섬의 반짝이는 땅에서 화석을 캐면 전시돼요.',doll:'주말 보스를 물리치면 인형이 전시돼요.'}[MUSE_TAB];sc.appendChild(el('p','mtip',tip));
   roomify(sc,'n_rmus');app.appendChild(sc);zMark&&zMark()}
@@ -20464,7 +20516,7 @@ function tchFinish(u,ok,back,quiet){var T=tchS(),d=dnum();T.log.push([d,u.id,ok?
   card.appendChild(el('small',null,ok?'오늘은 내가 선생님 · 가르친 단원 '+tchCount(u.g)[0]+' / '+tchCount(u.g)[1]:'오늘은 내가 선생님'));
   card.appendChild(el('h3',null,ok?TCH_FR[1]+'에게 ‘'+u.name+'’'+josa(u.name,'을','를').slice(-1)+' 가르쳐 줬어요!':TCH_FR[1]+'가 “내일 또 알려 줘!”래요'));
   card.appendChild(el('p','tchline','“'+(ok?tchSay(u):'오늘 같이 본 거 잊지 않을게. 내일 또 공책 봐 줘!')+'”'));
-  if(ok)card.appendChild(el('p',null,'보석 '+TCH_GEM+'개를 받았어요. 내일 '+TCH_FR[1]+'가 우체통으로 감사 편지를 보낼 거예요.'));
+  if(ok)card.appendChild(el('p',null,'햇살 '+((TCH_GEM)*GS)+'개를 받았어요. 내일 '+TCH_FR[1]+'가 우체통으로 감사 편지를 보낼 거예요.'));
   var b=el('button','cta green','좋아요');b.onclick=function(){lay.remove()};card.appendChild(b);
   if(ok){var c=el('button','cta light','우리 반 보기');c.onclick=function(){lay.remove();SCH_TAB='class';schoolScreen(back||home)};card.appendChild(c)}
   lay.appendChild(card);document.body.appendChild(lay);
@@ -20507,7 +20559,7 @@ function GRADES_K(){try{return curGrade()+'학년'}catch(e){return ''}}
 // 시안처럼: 머리 글(작은 제목·설명·진행)을 위쪽 크림 카드 하나로 모아요
 function spCardify(c){
   var card=el('div','spcard spcard-sum');
-  ['.eyebrow','h2','p.sub','.srdue-list','.entot','.prog'].forEach(function(q){Array.prototype.forEach.call(c.querySelectorAll(':scope > '+q),function(n){card.appendChild(n)})});
+  ['.reshead','.eyebrow','h2','p.sub','.srdue-list','.entot','.prog'].forEach(function(q){Array.prototype.forEach.call(c.querySelectorAll(':scope > '+q),function(n){card.appendChild(n)})});
   if(card.firstChild)c.insertBefore(card,c.firstChild);return card;
 }
 // 시안: 위에 방 안 그림, 아래 큰 크림 판 하나에 화면 내용을 모아요 (도서관·식물원·박물관·학교)
@@ -20517,18 +20569,25 @@ function roomify(sc,key){sc.classList.add('roomscr');var top=sc.querySelector(':
   if(rb.nextSibling)sc.insertBefore(pan,rb.nextSibling);else sc.appendChild(pan);return pan}
 
 // 시안(제미나이): 위에 작은 방 모형 그림, 아래 크림 판에 학습 상태
-function spaceDio(sc,key){sc.classList.add('dioscr');var top=sc.querySelector(':scope>.qtop');var w=el('div','spdio');var im=img(key,'dioimg');im.alt='';im.draggable=false;w.appendChild(im);if(top&&top.nextSibling)sc.insertBefore(w,top.nextSibling);else sc.insertBefore(w,sc.firstChild);return w}
+function spaceDio(sc,key){sc.classList.add('dioscr');var top=sc.querySelector(':scope>.qtop');var w=el('div','spdio');var im=img(key,'dioimg');im.alt='';im.draggable=false;w.appendChild(im);if(top&&top.nextSibling)sc.insertBefore(w,top.nextSibling);else sc.insertBefore(w,sc.firstChild);dockPad(sc);return w}
+// 아래 고정 버튼이 내용을 가리지 않게: 버튼 높이 + 24px 만큼 아래 여백
+function dockPad(sc){function f(){if(!sc.isConnected)return;var d=sc.querySelector('.dock');if(!d)return;var h=d.getBoundingClientRect().height;if(h)sc.style.setProperty('padding-bottom',(h+24)+'px','important')}[0,60,300,900].forEach(function(t){setTimeout(f,t)})}
 function mathUnitRows(){var g=curGrade(),st=S.math,box=el('div','mrows');UNITS.filter(function(u){return u.g===g}).forEach(function(u){var r=el('div','mrow2');r.appendChild(el('b',null,u.name));var ss=el('span','mstars'),lvs=u.types.filter(function(t){return GEN[t]}).map(function(t){return st.lv[t]||0}),n=lvs.length?Math.round(lvs.reduce(function(a,b){return a+b},0)/lvs.length):0;for(var i=0;i<5;i++)ss.appendChild(el('i',i<n?'on':''));ss.setAttribute('aria-label','실력 별 '+n+'개');r.appendChild(ss);box.appendChild(r)});return box}
 
 // 수학 결과: 받은 햇살과 오른 단원 별만 보여요 (꽃 피우기 없음)
 function mathResult(sub){clear();document.body.classList.remove('qmode');var sc=el('div','screen potscr mresscr'),top=el('div','qtop');var x=el('button','x');x.setAttribute('aria-label','홈으로');x.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';x.onclick=home;top.appendChild(x);top.appendChild(el('div','spacer'));var bag=el('div','balance');bag.appendChild(img('sun'));bag.appendChild(el('b','tnum',S.sun));top.appendChild(bag);sc.appendChild(top);
-  var c=el('div','center potcenter'),card=el('div','spcard spcard-sum potcard watercard');card.appendChild(el('div','eyebrow',(G?G.got:0)+' / '+ROUND+' 정답'+sunTxt()));
-  var ups=G&&G.ups||[],sg=G?(G.sunGot||G.drops||0):0;var hh=el('h2','mrsun');hh.appendChild(img('sun'));hh.appendChild(document.createTextNode('햇살 '+sg+'개를 받았어요'));card.appendChild(hh);
-  var nt=[];if(ups.length)nt.push(ups.join(', ')+' 별이 하나 늘었어요!');if(G&&G.drops>G.got)nt.push('연속 정답 보너스 +'+(G.drops-G.got)+'.');if(G&&G.unlocked)nt.push(gradeDone());if(G&&G.mission)nt.push('오솔길 친구가 한 칸 앞으로 갔어요.');nt.push('모은 햇살로 상점에서 꽃과 소품을 살 수 있어요.');card.appendChild(el('p','sub',nt.join(' ')));
+  var c=el('div','center potcenter'),card=el('div','spcard spcard-sum potcard watercard');card.appendChild(resHead(ROUND));
+  var ups=G&&G.ups||[],sg=G?(G.sunGot||G.drops||0):0;card.appendChild(el('h2',null,ups.length?ups.join(', ')+' 별이 늘었어요!':sg?'수학 온실에 햇살이 들었어요':'다음 판엔 더 잘할 수 있어요'));
+  var nt=[];if(G&&G.drops>G.got)nt.push('연속 정답 보너스 +'+(G.drops-G.got)+'.');if(G&&G.unlocked)nt.push(gradeDone());if(G&&G.mission)nt.push('오솔길 친구가 한 칸 앞으로 갔어요.');nt.push('모은 햇살로 상점에서 꽃과 소품을 살 수 있어요.');card.appendChild(el('p','sub',nt.join(' ')));
   c.appendChild(card);sc.appendChild(c);spaceDio(sc,'dio_math');
   var dock=el('div','dock'),btn=el('button',ADV?'cta green':'cta',advNextLabel()||'확인');btn.onclick=resultDone;dock.appendChild(btn);sc.appendChild(dock);app.appendChild(sc)}
 // 한 판 끝난 결과 화면: 모든 과목이 같은 닫기(X) 버튼, 제목 없음
-function resTop(sc){sc.classList.add('resscr');var x=sc.querySelector(':scope>.qtop>.x');if(x){x.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';x.setAttribute('aria-label','홈으로')}}
+function resTop(sc){sc.classList.add('resscr');var tp=sc.querySelector(':scope>.qtop');if(tp&&!tp.querySelector('.balance')){if(!tp.querySelector('.spacer'))tp.appendChild(el('div','spacer'));var bl=el('div','balance');bl.appendChild(img('sun'));bl.appendChild(el('b','tnum',S.sun));tp.appendChild(bl)}var x=sc.querySelector(':scope>.qtop>.x');if(x){x.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';x.setAttribute('aria-label','홈으로')}}
+// 결과 화면 머리(네 과목 같은 모양): 정답 칸 + 큰 '+N 햇살'
+function resHead(n){var w=el('div','reshead'),d=el('div','rsdots');n=n||ROUND;for(var i=0;i<n;i++)d.appendChild(el('i',G&&i<G.got?'on':null));w.appendChild(d);
+  w.appendChild(el('small','rsgot',(G?G.got:0)+' / '+n+' 정답'));var sg=G?(G.sunGot||0):0,sn=el('div','rssun');sn.appendChild(img('sun'));sn.appendChild(el('b','tnum','+'+sg));w.appendChild(sn);
+  if(G&&G.sunMul<1){var e=effortNext&&effortNext();if(e)w.appendChild(el('small','rsnote','노력상 '+e.lv+'상까지 '+e.left+'문제'))}
+  setTimeout(function(){if(!sn.isConnected)return;sn.classList.add('pop');var t=document.querySelector('.qtop .balance');if(t&&sg>0)try{flyTo('sun',sn,t,Math.min(6,sg),function(){})}catch(e){}},350);return w}
 // ================= 섬 식물원: 숙제 시간으로 식물을 키워 전시해요 =================
 // 퀴즈 보상(꽃·열매·소품)은 섬을 꾸미는 재료, 숙제는 식물원에만 전시되는 식물이에요. 섬 꾸미기와 겹치지 않아요.
 // - 숙제를 끝낼 때마다 그 시간이 지금 키우는 화분에 쌓여요(하루 최대 BOT_CAP분). 필요한 시간이 차면 피어서 전시돼요.
@@ -20693,7 +20752,7 @@ function botHM(m){m=Math.max(0,Math.round(m||0));var h=Math.floor(m/60),r=m%60;r
 function botUnlockMaybe(){var bs=bldS();if(bs.botanic||!(S.bot&&S.bot.min>0))return false;bs.botanic=1;BLDC.key='';save();return true}
 // 식물원 화면
 var BOT_TAB=0,BOT_SWAP=null;
-function botScreen(back){back=back||function(){islandScreen(false)};clear();var b=botS(),sc=el('div','screen botscr'),top=el('div','qtop');var x=el('button','x');x.setAttribute('aria-label','나가기');x.innerHTML=BACK_SVG;x.onclick=function(){BOT_SWAP=null;back()};top.appendChild(x);top.appendChild(el('h2','mtitle','섬 식물원'));top.appendChild(el('div','spacer'));var tot=el('div','balance');tot.appendChild(img('sprout'));tot.appendChild(el('b','tnum',botHM(b.min||0)));tot.setAttribute('aria-label','지금까지 숙제 시간');top.appendChild(tot);sc.appendChild(top);
+function botScreen(back){back=back||function(){islandScreen(false)};clear();var b=botS(),sc=el('div','screen botscr'),top=el('div','qtop');var x=el('button','x');x.setAttribute('aria-label','나가기');x.innerHTML=BACK_SVG;x.onclick=function(){BOT_SWAP=null;back()};top.appendChild(x);top.appendChild(el('h2','mtitle','섬 식물원'));top.appendChild(el('div','spacer'));var tot=el('div','balance');tot.appendChild(img('sun'));tot.appendChild(el('b','tnum',String(S.sun)));tot.setAttribute('aria-label','햇살 '+S.sun+'개');top.appendChild(tot);sc.appendChild(top);
   var guide=el('div','mcur');guide.appendChild(img('frog'));var gotN=Object.keys(b.got).length;guide.appendChild(el('p',null,!gotN?'숙제를 하면 그 시간만큼 화분이 자라. 다 자란 식물은 여기에 전시할게!':botAllGot()?'식물을 모두 모았구나! 이제 다시 키우면 식물마다 별이 하나씩 늘어나.':['어서 와! 오늘도 숙제로 물을 주러 왔구나.','식물을 누르면 재미있는 이야기를 들려줄게.','한 관을 다 채우면 다음 관 문이 열려!'][R(0,2)]));sc.appendChild(guide);
   // 지금 키우는 화분
   if(!b.cur){var s0=botSeeds();b.cur={id:s0[0],m:0};save()}var cur=b.cur,p=botP(cur.id),pct=botPct(),card=el('div','card botcur');var pim=el('div','botpot');pim.appendChild(img(botStageImg(pct,cur.id)));card.appendChild(pim);var info=el('div','botinfo');info.appendChild(el('small',null,'지금 키우는 화분'));info.appendChild(el('b',null,pct>=.67?p.name:'??? 씨앗'));var bar=el('div','botbar'),f=el('i');f.style.width=Math.round(pct*100)+'%';bar.appendChild(f);info.appendChild(bar);info.appendChild(el('small','botleft','숙제 '+botHM(botNeed(cur.id)-cur.m)+' 더 하면 피어요 · 오늘 '+botHM(b.day.d===dnum()?b.day.m:0)+' / '+botHM(BOT_CAP)));
@@ -20773,10 +20832,10 @@ var LIB_CAT=["Magic Tree House: Dinosaurs Before Dark","Magic Tree House: The Kn
 function libS(){if(!S.lib)S.lib={books:[],day:{d:-1,n:0}};if(!S.lib.day)S.lib.day={d:-1,n:0};if(!S.lib.rw){var n0=(S.lib.books||[]).length;S.lib.rw=LIB_RW.filter(function(r){return r.n<=n0}).map(function(r){return r.n})}return S.lib} // rw: 보석을 이미 받은 권수 고개
 var LIB_BACK=null,LIB_F='all';
 function libScreen(back){LIB_BACK=back;clear();var L=libS(),sc=el('div','screen libscr'),top=el('div','qtop');
-  var b=el('button','x');b.setAttribute('aria-label','나가기');b.innerHTML=BACK_SVG;b.onclick=function(){(back||villageScreen)()};top.appendChild(b);top.appendChild(el('h2','mtitle','섬 도서관'));top.appendChild(el('div','spacer'));var cnt=el('div','balance');cnt.appendChild(el('b','tnum',L.books.length+'권'));top.appendChild(cnt);sc.appendChild(top);
+  var b=el('button','x');b.setAttribute('aria-label','나가기');b.innerHTML=BACK_SVG;b.onclick=function(){(back||villageScreen)()};top.appendChild(b);top.appendChild(el('h2','mtitle','섬 도서관'));top.appendChild(el('div','spacer'));var cnt=el('div','balance');cnt.appendChild(img('sun'));cnt.appendChild(el('b','tnum',String(S.sun)));cnt.setAttribute('aria-label','햇살 '+S.sun+'개');top.appendChild(cnt);sc.appendChild(top);
   var cur=el('div','mcur');cur.appendChild(img('hedgehog'));cur.appendChild(el('p',null,L.books.length?['오늘은 어떤 책을 읽었니?','책장이 점점 채워지고 있어!','책을 누르면 네가 쓴 문장을 읽어 줄게.'][R(0,2)]:'집에서, 학교에서 읽은 책을 여기 꽂아 보자! 한국어 책도 영어 책도 좋아.'));sc.appendChild(cur);
   var add=el('button','cta green','읽은 책 꽂기');add.onclick=function(){libAdd(back)};sc.appendChild(add);
-  var rwr=el('div','dexrw');LIB_RW.forEach(function(r){var on=L.rw.indexOf(r.n)>=0||bookN()>=r.n,c=el('div','dexrwi'+(on?' on':''));c.appendChild(img('gem'));c.appendChild(el('b',null,r.n+'권'));c.appendChild(el('small',null,on?'달성!':'보석 '+r.gem+'개'));rwr.appendChild(c)});sc.appendChild(rwr);
+  var rwr=el('div','dexrw');LIB_RW.forEach(function(r){var on=L.rw.indexOf(r.n)>=0||bookN()>=r.n,c=el('div','dexrwi'+(on?' on':''));c.appendChild(img('sun'));c.appendChild(el('b',null,r.n+'권'));c.appendChild(el('small',null,on?'달성!':'햇살 '+((r.gem)*GS)+'개'));rwr.appendChild(c)});sc.appendChild(rwr);
   var nk=L.books.filter(function(x){return x.lang==='ko'}).length,ne=L.books.length-nk;if(nk&&ne){var fl=el('div','kchips lfilt');[['all','전체 '+L.books.length],['ko','한국어 '+nk],['en','영어 '+ne]].forEach(function(f){var c=el('button','kchip'+(LIB_F===f[0]?' on':''),f[1]);c.onclick=function(){LIB_F=f[0];libScreen(back)};fl.appendChild(c)});sc.appendChild(fl)}else LIB_F='all';
   var case_=el('div','lcase'),G={},GK=[],nsh=0;
   L.books.forEach(function(bk,i){if(LIB_F!=='all'&&(bk.lang==='ko'?'ko':'en')!==LIB_F)return;var k=bk.d!=null?libMonKey(bk.d):'z';if(!G[k]){G[k]=[];GK.push(k)}G[k].push({b:bk,i:i})});
@@ -20963,7 +21022,7 @@ function schEnd(){var items=G.sch,res=G.sres||[];document.body.classList.remove(
   if(!schBoard().length&&grad.length){sc.stars=(sc.stars||0)+1;star=true}
   var t=dayKey();if(S.days.indexOf(t)<0)S.days.push(t);stkAward();save();if(star)gemGain(2);
   SCH_TAB='wrong';schoolScreen(SCH_BACK);SND.bloom();
-  setTimeout(function(){showSheet('good','panda','복습 끝!',items.length+'문제 중 '+ok+'문제를 한 번에 맞혔어요',(grad.length?'다른 날 두 번 맞혀서 '+grad.length+'문제가 칠판에서 졸업했어요! ('+grad.map(function(x){return schLabel(x).big}).join(', ')+') ':'')+(wait?'맞힌 문제 '+wait+'개는 내일 한 번 더 맞히면 졸업해요. ':'')+(star?'칠판이 깨끗해졌어요! 별 1개와 보석 2개! ':'')+(rew?(sun?'햇살 '+sun+'개를 받았어요.':''):'오늘 복습 보상은 다 받았어요.'),'좋아요',function(){})},350)}
+  setTimeout(function(){showSheet('good','panda','복습 끝!',items.length+'문제 중 '+ok+'문제를 한 번에 맞혔어요',(grad.length?'다른 날 두 번 맞혀서 '+grad.length+'문제가 칠판에서 졸업했어요! ('+grad.map(function(x){return schLabel(x).big}).join(', ')+') ':'')+(wait?'맞힌 문제 '+wait+'개는 내일 한 번 더 맞히면 졸업해요. ':'')+(star?'칠판이 깨끗해졌어요! 별 1개와 햇살 20개! ':'')+(rew?(sun?'햇살 '+sun+'개를 받았어요.':''):'오늘 복습 보상은 다 받았어요.'),'좋아요',function(){})},350)}
 // 상장
 // 책 수는 하루 2권까지만 세요 (상장·책장 보석)
 function bookN(){var c={},n=0;libS().books.forEach(function(b){var d=b.d==null?'x':b.d;c[d]=(c[d]||0)+1;if(d==='x'||c[d]<=2)n++});return n}
@@ -20979,7 +21038,7 @@ function awHave(){var sc=schS(),h={};Object.keys(sc.aw||{}).forEach(function(k){
 function awCheck(){var sc=schS(),g=awGot(),nw=g.filter(function(k){return !sc.aw[k]});nw.forEach(function(k){sc.aw[k]=dnum()});if(nw.length){save();gemGain(nw.length)}return nw}
 function awShow(A,i,got){showSheet('good',A.img,A.name+' ('+AW_LV[i]+')',got?'상장':'아직이에요',got?'위 어린이는 '+A.say(A.t[i])+' 이 상장을 줍니다. — 섬 학교 판다 선생님':'목표: '+A.t[i]+A.unit+'. 지금은 '+A.v()+'예요. 조금만 더 힘내요!','좋아요',function(){})}
 function schoolScreen(back){SCH_BACK=back=back||SCH_BACK||villageScreen;clear();var sc=el('div','screen museumscr schscr'),top=el('div','qtop'),S_=schS();
-  var b=el('button','x');b.setAttribute('aria-label','나가기');b.innerHTML=BACK_SVG;b.onclick=function(){back()};top.appendChild(b);top.appendChild(el('h2','mtitle','섬 학교'));top.appendChild(el('div','spacer'));var st=el('div','balance');st.appendChild(img('sparkles'));st.appendChild(el('b','tnum',String(S_.stars||0)));st.setAttribute('aria-label','칠판 별 '+(S_.stars||0)+'개');top.appendChild(st);sc.appendChild(top);
+  var b=el('button','x');b.setAttribute('aria-label','나가기');b.innerHTML=BACK_SVG;b.onclick=function(){back()};top.appendChild(b);top.appendChild(el('h2','mtitle','섬 학교'));top.appendChild(el('div','spacer'));var st=el('div','balance');st.appendChild(img('sun'));st.appendChild(el('b','tnum',String(S.sun)));st.setAttribute('aria-label','햇살 '+S.sun+'개');top.appendChild(st);sc.appendChild(top);
   var nw=awCheck(),bd=schBoard();if(nw.length)SCH_TAB='award';
   var cur=el('div','mcur');cur.appendChild(img('panda'));cur.appendChild(el('p',null,nw.length?'새 상장이 나왔어! 상장 칸에서 확인해 봐.':bd.length?['틀린 문제는 다시 풀면 내 것이 돼!','칠판 문제는 다른 날에 두 번 맞히면 졸업이야.','오늘도 와 줘서 고마워!'][R(0,2)]:'칠판이 깨끗하구나! 정말 잘했어.'));sc.appendChild(cur);
   var T=[['wrong','오답 교실',bd.length+'문제'],['report','성적표','이번 주'],['award','상장',awHave().length+' / '+AWARDS.length*3],['class','우리 반',tchCount(curGrade())[0]+'단원']],seg=el('div','mseg');
@@ -21007,7 +21066,7 @@ function schoolScreen(back){SCH_BACK=back=back||SCH_BACK||villageScreen;clear();
   else if(SCH_TAB==='class')tchClassTab(sc);
   else{var g=el('div','awgrid'),have={};awHave().forEach(function(k){have[k]=1});
     AWARDS.forEach(function(A){A.t.forEach(function(n,i){var ok=have[A.id+i],c=el('button','awc'+(ok?' on':'')+(nw.indexOf(A.id+i)>=0?' new':''));c.className+=' t'+i;var wr=el('span','awwrap');if(i===2)wr.appendChild(el('i','awro'));if(i>=1){var rb=el('i','awrib');rb.appendChild(el('i'));rb.appendChild(el('i'));wr.appendChild(rb)}var md=el('i','awmd');md.appendChild(img(A.img));wr.appendChild(md);if(i===2)wr.appendChild(el('i','awcrown'));c.appendChild(wr);c.appendChild(el('span','awtier',AW_LV[i]));c.appendChild(el('b',null,A.name));var un_=({stk:'일 연속',book:'권',grad:'개 졸업',ws:'그루',q:'문제',fo:'개'}[A.id]||A.unit);c.appendChild(el('small',null,ok?AW_LV[i]+' · '+n+un_:Math.min(n,A.v())+' / '+n+un_));c.onclick=function(){awShow(A,i,ok)};g.appendChild(c)})});sc.appendChild(g);
-    sc.appendChild(el('p','mtip','상장을 받으면 보석 1개! 상장을 누르면 내용을 볼 수 있어요.'))}
+    sc.appendChild(el('p','mtip','상장을 받으면 햇살 10개! 상장을 누르면 내용을 볼 수 있어요.'))}
   roomify(sc,'n_rsch');app.appendChild(sc);zMark&&zMark();
   if(nw.length&&SCH_TAB!=='award')setTimeout(function(){if(document.querySelector('.sheet.show'))return;var k=nw[0],A=AWARDS.filter(function(x){return x.id===k.slice(0,-1)})[0],i=+k.slice(-1);showSheet('good',A.img,'새 상장!',A.name+' ('+AW_LV[i]+')을 받았어요','위 어린이는 '+A.say(A.t[i])+' 이 상장을 줍니다.'+(nw.length>1?' 상장이 '+nw.length+'개 나왔어요!':''),'상장 보러 가기',function(){SCH_TAB='award';schoolScreen(back)})},500)}
 function libShow(bk){libShow0(bk);var inn=sheet.firstChild,hd=inn.querySelector('.hd');if(bk.cv){var w=el('div','lcovshow');w.appendChild(covImg(bk.cv));inn.insertBefore(w,hd.nextSibling)}var lt=covLabel('cta light',bk.cv?'표지 다시 찍기':'표지 사진 넣기',function(d){bk.cv=covNew(d);save();hideSheet();if(document.querySelector('.libscr:not(.libadd)'))libScreen(LIB_BACK);setTimeout(function(){libShow(bk)},350)});inn.appendChild(lt);var cl=el('button','cta light','닫기');cl.onclick=hideSheet;inn.appendChild(cl);scrim.onclick=hideSheet}
@@ -21024,19 +21083,19 @@ function libAdd(back){clear();var sc=el('div','screen libscr libadd'),top=el('di
   var f3=el('div','lfield');f3.appendChild(el('small',null,'얼마나 재미있었어?'));var sr=el('div','lstars');for(var i=1;i<=5;i++)(function(i){var s_=el('button','lstar','★');s_.onclick=function(){st.s=i;[].forEach.call(sr.children,function(x,j){x.classList.toggle('on',j<i)})};sr.appendChild(s_)})(i);f3.appendChild(sr);sc.appendChild(f3);
   var f4=el('div','lfield'),f4l=el('small',null,'');f4.appendChild(f4l);var ss=el('div','lstarts');f4.appendChild(ss);
   function drawStarts(){ss.innerHTML='';SS().forEach(function(t,i){var c=el('button','lst'+(i===st.st?' on':''),t+' …');c.onclick=function(){st.st=i;[].forEach.call(ss.children,function(x){x.classList.remove('on')});c.classList.add('on');ta.placeholder=t+' …';upd()};ss.appendChild(c)})}
-  var ta=document.createElement('textarea');ta.className='lta';ta.rows=3;ta.setAttribute('autocorrect','off');ta.spellcheck=false;f4.appendChild(ta);var wc=el('p','lwc','');f4.appendChild(wc);var ta2=document.createElement('textarea');ta2.className='lta';ta2.rows=2;ta2.placeholder='한 문장 더 써 볼까? (자유롭게, 보석 +1)';ta2.setAttribute('autocorrect','off');ta2.spellcheck=false;f4.appendChild(ta2);sc.appendChild(f4);
+  var ta=document.createElement('textarea');ta.className='lta';ta.rows=3;ta.setAttribute('autocorrect','off');ta.spellcheck=false;f4.appendChild(ta);var wc=el('p','lwc','');f4.appendChild(wc);var ta2=document.createElement('textarea');ta2.className='lta';ta2.rows=2;ta2.placeholder='한 문장 더 써 볼까? (자유롭게, 햇살 +10)';ta2.setAttribute('autocorrect','off');ta2.spellcheck=false;f4.appendChild(ta2);sc.appendChild(f4);
   var go=el('button','cta green','책장에 꽂기');go.disabled=true;sc.appendChild(go);
-  function applyLang(){var ko=st.lang==='ko';ti.placeholder=ko?'예: 강아지똥':'예: Magic Tree House';ti.setAttribute('autocapitalize',ko?'off':'words');f4l.textContent=ko?'한마디 쓰기 (골라서 이어 써요)':'영어로 한마디 (골라서 이어 써요)';drawStarts();ta.placeholder=SS()[st.st]+' …';ta2.placeholder=ko?'한 문장 더 써 볼까? (자유롭게, 보석 +1)':'한 문장 더 써 볼까? (영어로 자유롭게, 보석 +1)';sug.innerHTML='';upd()}
+  function applyLang(){var ko=st.lang==='ko';ti.placeholder=ko?'예: 강아지똥':'예: Magic Tree House';ti.setAttribute('autocapitalize',ko?'off':'words');f4l.textContent=ko?'한마디 쓰기 (골라서 이어 써요)':'영어로 한마디 (골라서 이어 써요)';drawStarts();ta.placeholder=SS()[st.st]+' …';ta2.placeholder=ko?'한 문장 더 써 볼까? (자유롭게, 햇살 +10)':'한 문장 더 써 볼까? (영어로 자유롭게, 햇살 +10)';sug.innerHTML='';upd()}
   function GOAL(){return st.lang==='ko'?7:8}function GOAL2(){return st.lang==='ko'?3:5}
   function words(){return ta.value.trim()?ta.value.trim().split(/\s+/).length:0}
   function words2(){return ta2.value.trim()?ta2.value.trim().split(/\s+/).length:0}
-  function upd(){var n=words(),tot=n+SS()[st.st].split(' ').length,u=st.lang==='ko'?'낱말':'단어';wc.textContent=n?('지금 '+tot+u+(tot>=GOAL()?' · 보석 받을 수 있어요!':' · '+GOAL()+u+'이 넘으면 보석 1개')):'';if(words2()>=GOAL2())wc.textContent+=' · 한 문장 더 써서 보석 +1!';go.disabled=!ti.value.trim()}
+  function upd(){var n=words(),tot=n+SS()[st.st].split(' ').length,u=st.lang==='ko'?'낱말':'단어';wc.textContent=n?('지금 '+tot+u+(tot>=GOAL()?' · 햇살 받을 수 있어요!':' · '+GOAL()+u+'이 넘으면 햇살 10개')):'';if(words2()>=GOAL2())wc.textContent+=' · 한 문장 더 써서 보석 +1!';go.disabled=!ti.value.trim()}
   ti.oninput=function(){drawSug();upd()};ta.oninput=upd;ta2.oninput=upd;
   go.onclick=function(){var t=ti.value.trim();if(!t)return;var L=libS(),dn=dnum();if(L.day.d!==dn)L.day={d:dn,n:0};var n=words(),line=n?(SS()[st.st]+' '+ta.value.trim().replace(/\s+/g,' ')):'';if(line&&!/[.!?]$/.test(line))line+='.';var l2=ta2.value.trim().replace(/\s+/g,' ');if(l2){if(st.lang!=='ko')l2=l2.charAt(0).toUpperCase()+l2.slice(1);if(!/[.!?]$/.test(l2))l2+='.';line=line?line+' '+l2:l2}
     var tot=n+SS()[st.st].split(' ').length,rew=L.day.n<LIB_DAY,before=L.books.length;L.books.push({t:t,c:st.c,s:st.s,w:line,d:dn,lang:st.lang});if(st.cv)L.books[L.books.length-1].cv=st.cv;var sun=0,gem=0;
     if(rew){L.day.n++;sun=20;S.sun+=sun;if(n&&tot>=GOAL())gem=1;if(words2()>=GOAL2())gem+=1}LIB_RW.forEach(function(r){if(bookN()>=r.n&&L.rw.indexOf(r.n)<0){L.rw.push(r.n);gem+=r.gem}});save();if(gem)gemGain(gem);
     libScreen(back);SND.bloom();var last=document.querySelector('.lshelf .lbook');if(last){last.classList.add('new');var r_=last.getBoundingClientRect();burst(r_.left+r_.width/2,r_.top+r_.height/2,24,false)}
-    setTimeout(function(){showSheet('good','books','책장에 꽂았어요',t,(rew?'햇살 '+sun+'개'+(gem?', 보석 '+gem+'개':'')+'를 받았어요. ':'오늘 보상은 다 받았어요. 책은 책장에 잘 꽂았어요! ')+(L.books.length%10===0?'책 '+L.books.length+'권을 모았어요! ':''),'좋아요',function(){})},500)};
+    setTimeout(function(){showSheet('good','books','책장에 꽂았어요',t,(rew?'햇살 '+(sun+gem*GS)+'개를 받았어요. ':'오늘 보상은 다 받았어요. 책은 책장에 잘 꽂았어요! ')+(L.books.length%10===0?'책 '+L.books.length+'권을 모았어요! ':''),'좋아요',function(){})},500)};
   applyLang();app.appendChild(sc);setTimeout(function(){try{ti.focus()}catch(e){}},300)}
 
 function libMonKey(d){var t=new Date(d*864e5);return t.getUTCFullYear()+'-'+(t.getUTCMonth()<9?'0':'')+(t.getUTCMonth()+1)}
@@ -21062,7 +21121,7 @@ function introVillage(){var I=introS();if(!S.tut||document.querySelector('.guide
   if(!I.mailv&&document.querySelector('.vmailbtn')){I.mailv=1;save();
     coachRun([['.vmailbtn','위에 우체통이 있어! 섬 친구들이 매주 영어 편지를 보내 줘.'],['.vmailbtn','편지를 읽고 답장을 쓰면 우표를 받아. 우표 앨범을 채워 보자!','편지 보러 가기']],function(){mailScreen()});return true}
   if(!I.av&&S.path.char&&avS().gem>0&&document.querySelector('.hbtn.avbtn2')){I.av=1;save();
-    coachRun([['.hbtn.avbtn2','보석을 받았어! 이 버튼을 누르면 나를 꾸밀 수 있어. 모자도 쓰고 날개도 달아 볼래?','좋아!']],function(){});return true}
+    coachRun([['.hbtn.avbtn2','햇살이 모였어! 이 버튼을 누르면 나를 꾸밀 수 있어. 모자도 쓰고 날개도 달아 볼래?','좋아!']],function(){});return true}
   return false}
 
 // ================= 이번 주 요약 (부모용) =================
@@ -21294,12 +21353,12 @@ function voiceCard(){var c=el('section','card vccard');c.appendChild(el('h3',nul
 // ================= 숨김 디버그 메뉴: 우리 집(부모님 보기) 제목을 7번 누르면 =================
 function dbgSave(){try{localStorage.setItem('pot-dbg',JSON.stringify(DBG))}catch(e){}}
 function dbgSheet(){var inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('light_bulb'));var t=el('div');t.appendChild(el('small',null,'개발자 메뉴'));t.appendChild(el('h3',null,'테스트용 (아이는 쓰지 않아요)'));hd.appendChild(t);inn.appendChild(hd);
-  var st=el('p',null,'날짜 이동 '+(DBG.off>0?'+':'')+DBG.off+'일 · 시각 '+(DBG.hour==null?'실제':DBG.hour+'시')+' · 햇살 '+S.sun+' · 보석 '+avS().gem);inn.appendChild(st);
+  var st=el('p',null,'날짜 이동 '+(DBG.off>0?'+':'')+DBG.off+'일 · 시각 '+(DBG.hour==null?'실제':DBG.hour+'시')+' · 햇살 '+S.sun+'');inn.appendChild(st);
   function row(items){var r=el('div','dockrow');items.forEach(function(x){var b=el('button','cta light',x[0]);b.onclick=function(){x[1]();save();dbgSheet()};r.appendChild(b)});inn.appendChild(r)}
   row([['햇살 +100',function(){S.sun+=100}],['햇살 +1000',function(){S.sun+=1000}]]);
-  row([['보석 +3',function(){avS().gem+=3}],['보석 +50',function(){avS().gem+=50}]]);
+  row([['햇살 +30',function(){S.sun+=30}],['햇살 +500',function(){S.sun+=500}]]);
   row([['장비 모두 ★1',function(){var a=avS();AV_ITEMS.forEach(function(it){if(!a.own[it.id])a.own[it.id]=1})}],['장비 모두 ★3',function(){var a=avS();AV_ITEMS.forEach(function(it){a.own[it.id]=3})}]]);
-  row([['장비·보석 처음으로',function(){var a=avS();a.own={};a.eqc={};a.gem=0;AVC={}}],['꾸미기 화면 열기',function(){setTimeout(function(){hideSheet();avScreen()},0)}]]);
+  row([['장비 처음으로',function(){var a=avS();a.own={};a.eqc={};a.gem=0;AVC={}}],['꾸미기 화면 열기',function(){setTimeout(function(){hideSheet();avScreen()},0)}]]);
   row([['날짜 +1일',function(){DBG.off++;dbgSave()}],['날짜 +7일',function(){DBG.off+=7;dbgSave()}]]);
   row([['날짜 원래대로',function(){DBG.off=0;dbgSave()}],['시각: 낮/저녁/밤',function(){DBG.hour=DBG.hour==null?18:DBG.hour===18?21:DBG.hour===21?11:null;dbgSave()}]]);
   row([['낚시 티켓 +1',function(){fishS().tk++}],['화분 한 단계 키우기',function(){S.math.pieces++}]]);
@@ -21546,7 +21605,7 @@ function villageScreen(){
   setTimeout(stkShow,900);hud.appendChild(left);void chip;
   var snd=el('button','hbtn');snd.appendChild(spkIcon());snd.setAttribute('aria-label',S.sound?'소리 끄기':'소리 켜기');snd.onclick=function(){S.sound=!S.sound;save();villageScreen()};var hr_=el('div','hudr2');var mb_=el('button','hbtn vmailbtn');mb_.appendChild(img('n_mailbox'));mb_.setAttribute('aria-label','우체통'+(mailNewN()>0?', 새 편지 있음':''));if(mailNewN()>0)mb_.appendChild(el('em','lmbadge dot'));mb_.onclick=function(){LMACT.mailp()};hr_.appendChild(mb_);if(S.path.char){var ab=el('button','hbtn avbtn2');ab.setAttribute('aria-label','내 캐릭터 꾸미기');ab.appendChild(img(S.path.char,'avbimg'));if(avBadge())ab.appendChild(el('em','lmbadge dot'));ab.onclick=function(){AVBACK=villageScreen;avScreen()};hr_.appendChild(ab)}var hm_=el('button','hbtn vhomebtn');hm_.innerHTML=GEAR_SVG;hm_.setAttribute('aria-label','우리 집 · 부모님 보기와 설정');hm_.onclick=function(){LMACT.home()};hr_.appendChild(hm_);void snd;hud.appendChild(hr_);setTimeout(introVillage,1400);
   root.appendChild(hud);
-  (function(){var e=evNow();if(!e)return;var b=el('button','evchip');b.appendChild(img(e.tok));var tx=el('span');tx.appendChild(el('b',null,String(S.ev.tok)));tx.appendChild(el('small',null,e.left?'D-'+e.left:'D-DAY'));b.appendChild(tx);b.setAttribute('aria-label',e.name+', '+e.tokName+' '+S.ev.tok+'개');b.onclick=evSheet;left.appendChild(b);
+  (function(){try{evMig()}catch(_){}var sc_=el('div','evchip sunchip');sc_.appendChild(img('sun'));var st_=el('span');st_.appendChild(el('b','tnum',String(S.sun)));sc_.appendChild(st_);sc_.setAttribute('aria-label','햇살 '+S.sun+'개');left.appendChild(sc_);var e=evNow();if(!e)return;var b=el('button','evchip evmini');b.appendChild(img(e.tok));var tx=el('span');tx.appendChild(el('small',null,'축제 '+(e.left?'D-'+e.left:'D-DAY')));b.appendChild(tx);b.setAttribute('aria-label',e.name+' 축제 상점');b.onclick=evSheet;left.appendChild(b);
     [['x_pumpkins',335,232,48],['x_cauldron',214,178,40],['x_candybasket',236,250,32]].forEach(function(d){var im=img(d[0],'evdeco');im.style.left=(d[1]-d[3]/2)+'px';im.style.top=(d[2]-d[3])+'px';im.style.width=d[3]+'px';im.style.zIndex=Math.round(d[2]);scene.appendChild(im)})})();
 
   // 아래: 오늘의 할 일
@@ -21594,7 +21653,7 @@ function dayDoneScene(){
   var me=S.path.char||'rabbit',lay=el('div','daydone'),card=el('div','ddcard');
   var pic=avImg(me,'ddpic');card.appendChild(el('i','ddrays'));card.appendChild(pic);
   card.appendChild(el('small',null,'오늘 할 일 끝!'));card.appendChild(el('h3',null,'정말 잘했어! 오늘은 충분해.'));
-  card.appendChild(el('p',null,daySubs().map(function(k){return ADVK[k][0]}).join(', ')+' 다 했어요. 선물로 햇살 20개와 보석 2개를 줄게요.'+(gateMode()!=='off'?' 섬 꾸미기도 열렸어요!':'')+' 내일 또 만나요!'));
+  card.appendChild(el('p',null,daySubs().map(function(k){return ADVK[k][0]}).join(', ')+' 다 했어요. 선물로 햇살 40개를 줄게요.'+(gateMode()!=='off'?' 섬 꾸미기도 열렸어요!':'')+' 내일 또 만나요!'));
   var b=el('button','cta green','좋아!');b.onclick=function(){lay.remove()};card.appendChild(b);
   lay.appendChild(card);document.body.appendChild(lay);SND.bloom();setTimeout(function(){var r=pic.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,36,true)},200);
 }
@@ -21787,7 +21846,7 @@ function trail(){missionCheck();
   function arrive(){if(p.step!==st0)return;var dc=chapInfo(p.step),first=!(S.gd.bought[dc.item]>0),sun=30;
     if(first)S.gd.bought[dc.item]=1;S.sun+=sun;p.step++;p.walk=(p.walk||0)+1;save();gemGain(2);
     SND.bloom();burst(innerWidth/2,innerHeight*.4,60,true);var nx=chapInfo(p.step);
-    showSheet('good',dc.item,(chapOf(p.step))+'장 완료 · 햇살 +'+sun+' · 보석 +2',first?josa(itemName(dc.item),'을','를')+' 받았어요!':dc.name+'에 또 왔어요!',(first?'섬 꾸미기의 ‘특별’ 칸에서 섬에 놓을 수 있어요. ':'')+'다음 목적지는 '+nx.name+'이에요!','다음 여행',function(){trail()})}
+    showSheet('good',dc.item,(chapOf(p.step))+'장 완료 · 햇살 +'+(sun+2*GS),first?josa(itemName(dc.item),'을','를')+' 받았어요!':dc.name+'에 또 왔어요!',(first?'섬 꾸미기의 ‘특별’ 칸에서 섬에 놓을 수 있어요. ':'')+'다음 목적지는 '+nx.name+'이에요!','다음 여행',function(){trail()})}
   function openChest(){if(p.step!==st0)return;
     var c=chestAt(p.step);S.sun+=c.sun;var got=c.item&&!S.own[c.item];if(c.item)S.own[c.item]=1;p.step++;p.walk=(p.walk||0)+1;save();
     tone([523,784,1047,1568],'sine',.1);balN.textContent=S.sun;
