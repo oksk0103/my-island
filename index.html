@@ -4728,6 +4728,9 @@ html:has(.dioscr){background:#f5e8d3}
 .mrsun{display:flex;align-items:center;justify-content:center;gap:8px}.mrsun img{width:30px;height:30px}
 html:root body:not(#z) #app:has(.dioscr){background:#f5e8d3!important}
 html:root body:not(#z) .resscr>.qtop::after{content:none!important}html:root body:not(#z) .resscr>.qtop .wtitle{display:none!important}
+/* 넓은 화면(아이패드): 장면 그림 가장자리를 하늘색으로 부드럽게 녹여요 */
+html:root body:not(#z) .village{background:radial-gradient(120% 70% at 50% 35%,#e3f1f4 0%,#cfe6ee 45%,#bcd7e4 100%)!important}
+html:root body:not(#z) .vbg.nvillage{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%),linear-gradient(180deg,#000 82%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%),linear-gradient(180deg,#000 82%,transparent 100%);mask-composite:intersect}
 </style>
 
 <div id="app"></div>
@@ -4981,7 +4984,7 @@ A["n_rbot"]="b/43c9019731db.webp";
 A["n_rlib"]="b/f05154bde995.webp";
 A["n_bookint"]="b/f29544f09728.webp";
 A["t_dig"]="b/13cbbf71b7fa.webp";
-A["t_under"]="b/4387e38d487e.webp";
+A["t_under"]="b/dea22536ba46.webp";
 A["t_dc1"]="b/c47d75f04931.webp";
 A["t_dc2"]="b/f91aa640a4d5.webp";
 A["t_dc3"]="b/718cf524f018.webp";
@@ -5664,7 +5667,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.151";
+var APP_VER="1.0.152";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -19243,11 +19246,17 @@ function islSmooth(lp,off){var N=lp.length,o=[];
     var nx=n1[0]/l1+n2[0]/l2,ny=n1[1]/l1+n2[1]/l2,l=Math.hypot(nx,ny)||1;o.push([b[0]+nx/l*off,b[1]+ny/l*off])}
   for(var it=0;it<3;it++){var q=[];for(var j=0;j<o.length;j++){var p0=o[j],p1=o[(j+1)%o.length];q.push([p0[0]*.75+p1[0]*.25,p0[1]*.75+p1[1]*.25]);q.push([p0[0]*.25+p1[0]*.75,p0[1]*.25+p1[1]*.75])}o=q}
   return o}
+// 섬 겉모양은 볼록하게(홈 섬처럼 둥근 한 덩어리): 칸이 들쭉날쭉해도 아랫면이 끊기지 않아요
+function islHull(lp){var P=lp.slice().sort(function(a,b){return a[0]-b[0]||a[1]-b[1]});function cr(o,a,b){return (a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0])}
+  var lo=[],up=[];P.forEach(function(p){while(lo.length>=2&&cr(lo[lo.length-2],lo[lo.length-1],p)<=0)lo.pop();lo.push(p)});for(var i=P.length-1;i>=0;i--){var p=P[i];while(up.length>=2&&cr(up[up.length-2],up[up.length-1],p)<=0)up.pop();up.push(p)}
+  var h=lo.slice(0,-1).concat(up.slice(0,-1)),A=0;for(var j=0;j<h.length;j++){var a=h[j],b=h[(j+1)%h.length];A+=a[0]*b[1]-b[0]*a[1]}if(A<0)h.reverse();
+  // 긴 변은 잘게 나눠야 둥글게 펴져요
+  var o=[];for(var k=0;k<h.length;k++){var a2=h[k],b2=h[(k+1)%h.length],n=Math.max(1,Math.round(Math.hypot(b2[0]-a2[0],b2[1]-a2[1])/(ITW/2)));for(var t=0;t<n;t++)o.push([a2[0]+(b2[0]-a2[0])*t/n,a2[1]+(b2[1]-a2[1])*t/n])}return o}
 function cliffPaint(ctx,CS,bx0,by0,P,HAS){
   var loops=islLoops(P,HAS),pat=ctx.createPattern(TIMG.rock,'repeat'),SH=[];
   function X(p){return (p[0]-bx0)*CS}function Y(p){return (p[1]-by0)*CS}
   loops.forEach(function(lp){var A=0;for(var i=0;i<lp.length;i++){var a=lp[i],b=lp[(i+1)%lp.length];A+=a[0]*b[1]-b[0]*a[1]}if(A<=0)return; // 구멍은 건너뛰어요
-    var sm=islSmooth(lp,ITH*.26),xs=sm.map(function(p){return p[0]}),cx=0;xs.forEach(function(x){cx+=x});cx/=xs.length;
+    var hl=islHull(lp),sm=islSmooth(hl,ITH*.3),xs=sm.map(function(p){return p[0]}),cx=0;xs.forEach(function(x){cx+=x});cx/=xs.length;
     var half=Math.max.apply(null,xs.map(function(x){return Math.abs(x-cx)}))+8,D=Math.min(170,26+15*Math.sqrt(lp.length));
     SH.push({sm:sm,cx:cx,half:half,D:D,cy:sm.reduce(function(s,p){return s+p[1]},0)/sm.length})});
   SH.sort(function(a,b){return a.cy-b.cy});
@@ -19263,13 +19272,20 @@ function cliffPaint(ctx,CS,bx0,by0,P,HAS){
     var seq=[];for(var t=0;t<fr.length;t++)seq.push(fr[(st+t)%fr.length]);var top=seq.map(function(i){return sm[i]});top.push(sm[(seq[seq.length-1]+1)%N]);
     top.sort(function(a,b){return a[0]-b[0]});
     function cy(x){if(x<=top[0][0])return top[0][1];for(var i=1;i<top.length;i++){if(x<=top[i][0]){var a=top[i-1],b=top[i],t=(x-a[0])/((b[0]-a[0])||1);return a[1]+(b[1]-a[1])*t}}return top[top.length-1][1]}
-    // 홈 섬의 아랫부분 그림을 세로 조각으로 나눠, 각 조각의 테두리선을 이 섬의 테두리에 맞춰 붙여요
-    var U=TIMG.under,UW=U.naturalWidth,UH=U.naturalHeight,UL=5,UR=816,UA=410,UV0=50,UV1=265;
-    var minX=top[0][0]-6,maxX=top[top.length-1][0]+6,sx=(maxX-minX)/(UR-UL),sy=sx*.85,step=4;
-    for(var ix=0;ix<UW;ix+=step){var vy=ix<=UA?UV0+(ix-UL)*(UV1-UV0)/(UA-UL):UV0+(UR-ix)*(UV1-UV0)/(UR-UA),dx=minX+(ix-UL)*sx,dy=cy(dx+step*sx/2)-vy*sy+6;
-      ctx.drawImage(U,ix,0,Math.min(step+1,UW-ix),UH,X([dx,0]),Y([0,dy]),(step+1)*sx*CS,UH*sy*CS)}
+    // 앞 테두리 높이를 넓게 고르게 펴서 칸 계단 모양이 보이지 않게 해요
+    var minX=top[0][0]-10,maxX=top[top.length-1][0]+10,SM=[],win=Math.max(3,Math.round(ITW*.7/4));
+    for(var x=minX;x<=maxX;x+=4)SM.push(cy(x));
+    var SM2=SM.map(function(_,i){var s=0,n=0;for(var j=Math.max(0,i-win);j<=Math.min(SM.length-1,i+win);j++){s+=SM[j];n++}return s/n-2});
+    S_.minX=minX;S_.maxX=maxX;S_.cy=function(x){var i=Math.max(0,Math.min(SM2.length-1,(x-minX)/4)),i0=Math.floor(i),i1=Math.min(SM2.length-1,i0+1),t=i-i0;return SM2[i0]*(1-t)+SM2[i1]*t};
   });
   return SH}
+// 섬 아랫면: 홈 섬처럼 따뜻한 흙 + 둥근 돌 + 뿌리. 그림을 세로 조각으로 나눠 위 테두리를 섬 앞 테두리에 맞춰 붙여요 (칸 그림 위에 그려서 계단 모양을 덮어요)
+var URIM=[24,34,42,49,56,62,67,73,78,83,88,92,97,102,107,111,116,121,126,131,136,141,147,152,157,162,167,172,177,181,186,190,194,198,201,204,207,210,212,214,215,216,217,217,217,216,215,214,212,210,207,204,201,198,194,190,186,181,176,172,167,161,156,151,146,141,135,130,125,120,115,110,105,100,95,90,86,81,76,70,65,59,53,46,39,31,23];
+function underPaint(ctx,CS,bx0,by0,SH){(SH||[]).forEach(function(S_){if(!S_.cy)return;
+  var U=TIMG.under,UW=U.naturalWidth,UH=U.naturalHeight;if(!UW)return;
+  var sx=(S_.maxX-S_.minX)/UW,sy=Math.min(sx*.8,1.6),step=4;
+  for(var ix=0;ix<UW;ix+=step){var f=ix/8,i0=Math.floor(f),t=f-i0,vy=URIM[Math.min(URIM.length-1,i0)]*(1-t)+URIM[Math.min(URIM.length-1,i0+1)]*t,dx=S_.minX+ix*sx,dy=S_.cy(dx+step*sx/2)-vy*sy+2;
+    ctx.drawImage(U,ix,0,Math.min(step+1,UW-ix),UH,(dx-bx0)*CS,(dy-by0)*CS,(step+1)*sx*CS,UH*sy*CS)}})}
 // 풀 윗면 가장자리: 둥근 점토 느낌의 밝은 테
 function islBevel(ctx,CS,bx0,by0,SH){(SH||[]).forEach(function(S_){var sm=S_.sm;ctx.save();ctx.beginPath();sm.forEach(function(p,i){var X=(p[0]-bx0)*CS,Y=(p[1]-by0)*CS;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.closePath();
   ctx.lineJoin='round';ctx.strokeStyle='rgba(255,255,230,.28)';ctx.lineWidth=5*CS;ctx.stroke();ctx.strokeStyle='rgba(96,132,66,.55)';ctx.lineWidth=2*CS;ctx.stroke();ctx.restore()})}
@@ -19305,7 +19321,10 @@ function drawGround(cv,CS,bx0,by0,cells){
     var SH_=cliffPaint(ctx,CS,bx0,by0,P,HAS);
     var GD=S.gd.ground||{},W_=function(c,r){return GROUND[GD[c+','+r]]==='canal'};
     P.forEach(function(q){var k=q[0]+','+q[1],h=hsh(q[0]*3+1,q[1]*5+2),h2=hsh(q[0]*7+3,q[1]*11+5),g=GROUND[GD[k]];put(g&&g!=='hedge'&&!POND[k]?g:POND[k]?'pond':(BLDC.path&&BLDC.path[k])?'path':ISLS[k]?'sand':(h2<.3?'g2':'g1'),q[0],q[1])});
-    grassLife(ctx,cv,CS,bx0,by0,P,GD);islLight(ctx,cv,P,bx0,by0,CS);islBevel(ctx,CS,bx0,by0,SH_);rimDeco(ctx,CS,bx0,by0,P,HAS);
+    // 가장자리 칸의 옆면(어두운 두께)을 풀색으로 덮어서 지그재그 선이 안 보이게 해요
+    (function(){var hw=ITW/2,hh=ITH/2,d=ITH*.6;ctx.fillStyle='#a0bd68';function F(pts){ctx.beginPath();pts.forEach(function(p,i){var X=(p[0]-bx0)*CS,Y=(p[1]-by0)*CS;i?ctx.lineTo(X,Y):ctx.moveTo(X,Y)});ctx.closePath();ctx.fill()}
+      P.forEach(function(q){var c=iCtr(q[0],q[1]),x=c[0],y=c[1];if(!HAS[(q[0]+1)+','+q[1]])F([[x+hw,y-1],[x,y+hh-1],[x,y+hh+d],[x+hw,y+d]]);if(!HAS[q[0]+','+(q[1]+1)])F([[x-hw,y-1],[x,y+hh-1],[x,y+hh+d],[x-hw,y+d]])})})();
+    grassLife(ctx,cv,CS,bx0,by0,P,GD);islLight(ctx,cv,P,bx0,by0,CS);islBevel(ctx,CS,bx0,by0,SH_);underPaint(ctx,CS,bx0,by0,SH_);rimDeco(ctx,CS,bx0,by0,P,HAS);
     P.forEach(function(q){var k=q[0]+','+q[1];if(GROUND[GD[k]]!=='canal')return;if(!W_(q[0]+1,q[1]))put('rim_px',q[0],q[1]);if(!W_(q[0],q[1]+1))put('rim_pz',q[0],q[1]);if(!W_(q[0]-1,q[1]))put('rim_nx',q[0],q[1]);if(!W_(q[0],q[1]-1))put('rim_nz',q[0],q[1])});
   }
   RIMK.forEach(function(k){if(!RIMI[k]){RIMI[k]=new Image();RIMI[k].src=A[k]}});
@@ -21529,7 +21548,7 @@ function villageScreen(){
   // 화면 크기에 맞춰 장면을 키우거나 줄여요
   function fit(){
     try{stg.style.bottom=Math.max(100,bottom.getBoundingClientRect().height-28)+'px'}catch(e){}
-    var aw=Math.min(stg.clientWidth||1e9,innerWidth||1e9,document.documentElement.clientWidth||1e9);if(aw>1e8)aw=375;var ah=stg.clientHeight||500,CT=0,CB=NB_H,s=Math.min(Math.max(aw/505,ah/780),2.4);
+    var aw=Math.min(stg.clientWidth||1e9,innerWidth||1e9,document.documentElement.clientWidth||1e9);if(aw>1e8)aw=375;var ah=stg.clientHeight||500,CT=0,CB=NB_H,s=Math.min(aw/505,ah/730,2.4); // 섬 전체와 왼쪽 아래 '내 섬'이 늘 다 보이게(아이패드처럼 넓은 화면도)
     scene.style.transform='translate(-50%,-50%) scale('+s+') translateY('+(VH/2-(CT+CB)/2)+'px)';
   }
   fit();requestAnimationFrame(fit);window.onresize=fit;[300,900,2000].forEach(function(t){setTimeout(function(){if(root.isConnected)fit()},t)});try{if(window.visualViewport)visualViewport.addEventListener('resize',function(){if(root.isConnected)fit()});if(window.ResizeObserver){var ro=new ResizeObserver(function(){if(root.isConnected)fit()});ro.observe(stg)}}catch(e){}try{if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);if(window.ResizeObserver){var ro=new ResizeObserver(function(){if(!document.body.contains(bottom)){ro.disconnect();return}fit()});ro.observe(bottom)}}catch(e){}setTimeout(fit,600);
