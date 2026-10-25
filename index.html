@@ -5670,7 +5670,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.154";
+var APP_VER="1.0.155";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -19269,15 +19269,16 @@ function basePaint(ctx,CS,bx0,by0,P,HAS){var F=mbImg('mb_front'),B=mbImg('mb_bac
   mbComps(P,HAS).forEach(function(e){function X(x){return (x-bx0)*CS}function Y(y){return (y-by0)*CS}
     function ys(x,sg){var d=(x-e.cx)/e.a;return e.cy+sg*e.b*Math.sqrt(Math.max(0,1-d*d))}
     var x0=e.cx-e.a,x1=e.cx+e.a,step=2,D=Math.max(1,Math.min(2.2,e.a*.5/285));
-    // 아래 흙덩이: 홈 섬과 같은 그림 한 장을 섬 크기에 맞춰(잔디 타원이 그림의 잔디 타원과 딱 겹치게)
-    var U=mbImg('myisl_base');if(U.naturalWidth){var usx=e.a/580,usy=Math.max(e.b/316,usx*.5);ctx.drawImage(U,X(e.cx-825*usx),Y(e.cy-459*usy),U.naturalWidth*usx*CS,U.naturalHeight*usy*CS)}
+    // 바깥 잔디 타원(칸보다 조금 크게) = 그림 윗면 전체. 그림의 흙덩이만 보이고, 그림 속 꽃테는 잔디로 덮어요
+    var OA=1.13;e={cx:e.cx,cy:e.cy,a:e.a*OA,b:e.b*OA};x0=e.cx-e.a;x1=e.cx+e.a;
+    var U=mbImg('myisl_base');if(U.naturalWidth){var usx=e.a/805,usy=Math.max(e.b/440,usx*.5);ctx.drawImage(U,X(e.cx-812*usx),Y(e.cy-459*usy),U.naturalWidth*usx*CS,U.naturalHeight*usy*CS)}
     // 뒤 꽃테(잔디보다 먼저: 잔디가 아랫부분을 덮어 자연스럽게)
-    if(B.naturalWidth){var BW=B.naturalWidth,BH=B.naturalHeight;for(var x=x0;x<x1;x+=step){var u=((x-x0)%BW+BW)%BW,y=ys(x+step/2,-1);ctx.drawImage(B,u,0,Math.min(step,BW-u),BH,X(x),Y(y-MB_BK),step*CS+.6,BH*CS)}}
+    var RS=1.5;if(B.naturalWidth){var BW=B.naturalWidth,BH=B.naturalHeight;for(var x=x0;x<x1;x+=step){var u=(((x-x0)/RS)%BW+BW)%BW,y=ys(x+step/2,-1);ctx.drawImage(B,u,0,Math.min(step/RS,BW-u),BH,X(x),Y(y-MB_BK*RS),step*CS+.6,BH*RS*CS)}}
     ctx.save();ctx.beginPath();ctx.ellipse(X(e.cx),Y(e.cy),e.a*CS,e.b*CS,0,0,Math.PI*2);ctx.fillStyle=LAWN;ctx.fill();ctx.save();ctx.scale(CS,CS);ctx.fillStyle=lawnPat(ctx);ctx.translate(-bx0,-by0);ctx.fill();ctx.restore();ctx.restore();
-    if(B.naturalWidth){ctx.save();ctx.beginPath();ctx.ellipse(X(e.cx),Y(e.cy),e.a*CS,e.b*CS,0,Math.PI,Math.PI*2);ctx.clip();var BW=B.naturalWidth,BH=B.naturalHeight;for(var x=x0;x<x1;x+=step){var u=((x-x0)%BW+BW)%BW,y=ys(x+step/2,-1);ctx.drawImage(B,u,0,Math.min(step,BW-u),MB_BK+6,X(x),Y(y-MB_BK),step*CS+.6,(MB_BK+6)*CS)}ctx.restore()}
+    if(B.naturalWidth){ctx.save();ctx.beginPath();ctx.ellipse(X(e.cx),Y(e.cy),e.a*CS,e.b*CS,0,Math.PI,Math.PI*2);ctx.clip();var BW=B.naturalWidth,BH=B.naturalHeight;for(var x=x0;x<x1;x+=step){var u=(((x-x0)/RS)%BW+BW)%BW,y=ys(x+step/2,-1);ctx.drawImage(B,u,0,Math.min(step/RS,BW-u),MB_BK+6,X(x),Y(y-MB_BK*RS),step*CS+.6,(MB_BK+6)*RS*CS)}ctx.restore()}
     // 앞 흙벽: 테두리 부분은 원래 크기, 아래 흙은 가운데가 깊고 양끝이 얕게
-    if(F.naturalWidth){var FW=F.naturalWidth,FH=F.naturalHeight,top=FH;for(var x=x0;x<x1;x+=step){var u=((x-x0+FW*.37)%FW+FW)%FW,y=ys(x+step/2,1),t=Math.sqrt(Math.max(0,1-Math.pow((x+step/2-e.cx)/e.a,2))),sc=D*(.3+.7*t);
-      var sw=Math.min(step,FW-u);ctx.drawImage(F,u,0,sw,top,X(x),Y(y-MB_UP),step*CS+.6,top*CS)}}
+    if(F.naturalWidth){var FW=F.naturalWidth,FH=F.naturalHeight,top=FH;for(var x=x0;x<x1;x+=step){var u=(((x-x0)/RS+FW*.37)%FW+FW)%FW,y=ys(x+step/2,1);
+      var sw=Math.min(step/RS,FW-u);ctx.drawImage(F,u,0,sw,top,X(x),Y(y-MB_UP*RS),step*CS+.6,top*RS*CS)}}
   })}
 function cliffPaint(ctx,CS,bx0,by0,P,HAS){
   var loops=islLoops(P,HAS),pat=ctx.createPattern(TIMG.rock,'repeat'),SH=[];
@@ -19387,7 +19388,7 @@ function buildWorld(edit,onLm){
   // 땅이 있는 범위
   var bx0=1e9,by0=1e9,bx1=-1e9,by1=-1e9,cells=Object.keys(LAND).concat(Object.keys(POND)),BI=(S.bld&&bldList().length)?bldCalc():{isl:{},br:[],deco:[],land:{}};cells=cells.concat(Object.keys(BI.isl));
   cells.forEach(function(k){var p=k.split(',').map(Number),q=iCtr(p[0],p[1]);bx0=Math.min(bx0,q[0]-100);bx1=Math.max(bx1,q[0]+100);by0=Math.min(by0,q[1]-60);by1=Math.max(by1,q[1]+80)});
-  bx0-=200;by0-=150;bx1+=200;by1+=Math.min(2600,80+(bx1-bx0)*.8);world.__box=[bx0,by0,bx1,by1];
+  var mg_=(bx1-bx0)*.14+60;bx0-=mg_;by0-=150;bx1+=mg_;by1+=Math.min(2600,80+(bx1-bx0)*.8);world.__box=[bx0,by0,bx1,by1];
   // 바다 물결
   for(var wv=0;wv<18;wv++){var s=el('i','wave');s.style.left=(bx0+(wv*137)%(bx1-bx0))+'px';s.style.top=(by0+40+(wv*89)%(by1-by0-60))+'px';s.style.animationDelay=(wv*.37)+'s';world.appendChild(s)}
   // 땅: 미리 찍어 둔 3D 조각을 이어 붙여요
@@ -20329,7 +20330,7 @@ var PIER_ORDER=['school','botanic','library','museum','gallery'];
 function bldPier(){return !(window.__pier===0)}
 function pierCalc(ks,cx,cy){var ids=PIER_ORDER.filter(function(id){return bldS()[id]});if(!ids.length)return;
   // 섬 뒤쪽(위쪽)을 부채꼴로 둘러싼 작은 섬들 — 다리 없이 물 건너 떨어져 있어요
-  var bad={};ks.forEach(function(p){for(var i=-2;i<=2;i++)for(var j=-2;j<=2;j++)bad[(p[0]+i)+','+(p[1]+j)]=1});
+  var bad={};ks.forEach(function(p){for(var i=-5;i<=5;i++)for(var j=-5;j<=5;j++)bad[(p[0]+i)+','+(p[1]+j)]=1}); // 본섬과 넉넉히 떨어진 작은 섬
   // 섬 뒤쪽에 한 줄로, 화면 가로 간격이 고르게, 좌우 대칭 (바깥 두 섬은 살짝 내려서 부드러운 곡선)
   var n=ids.length,ORD=['library','school','botanic','museum','gallery'];
   var seq=ORD.filter(function(id){return ids.indexOf(id)>=0});
@@ -21464,7 +21465,7 @@ function vC(c,r){return [VW/2+(c-r)*VTW/2,VY0+(c+r)*VTH/2+VTH/2]}
 var VCELL={tree:[1,1],home:[0,3],shop:[3,0],mail:[3,5],pot:[5,4]};
 var VPATH={'5,5':1,'4,4':1,'3,3':1,'2,2':1,'2,3':1,'1,3':1,'3,2':1,'3,1':1,'3,4':1};
 // 홈 섬에는 네 과목 장소와 '내 섬'(작은 섬)만 있어요. 좌표는 n_base 그림의 빈터 위치예요.
-var NB_X=10,NB_Y=0,NB_W=540,NB_H=723,VB=[{id:'tree',x:223,y:186},{id:'bee',x:128,y:306},{id:'book',x:415,y:258},{id:'pot',x:150,y:232},{id:'boat',x:96,y:650}];
+var NB_X=10,NB_Y=0,NB_W=540,NB_H=723,VB=[{id:'tree',x:223,y:186},{id:'bee',x:128,y:306},{id:'book',x:415,y:258},{id:'pot',x:150,y:232},{id:'boat',x:92,y:612}];
 var NART_AR={n_tree3:1.455,n_hive3:1.341,n_tree2:1.219,n_hive2:1.574,n_book2:1.134,n_tree:1.383,n_book:1.029,n_hive:1.294,n_pot:1.346,n_pot0:1.035,n_myisl:1.126},GEAR_SVG='<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8Zm8.4 4.6-1.9.4a6.7 6.7 0 0 1-.7 1.7l1.1 1.6-1.6 1.6-1.6-1.1c-.5.3-1.1.6-1.7.7l-.4 1.9h-2.2l-.4-1.9a6.7 6.7 0 0 1-1.7-.7l-1.6 1.1-1.6-1.6 1.1-1.6a6.7 6.7 0 0 1-.7-1.7l-1.9-.4v-2.2l1.9-.4c.1-.6.4-1.2.7-1.7L4.1 6.7l1.6-1.6 1.6 1.1c.5-.3 1.1-.6 1.7-.7l.4-1.9h2.2l.4 1.9c.6.1 1.2.4 1.7.7l1.6-1.1 1.6 1.6-1.1 1.6c.3.5.6 1.1.7 1.7l1.9.4v2.2Z" fill="currentColor"/></svg>';
 var V_BOSS=[282,334],V_WALK=[[236,252],[262,258],[290,266],[316,280],[298,296],[270,300],[244,292],[226,282],[214,270],[230,262],[256,276]];
 var VLABEL={book:'국어 서점',bee:'영어 벌집',tree:'한자 나무',home:'우리 집',pot:'수학 온실',mail:'오솔길',boat:'내 섬',fish:'낚시터',mailp:'우체통'};
@@ -21515,7 +21516,7 @@ function villageScreen(){
     else if(v.id==='pot'){art=vhit(140,130,.95)}
     else if(v.id==='bee')art=vhit(110,90,.9);
     else if(v.id==='book')art=vhit(130,120,.9);
-    else if(v.id==='boat'){art=nart('n_myisl',96,.5);art.className+=' vmyisl'}
+    else if(v.id==='boat'){art=nart('n_myisl',124,.5);art.className+=' vmyisl'}
     else if(v.id==='home')art=sprite('house');
     else if(v.id==='bee')art=sprite('hive');
     else if(v.id==='book')art=sprite('bookshop');
