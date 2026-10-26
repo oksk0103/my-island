@@ -4923,6 +4923,9 @@ html:root body:not(#z) .planck{flex:none;width:22px;height:22px;border-radius:50
 html:root body:not(#z) .planhero .pvbtn{background:var(--c-teal)!important;box-shadow:0 4px 0 var(--c-teal-2)!important}
 html:root body:not(#z) .parscr .pvtog.on,html:root body:not(#z) .parscr input[type=checkbox]:checked{background:var(--c-teal)!important}
 html:root body:not(#z) .parscr.pv .pvsec.planhero button.pvbtn.pvbtn{background:var(--c-teal)!important;box-shadow:0 4px 0 var(--c-teal-2)!important;color:#fff!important}
+/* 부가 장소: 디오라마 그림 (과목 공간과 같은 모양) */
+html:root body:not(#z) .roomdio .roomban{background:none!important;box-shadow:none!important;-webkit-mask-image:none!important;mask-image:none!important;display:flex;justify-content:center;height:auto!important;overflow:visible!important}
+html:root body:not(#z) .roomdio .roomban .roomimg{width:min(300px,76vw)!important;height:auto!important;object-fit:contain!important;position:static!important;transform:none!important;filter:drop-shadow(0 10px 12px rgba(120,80,30,.16))}
 </style>
 
 <div id="app"></div>
@@ -5133,6 +5136,12 @@ A["n_softcloud"]="b/5b0b264a8594.webp";
 A["n_bush"]="b/a66daa1a3b56.webp";
 A["n_fbed"]="b/08a3792846d8.webp";
 A["n_rsch"]="b/d39306504719.webp";
+A["dio_shop"]="b/fcbf82299dca.webp";
+A["dio_bot"]="b/fc762d73681a.webp";
+A["dio_lib"]="b/961c56ac665e.webp";
+A["dio_mus"]="b/f358bea25baa.webp";
+A["dio_mail"]="b/601e93385069.webp";
+A["dio_sch"]="b/ab96ad00f0c5.webp";
 A["mb_back"]="b/66cb15236224.webp";
 A["mb_front"]="b/0d5c25df852d.webp";
 A["myisl_base"]="b/4fcfe5a99581.webp";
@@ -5862,7 +5871,7 @@ A["library"]="b/d544edc53b3c.webp";
 ;A.weed2="b/39c5b578f0f9.webp";
 ;A.weed3="b/80bfc154de7d.webp";
 ;A.clover4="b/982a707a477a.webp";
-var APP_VER="1.0.166";
+var APP_VER="1.0.167";
 // ================= 데이터 =================
 var FLOWERS=[
  {name:'데이지',img:'blossom',stem:true,cm:30,season:'봄',fact:'해가 지면 꽃잎을 오므렸다가 아침에 다시 펴요.'},
@@ -20565,12 +20574,12 @@ function bldCalc(){var key=Object.keys(LAND).length+'|'+JSON.stringify(bldS());i
 function bldCells(){if(typeof LAND==='undefined'||!S||!S.bld)return {};return bldCalc().m}
 function bldLot(id){return bldCalc().lots[id]}
 function museumCounts(){var f=fishS(),fn=FISH_SP.filter(function(x){return f.dex[x.id]}).length,fo=fossilCount(),bw=(S.boss&&S.boss.wins)||[];return {fish:fn,fossil:fo,doll:BOSSES.filter(function(B){return bw.indexOf(B.id)>=0}).length}}
-function bldUnlock(){var b=bldS();if(!b.school&&!document.querySelector('.sheet.show,.daydone,.guide')){b.school=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','panda','판다 선생님','섬 한가운데에 학교가 생겼어요!','틀렸던 문제를 다시 풀어 칠판을 깨끗하게 만들고, 이번 주 성적표와 상장도 볼 수 있어요.','구경하러 가기',function(){schoolScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300);return}if(!b.library&&!document.querySelector('.sheet.show,.daydone,.guide')){b.library=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','hedgehog','고슴도치 사서','섬 도서관이 생겼어요!','집이나 학교에서 읽은 책을 도서관 책장에 꽂아 봐요. 한국어 책도 영어 책도 좋아요. 책마다 한마디를 쓰면 햇살을 받아요.','구경하러 가기',function(){libScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300);return}if(b.museum)return;var m=museumCounts();if(m.fish<5&&m.fossil<5)return;if(document.querySelector('.sheet.show,.daydone,.guide'))return;
-  b.museum=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','owl','부엉이 박사','섬 박물관이 생겼어요!','물고기와 화석을 많이 모아서 부엉이 박사가 섬에 박물관을 지어 줬어요. 박물관을 누르면 모은 것들을 구경할 수 있어요.','구경하러 가기',function(){museumScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300)}
+function bldUnlock(){var b=bldS();if(!b.school&&!document.querySelector('.sheet.show,.daydone,.guide')){b.school=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','panda','판다 선생님','섬 한가운데에 학교가 생겼어요!','틀렸던 문제를 다시 풀어 칠판을 깨끗하게 만들고, 이번 주 성적표와 상장도 볼 수 있어요.','구경하러 가기',function(){schoolScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300);return}if(!b.library&&!document.querySelector('.sheet.show,.daydone,.guide')){b.library=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','sheep','양 사서','섬 도서관이 생겼어요!','집이나 학교에서 읽은 책을 도서관 책장에 꽂아 봐요. 한국어 책도 영어 책도 좋아요. 책마다 한마디를 쓰면 햇살을 받아요.','구경하러 가기',function(){libScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300);return}if(b.museum)return;var m=museumCounts();if(m.fish<5&&m.fossil<5)return;if(document.querySelector('.sheet.show,.daydone,.guide'))return;
+  b.museum=1;BLDC.key='';save();islandScreen(false);setTimeout(function(){SND.bloom();showSheet('good','turtle','거북이 박사','섬 박물관이 생겼어요!','물고기와 화석을 많이 모아서 거북이 박사가 섬에 박물관을 지어 줬어요. 박물관을 누르면 모은 것들을 구경할 수 있어요.','구경하러 가기',function(){museumScreen(function(){islandScreen(false)})});var lt=el('button','cta light','나중에');lt.onclick=function(){hideSheet()};sheet.firstChild.appendChild(lt)},300)}
 var MUSE_TAB='fish';
 function museumScreen(back){if(MUSE_TAB==='unit')MUSE_TAB='fish';clear();var sc=el('div','screen museumscr'),top=el('div','qtop');
   var b=el('button','x');b.setAttribute('aria-label','나가기');b.innerHTML=BACK_SVG;b.onclick=function(){(back||villageScreen)()};top.appendChild(b);var built=!!bldS().museum;top.appendChild(el('h2','mtitle',built?'섬 박물관':'도감'));top.appendChild(el('div','spacer'));sc.appendChild(top);
-  var m=museumCounts(),cur=el('div','mcur');cur.appendChild(img('owl'));cur.appendChild(el('p',null,!built?'물고기나 화석을 5종 모으면 섬에 박물관을 지어 줄게! 지금 물고기 '+m.fish+'종 · 화석 '+m.fossil+'종이야.':['어서 와! 네가 모은 걸 정성껏 전시해 두었어.','빈 진열장도 언젠가 꽉 채워 보자!','전시품을 누르면 재미있는 이야기를 들려줄게.'][R(0,2)]));sc.appendChild(cur);
+  var m=museumCounts(),cur=el('div','mcur');cur.appendChild(img('turtle'));cur.appendChild(el('p',null,!built?'물고기나 화석을 5종 모으면 섬에 박물관을 지어 줄게! 지금 물고기 '+m.fish+'종 · 화석 '+m.fossil+'종이야.':['어서 와! 네가 모은 걸 정성껏 전시해 두었어.','빈 진열장도 언젠가 꽉 채워 보자!','전시품을 누르면 재미있는 이야기를 들려줄게.'][R(0,2)]));sc.appendChild(cur);
   var T=[['fish','물고기관',m.fish,FISH_SP.length],['fossil','화석관',m.fossil,FOSSILS.length],['doll','인형관',m.doll,BOSSES.length]],seg=el('div','mseg');
   T.forEach(function(t){var bt=el('button',MUSE_TAB===t[0]?'on':null);bt.appendChild(el('b',null,t[1]));bt.appendChild(el('small',null,t[2]+' / '+t[3]));bt.onclick=function(){MUSE_TAB=t[0];museumScreen(back)};seg.appendChild(bt)});sc.appendChild(seg);
   var g=el('div','mgrid'),f=fishS(),dg=digS().got,bw=(S.boss&&S.boss.wins)||[];
@@ -20707,7 +20716,8 @@ function spCardify(c){
   if(card.firstChild)c.insertBefore(card,c.firstChild);return card;
 }
 // 시안: 위에 방 안 그림, 아래 큰 크림 판 하나에 화면 내용을 모아요 (도서관·식물원·박물관·학교)
-function roomify(sc,key){sc.classList.add('roomscr');var top=sc.querySelector(':scope>.qtop');var rb=el('div','roomban');var im=img(key,'roomimg');im.alt='';im.draggable=false;rb.appendChild(im);
+var ROOM_DIO={n_rsch:'dio_sch',n_rmail:'dio_mail',n_rmus:'dio_mus',n_rlib:'dio_lib',n_rbot:'dio_bot',n_rshop:'dio_shop'};
+function roomify(sc,key){if(ROOM_DIO[key]&&A[ROOM_DIO[key]]){key=ROOM_DIO[key];sc.classList.add('roomdio')}sc.classList.add('roomscr');var top=sc.querySelector(':scope>.qtop');var rb=el('div','roomban');var im=img(key,'roomimg');im.alt='';im.draggable=false;rb.appendChild(im);
   var pan=el('div','roompanel');Array.prototype.slice.call(sc.children).forEach(function(n){if(n!==top&&!n.classList.contains('dock'))pan.appendChild(n)});
   if(top&&top.nextSibling)sc.insertBefore(rb,top.nextSibling);else sc.appendChild(rb);
   if(rb.nextSibling)sc.insertBefore(pan,rb.nextSibling);else sc.appendChild(pan);return pan}
@@ -20911,7 +20921,7 @@ function botScreen(back){back=back||function(){islandScreen(false)};clear();var 
   sc.appendChild(room);
   sc.appendChild(el('p','mtip',BOT_SWAP?'옮길 자리를 눌러요. 다른 식물이 있으면 서로 자리를 바꿔요.':'숙제 시간에 ‘다 했어요’를 누르면 그 시간만큼 화분이 자라요. 하루에 '+botHM(BOT_CAP)+'까지 자라요.'));
   var dk=el('div','dock'),go=el('button','cta green','숙제하러 가기');go.onclick=function(){wsOpen(function(){botScreen(back)})};dk.appendChild(go);sc.appendChild(dk);
-  roomify(sc,'n_rbot');app.appendChild(sc);zMark&&zMark();
+  roomify(sc,'n_rbot');app.appendChild(sc);dockPad(sc);zMark&&zMark();
   if(b.mig&&!b.mig.shown){b.mig.shown=1;save();setTimeout(function(){var n=Object.keys(b.got).length;showSheet('good','frog','섬 식물원이 열렸어요','지금까지 한 숙제 '+botHM(b.mig.m)+'으로 '+(n?'식물 '+n+'종이 자랐어요!':'화분이 자라고 있어요!'),'앞으로도 숙제를 끝낼 때마다 그 시간만큼 화분이 자라요.','좋아요',function(){})},350)}}
 function botFact(id,onMove){var p=botP(id),n=S.bot.got[id]||0;showSheet('good','pl_'+id,p.home||'섬 식물원',p.name+(n>1?' ★'+(n-1):''),p.fact+' '+p.fact2,'좋아요',function(){});if(onMove){var mv=el('button','cta light','자리 옮기기');mv.onclick=onMove;sheet.firstChild.appendChild(mv)}}
 function botSeedSheet(after){var b=botS(),L=botSeeds(),inn=sheet.firstChild;inn.innerHTML='';var hd=el('div','hd');hd.appendChild(img('seedling'));var t=el('div');t.appendChild(el('small',null,'섬 식물원'));t.appendChild(el('h3',null,'어떤 씨앗을 심을까요?'));hd.appendChild(t);inn.appendChild(hd);
@@ -20977,7 +20987,7 @@ function libS(){if(!S.lib)S.lib={books:[],day:{d:-1,n:0}};if(!S.lib.day)S.lib.da
 var LIB_BACK=null,LIB_F='all';
 function libScreen(back){LIB_BACK=back;clear();var L=libS(),sc=el('div','screen libscr'),top=el('div','qtop');
   var b=el('button','x');b.setAttribute('aria-label','나가기');b.innerHTML=BACK_SVG;b.onclick=function(){(back||villageScreen)()};top.appendChild(b);top.appendChild(el('h2','mtitle','섬 도서관'));top.appendChild(el('div','spacer'));var cnt=el('div','balance');cnt.appendChild(img('sun'));cnt.appendChild(el('b','tnum',String(S.sun)));cnt.setAttribute('aria-label','햇살 '+S.sun+'개');top.appendChild(cnt);sc.appendChild(top);
-  var cur=el('div','mcur');cur.appendChild(img('hedgehog'));cur.appendChild(el('p',null,L.books.length?['오늘은 어떤 책을 읽었니?','책장이 점점 채워지고 있어!','책을 누르면 네가 쓴 문장을 읽어 줄게.'][R(0,2)]:'집에서, 학교에서 읽은 책을 여기 꽂아 보자! 한국어 책도 영어 책도 좋아.'));sc.appendChild(cur);
+  var cur=el('div','mcur');cur.appendChild(img('sheep'));cur.appendChild(el('p',null,L.books.length?['오늘은 어떤 책을 읽었니?','책장이 점점 채워지고 있어!','책을 누르면 네가 쓴 문장을 읽어 줄게.'][R(0,2)]:'집에서, 학교에서 읽은 책을 여기 꽂아 보자! 한국어 책도 영어 책도 좋아.'));sc.appendChild(cur);
   var bn_=bookN(),nx_=LIB_RW.filter(function(r){return bn_<r.n})[0],pv_=LIB_RW.filter(function(r){return bn_>=r.n}).pop(),lo_=pv_?pv_.n:0;var pc=el('div','libprog');var ph=el('div','libph');ph.appendChild(el('b',null,'읽은 책 '+bn_+'권'));ph.appendChild(el('small',null,nx_?'다음 선물까지 '+(nx_.n-bn_)+'권':'선물을 모두 받았어요'));pc.appendChild(ph);
   var bar=el('div','libbar');var fi=el('i');fi.style.width=(nx_?Math.round((bn_-lo_)/(nx_.n-lo_)*100):100)+'%';bar.appendChild(fi);pc.appendChild(bar);var rw=el('div','librw');LIB_RW.forEach(function(r){var on=bn_>=r.n,c=el('span','librwi'+(on?' on':''));c.appendChild(img('sun'));c.appendChild(el('small',null,r.n+'권 · +'+(r.gem*GS)));rw.appendChild(c)});pc.appendChild(rw);sc.appendChild(pc);
   var add=el('button','cta','읽은 책 꽂기');add.onclick=function(){libAdd(back)};
