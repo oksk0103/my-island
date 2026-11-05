@@ -274,7 +274,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v9</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v10</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -661,7 +661,7 @@ button { cursor: pointer; }
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST', signal,
       headers: { 'content-type': 'application/json', 'x-api-key': settings.apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-      body: JSON.stringify({ model: settings.model || DEFAULTS.model, max_tokens: maxTokens, thinking: { type: 'disabled' }, system, messages })
+      body: JSON.stringify({ model: settings.model || DEFAULTS.model, max_tokens: maxTokens, thinking: { type: 'between_tools' }, system, messages })
     });
     if (!res.ok) { const err = new Error('api'); err.status = res.status; try { err.detail = (await res.json()).error?.message; } catch (e) {} throw err; }
     const data = await res.json();
