@@ -57,7 +57,7 @@ button { cursor: pointer; }
 /* top bar */
 .topbar { border-bottom: 1px solid var(--line); }
 .topbar .inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 3.6rem; gap: 1rem; }
-.wordmark { justify-self: start; font-family: var(--f-display); font-size: 1.35rem; letter-spacing: -.02em; color: var(--ink); background: none; border: 0; padding: .4rem 0; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; touch-action: none; }
+.wordmark { justify-self: start; font-family: var(--f-display); font-size: 1.35rem; letter-spacing: -.02em; color: var(--ink); background: none; border: 0; padding: .4rem 0; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; touch-action: manipulation; }
 .wordmark .eye { width: .5em; height: .5em; margin-left: .18em; vertical-align: top; margin-top: .05em; }
 .status { display: inline-flex; align-items: center; gap: .6rem; min-height: 2.4rem; color: var(--muted); font-size: .9rem; font-weight: 600; white-space: nowrap; }
 .app[data-state="listen"] .status, .app[data-state="think"] .status, .app[data-state="quiz"] .status { color: var(--accent); }
@@ -365,7 +365,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v32</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v33</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -609,7 +609,6 @@ button { cursor: pointer; }
       });
       if (part.key) {
         if (pi) sheet.append(' ');
-        host.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M1 6 C 25 3.5, 55 8, 99 4" pathLength="1"></path></svg>');
         sheet.append(host);
       }
     });
@@ -755,7 +754,7 @@ button { cursor: pointer; }
   renderSound();
   // 터치 모니터: 닿는 순간 반응
   const micBtn = $('micBtn'); let micFast = false;
-  micBtn.addEventListener('pointerdown', e => { if (e.pointerType !== 'touch') return; e.preventDefault(); micFast = true; micBtn.dispatchEvent(new MouseEvent('click', { bubbles: true })); });
+  micBtn.addEventListener('pointerdown', e => { if (e.pointerType !== 'touch') return; e.preventDefault(); micFast = true; setTimeout(() => { micFast = false; }, 600); micBtn.dispatchEvent(new MouseEvent('click', { bubbles: true })); });
   micBtn.addEventListener('click', e => { if (!e.isTrusted) return; if (micFast) { micFast = false; e.stopImmediatePropagation(); } }, true);
   $('replayBtn').addEventListener('click', () => { speak(current, true); });
 
@@ -939,9 +938,11 @@ button { cursor: pointer; }
   setInterval(() => {
     if (busy || listening || !logEl.hidden) return;
     if (app.dataset.state !== 'idle') return;
-    const mode = screenMode();
-    if (mode !== 'piece' || mode !== specialMode) showPiece(false);
+    if (Date.now() < holdUntil) return;
+    const mode = screenMode(), cur = specialMode || 'piece';
+    if (mode !== cur || mode !== 'piece') showPiece(false);
   }, 30 * 1000);
+  let holdUntil = 0;
   // 날씨 지역 찾기
   $('wxFind').addEventListener('click', async () => {
     const q = $('wxName').value.trim(); if (!q) return;
@@ -964,13 +965,12 @@ button { cursor: pointer; }
   const ASK_KEYS = ['Enter', 'ArrowRight', ' '];
   const ROLE = k => ASK_KEYS.includes(k) ? '물어보기(말하기)' : REPLAY_KEYS.includes(k) ? '다시 듣기' : CLEAR_KEYS.includes(k) ? '지우기/멈추기' : '궁금칸에서 안 쓰는 키';
   const pinEl = $('pin'), pinInput = $('pinInput');
+  const typing = () => { const a = document.activeElement; return a && (['INPUT', 'TEXTAREA', 'SELECT'].includes(a.tagName) || a.isContentEditable); };
   document.addEventListener('keydown', e => {
     if (!pinEl.hidden) return; // 비밀번호 창에서는 키를 가로채지 않음
-    if (!logEl.hidden) {
-      if (['Enter', ' '].includes(e.key) && document.activeElement && ['BUTTON', 'INPUT', 'SELECT'].includes(document.activeElement.tagName)) return;
-      e.preventDefault(); keyTest.textContent = `받은 키: ${e.key === ' ' ? 'Space' : e.key} → ${ROLE(e.key)}`; return;
-    }
+    if (!logEl.hidden) { if (!typing() && e.key !== 'Tab') keyTest.textContent = `받은 키: ${e.key === ' ' ? 'Space' : e.key} → ${ROLE(e.key)}`; return; }
     if (e.isComposing) return;
+    if (typing()) return; // 글자 입력 중엔 단축키 없음 (Enter는 폼이 처리)
     if (REPLAY_KEYS.includes(e.key)) { e.preventDefault(); if (e.repeat) return; speak(current, true); statusEl.textContent = '한 번 더 읽어 줄게.'; return; }
     if (CLEAR_KEYS.includes(e.key)) {
       e.preventDefault(); if (e.repeat) return;
@@ -980,7 +980,6 @@ button { cursor: pointer; }
     }
     if (ASK_KEYS.includes(e.key)) {
       if (e.repeat) { e.preventDefault(); return; }
-      if (document.activeElement === input) { if (e.key === 'Enter') return; if (e.key === ' ') return; e.preventDefault(); if (input.value.trim()) ask(input.value); return; }
       if (document.activeElement && document.activeElement.tagName === 'BUTTON') return;
       e.preventDefault();
       if (listening) { stopListening(); return; }   // second press: stop early and ask
@@ -992,13 +991,21 @@ button { cursor: pointer; }
   form.addEventListener('submit', e => { e.preventDefault(); if (!input.value.trim()) { startListening(); return; } ask(input.value); });
 
   // ---------- Claude API ----------
-  async function claude(messages, { system, maxTokens = 1000, signal } = {}) {
+  let thinkingOff = { type: 'between_tools' };
+  async function claude(messages, { system, maxTokens = 1000, signal, _retry } = {}) {
+    const body = { model: settings.model || DEFAULTS.model, max_tokens: maxTokens, system, messages };
+    if (thinkingOff) body.thinking = thinkingOff;
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST', signal,
       headers: { 'content-type': 'application/json', 'x-api-key': settings.apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-      body: JSON.stringify({ model: settings.model || DEFAULTS.model, max_tokens: maxTokens, thinking: { type: 'between_tools' }, system, messages })
+      body: JSON.stringify(body)
     });
-    if (!res.ok) { const err = new Error('api'); err.status = res.status; try { err.detail = (await res.json()).error?.message; } catch (e) {} throw err; }
+    if (!res.ok) {
+      const err = new Error('api'); err.status = res.status; try { err.detail = (await res.json()).error?.message; } catch (e) {}
+      // 모델이 thinking 옵션을 안 받으면 옵션 없이 한 번 더
+      if (res.status === 400 && /thinking/i.test(err.detail || '') && !_retry) { thinkingOff = /disabled/.test(err.detail) ? { type: 'disabled' } : null; return claude(messages, { system, maxTokens, signal, _retry: true }); }
+      throw err;
+    }
     const data = await res.json();
     const out = (data.content || []).filter(c => c.type === 'text').map(c => c.text).join('').trim();
     if (!out) throw Object.assign(new Error('empty'), { status: 0, detail: '빈 응답 (stop: ' + data.stop_reason + ', content: ' + JSON.stringify(data.content || []).slice(0, 120) + ')' });
@@ -1032,7 +1039,10 @@ button { cursor: pointer; }
     fit();
   }
   // 아이 화면용 금칙어 — 제목·분류에 걸리면 사진을 쓰지 않는다
-  const BLOCK = /성기|성교|성행위|성관계|생식|음부|음경|음핵|질(?![문량])|자궁|고환|유방|젖|항문|나체|누드|포르노|성적|섹스|야동|자위|강간|성폭|성희롱|매춘|성매매|해부|장기(?!간)|시신|시체|사망|살해|살인|자살|학살|처형|고문|폭력|테러|전쟁범죄|총기|권총|소총|폭탄|폭발물|무기|칼부림|마약|대마|필로폰|코카인|헤로인|담배|흡연|술(?!래)|음주|소주|맥주|도박|카지노|질병|종양|암(?!컷|석|흑)|감염|상처|출혈|피부병|배설|대변|소변|똥|오줌|욕설|혐오|인종차별|나치|극단주의|낙태|임신|출산|피임|성인|19금/;
+  // 단어 경계가 없는 한국어라, 짧은 말은 "독립된 낱말일 때"만 막는다 (물질·질소·미술·무기물·암모나이트·젖소 등은 통과)
+  const ALONE = w => `(?:^|[\\s:(])${w}(?:$|[\\s)(,·])`;
+  const BLOCK = new RegExp(['성기','성교','성행위','성관계','생식','음부','음경','음핵','자궁','고환','유방','항문','나체','누드','포르노','성적 ','섹스','야동','자위','강간','성폭','성희롱','매춘','성매매','해부','시신','시체','살해','살인','자살','학살','처형','고문','폭력','테러','총기','권총','소총','폭탄','폭발물','칼부림','마약','필로폰','코카인','헤로인','담배','흡연','음주','소주','맥주','도박','카지노','질병','종양','감염','출혈','피부병','배설물','대변','소변','욕설','혐오','인종차별','나치','극단주의','낙태','임신','출산','피임','성인물','19금',
+    ALONE('질'), ALONE('젖'), ALONE('술'), ALONE('암'), ALONE('무기'), ALONE('장기'), ALONE('대마'), ALONE('똥'), ALONE('오줌'), ALONE('상처'), ALONE('사망'), ALONE('성인'), '분류:[^ ]*(?:성행위|성기|성교|성적|성인|음란|포르노|누드|해부학|생식기|생식 기관|범죄|살인|질병|사망|무기|약물|마약|담배|주류|음주|도박)'].join('|'));
   async function wikiImage(term, signal) {
     if (!term || term.length > 20 || BLOCK.test(term)) return null;
     const u = 'https://ko.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages|categories|pageprops&piprop=thumbnail|name&pithumbsize=900&cllimit=50&titles=' + encodeURIComponent(term);
@@ -1046,6 +1056,7 @@ button { cursor: pointer; }
     if (/\.svg$/i.test(p.pageimage || '') || /map|flag|icon|logo/i.test(p.pageimage || '')) return null;
     return { src: p.thumbnail.source, title: p.title };
   }
+  const picDbg = m => { try { const el = $('picDbg'); if (el) el.textContent = '마지막 그림: ' + m + (lastRaw ? ' ‖ 원문: ' + lastRaw.slice(0, 300).replace(/\n/g, '⏎') : ''); } catch (e) {} };
   async function showPic(term, emoji, signal) {
     const seq = ++picSeq;
     let note = term ? `검색어 "${term}"` : '검색어 없음';
@@ -1081,6 +1092,7 @@ button { cursor: pointer; }
     input.value = ''; input.blur();
     lastQ = q; setEyebrow('q', q);
     if (/퀴즈|문제\s*내|수수께끼/.test(q)) quiz = true;
+    else if (quiz && !/힌트|정답|모르겠|다른 문제|^[가-힣A-Za-z0-9 ]{1,8}$/.test(q)) quiz = false; // 퀴즈 중 다른 질문을 하면 퀴즈 종료
     setState('think', '생각 중', quiz ? '문제를 고르고 있어.' : '잠깐만.');
     setChips([]); hidePic(); setSpecial('');
     draw(quiz ? '문제를 고르고 있어…' : '음… 생각하고 있어.', false, 'soft');
@@ -1119,7 +1131,7 @@ button { cursor: pointer; }
       else if (e.status === 400 && /credit|balance/i.test(e.detail || '')) msg = '충전이 필요해. 부모님께 말해 줘.';
       else if (e.status === 404) msg = '모델 이름이 맞지 않아. 부모님 설정에서 모델을 바꿔 줘.';
       else if (e.status === 429) msg = '조금 쉬었다가 다시 물어봐 줘.';
-      current = msg; draw(msg, true, 'plain');
+      current = msg; draw(msg, true, 'plain'); holdUntil = Date.now() + 60 * 1000;
       setState('idle', '잠깐', e.detail ? ('오류: ' + String(e.detail).slice(0, 80)) : '마이크를 누르고 다시 해 봐.');
     } finally { busy = false; askBtn.disabled = false; touchIdle(); }
   }
@@ -1195,24 +1207,17 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   });
 
   // ⚙ + 비밀번호
-  $('gearBtn').addEventListener('click', () => { pinEl.hidden = false; pinInput.value = ''; $('pinNote').textContent = ''; setTimeout(() => pinInput.focus(), 50); });
+  $('gearBtn').addEventListener('click', () => askPin());
   $('pinCancel').addEventListener('click', () => { pinEl.hidden = true; });
   $('pinForm').addEventListener('submit', e => { e.preventDefault(); if (pinInput.value === String(settings.pin || '1234')) { pinEl.hidden = true; openLog(); } else { $('pinNote').textContent = '비밀번호가 달라요'; pinInput.value = ''; pinInput.focus(); } });
   $('pinSave').addEventListener('click', () => { const v = $('pinSet').value.trim(); if (!/^\d{4}$/.test(v)) { $('saved').textContent = '숫자 4자리로 적어 주세요'; return; } saveSettings({ pin: v }); });
 
-  // long-press (2s) or 5 quick taps on the wordmark
+  // 제목 5번 빠르게 탭 → 비밀번호 창 (길게 누르기는 DeX 창 제스처와 충돌해서 뺌)
   const title = $('title');
-  let pressTimer = null, taps = 0, tapTimer = null;
-  const pressStart = () => { clearTimeout(pressTimer); pressTimer = setTimeout(() => { pressTimer = null; openLog(); }, 1500); };
-  const pressEnd = () => { clearTimeout(pressTimer); pressTimer = null; };
-  title.addEventListener('pointerdown', e => { e.preventDefault(); pressStart(); });
-  ['pointerup', 'pointerleave'].forEach(ev => title.addEventListener(ev, pressEnd));
-  // 터치 모니터/DeX에서 pointercancel이 먼저 오는 경우를 위해 touch 이벤트로도 잡는다
-  title.addEventListener('touchstart', e => { e.preventDefault(); pressStart(); }, { passive: false });
-  ['touchend', 'touchcancel'].forEach(ev => title.addEventListener(ev, pressEnd));
-  title.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+  let taps = 0, tapTimer = null;
+  const askPin = () => { pinEl.hidden = false; pinInput.value = ''; $('pinNote').textContent = ''; setTimeout(() => pinInput.focus(), 50); };
   title.addEventListener('contextmenu', e => e.preventDefault());
-  title.addEventListener('click', () => { taps++; clearTimeout(tapTimer); tapTimer = setTimeout(() => { taps = 0; }, 1500); if (taps >= 5) { taps = 0; openLog(); } });
+  title.addEventListener('click', () => { taps++; clearTimeout(tapTimer); tapTimer = setTimeout(() => { taps = 0; }, 1500); if (taps >= 5) { taps = 0; askPin(); } });
 
   // 확대 제스처 차단 (터치 모니터)
   document.addEventListener('gesturestart', e => e.preventDefault(), { passive: false });
