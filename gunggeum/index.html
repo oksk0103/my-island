@@ -157,6 +157,12 @@ button { cursor: pointer; }
 @keyframes figin { from { opacity: 0; transform: translateY(.6rem); } to { opacity: 1; transform: none; } }
 .fig-box { position: relative; aspect-ratio: 1 / 1; border: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 70%, var(--line)); overflow: hidden; display: grid; place-items: center; }
 .fig-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fig-box .wcard { width: 100%; height: 100%; display: grid; place-content: center; gap: .6rem; padding: .8rem; grid-auto-flow: row; }
+.fig-box .wcard.hanja { grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr)); grid-auto-flow: row; align-content: center; }
+.fig-box .wc { text-align: center; }
+.fig-box .wcard.hanja .wc-g { font-family: var(--f-ui); font-size: clamp(3.2rem, 7vw, 5.6rem); line-height: 1; color: var(--ink); }
+.fig-box .wcard:not(.hanja) .wc-g { font-family: var(--f-display); font-size: clamp(1.6rem, 3vw, 2.6rem); line-height: 1.1; color: var(--ink); letter-spacing: .02em; }
+.fig-box .wc-l { margin-top: .45rem; font-size: clamp(.9rem, 1.6vw, 1.15rem); color: var(--accent); font-weight: 700; }
 .fig-box .emo { font-size: clamp(2.4rem, 5vw, 4.6rem); line-height: 1.15; letter-spacing: .1em; text-align: center; padding: .5rem; white-space: nowrap; }
 .fig figcaption { color: var(--muted); font-size: .8rem; display: flex; justify-content: space-between; gap: .5rem; }
 .fig figcaption b { color: var(--ink); font-weight: 600; }
@@ -342,7 +348,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v39</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v40</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -448,7 +454,7 @@ button { cursor: pointer; }
 - "더 알려줘", "왜?", "예를 들면?"처럼 이어서 물으면 방금 이야기를 한 단계 더 깊게, ${deep}자 이내로 답해.
 - 아이가 방금 답에 나온 낱말의 뜻을 물으면(예: "광합성"이 뭐야?) 조사를 떼고 그 낱말만 2문장 안에 풀어 줘.
 - 답 본문에는 꾸밈, 이모지, 마크다운, 줄바꿈을 쓰지 마. 문장만 써.
-- 답이 끝나면 줄을 바꾸고 마지막 줄에 "@@ 검색어 | 이모지 | 다음 질문" 을 꼭 붙여. 다음 질문은 이 답을 읽은 아이가 이어서 물어볼 만한 짧은 질문 4개(각 14자 이내, 서로 다른 방향으로: 이유, 비교, 예시, 엉뚱한 상상 등)를 ; 로 구분해서 써. 검색어는 답의 핵심이 되는 구체적인 사물·동물·식물·자연현상·우주·장소·유물·탈것 가운데 하나를 한국어 위키백과 표제어 그대로 적어(예: 달, 무지개, 티라노사우루스, 번개, 경복궁). 다음 경우엔 검색어를 반드시 비워: 낱말 뜻·영어 단어·문법·추상 개념·감정·관계·수학 원리, 사람 몸(신체 부위·장기·생식·출산), 질병, 폭력·무기·약물·술·담배, 특정 인물. 조금이라도 애매하면 비워. 이모지는 답의 내용·비유와 직접 연결된 사물·동물·자연 2~3개(예: 추호→🐜🔬, 무지개→🌈☀️). 📖📚✏️📝💬🔤🧠💡❓ 같은 '공부·생각' 이모지는 쓰지 마. 이 줄은 화면에 안 보여.
+- 답이 끝나면 줄을 바꾸고 마지막 줄에 "@@ 검색어 | 이모지 | 다음 질문 | 낱말 카드" 를 꼭 붙여. 낱말 카드: 질문이 낱말의 뜻을 묻는 것이고 그 낱말이 한자어면 한 글자씩 "秋:가을 추;毫:털 호" 꼴로(글자:훈 음), 영어 단어면 "im·por·tant:임포턴트" 꼴로(음절:한글 발음) 적어. 낱말 질문이 아니거나 고유어면 비워. 다음 질문은 이 답을 읽은 아이가 이어서 물어볼 만한 짧은 질문 4개(각 14자 이내, 서로 다른 방향으로: 이유, 비교, 예시, 엉뚱한 상상 등)를 ; 로 구분해서 써. 검색어는 답의 핵심이 되는 구체적인 사물·동물·식물·자연현상·우주·장소·유물·탈것 가운데 하나를 한국어 위키백과 표제어 그대로 적어(예: 달, 무지개, 티라노사우루스, 번개, 경복궁). 다음 경우엔 검색어를 반드시 비워: 낱말 뜻·영어 단어·문법·추상 개념·감정·관계·수학 원리, 사람 몸(신체 부위·장기·생식·출산), 질병, 폭력·무기·약물·술·담배, 특정 인물. 조금이라도 애매하면 비워. 이모지는 답의 내용·비유와 직접 연결된 사물·동물·자연 2~3개(예: 추호→🐜🔬, 무지개→🌈☀️). 📖📚✏️📝💬🔤🧠💡❓ 같은 '공부·생각' 이모지는 쓰지 마. 이 줄은 화면에 안 보여.
 - 답에서 가장 중요한 구절 하나(2~6어절)를 《 》로 감싸. 꼭 한 군데만.
 - 대답해도 되는 것: 과학, 자연, 동물, 우주, 몸, 역사, 세계 여러 나라, 수학 원리, 미술과 음악, 로봇과 컴퓨터가 움직이는 원리, 책과 이야기, 말과 글자, 날씨와 계절, 생활 속 궁금증, 퀴즈, 수수께끼, 말놀이.
 - 퀴즈를 내 달라고 하면 중학생이 잠깐 생각해야 풀 만한 걸로 하나만 내고, 답은 맞히거나 "정답!"이라고 할 때 알려 줘. 정답을 알려 줄 때는 "정답은"이라는 말을 꼭 넣어.
@@ -1001,10 +1007,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       if (!m || m.index === 0) return { body: raw, term: '', emoji: '', qs: [] };
       tag = m[1]; body = raw.slice(0, m.index).trim();
     }
-    const [t = '', e = '', q = ''] = tag.split('|');
+    const [t = '', e = '', q = '', c = ''] = tag.split('|');
     const qs = q.split(/[;；\n]/).map(x => x.trim().replace(/^[-·•\d.\s]+/, '')).filter(x => x.length >= 2 && x.length <= 24).slice(0, 4);
     body = (body || raw).replace(/@@[^\n]*/g, '').trim();
-    return { body, term: cleanTerm(t), emoji: pickEmoji(e), qs };
+    const card = c.split(';').map(x => x.trim()).filter(Boolean).map(x => { const i = x.indexOf(':'); return i > 0 ? { g: x.slice(0, i).trim(), l: x.slice(i + 1).trim() } : null; }).filter(x => x && x.g.length <= 14 && x.l.length <= 12).slice(0, 4);
+    return { body, term: cleanTerm(t), emoji: pickEmoji(e), qs, card };
   }
   const cleanTerm = t => (t || '').trim().replace(/^[\s"'「」]+|[\s"'「」]+$/g, '');
   const BAD_EMOJI = /[🍺🍻🍷🍸🍹🥃🍾🚬🔪🗡️⚔️🔫💣🧨💊💉🩸🖕💀☠️🪦⚰️🍆🍑💦🔞👙🩲🩱👅🫦]/u;
@@ -1035,6 +1042,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     return { src: p.thumbnail.source, title: p.title };
   }
   const picDbg = m => { try { const el = $('picDbg'); if (el) el.textContent = '마지막 그림: ' + m + (lastRaw ? ' ‖ 원문: ' + lastRaw.slice(0, 300).replace(/\n/g, '⏎') : ''); } catch (e) {} };
+  function showCard(items) {
+    const esc = t => t.replace(/</g, '&lt;');
+    const hanja = items.every(x => /^[\u4E00-\u9FFF\u3400-\u4DBF]+$/.test(x.g));
+    placePic(`<div class="wcard${hanja ? ' hanja' : ''}">${items.map(x => `<div class="wc"><div class="wc-g">${esc(x.g)}</div><div class="wc-l">${esc(x.l)}</div></div>`).join('')}</div>`, '<span>낱말 카드</span>');
+  }
   async function showPic(term, emoji, signal) {
     const seq = ++picSeq;
     let note = term ? `검색어 "${term}"` : '검색어 없음';
@@ -1083,7 +1095,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     try {
       const raw = await claude(msgs, { system: rules(), signal: ctl.signal });
       lastRaw = raw; picDbg('응답 받음 (' + raw.length + '자)');
-      const { body: text, term, emoji, qs } = splitPic(raw);
+      const { body: text, term, emoji, qs, card } = splitPic(raw);
       let a = text.replace(/[*#_`>]/g, '').replace(/\p{Extended_Pictographic}/gu, '').replace(/\s+/g, ' ').trim();
       const g = graphemes(a);
       if (g.length > 320) { // 문장 끝에서 자르기
@@ -1098,7 +1110,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       setState(quiz ? 'quiz' : 'answer', quiz ? '퀴즈 중' : '답', quiz ? '답을 말해 봐. 모르겠으면 힌트를 눌러.' : '모르는 낱말은 눌러 봐.');
       speak(current);
       const noPhoto = /뜻|의미|무슨 말|영어|단어|문법|스펠링|철자|반대말|비슷한 말|예문|[A-Za-z]{3,}/.test(q);
-      if (!term && !emoji && !/@@/.test(raw)) picDbg('답에 그림 줄(@@)이 안 왔음 — 모델이 규칙을 빼먹음'); else showPic((noPhoto || settings.picOn === 'off') ? '' : term, emoji, ctl.signal);
+      if (card && card.length) { picSeq++; showCard(card); picDbg('낱말 카드 ' + card.map(x => x.g + ' ' + x.l).join(', ')); }
+      else if (!term && !emoji && !/@@/.test(raw)) picDbg('답에 그림 줄(@@)이 안 왔음 — 모델이 규칙을 빼먹음'); else showPic((noPhoto || settings.picOn === 'off') ? '' : term, emoji, ctl.signal);
       recent.push({ q, a: current }); while (recent.length > 3) recent.shift();
       todayCount(1); renderCount();
       saveLog(q, current);
