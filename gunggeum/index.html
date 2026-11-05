@@ -278,6 +278,12 @@ button { cursor: pointer; }
         <div class="row"><input id="apiKey" type="password" placeholder="sk-ant-…" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 16rem; max-width: 100%"><button class="chip" id="apiSave" type="button">저장</button><span class="empty" id="apiNote"></span></div>
         <label>모델</label>
         <select id="model"><option value="claude-haiku-5-5">Haiku 5.5 (빠르고 저렴)</option><option value="claude-sonnet-5-5">Sonnet 5.5 (더 똑똑, 비쌈)</option><option value="claude-haiku-4-5">Haiku 4.5</option></select>
+        <label>목소리</label>
+        <div class="row"><select id="voice"><option value="">자동</option></select><button class="chip" id="voiceTest" type="button">들어보기</button></div>
+        <label>말 빠르기</label>
+        <div class="seg" data-k="rate"><button type="button" data-v="0.85">느리게</button><button type="button" data-v="1">보통</button><button type="button" data-v="1.15">빠르게</button></div>
+        <label>목소리 높이</label>
+        <div class="seg" data-k="pitch"><button type="button" data-v="0.9">낮게</button><button type="button" data-v="1">보통</button><button type="button" data-v="1.15">높게</button></div>
         <label>하루 질문 상한</label>
         <select id="cap"><option value="0">제한 없음</option><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option><option value="50">50개</option></select>
       </div>
@@ -307,7 +313,7 @@ button { cursor: pointer; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '' };
+  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
   const LEVEL = {
@@ -343,6 +349,7 @@ button { cursor: pointer; }
     document.querySelectorAll('.seg').forEach(seg => seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === String(settings[seg.dataset.k]))));
     $('hFrom').value = settings.hFrom; $('hTo').value = settings.hTo; $('cap').value = settings.cap; $('model').value = settings.model;
     $('apiKey').value = settings.apiKey || '';
+    $('voice').value = settings.voice || '';
     $('apiNote').textContent = settings.apiKey ? '키 저장됨' : '키가 없으면 대답을 못 해요';
   }
   function saveSettings(patch) {
@@ -488,8 +495,19 @@ button { cursor: pointer; }
 
   // ---------- speech out ----------
   let voiceKo = null;
-  function pickVoice() { try { const vs = speechSynthesis.getVoices(); voiceKo = vs.find(v => /ko/i.test(v.lang) && /Google|Samsung|female|여/i.test(v.name)) || vs.find(v => /ko/i.test(v.lang)) || null; } catch (e) {} }
+  function koVoices() { try { return speechSynthesis.getVoices().filter(v => /^ko/i.test(v.lang)); } catch (e) { return []; } }
+  function pickVoice() {
+    const vs = koVoices();
+    const chosen = settings.voice && vs.find(v => v.name === settings.voice);
+    // 자동: 네트워크(고음질) 음성 → Google → Samsung → 아무거나
+    voiceKo = chosen || vs.find(v => !v.localService) || vs.find(v => /Google/i.test(v.name)) || vs.find(v => /Samsung/i.test(v.name)) || vs[0] || null;
+    const sel = $('voice'); const cur = sel.value;
+    sel.innerHTML = '<option value="">자동</option>' + vs.map(v => `<option value="${v.name.replace(/"/g, '&quot;')}">${v.name}${v.localService ? '' : ' (고음질)'}</option>`).join('');
+    sel.value = settings.voice && vs.some(v => v.name === settings.voice) ? settings.voice : (cur && vs.some(v => v.name === cur) ? cur : '');
+  }
   if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+  $('voice').addEventListener('change', e => { saveSettings({ voice: e.target.value }); pickVoice(); });
+  $('voiceTest').addEventListener('click', () => { speak('안녕! 나는 궁금칸이야. 뭐든 물어봐.', true); });
   function speak(text, force) {
     if (!sound && !force) return Promise.resolve();
     return new Promise(res => {
@@ -498,7 +516,7 @@ button { cursor: pointer; }
         if (!plain || !('speechSynthesis' in window)) return res();
         speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(plain);
-        u.lang = 'ko-KR'; u.rate = 0.95; u.pitch = 1.02; if (voiceKo) u.voice = voiceKo;
+        u.lang = 'ko-KR'; u.rate = +settings.rate || 1; u.pitch = +settings.pitch || 1; if (voiceKo) u.voice = voiceKo;
         u.onend = res; u.onerror = res;
         speechSynthesis.speak(u);
       } catch (e) { res(); }
