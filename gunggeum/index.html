@@ -168,7 +168,13 @@ button { cursor: pointer; }
 .sp-wx-txt { margin-top: .7rem; font-family: var(--f-display); font-size: 1.7rem; color: var(--ink); }
 .sp-wx-row { margin-top: .7rem; font-size: .78rem; color: var(--muted); line-height: 1.6; display: flex; flex-wrap: wrap; }
 .sp-wx-row span { white-space: nowrap; } .sp-wx-row span + span::before { content: '·'; padding: 0 .55em; }
-.sp-wx-tip { margin-top: 1.1rem; padding-top: .9rem; border-top: 1px solid var(--line); font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+.sp-hourly { display: grid; grid-template-columns: repeat(6, 1fr); gap: .4rem; margin-top: 1rem; padding-top: .9rem; border-top: 1px solid var(--line); }
+.sp-hourly .h { display: flex; flex-direction: column; align-items: center; gap: .25rem; min-width: 0; }
+.sp-hourly .h-t { font-size: .72rem; color: var(--muted); white-space: nowrap; }
+.sp-hourly .h-i { width: 1.9rem; height: 1.9rem; color: var(--accent); } .sp-hourly .h-i svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.sp-hourly .h-p { font-size: .68rem; color: var(--muted); } .sp-hourly .h-p.wet { color: var(--accent); font-weight: 700; }
+.sp-hourly .h-d { font-family: var(--f-display); font-size: 1.15rem; color: var(--ink); line-height: 1; }
+.sp-wx-tip { margin-top: 1rem; padding-top: .9rem; border-top: 1px solid var(--line); font-size: 1.1rem; font-weight: 700; color: var(--accent); }
 /* morning: weather is the hero, time secondary */
 .special.morning { grid-template-columns: 34fr 1px 66fr; }
 .special.morning .sp-time { font-size: clamp(3.4rem, 6vw, 5.6rem); line-height: .9; }
@@ -180,6 +186,7 @@ button { cursor: pointer; }
 .special.morning .sp-wx-cond { display: flex; align-items: baseline; gap: 1.2rem; flex-wrap: wrap; margin-top: .7rem; }
 .special.morning .sp-wx-txt { margin-top: 0; font-size: 2.2rem; } .special.morning .sp-wx-row { margin-top: 0; font-size: .8rem; }
 .special.morning .sp-wx-tip { font-size: 1.2rem; }
+.special.morning .sp-hourly { grid-template-columns: repeat(8, 1fr); }
 /* night: low-glare */
 .app.clock-mode .sp-time, .app.clock-mode .sp-wx-temp, .app.clock-mode .sp-wx-txt { color: color-mix(in srgb, var(--ink) 86%, transparent); }
 .app.clock-mode .qbar, .app.clock-mode .foot { visibility: hidden; }
@@ -190,6 +197,7 @@ button { cursor: pointer; }
   .special.morning .sp-clock { order: 2; }
   .sp-time { font-size: clamp(4.5rem, 30vw, 7rem); } .special.morning .sp-time { font-size: 3.2rem; }
   .special.morning .sp-wx-temp { font-size: 6.5rem; } .special.morning .sp-wx-ico { width: 5.6rem; height: 5.6rem; }
+  .special.morning .sp-hourly { grid-template-columns: repeat(6, 1fr); }
 }
 
 /* question bar */
@@ -315,6 +323,7 @@ button { cursor: pointer; }
         <div class="sp-label" id="wxHead"></div>
         <div class="sp-wx-main"><span class="sp-wx-ico" id="wxIco"></span><span class="sp-wx-temp" id="wxTemp">--°</span></div>
         <div class="sp-wx-cond"><div class="sp-wx-txt" id="wxTxt"></div><div class="sp-wx-row" id="wxRow"></div></div>
+        <div class="sp-hourly" id="wxHourly"></div>
         <div class="sp-wx-tip" id="wxTip"></div>
       </section>
     </div>
@@ -335,7 +344,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v19</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v20</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -800,6 +809,8 @@ button { cursor: pointer; }
     rain: '<svg viewBox="0 0 64 64"><path d="M18 42h28a10 10 0 0 0 1.5-19.9A14 14 0 0 0 18.6 20 11 11 0 0 0 18 42Z"/><path d="M24 47l-3 8M33 47l-3 8M42 47l-3 8"/></svg>',
     snow: '<svg viewBox="0 0 64 64"><path d="M18 40h28a10 10 0 0 0 1.5-19.9A14 14 0 0 0 18.6 18 11 11 0 0 0 18 40Z"/><path d="M24 48v8M20 52h8M32 48v8M28 52h8M40 48v8M36 52h8"/></svg>',
     thunder: '<svg viewBox="0 0 64 64"><path d="M18 40h28a10 10 0 0 0 1.5-19.9A14 14 0 0 0 18.6 18 11 11 0 0 0 18 40Z"/><path d="M34 42l-6 10h8l-6 10"/></svg>',
+    moon: '<svg viewBox="0 0 64 64"><path d="M40 12a20 20 0 1 0 12 36 16 16 0 0 1-12-36Z"/></svg>',
+    mooncloud: '<svg viewBox="0 0 64 64"><path d="M44 10a13 13 0 1 0 9 23 10 10 0 0 1-9-23Z"/><path d="M16 52 H45 A9 9 0 0 0 45 34 A13 13 0 0 0 20 37.5 A7.5 7.5 0 0 0 16 52 Z" fill="var(--bg)"/></svg>',
     thermo: '<svg viewBox="0 0 64 64"><path d="M26 38V14a6 6 0 0 1 12 0v24a10 10 0 1 1-12 0Z"/><path d="M32 26v18"/></svg>'
   };
   const WX = { 0: ['맑음', 'sun'], 1: ['대체로 맑음', 'sunsmallcloud'], 2: ['구름 조금', 'suncloud'], 3: ['흐림', 'cloud'], 45: ['안개', 'fog'], 48: ['안개', 'fog'], 51: ['이슬비', 'drizzle'], 53: ['이슬비', 'drizzle'], 55: ['이슬비', 'drizzle'], 56: ['찬 이슬비', 'rain'], 57: ['찬 이슬비', 'rain'], 61: ['비', 'rain'], 63: ['비', 'rain'], 65: ['많은 비', 'rain'], 66: ['얼음비', 'rain'], 67: ['얼음비', 'rain'], 71: ['눈', 'snow'], 73: ['눈', 'snow'], 75: ['많은 눈', 'snow'], 77: ['싸락눈', 'snow'], 80: ['소나기', 'drizzle'], 81: ['소나기', 'rain'], 82: ['강한 소나기', 'thunder'], 85: ['소낙눈', 'snow'], 86: ['소낙눈', 'snow'], 95: ['천둥번개', 'thunder'], 96: ['천둥번개·우박', 'thunder'], 99: ['천둥번개·우박', 'thunder'] };
@@ -807,11 +818,13 @@ button { cursor: pointer; }
     if (wxCache && Date.now() - wxAt < 20 * 60 * 1000) return wxCache;
     const lat = +settings.wxLat || 37.526, lon = +settings.wxLon || 126.896;
     const [f, a] = await Promise.all([
-      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=Asia%2FSeoul&forecast_days=2`).then(r => r.json()),
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,precipitation&hourly=temperature_2m,weather_code,precipitation_probability,is_day&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=Asia%2FSeoul&forecast_days=2`).then(r => r.json()),
       fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=pm10,pm2_5&timezone=Asia%2FSeoul`).then(r => r.json()).catch(() => null)
     ]);
-    const c = f.current, d = f.daily, i = (new Date().getHours() >= 15 && d.temperature_2m_max.length > 1) ? 1 : 0; // 저녁엔 내일 예보
-    wxCache = { t: Math.round(c.temperature_2m), feel: Math.round(c.apparent_temperature), code: i ? (d.weather_code?.[1] ?? c.weather_code) : c.weather_code, dayCode: d.weather_code?.[i], hi: Math.round(d.temperature_2m_max[i]), lo: Math.round(d.temperature_2m_min[i]), pop: d.precipitation_probability_max?.[i] ?? null, pm10: a?.current?.pm10 ?? null, pm25: a?.current?.pm2_5 ?? null };
+    const c = f.current, d = f.daily, hh = f.hourly || {};
+    const now = new Date(); const startIdx = Math.max(0, (hh.time || []).findIndex(t => new Date(t) > now));
+    const hours = (hh.time || []).slice(startIdx, startIdx + 8).map((t, k) => ({ h: new Date(t).getHours(), t: Math.round(hh.temperature_2m[startIdx + k]), code: hh.weather_code[startIdx + k], pop: hh.precipitation_probability?.[startIdx + k] ?? null, day: hh.is_day?.[startIdx + k] }));
+    wxCache = { hours, t: Math.round(c.temperature_2m), feel: Math.round(c.apparent_temperature), code: c.weather_code, dayCode: d.weather_code?.[0], hi: Math.round(d.temperature_2m_max[0]), lo: Math.round(d.temperature_2m_min[0]), pop: d.precipitation_probability_max?.[0] ?? null, pm10: a?.current?.pm10 ?? null, pm25: a?.current?.pm2_5 ?? null };
     wxAt = Date.now(); return wxCache;
   }
   function dustGrade(pm10, pm25) {
@@ -821,10 +834,12 @@ button { cursor: pointer; }
     return ['좋음', '보통', '나쁨', '매우 나쁨'][Math.max(g10, g25)];
   }
   function wxTip(w, dust) {
-    const rainy = (w.pop != null && w.pop >= 50) || [51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99].includes(w.dayCode ?? w.code);
+    const wet = c => [51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99].includes(c);
+    const soon = (w.hours || []).slice(0, 8);
+    const rainy = soon.some(x => (x.pop != null && x.pop >= 50) || wet(x.code)) || wet(w.code);
     const snowy = [71,73,75,77,85,86].includes(w.dayCode ?? w.code);
     if (snowy) return '눈이 와! 따뜻하게 입고 미끄럼 조심.';
-    if (rainy) return (new Date().getHours() >= 15 ? '내일 아침엔 우산 챙겨!' : '비 올 수 있어. 우산 챙겨!');
+    if (rainy) return '곧 비 올 수 있어. 우산 챙겨!';
     if (dust === '나쁨' || dust === '매우 나쁨') return '미세먼지가 나빠. 마스크 쓰자.';
     if (w.lo <= 0) return '영하야. 두꺼운 외투랑 장갑!';
     if (w.t <= 5) return '많이 추워. 두껍게 입자.';
@@ -833,17 +848,20 @@ button { cursor: pointer; }
     return '딱 좋은 날씨야. 잘 다녀와!';
   }
   async function renderWeather() {
-    const hr = new Date().getHours();
-    $('wxHead').textContent = (specialMode === 'clock' && hr >= 15 ? '내일 아침 · ' : '오늘 날씨 · ') + (settings.wxName || '우리 동네');
+    $('wxHead').textContent = '지금 날씨 · ' + (settings.wxName || '우리 동네');
     try {
       const w = await fetchWeather(); if (!specialMode) return;
-      const [txt, ico] = WX[w.code] || ['날씨', 'thermo'];
+      const [txt, ico0] = WX[w.code] || ['날씨', 'thermo'];
+      const hrNow = new Date().getHours(), night = hrNow < 6 || hrNow >= 18;
+      const ico = night && ico0 === 'sun' ? 'moon' : night && (ico0 === 'suncloud' || ico0 === 'sunsmallcloud') ? 'mooncloud' : ico0;
       $('wxIco').innerHTML = ICON[ico] || ICON.thermo; $('wxTemp').textContent = w.t + '°'; $('wxTxt').textContent = txt;
       const dust = dustGrade(w.pm10, w.pm25);
       $('wxRow').innerHTML = [`최고 ${w.hi}°`, `최저 ${w.lo}°`, w.feel !== w.t ? `체감 ${w.feel}°` : null, w.pop != null ? `비 올 확률 ${w.pop}%` : null, dust ? `미세먼지 ${dust}` : null].filter(Boolean).map(x => `<span>${x}</span>`).join('');
+      const n = specialMode === 'weather' && window.innerWidth > 900 ? 8 : 6;
+      $('wxHourly').innerHTML = (w.hours || []).slice(0, n).map(x => { const [, ic] = WX[x.code] || ['', 'thermo']; const icon = (x.day === 0 && (ic === 'sun' || ic === 'sunsmallcloud' || ic === 'suncloud')) ? (ic === 'sun' ? 'moon' : 'mooncloud') : ic; return `<div class="h"><div class="h-t">${x.h < 12 ? '오전' : '오후'} ${x.h % 12 || 12}시</div><div class="h-i">${ICON[icon] || ICON.thermo}</div><div class="h-p${x.pop >= 40 ? ' wet' : ''}">${x.pop != null ? x.pop + '%' : ''}</div><div class="h-d">${x.t}°</div></div>`; }).join('');
       $('wxTip').textContent = wxTip(w, dust);
       if (specialMode === 'weather') current = `오늘 ${settings.wxName || '우리 동네'} 날씨는 ${txt}, 지금 ${w.t}도, 최고 ${w.hi}도 최저 ${w.lo}도야. ${$('wxTip').textContent}`;
-    } catch (e) { $('wxIco').innerHTML = ICON.thermo; $('wxTemp').textContent = '--°'; $('wxTxt').textContent = '날씨를 못 가져왔어'; $('wxRow').innerHTML = ''; $('wxTip').textContent = ''; }
+    } catch (e) { $('wxIco').innerHTML = ICON.thermo; $('wxTemp').textContent = '--°'; $('wxTxt').textContent = '날씨를 못 가져왔어'; $('wxRow').innerHTML = ''; $('wxHourly').innerHTML = ''; $('wxTip').textContent = ''; }
   }
   function showWeather() {
     hidePic(); setChips([]);
