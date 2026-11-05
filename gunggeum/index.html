@@ -93,9 +93,12 @@ button { cursor: pointer; }
 .wave rect:nth-child(2) { animation-delay: .12s; animation-duration: .75s; } .wave rect:nth-child(3) { animation-delay: .24s; animation-duration: .85s; } .wave rect:nth-child(4) { animation-delay: .08s; animation-duration: .7s; } .wave rect:nth-child(5) { animation-delay: .2s; animation-duration: .8s; }
 @keyframes gk-wave { 0%, 100% { transform: scaleY(.4); } 50% { transform: scaleY(1); } }
 .app[data-state="listen"] .mic .micico { display: none; } .app[data-state="listen"] .mic .wave { display: block; }
-/* key phrase — 형광펜 느낌 (단어 단위) */
+/* key phrase — 형광펜 (낮: 머스터드 / 밤: 테라코타 밴드 + 크림 글자) */
+:root { --hl: #F3D36B; --hl-ink: var(--ink); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --hl: #7A3A20; --hl-ink: #FFF1D6; } }
+:root[data-theme="dark"] { --hl: #7A3A20; --hl-ink: #FFF1D6; }
 .sheet .key { text-decoration: none; }
-.sheet .key .w { border-bottom: 0; background: linear-gradient(transparent 12%, color-mix(in srgb, var(--accent) 30%, transparent) 12%, color-mix(in srgb, var(--accent) 30%, transparent) 90%, transparent 90%); padding: 0 .06em; margin: 0 -.06em; }
+.sheet .key .w { border-bottom: 0; color: var(--hl-ink); background: linear-gradient(transparent 12%, var(--hl) 12%, var(--hl) 90%, transparent 90%); padding: 0 .06em; margin: 0 -.06em; }
 .sheet .key svg { display: none; }
 /* constellation */
 .dots svg { width: 4.6rem; height: 2rem; overflow: visible; }
@@ -360,7 +363,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v28</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v29</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
