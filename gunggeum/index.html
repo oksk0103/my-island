@@ -156,7 +156,8 @@ button { cursor: pointer; }
 .sp-date { font-size: clamp(1.2rem, 3vw, 2rem); color: var(--muted); font-weight: 600; }
 .sp-msg { font-family: var(--f-display); font-size: clamp(1.3rem, 3.4vw, 2.4rem); color: var(--accent); margin-top: .4rem; }
 .sp-wx-main { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
-.sp-wx-ico { font-size: clamp(3rem, 7vw, 6rem); line-height: 1; }
+.sp-wx-ico { display: inline-flex; width: clamp(3.6rem, 8vw, 6.5rem); height: clamp(3.6rem, 8vw, 6.5rem); color: var(--accent); }
+.sp-wx-ico svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .sp-wx-temp { font-family: var(--f-display); font-size: clamp(3.5rem, 9vw, 7.5rem); line-height: 1; letter-spacing: -.03em; color: var(--ink); }
 .sp-wx-txt { font-family: var(--f-display); font-size: clamp(1.5rem, 3.6vw, 2.8rem); color: var(--ink); }
 .sp-wx-row { font-size: clamp(1rem, 2vw, 1.4rem); color: var(--muted); font-weight: 600; }
@@ -283,7 +284,7 @@ button { cursor: pointer; }
       </div>
       <div class="sp-wx" id="spWx">
         <div class="sp-date" id="wxHead"></div>
-        <div class="sp-wx-main"><span class="sp-wx-ico" id="wxIco">☀️</span><span class="sp-wx-temp" id="wxTemp">--°</span><span class="sp-wx-txt" id="wxTxt"></span></div>
+        <div class="sp-wx-main"><span class="sp-wx-ico" id="wxIco"></span><span class="sp-wx-temp" id="wxTemp">--°</span><span class="sp-wx-txt" id="wxTxt"></span></div>
         <div class="sp-wx-row" id="wxRow"></div>
         <div class="sp-wx-tip" id="wxTip"></div>
       </div>
@@ -305,7 +306,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v17</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v18</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -757,7 +758,20 @@ button { cursor: pointer; }
     setSpecial('clock'); renderWeather();
     setState('idle', '쉬는 시간', '부모님이 정한 시간이에요.');
   }
-  const WX = { 0: ['맑음', '☀️'], 1: ['대체로 맑음', '🌤️'], 2: ['구름 조금', '⛅'], 3: ['흐림', '☁️'], 45: ['안개', '🌫️'], 48: ['안개', '🌫️'], 51: ['이슬비', '🌦️'], 53: ['이슬비', '🌦️'], 55: ['이슬비', '🌦️'], 56: ['찬 이슬비', '🌧️'], 57: ['찬 이슬비', '🌧️'], 61: ['비', '🌧️'], 63: ['비', '🌧️'], 65: ['많은 비', '🌧️'], 66: ['얼음비', '🌧️'], 67: ['얼음비', '🌧️'], 71: ['눈', '🌨️'], 73: ['눈', '🌨️'], 75: ['많은 눈', '❄️'], 77: ['싸락눈', '🌨️'], 80: ['소나기', '🌦️'], 81: ['소나기', '🌧️'], 82: ['강한 소나기', '⛈️'], 85: ['소낙눈', '🌨️'], 86: ['소낙눈', '❄️'], 95: ['천둥번개', '⛈️'], 96: ['천둥번개·우박', '⛈️'], 99: ['천둥번개·우박', '⛈️'] };
+  const SUN = '<circle cx="32" cy="32" r="10"/><path d="M32 8v6M32 50v6M8 32h6M50 32h6M15 15l4.2 4.2M44.8 44.8 49 49M15 49l4.2-4.2M44.8 19.2 49 15"/>';
+  const CLOUD = '<path d="M20 50h26a10 10 0 0 0 1.5-19.9A14 14 0 0 0 20.6 28 11 11 0 0 0 20 50Z"/>';
+  const ICON = {
+    sun: `<svg viewBox="0 0 64 64">${SUN}</svg>`,
+    suncloud: '<svg viewBox="0 0 64 64"><circle cx="24" cy="22" r="8"/><path d="M24 6v4M8 22h4M12.7 10.7l2.8 2.8M35.3 10.7l-2.8 2.8"/><path d="M26 54h22a9 9 0 0 0 1.3-17.9A12.5 12.5 0 0 0 26.5 34 10 10 0 0 0 26 54Z"/></svg>',
+    cloud: `<svg viewBox="0 0 64 64">${CLOUD}</svg>`,
+    fog: '<svg viewBox="0 0 64 64"><path d="M20 40h26a10 10 0 0 0 1.5-19.9A14 14 0 0 0 20.6 18 11 11 0 0 0 20 40Z"/><path d="M14 48h36M20 56h24"/></svg>',
+    drizzle: '<svg viewBox="0 0 64 64"><path d="M20 42h26a10 10 0 0 0 1.5-19.9A14 14 0 0 0 20.6 20 11 11 0 0 0 20 42Z"/><path d="M25 48v4M33 50v4M41 48v4"/></svg>',
+    rain: '<svg viewBox="0 0 64 64"><path d="M20 42h26a10 10 0 0 0 1.5-19.9A14 14 0 0 0 20.6 20 11 11 0 0 0 20 42Z"/><path d="M24 47l-3 8M33 47l-3 8M42 47l-3 8"/></svg>',
+    snow: '<svg viewBox="0 0 64 64"><path d="M20 40h26a10 10 0 0 0 1.5-19.9A14 14 0 0 0 20.6 18 11 11 0 0 0 20 40Z"/><path d="M24 48v8M20 52h8M32 48v8M28 52h8M40 48v8M36 52h8"/></svg>',
+    thunder: '<svg viewBox="0 0 64 64"><path d="M20 40h26a10 10 0 0 0 1.5-19.9A14 14 0 0 0 20.6 18 11 11 0 0 0 20 40Z"/><path d="M34 42l-6 10h8l-6 10"/></svg>',
+    thermo: '<svg viewBox="0 0 64 64"><path d="M26 38V14a6 6 0 0 1 12 0v24a10 10 0 1 1-12 0Z"/><path d="M32 26v18"/></svg>'
+  };
+  const WX = { 0: ['맑음', 'sun'], 1: ['대체로 맑음', 'suncloud'], 2: ['구름 조금', 'suncloud'], 3: ['흐림', 'cloud'], 45: ['안개', 'fog'], 48: ['안개', 'fog'], 51: ['이슬비', 'drizzle'], 53: ['이슬비', 'drizzle'], 55: ['이슬비', 'drizzle'], 56: ['찬 이슬비', 'rain'], 57: ['찬 이슬비', 'rain'], 61: ['비', 'rain'], 63: ['비', 'rain'], 65: ['많은 비', 'rain'], 66: ['얼음비', 'rain'], 67: ['얼음비', 'rain'], 71: ['눈', 'snow'], 73: ['눈', 'snow'], 75: ['많은 눈', 'snow'], 77: ['싸락눈', 'snow'], 80: ['소나기', 'drizzle'], 81: ['소나기', 'rain'], 82: ['강한 소나기', 'thunder'], 85: ['소낙눈', 'snow'], 86: ['소낙눈', 'snow'], 95: ['천둥번개', 'thunder'], 96: ['천둥번개·우박', 'thunder'], 99: ['천둥번개·우박', 'thunder'] };
   async function fetchWeather() {
     if (wxCache && Date.now() - wxAt < 20 * 60 * 1000) return wxCache;
     const lat = +settings.wxLat || 37.526, lon = +settings.wxLon || 126.896;
@@ -791,13 +805,13 @@ button { cursor: pointer; }
     $('wxHead').textContent = settings.wxName || '우리 동네';
     try {
       const w = await fetchWeather(); if (!specialMode) return;
-      const [txt, ico] = WX[w.code] || ['날씨', '🌡️'];
-      $('wxIco').textContent = ico; $('wxTemp').textContent = w.t + '°'; $('wxTxt').textContent = txt;
+      const [txt, ico] = WX[w.code] || ['날씨', 'thermo'];
+      $('wxIco').innerHTML = ICON[ico] || ICON.thermo; $('wxTemp').textContent = w.t + '°'; $('wxTxt').textContent = txt;
       const dust = dustGrade(w.pm10, w.pm25);
       $('wxRow').textContent = [`최고 ${w.hi}°`, `최저 ${w.lo}°`, w.feel !== w.t ? `체감 ${w.feel}°` : null, w.pop != null ? `비 올 확률 ${w.pop}%` : null, dust ? `미세먼지 ${dust}` : null].filter(Boolean).join(' · ');
       $('wxTip').textContent = wxTip(w, dust);
       if (specialMode === 'weather') current = `오늘 ${settings.wxName || '우리 동네'} 날씨는 ${txt}, 지금 ${w.t}도, 최고 ${w.hi}도 최저 ${w.lo}도야. ${$('wxTip').textContent}`;
-    } catch (e) { $('wxIco').textContent = '🌡️'; $('wxTemp').textContent = '--°'; $('wxTxt').textContent = '날씨를 못 가져왔어'; $('wxRow').textContent = ''; $('wxTip').textContent = ''; }
+    } catch (e) { $('wxIco').innerHTML = ICON.thermo; $('wxTemp').textContent = '--°'; $('wxTxt').textContent = '날씨를 못 가져왔어'; $('wxRow').textContent = ''; $('wxTip').textContent = ''; }
   }
   function showWeather() {
     hidePic(); setChips([]);
