@@ -495,7 +495,7 @@ button { cursor: pointer; }
 
   // ---------- speech out ----------
   let voiceKo = null;
-  function koVoices() { try { return speechSynthesis.getVoices().filter(v => /^ko/i.test(v.lang)); } catch (e) { return []; } }
+  function koVoices() { try { return speechSynthesis.getVoices().filter(v => /^ko([-_]|$)/i.test(v.lang)); } catch (e) { return []; } }
   function pickVoice() {
     const vs = koVoices();
     const chosen = settings.voice && vs.find(v => v.name === settings.voice);
