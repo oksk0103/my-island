@@ -63,7 +63,11 @@ button { cursor: pointer; }
 .gk * { transform-box: fill-box; transform-origin: center; }
 .gk .gk-body { transform-box: view-box; transform-origin: 50px 90px; }
 .gk .st { display: none; }
-.app[data-state="listen"] .gk .st-listen, .app[data-state="think"] .gk .st-think, .app[data-state="answer"] .gk .st-answer, .app[data-state="quiz"] .gk .st-quiz { display: inline; }
+.app[data-state="listen"] .gk .st-listen, .app[data-state="think"] .gk .st-think, .app[data-state="answer"] .gk .st-answer, .app[data-state="quiz"] .gk .st-quiz, .app.clock-mode .gk .st-sleep { display: inline; }
+.app.clock-mode .gk .gk-eye { display: none; animation: none; }
+.app.clock-mode .gk .gk-body { transform: rotate(6deg); }
+@keyframes gk-zz { 0%, 100% { opacity: .35; } 50% { opacity: .9; } }
+.gk .gk-z { animation: gk-zz 4s ease-in-out infinite; } .gk .gk-z:nth-of-type(2) { animation-delay: .9s; }
 .app[data-state="listen"] .gk .gk-eye { transform: scale(1.18); }
 .app[data-state="think"] .gk .gk-pupil { transform: translate(2.6px, -3.2px); }
 .app[data-state="quiz"] .gk .gk-pupil { transform: translate(-.8px, .4px); }
@@ -146,24 +150,47 @@ button { cursor: pointer; }
 .fig figcaption b { color: var(--ink); font-weight: 600; }
 .fig figcaption:empty { display: none; }
 
-/* special screens: clock / weather */
+/* special screens: clock / weather (Magic Patterns 시안 기준) */
 .main .inner.special-on .textcol, .main .inner.special-on .fig { display: none; }
-.special { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 2rem 4rem; min-height: 0; }
+.special { display: grid; grid-template-columns: 55fr 1px 45fr; align-items: stretch; min-height: 0; height: 100%; }
 .special[hidden] { display: none; }
-.sp-clock, .sp-wx { display: flex; flex-direction: column; gap: .6rem; min-width: 0; }
-.sp-wx { border-left: 1px solid var(--line); padding-left: 3rem; }
-.sp-time { font-family: var(--f-display); font-size: clamp(4rem, 13vw, 12rem); line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--ink); }
-.sp-date { font-size: clamp(1.2rem, 3vw, 2rem); color: var(--muted); font-weight: 600; }
-.sp-msg { font-family: var(--f-display); font-size: clamp(1.3rem, 3.4vw, 2.4rem); color: var(--accent); margin-top: .4rem; }
-.sp-wx-main { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
-.sp-wx-ico { display: inline-flex; width: clamp(3.6rem, 8vw, 6.5rem); height: clamp(3.6rem, 8vw, 6.5rem); color: var(--accent); }
-.sp-wx-ico svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-.sp-wx-temp { font-family: var(--f-display); font-size: clamp(3.5rem, 9vw, 7.5rem); line-height: 1; letter-spacing: -.03em; color: var(--ink); }
-.sp-wx-txt { font-family: var(--f-display); font-size: clamp(1.5rem, 3.6vw, 2.8rem); color: var(--ink); }
-.sp-wx-row { font-size: clamp(1rem, 2vw, 1.4rem); color: var(--muted); font-weight: 600; }
-.sp-wx-tip { font-family: var(--f-display); font-size: clamp(1.4rem, 3.2vw, 2.4rem); color: var(--accent); }
-@media (max-width: 900px) { .special { grid-template-columns: 1fr; gap: 1.6rem; } .sp-wx { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: 1.4rem; } .sp-time { font-size: clamp(4rem, 24vw, 8rem); } }
+.special > .sp-rule { background: var(--line); margin: 3.6rem 0; }
+.sp-clock, .sp-wx { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: 0 2.8rem 0 0; }
+.sp-wx { padding: 0 0 0 3.2rem; }
+.sp-time { font-family: var(--f-display); font-size: clamp(5rem, 13.2vw, 12.6rem); line-height: .86; letter-spacing: -.01em; font-variant-numeric: tabular-nums; color: var(--ink); margin-left: -.03em; }
+.sp-date { margin-top: 1.5rem; font-size: 1.3rem; font-weight: 500; color: var(--muted); }
+.sp-msg { margin-top: .7rem; font-size: 1.1rem; font-weight: 500; color: var(--accent); }
+.sp-label { font-size: .8rem; font-weight: 500; color: var(--muted); }
+.sp-wx-main { display: flex; align-items: center; gap: 1.1rem; margin-top: .9rem; }
+.sp-wx-ico { display: inline-flex; flex: none; width: 5.2rem; height: 5.2rem; color: var(--accent); }
+.sp-wx-ico svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.85; stroke-linecap: round; stroke-linejoin: round; }
+.sp-wx-temp { font-family: var(--f-display); font-size: 6.4rem; line-height: .9; color: var(--ink); }
+.sp-wx-txt { margin-top: .7rem; font-family: var(--f-display); font-size: 1.7rem; color: var(--ink); }
+.sp-wx-row { margin-top: .7rem; font-size: .78rem; color: var(--muted); line-height: 1.6; display: flex; flex-wrap: wrap; }
+.sp-wx-row span { white-space: nowrap; } .sp-wx-row span + span::before { content: '·'; padding: 0 .55em; }
+.sp-wx-tip { margin-top: 1.1rem; padding-top: .9rem; border-top: 1px solid var(--line); font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+/* morning: weather is the hero, time secondary */
+.special.morning { grid-template-columns: 34fr 1px 66fr; }
+.special.morning .sp-time { font-size: clamp(3.4rem, 6vw, 5.6rem); line-height: .9; }
+.special.morning .sp-date { margin-top: .9rem; font-size: 1rem; }
+.special.morning .sp-msg { margin-top: 1.8rem; font-size: 1.1rem; color: var(--ink); line-height: 1.55; }
+.special.morning .sp-wx-ico { width: 8.4rem; height: 8.4rem; } .special.morning .sp-wx-ico svg { stroke-width: 1.4; }
+.special.morning .sp-wx-temp { font-size: 10.4rem; line-height: .85; }
+.special.morning .sp-wx-main { gap: 1.4rem; margin-top: .5rem; }
+.special.morning .sp-wx-cond { display: flex; align-items: baseline; gap: 1.2rem; flex-wrap: wrap; margin-top: .7rem; }
+.special.morning .sp-wx-txt { margin-top: 0; font-size: 2.2rem; } .special.morning .sp-wx-row { margin-top: 0; font-size: .8rem; }
+.special.morning .sp-wx-tip { font-size: 1.2rem; }
+/* night: low-glare */
+.app.clock-mode .sp-time, .app.clock-mode .sp-wx-temp, .app.clock-mode .sp-wx-txt { color: color-mix(in srgb, var(--ink) 86%, transparent); }
 .app.clock-mode .qbar, .app.clock-mode .foot { visibility: hidden; }
+@media (max-width: 900px) {
+  .special, .special.morning { grid-template-columns: 1fr; height: auto; }
+  .special > .sp-rule { margin: 1.6rem 0; height: 1px; }
+  .sp-clock, .sp-wx { padding: 0; }
+  .special.morning .sp-clock { order: 2; }
+  .sp-time { font-size: clamp(4.5rem, 30vw, 7rem); } .special.morning .sp-time { font-size: 3.2rem; }
+  .special.morning .sp-wx-temp { font-size: 6.5rem; } .special.morning .sp-wx-ico { width: 5.6rem; height: 5.6rem; }
+}
 
 /* question bar */
 .qbar .inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(9rem, 10.5rem); gap: .7rem; padding-block: .6rem 1rem; }
@@ -251,6 +278,7 @@ button { cursor: pointer; }
           <g class="st st-quiz gk-brow"><rect x="54" y="40" width="15" height="4" rx="2" fill="var(--accent-ink)" transform="rotate(-14 61.5 42)"></rect></g>
         </g>
         <g class="st st-listen"><rect class="gk-bar" x="88.5" y="53" width="3.5" height="10" rx="1" fill="var(--accent)"></rect><rect class="gk-bar" x="93.5" y="49" width="3.5" height="18" rx="1" fill="var(--accent)"></rect><rect class="gk-bar" x="98.5" y="52" width="3.5" height="12" rx="1" fill="var(--accent)"></rect></g>
+        <g class="st st-sleep"><path d="M31 60 Q38 67 45 60" fill="none" stroke="var(--accent-ink)" stroke-width="4" stroke-linecap="round"></path><path d="M55 60 Q62 67 69 60" fill="none" stroke="var(--accent-ink)" stroke-width="4" stroke-linecap="round"></path><text class="gk-z" x="86" y="30" font-family="Do Hyeon, sans-serif" font-size="16" fill="var(--muted)">z</text><text class="gk-z" x="95" y="16" font-family="Do Hyeon, sans-serif" font-size="22" fill="var(--muted)">z</text></g>
         <g class="st st-think"><circle class="gk-dot" cx="85" cy="25" r="2" fill="var(--accent)"></circle><circle class="gk-dot" cx="91" cy="16" r="2.8" fill="var(--accent)"></circle><circle class="gk-dot" cx="97" cy="5.5" r="3.6" fill="var(--accent)"></circle></g>
       </svg>
       <span id="stateLabel">쉬는 중</span>
@@ -277,17 +305,18 @@ button { cursor: pointer; }
     <div class="chips" id="chips"></div>
     </div>
     <div class="special" id="special" hidden>
-      <div class="sp-clock" id="spClock">
+      <section class="sp-clock" id="spClock">
         <div class="sp-time" id="spTime">00:00</div>
         <div class="sp-date" id="spDate"></div>
         <div class="sp-msg" id="spMsg"></div>
-      </div>
-      <div class="sp-wx" id="spWx">
-        <div class="sp-date" id="wxHead"></div>
-        <div class="sp-wx-main"><span class="sp-wx-ico" id="wxIco"></span><span class="sp-wx-temp" id="wxTemp">--°</span><span class="sp-wx-txt" id="wxTxt"></span></div>
-        <div class="sp-wx-row" id="wxRow"></div>
+      </section>
+      <div class="sp-rule" aria-hidden="true"></div>
+      <section class="sp-wx" id="spWx">
+        <div class="sp-label" id="wxHead"></div>
+        <div class="sp-wx-main"><span class="sp-wx-ico" id="wxIco"></span><span class="sp-wx-temp" id="wxTemp">--°</span></div>
+        <div class="sp-wx-cond"><div class="sp-wx-txt" id="wxTxt"></div><div class="sp-wx-row" id="wxRow"></div></div>
         <div class="sp-wx-tip" id="wxTip"></div>
-      </div>
+      </section>
     </div>
     <figure class="fig" id="fig" hidden>
       <div class="fig-box" id="figBox"></div>
@@ -306,7 +335,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v18</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v19</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -743,6 +772,7 @@ button { cursor: pointer; }
     specialMode = mode;
     special.hidden = !mode; mainInnerEl.classList.toggle('special-on', !!mode);
     app.classList.toggle('clock-mode', mode === 'clock');
+    special.classList.toggle('morning', mode === 'weather');
   }
   function renderClock(msg) {
     const d = new Date();
@@ -758,29 +788,30 @@ button { cursor: pointer; }
     setSpecial('clock'); renderWeather();
     setState('idle', '쉬는 시간', '부모님이 정한 시간이에요.');
   }
-  const SUN = '<circle cx="32" cy="32" r="10"/><path d="M32 8v6M32 50v6M8 32h6M50 32h6M15 15l4.2 4.2M44.8 44.8 49 49M15 49l4.2-4.2M44.8 19.2 49 15"/>';
-  const CLOUD = '<path d="M20 50h26a10 10 0 0 0 1.5-19.9A14 14 0 0 0 20.6 28 11 11 0 0 0 20 50Z"/>';
+  const RAYS = (cx, cy, r1, r2) => Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4; return `<line x1="${(cx + Math.cos(a) * r1).toFixed(1)}" y1="${(cy + Math.sin(a) * r1).toFixed(1)}" x2="${(cx + Math.cos(a) * r2).toFixed(1)}" y2="${(cy + Math.sin(a) * r2).toFixed(1)}"/>`; }).join('');
+  const CLOUD_LOW = '<path d="M16 52 H45 A9 9 0 0 0 45 34 A13 13 0 0 0 20 37.5 A7.5 7.5 0 0 0 16 52 Z" fill="var(--bg)"/>';
   const ICON = {
-    sun: `<svg viewBox="0 0 64 64">${SUN}</svg>`,
-    suncloud: '<svg viewBox="0 0 64 64"><circle cx="24" cy="22" r="8"/><path d="M24 6v4M8 22h4M12.7 10.7l2.8 2.8M35.3 10.7l-2.8 2.8"/><path d="M26 54h22a9 9 0 0 0 1.3-17.9A12.5 12.5 0 0 0 26.5 34 10 10 0 0 0 26 54Z"/></svg>',
-    cloud: `<svg viewBox="0 0 64 64">${CLOUD}</svg>`,
-    fog: '<svg viewBox="0 0 64 64"><path d="M20 40h26a10 10 0 0 0 1.5-19.9A14 14 0 0 0 20.6 18 11 11 0 0 0 20 40Z"/><path d="M14 48h36M20 56h24"/></svg>',
-    drizzle: '<svg viewBox="0 0 64 64"><path d="M20 42h26a10 10 0 0 0 1.5-19.9A14 14 0 0 0 20.6 20 11 11 0 0 0 20 42Z"/><path d="M25 48v4M33 50v4M41 48v4"/></svg>',
-    rain: '<svg viewBox="0 0 64 64"><path d="M20 42h26a10 10 0 0 0 1.5-19.9A14 14 0 0 0 20.6 20 11 11 0 0 0 20 42Z"/><path d="M24 47l-3 8M33 47l-3 8M42 47l-3 8"/></svg>',
-    snow: '<svg viewBox="0 0 64 64"><path d="M20 40h26a10 10 0 0 0 1.5-19.9A14 14 0 0 0 20.6 18 11 11 0 0 0 20 40Z"/><path d="M24 48v8M20 52h8M32 48v8M28 52h8M40 48v8M36 52h8"/></svg>',
-    thunder: '<svg viewBox="0 0 64 64"><path d="M20 40h26a10 10 0 0 0 1.5-19.9A14 14 0 0 0 20.6 18 11 11 0 0 0 20 40Z"/><path d="M34 42l-6 10h8l-6 10"/></svg>',
+    sun: `<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="11"/>${RAYS(32, 32, 16, 21)}</svg>`,
+    suncloud: `<svg viewBox="0 0 64 64"><circle cx="41" cy="22" r="8"/>${RAYS(41, 22, 12.5, 16.5)}${CLOUD_LOW}</svg>`,
+    sunsmallcloud: `<svg viewBox="0 0 64 64"><circle cx="28" cy="27" r="10.5"/>${RAYS(28, 27, 15.5, 20.5)}<path d="M33 55 H52 A6 6 0 0 0 52 43 A9 9 0 0 0 35 43.5 A5.8 5.8 0 0 0 33 55 Z" fill="var(--bg)"/></svg>`,
+    cloud: '<svg viewBox="0 0 64 64"><path d="M18 50h28a10 10 0 0 0 1.5-19.9A14 14 0 0 0 18.6 28 11 11 0 0 0 18 50Z"/></svg>',
+    fog: '<svg viewBox="0 0 64 64"><path d="M18 40h28a10 10 0 0 0 1.5-19.9A14 14 0 0 0 18.6 18 11 11 0 0 0 18 40Z"/><path d="M14 48h36M20 56h24"/></svg>',
+    drizzle: '<svg viewBox="0 0 64 64"><path d="M18 42h28a10 10 0 0 0 1.5-19.9A14 14 0 0 0 18.6 20 11 11 0 0 0 18 42Z"/><path d="M25 48v4M33 50v4M41 48v4"/></svg>',
+    rain: '<svg viewBox="0 0 64 64"><path d="M18 42h28a10 10 0 0 0 1.5-19.9A14 14 0 0 0 18.6 20 11 11 0 0 0 18 42Z"/><path d="M24 47l-3 8M33 47l-3 8M42 47l-3 8"/></svg>',
+    snow: '<svg viewBox="0 0 64 64"><path d="M18 40h28a10 10 0 0 0 1.5-19.9A14 14 0 0 0 18.6 18 11 11 0 0 0 18 40Z"/><path d="M24 48v8M20 52h8M32 48v8M28 52h8M40 48v8M36 52h8"/></svg>',
+    thunder: '<svg viewBox="0 0 64 64"><path d="M18 40h28a10 10 0 0 0 1.5-19.9A14 14 0 0 0 18.6 18 11 11 0 0 0 18 40Z"/><path d="M34 42l-6 10h8l-6 10"/></svg>',
     thermo: '<svg viewBox="0 0 64 64"><path d="M26 38V14a6 6 0 0 1 12 0v24a10 10 0 1 1-12 0Z"/><path d="M32 26v18"/></svg>'
   };
-  const WX = { 0: ['맑음', 'sun'], 1: ['대체로 맑음', 'suncloud'], 2: ['구름 조금', 'suncloud'], 3: ['흐림', 'cloud'], 45: ['안개', 'fog'], 48: ['안개', 'fog'], 51: ['이슬비', 'drizzle'], 53: ['이슬비', 'drizzle'], 55: ['이슬비', 'drizzle'], 56: ['찬 이슬비', 'rain'], 57: ['찬 이슬비', 'rain'], 61: ['비', 'rain'], 63: ['비', 'rain'], 65: ['많은 비', 'rain'], 66: ['얼음비', 'rain'], 67: ['얼음비', 'rain'], 71: ['눈', 'snow'], 73: ['눈', 'snow'], 75: ['많은 눈', 'snow'], 77: ['싸락눈', 'snow'], 80: ['소나기', 'drizzle'], 81: ['소나기', 'rain'], 82: ['강한 소나기', 'thunder'], 85: ['소낙눈', 'snow'], 86: ['소낙눈', 'snow'], 95: ['천둥번개', 'thunder'], 96: ['천둥번개·우박', 'thunder'], 99: ['천둥번개·우박', 'thunder'] };
+  const WX = { 0: ['맑음', 'sun'], 1: ['대체로 맑음', 'sunsmallcloud'], 2: ['구름 조금', 'suncloud'], 3: ['흐림', 'cloud'], 45: ['안개', 'fog'], 48: ['안개', 'fog'], 51: ['이슬비', 'drizzle'], 53: ['이슬비', 'drizzle'], 55: ['이슬비', 'drizzle'], 56: ['찬 이슬비', 'rain'], 57: ['찬 이슬비', 'rain'], 61: ['비', 'rain'], 63: ['비', 'rain'], 65: ['많은 비', 'rain'], 66: ['얼음비', 'rain'], 67: ['얼음비', 'rain'], 71: ['눈', 'snow'], 73: ['눈', 'snow'], 75: ['많은 눈', 'snow'], 77: ['싸락눈', 'snow'], 80: ['소나기', 'drizzle'], 81: ['소나기', 'rain'], 82: ['강한 소나기', 'thunder'], 85: ['소낙눈', 'snow'], 86: ['소낙눈', 'snow'], 95: ['천둥번개', 'thunder'], 96: ['천둥번개·우박', 'thunder'], 99: ['천둥번개·우박', 'thunder'] };
   async function fetchWeather() {
     if (wxCache && Date.now() - wxAt < 20 * 60 * 1000) return wxCache;
     const lat = +settings.wxLat || 37.526, lon = +settings.wxLon || 126.896;
     const [f, a] = await Promise.all([
-      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=Asia%2FSeoul&forecast_days=1`).then(r => r.json()),
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=Asia%2FSeoul&forecast_days=2`).then(r => r.json()),
       fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=pm10,pm2_5&timezone=Asia%2FSeoul`).then(r => r.json()).catch(() => null)
     ]);
-    const c = f.current, d = f.daily;
-    wxCache = { t: Math.round(c.temperature_2m), feel: Math.round(c.apparent_temperature), code: c.weather_code, dayCode: d.weather_code?.[0], hi: Math.round(d.temperature_2m_max[0]), lo: Math.round(d.temperature_2m_min[0]), pop: d.precipitation_probability_max?.[0] ?? null, pm10: a?.current?.pm10 ?? null, pm25: a?.current?.pm2_5 ?? null };
+    const c = f.current, d = f.daily, i = (new Date().getHours() >= 15 && d.temperature_2m_max.length > 1) ? 1 : 0; // 저녁엔 내일 예보
+    wxCache = { t: Math.round(c.temperature_2m), feel: Math.round(c.apparent_temperature), code: i ? (d.weather_code?.[1] ?? c.weather_code) : c.weather_code, dayCode: d.weather_code?.[i], hi: Math.round(d.temperature_2m_max[i]), lo: Math.round(d.temperature_2m_min[i]), pop: d.precipitation_probability_max?.[i] ?? null, pm10: a?.current?.pm10 ?? null, pm25: a?.current?.pm2_5 ?? null };
     wxAt = Date.now(); return wxCache;
   }
   function dustGrade(pm10, pm25) {
@@ -793,7 +824,7 @@ button { cursor: pointer; }
     const rainy = (w.pop != null && w.pop >= 50) || [51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99].includes(w.dayCode ?? w.code);
     const snowy = [71,73,75,77,85,86].includes(w.dayCode ?? w.code);
     if (snowy) return '눈이 와! 따뜻하게 입고 미끄럼 조심.';
-    if (rainy) return '비 올 수 있어. 우산 챙겨!';
+    if (rainy) return (new Date().getHours() >= 15 ? '내일 아침엔 우산 챙겨!' : '비 올 수 있어. 우산 챙겨!');
     if (dust === '나쁨' || dust === '매우 나쁨') return '미세먼지가 나빠. 마스크 쓰자.';
     if (w.lo <= 0) return '영하야. 두꺼운 외투랑 장갑!';
     if (w.t <= 5) return '많이 추워. 두껍게 입자.';
@@ -802,16 +833,17 @@ button { cursor: pointer; }
     return '딱 좋은 날씨야. 잘 다녀와!';
   }
   async function renderWeather() {
-    $('wxHead').textContent = settings.wxName || '우리 동네';
+    const hr = new Date().getHours();
+    $('wxHead').textContent = (specialMode === 'clock' && hr >= 15 ? '내일 아침 · ' : '오늘 날씨 · ') + (settings.wxName || '우리 동네');
     try {
       const w = await fetchWeather(); if (!specialMode) return;
       const [txt, ico] = WX[w.code] || ['날씨', 'thermo'];
       $('wxIco').innerHTML = ICON[ico] || ICON.thermo; $('wxTemp').textContent = w.t + '°'; $('wxTxt').textContent = txt;
       const dust = dustGrade(w.pm10, w.pm25);
-      $('wxRow').textContent = [`최고 ${w.hi}°`, `최저 ${w.lo}°`, w.feel !== w.t ? `체감 ${w.feel}°` : null, w.pop != null ? `비 올 확률 ${w.pop}%` : null, dust ? `미세먼지 ${dust}` : null].filter(Boolean).join(' · ');
+      $('wxRow').innerHTML = [`최고 ${w.hi}°`, `최저 ${w.lo}°`, w.feel !== w.t ? `체감 ${w.feel}°` : null, w.pop != null ? `비 올 확률 ${w.pop}%` : null, dust ? `미세먼지 ${dust}` : null].filter(Boolean).map(x => `<span>${x}</span>`).join('');
       $('wxTip').textContent = wxTip(w, dust);
       if (specialMode === 'weather') current = `오늘 ${settings.wxName || '우리 동네'} 날씨는 ${txt}, 지금 ${w.t}도, 최고 ${w.hi}도 최저 ${w.lo}도야. ${$('wxTip').textContent}`;
-    } catch (e) { $('wxIco').innerHTML = ICON.thermo; $('wxTemp').textContent = '--°'; $('wxTxt').textContent = '날씨를 못 가져왔어'; $('wxRow').textContent = ''; $('wxTip').textContent = ''; }
+    } catch (e) { $('wxIco').innerHTML = ICON.thermo; $('wxTemp').textContent = '--°'; $('wxTxt').textContent = '날씨를 못 가져왔어'; $('wxRow').innerHTML = ''; $('wxTip').textContent = ''; }
   }
   function showWeather() {
     hidePic(); setChips([]);
