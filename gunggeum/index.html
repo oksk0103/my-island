@@ -285,6 +285,7 @@ button { cursor: pointer; }
     </div>
     <div class="card">
       <h3>리모컨 버튼 테스트</h3>
+      <p id="picDbg" class="empty">마지막 그림: 아직 질문 없음</p>
       <p id="keyTest" class="empty">이 화면이 열려 있을 때 숏키 버튼을 눌러 보세요. 받은 신호와 역할이 여기 표시돼요.</p>
     </div>
     <div class="card">
@@ -678,8 +679,10 @@ button { cursor: pointer; }
     const p = pages.find(x => x.thumbnail && !/\.svg$/i.test(x.pageimage || '') && !/map|flag|icon|logo/i.test(x.pageimage || ''));
     return p ? { src: p.thumbnail.source, title: p.title } : null;
   }
+  const picDbg = m => { try { const el = $('picDbg'); if (el) el.textContent = '마지막 그림: ' + m; } catch (e) {} };
   async function showPic(term, emoji, signal) {
     const seq = ++picSeq;
+    let note = term ? `검색어 "${term}"` : '검색어 없음';
     if (term) {
       try {
         const tctl = new AbortController(); const t = setTimeout(() => tctl.abort(), 4000);
@@ -688,15 +691,17 @@ button { cursor: pointer; }
         if (seq !== picSeq) return;
         if (hit) {
           const img = new Image(); img.alt = hit.title; img.src = hit.src;
-          await new Promise((ok, no) => { img.onload = ok; img.onerror = no; });
+          await new Promise((ok, no) => { img.onload = ok; img.onerror = () => no(new Error('img')); });
           if (seq !== picSeq) return;
           figBox.innerHTML = ''; placePic('', `<b>${hit.title.replace(/</g, '&lt;')}</b><span>위키백과</span>`); figBox.append(img);
-          return;
+          picDbg(`${note} → 사진 "${hit.title}" 표시`); return;
         }
-      } catch (e) {}
+        note += ' → 위키백과에 사진 없음';
+      } catch (e) { note += ' → ' + (e.name === 'AbortError' ? '4초 안에 응답 없음' : e.message === 'img' ? '사진 파일 로딩 실패' : '연결 실패(' + (e.message || e) + ')'); }
       if (seq !== picSeq) return;
     }
-    if (emoji) placePic(`<div class="emo">${emoji}</div>`, '');
+    if (emoji) { placePic(`<div class="emo">${emoji}</div>`, ''); picDbg(note + ` → 이모지 ${emoji}`); }
+    else picDbg(note + ' → 이모지도 없음, 글만 표시');
   }
 
   // ---------- ask ----------
@@ -731,7 +736,7 @@ button { cursor: pointer; }
       setState(quiz ? 'quiz' : 'answer', quiz ? '퀴즈 중' : '답', quiz ? '답을 말해 봐. 모르겠으면 힌트를 눌러.' : '모르는 낱말은 눌러 봐.');
       setChips(quiz ? ['힌트 줘', '정답 알려줘', '다른 문제'] : ['왜?', '더 알려줘', '예를 들면?'], '이어서');
       speak(current);
-      showPic(term, emoji, ctl.signal);
+      if (!term && !emoji && !/@@/.test(raw)) picDbg('답에 그림 줄(@@)이 안 왔음 — 모델이 규칙을 빼먹음'); else showPic(term, emoji, ctl.signal);
       recent.push({ q, a: current }); while (recent.length > 3) recent.shift();
       todayCount(1); renderCount();
       saveLog(q, current);
