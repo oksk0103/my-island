@@ -138,7 +138,9 @@ button { cursor: pointer; }
 .sheet .ch { display: inline-block; }
 .sheet .ch.on { animation: ink .18s ease-out both; }
 @keyframes ink { from { transform: translateY(.12em); opacity: 0; } to { transform: none; opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .sheet .ch.on, .gk *, .wave rect, .dots .tw { animation: none !important; } }
+.sheet .w.wv { opacity: 0; } .sheet .w.wv.shown { opacity: 1; }
+.sheet .w.wv:not(.done) { border-bottom-color: transparent !important; background: none !important; }
+@media (prefers-reduced-motion: reduce) { .sheet .ch.on, .gk *, .wave rect, .dots .tw { animation: none !important; } .sheet .w.wv { opacity: 1; } .sheet .w.wv:not(.done) { border-bottom-color: inherit !important; } }
 .meta { display: flex; align-items: center; gap: 1.4rem; color: var(--muted); font-size: .9rem; min-height: 2.2rem; flex-wrap: wrap; }
 .meta .textbtn { display: inline-flex; align-items: center; gap: .45rem; min-height: 2.2rem; padding: 0; border: 0; background: none; color: var(--muted); font-weight: 600; font-size: .9rem; }
 .meta .textbtn:active { color: var(--accent); }
@@ -350,7 +352,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v44</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v45</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -584,11 +586,13 @@ button { cursor: pointer; }
         if (wi || (pi && host === sheet)) host.append(' ');
         if (!w) return;
         const ws = document.createElement('span'); ws.className = 'w';
+        if (animate) { ws.classList.add('wv'); setTimeout(() => ws.classList.add('shown'), i * 28); }
         for (const ch of graphemes(w)) {
           const c = document.createElement('span'); c.className = 'ch'; c.textContent = ch;
           if (animate) { c.classList.add('on'); c.style.animationDelay = (i * 28) + 'ms'; }
           i++; ws.append(c);
         }
+        if (animate) setTimeout(() => ws.classList.add('done'), i * 28 + 120); else ws.classList.add('done');
         host.append(ws);
       });
       if (part.key) {
