@@ -342,7 +342,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v22</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v23</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -1046,7 +1046,11 @@ button { cursor: pointer; }
       const { body: text, term, emoji, qs } = splitPic(raw);
       let a = text.replace(/[*#_`>]/g, '').replace(/\p{Extended_Pictographic}/gu, '').replace(/\s+/g, ' ').trim();
       const g = graphemes(a);
-      if (g.length > 230) a = g.slice(0, 230).join('') + '…';
+      if (g.length > 320) { // 문장 끝에서 자르기
+        const cut = g.slice(0, 320).join('');
+        const m = cut.match(/^[\s\S]*[.!?。](?=\s|$)/);
+        a = (m && m[0].length > 120) ? m[0].trim() : cut.trim() + '…';
+      }
       if (quiz && /정답은/.test(a)) quiz = false;
       current = a.replace(/[《》]/g, '');
       setChips(quiz ? ['힌트 줘', '정답 알려줘', '다른 문제'] : (qs && qs.length ? qs : ['왜?', '더 알려줘', '예를 들면?']), '이어서');
