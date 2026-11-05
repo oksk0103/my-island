@@ -34,7 +34,9 @@ html, body { margin: 0; }
   --accent: #E6A44B; --accent-ink: #18231F; --grid: rgba(238, 182, 95, .035); color-scheme: dark;
 }
 html, body { height: 100%; }
-@media (min-width: 1100px) { html { font-size: 20px; } }
+@media (min-width: 1100px) { html { font-size: 20px; } .mic { width: 4.4rem; height: 4.4rem; } .chips button { min-height: 3.4rem; padding: 0 1.5rem; } .iconbtn { width: 2.8rem; height: 2.8rem; } #askBtn { min-height: 4.4rem; } .qbox { min-height: 4.4rem; } }
+button { -webkit-tap-highlight-color: transparent; }
+button:active { transform: scale(.97); }
 body {
   margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-ui); font-size: 1rem; line-height: 1.4;
   background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
@@ -363,7 +365,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v30</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v31</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -750,6 +752,10 @@ button { cursor: pointer; }
   function renderSound() { soundBtn.setAttribute('aria-pressed', String(sound)); soundBtn.title = sound ? '소리 켜짐' : '소리 꺼짐'; }
   soundBtn.addEventListener('click', () => { sound = !sound; renderSound(); LS.set('gk-sound', sound ? 'on' : 'off'); if (!sound) hush(); });
   renderSound();
+  // 터치 모니터: 닿는 순간 반응
+  const micBtn = $('micBtn'); let micFast = false;
+  micBtn.addEventListener('pointerdown', e => { if (e.pointerType !== 'touch') return; e.preventDefault(); micFast = true; micBtn.dispatchEvent(new MouseEvent('click', { bubbles: true })); });
+  micBtn.addEventListener('click', e => { if (!e.isTrusted) return; if (micFast) { micFast = false; e.stopImmediatePropagation(); } }, true);
   $('replayBtn').addEventListener('click', () => { speak(current, true); });
 
   // ---------- speech in (Web Speech API) ----------
@@ -1210,7 +1216,6 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   // 확대 제스처 차단 (터치 모니터)
   document.addEventListener('gesturestart', e => e.preventDefault(), { passive: false });
   document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
-  let lastTap = 0; document.addEventListener('touchend', e => { const t = Date.now(); if (t - lastTap < 300 && !e.target.closest('button, input, select, .w')) e.preventDefault(); lastTap = t; }, { passive: false });
   document.addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
 
   // ---------- start ----------
