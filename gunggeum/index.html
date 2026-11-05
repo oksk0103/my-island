@@ -1,10 +1,9 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#F7F6F1" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#18231F" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#18231F">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon-192.png">
@@ -212,6 +211,17 @@ button { cursor: pointer; }
   .special.morning .sp-hourly { grid-template-columns: repeat(6, 1fr); }
 }
 
+/* screensaver — 시각이 들어간 문장 (Author Clock 컨셉) */
+.saver { position: fixed; inset: 0; z-index: 25; background: #0F1613; display: grid; place-items: center; padding: 6vw; cursor: pointer; }
+.saver[hidden] { display: none; }
+.sv-inner { max-width: 60rem; animation: svin 1.2s ease-out both; }
+@keyframes svin { from { opacity: 0; } to { opacity: 1; } }
+.sv-line { margin: 0; font-family: var(--f-ui); font-weight: 400; font-size: clamp(1.6rem, 3.6vw, 3.1rem); line-height: 1.6; letter-spacing: -.01em; color: color-mix(in srgb, var(--ink) 72%, transparent); word-break: keep-all; text-wrap: pretty; }
+.sv-line b { font-family: var(--f-display); font-weight: 400; color: var(--ink); font-size: 1.12em; letter-spacing: -.02em; }
+.sv-foot { margin-top: 2.2rem; display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; font-size: .9rem; color: color-mix(in srgb, var(--muted) 75%, transparent); }
+.sv-dot { opacity: .5; }
+@media (max-width: 760px) { .sv-line { font-size: 1.45rem; } .saver { padding: 8vw 6vw; } }
+
 /* question bar */
 .qbar .inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(9rem, 10.5rem); gap: .7rem; padding-block: .6rem 1rem; }
 .qbox { display: flex; align-items: center; min-height: 4rem; border: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 75%, transparent); transition: border-color .15s; }
@@ -357,6 +367,12 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
+  <div class="saver" id="saver" hidden>
+    <div class="sv-inner">
+      <p class="sv-line" id="svLine"></p>
+      <div class="sv-foot"><span id="svDate"></span><span class="sv-dot">·</span><span id="svWx"></span><span class="sv-dot">·</span><span>화면을 누르면 깨어나</span></div>
+    </div>
+  </div>
   <div class="pin" id="pin" hidden>
     <form class="box" id="pinForm">
       <h3>부모님 확인</h3>
@@ -365,7 +381,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v33</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v34</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -414,8 +430,6 @@ button { cursor: pointer; }
         <div class="seg" data-k="pitch"><button type="button" data-v="0.9">낮게</button><button type="button" data-v="1">보통</button><button type="button" data-v="1.15">높게</button></div>
         <label>날씨 지역</label>
         <div class="row"><input id="wxName" placeholder="예: 영등포구" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 10rem"><button class="chip" id="wxFind" type="button">찾기</button><span class="empty" id="wxNote"></span></div>
-        <label>화면 색</label>
-        <div class="seg" data-k="theme"><button type="button" data-v="auto">자동 (일몰)</button><button type="button" data-v="light">밝게</button><button type="button" data-v="dark">어둡게</button></div>
         <label>위키백과 사진</label>
         <div class="row"><div class="seg" data-k="picOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔 (이모지만)</button></div></div>
         <label>아침 날씨 화면</label>
@@ -451,7 +465,7 @@ button { cursor: pointer; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', theme: 'auto', pin: '1234', picOn: 'on' };
+  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
   const LEVEL = {
@@ -813,11 +827,7 @@ button { cursor: pointer; }
     if (sun && sun.day === dayKey(now)) { const r = new Date(sun.rise), st = new Date(sun.set); return now < r || now >= st; }
     const h = now.getHours() + now.getMinutes() / 60; return h < 6.5 || h >= 18; // 일출·일몰 정보 없을 때
   }
-  function applyTheme() {
-    const t = settings.theme || 'auto';
-    const dark = t === 'dark' ? true : t === 'light' ? false : isNightNow();
-    document.documentElement.dataset.theme = dark ? 'dark' : 'light';
-  }
+  function applyTheme() { document.documentElement.dataset.theme = 'dark'; } // 다크 고정
   applyTheme(); setInterval(applyTheme, 60 * 1000);
 
   // ---------- idle: piece / weather / clock ----------
@@ -953,8 +963,55 @@ button { cursor: pointer; }
       saveSettings({ wxName: g.name, wxLat: g.latitude, wxLon: g.longitude }); wxCache = null;
     } catch (e) { $('wxNote').textContent = '연결이 안 돼요'; }
   });
-  function touchIdle() { clearTimeout(idleTimer); idleTimer = setTimeout(() => { if (!busy && !listening && document.activeElement !== input) showPiece(true); }, IDLE_MS); }
+  function touchIdle() {
+    clearTimeout(idleTimer); idleTimer = setTimeout(() => { if (!busy && !listening && document.activeElement !== input) showPiece(true); }, IDLE_MS);
+    clearTimeout(saverTimer); saverTimer = setTimeout(() => { if (!busy && !listening && logEl.hidden && pinEl.hidden) enterSaver(); }, SAVER_MS);
+  }
   ['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, touchIdle, true));
+
+  // ---------- screensaver: 10분 뒤, 시각이 들어간 '궁금 한 조각' ----------
+  const SAVER_MS = 10 * 60 * 1000;
+  let saverTimer = null, saverTick = null, linesBusy = false;
+  const saverEl = $('saver');
+  const LINES_KEY = 'gk-lines';
+  const hhmm = d => pad(d.getHours()) + ':' + pad(d.getMinutes());
+  const koTime = (h, m) => `${h}시 ${m}분`;
+  function fallbackLine(h, m) { const p = PIECES[(h * 60 + m) % PIECES.length]; return `《${koTime(h, m)}》. ${p.f}`; }
+  async function fetchLines(from) { // from: Date — 그 시각부터 10분치
+    if (linesBusy || !settings.apiKey) return;
+    const lines = LS.get(LINES_KEY, {}); const need = [];
+    for (let i = 0; i < 12; i++) { const d = new Date(from.getTime() + i * 60000); const k = hhmm(d); if (!lines[k]) need.push(k); }
+    if (!need.length) return;
+    linesBusy = true;
+    try {
+      const txt = await claude([{ role: 'user', content: `아래 시각들 각각에 대해, 그 시각이 문장 안에 자연스럽게 들어간 한국어 한 문장을 써 줘. 초등학생이 읽는 '시간 속 궁금 한 조각'이야: 그 시각과 연결된 과학·자연·세계·우주 사실(지구 반대편은 지금 몇 시인지, 빛이나 소리가 1분에 가는 거리, 동물·식물의 하루, 별과 달, 몸속 시계 등) 또는 짧고 담담한 관찰. 반말, 45~80자, 꾸밈 없이, 이모지·마크다운 없이. 시각은 반드시 'N시 M분' 꼴로 문장 안에 넣고 《 》로 감싸(예: 《21시 47분》). 같은 소재 반복 금지, 무섭거나 어른용 내용 금지.
+출력 형식: 줄마다 'HH:MM|문장'. 다른 말은 쓰지 마.
+시각: ${need.join(', ')}` }], { maxTokens: 1500 });
+      const got = LS.get(LINES_KEY, {});
+      for (const row of txt.split('\n')) { const m = row.match(/^\s*(\d{1,2}):(\d{2})\s*\|\s*(.+?)\s*$/); if (m) { const k = pad(+m[1]) + ':' + m[2]; if (/《[^》]*분》/.test(m[3])) got[k] = m[3].slice(0, 120); } }
+      LS.set(LINES_KEY, got);
+      if (!saverEl.hidden) renderSaver();
+    } catch (e) {} finally { linesBusy = false; }
+  }
+  function renderSaver() {
+    const d = new Date(), k = hhmm(d);
+    const line = (LS.get(LINES_KEY, {})[k]) || fallbackLine(d.getHours(), d.getMinutes());
+    $('svLine').innerHTML = line.replace(/</g, '&lt;').replace(/《([^》]+)》/g, '<b>$1</b>');
+    $('svDate').textContent = `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`;
+    const w = wxCache; const [txt] = (w && WX[w.code]) || ['']; $('svWx').textContent = w ? `${settings.wxName || ''} ${w.t}° ${txt}`.trim() : '';
+    if (d.getMinutes() % 10 === 0 || !LS.get(LINES_KEY, {})[hhmm(new Date(d.getTime() + 5 * 60000))]) fetchLines(d);
+  }
+  function enterSaver() {
+    if (!saverEl.hidden) return;
+    hush(); saverEl.hidden = false; renderSaver(); fetchWeather().then(renderSaver).catch(() => {});
+    clearInterval(saverTick); saverTick = setInterval(renderSaver, 15 * 1000);
+  }
+  function exitSaver() {
+    if (saverEl.hidden) return;
+    saverEl.hidden = true; clearInterval(saverTick); showPiece(false); touchIdle();
+  }
+  saverEl.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); exitSaver(); }, true);
+  document.addEventListener('keydown', e => { if (!saverEl.hidden) { e.preventDefault(); exitSaver(); } }, true);
 
   input.addEventListener('focus', () => { if (!busy && !listening) setState('listen', '입력 중', '글자로 써도 돼. 다 쓰면 물어보기.'); });
   input.addEventListener('blur', () => { if (!busy && !listening && app.dataset.state === 'listen') setState(recent.length ? (quiz ? 'quiz' : 'answer') : 'idle', recent.length ? (quiz ? '퀴즈 중' : '답') : '쉬는 중', '마이크를 누르고 말해 봐.'); });
