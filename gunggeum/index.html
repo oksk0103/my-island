@@ -337,12 +337,12 @@ button { cursor: pointer; }
         <svg class="micico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.2" y="2.5" width="7.6" height="12.2" rx="3.8"></rect><path d="M5.5 11.8a6.5 6.5 0 0 0 13 0M12 18.3v3.2M8.7 21.5h6.6"></path></svg>
         <svg class="wave" viewBox="0 0 30 24" aria-hidden="true"><rect x="1.5" y="6" width="3" height="12" rx=".5" fill="var(--accent)"></rect><rect x="7.5" y="2" width="3" height="20" rx=".5" fill="var(--accent)"></rect><rect x="13.5" y="0" width="3" height="24" rx=".5" fill="var(--accent)"></rect><rect x="19.5" y="4" width="3" height="16" rx=".5" fill="var(--accent)"></rect><rect x="25.5" y="7" width="3" height="10" rx=".5" fill="var(--accent)"></rect></svg>
       </button>
-      <input id="q" type="text" placeholder="마이크를 누르거나 리모컨 ●를 누르고 말해요" enterkeyhint="send" maxlength="120" aria-label="궁금한 질문">
+      <input id="q" type="text" placeholder="마이크를 누르고 말해요" enterkeyhint="send" maxlength="120" aria-label="궁금한 질문">
     </div>
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v23</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v24</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -352,9 +352,9 @@ button { cursor: pointer; }
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
-      <h3>리모컨 버튼 테스트</h3>
+      <h3>진단</h3>
       <p id="picDbg" class="empty">마지막 그림: 아직 질문 없음</p>
-      <p id="keyTest" class="empty">이 화면이 열려 있을 때 숏키 버튼을 눌러 보세요. 받은 신호와 역할이 여기 표시돼요.</p>
+      <p id="keyTest" class="empty" hidden></p>
     </div>
     <div class="card">
       <h3>설정 (이 기기에 저장돼요)</h3>
@@ -882,7 +882,7 @@ button { cursor: pointer; }
     renderClock('좋은 아침! 궁금한 게 있으면 물어봐.');
     setEyebrow('piece');
     setSpecial('weather'); renderWeather();
-    setState('idle', '아침', settings.apiKey ? '리모컨 ●를 누르고 말해 봐.' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
+    setState('idle', '아침', settings.apiKey ? '마이크를 누르고 말해 봐.' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
   }
   function showPiece(animate) {
     const mode = screenMode();
@@ -891,7 +891,7 @@ button { cursor: pointer; }
     setSpecial('');
     const p = piece(); current = p.f; hidePic();
     setEyebrow('piece'); setChips([p.q], '', true); draw(p.f, animate, 'plain');
-    setState('idle', '쉬는 중', settings.apiKey ? '리모컨 ●나 마이크를 누르고 말해 봐.' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
+    setState('idle', '쉬는 중', settings.apiKey ? '마이크를 누르고 말해 봐.' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
   }
   function showBlocked(msg) { showClock(msg); }
   // 30초마다: 시계 갱신 / 시간대가 바뀌면 화면 전환
@@ -915,7 +915,7 @@ button { cursor: pointer; }
   ['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, touchIdle, true));
 
   input.addEventListener('focus', () => { if (!busy && !listening) setState('listen', '입력 중', '글자로 써도 돼. 다 쓰면 물어보기.'); });
-  input.addEventListener('blur', () => { if (!busy && !listening && app.dataset.state === 'listen') setState(recent.length ? (quiz ? 'quiz' : 'answer') : 'idle', recent.length ? (quiz ? '퀴즈 중' : '답') : '쉬는 중', '리모컨 ●나 마이크를 누르고 말해 봐.'); });
+  input.addEventListener('blur', () => { if (!busy && !listening && app.dataset.state === 'listen') setState(recent.length ? (quiz ? 'quiz' : 'answer') : 'idle', recent.length ? (quiz ? '퀴즈 중' : '답') : '쉬는 중', '마이크를 누르고 말해 봐.'); });
 
   // ---------- remote keys ----------
   const REPLAY_KEYS = ['F2', 'PageUp', 'ArrowLeft', 'ArrowUp'];
@@ -1069,7 +1069,7 @@ button { cursor: pointer; }
       else if (e.status === 404) msg = '모델 이름이 맞지 않아. 부모님 설정에서 모델을 바꿔 줘.';
       else if (e.status === 429) msg = '조금 쉬었다가 다시 물어봐 줘.';
       current = msg; draw(msg, true, 'plain');
-      setState('idle', '잠깐', e.detail ? ('오류: ' + String(e.detail).slice(0, 80)) : '리모컨 ●를 누르고 다시 해 봐.');
+      setState('idle', '잠깐', e.detail ? ('오류: ' + String(e.detail).slice(0, 80)) : '마이크를 누르고 다시 해 봐.');
     } finally { busy = false; askBtn.disabled = false; touchIdle(); }
   }
 
