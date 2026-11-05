@@ -363,7 +363,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v29</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v30</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -414,6 +414,8 @@ button { cursor: pointer; }
         <div class="row"><input id="wxName" placeholder="예: 영등포구" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 10rem"><button class="chip" id="wxFind" type="button">찾기</button><span class="empty" id="wxNote"></span></div>
         <label>화면 색</label>
         <div class="seg" data-k="theme"><button type="button" data-v="auto">자동 (일몰)</button><button type="button" data-v="light">밝게</button><button type="button" data-v="dark">어둡게</button></div>
+        <label>위키백과 사진</label>
+        <div class="row"><div class="seg" data-k="picOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔 (이모지만)</button></div></div>
         <label>아침 날씨 화면</label>
         <div class="seg" data-k="wxOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔</button></div>
         <label>부모 비밀번호</label>
@@ -447,7 +449,7 @@ button { cursor: pointer; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', theme: 'auto', pin: '1234' };
+  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', theme: 'auto', pin: '1234', picOn: 'on' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
   const LEVEL = {
@@ -469,7 +471,7 @@ button { cursor: pointer; }
 - "더 알려줘", "왜?", "예를 들면?"처럼 이어서 물으면 방금 이야기를 한 단계 더 깊게, ${deep}자 이내로 답해.
 - 아이가 방금 답에 나온 낱말의 뜻을 물으면(예: "광합성"이 뭐야?) 조사를 떼고 그 낱말만 2문장 안에 풀어 줘.
 - 답 본문에는 꾸밈, 이모지, 마크다운, 줄바꿈을 쓰지 마. 문장만 써.
-- 답이 끝나면 줄을 바꾸고 마지막 줄에 "@@ 검색어 | 이모지 | 다음 질문" 을 꼭 붙여. 다음 질문은 이 답을 읽은 아이가 이어서 물어볼 만한 짧은 질문 4개(각 14자 이내, 서로 다른 방향으로: 이유, 비교, 예시, 엉뚱한 상상 등)를 ; 로 구분해서 써. 검색어는 답의 핵심 사물·현상을 한국어 위키백과에서 사진으로 찾을 만한 표제어 하나(예: 달, 무지개, 티라노사우루스, 번개). 사진으로 보여 줄 만한 게 없는 주제면 검색어 자리는 비워. 이모지는 답과 어울리는 것 2~3개. 이 줄은 화면에 안 보여.
+- 답이 끝나면 줄을 바꾸고 마지막 줄에 "@@ 검색어 | 이모지 | 다음 질문" 을 꼭 붙여. 다음 질문은 이 답을 읽은 아이가 이어서 물어볼 만한 짧은 질문 4개(각 14자 이내, 서로 다른 방향으로: 이유, 비교, 예시, 엉뚱한 상상 등)를 ; 로 구분해서 써. 검색어는 답의 핵심이 되는 구체적인 사물·동물·식물·자연현상·우주·장소·유물·탈것 가운데 하나를 한국어 위키백과 표제어 그대로 적어(예: 달, 무지개, 티라노사우루스, 번개, 경복궁). 다음 경우엔 검색어를 반드시 비워: 낱말 뜻·영어 단어·문법·추상 개념·감정·관계·수학 원리, 사람 몸(신체 부위·장기·생식·출산), 질병, 폭력·무기·약물·술·담배, 특정 인물. 조금이라도 애매하면 비워. 이모지는 답과 어울리는 것 2~3개. 이 줄은 화면에 안 보여.
 - 답에서 가장 중요한 구절 하나(2~6어절)를 《 》로 감싸. 꼭 한 군데만.
 - 대답해도 되는 것: 과학, 자연, 동물, 우주, 몸, 역사, 세계 여러 나라, 수학 원리, 미술과 음악, 로봇과 컴퓨터가 움직이는 원리, 책과 이야기, 말과 글자, 날씨와 계절, 생활 속 궁금증, 퀴즈, 수수께끼, 말놀이.
 - 퀴즈를 내 달라고 하면 중학생이 잠깐 생각해야 풀 만한 걸로 하나만 내고, 답은 맞히거나 "정답!"이라고 할 때 알려 줘. 정답을 알려 줄 때는 "정답은"이라는 말을 꼭 넣어.
@@ -1022,14 +1024,21 @@ button { cursor: pointer; }
     fig.hidden = false; mainInner.classList.add('has-fig'); fig.style.animation = 'none'; void fig.offsetWidth; fig.style.animation = '';
     fit();
   }
+  // 아이 화면용 금칙어 — 제목·분류에 걸리면 사진을 쓰지 않는다
+  const BLOCK = /성기|성교|성행위|성관계|생식|음부|음경|음핵|질(?![문량])|자궁|고환|유방|젖|항문|나체|누드|포르노|성적|섹스|야동|자위|강간|성폭|성희롱|매춘|성매매|해부|장기(?!간)|시신|시체|사망|살해|살인|자살|학살|처형|고문|폭력|테러|전쟁범죄|총기|권총|소총|폭탄|폭발물|무기|칼부림|마약|대마|필로폰|코카인|헤로인|담배|흡연|술(?!래)|음주|소주|맥주|도박|카지노|질병|종양|암(?!컷|석|흑)|감염|상처|출혈|피부병|배설|대변|소변|똥|오줌|욕설|혐오|인종차별|나치|극단주의|낙태|임신|출산|피임|성인|19금/;
   async function wikiImage(term, signal) {
-    const u = 'https://ko.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=3&gsrnamespace=0&prop=pageimages&piprop=thumbnail|name&pithumbsize=900&gsrsearch=' + encodeURIComponent(term);
+    if (!term || term.length > 20 || BLOCK.test(term)) return null;
+    const u = 'https://ko.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages|categories|pageprops&piprop=thumbnail|name&pithumbsize=900&cllimit=50&titles=' + encodeURIComponent(term);
     const res = await fetch(u, { signal }); if (!res.ok) return null;
-    const pages = Object.values((await res.json()).query?.pages || {}).sort((a, b) => a.index - b.index);
-    const p = pages.find(x => x.thumbnail && !/\.svg$/i.test(x.pageimage || '') && !/map|flag|icon|logo/i.test(x.pageimage || ''));
-    return p ? { src: p.thumbnail.source, title: p.title } : null;
+    const pages = Object.values((await res.json()).query?.pages || {});
+    const p = pages[0];
+    if (!p || p.missing !== undefined || !p.thumbnail) return null;
+    if (p.pageprops && 'disambiguation' in p.pageprops) return null; // 동음이의 문서는 제외
+    const cats = (p.categories || []).map(c => c.title).join(' ');
+    if (BLOCK.test(p.title) || BLOCK.test(cats) || BLOCK.test(p.pageimage || '')) return null;
+    if (/\.svg$/i.test(p.pageimage || '') || /map|flag|icon|logo/i.test(p.pageimage || '')) return null;
+    return { src: p.thumbnail.source, title: p.title };
   }
-  const picDbg = m => { try { const el = $('picDbg'); if (el) el.textContent = '마지막 그림: ' + m + (lastRaw ? ' ‖ 원문: ' + lastRaw.slice(0, 300).replace(/\n/g, '⏎') : ''); } catch (e) {} };
   async function showPic(term, emoji, signal) {
     const seq = ++picSeq;
     let note = term ? `검색어 "${term}"` : '검색어 없음';
@@ -1091,7 +1100,8 @@ button { cursor: pointer; }
       draw(a, true, 'answer');
       setState(quiz ? 'quiz' : 'answer', quiz ? '퀴즈 중' : '답', quiz ? '답을 말해 봐. 모르겠으면 힌트를 눌러.' : '모르는 낱말은 눌러 봐.');
       speak(current);
-      if (!term && !emoji && !/@@/.test(raw)) picDbg('답에 그림 줄(@@)이 안 왔음 — 모델이 규칙을 빼먹음'); else showPic(term, emoji, ctl.signal);
+      const noPhoto = /뜻|의미|무슨 말|영어|단어|문법|스펠링|철자|반대말|비슷한 말|예문|[A-Za-z]{3,}/.test(q);
+      if (!term && !emoji && !/@@/.test(raw)) picDbg('답에 그림 줄(@@)이 안 왔음 — 모델이 규칙을 빼먹음'); else showPic((noPhoto || settings.picOn === 'off') ? '' : term, emoji, ctl.signal);
       recent.push({ q, a: current }); while (recent.length > 3) recent.shift();
       todayCount(1); renderCount();
       saveLog(q, current);
