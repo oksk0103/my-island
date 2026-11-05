@@ -274,7 +274,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v12</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v13</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -629,7 +629,7 @@ button { cursor: pointer; }
     hush();
     if (settings.ttsKey) {
       try { lastTts = 'AI 목소리'; await cloudSpeak(plain); return; }
-      catch (e) { lastTts = 'AI 실패(' + (e.message || e) + ') → 폰 목소리'; }
+      catch (e) { lastTts = 'AI 실패(' + (e.message || e) + ') → 폰 목소리'; try { $('ttsNote').textContent = lastTts; } catch (x) {} }
     } else lastTts = '폰 목소리';
     await deviceSpeak(plain);
   }
@@ -637,7 +637,7 @@ button { cursor: pointer; }
   $('ttsVoice').addEventListener('change', e => saveSettings({ ttsVoice: e.target.value }));
   // 서비스 바꾸면 그 서비스의 기본 목소리로
   document.querySelector('.seg[data-k="ttsProvider"]').addEventListener('click', () => saveSettings({ ttsVoice: '' }));
-  $('ttsTest').addEventListener('click', async () => { if (!settings.ttsKey) { $('saved').textContent = 'AI 목소리 키를 먼저 저장하세요'; return; } $('saved').textContent = '받는 중…'; await speak('안녕! 나는 궁금칸이야. 뭐든 물어봐.', true); $('saved').textContent = lastTts; });
+  $('ttsTest').addEventListener('click', async () => { if (!settings.ttsKey) { $('ttsNote').textContent = 'AI 목소리 키를 먼저 저장하세요'; return; } $('ttsNote').textContent = 'AI 음성 받는 중…'; await speak('안녕! 나는 궁금칸이야. 뭐든 물어봐.', true); $('ttsNote').textContent = 'AI 테스트 결과: ' + lastTts; });
   function renderSound() { soundBtn.setAttribute('aria-pressed', String(sound)); soundBtn.title = sound ? '소리 켜짐' : '소리 꺼짐'; }
   soundBtn.addEventListener('click', () => { sound = !sound; renderSound(); LS.set('gk-sound', sound ? 'on' : 'off'); if (!sound) hush(); });
   renderSound();
