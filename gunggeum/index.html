@@ -350,7 +350,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v41</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v42</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -362,6 +362,7 @@ button { cursor: pointer; }
     <div class="card">
       <h3>진단</h3>
       <p id="picDbg" class="empty">마지막 그림: 아직 질문 없음</p>
+      <p id="linesDbg" class="empty"></p>
       <p id="keyTest" class="empty" hidden></p>
     </div>
     <div class="card">
@@ -903,11 +904,19 @@ button { cursor: pointer; }
 공통: 이모지·마크다운 금지, 무섭거나 어른용 내용 금지.
 출력 형식: 줄마다 'HH:MM|문장'. 다른 말은 쓰지 마.
 ${items.join('\n')}` }], { maxTokens: 2500 });
-      const got = LS.get(LINES_KEY, {});
-      for (const row of txt.split('\n')) { const m = row.match(/^\s*(\d{1,2}):(\d{2})\s*\|\s*(.+?)\s*$/); if (m) { const k = pad(+m[1]) + ':' + m[2]; if (/《[^》]*(분|시|반)》/.test(m[3])) got[k] = m[3].slice(0, 400); } }
+      const got = LS.get(LINES_KEY, {}); let okN = 0;
+      for (const row of txt.split('\n')) {
+        const m = row.replace(/[*`]/g, '').match(/^\s*(\d{1,2})[:：](\d{2})\s*[|｜]\s*(.+?)\s*$/); if (!m) continue;
+        const k = pad(+m[1]) + ':' + m[2]; let line = m[3];
+        if (!/《[^》]*(분|시|반)》/.test(line)) { // 《 》를 빼먹었으면 시각 표현을 찾아 감싼다
+          const t = line.match(/\d{1,2}시\s*(\d{1,2}분|반)?/); if (!t) continue; line = line.replace(t[0], '《' + t[0] + '》');
+        }
+        got[k] = line.slice(0, 400); okN++;
+      }
       LS.set(LINES_KEY, got);
+      LS.set('gk-lines-dbg', { at: new Date().toISOString().slice(0, 16), need: need.length, ok: okN, raw: txt.slice(0, 300) });
       if (!saverEl.hidden) renderSaver();
-    } catch (e) {} finally { linesBusy = false; }
+    } catch (e) { LS.set('gk-lines-dbg', { at: new Date().toISOString().slice(0, 16), need: need.length, ok: 0, err: String(e.detail || e.message || e).slice(0, 200) }); } finally { linesBusy = false; }
   }
   function renderSaver() {
     const d = new Date(), k = hhmm(d);
@@ -1152,6 +1161,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   function openLog() {
     logEl.hidden = false; $('summary').hidden = true; applySettingsUI();
+    try { const d = LS.get('gk-lines-dbg', null), n = Object.keys(LS.get(LINES_KEY, {})).length; $('linesDbg').textContent = `대기 화면 문장: 저장 ${n}개` + (d ? ` · 마지막 요청 ${d.at} (${d.need}개 요청 → ${d.ok}개 받음)` + (d.err ? ' · 오류: ' + d.err : '') + (d.raw ? ' · 원문: ' + d.raw.slice(0, 120) : '') : ' · 아직 요청 없음'); } catch (e) {}
     const days = loadDays(14);
     logBody.textContent = '';
     if (!days.length) { logBody.innerHTML = '<p class="empty">아직 물어본 질문이 없어요. 첫 질문을 하면 여기에 날짜별로 쌓여요.</p>'; return; }
