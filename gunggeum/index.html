@@ -146,6 +146,21 @@ button { cursor: pointer; }
 .fig figcaption b { color: var(--ink); font-weight: 600; }
 .fig figcaption:empty { display: none; }
 
+/* special screens: clock / weather */
+.main .inner.special-on .textcol, .main .inner.special-on .fig { display: none; }
+.special { display: flex; flex-direction: column; justify-content: center; min-height: 0; gap: 1rem; }
+.special[hidden] { display: none; }
+.sp-time { font-family: var(--f-display); font-size: clamp(5rem, 22vw, 17rem); line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--ink); }
+.sp-date { font-size: clamp(1.2rem, 3vw, 2rem); color: var(--muted); font-weight: 600; }
+.sp-msg { font-family: var(--f-display); font-size: clamp(1.3rem, 3.4vw, 2.4rem); color: var(--accent); margin-top: .4rem; }
+.sp-wx-main { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
+.sp-wx-ico { font-size: clamp(4rem, 14vw, 10rem); line-height: 1; }
+.sp-wx-temp { font-family: var(--f-display); font-size: clamp(5rem, 18vw, 13rem); line-height: 1; letter-spacing: -.03em; color: var(--ink); }
+.sp-wx-txt { font-family: var(--f-display); font-size: clamp(1.8rem, 5vw, 3.6rem); color: var(--ink); }
+.sp-wx-row { font-size: clamp(1.1rem, 2.6vw, 1.8rem); color: var(--muted); font-weight: 600; }
+.sp-wx-tip { font-family: var(--f-display); font-size: clamp(1.6rem, 4.2vw, 3rem); color: var(--accent); }
+.app.clock-mode .qbar, .app.clock-mode .foot { visibility: hidden; }
+
 /* question bar */
 .qbar .inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(9rem, 10.5rem); gap: .7rem; padding-block: .6rem 1rem; }
 .qbox { display: flex; align-items: center; min-height: 4rem; border: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 75%, transparent); transition: border-color .15s; }
@@ -257,6 +272,19 @@ button { cursor: pointer; }
     </div>
     <div class="chips" id="chips"></div>
     </div>
+    <div class="special" id="special" hidden>
+      <div class="sp-clock" id="spClock" hidden>
+        <div class="sp-time" id="spTime">00:00</div>
+        <div class="sp-date" id="spDate"></div>
+        <div class="sp-msg" id="spMsg"></div>
+      </div>
+      <div class="sp-wx" id="spWx" hidden>
+        <div class="sp-date" id="wxHead"></div>
+        <div class="sp-wx-main"><span class="sp-wx-ico" id="wxIco">☀️</span><span class="sp-wx-temp" id="wxTemp">--°</span><span class="sp-wx-txt" id="wxTxt"></span></div>
+        <div class="sp-wx-row" id="wxRow"></div>
+        <div class="sp-wx-tip" id="wxTip"></div>
+      </div>
+    </div>
     <figure class="fig" id="fig" hidden>
       <div class="fig-box" id="figBox"></div>
       <figcaption id="figCap"></figcaption>
@@ -274,7 +302,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v15</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v16</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -321,6 +349,10 @@ button { cursor: pointer; }
         <div class="seg" data-k="rate"><button type="button" data-v="0.85">느리게</button><button type="button" data-v="1">보통</button><button type="button" data-v="1.15">빠르게</button></div>
         <label>목소리 높이</label>
         <div class="seg" data-k="pitch"><button type="button" data-v="0.9">낮게</button><button type="button" data-v="1">보통</button><button type="button" data-v="1.15">높게</button></div>
+        <label>날씨 지역</label>
+        <div class="row"><input id="wxName" placeholder="예: 영등포구" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 10rem"><button class="chip" id="wxFind" type="button">찾기</button><span class="empty" id="wxNote"></span></div>
+        <label>아침 날씨 화면</label>
+        <div class="seg" data-k="wxOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔</button></div>
         <label>하루 질문 상한</label>
         <select id="cap"><option value="0">제한 없음</option><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option><option value="50">50개</option></select>
       </div>
@@ -350,7 +382,7 @@ button { cursor: pointer; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral' };
+  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
   const LEVEL = {
@@ -394,6 +426,7 @@ button { cursor: pointer; }
     $('ttsVoice').value = ttsVoiceName();
     $('ttsKey').placeholder = prov === 'google' ? 'Google Cloud API 키 (AIza…)' : prov === 'azure' ? 'Azure 음성 KEY 1' : 'OpenAI API 키 (sk-…)';
     $('ttsRegion').hidden = prov !== 'azure'; $('ttsRegion').value = settings.ttsRegion || 'koreacentral';
+    $('wxName').value = settings.wxName || ''; $('wxNote').textContent = settings.wxName ? `${settings.wxName} (${(+settings.wxLat).toFixed(2)}, ${(+settings.wxLon).toFixed(2)})` : '';
     $('ttsNote').textContent = settings.ttsKey ? `AI 목소리 사용 중 (키 ${settings.ttsKey.length}자 · …${settings.ttsKey.slice(-4)})` : '없으면 폰 목소리로 읽어요';
     $('apiNote').textContent = settings.apiKey ? '키 저장됨' : '키가 없으면 대답을 못 해요';
   }
@@ -656,7 +689,7 @@ button { cursor: pointer; }
     rec = new SR(); rec.lang = 'ko-KR'; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
     heard = ''; input.value = ''; listening = true;
     setState('listen', '듣는 중', '말해 봐. 다 말하면 잠깐 기다려.');
-    draw('듣고 있어.', false, 'soft'); setChips([]); hidePic(); setEyebrow('piece'); eyebrow.textContent = '';
+    draw('듣고 있어.', false, 'soft'); setChips([]); hidePic(); setSpecial(''); setEyebrow('piece'); eyebrow.textContent = '';
     rec.onresult = e => {
       let interim = '', final = '';
       for (let i = e.resultIndex; i < e.results.length; i++) { const t = e.results[i][0].transcript; if (e.results[i].isFinal) final += t; else interim += t; }
@@ -692,13 +725,106 @@ button { cursor: pointer; }
     }
   }
 
-  // ---------- idle ----------
+  // ---------- idle: piece / weather / clock ----------
+  const special = $('special'), mainInnerEl = $('mainInner');
+  let specialMode = '', wxCache = null, wxAt = 0;
+  const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
+  function screenMode() {
+    if (gate()) return 'clock';
+    const d = new Date(), h = d.getHours() + d.getMinutes() / 60;
+    if (settings.wxOn !== 'off' && h >= settings.hFrom && h < settings.hFrom + 2) return 'weather';
+    return 'piece';
+  }
+  function setSpecial(mode) {
+    specialMode = mode;
+    special.hidden = !mode; mainInnerEl.classList.toggle('special-on', !!mode);
+    $('spClock').hidden = mode !== 'clock'; $('spWx').hidden = mode !== 'weather';
+    app.classList.toggle('clock-mode', mode === 'clock');
+  }
+  function showClock(msg) {
+    hidePic(); setChips([]); input.value = ''; input.blur();
+    const d = new Date();
+    $('spTime').textContent = pad(d.getHours()) + ':' + pad(d.getMinutes());
+    $('spDate').textContent = `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`;
+    $('spMsg').textContent = msg || (settings.cap && todayCount() >= settings.cap ? '오늘 질문은 여기까지. 내일 또 물어봐.' : `쉬는 시간이야. ${settings.hFrom}시에 다시 만나.`);
+    current = $('spMsg').textContent;
+    setEyebrow('piece'); eyebrow.textContent = '쉬는 시간';
+    setSpecial('clock');
+    setState('idle', '쉬는 시간', '부모님이 정한 시간이에요.');
+  }
+  const WX = { 0: ['맑음', '☀️'], 1: ['대체로 맑음', '🌤️'], 2: ['구름 조금', '⛅'], 3: ['흐림', '☁️'], 45: ['안개', '🌫️'], 48: ['안개', '🌫️'], 51: ['이슬비', '🌦️'], 53: ['이슬비', '🌦️'], 55: ['이슬비', '🌦️'], 56: ['찬 이슬비', '🌧️'], 57: ['찬 이슬비', '🌧️'], 61: ['비', '🌧️'], 63: ['비', '🌧️'], 65: ['많은 비', '🌧️'], 66: ['얼음비', '🌧️'], 67: ['얼음비', '🌧️'], 71: ['눈', '🌨️'], 73: ['눈', '🌨️'], 75: ['많은 눈', '❄️'], 77: ['싸락눈', '🌨️'], 80: ['소나기', '🌦️'], 81: ['소나기', '🌧️'], 82: ['강한 소나기', '⛈️'], 85: ['소낙눈', '🌨️'], 86: ['소낙눈', '❄️'], 95: ['천둥번개', '⛈️'], 96: ['천둥번개·우박', '⛈️'], 99: ['천둥번개·우박', '⛈️'] };
+  async function fetchWeather() {
+    if (wxCache && Date.now() - wxAt < 20 * 60 * 1000) return wxCache;
+    const lat = +settings.wxLat || 37.526, lon = +settings.wxLon || 126.896;
+    const [f, a] = await Promise.all([
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=Asia%2FSeoul&forecast_days=1`).then(r => r.json()),
+      fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=pm10,pm2_5&timezone=Asia%2FSeoul`).then(r => r.json()).catch(() => null)
+    ]);
+    const c = f.current, d = f.daily;
+    wxCache = { t: Math.round(c.temperature_2m), feel: Math.round(c.apparent_temperature), code: c.weather_code, dayCode: d.weather_code?.[0], hi: Math.round(d.temperature_2m_max[0]), lo: Math.round(d.temperature_2m_min[0]), pop: d.precipitation_probability_max?.[0] ?? null, pm10: a?.current?.pm10 ?? null, pm25: a?.current?.pm2_5 ?? null };
+    wxAt = Date.now(); return wxCache;
+  }
+  function dustGrade(pm10, pm25) {
+    if (pm10 == null && pm25 == null) return null;
+    const g10 = pm10 == null ? 0 : pm10 <= 30 ? 0 : pm10 <= 80 ? 1 : pm10 <= 150 ? 2 : 3;
+    const g25 = pm25 == null ? 0 : pm25 <= 15 ? 0 : pm25 <= 35 ? 1 : pm25 <= 75 ? 2 : 3;
+    return ['좋음', '보통', '나쁨', '매우 나쁨'][Math.max(g10, g25)];
+  }
+  function wxTip(w, dust) {
+    const rainy = (w.pop != null && w.pop >= 50) || [51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99].includes(w.dayCode ?? w.code);
+    const snowy = [71,73,75,77,85,86].includes(w.dayCode ?? w.code);
+    if (snowy) return '눈이 와! 따뜻하게 입고 미끄럼 조심.';
+    if (rainy) return '비 올 수 있어. 우산 챙겨!';
+    if (dust === '나쁨' || dust === '매우 나쁨') return '미세먼지가 나빠. 마스크 쓰자.';
+    if (w.lo <= 0) return '영하야. 두꺼운 외투랑 장갑!';
+    if (w.t <= 5) return '많이 추워. 두껍게 입자.';
+    if (w.t <= 12) return '쌀쌀해. 겉옷 챙겨!';
+    if (w.hi >= 30) return '더워. 물 꼭 챙겨!';
+    return '딱 좋은 날씨야. 잘 다녀와!';
+  }
+  async function showWeather() {
+    hidePic(); setChips([]);
+    const d = new Date();
+    setEyebrow('piece'); $('wxHead').textContent = `좋은 아침 · ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일 · ${settings.wxName || '우리 동네'}`;
+    setSpecial('weather');
+    setState('idle', '아침', settings.apiKey ? '궁금한 게 있으면 리모컨 ●를 누르고 말해 봐.' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
+    try {
+      const w = await fetchWeather(); if (specialMode !== 'weather') return;
+      const [txt, ico] = WX[w.code] || ['날씨', '🌡️'];
+      $('wxIco').textContent = ico; $('wxTemp').textContent = w.t + '°'; $('wxTxt').textContent = txt;
+      const dust = dustGrade(w.pm10, w.pm25);
+      $('wxRow').textContent = [`최고 ${w.hi}°`, `최저 ${w.lo}°`, w.feel !== w.t ? `체감 ${w.feel}°` : null, w.pop != null ? `비 올 확률 ${w.pop}%` : null, dust ? `미세먼지 ${dust}` : null].filter(Boolean).join(' · ');
+      $('wxTip').textContent = wxTip(w, dust);
+      current = `오늘 ${settings.wxName || '우리 동네'} 날씨는 ${txt}, 지금 ${w.t}도, 최고 ${w.hi}도 최저 ${w.lo}도야. ${$('wxTip').textContent}`;
+    } catch (e) { $('wxIco').textContent = '🌡️'; $('wxTemp').textContent = '--°'; $('wxTxt').textContent = '날씨를 못 가져왔어'; $('wxRow').textContent = ''; $('wxTip').textContent = '그래도 좋은 하루!'; }
+  }
   function showPiece(animate) {
+    const mode = screenMode();
+    if (mode === 'clock') return showClock();
+    if (mode === 'weather') return showWeather();
+    setSpecial('');
     const p = piece(); current = p.f; hidePic();
     setEyebrow('piece'); setChips([p.q], '', true); draw(p.f, animate, 'plain');
     setState('idle', '쉬는 중', settings.apiKey ? '리모컨 ●나 마이크를 누르고 말해 봐.' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
   }
-  function showBlocked(msg) { input.value = ''; input.blur(); current = msg; hidePic(); setEyebrow('piece'); eyebrow.textContent = '쉬는 시간'; setChips([]); draw(msg, true, 'plain'); setState('idle', '쉬는 시간', '부모님이 정한 시간이에요.'); }
+  function showBlocked(msg) { showClock(msg); }
+  // 30초마다: 시계 갱신 / 시간대가 바뀌면 화면 전환
+  setInterval(() => {
+    if (busy || listening || !logEl.hidden) return;
+    if (app.dataset.state !== 'idle') return;
+    const mode = screenMode();
+    if (mode === 'clock' || mode !== specialMode) showPiece(false);
+  }, 30 * 1000);
+  // 날씨 지역 찾기
+  $('wxFind').addEventListener('click', async () => {
+    const q = $('wxName').value.trim(); if (!q) return;
+    $('wxNote').textContent = '찾는 중…';
+    try {
+      const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=1&language=ko&format=json`).then(x => x.json());
+      const g = r.results?.[0]; if (!g) { $('wxNote').textContent = '못 찾았어요. 구·시 이름으로 적어 보세요'; return; }
+      saveSettings({ wxName: g.name, wxLat: g.latitude, wxLon: g.longitude }); wxCache = null;
+    } catch (e) { $('wxNote').textContent = '연결이 안 돼요'; }
+  });
   function touchIdle() { clearTimeout(idleTimer); idleTimer = setTimeout(() => { if (!busy && !listening && document.activeElement !== input) showPiece(true); }, IDLE_MS); }
   ['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, touchIdle, true));
 
@@ -820,7 +946,7 @@ button { cursor: pointer; }
     lastQ = q; setEyebrow('q', q);
     if (/퀴즈|문제\s*내|수수께끼/.test(q)) quiz = true;
     setState('think', '생각 중', quiz ? '문제를 고르고 있어.' : '잠깐만.');
-    setChips([]); hidePic();
+    setChips([]); hidePic(); setSpecial('');
     draw(quiz ? '문제를 고르고 있어…' : '음… 생각하고 있어.', false, 'soft');
     ctl?.abort(); ctl = new AbortController();
     const msgs = [];
