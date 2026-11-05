@@ -162,55 +162,6 @@ button { cursor: pointer; }
 .fig figcaption b { color: var(--ink); font-weight: 600; }
 .fig figcaption:empty { display: none; }
 
-/* special screens: clock / weather (Magic Patterns 시안 기준) */
-.main .inner.special-on .textcol, .main .inner.special-on .fig { display: none; }
-.special { display: grid; grid-template-columns: max-content 1px minmax(22rem, 36rem); justify-content: center; column-gap: 4.5rem; align-items: stretch; min-height: 0; height: 100%; }
-.special[hidden] { display: none; }
-.special > .sp-rule { background: var(--line); margin: 3.6rem 0; }
-.sp-clock, .sp-wx { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
-.sp-time { font-family: var(--f-display); font-size: clamp(5rem, 13.2vw, 12.6rem); line-height: .86; letter-spacing: -.01em; font-variant-numeric: tabular-nums; color: var(--ink); margin-left: -.03em; }
-.sp-date { margin-top: 1.5rem; font-size: 1.3rem; font-weight: 500; color: var(--muted); }
-.sp-msg { margin-top: .7rem; font-size: 1.1rem; font-weight: 500; color: var(--accent); }
-.sp-label { font-size: .8rem; font-weight: 500; color: var(--muted); }
-.sp-wx-main { display: flex; align-items: center; gap: 1.1rem; margin-top: .9rem; }
-.sp-wx-ico { display: inline-flex; flex: none; width: 5.2rem; height: 5.2rem; color: var(--accent); }
-.sp-wx-ico svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.85; stroke-linecap: round; stroke-linejoin: round; }
-.sp-wx-temp { font-family: var(--f-display); font-size: 6.4rem; line-height: .9; color: var(--ink); }
-.sp-wx-txt { margin-top: .7rem; font-family: var(--f-display); font-size: 1.7rem; color: var(--ink); }
-.sp-wx-row { margin-top: .7rem; font-size: .78rem; color: var(--muted); line-height: 1.6; display: flex; flex-wrap: wrap; }
-.sp-wx-row span { white-space: nowrap; } .sp-wx-row span + span::before { content: '·'; padding: 0 .55em; }
-.sp-hourly { display: grid; grid-template-columns: repeat(6, 1fr); gap: .4rem; margin-top: 1rem; padding-top: .9rem; border-top: 1px solid var(--line); }
-.sp-hourly .h { display: flex; flex-direction: column; align-items: center; gap: .25rem; min-width: 0; }
-.sp-hourly .h-t { font-size: .72rem; color: var(--muted); white-space: nowrap; }
-.sp-hourly .h-i { width: 1.9rem; height: 1.9rem; color: var(--accent); } .sp-hourly .h-i svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-.sp-hourly .h-p { font-size: .68rem; color: var(--muted); } .sp-hourly .h-p.wet { color: var(--accent); font-weight: 700; }
-.sp-hourly .h-d { font-family: var(--f-display); font-size: 1.15rem; color: var(--ink); line-height: 1; }
-.sp-wx-tip { margin-top: 1rem; padding-top: .9rem; border-top: 1px solid var(--line); font-size: 1.1rem; font-weight: 700; color: var(--accent); }
-/* morning: weather is the hero, time secondary */
-.special.morning { grid-template-columns: max-content 1px minmax(26rem, 44rem); }
-.special.morning .sp-time { font-size: clamp(3.4rem, 6vw, 5.6rem); line-height: .9; }
-.special.morning .sp-date { margin-top: .9rem; font-size: 1rem; }
-.special.morning .sp-msg { margin-top: 1.8rem; font-size: 1.1rem; color: var(--ink); line-height: 1.55; }
-.special.morning .sp-wx-ico { width: 8.4rem; height: 8.4rem; } .special.morning .sp-wx-ico svg { stroke-width: 1.4; }
-.special.morning .sp-wx-temp { font-size: 10.4rem; line-height: .85; }
-.special.morning .sp-wx-main { gap: 1.4rem; margin-top: .5rem; }
-.special.morning .sp-wx-cond { display: flex; align-items: baseline; gap: 1.2rem; flex-wrap: wrap; margin-top: .7rem; }
-.special.morning .sp-wx-txt { margin-top: 0; font-size: 2.2rem; } .special.morning .sp-wx-row { margin-top: 0; font-size: .8rem; }
-.special.morning .sp-wx-tip { font-size: 1.2rem; }
-.special.morning .sp-hourly { grid-template-columns: repeat(8, 1fr); }
-/* night: low-glare */
-.app.clock-mode .sp-time, .app.clock-mode .sp-wx-temp, .app.clock-mode .sp-wx-txt { color: color-mix(in srgb, var(--ink) 86%, transparent); }
-.app.clock-mode .qbar, .app.clock-mode .foot { visibility: hidden; }
-@media (max-width: 900px) {
-  .special, .special.morning { grid-template-columns: 1fr; height: auto; }
-  .special > .sp-rule { margin: 1.6rem 0; height: 1px; }
-  .sp-clock, .sp-wx { padding: 0; }
-  .special.morning .sp-clock { order: 2; }
-  .sp-time { font-size: clamp(4.5rem, 30vw, 7rem); } .special.morning .sp-time { font-size: 3.2rem; }
-  .special.morning .sp-wx-temp { font-size: 6.5rem; } .special.morning .sp-wx-ico { width: 5.6rem; height: 5.6rem; }
-  .special.morning .sp-hourly { grid-template-columns: repeat(6, 1fr); }
-}
-
 /* screensaver — 시각이 들어간 문장 (Author Clock 컨셉) */
 .saver { position: fixed; inset: 0; z-index: 25; background: #0F1613; display: grid; place-items: center; padding: 6vw; cursor: pointer; }
 .saver[hidden] { display: none; }
@@ -220,6 +171,8 @@ button { cursor: pointer; }
 .sv-line b { font-family: var(--f-display); font-weight: 400; color: var(--ink); font-size: 1.12em; letter-spacing: -.02em; }
 .sv-foot { margin-top: 2.2rem; display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; font-size: .9rem; color: color-mix(in srgb, var(--muted) 75%, transparent); }
 .sv-dot { opacity: .5; }
+.sv-msg { margin-top: 1.6rem; font-family: var(--f-display); font-size: 1.3rem; color: var(--accent); }
+.sv-msg[hidden] { display: none; }
 .sv-attr { display: block; margin-top: 1.1rem; font-size: .55em; color: color-mix(in srgb, var(--muted) 85%, transparent); }
 @media (max-width: 760px) { .sv-line { font-size: 1.45rem; } .saver { padding: 8vw 6vw; } }
 
@@ -336,21 +289,6 @@ button { cursor: pointer; }
     </div>
     <div class="chips" id="chips"></div>
     </div>
-    <div class="special" id="special" hidden>
-      <section class="sp-clock" id="spClock">
-        <div class="sp-time" id="spTime">00:00</div>
-        <div class="sp-date" id="spDate"></div>
-        <div class="sp-msg" id="spMsg"></div>
-      </section>
-      <div class="sp-rule" aria-hidden="true"></div>
-      <section class="sp-wx" id="spWx">
-        <div class="sp-label" id="wxHead"></div>
-        <div class="sp-wx-main"><span class="sp-wx-ico" id="wxIco"></span><span class="sp-wx-temp" id="wxTemp">--°</span></div>
-        <div class="sp-wx-cond"><div class="sp-wx-txt" id="wxTxt"></div><div class="sp-wx-row" id="wxRow"></div></div>
-        <div class="sp-hourly" id="wxHourly"></div>
-        <div class="sp-wx-tip" id="wxTip"></div>
-      </section>
-    </div>
     <figure class="fig" id="fig" hidden>
       <div class="fig-box" id="figBox"></div>
       <figcaption id="figCap"></figcaption>
@@ -371,7 +309,8 @@ button { cursor: pointer; }
   <div class="saver" id="saver" hidden>
     <div class="sv-inner">
       <p class="sv-line" id="svLine"></p>
-      <div class="sv-foot"><span id="svDate"></span><span class="sv-dot">·</span><span id="svWx"></span><span class="sv-dot">·</span><span>화면을 누르면 깨어나</span></div>
+      <div class="sv-foot"><span id="svDate"></span><span class="sv-dot">·</span><span id="svWx"></span><span class="sv-dot" id="svTipDot">·</span><span id="svTip"></span></div>
+      <div class="sv-msg" id="svMsg" hidden></div>
     </div>
   </div>
   <div class="pin" id="pin" hidden>
@@ -382,7 +321,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v35</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v36</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -466,7 +405,7 @@ button { cursor: pointer; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on' };
+  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 0, hTo: 24, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
   const LEVEL = {
@@ -563,7 +502,7 @@ button { cursor: pointer; }
   let busy = false, ctl = null, sound = true, wakeLock = null, quiz = false;
   let current = '', lastQ = '';
   let idleTimer = null;
-  const IDLE_MS = 3 * 60 * 1000;
+  const IDLE_MS = 5 * 60 * 1000; // 5분 가만두면 대기 화면
   sound = LS.get('gk-sound', 'on') !== 'off';
 
   // ---------- state ----------
@@ -789,7 +728,7 @@ button { cursor: pointer; }
     rec = new SR(); rec.lang = 'ko-KR'; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
     heard = ''; input.value = ''; listening = true;
     setState('listen', '듣는 중', '말해 봐. 다 말하면 잠깐 기다려.');
-    draw('듣고 있어.', false, 'soft'); setChips([]); hidePic(); setSpecial(''); setEyebrow('piece'); eyebrow.textContent = '';
+    draw('듣고 있어.', false, 'soft'); setChips([]); hidePic(); setEyebrow('piece'); eyebrow.textContent = '';
     rec.onresult = e => {
       let interim = '', final = '';
       for (let i = e.resultIndex; i < e.results.length; i++) { const t = e.results[i][0].transcript; if (e.results[i].isFinal) final += t; else interim += t; }
@@ -835,36 +774,8 @@ button { cursor: pointer; }
   applyTheme(); setInterval(applyTheme, 60 * 1000);
 
   // ---------- idle: piece / weather / clock ----------
-  const special = $('special'), mainInnerEl = $('mainInner');
-  let specialMode = '', wxCache = null, wxAt = 0;
+  let wxCache = null, wxAt = 0;
   const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
-  function screenMode() {
-    if (gate()) return 'clock';
-    const d = new Date(), h = d.getHours() + d.getMinutes() / 60;
-    if (settings.wxOn !== 'off' && h >= (settings.hFrom % 24) && h < (settings.hFrom % 24) + 2) return 'weather';
-    return 'piece';
-  }
-  function setSpecial(mode) {
-    specialMode = mode;
-    special.hidden = !mode; mainInnerEl.classList.toggle('special-on', !!mode);
-    app.classList.toggle('clock-mode', mode === 'clock');
-    special.classList.toggle('morning', mode === 'weather');
-  }
-  function renderClock(msg) {
-    const d = new Date();
-    $('spTime').textContent = pad(d.getHours()) + ':' + pad(d.getMinutes());
-    $('spDate').textContent = `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`;
-    $('spMsg').textContent = msg || '';
-  }
-  function showClock(msg) {
-    recent.length = 0; quiz = false;
-    hidePic(); setChips([]); input.value = ''; input.blur();
-    const m = msg || (settings.cap && todayCount() >= settings.cap ? '오늘 질문은 여기까지. 내일 또 물어봐.' : `쉬는 시간이야. ${settings.hFrom}시에 다시 만나.`);
-    renderClock(m); current = m;
-    setEyebrow('piece'); eyebrow.textContent = '쉬는 시간';
-    setSpecial('clock'); renderWeather();
-    setState('idle', '쉬는 시간', '부모님이 정한 시간이에요.');
-  }
   const RAYS = (cx, cy, r1, r2) => Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4; return `<line x1="${(cx + Math.cos(a) * r1).toFixed(1)}" y1="${(cy + Math.sin(a) * r1).toFixed(1)}" x2="${(cx + Math.cos(a) * r2).toFixed(1)}" y2="${(cy + Math.sin(a) * r2).toFixed(1)}"/>`; }).join('');
   const CLOUD_LOW = '<path d="M16 52 H45 A9 9 0 0 0 45 34 A13 13 0 0 0 20 37.5 A7.5 7.5 0 0 0 16 52 Z" fill="var(--bg)"/>';
   const ICON = {
@@ -916,49 +827,13 @@ button { cursor: pointer; }
     if (w.hi >= 30) return '더워. 물 꼭 챙겨!';
     return '딱 좋은 날씨야. 잘 다녀와!';
   }
-  async function renderWeather() {
-    $('wxHead').textContent = '지금 날씨 · ' + (settings.wxName || '우리 동네');
-    try {
-      const w = await fetchWeather(); if (!specialMode) return;
-      const [txt, ico0] = WX[w.code] || ['날씨', 'thermo'];
-      const hrNow = new Date().getHours(), night = hrNow < 6 || hrNow >= 18;
-      const ico = night && ico0 === 'sun' ? 'moon' : night && (ico0 === 'suncloud' || ico0 === 'sunsmallcloud') ? 'mooncloud' : ico0;
-      $('wxIco').innerHTML = ICON[ico] || ICON.thermo; $('wxTemp').textContent = w.t + '°'; $('wxTxt').textContent = txt;
-      const dust = dustGrade(w.pm10, w.pm25);
-      $('wxRow').innerHTML = [`최고 ${w.hi}°`, `최저 ${w.lo}°`, w.feel !== w.t ? `체감 ${w.feel}°` : null, w.pop != null ? `비 올 확률 ${w.pop}%` : null, dust ? `미세먼지 ${dust}` : null].filter(Boolean).map(x => `<span>${x}</span>`).join('');
-      const n = specialMode === 'weather' && window.innerWidth > 900 ? 8 : 6;
-      $('wxHourly').innerHTML = (w.hours || []).slice(0, n).map(x => { const [, ic] = WX[x.code] || ['', 'thermo']; const icon = (x.day === 0 && (ic === 'sun' || ic === 'sunsmallcloud' || ic === 'suncloud')) ? (ic === 'sun' ? 'moon' : 'mooncloud') : ic; return `<div class="h"><div class="h-t">${x.h < 12 ? '오전' : '오후'} ${x.h % 12 || 12}시</div><div class="h-i">${ICON[icon] || ICON.thermo}</div><div class="h-p${x.pop >= 40 ? ' wet' : ''}">${x.pop != null ? x.pop + '%' : ''}</div><div class="h-d">${x.t}°</div></div>`; }).join('');
-      $('wxTip').textContent = wxTip(w, dust);
-      if (specialMode === 'weather') current = `오늘 ${settings.wxName || '우리 동네'} 날씨는 ${txt}, 지금 ${w.t}도, 최고 ${w.hi}도 최저 ${w.lo}도야. ${$('wxTip').textContent}`;
-    } catch (e) { $('wxIco').innerHTML = ICON.thermo; $('wxTemp').textContent = '--°'; $('wxTxt').textContent = '날씨를 못 가져왔어'; $('wxRow').innerHTML = ''; $('wxHourly').innerHTML = ''; $('wxTip').textContent = ''; }
-  }
-  function showWeather() {
-    recent.length = 0; quiz = false;
-    hidePic(); setChips([]);
-    renderClock('좋은 아침! 궁금한 게 있으면 물어봐.');
-    setEyebrow('piece');
-    setSpecial('weather'); renderWeather();
-    setState('idle', '아침', settings.apiKey ? '마이크를 누르고 말해 봐.' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
-  }
   function showPiece(animate) {
-    const mode = screenMode();
-    if (mode === 'clock') return showClock();
-    if (mode === 'weather') return showWeather();
-    setSpecial('');
-    recent.length = 0; quiz = false; // 쉬는 화면으로 돌아오면 대화 맥락 초기화
+    recent.length = 0; quiz = false; // 홈으로 돌아오면 대화 맥락 초기화
     const p = piece(); current = p.f; hidePic();
     setEyebrow('piece'); setChips([p.q], '', true); draw(p.f, animate, 'plain');
     setState('idle', '쉬는 중', settings.apiKey ? '마이크를 누르고 말해 봐.' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
   }
-  function showBlocked(msg) { showClock(msg); }
-  // 30초마다: 시계 갱신 / 시간대가 바뀌면 화면 전환
-  setInterval(() => {
-    if (busy || listening || !logEl.hidden) return;
-    if (app.dataset.state !== 'idle') return;
-    if (Date.now() < holdUntil) return;
-    const mode = screenMode(), cur = specialMode || 'piece';
-    if (mode !== cur || mode !== 'piece') showPiece(false);
-  }, 30 * 1000);
+  function showBlocked(msg) { enterSaver(msg); }
   let holdUntil = 0;
   // 날씨 지역 찾기
   $('wxFind').addEventListener('click', async () => {
@@ -971,14 +846,12 @@ button { cursor: pointer; }
     } catch (e) { $('wxNote').textContent = '연결이 안 돼요'; }
   });
   function touchIdle() {
-    clearTimeout(idleTimer); idleTimer = setTimeout(() => { if (!busy && !listening && document.activeElement !== input) showPiece(true); }, IDLE_MS);
-    clearTimeout(saverTimer); saverTimer = setTimeout(() => { if (!busy && !listening && logEl.hidden && pinEl.hidden) enterSaver(); }, SAVER_MS);
+    clearTimeout(idleTimer); idleTimer = setTimeout(() => { if (!busy && !listening && logEl.hidden && pinEl.hidden) enterSaver(); }, IDLE_MS);
   }
   ['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, touchIdle, true));
 
   // ---------- screensaver: 10분 뒤, 시각이 들어간 '궁금 한 조각' ----------
-  const SAVER_MS = 10 * 60 * 1000;
-  let saverTimer = null, saverTick = null, linesBusy = false;
+  let saverTick = null, linesBusy = false, saverLock = '';
   const saverEl = $('saver');
   const LINES_KEY = 'gk-lines';
   let QUOTES = null; // 저작권 만료 고전에서 뽑은 '그 시각' 문장 (영어 원문 → Claude가 번역)
@@ -1013,17 +886,25 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const [bodyTxt, attr] = line.split(/\s+—\s+(?=[^—]+$)/);
     $('svLine').innerHTML = bodyTxt.replace(/</g, '&lt;').replace(/《([^》]+)》/g, '<b>$1</b>') + (attr ? `<span class="sv-attr">— ${attr.replace(/</g, '&lt;')}</span>` : '');
     $('svDate').textContent = `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`;
-    const w = wxCache; const [txt] = (w && WX[w.code]) || ['']; const wxs = w ? `${settings.wxName || ''} ${w.t}° ${txt}`.trim() : '';
+    const w = wxCache; const [txt] = (w && WX[w.code]) || ['']; const wxs = w ? `${settings.wxName || ''} ${w.t}° ${txt} · 최고 ${w.hi}° 최저 ${w.lo}°`.trim() : '';
     $('svWx').textContent = wxs; $('svWx').previousElementSibling.hidden = !wxs; $('svWx').hidden = !wxs;
+    const tip = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : ''; $('svTip').textContent = tip; $('svTipDot').hidden = !tip; $('svTip').hidden = !tip;
     if (d.getMinutes() % 10 === 0 || !LS.get(LINES_KEY, {})[hhmm(new Date(d.getTime() + 5 * 60000))]) fetchLines(d);
   }
-  function enterSaver() {
+  function enterSaver(lockMsg) {
+    saverLock = lockMsg || '';
     if (!saverEl.hidden) return;
-    hush(); saverEl.hidden = false; renderSaver(); fetchWeather().then(renderSaver).catch(() => {});
+    recent.length = 0; quiz = false; hidePic(); setChips([]); input.value = ''; input.blur();
+    hush(); saverEl.hidden = false; $('svMsg').hidden = true; renderSaver(); fetchWeather().then(renderSaver).catch(() => {});
     clearInterval(saverTick); saverTick = setInterval(renderSaver, 15 * 1000);
   }
+  let lockMsgTimer = null;
   function exitSaver() {
     if (saverEl.hidden) return;
+    const blocked = gate();
+    if (blocked) { // 쉬는 시간: 안내만 잠깐 보여주고 계속 잠듦
+      const m = $('svMsg'); m.textContent = blocked; m.hidden = false; clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { m.hidden = true; }, 4000); return;
+    }
     saverEl.hidden = true; clearInterval(saverTick); showPiece(false); touchIdle();
   }
   saverEl.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); exitSaver(); }, true);
@@ -1169,7 +1050,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (/퀴즈|문제\s*내|수수께끼/.test(q)) quiz = true;
     else if (quiz && !/힌트|정답|모르겠|다른 문제|^[가-힣A-Za-z0-9 ]{1,8}$/.test(q)) quiz = false; // 퀴즈 중 다른 질문을 하면 퀴즈 종료
     setState('think', '생각 중', quiz ? '문제를 고르고 있어.' : '잠깐만.');
-    setChips([]); hidePic(); setSpecial('');
+    setChips([]); hidePic();
     draw(quiz ? '문제를 고르고 있어…' : '음… 생각하고 있어.', false, 'soft');
     ctl?.abort(); ctl = new AbortController();
     const msgs = [];
@@ -1303,7 +1184,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   renderCount();
   fetchWeather().then(applyTheme).catch(() => {});
   showPiece(false);
-  touchIdle();
+  if (gate()) enterSaver(gate()); else touchIdle();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
   if ('serviceWorker' in navigator) { try { navigator.serviceWorker.register('./sw.js'); navigator.serviceWorker.addEventListener('message', e => { if (e.data && e.data.type === 'updated' && !busy && !listening) location.reload(); }); } catch (e) {} }
   if (!settings.apiKey) setTimeout(() => { if (!settings.apiKey) openLog(); }, 800);
