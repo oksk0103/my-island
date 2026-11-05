@@ -365,7 +365,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v31</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v32</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -686,12 +686,13 @@ button { cursor: pointer; }
         const region = (settings.ttsRegion || 'koreacentral').trim();
         const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const pr = Math.round((rate - 1) * 100) + '%';
+        const prEn = Math.round((rate * 0.85 - 1) * 100) + '%'; // 영어는 조금 천천히
         // 영어 구간은 영어 음성으로 (한국어 음성이 영어를 한글식으로 읽는 문제)
         const enVoice = /InJoon|BongJin|GookMin|Hyunsu/.test(voice) ? 'en-US-AndrewNeural' : 'en-US-AvaNeural';
         const multi = /Multilingual/.test(voice);
         const parts = plain.split(/([A-Za-z][A-Za-z0-9'’,.!? -]*[A-Za-z0-9.!?]|[A-Za-z]{2,})/g).filter(Boolean);
         const body = parts.map(seg => /^[A-Za-z]/.test(seg) && /[A-Za-z]{2,}/.test(seg)
-          ? (multi ? `<lang xml:lang="en-US">${esc(seg)}</lang>` : `</prosody></voice><voice name="${enVoice}"><prosody rate="${pr}">${esc(seg)}</prosody></voice><voice name="${voice}"><prosody rate="${pr}">`)
+          ? (multi ? `<lang xml:lang="en-US"><prosody rate="${prEn}">${esc(seg)}</prosody></lang>` : `</prosody></voice><voice name="${enVoice}"><prosody rate="${prEn}">${esc(seg)}</prosody></voice><voice name="${voice}"><prosody rate="${pr}">`)
           : esc(seg)).join('');
         const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="ko-KR"><voice name="${voice}"><prosody rate="${pr}">${body}</prosody></voice></speak>`;
         res = await fetch(`https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`, {
