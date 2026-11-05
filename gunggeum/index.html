@@ -364,7 +364,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v51</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v52</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -378,6 +378,9 @@ button { cursor: pointer; }
       <p id="picDbg" class="empty">마지막 그림: 아직 질문 없음</p>
       <p id="linesDbg" class="empty"></p>
       <p id="keyTest" class="empty">딸깍 버튼(리모컨) 확인: 이 창을 열어 둔 채 버튼을 누르면 어떤 키인지 여기에 떠요.</p>
+      <label>터치 확인</label>
+      <div id="touchPad" style="border: 1px dashed var(--line); padding: 1.2rem; text-align: center; color: var(--muted); touch-action: none; user-select: none; -webkit-user-select: none">여기를 손가락·펜으로 톡 눌러 보세요</div>
+      <p id="touchDbg" class="empty" style="white-space: pre-line"></p>
     </div>
     <div class="card">
       <h3>설정 (이 기기에 저장돼요)</h3>
@@ -419,7 +422,7 @@ button { cursor: pointer; }
         <label>아침 날씨 화면</label>
         <div class="seg" data-k="wxOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔</button></div>
         <label>부모 비밀번호</label>
-        <div class="row"><input id="pinSet" type="text" inputmode="numeric" maxlength="4" placeholder="4자리" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 6rem"><button class="chip" id="pinSave" type="button">저장</button><span class="empty">⚙ 버튼으로 들어올 때 씀 (기본 1234)</span></div>
+        <div class="row"><input id="pinSet" type="text" inputmode="numeric" maxlength="4" placeholder="4자리" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 6rem"><button class="chip" id="pinSave" type="button">저장</button><span class="empty">지금은 비밀번호 없이 ⚙로 바로 열려요</span></div>
         <label>하루 질문 상한</label>
         <select id="cap"><option value="0">제한 없음</option><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option><option value="50">50개</option></select>
       </div>
@@ -1207,6 +1210,23 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     let keys = []; try { keys = Object.keys(localStorage).filter(x => x.startsWith('gk-log-')).sort().reverse().slice(0, n); } catch (e) {}
     return keys.map(k => ({ day: k.slice(7), items: LS.get(k, []) })).filter(d => d.items.length);
   }
+  // 터치 진단: 모니터/펜이 어떤 이벤트를 보내는지 그대로 보여줌
+  (function touchDiag() {
+    const pad = $('touchPad'), out = $('touchDbg'); if (!pad) return;
+    const rows = []; let t0 = 0;
+    const log = (m) => { rows.push(m); while (rows.length > 7) rows.shift(); out.textContent = rows.join('\n'); };
+    const f = e => `${e.type} · ${e.pointerType || e.type.slice(0, 5)} · x${Math.round(e.clientX || 0)} y${Math.round(e.clientY || 0)}` + (e.pressure != null ? ` · 압력 ${e.pressure.toFixed(2)}` : '') + (e.width ? ` · 폭 ${Math.round(e.width)}` : '');
+    ['pointerdown', 'pointerup', 'pointercancel', 'pointermove'].forEach(ev => pad.addEventListener(ev, e => {
+      if (ev === 'pointerdown') t0 = Date.now();
+      if (ev === 'pointermove' && (!e.buttons)) return;
+      if (ev === 'pointermove') { const last = rows[rows.length - 1] || ''; if (last.startsWith('pointermove')) rows.pop(); }
+      log(f(e) + (ev === 'pointerup' || ev === 'pointercancel' ? ` · ${Date.now() - t0}ms` : ''));
+      if (ev === 'pointerup') { pad.style.background = 'color-mix(in srgb, var(--accent) 25%, transparent)'; setTimeout(() => pad.style.background = '', 250); }
+    }));
+    pad.addEventListener('click', e => log(`click · ${e.isTrusted ? '브라우저' : '궁금칸 보정'} ✔`));
+    ['touchstart', 'touchend', 'touchcancel'].forEach(ev => pad.addEventListener(ev, e => log(`${ev} · 손가락 ${e.touches.length}`), { passive: true }));
+    pad.addEventListener('contextmenu', e => e.preventDefault());
+  })();
   function openLog() {
     logEl.hidden = false; $('summary').hidden = true; applySettingsUI();
     try { const d = LS.get('gk-lines-dbg', null), n = Object.keys(LS.get(LINES_KEY, {})).length; $('linesDbg').textContent = `대기 화면 문장: 저장 ${n}개` + (d ? ` · 마지막 요청 ${d.at} (${d.need}개 요청 → ${d.ok}개 받음)` + (d.err ? ' · 오류: ' + d.err : '') + (d.raw ? ' · 원문: ' + d.raw.slice(0, 120) : '') : ' · 아직 요청 없음'); } catch (e) {}
@@ -1267,7 +1287,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   // 제목 5번 빠르게 탭 → 비밀번호 창 (길게 누르기는 DeX 창 제스처와 충돌해서 뺌)
   const title = $('title');
   let taps = 0, tapTimer = null;
-  const askPin = () => { pinEl.hidden = false; pinInput.value = ''; $('pinNote').textContent = ''; setTimeout(() => pinInput.focus(), 50); };
+  const askPin = () => openLog(); // 비밀번호 확인 없이 바로 부모 화면
   title.addEventListener('contextmenu', e => e.preventDefault());
   title.addEventListener('click', () => { taps++; clearTimeout(tapTimer); tapTimer = setTimeout(() => { taps = 0; }, 1500); if (taps >= 5) { taps = 0; askPin(); } });
 
