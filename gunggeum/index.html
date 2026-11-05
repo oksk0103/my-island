@@ -352,7 +352,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v48</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v49</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -956,7 +956,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (!saverEl.hidden) return;
     recent.length = 0; quiz = false; hidePic(); setChips([]); input.value = ''; input.blur();
     hush(); saverEl.hidden = false; $('svMsg').hidden = true; renderSaver(); fetchWeather().then(renderSaver).catch(() => {});
-    clearInterval(saverTick); saverTick = setInterval(renderSaver, 15 * 1000);
+    clearInterval(saverTick); saverTick = setInterval(renderSaver, 15 * 1000); keepAwake();
     if (saverLock) { const m = $('svMsg'); m.textContent = saverLock; m.hidden = false; clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { m.hidden = true; }, 4000); }
   }
   let lockMsgTimer = null;
@@ -1178,6 +1178,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     try { if (wakeLock || !('wakeLock' in navigator)) return; wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => { wakeLock = null; }); } catch (e) { wakeLock = null; }
   }
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && !wakeLock) keepAwake(); });
+  keepAwake(); setInterval(() => { if (document.visibilityState === 'visible' && !wakeLock) keepAwake(); }, 30 * 1000);
+  ['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, () => { if (!wakeLock) keepAwake(); }, true));
 
   // ---------- parent: log (this device) ----------
   function saveLog(q, a) {
