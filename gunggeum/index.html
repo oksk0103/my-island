@@ -162,19 +162,31 @@ button { cursor: pointer; }
 .fig figcaption b { color: var(--ink); font-weight: 600; }
 .fig figcaption:empty { display: none; }
 
-/* screensaver — 시각이 들어간 문장 (Author Clock 컨셉) */
-.saver { position: fixed; inset: 0; z-index: 25; background: #0F1613; display: grid; place-items: center; padding: 6vw; cursor: pointer; }
+/* 대기 화면 — 왼쪽 날짜·날씨 / 오른쪽 문장 (Author Clock 컨셉) */
+.saver { position: fixed; inset: 0; z-index: 25; background: #0F1613; display: grid; place-items: center; padding: 5vw 6vw; cursor: pointer; }
 .saver[hidden] { display: none; }
-.sv-inner { max-width: 60rem; animation: svin 1.2s ease-out both; }
+.sv-inner { display: grid; grid-template-columns: max-content 1px minmax(0, 36rem); column-gap: 3.6rem; align-items: center; max-width: 68rem; width: 100%; justify-content: center; animation: svin 1.2s ease-out both; }
 @keyframes svin { from { opacity: 0; } to { opacity: 1; } }
-.sv-line { margin: 0; font-family: var(--f-ui); font-weight: 400; font-size: clamp(1.6rem, 3.6vw, 3.1rem); line-height: 1.6; letter-spacing: -.01em; color: color-mix(in srgb, var(--ink) 72%, transparent); word-break: keep-all; text-wrap: pretty; }
+.sv-rule { background: color-mix(in srgb, var(--line) 80%, transparent); align-self: stretch; }
+.sv-date { display: flex; flex-direction: column; align-items: flex-start; min-width: 11rem; }
+.sv-dow { font-family: var(--f-display); font-size: 1.5rem; color: var(--accent); line-height: 1; }
+.sv-mon { font-family: var(--f-display); font-size: 1.5rem; color: color-mix(in srgb, var(--ink) 80%, transparent); line-height: 1; margin-top: .35rem; }
+.sv-day { font-family: var(--f-display); font-size: clamp(5rem, 11vw, 9.5rem); line-height: .9; letter-spacing: -.03em; color: var(--ink); margin: .5rem 0 0 -.04em; font-variant-numeric: tabular-nums; }
+.sv-wx { margin-top: 1.4rem; font-size: .9rem; color: color-mix(in srgb, var(--muted) 90%, transparent); line-height: 1.6; }
+.sv-tip { margin-top: .3rem; font-size: .9rem; font-weight: 700; color: color-mix(in srgb, var(--accent) 85%, transparent); }
+.sv-line { margin: 0; font-family: var(--f-ui); font-weight: 400; font-size: clamp(1.4rem, 2.6vw, 2.3rem); line-height: 1.65; letter-spacing: -.01em; color: color-mix(in srgb, var(--ink) 72%, transparent); word-break: keep-all; text-wrap: pretty; }
 .sv-line b { font-family: var(--f-display); font-weight: 400; color: var(--ink); font-size: 1.12em; letter-spacing: -.02em; }
-.sv-foot { margin-top: 2.2rem; display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; font-size: .9rem; color: color-mix(in srgb, var(--muted) 75%, transparent); }
-.sv-dot { opacity: .5; }
-.sv-msg { margin-top: 1.6rem; font-family: var(--f-display); font-size: 1.3rem; color: var(--accent); }
+.sv-attr { display: block; margin-top: 1rem; font-size: .6em; color: color-mix(in srgb, var(--muted) 85%, transparent); }
+.sv-msg { margin-top: 1.4rem; font-family: var(--f-display); font-size: 1.3rem; color: var(--accent); }
 .sv-msg[hidden] { display: none; }
-.sv-attr { display: block; margin-top: 1.1rem; font-size: .55em; color: color-mix(in srgb, var(--muted) 85%, transparent); }
-@media (max-width: 760px) { .sv-line { font-size: 1.45rem; } .saver { padding: 8vw 6vw; } }
+@media (max-width: 760px) {
+  .sv-inner { grid-template-columns: 1fr; row-gap: 1.6rem; }
+  .sv-rule { height: 1px; }
+  .sv-date { flex-direction: row; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
+  .sv-day { font-size: 3.2rem; margin: 0; } .sv-dow, .sv-mon { font-size: 1.2rem; }
+  .sv-wx, .sv-tip { width: 100%; margin-top: .2rem; }
+  .sv-line { font-size: 1.35rem; }
+}
 
 /* question bar */
 .qbar .inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(9rem, 10.5rem); gap: .7rem; padding-block: .6rem 1rem; }
@@ -308,9 +320,18 @@ button { cursor: pointer; }
 
   <div class="saver" id="saver" hidden>
     <div class="sv-inner">
-      <p class="sv-line" id="svLine"></p>
-      <div class="sv-foot"><span id="svDate"></span><span class="sv-dot">·</span><span id="svWx"></span><span class="sv-dot" id="svTipDot">·</span><span id="svTip"></span></div>
-      <div class="sv-msg" id="svMsg" hidden></div>
+      <section class="sv-date">
+        <div class="sv-dow" id="svDow"></div>
+        <div class="sv-mon" id="svMon"></div>
+        <div class="sv-day" id="svDay"></div>
+        <div class="sv-wx" id="svWx"></div>
+        <div class="sv-tip" id="svTip"></div>
+      </section>
+      <div class="sv-rule" aria-hidden="true"></div>
+      <section class="sv-text">
+        <p class="sv-line" id="svLine"></p>
+        <div class="sv-msg" id="svMsg" hidden></div>
+      </section>
     </div>
   </div>
   <div class="pin" id="pin" hidden>
@@ -321,7 +342,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v36</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v37</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -885,10 +906,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const line = (LS.get(LINES_KEY, {})[k]) || fallbackLine(d.getHours(), d.getMinutes());
     const [bodyTxt, attr] = line.split(/\s+—\s+(?=[^—]+$)/);
     $('svLine').innerHTML = bodyTxt.replace(/</g, '&lt;').replace(/《([^》]+)》/g, '<b>$1</b>') + (attr ? `<span class="sv-attr">— ${attr.replace(/</g, '&lt;')}</span>` : '');
-    $('svDate').textContent = `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`;
-    const w = wxCache; const [txt] = (w && WX[w.code]) || ['']; const wxs = w ? `${settings.wxName || ''} ${w.t}° ${txt} · 최고 ${w.hi}° 최저 ${w.lo}°`.trim() : '';
-    $('svWx').textContent = wxs; $('svWx').previousElementSibling.hidden = !wxs; $('svWx').hidden = !wxs;
-    const tip = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : ''; $('svTip').textContent = tip; $('svTipDot').hidden = !tip; $('svTip').hidden = !tip;
+    $('svDow').textContent = DAYS[d.getDay()] + '요일'; $('svMon').textContent = (d.getMonth() + 1) + '월'; $('svDay').textContent = d.getDate();
+    const w = wxCache; const [txt] = (w && WX[w.code]) || [''];
+    $('svWx').innerHTML = w ? `${(settings.wxName || '').replace(/</g, '&lt;')} ${w.t}° ${txt}<br>최고 ${w.hi}° · 최저 ${w.lo}°${w.pop != null ? ' · 비 ' + w.pop + '%' : ''}` : '';
+    $('svTip').textContent = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : '';
     if (d.getMinutes() % 10 === 0 || !LS.get(LINES_KEY, {})[hhmm(new Date(d.getTime() + 5 * 60000))]) fetchLines(d);
   }
   function enterSaver(lockMsg) {
