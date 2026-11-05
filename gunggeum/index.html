@@ -352,7 +352,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v46</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v47</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -743,10 +743,28 @@ button { cursor: pointer; }
   function renderSound() { soundBtn.setAttribute('aria-pressed', String(sound)); soundBtn.title = sound ? '소리 켜짐' : '소리 꺼짐'; }
   soundBtn.addEventListener('click', () => { sound = !sound; renderSound(); LS.set('gk-sound', sound ? 'on' : 'off'); if (!sound) hush(); });
   renderSound();
-  // 터치 모니터: 닿는 순간 반응
-  const micBtn = $('micBtn'); let micFast = false;
-  micBtn.addEventListener('pointerdown', e => { if (e.pointerType !== 'touch') return; e.preventDefault(); micFast = true; setTimeout(() => { micFast = false; }, 1500); micBtn.dispatchEvent(new MouseEvent('click', { bubbles: true })); });
-  micBtn.addEventListener('click', e => { if (!e.isTrusted) return; if (micFast) { micFast = false; e.stopImmediatePropagation(); } }, true);
+  // 터치 모니터/펜: 눌렀다 떼면 (조금 흔들려도) 클릭으로 인정 — 크롬이 클릭을 놓치는 경우 보완
+  (function robustTap() {
+    const SEL = 'button, .w, a';
+    let down = null, synthUntil = 0;
+    document.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse') { down = null; return; }
+      const el = e.target.closest(SEL); if (!el || el.disabled) { down = null; return; }
+      down = { el, x: e.clientX, y: e.clientY, t: Date.now(), id: e.pointerId };
+    }, true);
+    document.addEventListener('pointerup', e => {
+      if (!down || e.pointerId !== down.id) return;
+      const d = down; down = null;
+      const dist = Math.hypot(e.clientX - d.x, e.clientY - d.y);
+      if (dist > 24 || Date.now() - d.t > 1200) return;
+      synthUntil = Date.now() + 700;
+      e.preventDefault();
+      d.el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, clientX: e.clientX, clientY: e.clientY }));
+    }, true);
+    document.addEventListener('pointercancel', () => { down = null; }, true);
+    // 바로 뒤따라오는 브라우저의 진짜 클릭은 한 번 무시 (중복 방지)
+    document.addEventListener('click', e => { if (e.isTrusted && Date.now() < synthUntil) { synthUntil = 0; e.stopImmediatePropagation(); e.preventDefault(); } }, true);
+  })();
   $('replayBtn').addEventListener('click', () => { speak(current, true); });
 
   // ---------- speech in (Web Speech API) ----------
@@ -939,6 +957,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     recent.length = 0; quiz = false; hidePic(); setChips([]); input.value = ''; input.blur();
     hush(); saverEl.hidden = false; $('svMsg').hidden = true; renderSaver(); fetchWeather().then(renderSaver).catch(() => {});
     clearInterval(saverTick); saverTick = setInterval(renderSaver, 15 * 1000);
+    if (saverLock) { const m = $('svMsg'); m.textContent = saverLock; m.hidden = false; clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { m.hidden = true; }, 4000); }
   }
   let lockMsgTimer = null;
   function exitSaver() {
