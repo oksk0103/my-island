@@ -342,7 +342,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v38</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v39</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -448,7 +448,7 @@ button { cursor: pointer; }
 - "더 알려줘", "왜?", "예를 들면?"처럼 이어서 물으면 방금 이야기를 한 단계 더 깊게, ${deep}자 이내로 답해.
 - 아이가 방금 답에 나온 낱말의 뜻을 물으면(예: "광합성"이 뭐야?) 조사를 떼고 그 낱말만 2문장 안에 풀어 줘.
 - 답 본문에는 꾸밈, 이모지, 마크다운, 줄바꿈을 쓰지 마. 문장만 써.
-- 답이 끝나면 줄을 바꾸고 마지막 줄에 "@@ 검색어 | 이모지 | 다음 질문" 을 꼭 붙여. 다음 질문은 이 답을 읽은 아이가 이어서 물어볼 만한 짧은 질문 4개(각 14자 이내, 서로 다른 방향으로: 이유, 비교, 예시, 엉뚱한 상상 등)를 ; 로 구분해서 써. 검색어는 답의 핵심이 되는 구체적인 사물·동물·식물·자연현상·우주·장소·유물·탈것 가운데 하나를 한국어 위키백과 표제어 그대로 적어(예: 달, 무지개, 티라노사우루스, 번개, 경복궁). 다음 경우엔 검색어를 반드시 비워: 낱말 뜻·영어 단어·문법·추상 개념·감정·관계·수학 원리, 사람 몸(신체 부위·장기·생식·출산), 질병, 폭력·무기·약물·술·담배, 특정 인물. 조금이라도 애매하면 비워. 이모지는 답과 어울리는 것 2~3개. 이 줄은 화면에 안 보여.
+- 답이 끝나면 줄을 바꾸고 마지막 줄에 "@@ 검색어 | 이모지 | 다음 질문" 을 꼭 붙여. 다음 질문은 이 답을 읽은 아이가 이어서 물어볼 만한 짧은 질문 4개(각 14자 이내, 서로 다른 방향으로: 이유, 비교, 예시, 엉뚱한 상상 등)를 ; 로 구분해서 써. 검색어는 답의 핵심이 되는 구체적인 사물·동물·식물·자연현상·우주·장소·유물·탈것 가운데 하나를 한국어 위키백과 표제어 그대로 적어(예: 달, 무지개, 티라노사우루스, 번개, 경복궁). 다음 경우엔 검색어를 반드시 비워: 낱말 뜻·영어 단어·문법·추상 개념·감정·관계·수학 원리, 사람 몸(신체 부위·장기·생식·출산), 질병, 폭력·무기·약물·술·담배, 특정 인물. 조금이라도 애매하면 비워. 이모지는 답의 내용·비유와 직접 연결된 사물·동물·자연 2~3개(예: 추호→🐜🔬, 무지개→🌈☀️). 📖📚✏️📝💬🔤🧠💡❓ 같은 '공부·생각' 이모지는 쓰지 마. 이 줄은 화면에 안 보여.
 - 답에서 가장 중요한 구절 하나(2~6어절)를 《 》로 감싸. 꼭 한 군데만.
 - 대답해도 되는 것: 과학, 자연, 동물, 우주, 몸, 역사, 세계 여러 나라, 수학 원리, 미술과 음악, 로봇과 컴퓨터가 움직이는 원리, 책과 이야기, 말과 글자, 날씨와 계절, 생활 속 궁금증, 퀴즈, 수수께끼, 말놀이.
 - 퀴즈를 내 달라고 하면 중학생이 잠깐 생각해야 풀 만한 걸로 하나만 내고, 답은 맞히거나 "정답!"이라고 할 때 알려 줘. 정답을 알려 줄 때는 "정답은"이라는 말을 꼭 넣어.
@@ -1008,7 +1008,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   const cleanTerm = t => (t || '').trim().replace(/^[\s"'「」]+|[\s"'「」]+$/g, '');
   const BAD_EMOJI = /[🍺🍻🍷🍸🍹🥃🍾🚬🔪🗡️⚔️🔫💣🧨💊💉🩸🖕💀☠️🪦⚰️🍆🍑💦🔞👙🩲🩱👅🫦]/u;
-  const pickEmoji = e => Array.from((e || '').matchAll(/\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic})*/gu), x => x[0]).filter(x => !BAD_EMOJI.test(x)).slice(0, 3).join('');
+  const GENERIC_EMOJI = /[📖📚📕📗📘📙📓📔📒✏️✒️🖊️🖋️📝💬🗨️💭🔤🔡🔠🧠💡❓❔❗📌📎🔍🔎🗣️👂👀🤔🙂😊✨⭐]/u;
+  const pickEmoji = e => { const all = Array.from((e || '').matchAll(/\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic})*/gu), x => x[0]).filter(x => !BAD_EMOJI.test(x)); const meaningful = all.filter(x => !GENERIC_EMOJI.test(x)); return (meaningful.length ? meaningful : []).slice(0, 3).join(''); };
   function hidePic() { picSeq++; fig.hidden = true; mainInner.classList.remove('has-fig'); figBox.innerHTML = ''; figCap.textContent = ''; fit(); }
   function placePic(html, cap) {
     figBox.innerHTML = html; figCap.innerHTML = cap || '';
