@@ -148,17 +148,20 @@ button { cursor: pointer; }
 
 /* special screens: clock / weather */
 .main .inner.special-on .textcol, .main .inner.special-on .fig { display: none; }
-.special { display: flex; flex-direction: column; justify-content: center; min-height: 0; gap: 1rem; }
+.special { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 2rem 4rem; min-height: 0; }
 .special[hidden] { display: none; }
-.sp-time { font-family: var(--f-display); font-size: clamp(5rem, 22vw, 17rem); line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--ink); }
+.sp-clock, .sp-wx { display: flex; flex-direction: column; gap: .6rem; min-width: 0; }
+.sp-wx { border-left: 1px solid var(--line); padding-left: 3rem; }
+.sp-time { font-family: var(--f-display); font-size: clamp(4rem, 13vw, 12rem); line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: var(--ink); }
 .sp-date { font-size: clamp(1.2rem, 3vw, 2rem); color: var(--muted); font-weight: 600; }
 .sp-msg { font-family: var(--f-display); font-size: clamp(1.3rem, 3.4vw, 2.4rem); color: var(--accent); margin-top: .4rem; }
 .sp-wx-main { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
-.sp-wx-ico { font-size: clamp(4rem, 14vw, 10rem); line-height: 1; }
-.sp-wx-temp { font-family: var(--f-display); font-size: clamp(5rem, 18vw, 13rem); line-height: 1; letter-spacing: -.03em; color: var(--ink); }
-.sp-wx-txt { font-family: var(--f-display); font-size: clamp(1.8rem, 5vw, 3.6rem); color: var(--ink); }
-.sp-wx-row { font-size: clamp(1.1rem, 2.6vw, 1.8rem); color: var(--muted); font-weight: 600; }
-.sp-wx-tip { font-family: var(--f-display); font-size: clamp(1.6rem, 4.2vw, 3rem); color: var(--accent); }
+.sp-wx-ico { font-size: clamp(3rem, 7vw, 6rem); line-height: 1; }
+.sp-wx-temp { font-family: var(--f-display); font-size: clamp(3.5rem, 9vw, 7.5rem); line-height: 1; letter-spacing: -.03em; color: var(--ink); }
+.sp-wx-txt { font-family: var(--f-display); font-size: clamp(1.5rem, 3.6vw, 2.8rem); color: var(--ink); }
+.sp-wx-row { font-size: clamp(1rem, 2vw, 1.4rem); color: var(--muted); font-weight: 600; }
+.sp-wx-tip { font-family: var(--f-display); font-size: clamp(1.4rem, 3.2vw, 2.4rem); color: var(--accent); }
+@media (max-width: 900px) { .special { grid-template-columns: 1fr; gap: 1.6rem; } .sp-wx { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: 1.4rem; } .sp-time { font-size: clamp(4rem, 24vw, 8rem); } }
 .app.clock-mode .qbar, .app.clock-mode .foot { visibility: hidden; }
 
 /* question bar */
@@ -273,12 +276,12 @@ button { cursor: pointer; }
     <div class="chips" id="chips"></div>
     </div>
     <div class="special" id="special" hidden>
-      <div class="sp-clock" id="spClock" hidden>
+      <div class="sp-clock" id="spClock">
         <div class="sp-time" id="spTime">00:00</div>
         <div class="sp-date" id="spDate"></div>
         <div class="sp-msg" id="spMsg"></div>
       </div>
-      <div class="sp-wx" id="spWx" hidden>
+      <div class="sp-wx" id="spWx">
         <div class="sp-date" id="wxHead"></div>
         <div class="sp-wx-main"><span class="sp-wx-ico" id="wxIco">☀️</span><span class="sp-wx-temp" id="wxTemp">--°</span><span class="sp-wx-txt" id="wxTxt"></span></div>
         <div class="sp-wx-row" id="wxRow"></div>
@@ -302,7 +305,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v16</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v17</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -738,18 +741,20 @@ button { cursor: pointer; }
   function setSpecial(mode) {
     specialMode = mode;
     special.hidden = !mode; mainInnerEl.classList.toggle('special-on', !!mode);
-    $('spClock').hidden = mode !== 'clock'; $('spWx').hidden = mode !== 'weather';
     app.classList.toggle('clock-mode', mode === 'clock');
   }
-  function showClock(msg) {
-    hidePic(); setChips([]); input.value = ''; input.blur();
+  function renderClock(msg) {
     const d = new Date();
     $('spTime').textContent = pad(d.getHours()) + ':' + pad(d.getMinutes());
     $('spDate').textContent = `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`;
-    $('spMsg').textContent = msg || (settings.cap && todayCount() >= settings.cap ? '오늘 질문은 여기까지. 내일 또 물어봐.' : `쉬는 시간이야. ${settings.hFrom}시에 다시 만나.`);
-    current = $('spMsg').textContent;
+    $('spMsg').textContent = msg || '';
+  }
+  function showClock(msg) {
+    hidePic(); setChips([]); input.value = ''; input.blur();
+    const m = msg || (settings.cap && todayCount() >= settings.cap ? '오늘 질문은 여기까지. 내일 또 물어봐.' : `쉬는 시간이야. ${settings.hFrom}시에 다시 만나.`);
+    renderClock(m); current = m;
     setEyebrow('piece'); eyebrow.textContent = '쉬는 시간';
-    setSpecial('clock');
+    setSpecial('clock'); renderWeather();
     setState('idle', '쉬는 시간', '부모님이 정한 시간이에요.');
   }
   const WX = { 0: ['맑음', '☀️'], 1: ['대체로 맑음', '🌤️'], 2: ['구름 조금', '⛅'], 3: ['흐림', '☁️'], 45: ['안개', '🌫️'], 48: ['안개', '🌫️'], 51: ['이슬비', '🌦️'], 53: ['이슬비', '🌦️'], 55: ['이슬비', '🌦️'], 56: ['찬 이슬비', '🌧️'], 57: ['찬 이슬비', '🌧️'], 61: ['비', '🌧️'], 63: ['비', '🌧️'], 65: ['많은 비', '🌧️'], 66: ['얼음비', '🌧️'], 67: ['얼음비', '🌧️'], 71: ['눈', '🌨️'], 73: ['눈', '🌨️'], 75: ['많은 눈', '❄️'], 77: ['싸락눈', '🌨️'], 80: ['소나기', '🌦️'], 81: ['소나기', '🌧️'], 82: ['강한 소나기', '⛈️'], 85: ['소낙눈', '🌨️'], 86: ['소낙눈', '❄️'], 95: ['천둥번개', '⛈️'], 96: ['천둥번개·우박', '⛈️'], 99: ['천둥번개·우박', '⛈️'] };
@@ -782,21 +787,24 @@ button { cursor: pointer; }
     if (w.hi >= 30) return '더워. 물 꼭 챙겨!';
     return '딱 좋은 날씨야. 잘 다녀와!';
   }
-  async function showWeather() {
-    hidePic(); setChips([]);
-    const d = new Date();
-    setEyebrow('piece'); $('wxHead').textContent = `좋은 아침 · ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일 · ${settings.wxName || '우리 동네'}`;
-    setSpecial('weather');
-    setState('idle', '아침', settings.apiKey ? '궁금한 게 있으면 리모컨 ●를 누르고 말해 봐.' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
+  async function renderWeather() {
+    $('wxHead').textContent = settings.wxName || '우리 동네';
     try {
-      const w = await fetchWeather(); if (specialMode !== 'weather') return;
+      const w = await fetchWeather(); if (!specialMode) return;
       const [txt, ico] = WX[w.code] || ['날씨', '🌡️'];
       $('wxIco').textContent = ico; $('wxTemp').textContent = w.t + '°'; $('wxTxt').textContent = txt;
       const dust = dustGrade(w.pm10, w.pm25);
       $('wxRow').textContent = [`최고 ${w.hi}°`, `최저 ${w.lo}°`, w.feel !== w.t ? `체감 ${w.feel}°` : null, w.pop != null ? `비 올 확률 ${w.pop}%` : null, dust ? `미세먼지 ${dust}` : null].filter(Boolean).join(' · ');
       $('wxTip').textContent = wxTip(w, dust);
-      current = `오늘 ${settings.wxName || '우리 동네'} 날씨는 ${txt}, 지금 ${w.t}도, 최고 ${w.hi}도 최저 ${w.lo}도야. ${$('wxTip').textContent}`;
-    } catch (e) { $('wxIco').textContent = '🌡️'; $('wxTemp').textContent = '--°'; $('wxTxt').textContent = '날씨를 못 가져왔어'; $('wxRow').textContent = ''; $('wxTip').textContent = '그래도 좋은 하루!'; }
+      if (specialMode === 'weather') current = `오늘 ${settings.wxName || '우리 동네'} 날씨는 ${txt}, 지금 ${w.t}도, 최고 ${w.hi}도 최저 ${w.lo}도야. ${$('wxTip').textContent}`;
+    } catch (e) { $('wxIco').textContent = '🌡️'; $('wxTemp').textContent = '--°'; $('wxTxt').textContent = '날씨를 못 가져왔어'; $('wxRow').textContent = ''; $('wxTip').textContent = ''; }
+  }
+  function showWeather() {
+    hidePic(); setChips([]);
+    renderClock('좋은 아침! 궁금한 게 있으면 물어봐.');
+    setEyebrow('piece');
+    setSpecial('weather'); renderWeather();
+    setState('idle', '아침', settings.apiKey ? '리모컨 ●를 누르고 말해 봐.' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
   }
   function showPiece(animate) {
     const mode = screenMode();
@@ -813,7 +821,7 @@ button { cursor: pointer; }
     if (busy || listening || !logEl.hidden) return;
     if (app.dataset.state !== 'idle') return;
     const mode = screenMode();
-    if (mode === 'clock' || mode !== specialMode) showPiece(false);
+    if (mode !== 'piece' || mode !== specialMode) showPiece(false);
   }, 30 * 1000);
   // 날씨 지역 찾기
   $('wxFind').addEventListener('click', async () => {
