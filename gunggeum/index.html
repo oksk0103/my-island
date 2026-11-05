@@ -152,11 +152,10 @@ button { cursor: pointer; }
 
 /* special screens: clock / weather (Magic Patterns 시안 기준) */
 .main .inner.special-on .textcol, .main .inner.special-on .fig { display: none; }
-.special { display: grid; grid-template-columns: 55fr 1px 45fr; align-items: stretch; min-height: 0; height: 100%; }
+.special { display: grid; grid-template-columns: max-content 1px minmax(22rem, 36rem); justify-content: center; column-gap: 4.5rem; align-items: stretch; min-height: 0; height: 100%; }
 .special[hidden] { display: none; }
 .special > .sp-rule { background: var(--line); margin: 3.6rem 0; }
-.sp-clock, .sp-wx { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: 0 2.8rem 0 0; }
-.sp-wx { padding: 0 0 0 3.2rem; }
+.sp-clock, .sp-wx { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
 .sp-time { font-family: var(--f-display); font-size: clamp(5rem, 13.2vw, 12.6rem); line-height: .86; letter-spacing: -.01em; font-variant-numeric: tabular-nums; color: var(--ink); margin-left: -.03em; }
 .sp-date { margin-top: 1.5rem; font-size: 1.3rem; font-weight: 500; color: var(--muted); }
 .sp-msg { margin-top: .7rem; font-size: 1.1rem; font-weight: 500; color: var(--accent); }
@@ -176,7 +175,7 @@ button { cursor: pointer; }
 .sp-hourly .h-d { font-family: var(--f-display); font-size: 1.15rem; color: var(--ink); line-height: 1; }
 .sp-wx-tip { margin-top: 1rem; padding-top: .9rem; border-top: 1px solid var(--line); font-size: 1.1rem; font-weight: 700; color: var(--accent); }
 /* morning: weather is the hero, time secondary */
-.special.morning { grid-template-columns: 34fr 1px 66fr; }
+.special.morning { grid-template-columns: max-content 1px minmax(26rem, 44rem); }
 .special.morning .sp-time { font-size: clamp(3.4rem, 6vw, 5.6rem); line-height: .9; }
 .special.morning .sp-date { margin-top: .9rem; font-size: 1rem; }
 .special.morning .sp-msg { margin-top: 1.8rem; font-size: 1.1rem; color: var(--ink); line-height: 1.55; }
@@ -344,7 +343,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v20</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v21</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -393,6 +392,8 @@ button { cursor: pointer; }
         <div class="seg" data-k="pitch"><button type="button" data-v="0.9">낮게</button><button type="button" data-v="1">보통</button><button type="button" data-v="1.15">높게</button></div>
         <label>날씨 지역</label>
         <div class="row"><input id="wxName" placeholder="예: 영등포구" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 10rem"><button class="chip" id="wxFind" type="button">찾기</button><span class="empty" id="wxNote"></span></div>
+        <label>화면 색</label>
+        <div class="seg" data-k="theme"><button type="button" data-v="auto">자동 (일몰)</button><button type="button" data-v="light">밝게</button><button type="button" data-v="dark">어둡게</button></div>
         <label>아침 날씨 화면</label>
         <div class="seg" data-k="wxOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔</button></div>
         <label>하루 질문 상한</label>
@@ -424,7 +425,7 @@ button { cursor: pointer; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on' };
+  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', theme: 'auto' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
   const LEVEL = {
@@ -473,7 +474,7 @@ button { cursor: pointer; }
     $('apiNote').textContent = settings.apiKey ? '키 저장됨' : '키가 없으면 대답을 못 해요';
   }
   function saveSettings(patch) {
-    Object.assign(settings, patch); LS.set('gk-settings', settings); applySettingsUI();
+    Object.assign(settings, patch); LS.set('gk-settings', settings); applySettingsUI(); try { applyTheme(); } catch (e) {}
     $('saved').textContent = '저장됨';
   }
   (function buildSettingsUI() {
@@ -767,6 +768,19 @@ button { cursor: pointer; }
     }
   }
 
+  // ---------- theme: auto by sunset ----------
+  function isNightNow() {
+    const now = new Date(), sun = LS.get('gk-sun', null);
+    if (sun && sun.day === dayKey(now)) { const r = new Date(sun.rise), st = new Date(sun.set); return now < r || now >= st; }
+    const h = now.getHours() + now.getMinutes() / 60; return h < 6.5 || h >= 18; // 일출·일몰 정보 없을 때
+  }
+  function applyTheme() {
+    const t = settings.theme || 'auto';
+    const dark = t === 'dark' ? true : t === 'light' ? false : isNightNow();
+    document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  }
+  applyTheme(); setInterval(applyTheme, 60 * 1000);
+
   // ---------- idle: piece / weather / clock ----------
   const special = $('special'), mainInnerEl = $('mainInner');
   let specialMode = '', wxCache = null, wxAt = 0;
@@ -818,12 +832,13 @@ button { cursor: pointer; }
     if (wxCache && Date.now() - wxAt < 20 * 60 * 1000) return wxCache;
     const lat = +settings.wxLat || 37.526, lon = +settings.wxLon || 126.896;
     const [f, a] = await Promise.all([
-      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,precipitation&hourly=temperature_2m,weather_code,precipitation_probability,is_day&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=Asia%2FSeoul&forecast_days=2`).then(r => r.json()),
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,precipitation&hourly=temperature_2m,weather_code,precipitation_probability,is_day&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code,sunrise,sunset&timezone=Asia%2FSeoul&forecast_days=2`).then(r => r.json()),
       fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=pm10,pm2_5&timezone=Asia%2FSeoul`).then(r => r.json()).catch(() => null)
     ]);
     const c = f.current, d = f.daily, hh = f.hourly || {};
     const now = new Date(); const startIdx = Math.max(0, (hh.time || []).findIndex(t => new Date(t) > now));
     const hours = (hh.time || []).slice(startIdx, startIdx + 8).map((t, k) => ({ h: new Date(t).getHours(), t: Math.round(hh.temperature_2m[startIdx + k]), code: hh.weather_code[startIdx + k], pop: hh.precipitation_probability?.[startIdx + k] ?? null, day: hh.is_day?.[startIdx + k] }));
+    try { if (d.sunrise?.[0]) LS.set('gk-sun', { rise: d.sunrise[0], set: d.sunset[0], day: dayKey(new Date()) }); } catch (e) {}
     wxCache = { hours, t: Math.round(c.temperature_2m), feel: Math.round(c.apparent_temperature), code: c.weather_code, dayCode: d.weather_code?.[0], hi: Math.round(d.temperature_2m_max[0]), lo: Math.round(d.temperature_2m_min[0]), pop: d.precipitation_probability_max?.[0] ?? null, pm10: a?.current?.pm10 ?? null, pm25: a?.current?.pm2_5 ?? null };
     wxAt = Date.now(); return wxCache;
   }
@@ -1128,15 +1143,20 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   // long-press (2s) or 5 quick taps on the wordmark
   const title = $('title');
   let pressTimer = null, taps = 0, tapTimer = null;
-  title.addEventListener('pointerdown', e => { e.preventDefault(); try { title.setPointerCapture(e.pointerId); } catch (x) {} clearTimeout(pressTimer); pressTimer = setTimeout(openLog, 2000); });
-  ['pointerup', 'pointercancel'].forEach(ev => title.addEventListener(ev, () => clearTimeout(pressTimer)));
-  title.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+  const pressStart = () => { clearTimeout(pressTimer); pressTimer = setTimeout(() => { pressTimer = null; openLog(); }, 1500); };
+  const pressEnd = () => { clearTimeout(pressTimer); pressTimer = null; };
+  title.addEventListener('pointerdown', e => { e.preventDefault(); pressStart(); });
+  ['pointerup', 'pointerleave'].forEach(ev => title.addEventListener(ev, pressEnd));
+  // 터치 모니터/DeX에서 pointercancel이 먼저 오는 경우를 위해 touch 이벤트로도 잡는다
+  title.addEventListener('touchstart', e => { e.preventDefault(); pressStart(); }, { passive: false });
+  ['touchend', 'touchcancel'].forEach(ev => title.addEventListener(ev, pressEnd));
   title.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
   title.addEventListener('contextmenu', e => e.preventDefault());
   title.addEventListener('click', () => { taps++; clearTimeout(tapTimer); tapTimer = setTimeout(() => { taps = 0; }, 1500); if (taps >= 5) { taps = 0; openLog(); } });
 
   // ---------- start ----------
   renderCount();
+  fetchWeather().then(applyTheme).catch(() => {});
   showPiece(false);
   touchIdle();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
