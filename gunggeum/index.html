@@ -220,6 +220,7 @@ button { cursor: pointer; }
 .sv-line b { font-family: var(--f-display); font-weight: 400; color: var(--ink); font-size: 1.12em; letter-spacing: -.02em; }
 .sv-foot { margin-top: 2.2rem; display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; font-size: .9rem; color: color-mix(in srgb, var(--muted) 75%, transparent); }
 .sv-dot { opacity: .5; }
+.sv-attr { display: block; margin-top: 1.1rem; font-size: .55em; color: color-mix(in srgb, var(--muted) 85%, transparent); }
 @media (max-width: 760px) { .sv-line { font-size: 1.45rem; } .saver { padding: 8vw 6vw; } }
 
 /* question bar */
@@ -240,7 +241,7 @@ button { cursor: pointer; }
 .foot b { color: var(--line); font-weight: 400; }
 
 @media (max-width: 760px) {
-  .app { height: auto; min-height: 100%; grid-template-rows: auto auto auto auto; }
+  .app { height: auto; min-height: 100%; grid-template-rows: auto 1fr auto auto; align-content: start; }
   .main .inner { height: auto; }
   .qbar { position: sticky; bottom: 0; background: var(--bg); padding-top: .4rem; }
   .topbar .inner { grid-template-columns: auto 1fr auto; min-height: 3.2rem; }
@@ -381,7 +382,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v34</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v35</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -530,7 +531,7 @@ button { cursor: pointer; }
   })();
   function gate() {
     const h = new Date().getHours();
-    const open = settings.hFrom <= settings.hTo ? (h >= settings.hFrom && h < settings.hTo) : (h >= settings.hFrom || h < settings.hTo);
+    const open = settings.hFrom === settings.hTo ? true : settings.hFrom < settings.hTo ? (h >= settings.hFrom && h < settings.hTo) : (h >= settings.hFrom || h < settings.hTo);
     if (!open) return `지금은 쉬는 시간이야. ${settings.hFrom}시부터 물어볼 수 있어.`;
     if (settings.cap && todayCount() >= settings.cap) return `오늘 질문은 여기까지. 내일 또 물어봐.`;
     return null;
@@ -674,7 +675,8 @@ button { cursor: pointer; }
   let lastSpeakErr = '', lastTts = '';
   const player = new Audio(); player.preload = 'auto';
   const audioCache = new Map();
-  function hush() { try { player.pause(); player.currentTime = 0; } catch (e) {} try { speechSynthesis.cancel(); } catch (e) {} }
+  let speakGen = 0;
+  function hush() { speakGen++; try { player.pause(); player.currentTime = 0; } catch (e) {} try { speechSynthesis.cancel(); } catch (e) {} }
   function ttsVoiceName() {
     const p = settings.ttsProvider || 'azure', v = settings.ttsVoice || '';
     const ok = p === 'google' ? /^ko-KR-(Chirp|Neural2|Wavenet|Standard)/.test(v) : p === 'azure' ? /Neural$/.test(v) : /^[a-z]+$/.test(v);
@@ -726,20 +728,21 @@ button { cursor: pointer; }
     await new Promise((ok, no) => { player.src = src; player.onended = ok; player.onerror = () => no(new Error('play')); player.play().then(() => {}).catch(no); });
     return true;
   }
-  function deviceSpeak(plain) {
+  function deviceSpeak(plain, gen = speakGen) {
     return new Promise(res => {
       try {
         if (!('speechSynthesis' in window)) return res();
         speechSynthesis.cancel();
         const go = (voice, retry) => {
+          if (gen !== speakGen) return res(); // 그사이 끊겼으면 다시 읽지 않음
           const u = new SpeechSynthesisUtterance(plain);
           u.lang = 'ko-KR'; u.rate = +settings.rate || 1; u.pitch = +settings.pitch || 1; if (voice) u.voice = voice;
           let started = false;
           u.onstart = () => { started = true; lastSpeakErr = ''; };
           u.onend = res;
-          u.onerror = e => { lastSpeakErr = e.error || 'error'; if (retry) { res(); return; } go(null, true); };
+          u.onerror = e => { lastSpeakErr = e.error || 'error'; if (retry || /interrupted|canceled/.test(e.error || '') || gen !== speakGen) { res(); return; } go(null, true); };
           // 소리가 1.5초 안에 시작 안 하면 기본 음성으로 한 번 더
-          setTimeout(() => { if (!started && !retry) { lastSpeakErr = 'no-start'; try { speechSynthesis.cancel(); } catch (x) {} go(null, true); } }, 1500);
+          setTimeout(() => { if (!started && !retry && gen === speakGen) { lastSpeakErr = 'no-start'; try { speechSynthesis.cancel(); } catch (x) {} go(null, true); } }, 1500);
           speechSynthesis.speak(u);
         };
         // cancel() 직후 speak()가 먹히지 않는 폰 버그 회피용 지연
@@ -751,12 +754,13 @@ button { cursor: pointer; }
     if (!sound && !force) return;
     const plain = text.replace(/[《》]/g, '').replace(/\p{Extended_Pictographic}/gu, '').trim();
     if (!plain) return;
-    hush();
+    hush(); const gen = speakGen;
     if (settings.ttsKey) {
       try { lastTts = 'AI 목소리'; await cloudSpeak(plain); return; }
-      catch (e) { lastTts = 'AI 실패(' + (e.message || e) + ') → 폰 목소리'; try { $('ttsNote').textContent = lastTts + ` [${settings.ttsProvider}, 키 ${settings.ttsKey.length}자 · …${settings.ttsKey.slice(-4)}, 지역 ${settings.ttsRegion}]`; } catch (x) {} }
+      catch (e) { if (gen !== speakGen) return; lastTts = 'AI 실패(' + (e.message || e) + ') → 폰 목소리'; try { $('ttsNote').textContent = lastTts + ` [${settings.ttsProvider}, 키 ${settings.ttsKey.length}자 · …${settings.ttsKey.slice(-4)}, 지역 ${settings.ttsRegion}]`; } catch (x) {} }
     } else lastTts = '폰 목소리';
-    await deviceSpeak(plain);
+    if (gen !== speakGen || (!sound && !force)) return;
+    await deviceSpeak(plain, gen);
   }
   $('ttsSave').addEventListener('click', () => { saveSettings({ ttsKey: $('ttsKey').value.trim(), ttsRegion: $('ttsRegion').value.trim() || 'koreacentral' }); });
   $('ttsVoice').addEventListener('change', e => saveSettings({ ttsVoice: e.target.value }));
@@ -768,7 +772,7 @@ button { cursor: pointer; }
   renderSound();
   // 터치 모니터: 닿는 순간 반응
   const micBtn = $('micBtn'); let micFast = false;
-  micBtn.addEventListener('pointerdown', e => { if (e.pointerType !== 'touch') return; e.preventDefault(); micFast = true; setTimeout(() => { micFast = false; }, 600); micBtn.dispatchEvent(new MouseEvent('click', { bubbles: true })); });
+  micBtn.addEventListener('pointerdown', e => { if (e.pointerType !== 'touch') return; e.preventDefault(); micFast = true; setTimeout(() => { micFast = false; }, 1500); micBtn.dispatchEvent(new MouseEvent('click', { bubbles: true })); });
   micBtn.addEventListener('click', e => { if (!e.isTrusted) return; if (micFast) { micFast = false; e.stopImmediatePropagation(); } }, true);
   $('replayBtn').addEventListener('click', () => { speak(current, true); });
 
@@ -837,7 +841,7 @@ button { cursor: pointer; }
   function screenMode() {
     if (gate()) return 'clock';
     const d = new Date(), h = d.getHours() + d.getMinutes() / 60;
-    if (settings.wxOn !== 'off' && h >= settings.hFrom && h < settings.hFrom + 2) return 'weather';
+    if (settings.wxOn !== 'off' && h >= (settings.hFrom % 24) && h < (settings.hFrom % 24) + 2) return 'weather';
     return 'piece';
   }
   function setSpecial(mode) {
@@ -853,6 +857,7 @@ button { cursor: pointer; }
     $('spMsg').textContent = msg || '';
   }
   function showClock(msg) {
+    recent.length = 0; quiz = false;
     hidePic(); setChips([]); input.value = ''; input.blur();
     const m = msg || (settings.cap && todayCount() >= settings.cap ? '오늘 질문은 여기까지. 내일 또 물어봐.' : `쉬는 시간이야. ${settings.hFrom}시에 다시 만나.`);
     renderClock(m); current = m;
@@ -928,6 +933,7 @@ button { cursor: pointer; }
     } catch (e) { $('wxIco').innerHTML = ICON.thermo; $('wxTemp').textContent = '--°'; $('wxTxt').textContent = '날씨를 못 가져왔어'; $('wxRow').innerHTML = ''; $('wxHourly').innerHTML = ''; $('wxTip').textContent = ''; }
   }
   function showWeather() {
+    recent.length = 0; quiz = false;
     hidePic(); setChips([]);
     renderClock('좋은 아침! 궁금한 게 있으면 물어봐.');
     setEyebrow('piece');
@@ -939,6 +945,7 @@ button { cursor: pointer; }
     if (mode === 'clock') return showClock();
     if (mode === 'weather') return showWeather();
     setSpecial('');
+    recent.length = 0; quiz = false; // 쉬는 화면으로 돌아오면 대화 맥락 초기화
     const p = piece(); current = p.f; hidePic();
     setEyebrow('piece'); setChips([p.q], '', true); draw(p.f, animate, 'plain');
     setState('idle', '쉬는 중', settings.apiKey ? '마이크를 누르고 말해 봐.' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
@@ -974,6 +981,8 @@ button { cursor: pointer; }
   let saverTimer = null, saverTick = null, linesBusy = false;
   const saverEl = $('saver');
   const LINES_KEY = 'gk-lines';
+  let QUOTES = null; // 저작권 만료 고전에서 뽑은 '그 시각' 문장 (영어 원문 → Claude가 번역)
+  async function loadQuotes() { if (QUOTES) return QUOTES; try { QUOTES = await fetch('./quotes.json', { cache: 'force-cache' }).then(r => r.json()); } catch (e) { QUOTES = {}; } return QUOTES; }
   const hhmm = d => pad(d.getHours()) + ':' + pad(d.getMinutes());
   const koTime = (h, m) => `${h}시 ${m}분`;
   function fallbackLine(h, m) { const p = PIECES[(h * 60 + m) % PIECES.length]; return `《${koTime(h, m)}》. ${p.f}`; }
@@ -984,11 +993,16 @@ button { cursor: pointer; }
     if (!need.length) return;
     linesBusy = true;
     try {
-      const txt = await claude([{ role: 'user', content: `아래 시각들 각각에 대해, 그 시각이 문장 안에 자연스럽게 들어간 한국어 한 문장을 써 줘. 초등학생이 읽는 '시간 속 궁금 한 조각'이야: 그 시각과 연결된 과학·자연·세계·우주 사실(지구 반대편은 지금 몇 시인지, 빛이나 소리가 1분에 가는 거리, 동물·식물의 하루, 별과 달, 몸속 시계 등) 또는 짧고 담담한 관찰. 반말, 45~80자, 꾸밈 없이, 이모지·마크다운 없이. 시각은 반드시 'N시 M분' 꼴로 문장 안에 넣고 《 》로 감싸(예: 《21시 47분》). 같은 소재 반복 금지, 무섭거나 어른용 내용 금지.
+      const Q = await loadQuotes();
+      const items = need.map(k => { const qs = Q[k]; if (qs && qs.length) { const o = qs[Math.floor(Math.random() * qs.length)]; return `${k}|번역|${o.q.replace(/\|/g, '/')}|${o.title}|${o.author}`; } return `${k}|창작`; });
+      const txt = await claude([{ role: 'user', content: `시계 화면에 쓸 문장을 만들어 줘. 줄마다 시각(HH:MM)과 종류가 있어.
+- '번역' 줄: 뒤에 붙은 영어 소설 원문(저작권이 만료된 고전)을 자연스러운 한국어로 충실히 번역해. 원문에 있는 시각 표현은 반드시 'N시 M분' 꼴(정각이면 'N시', 반이면 'N시 반'도 가능)로 옮기고 그 부분만 《 》로 감싸. 문장 끝에 ' — 작품명, 작가' 를 한국어로 붙여(예: ' — 위대한 개츠비, F. 스콧 피츠제럴드').
+- '창작' 줄: 그 시각이 문장 안에 자연스럽게 들어간 한국어 한 문장을 새로 써. 초등학생이 읽는 '시간 속 궁금 한 조각': 그 시각과 연결된 과학·자연·세계·우주 사실 또는 짧고 담담한 관찰. 반말, 45~80자. 시각은 'N시 M분' 꼴로 넣고 《 》로 감싸. 같은 소재 반복 금지.
+공통: 이모지·마크다운 금지, 무섭거나 어른용 내용 금지.
 출력 형식: 줄마다 'HH:MM|문장'. 다른 말은 쓰지 마.
-시각: ${need.join(', ')}` }], { maxTokens: 1500 });
+${items.join('\n')}` }], { maxTokens: 2500 });
       const got = LS.get(LINES_KEY, {});
-      for (const row of txt.split('\n')) { const m = row.match(/^\s*(\d{1,2}):(\d{2})\s*\|\s*(.+?)\s*$/); if (m) { const k = pad(+m[1]) + ':' + m[2]; if (/《[^》]*분》/.test(m[3])) got[k] = m[3].slice(0, 120); } }
+      for (const row of txt.split('\n')) { const m = row.match(/^\s*(\d{1,2}):(\d{2})\s*\|\s*(.+?)\s*$/); if (m) { const k = pad(+m[1]) + ':' + m[2]; if (/《[^》]*(분|시|반)》/.test(m[3])) got[k] = m[3].slice(0, 400); } }
       LS.set(LINES_KEY, got);
       if (!saverEl.hidden) renderSaver();
     } catch (e) {} finally { linesBusy = false; }
@@ -996,9 +1010,11 @@ button { cursor: pointer; }
   function renderSaver() {
     const d = new Date(), k = hhmm(d);
     const line = (LS.get(LINES_KEY, {})[k]) || fallbackLine(d.getHours(), d.getMinutes());
-    $('svLine').innerHTML = line.replace(/</g, '&lt;').replace(/《([^》]+)》/g, '<b>$1</b>');
+    const [bodyTxt, attr] = line.split(/\s+—\s+(?=[^—]+$)/);
+    $('svLine').innerHTML = bodyTxt.replace(/</g, '&lt;').replace(/《([^》]+)》/g, '<b>$1</b>') + (attr ? `<span class="sv-attr">— ${attr.replace(/</g, '&lt;')}</span>` : '');
     $('svDate').textContent = `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`;
-    const w = wxCache; const [txt] = (w && WX[w.code]) || ['']; $('svWx').textContent = w ? `${settings.wxName || ''} ${w.t}° ${txt}`.trim() : '';
+    const w = wxCache; const [txt] = (w && WX[w.code]) || ['']; const wxs = w ? `${settings.wxName || ''} ${w.t}° ${txt}`.trim() : '';
+    $('svWx').textContent = wxs; $('svWx').previousElementSibling.hidden = !wxs; $('svWx').hidden = !wxs;
     if (d.getMinutes() % 10 === 0 || !LS.get(LINES_KEY, {})[hhmm(new Date(d.getTime() + 5 * 60000))]) fetchLines(d);
   }
   function enterSaver() {
@@ -1013,8 +1029,8 @@ button { cursor: pointer; }
   saverEl.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); exitSaver(); }, true);
   document.addEventListener('keydown', e => { if (!saverEl.hidden) { e.preventDefault(); exitSaver(); } }, true);
 
-  input.addEventListener('focus', () => { if (!busy && !listening) setState('listen', '입력 중', '글자로 써도 돼. 다 쓰면 물어보기.'); });
-  input.addEventListener('blur', () => { if (!busy && !listening && app.dataset.state === 'listen') setState(recent.length ? (quiz ? 'quiz' : 'answer') : 'idle', recent.length ? (quiz ? '퀴즈 중' : '답') : '쉬는 중', '마이크를 누르고 말해 봐.'); });
+  input.addEventListener('focus', () => { if (!busy && !listening) setState('type', '입력 중', '글자로 써도 돼. 다 쓰면 물어보기.'); });
+  input.addEventListener('blur', () => { if (!busy && !listening && app.dataset.state === 'type') setState(recent.length ? (quiz ? 'quiz' : 'answer') : 'idle', recent.length ? (quiz ? '퀴즈 중' : '답') : '쉬는 중', '마이크를 누르고 말해 봐.'); });
 
   // ---------- remote keys ----------
   const REPLAY_KEYS = ['F2', 'PageUp', 'ArrowLeft', 'ArrowUp'];
@@ -1045,7 +1061,7 @@ button { cursor: pointer; }
     }
   });
   document.addEventListener('wheel', () => { if (!logEl.hidden) keyTest.textContent = '받은 신호: 화면 스크롤 (궁금칸에서 안 씀)'; }, { passive: true });
-  form.addEventListener('submit', e => { e.preventDefault(); if (!input.value.trim()) { startListening(); return; } ask(input.value); });
+  form.addEventListener('submit', e => { e.preventDefault(); if (listening) { const v = input.value; heard = ''; stopListening(); if (v.trim()) ask(v); return; } if (!input.value.trim()) { startListening(); return; } ask(input.value); });
 
   // ---------- Claude API ----------
   let thinkingOff = { type: 'between_tools' };
@@ -1085,10 +1101,12 @@ button { cursor: pointer; }
     }
     const [t = '', e = '', q = ''] = tag.split('|');
     const qs = q.split(/[;；\n]/).map(x => x.trim().replace(/^[-·•\d.\s]+/, '')).filter(x => x.length >= 2 && x.length <= 24).slice(0, 4);
-    return { body: body || raw.replace(/@@[^\n]*/g, '').trim(), term: cleanTerm(t), emoji: pickEmoji(e), qs };
+    body = (body || raw).replace(/@@[^\n]*/g, '').trim();
+    return { body, term: cleanTerm(t), emoji: pickEmoji(e), qs };
   }
   const cleanTerm = t => (t || '').trim().replace(/^[\s"'「」]+|[\s"'「」]+$/g, '');
-  const pickEmoji = e => Array.from((e || '').matchAll(/\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic})*/gu), x => x[0]).slice(0, 3).join('');
+  const BAD_EMOJI = /[🍺🍻🍷🍸🍹🥃🍾🚬🔪🗡️⚔️🔫💣🧨💊💉🩸🖕💀☠️🪦⚰️🍆🍑💦🔞👙🩲🩱👅🫦]/u;
+  const pickEmoji = e => Array.from((e || '').matchAll(/\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic})*/gu), x => x[0]).filter(x => !BAD_EMOJI.test(x)).slice(0, 3).join('');
   function hidePic() { picSeq++; fig.hidden = true; mainInner.classList.remove('has-fig'); figBox.innerHTML = ''; figCap.textContent = ''; fit(); }
   function placePic(html, cap) {
     figBox.innerHTML = html; figCap.innerHTML = cap || '';
@@ -1098,11 +1116,11 @@ button { cursor: pointer; }
   // 아이 화면용 금칙어 — 제목·분류에 걸리면 사진을 쓰지 않는다
   // 단어 경계가 없는 한국어라, 짧은 말은 "독립된 낱말일 때"만 막는다 (물질·질소·미술·무기물·암모나이트·젖소 등은 통과)
   const ALONE = w => `(?:^|[\\s:(])${w}(?:$|[\\s)(,·])`;
-  const BLOCK = new RegExp(['성기','성교','성행위','성관계','생식','음부','음경','음핵','자궁','고환','유방','항문','나체','누드','포르노','성적 ','섹스','야동','자위','강간','성폭','성희롱','매춘','성매매','해부','시신','시체','살해','살인','자살','학살','처형','고문','폭력','테러','총기','권총','소총','폭탄','폭발물','칼부림','마약','필로폰','코카인','헤로인','담배','흡연','음주','소주','맥주','도박','카지노','질병','종양','감염','출혈','피부병','배설물','대변','소변','욕설','혐오','인종차별','나치','극단주의','낙태','임신','출산','피임','성인물','19금',
-    ALONE('질'), ALONE('젖'), ALONE('술'), ALONE('암'), ALONE('무기'), ALONE('장기'), ALONE('대마'), ALONE('똥'), ALONE('오줌'), ALONE('상처'), ALONE('사망'), ALONE('성인'), '분류:[^ ]*(?:성행위|성기|성교|성적|성인|음란|포르노|누드|해부학|생식기|생식 기관|범죄|살인|질병|사망|무기|약물|마약|담배|주류|음주|도박)'].join('|'));
+  const BLOCK = new RegExp(['성기','성교','성행위','성관계','생식','음부','음경','음핵','자궁','고환','유방','항문','나체','누드','포르노','성적 ','섹스','야동','자위','강간','성폭','성희롱','매춘','성매매','해부','시신','시체','살해','살인','자살','학살','처형','고문','폭력','테러','총기','권총','소총','폭탄','폭발물','칼부림','마약','필로폰','코카인','헤로인','담배','흡연','음주','소주','맥주','도박','카지노','질병','종양','감염','출혈','피부병','배설물','대변','소변','욕설','혐오','인종차별','나치','극단주의','낙태','임신','출산','피임','성인물','19금','교미','짝짓기','번식기','심장','뇌','허파','간장','신장','혀','해골','두개골','미라','화상','부상','골절','외상','핵무기','미사일','전쟁','전투','사형','익사','사고','재난','장례','묘지','와인','위스키','막걸리','소맥','다비드상','비너스','아담과 이브','나체화','누드화','피','혈액',
+    ALONE('질'), ALONE('젖'), ALONE('술'), ALONE('암'), ALONE('무기'), ALONE('장기'), ALONE('대마'), ALONE('똥'), ALONE('오줌'), ALONE('상처'), ALONE('사망'), ALONE('성인'), ALONE('칼'), ALONE('총'), ALONE('활'), ALONE('폐'), ALONE('간'), ALONE('위'), '분류:[^ ]*(?:성행위|성기|성교|성적|성인|음란|포르노|누드|해부학|생식기|생식 기관|범죄|살인|질병|사망|무기|약물|마약|담배|주류|음주|도박)'].join('|'));
   async function wikiImage(term, signal) {
     if (!term || term.length > 20 || BLOCK.test(term)) return null;
-    const u = 'https://ko.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages|categories|pageprops&piprop=thumbnail|name&pithumbsize=900&cllimit=50&titles=' + encodeURIComponent(term);
+    const u = 'https://ko.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages|categories|pageprops&piprop=thumbnail|name&pithumbsize=900&cllimit=max&clshow=!hidden&titles=' + encodeURIComponent(term);
     const res = await fetch(u, { signal }); if (!res.ok) return null;
     const pages = Object.values((await res.json()).query?.pages || {});
     const p = pages[0];
@@ -1110,7 +1128,7 @@ button { cursor: pointer; }
     if (p.pageprops && 'disambiguation' in p.pageprops) return null; // 동음이의 문서는 제외
     const cats = (p.categories || []).map(c => c.title).join(' ');
     if (BLOCK.test(p.title) || BLOCK.test(cats) || BLOCK.test(p.pageimage || '')) return null;
-    if (/\.svg$/i.test(p.pageimage || '') || /map|flag|icon|logo/i.test(p.pageimage || '')) return null;
+    if (/\.svg$/i.test(p.pageimage || '') || /map|flag|icon|logo|nude|naked|corpse|autops|penis|vagin|vulva|blood|wound|burn|injur|dead|death|skull|sex|breast|anus|genital/i.test(p.pageimage || '')) return null;
     return { src: p.thumbnail.source, title: p.title };
   }
   const picDbg = m => { try { const el = $('picDbg'); if (el) el.textContent = '마지막 그림: ' + m + (lastRaw ? ' ‖ 원문: ' + lastRaw.slice(0, 300).replace(/\n/g, '⏎') : ''); } catch (e) {} };
