@@ -104,6 +104,13 @@ button { cursor: pointer; }
 .top-right { justify-self: end; display: flex; align-items: center; gap: 1.1rem; }
 .iconbtn { display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border: 0; background: none; color: var(--muted); }
 .iconbtn[aria-pressed="true"] { color: var(--accent); }
+.iconbtn.gear { opacity: .45; } .iconbtn.gear:active { opacity: 1; }
+.pin { position: fixed; inset: 0; z-index: 30; background: color-mix(in srgb, var(--bg) 92%, transparent); display: grid; place-items: center; }
+.pin[hidden] { display: none; }
+.pin .box { display: flex; flex-direction: column; gap: .9rem; align-items: center; padding: 2rem 2.4rem; border: 1px solid var(--line); background: var(--bg); }
+.pin h3 { margin: 0; font-family: var(--f-display); font-size: 1.4rem; color: var(--ink); }
+.pin input { font: inherit; font-size: 1.6rem; letter-spacing: .5em; text-align: center; width: 8em; padding: .4rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+.pin .row { display: flex; gap: .6rem; } .pin .note { color: var(--muted); font-size: .85rem; min-height: 1.2em; }
 .iconbtn svg { width: 1.15rem; height: 1.15rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .count { display: flex; align-items: center; gap: .7rem; color: var(--muted); font-size: .85rem; white-space: nowrap; }
 .count b { color: var(--ink); font-weight: 700; }
@@ -292,6 +299,7 @@ button { cursor: pointer; }
       <span id="stateLabel">쉬는 중</span>
     </div>
     <div class="top-right">
+      <button class="iconbtn gear" id="gearBtn" type="button" aria-label="부모님 설정"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg></button>
       <button class="iconbtn" id="soundBtn" type="button" aria-pressed="true" aria-label="소리 켜짐/꺼짐" title="소리">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path class="waves" d="M16 8.2a5.2 5.2 0 0 1 0 7.6M18.5 5.7a8.7 8.7 0 0 1 0 12.6"></path></svg>
       </button>
@@ -344,7 +352,15 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v27</span></div></footer>
+  <div class="pin" id="pin" hidden>
+    <form class="box" id="pinForm">
+      <h3>부모님 확인</h3>
+      <input id="pinInput" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="••••">
+      <div class="row"><button class="chip" type="submit">열기</button><button class="chip" type="button" id="pinCancel">닫기</button></div>
+      <div class="note" id="pinNote"></div>
+    </form>
+  </div>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v28</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -397,6 +413,8 @@ button { cursor: pointer; }
         <div class="seg" data-k="theme"><button type="button" data-v="auto">자동 (일몰)</button><button type="button" data-v="light">밝게</button><button type="button" data-v="dark">어둡게</button></div>
         <label>아침 날씨 화면</label>
         <div class="seg" data-k="wxOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔</button></div>
+        <label>부모 비밀번호</label>
+        <div class="row"><input id="pinSet" type="text" inputmode="numeric" maxlength="4" placeholder="4자리" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 6rem"><button class="chip" id="pinSave" type="button">저장</button><span class="empty">⚙ 버튼으로 들어올 때 씀 (기본 1234)</span></div>
         <label>하루 질문 상한</label>
         <select id="cap"><option value="0">제한 없음</option><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option><option value="50">50개</option></select>
       </div>
@@ -426,7 +444,7 @@ button { cursor: pointer; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', theme: 'auto' };
+  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', theme: 'auto', pin: '1234' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
   const LEVEL = {
@@ -470,6 +488,7 @@ button { cursor: pointer; }
     $('ttsVoice').value = ttsVoiceName();
     $('ttsKey').placeholder = prov === 'google' ? 'Google Cloud API 키 (AIza…)' : prov === 'azure' ? 'Azure 음성 KEY 1' : 'OpenAI API 키 (sk-…)';
     $('ttsRegion').hidden = prov !== 'azure'; $('ttsRegion').value = settings.ttsRegion || 'koreacentral';
+    $('pinSet').value = settings.pin || '1234';
     $('wxName').value = settings.wxName || ''; $('wxNote').textContent = settings.wxName ? `${settings.wxName} (${(+settings.wxLat).toFixed(2)}, ${(+settings.wxLon).toFixed(2)})` : '';
     $('ttsNote').textContent = settings.ttsKey ? `AI 목소리 사용 중 (키 ${settings.ttsKey.length}자 · …${settings.ttsKey.slice(-4)})` : '없으면 폰 목소리로 읽어요';
     $('apiNote').textContent = settings.apiKey ? '키 저장됨' : '키가 없으면 대답을 못 해요';
@@ -932,7 +951,9 @@ button { cursor: pointer; }
   const CLEAR_KEYS = ['F4', 'PageDown', 'Delete', 'MediaPlayPause', 'ArrowDown'];
   const ASK_KEYS = ['Enter', 'ArrowRight', ' '];
   const ROLE = k => ASK_KEYS.includes(k) ? '물어보기(말하기)' : REPLAY_KEYS.includes(k) ? '다시 듣기' : CLEAR_KEYS.includes(k) ? '지우기/멈추기' : '궁금칸에서 안 쓰는 키';
+  const pinEl = $('pin'), pinInput = $('pinInput');
   document.addEventListener('keydown', e => {
+    if (!pinEl.hidden) return; // 비밀번호 창에서는 키를 가로채지 않음
     if (!logEl.hidden) {
       if (['Enter', ' '].includes(e.key) && document.activeElement && ['BUTTON', 'INPUT', 'SELECT'].includes(document.activeElement.tagName)) return;
       e.preventDefault(); keyTest.textContent = `받은 키: ${e.key === ' ' ? 'Space' : e.key} → ${ROLE(e.key)}`; return;
@@ -1152,6 +1173,12 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
     } catch (e) { note.textContent = '요약을 만들지 못했어요. 잠시 뒤 다시 눌러 주세요.'; }
     finally { btn.disabled = false; }
   });
+
+  // ⚙ + 비밀번호
+  $('gearBtn').addEventListener('click', () => { pinEl.hidden = false; pinInput.value = ''; $('pinNote').textContent = ''; setTimeout(() => pinInput.focus(), 50); });
+  $('pinCancel').addEventListener('click', () => { pinEl.hidden = true; });
+  $('pinForm').addEventListener('submit', e => { e.preventDefault(); if (pinInput.value === String(settings.pin || '1234')) { pinEl.hidden = true; openLog(); } else { $('pinNote').textContent = '비밀번호가 달라요'; pinInput.value = ''; pinInput.focus(); } });
+  $('pinSave').addEventListener('click', () => { const v = $('pinSet').value.trim(); if (!/^\d{4}$/.test(v)) { $('saved').textContent = '숫자 4자리로 적어 주세요'; return; } saveSettings({ pin: v }); });
 
   // long-press (2s) or 5 quick taps on the wordmark
   const title = $('title');
