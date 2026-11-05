@@ -274,7 +274,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v10</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v11</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -301,8 +301,16 @@ button { cursor: pointer; }
         <div class="row"><input id="apiKey" type="password" placeholder="sk-ant-…" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 16rem; max-width: 100%"><button class="chip" id="apiSave" type="button">저장</button><span class="empty" id="apiNote"></span></div>
         <label>모델</label>
         <select id="model"><option value="claude-haiku-5-5">Haiku 5.5 (빠르고 저렴)</option><option value="claude-sonnet-5-5">Sonnet 5.5 (더 똑똑, 비쌈)</option><option value="claude-haiku-4-5">Haiku 4.5</option></select>
-        <label>목소리</label>
-        <div class="row"><select id="voice"><option value="">자동</option></select><button class="chip" id="voiceTest" type="button">들어보기</button></div>
+        <label>AI 목소리 키</label>
+        <div class="row"><input id="ttsKey" type="password" placeholder="Google Cloud TTS API 키 (선택)" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 16rem; max-width: 100%"><button class="chip" id="ttsSave" type="button">저장</button><span class="empty" id="ttsNote"></span></div>
+        <label>AI 목소리</label>
+        <div class="row"><select id="ttsVoice">
+          <option value="ko-KR-Chirp3-HD-Aoede">Aoede (여, 밝음)</option><option value="ko-KR-Chirp3-HD-Kore">Kore (여, 차분)</option><option value="ko-KR-Chirp3-HD-Leda">Leda (여, 어림)</option><option value="ko-KR-Chirp3-HD-Zephyr">Zephyr (여, 또렷)</option>
+          <option value="ko-KR-Chirp3-HD-Puck">Puck (남, 경쾌)</option><option value="ko-KR-Chirp3-HD-Charon">Charon (남, 낮음)</option><option value="ko-KR-Chirp3-HD-Fenrir">Fenrir (남, 힘참)</option><option value="ko-KR-Chirp3-HD-Orus">Orus (남, 부드러움)</option>
+          <option value="ko-KR-Neural2-A">Neural2 A (여)</option><option value="ko-KR-Neural2-B">Neural2 B (여)</option><option value="ko-KR-Neural2-C">Neural2 C (남)</option>
+        </select><button class="chip" id="ttsTest" type="button">들어보기</button></div>
+        <label>폰 목소리</label>
+        <div class="row"><select id="voice"><option value="">자동</option></select><button class="chip" id="voiceTest" type="button">들어보기</button><span class="empty">AI 키가 없거나 안 될 때 씀</span></div>
         <label>말 빠르기</label>
         <div class="seg" data-k="rate"><button type="button" data-v="0.85">느리게</button><button type="button" data-v="1">보통</button><button type="button" data-v="1.15">빠르게</button></div>
         <label>목소리 높이</label>
@@ -336,7 +344,7 @@ button { cursor: pointer; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1' };
+  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: 'ko-KR-Chirp3-HD-Aoede' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
   const LEVEL = {
@@ -374,6 +382,8 @@ button { cursor: pointer; }
     $('hFrom').value = settings.hFrom; $('hTo').value = settings.hTo; $('cap').value = settings.cap; $('model').value = settings.model;
     $('apiKey').value = settings.apiKey || '';
     $('voice').value = settings.voice || '';
+    $('ttsKey').value = settings.ttsKey || ''; $('ttsVoice').value = settings.ttsVoice || DEFAULTS.ttsVoice;
+    $('ttsNote').textContent = settings.ttsKey ? 'AI 목소리 사용 중' : '없으면 폰 목소리로 읽어요';
     $('apiNote').textContent = settings.apiKey ? '키 저장됨' : '키가 없으면 대답을 못 해요';
   }
   function saveSettings(patch) {
@@ -533,14 +543,32 @@ button { cursor: pointer; }
   }
   if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
   $('voice').addEventListener('change', e => { saveSettings({ voice: e.target.value }); pickVoice(); });
-  $('voiceTest').addEventListener('click', async () => { const vs = koVoices(); await speak('안녕! 나는 궁금칸이야. 뭐든 물어봐.', true); $('saved').textContent = `한국어 음성 ${vs.length}개 · 사용: ${voiceKo ? voiceKo.name : '기본'}${lastSpeakErr ? ' · 오류: ' + lastSpeakErr : ' · 재생됨'}`; });
-  let lastSpeakErr = '';
-  function speak(text, force) {
-    if (!sound && !force) return Promise.resolve();
+  $('voiceTest').addEventListener('click', async () => { const vs = koVoices(); hush(); await deviceSpeak('안녕! 나는 궁금칸이야. 뭐든 물어봐.'); $('saved').textContent = `한국어 음성 ${vs.length}개 · 사용: ${voiceKo ? voiceKo.name : '기본'}${lastSpeakErr ? ' · 오류: ' + lastSpeakErr : ' · 재생됨'}`; });
+  let lastSpeakErr = '', lastTts = '';
+  const player = new Audio(); player.preload = 'auto';
+  const audioCache = new Map();
+  function hush() { try { player.pause(); player.currentTime = 0; } catch (e) {} try { speechSynthesis.cancel(); } catch (e) {} }
+  async function cloudSpeak(plain) {
+    const key = settings.ttsKey; if (!key) return false;
+    const ck = (settings.ttsVoice || DEFAULTS.ttsVoice) + '|' + settings.rate + '|' + plain;
+    let src = audioCache.get(ck);
+    if (!src) {
+      const res = await fetch('https://texttospeech.googleapis.com/v1/text:synthesize?key=' + encodeURIComponent(key), {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ input: { text: plain }, voice: { languageCode: 'ko-KR', name: settings.ttsVoice || DEFAULTS.ttsVoice }, audioConfig: { audioEncoding: 'MP3', speakingRate: +settings.rate || 1 } })
+      });
+      if (!res.ok) { let d = ''; try { d = (await res.json()).error?.message || ''; } catch (e) {} throw new Error('tts ' + res.status + ' ' + d.slice(0, 120)); }
+      const data = await res.json(); if (!data.audioContent) throw new Error('tts empty');
+      src = 'data:audio/mp3;base64,' + data.audioContent;
+      audioCache.set(ck, src); if (audioCache.size > 20) audioCache.delete(audioCache.keys().next().value);
+    }
+    await new Promise((ok, no) => { player.src = src; player.onended = ok; player.onerror = () => no(new Error('play')); player.play().then(() => {}).catch(no); });
+    return true;
+  }
+  function deviceSpeak(plain) {
     return new Promise(res => {
       try {
-        const plain = text.replace(/[《》]/g, '').replace(/\p{Extended_Pictographic}/gu, '').trim();
-        if (!plain || !('speechSynthesis' in window)) return res();
+        if (!('speechSynthesis' in window)) return res();
         speechSynthesis.cancel();
         const go = (voice, retry) => {
           const u = new SpeechSynthesisUtterance(plain);
@@ -558,8 +586,22 @@ button { cursor: pointer; }
       } catch (e) { res(); }
     });
   }
+  async function speak(text, force) {
+    if (!sound && !force) return;
+    const plain = text.replace(/[《》]/g, '').replace(/\p{Extended_Pictographic}/gu, '').trim();
+    if (!plain) return;
+    hush();
+    if (settings.ttsKey) {
+      try { lastTts = 'AI 목소리'; await cloudSpeak(plain); return; }
+      catch (e) { lastTts = 'AI 실패(' + (e.message || e) + ') → 폰 목소리'; }
+    } else lastTts = '폰 목소리';
+    await deviceSpeak(plain);
+  }
+  $('ttsSave').addEventListener('click', () => { saveSettings({ ttsKey: $('ttsKey').value.trim() }); });
+  $('ttsVoice').addEventListener('change', e => saveSettings({ ttsVoice: e.target.value }));
+  $('ttsTest').addEventListener('click', async () => { if (!settings.ttsKey) { $('saved').textContent = 'AI 목소리 키를 먼저 저장하세요'; return; } $('saved').textContent = '받는 중…'; await speak('안녕! 나는 궁금칸이야. 뭐든 물어봐.', true); $('saved').textContent = lastTts; });
   function renderSound() { soundBtn.setAttribute('aria-pressed', String(sound)); soundBtn.title = sound ? '소리 켜짐' : '소리 꺼짐'; }
-  soundBtn.addEventListener('click', () => { sound = !sound; renderSound(); LS.set('gk-sound', sound ? 'on' : 'off'); if (!sound) try { speechSynthesis.cancel(); } catch (e) {} });
+  soundBtn.addEventListener('click', () => { sound = !sound; renderSound(); LS.set('gk-sound', sound ? 'on' : 'off'); if (!sound) hush(); });
   renderSound();
   $('replayBtn').addEventListener('click', () => { speak(current, true); });
 
@@ -571,7 +613,7 @@ button { cursor: pointer; }
     if (busy || listening) return;
     if (!SR) { statusEl.textContent = '이 브라우저는 음성 인식이 안 돼요. Chrome에서 열어 주세요.'; input.focus(); return; }
     const blocked = gate(); if (blocked) { showBlocked(blocked); return; }
-    try { speechSynthesis.cancel(); } catch (e) {}
+    hush();
     keepAwake();
     rec = new SR(); rec.lang = 'ko-KR'; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
     heard = ''; input.value = ''; listening = true;
