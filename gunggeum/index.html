@@ -274,7 +274,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v7</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v8</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -525,14 +525,16 @@ button { cursor: pointer; }
     const vs = koVoices();
     const chosen = settings.voice && vs.find(v => v.name === settings.voice);
     // 자동: 네트워크(고음질) 음성 → Google → Samsung → 아무거나
-    voiceKo = chosen || vs.find(v => !v.localService) || vs.find(v => /Google/i.test(v.name)) || vs.find(v => /Samsung/i.test(v.name)) || vs[0] || null;
+    // 자동: 기기 안에 있는(local) 음성 우선 — 네트워크 음성은 폰에서 소리가 안 나는 일이 있음
+    voiceKo = chosen || vs.find(v => v.localService && /Google/i.test(v.name)) || vs.find(v => v.localService) || vs.find(v => /Google|Samsung/i.test(v.name)) || vs[0] || null;
     const sel = $('voice'); const cur = sel.value;
     sel.innerHTML = '<option value="">자동</option>' + vs.map(v => `<option value="${v.name.replace(/"/g, '&quot;')}">${v.name}${v.localService ? '' : ' (고음질)'}</option>`).join('');
     sel.value = settings.voice && vs.some(v => v.name === settings.voice) ? settings.voice : (cur && vs.some(v => v.name === cur) ? cur : '');
   }
   if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
   $('voice').addEventListener('change', e => { saveSettings({ voice: e.target.value }); pickVoice(); });
-  $('voiceTest').addEventListener('click', () => { speak('안녕! 나는 궁금칸이야. 뭐든 물어봐.', true); });
+  $('voiceTest').addEventListener('click', async () => { const vs = koVoices(); await speak('안녕! 나는 궁금칸이야. 뭐든 물어봐.', true); $('saved').textContent = `한국어 음성 ${vs.length}개 · 사용: ${voiceKo ? voiceKo.name : '기본'}${lastSpeakErr ? ' · 오류: ' + lastSpeakErr : ' · 재생됨'}`; });
+  let lastSpeakErr = '';
   function speak(text, force) {
     if (!sound && !force) return Promise.resolve();
     return new Promise(res => {
@@ -540,10 +542,19 @@ button { cursor: pointer; }
         const plain = text.replace(/[《》]/g, '').replace(/\p{Extended_Pictographic}/gu, '').trim();
         if (!plain || !('speechSynthesis' in window)) return res();
         speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(plain);
-        u.lang = 'ko-KR'; u.rate = +settings.rate || 1; u.pitch = +settings.pitch || 1; if (voiceKo) u.voice = voiceKo;
-        u.onend = res; u.onerror = res;
-        speechSynthesis.speak(u);
+        const go = (voice, retry) => {
+          const u = new SpeechSynthesisUtterance(plain);
+          u.lang = 'ko-KR'; u.rate = +settings.rate || 1; u.pitch = +settings.pitch || 1; if (voice) u.voice = voice;
+          let started = false;
+          u.onstart = () => { started = true; lastSpeakErr = ''; };
+          u.onend = res;
+          u.onerror = e => { lastSpeakErr = e.error || 'error'; if (retry) { res(); return; } go(null, true); };
+          // 소리가 1.5초 안에 시작 안 하면 기본 음성으로 한 번 더
+          setTimeout(() => { if (!started && !retry) { lastSpeakErr = 'no-start'; try { speechSynthesis.cancel(); } catch (x) {} go(null, true); } }, 1500);
+          speechSynthesis.speak(u);
+        };
+        // cancel() 직후 speak()가 먹히지 않는 폰 버그 회피용 지연
+        setTimeout(() => go(voiceKo, false), 60);
       } catch (e) { res(); }
     });
   }
