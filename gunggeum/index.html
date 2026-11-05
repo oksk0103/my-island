@@ -274,7 +274,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v11</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v12</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -301,13 +301,19 @@ button { cursor: pointer; }
         <div class="row"><input id="apiKey" type="password" placeholder="sk-ant-…" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 16rem; max-width: 100%"><button class="chip" id="apiSave" type="button">저장</button><span class="empty" id="apiNote"></span></div>
         <label>모델</label>
         <select id="model"><option value="claude-haiku-5-5">Haiku 5.5 (빠르고 저렴)</option><option value="claude-sonnet-5-5">Sonnet 5.5 (더 똑똑, 비쌈)</option><option value="claude-haiku-4-5">Haiku 4.5</option></select>
+        <label>AI 목소리 서비스</label>
+        <div class="seg" data-k="ttsProvider"><button type="button" data-v="azure">Azure (무료)</button><button type="button" data-v="openai">OpenAI</button><button type="button" data-v="google">Google</button></div>
         <label>AI 목소리 키</label>
-        <div class="row"><input id="ttsKey" type="password" placeholder="Google Cloud TTS API 키 (선택)" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 16rem; max-width: 100%"><button class="chip" id="ttsSave" type="button">저장</button><span class="empty" id="ttsNote"></span></div>
+        <div class="row"><input id="ttsKey" type="password" placeholder="서비스 API 키 (선택)" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 16rem; max-width: 100%"><input id="ttsRegion" placeholder="Azure 지역 (예: koreacentral)" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 11rem; max-width: 100%"><button class="chip" id="ttsSave" type="button">저장</button><span class="empty" id="ttsNote"></span></div>
         <label>AI 목소리</label>
         <div class="row"><select id="ttsVoice">
+          <optgroup label="Azure" data-p="azure"><option value="ko-KR-SunHiNeural">선희 (여, 또렷)</option><option value="ko-KR-JiMinNeural">지민 (여, 밝음)</option><option value="ko-KR-SeoHyeonNeural">서현 (여, 차분)</option><option value="ko-KR-SoonBokNeural">순복 (여, 어른)</option><option value="ko-KR-YuJinNeural">유진 (여, 어림)</option><option value="ko-KR-InJoonNeural">인준 (남, 부드러움)</option><option value="ko-KR-BongJinNeural">봉진 (남, 묵직)</option><option value="ko-KR-GookMinNeural">국민 (남, 경쾌)</option><option value="ko-KR-HyunsuMultilingualNeural">현수 (남, 다국어)</option></optgroup>
+          <optgroup label="OpenAI" data-p="openai"><option value="nova">Nova (여, 밝음)</option><option value="shimmer">Shimmer (여, 부드러움)</option><option value="coral">Coral (여, 또렷)</option><option value="sage">Sage (여, 차분)</option><option value="alloy">Alloy (중성)</option><option value="echo">Echo (남, 낮음)</option><option value="fable">Fable (남, 이야기꾼)</option><option value="onyx">Onyx (남, 묵직)</option><option value="ash">Ash (남, 경쾌)</option></optgroup>
+          <optgroup label="Google" data-p="google">
           <option value="ko-KR-Chirp3-HD-Aoede">Aoede (여, 밝음)</option><option value="ko-KR-Chirp3-HD-Kore">Kore (여, 차분)</option><option value="ko-KR-Chirp3-HD-Leda">Leda (여, 어림)</option><option value="ko-KR-Chirp3-HD-Zephyr">Zephyr (여, 또렷)</option>
           <option value="ko-KR-Chirp3-HD-Puck">Puck (남, 경쾌)</option><option value="ko-KR-Chirp3-HD-Charon">Charon (남, 낮음)</option><option value="ko-KR-Chirp3-HD-Fenrir">Fenrir (남, 힘참)</option><option value="ko-KR-Chirp3-HD-Orus">Orus (남, 부드러움)</option>
           <option value="ko-KR-Neural2-A">Neural2 A (여)</option><option value="ko-KR-Neural2-B">Neural2 B (여)</option><option value="ko-KR-Neural2-C">Neural2 C (남)</option>
+          </optgroup>
         </select><button class="chip" id="ttsTest" type="button">들어보기</button></div>
         <label>폰 목소리</label>
         <div class="row"><select id="voice"><option value="">자동</option></select><button class="chip" id="voiceTest" type="button">들어보기</button><span class="empty">AI 키가 없거나 안 될 때 씀</span></div>
@@ -344,7 +350,7 @@ button { cursor: pointer; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: 'ko-KR-Chirp3-HD-Aoede' };
+  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 7, hTo: 21, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
   const LEVEL = {
@@ -382,7 +388,12 @@ button { cursor: pointer; }
     $('hFrom').value = settings.hFrom; $('hTo').value = settings.hTo; $('cap').value = settings.cap; $('model').value = settings.model;
     $('apiKey').value = settings.apiKey || '';
     $('voice').value = settings.voice || '';
-    $('ttsKey').value = settings.ttsKey || ''; $('ttsVoice').value = settings.ttsVoice || DEFAULTS.ttsVoice;
+    $('ttsKey').value = settings.ttsKey || '';
+    const prov = settings.ttsProvider || 'azure';
+    document.querySelectorAll('#ttsVoice optgroup').forEach(g => { g.hidden = g.dataset.p !== prov; });
+    $('ttsVoice').value = ttsVoiceName();
+    $('ttsKey').placeholder = prov === 'google' ? 'Google Cloud API 키 (AIza…)' : prov === 'azure' ? 'Azure 음성 KEY 1' : 'OpenAI API 키 (sk-…)';
+    $('ttsRegion').hidden = prov !== 'azure'; $('ttsRegion').value = settings.ttsRegion || 'koreacentral';
     $('ttsNote').textContent = settings.ttsKey ? 'AI 목소리 사용 중' : '없으면 폰 목소리로 읽어요';
     $('apiNote').textContent = settings.apiKey ? '키 저장됨' : '키가 없으면 대답을 못 해요';
   }
@@ -548,19 +559,44 @@ button { cursor: pointer; }
   const player = new Audio(); player.preload = 'auto';
   const audioCache = new Map();
   function hush() { try { player.pause(); player.currentTime = 0; } catch (e) {} try { speechSynthesis.cancel(); } catch (e) {} }
+  function ttsVoiceName() {
+    const p = settings.ttsProvider || 'azure', v = settings.ttsVoice || '';
+    const ok = p === 'google' ? /^ko-KR-(Chirp|Neural2|Wavenet|Standard)/.test(v) : p === 'azure' ? /Neural$/.test(v) : /^[a-z]+$/.test(v);
+    return ok ? v : (p === 'google' ? 'ko-KR-Chirp3-HD-Aoede' : p === 'azure' ? 'ko-KR-SunHiNeural' : 'nova');
+  }
   async function cloudSpeak(plain) {
     const key = settings.ttsKey; if (!key) return false;
-    const ck = (settings.ttsVoice || DEFAULTS.ttsVoice) + '|' + settings.rate + '|' + plain;
+    const p = settings.ttsProvider || 'azure', voice = ttsVoiceName(), rate = +settings.rate || 1;
+    const ck = p + '|' + voice + '|' + rate + '|' + plain;
     let src = audioCache.get(ck);
     if (!src) {
-      const res = await fetch('https://texttospeech.googleapis.com/v1/text:synthesize?key=' + encodeURIComponent(key), {
-        method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ input: { text: plain }, voice: { languageCode: 'ko-KR', name: settings.ttsVoice || DEFAULTS.ttsVoice }, audioConfig: { audioEncoding: 'MP3', speakingRate: +settings.rate || 1 } })
-      });
-      if (!res.ok) { let d = ''; try { d = (await res.json()).error?.message || ''; } catch (e) {} throw new Error('tts ' + res.status + ' ' + d.slice(0, 120)); }
-      const data = await res.json(); if (!data.audioContent) throw new Error('tts empty');
-      src = 'data:audio/mp3;base64,' + data.audioContent;
-      audioCache.set(ck, src); if (audioCache.size > 20) audioCache.delete(audioCache.keys().next().value);
+      let res;
+      if (p === 'google') {
+        res = await fetch('https://texttospeech.googleapis.com/v1/text:synthesize?key=' + encodeURIComponent(key), {
+          method: 'POST', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ input: { text: plain }, voice: { languageCode: 'ko-KR', name: voice }, audioConfig: { audioEncoding: 'MP3', speakingRate: rate } })
+        });
+        if (!res.ok) { let d = ''; try { d = (await res.json()).error?.message || ''; } catch (e) {} throw new Error('tts ' + res.status + ' ' + d.slice(0, 120)); }
+        const data = await res.json(); if (!data.audioContent) throw new Error('tts empty');
+        src = 'data:audio/mp3;base64,' + data.audioContent;
+      } else if (p === 'azure') {
+        const region = (settings.ttsRegion || 'koreacentral').trim();
+        const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="ko-KR"><voice name="${voice}"><prosody rate="${Math.round((rate - 1) * 100)}%">${esc(plain)}</prosody></voice></speak>`;
+        res = await fetch(`https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`, {
+          method: 'POST', headers: { 'content-type': 'application/ssml+xml', 'Ocp-Apim-Subscription-Key': key, 'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3' }, body: ssml
+        });
+        if (!res.ok) throw new Error('tts ' + res.status + ' ' + (res.status === 401 ? '키 또는 지역이 틀림' : res.status === 403 ? '무료 한도 초과?' : ''));
+        const blob = await res.blob(); src = URL.createObjectURL(blob);
+      } else {
+        res = await fetch('https://api.openai.com/v1/audio/speech', {
+          method: 'POST', headers: { 'content-type': 'application/json', 'authorization': 'Bearer ' + key },
+          body: JSON.stringify({ model: 'gpt-4o-mini-tts', voice, input: plain, speed: rate, response_format: 'mp3', instructions: '초등학생에게 다정하고 또박또박, 자연스러운 한국어로 읽어 주세요.' })
+        });
+        if (!res.ok) { let d = ''; try { d = (await res.json()).error?.message || ''; } catch (e) {} throw new Error('tts ' + res.status + ' ' + d.slice(0, 120)); }
+        const blob = await res.blob(); src = URL.createObjectURL(blob);
+      }
+      audioCache.set(ck, src); if (audioCache.size > 20) { const k0 = audioCache.keys().next().value; const v0 = audioCache.get(k0); if (v0 && v0.startsWith('blob:')) URL.revokeObjectURL(v0); audioCache.delete(k0); }
     }
     await new Promise((ok, no) => { player.src = src; player.onended = ok; player.onerror = () => no(new Error('play')); player.play().then(() => {}).catch(no); });
     return true;
@@ -597,8 +633,10 @@ button { cursor: pointer; }
     } else lastTts = '폰 목소리';
     await deviceSpeak(plain);
   }
-  $('ttsSave').addEventListener('click', () => { saveSettings({ ttsKey: $('ttsKey').value.trim() }); });
+  $('ttsSave').addEventListener('click', () => { saveSettings({ ttsKey: $('ttsKey').value.trim(), ttsRegion: $('ttsRegion').value.trim() || 'koreacentral' }); });
   $('ttsVoice').addEventListener('change', e => saveSettings({ ttsVoice: e.target.value }));
+  // 서비스 바꾸면 그 서비스의 기본 목소리로
+  document.querySelector('.seg[data-k="ttsProvider"]').addEventListener('click', () => saveSettings({ ttsVoice: '' }));
   $('ttsTest').addEventListener('click', async () => { if (!settings.ttsKey) { $('saved').textContent = 'AI 목소리 키를 먼저 저장하세요'; return; } $('saved').textContent = '받는 중…'; await speak('안녕! 나는 궁금칸이야. 뭐든 물어봐.', true); $('saved').textContent = lastTts; });
   function renderSound() { soundBtn.setAttribute('aria-pressed', String(sound)); soundBtn.title = sound ? '소리 켜짐' : '소리 꺼짐'; }
   soundBtn.addEventListener('click', () => { sound = !sound; renderSound(); LS.set('gk-sound', sound ? 'on' : 'off'); if (!sound) hush(); });
