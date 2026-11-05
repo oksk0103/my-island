@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#F7F6F1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#18231F" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
@@ -40,6 +40,8 @@ body {
   background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 38px 38px;
 }
+html, body { touch-action: pan-y; overscroll-behavior: none; }
+.app { touch-action: pan-y; } .log { touch-action: pan-y; }
 button, input, select { font: inherit; }
 button { cursor: pointer; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -342,7 +344,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v25</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v26</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -1156,6 +1158,12 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   title.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
   title.addEventListener('contextmenu', e => e.preventDefault());
   title.addEventListener('click', () => { taps++; clearTimeout(tapTimer); tapTimer = setTimeout(() => { taps = 0; }, 1500); if (taps >= 5) { taps = 0; openLog(); } });
+
+  // 확대 제스처 차단 (터치 모니터)
+  document.addEventListener('gesturestart', e => e.preventDefault(), { passive: false });
+  document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+  let lastTap = 0; document.addEventListener('touchend', e => { const t = Date.now(); if (t - lastTap < 300 && !e.target.closest('button, input, select, .w')) e.preventDefault(); lastTap = t; }, { passive: false });
+  document.addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
 
   // ---------- start ----------
   renderCount();
