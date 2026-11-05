@@ -274,7 +274,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v13</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v14</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -394,7 +394,7 @@ button { cursor: pointer; }
     $('ttsVoice').value = ttsVoiceName();
     $('ttsKey').placeholder = prov === 'google' ? 'Google Cloud API 키 (AIza…)' : prov === 'azure' ? 'Azure 음성 KEY 1' : 'OpenAI API 키 (sk-…)';
     $('ttsRegion').hidden = prov !== 'azure'; $('ttsRegion').value = settings.ttsRegion || 'koreacentral';
-    $('ttsNote').textContent = settings.ttsKey ? 'AI 목소리 사용 중' : '없으면 폰 목소리로 읽어요';
+    $('ttsNote').textContent = settings.ttsKey ? `AI 목소리 사용 중 (키 ${settings.ttsKey.length}자 · …${settings.ttsKey.slice(-4)})` : '없으면 폰 목소리로 읽어요';
     $('apiNote').textContent = settings.apiKey ? '키 저장됨' : '키가 없으면 대답을 못 해요';
   }
   function saveSettings(patch) {
