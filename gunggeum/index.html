@@ -352,7 +352,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v49</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v50</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -976,8 +976,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
 
   // ---------- remote keys ----------
   const REPLAY_KEYS = ['F2', 'PageUp', 'ArrowLeft', 'ArrowUp'];
-  const CLEAR_KEYS = ['F4', 'PageDown', 'Delete', 'MediaPlayPause', 'ArrowDown'];
-  const ASK_KEYS = ['Enter', 'ArrowRight', ' ', 'AudioVolumeUp', 'AudioVolumeDown', 'VolumeUp', 'VolumeDown', 'Camera', 'MediaTrackNext', 'F1'];
+  const CLEAR_KEYS = ['F4', 'Delete', 'MediaPlayPause', 'Escape'];
+  const ASK_KEYS = ['Enter', 'ArrowRight', 'ArrowDown', 'PageDown', ' ', 'AudioVolumeUp', 'AudioVolumeDown', 'VolumeUp', 'VolumeDown', 'Camera', 'MediaTrackNext', 'F1'];
   const ROLE = k => ASK_KEYS.includes(k) ? '물어보기(말하기)' : REPLAY_KEYS.includes(k) ? '다시 듣기' : CLEAR_KEYS.includes(k) ? '지우기/멈추기' : '궁금칸에서 안 쓰는 키';
   const pinEl = $('pin'), pinInput = $('pinInput');
   const typing = () => { const a = document.activeElement; return a && (['INPUT', 'TEXTAREA', 'SELECT'].includes(a.tagName) || a.isContentEditable); };
