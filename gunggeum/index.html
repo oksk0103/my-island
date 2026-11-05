@@ -274,7 +274,7 @@ button { cursor: pointer; }
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
 
-  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v14</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 물어보기 <b>·</b> ↺ 다시 듣기 <b>·</b> × 지우기 <b>·</b> <span style="opacity:.6">v15</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -629,7 +629,7 @@ button { cursor: pointer; }
     hush();
     if (settings.ttsKey) {
       try { lastTts = 'AI 목소리'; await cloudSpeak(plain); return; }
-      catch (e) { lastTts = 'AI 실패(' + (e.message || e) + ') → 폰 목소리'; try { $('ttsNote').textContent = lastTts; } catch (x) {} }
+      catch (e) { lastTts = 'AI 실패(' + (e.message || e) + ') → 폰 목소리'; try { $('ttsNote').textContent = lastTts + ` [${settings.ttsProvider}, 키 ${settings.ttsKey.length}자 · …${settings.ttsKey.slice(-4)}, 지역 ${settings.ttsRegion}]`; } catch (x) {} }
     } else lastTts = '폰 목소리';
     await deviceSpeak(plain);
   }
