@@ -365,7 +365,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v53</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v54</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -999,7 +999,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const typing = () => { const a = document.activeElement; return a && (['INPUT', 'TEXTAREA', 'SELECT'].includes(a.tagName) || a.isContentEditable); };
   document.addEventListener('keydown', e => {
     if (!pinEl.hidden) return; // 비밀번호 창에서는 키를 가로채지 않음
-    if (!logEl.hidden) { if (!typing() && e.key !== 'Tab') keyTest.textContent = `받은 키: ${e.key === ' ' ? 'Space' : e.key} → ${ROLE(e.key)}`; return; }
+    if (!logEl.hidden) { if (e.key !== 'Tab') { const mods = ['ctrlKey', 'altKey', 'shiftKey', 'metaKey'].filter(m => e[m]).map(m => m.replace('Key', '')).join('+'); keyTest.textContent = `받은 키: ${e.key === ' ' ? 'Space' : e.key}${mods ? ' (+' + mods + ')' : ''} · 코드 ${e.code || '-'}/${e.keyCode} → ${ROLE(e.key)}`; keyTest.style.color = 'var(--accent)'; } return; }
     if (e.isComposing) return;
     if (typing()) { if (document.activeElement === input && !input.value.trim() && ASK_KEYS.includes(e.key) && e.key !== 'Enter') { e.preventDefault(); if (!e.repeat) { if (listening) stopListening(); else startListening(); } } return; } // 글자 입력 중엔 단축키 없음 (Enter는 폼이 처리)
     if (REPLAY_KEYS.includes(e.key)) { e.preventDefault(); if (e.repeat) return; speak(current, true); statusEl.textContent = '한 번 더 읽어 줄게.'; return; }
