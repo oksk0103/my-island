@@ -365,7 +365,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v54</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v55</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -994,7 +994,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const REPLAY_KEYS = ['F2', 'PageUp', 'ArrowLeft', 'ArrowUp'];
   const CLEAR_KEYS = ['F4', 'Delete', 'MediaPlayPause', 'Escape'];
   const ASK_KEYS = ['Enter', 'ArrowRight', 'ArrowDown', 'PageDown', ' ', 'AudioVolumeUp', 'AudioVolumeDown', 'VolumeUp', 'VolumeDown', 'Camera', 'MediaTrackNext', 'F1'];
-  const ROLE = k => ASK_KEYS.includes(k) ? '물어보기(말하기)' : REPLAY_KEYS.includes(k) ? '다시 듣기' : CLEAR_KEYS.includes(k) ? '지우기/멈추기' : '궁금칸에서 안 쓰는 키';
+  const SAVER_KEYS = ['Home', 'End', 'F3'];
+  const ROLE = k => SAVER_KEYS.includes(k) ? '대기 화면으로' : ASK_KEYS.includes(k) ? '물어보기(말하기)' : REPLAY_KEYS.includes(k) ? '다시 듣기' : CLEAR_KEYS.includes(k) ? '지우기/멈추기' : '궁금칸에서 안 쓰는 키';
   const pinEl = $('pin'), pinInput = $('pinInput');
   const typing = () => { const a = document.activeElement; return a && (['INPUT', 'TEXTAREA', 'SELECT'].includes(a.tagName) || a.isContentEditable); };
   document.addEventListener('keydown', e => {
@@ -1002,6 +1003,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (!logEl.hidden) { if (e.key !== 'Tab') { const mods = ['ctrlKey', 'altKey', 'shiftKey', 'metaKey'].filter(m => e[m]).map(m => m.replace('Key', '')).join('+'); keyTest.textContent = `받은 키: ${e.key === ' ' ? 'Space' : e.key}${mods ? ' (+' + mods + ')' : ''} · 코드 ${e.code || '-'}/${e.keyCode} → ${ROLE(e.key)}`; keyTest.style.color = 'var(--accent)'; } return; }
     if (e.isComposing) return;
     if (typing()) { if (document.activeElement === input && !input.value.trim() && ASK_KEYS.includes(e.key) && e.key !== 'Enter') { e.preventDefault(); if (!e.repeat) { if (listening) stopListening(); else startListening(); } } return; } // 글자 입력 중엔 단축키 없음 (Enter는 폼이 처리)
+    if (SAVER_KEYS.includes(e.key)) { if (e.defaultPrevented || e.repeat) return; e.preventDefault(); if (listening) stopListening(); if (busy) ctl?.abort(); enterSaver(); return; }
     if (REPLAY_KEYS.includes(e.key)) { e.preventDefault(); if (e.repeat) return; speak(current, true); statusEl.textContent = '한 번 더 읽어 줄게.'; return; }
     if (CLEAR_KEYS.includes(e.key)) {
       e.preventDefault(); if (e.repeat) return;
