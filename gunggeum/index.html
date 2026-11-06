@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="./icon-192.png">
 <title>궁금칸</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;600&family=Fredoka:wght@600;700&family=Jua&display=swap">
 <style>
 html, body { margin: 0; }
 [hidden] { display: none !important; }
@@ -215,6 +215,13 @@ button { cursor: pointer; }
 .svw-grid span.on { color: #F7E9CB; font-weight: 600; text-shadow: 0 0 .35em rgba(255, 196, 120, .55), 0 0 1.2em rgba(255, 170, 80, .22); }
 .svw-foot { font-size: clamp(1rem, 1.7vw, 2rem); color: #8A8176; letter-spacing: .02em; text-align: center; word-break: keep-all; }
 
+/* 말랑: 딸이 고른 파스텔 찰흙 숫자 */
+.saver[data-style="clay"] { background: radial-gradient(120% 90% at 50% 40%, #D3C4F3 0%, #C3B1EC 55%, #B29DE3 100%); }
+.saver[data-style="clay"].night { background: radial-gradient(120% 90% at 50% 40%, #463C72 0%, #3A3163 55%, #2C2550 100%); }
+.saver[data-style="clay"] #svClay { display: block; }
+#svClay svg { width: 100%; height: 100%; display: block; }
+#svClay .cl-num { font-family: "Fredoka", "Jua", "Arial Rounded MT Bold", sans-serif; font-weight: 700; }
+#svClay .cl-txt { font-family: "Jua", "Fredoka", "Noto Sans KR", sans-serif; }
 .sv-msg { position: absolute; left: 50%; bottom: 5vh; transform: translateX(-50%); z-index: 2; font-family: var(--f-serif); font-size: clamp(1.1rem, 1.8vw, 2rem); padding: .55em 1.2em; background: rgba(20, 18, 16, .82); color: #F0D9A8; white-space: nowrap; }
 .sv-msg[hidden] { display: none; }
 @media (orientation: portrait), (max-width: 760px) {
@@ -374,6 +381,7 @@ button { cursor: pointer; }
       <div class="svw-grid" id="wGrid"></div>
       <div class="svw-foot" id="wFoot"></div>
     </section>
+    <section id="svClay" aria-label="대기 화면"></section>
     <div class="sv-msg" id="svMsg" hidden></div>
   </div>
   <div class="pin" id="pin" hidden>
@@ -384,7 +392,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v56</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v57</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -410,7 +418,7 @@ button { cursor: pointer; }
         <label>수준</label>
         <div class="seg" data-k="level"><button type="button" data-v="e2">초등 2학년</button><button type="button" data-v="m1">중학생</button></div>
         <label>대기 화면</label>
-        <div class="seg" data-k="svStyle"><button type="button" data-v="auto">자동</button><button type="button" data-v="ink">먹</button><button type="button" data-v="paper">종이</button><button type="button" data-v="word">글자 시계</button></div>
+        <div class="seg" data-k="svStyle"><button type="button" data-v="clay">말랑</button><button type="button" data-v="auto">자동</button><button type="button" data-v="ink">먹</button><button type="button" data-v="paper">종이</button><button type="button" data-v="word">글자 시계</button></div>
         <label>쓸 수 있는 시간</label>
         <div class="row"><select id="hFrom"></select><span>부터</span><select id="hTo"></select><span>까지</span></div>
         <label>API 키</label>
@@ -474,8 +482,9 @@ button { cursor: pointer; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 0, hTo: 24, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on', svStyle: 'auto' };
+  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 0, hTo: 24, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on', svStyle: 'clay' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
+  if (!settings.svMig1) { settings.svStyle = 'clay'; settings.svMig1 = 1; LS.set('gk-settings', settings); } // 딸이 고른 '말랑'을 기본으로
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
   const LEVEL = {
     m1: `묻는 사람은 초등학생이지만 이해력과 호기심이 중학생 수준이야. 중학생을 대하듯 답해.
@@ -1030,6 +1039,68 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const block = Math.floor((d.getHours() * 60 + d.getMinutes()) / 10);
     return daylight(d) ? ['paper', 'ink', 'word'][block % 3] : ['ink', 'word'][block % 2];
   }
+  // 말랑 시계: SVG 조명 필터로 찰흙처럼 부푼 숫자
+  const CLAY = ['#F7A884', '#8EDDB2', '#F7D676', '#F4A9CB', '#9DCBF5'];
+  function clayBlob(x, y, r, col) { return `<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * .82}" fill="${col}" filter="url(#clayF)"/>`; }
+  function clayCloud(x, y, k) { return `<g filter="url(#clayF)" fill="#FBF8FF"><circle cx="${x}" cy="${y}" r="${30 * k}"/><circle cx="${x + 34 * k}" cy="${y - 16 * k}" r="${38 * k}"/><circle cx="${x + 74 * k}" cy="${y}" r="${30 * k}"/><rect x="${x}" y="${y - 4 * k}" width="${74 * k}" height="${34 * k}" rx="${17 * k}"/></g>`; }
+  function clayWx(key, x, y, k) {
+    const sun = (cx, cy, r) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#F9CF5B" filter="url(#clayF)"/>`;
+    if (key === 'sun') return sun(x + 40 * k, y - 6 * k, 36 * k);
+    if (key === 'suncloud' || key === 'sunsmallcloud') return sun(x + 22 * k, y - 26 * k, 26 * k) + clayCloud(x + 10 * k, y + 6 * k, k * .9);
+    let extra = '';
+    if (key === 'rain' || key === 'drizzle' || key === 'thunder') extra = [0, 1, 2].map(i => `<ellipse cx="${x + (10 + i * 28) * k}" cy="${y + 48 * k}" rx="${6 * k}" ry="${9 * k}" fill="#8CC3F2" filter="url(#clayF)"/>`).join('');
+    if (key === 'snow') extra = [0, 1, 2].map(i => `<circle cx="${x + (10 + i * 28) * k}" cy="${y + 48 * k}" r="${7 * k}" fill="#FFFFFF" filter="url(#clayF)"/>`).join('');
+    return clayCloud(x, y, k) + extra;
+  }
+  function renderClay(d, w, wkey, tip) {
+    const land = innerWidth >= innerHeight, VW = land ? 1600 : 900, VH = land ? 900 : 1600;
+    const night = !daylight(d); saverEl.classList.toggle('night', night);
+    const h12 = d.getHours() % 12 || 12, ampm = d.getHours() < 12 ? '오전' : '오후';
+    const hh = String(h12), mm = pad(d.getMinutes());
+    const fs = land ? 440 : 470;
+    const rows = land ? [{ chars: (hh + ':' + mm).split(''), y: 560 }] : [{ chars: hh.split(''), y: 720 }, { chars: mm.split(''), y: 1150 }];
+    const txtCol = night ? '#EDE6FF' : '#FFFFFF';
+    const S = fs * .03;
+    let ci = 0;
+    const rowSvg = rows.map((r, ri) => `<g class="cl-num cl-row" data-y="${r.y}" font-size="${fs}">${r.chars.map(ch => ch === ':' ? `<g data-colon="1"><circle r="${fs * .075}" fill="${CLAY[1]}" filter="url(#clayF)"/><circle r="${fs * .075}" fill="${CLAY[1]}" filter="url(#clayF)"/></g>` : `<text fill="${CLAY[ci++ % CLAY.length]}" filter="url(#clayF)">${ch}</text>`).join('')}</g>`).join('');
+    const lastY = rows[rows.length - 1].y, dateY = lastY + (land ? 190 : 200), tipY = dateY + (land ? 78 : 76), wxY = rows[0].y - fs * (land ? 1.02 : .98);
+    const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    const host = $('svClay');
+    host.innerHTML = `<svg viewBox="0 0 ${VW} ${VH}" preserveAspectRatio="xMidYMid meet" aria-label="${ampm} ${h12}시 ${d.getMinutes()}분">
+      <defs><filter id="clayF" x="-60%" y="-60%" width="220%" height="240%" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="${S}" result="blur"/>
+        <feDiffuseLighting in="blur" surfaceScale="${S * .55}" diffuseConstant="1.12" lighting-color="#fff" result="diff"><feDistantLight azimuth="235" elevation="58"/></feDiffuseLighting>
+        <feComposite in="SourceGraphic" in2="diff" operator="arithmetic" k1="1.04" k2="0" k3="0" k4="0" result="shade"/>
+        <feSpecularLighting in="blur" surfaceScale="${S * .55}" specularConstant=".55" specularExponent="16" lighting-color="#fff" result="spec"><feDistantLight azimuth="235" elevation="48"/></feSpecularLighting>
+        <feComposite in="spec" in2="SourceAlpha" operator="in" result="specIn"/>
+        <feComposite in="shade" in2="SourceAlpha" operator="in" result="body"/>
+        <feComposite in="specIn" in2="body" operator="arithmetic" k1="0" k2=".7" k3="1" k4="0" result="lit"/>
+        <feGaussianBlur in="SourceAlpha" stdDeviation="${S * 1.1}" result="sb"/><feOffset in="sb" dy="${S * 1.4}" result="so"/>
+        <feFlood flood-color="${night ? '#120E26' : '#6A4FA6'}" flood-opacity="${night ? .5 : .28}"/><feComposite in2="so" operator="in" result="shadow"/>
+        <feMerge><feMergeNode in="shadow"/><feMergeNode in="lit"/></feMerge>
+      </filter></defs>
+      ${rowSvg}
+      <g id="clTop"></g>
+      <text class="cl-txt" x="${VW / 2}" y="${dateY}" text-anchor="middle" font-size="${land ? 60 : 58}" fill="${txtCol}">${ampm} · ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일</text>
+      ${tip ? `<text class="cl-txt" x="${VW / 2}" y="${tipY}" text-anchor="middle" font-size="${land ? 38 : 40}" fill="${txtCol}" opacity=".82">${esc(tip)}</text>` : ''}
+      ${clayBlob(land ? 150 : 120, land ? 760 : 1450, land ? 62 : 56, night ? '#7F6DC4' : '#A88FE6')}${clayBlob(land ? 215 : 188, land ? 782 : 1474, land ? 34 : 32, night ? '#B88BC9' : '#E1A9E6')}
+      ${clayBlob(land ? 1450 : 780, land ? 750 : 1440, land ? 66 : 58, night ? '#7F6DC4' : '#A88FE6')}${clayBlob(land ? 1390 : 720, land ? 784 : 1476, land ? 32 : 30, night ? '#C68CB8' : '#F2B4D6')}
+    </svg>`;
+    // 숫자 배치: 글자 폭을 재서 가운데 정렬, 화면 폭의 86%를 넘으면 줄임
+    host.querySelectorAll('.cl-row').forEach(g => {
+      const cy = +g.dataset.y; let x = 0; const gap = fs * .03;
+      [...g.children].forEach(el => {
+        if (el.dataset.colon) { const r = fs * .075; const [a, b] = el.children; a.setAttribute('cx', x + r + gap); a.setAttribute('cy', cy - fs * .42); b.setAttribute('cx', x + r + gap); b.setAttribute('cy', cy - fs * .13); x += r * 2 + gap * 3; }
+        else { el.setAttribute('x', x); el.setAttribute('y', cy); let wdt = fs * .6; try { wdt = el.getComputedTextLength() || wdt; } catch (e) {} x += wdt + gap; }
+      });
+      const total = x - gap, sc = Math.min(1, VW * .86 / total), midY = cy - fs * .36;
+      g.setAttribute('transform', `translate(${VW / 2} ${midY}) scale(${sc}) translate(${-total / 2} ${-midY})`);
+    });
+    if (w) {
+      const k = land ? 1 : 1.05;
+      host.querySelector('#clTop').innerHTML = clayWx(wkey, VW / 2 - 120 * k, wxY, k) + `<text class="cl-num" x="${VW / 2 + 10 * k}" y="${wxY + 30 * k}" font-size="${86 * k}" fill="${txtCol}" filter="url(#clayF)">${w.t}°</text>`;
+    }
+  }
   function renderSaver() {
     const d = new Date(), k = hhmm(d);
     const line = (LS.get(LINES_KEY, {})[k]) || fallbackLine(d.getHours(), d.getMinutes());
@@ -1043,7 +1114,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const style = saverStyle(d);
     if (saverEl.dataset.style !== style) saverEl.dataset.style = style;
     const W = innerWidth, H = innerHeight;
-    if (style === 'ink') {
+    saverEl.classList.toggle('night', style === 'clay' && !daylight(d));
+    if (style === 'clay') {
+      renderClay(d, w, wkey, tip);
+    } else if (style === 'ink') {
       $('kDate').textContent = date; $('kTime').textContent = time;
       $('kWx').innerHTML = w ? `${wxSvg(wkey)}${w.t}° ${wtxt}` : '';
       $('kTip').textContent = tip;
