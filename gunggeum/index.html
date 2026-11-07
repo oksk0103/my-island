@@ -370,6 +370,32 @@ button { cursor: pointer; }
   .toprow .meta #status { display: none; }
   .lo-text { font-size: 2rem; } .lo-ring { width: 5rem; height: 5rem; }
 }
+
+/* v64: 오른쪽 칸을 늘 활용 — 사진 / 세로 낱말 카드 / 큰 이모지 */
+@media (min-width: 761px) { .sheet { max-width: 26em; } .main .inner.has-fig .sheet { max-width: none; } }
+.fig-box:has(.vcard), .fig-box:has(.emo) { aspect-ratio: auto; background: color-mix(in srgb, var(--ink) 4%, transparent); border-left: 3px solid var(--accent); border-radius: 0 20px 20px 0; place-items: start stretch; }
+.fig-box:has(.emo) { min-height: 16rem; place-items: center; }
+.fig-box .emo { font-size: 9rem; line-height: 1; }
+.vcard { display: flex; flex-direction: column; gap: 1.1rem; padding: 2rem 2.2rem 2.2rem; transition: opacity .5s ease; }
+.vcard.pending { opacity: .35; }
+.vc-word { font-family: var(--f-display); font-size: 3.2rem; line-height: 1.05; color: var(--accent); }
+.vc-mean { font-size: 1.6rem; font-weight: 500; color: var(--ink); line-height: 1.35; word-break: keep-all; }
+.vc-rule { height: 1px; background: var(--line); margin: .3rem 0; }
+.vc-item { display: flex; align-items: center; gap: 1.1rem; }
+.vc-g { font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 600; font-size: 4.4rem; line-height: 1; color: var(--ink); }
+.vcard.lat .vc-g { font-family: var(--f-ui); font-size: 2.6rem; letter-spacing: .02em; }
+.vc-g em { font-style: normal; color: var(--accent); text-decoration: underline; text-underline-offset: .18em; }
+.vc-g i { font-style: normal; color: var(--muted); margin: 0 .06em; }
+.vc-l { font-size: 1.5rem; color: var(--muted); }
+.vcard.lat .vc-item { flex-direction: column; align-items: flex-start; gap: .4rem; }
+@media (max-width: 760px) {
+  .fig:has(.vcard), .fig:has(.emo) { flex-direction: column; align-items: stretch; }
+  .fig-box:has(.vcard) { width: 100%; }
+  .fig-box:has(.emo) { width: 100%; min-height: 6rem; } .fig-box .emo { font-size: 4rem; }
+  .vcard { flex-direction: row; flex-wrap: wrap; align-items: center; gap: .5rem 1.2rem; padding: .9rem 1.1rem; }
+  .vc-word { font-size: 1.7rem; } .vc-mean { font-size: 1.1rem; } .vc-rule { width: 1px; height: 1.4rem; margin: 0; }
+  .vc-g { font-size: 2.2rem; } .vc-l { font-size: .9rem; }
+}
 </style>
 
 </head>
@@ -464,13 +490,13 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v63</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v64</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v63</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v64</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1221,21 +1247,20 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const g = x => hanja ? esc(x) : esc(x).split('·').map(sy => /^[A-Z]{2,}$/.test(sy) ? `<em>${sy.toLowerCase()}</em>` : (lat ? sy.toLowerCase() : sy)).join('<i>·</i>');
     // 카드가 풀이하는 낱말: 한자는 음을 이어 붙이고(강철 강 + 쇠 철 → 강철), 영어는 음절을 붙임
     const word = hanja ? items.map(x => x.l.trim().split(/\s+/).pop()).join('') : (items[0].g.replace(/·/g, '') || '');
-    const ws = $('wstrip');
-    ws.innerHTML = (hanja && word ? `<span class="ws-word">${esc(word)}</span>` + (mean ? `<span class="ws-div"></span><span class="ws-mean">${esc(mean)}</span>` : '') + '<span class="ws-div"></span>' : '') +
-      `<span class="ws-pairs">${items.map(x => `<span class="ws-item"><span class="ws-g${hanja ? '' : ' lat'}">${g(x.g)}</span><span class="ws-l">${esc(x.l)}</span></span>`).join('')}</span>`;
+    const html = `<div class="vcard${hanja ? '' : ' lat'} pending">` +
+      (hanja && word ? `<div class="vc-word">${esc(word)}</div>` + (mean ? `<div class="vc-mean">${esc(mean)}</div>` : '') + '<div class="vc-rule"></div>' : '') +
+      items.map(x => `<div class="vc-item"><span class="vc-g">${g(x.g)}</span><span class="vc-l">${esc(x.l)}</span></div>`).join('') + '</div>';
+    placePic(html, '');
     const key = (hanja ? word : word.toLowerCase()).replace(/\s/g, '');
-    // 답을 다 읽고 나서 띠를 보여주고, 낱말을 소리로 한 번 짚어 줌
+    // 답을 다 읽고 나서 카드를 또렷하게 하고, 낱말을 소리로 한 번 짚어 줌
     Promise.resolve(answerDone).catch(() => {}).then(() => {
       if (seq !== picSeq) return;
-      ws.hidden = false;
+      figBox.querySelector('.vcard')?.classList.remove('pending');
       sheet.querySelectorAll('.w.wlink').forEach(el => el.classList.remove('wlink', 'pulse'));
-      const linked = [];
-      if (key.length >= 2) sheet.querySelectorAll('.w').forEach(el => { if (el.textContent.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '').includes(key)) { el.classList.add('wlink', 'pulse'); linked.push(el); } });
-      fit();
+      if (key.length >= 2) sheet.querySelectorAll('.w').forEach(el => { if (el.textContent.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '').includes(key)) el.classList.add('wlink', 'pulse'); });
       if (hanja && word) {
-        const jong = (word.charCodeAt(word.length - 1) - 0xAC00) % 28 > 0;
-        speak(`${word}${jong ? '은' : '는'} ${mean ? mean + '. ' : ''}${items.map(x => x.l).join(', ')}${/[가-힣]$/.test(items[items.length - 1].l) && (items[items.length - 1].l.charCodeAt(items[items.length - 1].l.length - 1) - 0xAC00) % 28 > 0 ? '을' : '를'} 써.`);
+        const last = items[items.length - 1].l, jong = t => (t.charCodeAt(t.length - 1) - 0xAC00) % 28 > 0;
+        speak(`${word}${jong(word) ? '은' : '는'} ${mean ? mean + '. ' : ''}${items.map(x => x.l).join(', ')}${/[가-힣]$/.test(last) && jong(last) ? '을' : '를'} 써.`);
       }
     });
   }
@@ -1269,7 +1294,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       } catch (e) { note += ' → ' + (e.name === 'AbortError' ? '4초 안에 응답 없음' : e.message === 'img' ? '사진 파일 로딩 실패' : '연결 실패(' + (e.message || e) + ')'); }
       if (seq !== picSeq) return;
     }
-    if (emoji) { eyebrow.querySelector('.eyemo')?.remove(); eyebrow.insertAdjacentHTML('afterbegin', `<span class="eyemo">${emoji}</span>`); picDbg(note + ` → 이모지 ${emoji}`); }
+    if (emoji) { placePic(`<div class="emo">${emoji}</div>`, ''); picDbg(note + ` → 이모지 ${emoji}`); }
     else picDbg(note + ' → 이모지도 없음, 글만 표시');
   }
 
@@ -1309,7 +1334,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       current = a.replace(/[《》]/g, '');
       setChips(quiz ? ['힌트 줘', '정답 알려줘', '다른 문제'] : (qs && qs.length ? qs : ['왜?', '더 알려줘', '예를 들면?']), '이어서');
       const noPhoto = /뜻|의미|무슨 말|영어|단어|문법|스펠링|철자|반대말|비슷한 말|예문|[A-Za-z]{3,}/.test(q);
-      stripReserve = !!((card && card.length) || noPhoto);
+      stripReserve = false;
+      if ((card && card.length) || noPhoto) placePic('<div class="vcard pending"><div class="vc-word">&nbsp;</div></div>', '');
       draw(a, true, 'answer');
       setState(quiz ? 'quiz' : 'answer', quiz ? '퀴즈 중' : '답', quiz ? '답을 말해 봐. 모르겠으면 힌트를 눌러.' : '모르는 낱말은 눌러 봐.');
       const drawn = new Promise(r => setTimeout(r, graphemes(a).length * 28 + 400));
