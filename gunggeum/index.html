@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#18231F">
+<meta name="theme-color" content="#17130F">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon-192.png">
@@ -396,6 +396,39 @@ button { cursor: pointer; }
   .vc-word { font-size: 1.7rem; } .vc-mean { font-size: 1.1rem; } .vc-rule { width: 1px; height: 1.4rem; margin: 0; }
   .vc-g { font-size: 2.2rem; } .vc-l { font-size: .9rem; }
 }
+
+/* v65: 먹색 팔레트 + 나눔스퀘어 네오 */
+@font-face { font-family: "NanumSquare Neo"; src: url("fonts/NanumSquareNeo-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+:root { --f-display: "NanumSquare Neo", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif !important; --f-ui: "NanumSquare Neo", "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif !important; }
+.sheet { font-weight: 500; }
+/* D1 — Warm ink: brown-black paper, cream reading text, one amber accent (emphasis only) */
+:root[data-theme="dark"] {
+  --bg:#17130F !important; --surface:#211B16 !important; --ink:#E8DDC9 !important; --muted:#A39682 !important;
+  --line:#3A3129 !important; --accent:#E2AA55 !important; --accent-ink:#17130F !important; --grid:transparent !important;
+  --hl:#704812 !important; --hl-ink:#FFF4DE !important;
+}
+.wordmark { color: var(--ink); }
+.status, .app[data-state="answer"] .status { color: var(--muted); }
+.count b { color: var(--accent); }
+/* highlighter: amber-ochre band, brightest text on screen */
+.sheet .key.drawn { box-shadow: none; }
+.sheet .w.wlink { box-shadow: inset 0 -.08em 0 var(--accent); }
+.sheet .key.drawn .w.wlink { box-shadow: inset 0 -.08em 0 #F3C982; }
+/* chips: quiet filled pills, one step below the answer */
+.chips .lbl { color: var(--muted); }
+.chips button { border-color: #43392F; background: #1E1914; color: #D8CBB4; }
+.chips button:focus-visible, .chips button:active { border-color: var(--accent); color: #F3DDB5; }
+.chips button.lead { border-color: var(--accent); color: var(--ink); background: #1E1914; }
+/* word card */
+.fig-box:has(.vcard), .fig-box:has(.emo) { background: #251E18; border-left-color: var(--accent); }
+.vc-word { color: var(--accent); }
+.vc-mean { color: var(--ink); }
+.vc-g { color: var(--ink); }
+.vc-l { color: var(--muted); }
+.vc-rule { background: #3A3129; }
+.qbox { border-color: #3A3129; background: #1A1612; }
+.saver { background: #100D0A; }
+
 </style>
 
 </head>
@@ -490,13 +523,13 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v64</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v65</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v64</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v65</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
