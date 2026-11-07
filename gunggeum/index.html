@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#18231F">
+<meta name="theme-color" content="#3B3266">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon-192.png">
@@ -302,6 +302,97 @@ button { cursor: pointer; }
 .day .t { color: var(--muted); font-size: .8rem; font-variant-numeric: tabular-nums; }
 .day .qq { font-weight: 700; }
 .empty { color: var(--muted); margin: 0; }
+
+/* ===== 말랑 스킨: 딸이 고른 파스텔 찰흙 컨셉 (질문 화면) ===== */
+:root, :root[data-theme="light"], :root[data-theme="dark"] {
+  --f-display: "Jua", "Do Hyeon", "Noto Sans KR", sans-serif;
+  --f-ui: "Jua", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+  --peach: #F7A884; --mint: #8EDDB2; --butter: #F7D676; --pink: #F4A9CB; --sky: #9DCBF5;
+  --grid: transparent;
+}
+:root[data-theme="light"] {
+  --bg: #C9B8EE; --bg2: #B9A4E6; --surface: #FFFFFF; --card: #FFFFFF; --ink: #3A2C66; --muted: #7C6FA6; --line: #DCD2F5;
+  --accent: #F28D68; --accent-ink: #FFFFFF; --hl: #FBE08A; --hl-ink: #3A2C66; --shadow: 90, 60, 160; color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #3B3266; --bg2: #2C2550; --surface: #4A4080; --card: #4C4285; --ink: #F4EFFF; --muted: #B9AEE3; --line: #5D5296;
+  --accent: #F7A884; --accent-ink: #2C2550; --hl: #F7D676; --hl-ink: #2C2550; --shadow: 12, 8, 30; color-scheme: dark;
+}
+body { background: radial-gradient(120% 100% at 50% 30%, var(--bg) 0%, var(--bg2) 100%) fixed; background-size: auto; }
+.puff, .main .textcol, .fig-box, .qbox, .status, .chips button, #askBtn, .mic {
+  box-shadow: inset 0 3px 6px rgba(255, 255, 255, .55), inset 0 -5px 0 rgba(var(--shadow), .07), 0 10px 22px rgba(var(--shadow), .2);
+}
+:root[data-theme="dark"] .main .textcol, :root[data-theme="dark"] .fig-box, :root[data-theme="dark"] .qbox, :root[data-theme="dark"] .status { box-shadow: inset 0 2px 4px rgba(255, 255, 255, .1), inset 0 -5px 0 rgba(0, 0, 0, .12), 0 10px 24px rgba(var(--shadow), .45); }
+/* 위 막대 */
+.topbar { border-bottom: 0; }
+.topbar .inner { min-height: 4.2rem; }
+.wordmark { font-size: 1.7rem; color: var(--ink); letter-spacing: 0; }
+.wordmark .eye circle:first-child { fill: var(--peach); }
+.status { background: var(--card); border-radius: 999px; padding: .25rem 1.1rem .25rem .6rem; color: var(--muted); font-size: 1rem; font-weight: 400; }
+.app[data-state="listen"] .status, .app[data-state="think"] .status, .app[data-state="quiz"] .status { color: var(--accent); }
+.count { font-size: .95rem; } .count b { color: var(--ink); }
+.dots i { background: color-mix(in srgb, var(--ink) 18%, transparent); } .dots i.on { background: var(--peach); }
+.iconbtn { color: var(--ink); opacity: .7; }
+/* 답 카드 */
+.main .inner { gap: 1.4rem; }
+.main .textcol { background: var(--card); border-radius: 40px; padding: 2rem 2.4rem 1.6rem; gap: 1.1rem; min-height: 0; }
+.eyebrow { color: var(--muted); font-size: 1.05rem; }
+.eyebrow .dash { height: .55rem; width: .55rem; border-radius: 50%; background: var(--peach); }
+.sheet { font-family: var(--f-display); letter-spacing: -.01em; line-height: 1.3; color: var(--ink); }
+.sheet.soft { color: var(--muted); }
+.sheet .w { border-bottom: 2px dotted color-mix(in srgb, var(--ink) 12%, transparent); }
+.sheet .w.sel, .sheet .w:active { color: var(--accent); border-bottom-color: var(--accent); }
+.sheet .key .w { background: var(--hl); border-radius: 0; padding: 0 .08em; margin: 0 -.08em; border-bottom-color: transparent; }
+.sheet .key .w:first-of-type { border-radius: .22em 0 0 .22em; } .sheet .key .w:last-of-type { border-radius: 0 .22em .22em 0; }
+.sheet .key .w.done:not(:last-of-type) { box-shadow: .3em 0 0 var(--hl); }
+.meta { color: var(--muted); font-size: 1rem; }
+.meta .textbtn { color: var(--ink); background: color-mix(in srgb, var(--mint) 45%, transparent); border-radius: 999px; padding: 0 1rem; min-height: 2.6rem; font-size: 1rem; font-weight: 400; }
+:root[data-theme="dark"] .meta .textbtn { background: color-mix(in srgb, var(--mint) 25%, transparent); }
+/* 다음 질문 칩: 숫자 색 그대로 */
+.chips { gap: .7rem; }
+.chips .lbl { color: var(--muted); font-size: .95rem; font-weight: 400; }
+.chips button { border: 0; border-radius: 999px; min-height: 3.2rem; padding: 0 1.4rem; font-size: 1.1rem; font-weight: 400; color: #3A2C66; background: var(--peach); }
+.chips button:nth-of-type(4n+2) { background: var(--mint); } .chips button:nth-of-type(4n+3) { background: var(--butter); } .chips button:nth-of-type(4n+4) { background: var(--pink); }
+.chips button:active { transform: scale(.95); color: #3A2C66; }
+.chips button.lead { border-radius: 999px; border: 0; background: var(--butter); }
+.chips button.lead span { color: #3A2C66; }
+/* 그림·낱말 카드 */
+.fig-box { border: 0; border-radius: 40px; background: var(--card); }
+.fig-box img { border-radius: 40px; }
+.fig-box .wc-l { color: var(--accent); font-weight: 400; }
+.fig-box .wc-g em { color: var(--accent); }
+.fig figcaption { color: var(--muted); padding: 0 .8rem; }
+/* 질문 막대 */
+.qbar .inner { grid-template-columns: minmax(0, 1fr) minmax(9rem, 11rem); gap: .9rem; padding-block: .8rem 1.1rem; }
+.qbox { border: 0; border-radius: 999px; background: var(--card); padding-left: .5rem; }
+.qbox:focus-within, .app[data-state="listen"] .qbox { outline: 4px solid color-mix(in srgb, var(--peach) 70%, transparent); outline-offset: 0; }
+.mic { width: 3.6rem; height: 3.6rem; border-radius: 50%; background: var(--peach); color: #FFFFFF; margin: .35rem .4rem .35rem 0; }
+.mic svg { stroke-width: 2.2; }
+.app[data-state="listen"] .mic { background: var(--pink); }
+.app[data-state="listen"] .mic .wave rect { fill: #FFFFFF; }
+#q { font-size: 1.15rem; color: var(--ink); padding-left: .4rem; }
+#askBtn { border: 0; border-radius: 999px; background: var(--mint); color: #2E4A3C; font-size: 1.2rem; font-weight: 400; justify-content: center; }
+#askBtn span { font-size: 1.4rem; }
+.foot .inner { color: var(--muted); } .foot i { background: var(--peach); } .foot b { color: color-mix(in srgb, var(--muted) 50%, transparent); }
+@media (min-width: 1100px) { .mic { width: 4.6rem; height: 4.6rem; } .qbox, #askBtn { min-height: 5.4rem; } #q { height: 4.8rem; } .chips button { min-height: 3.6rem; } }
+@media (max-width: 760px) {
+  .main .textcol { border-radius: 28px; padding: 1.3rem 1.3rem 1.1rem; }
+  .qbar { background: transparent; }
+  .fig-box, .fig-box img { border-radius: 28px; }
+  .qbar .inner { grid-template-columns: 1fr; gap: .6rem; }
+  .mic { width: 3rem; height: 3rem; }
+  .fig { flex-direction: column; align-items: stretch; }
+  .fig-box { width: 100%; aspect-ratio: auto; min-height: 7.5rem; }
+  .fig-box .wcard.hanja { grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr)); }
+  .fig-box .wcard.hanja .wc-g { font-size: 3rem; }
+  .fig-box .emo { font-size: 3.4rem; }
+}
+/* 부모 화면 */
+.log { background: var(--bg2); }
+.card { background: var(--card); border-radius: 22px; }
+.seg { border-radius: 999px; overflow: hidden; border-color: var(--line); }
+.seg button.on { background: var(--peach); color: #3A2C66; }
+.chip { border-radius: 999px; }
 </style>
 
 </head>
@@ -392,7 +483,7 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v57</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v58</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
@@ -868,7 +959,11 @@ button { cursor: pointer; }
     if (sun && sun.day === dayKey(now)) { const r = new Date(sun.rise), st = new Date(sun.set); return now < r || now >= st; }
     const h = now.getHours() + now.getMinutes() / 60; return h < 6.5 || h >= 18; // 일출·일몰 정보 없을 때
   }
-  function applyTheme() { document.documentElement.dataset.theme = 'dark'; } // 다크 고정
+  function applyTheme() { // 해 있는 동안 연보라, 해 지면 짙은 보라
+    const d = new Date(); let day = d.getHours() >= 7 && d.getHours() < 18;
+    try { const sun = JSON.parse(localStorage.getItem('gk-sun') || 'null'); if (sun && sun.rise && sun.set && sun.day === `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`) day = d >= new Date(sun.rise) && d < new Date(sun.set); } catch (e) {}
+    document.documentElement.dataset.theme = day ? 'light' : 'dark';
+  }
   applyTheme(); setInterval(applyTheme, 60 * 1000);
 
   // ---------- idle: piece / weather / clock ----------
