@@ -432,6 +432,20 @@ button { cursor: pointer; }
 /* v69: 입력칸 조금 얇게 */
 @media (min-width: 1100px) { .qbox { min-height: 3.2rem; } .qbox .mic { width: 3.2rem; height: 3.2rem; } .qbox .mic svg { width: 1.8rem; height: 1.8rem; } #q { font-size: 1.35rem; } }
 
+
+/* v70: 질문 크게 · 길이별 행간 · 이어서 칩 바닥 고정 · 다음 질문 표시 */
+.eyebrow .askq { font-size: 1.5em; font-weight: 500; color: color-mix(in srgb, var(--ink) 82%, transparent); letter-spacing: -.01em; line-height: 1.25; }
+.sheet[data-len="s"] { line-height: 1.25; } .sheet[data-len="m"] { line-height: 1.35; } .sheet[data-len="l"] { line-height: 1.45; }
+@media (min-width: 761px) {
+  .main .inner:not(.has-fig) .chips:has(button:not(.lead)) { margin-top: auto; }
+  .main .inner.has-fig:has(.chips button:not(.lead)) { grid-template-rows: auto 1fr; }
+  .main .inner.has-fig .chips:has(button:not(.lead)) { align-self: end; }
+  .main .inner:has(.chips button:not(.lead)) { padding-bottom: 1.6rem; }
+}
+.chips .lbl { flex: none; white-space: nowrap; }
+.chips button .no { font-style: normal; font-size: .8em; font-weight: 800; color: var(--accent); margin-right: .55em; }
+.chips button.next { border-color: var(--accent) !important; border-width: 2px; color: var(--ink) !important; }
+
 /* v65: 먹색 팔레트 + 나눔스퀘어 네오 */
 @font-face { font-family: "NanumSquare Neo"; src: url("fonts/NanumSquareNeo-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 :root { --f-display: "NanumSquare Neo", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif !important; --f-ui: "NanumSquare Neo", "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif !important; }
@@ -563,13 +577,13 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v69</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v70</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v69</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v70</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -770,7 +784,7 @@ button { cursor: pointer; }
   function setEyebrow(kind, text) {
     eyebrow.innerHTML = '';
     if (kind === 'piece') { const d = document.createElement('span'); d.className = 'dash'; eyebrow.append(d, '오늘의 한 조각'); return; }
-    if (kind === 'q') { const sp = document.createElement('span'); sp.className = 'sep'; sp.textContent = '·'; eyebrow.append('물어본 말 ', sp, ' ' + text); return; }
+    if (kind === 'q') { const sp = document.createElement('span'); sp.className = 'askq'; sp.textContent = '“' + text.replace(/[?？.]*$/, '') + (/[?？]$/.test(text) || !/[.!]$/.test(text) ? '?' : '') + '”'; eyebrow.append(sp); return; }
   }
 
   // ---------- count ----------
@@ -838,7 +852,8 @@ button { cursor: pointer; }
     const maxH = phone ? Math.max(window.innerHeight * 0.5 - figH, 200) : r.height - other;
     const maxW = Math.min(document.getElementById('textcol').getBoundingClientRect().width || r.width, 1570);
     const n = graphemes(sheet.textContent).length;
-    let lo = phone ? 26 : 30, hi = Math.min(n <= 24 ? 96 : n <= 70 ? 72 : 58, Math.floor(maxW / (maxW < 600 ? 6.5 : 9)));
+    sheet.dataset.len = n <= 30 ? 's' : n <= 90 ? 'm' : 'l';
+    let lo = phone ? 26 : 30, hi = Math.min(n <= 30 ? 96 : n <= 90 ? 72 : 60, Math.floor(maxW / (maxW < 600 ? 6.5 : 9)));
     while (hi - lo > 1) {
       const mid = (lo + hi) >> 1;
       sheet.style.setProperty('--fs', mid + 'px');
@@ -1045,11 +1060,12 @@ button { cursor: pointer; }
   // ---------- chips ----------
   function setChips(list, label, lead) {
     chipsEl.innerHTML = '';
+    if (!list.length) followUp = '';
     if (!list.length) return;
     if (label) { const l = document.createElement('span'); l.className = 'lbl'; l.textContent = label; chipsEl.append(l); }
     for (const t of list) {
       const b = document.createElement('button'); b.type = 'button';
-      if (lead) { b.className = 'lead'; b.append(t); const a = document.createElement('span'); a.textContent = '→'; b.append(a); } else b.textContent = t;
+      if (lead) { b.className = 'lead'; b.append(t); const a = document.createElement('span'); a.textContent = '→'; b.append(a); } else { const no = document.createElement('i'); no.className = 'no'; no.textContent = list.indexOf(t) + 1; b.append(no, t); }
       b.addEventListener('click', () => ask(t));
       chipsEl.append(b);
     }
@@ -1328,7 +1344,20 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     return { src: p.thumbnail.source, title: p.title };
   }
   const picDbg = m => { try { const el = $('picDbg'); if (el) el.textContent = '마지막 그림: ' + m + (lastRaw ? ' ‖ 원문: ' + lastRaw.slice(0, 300).replace(/\n/g, '⏎') : ''); } catch (e) {} };
-  let stripReserve = false, answerDone = Promise.resolve();
+  let stripReserve = false, answerDone = Promise.resolve(), cardLine = Promise.resolve(), followUp = '', askSeq = 0;
+  // 말로 이어서 질문 고르기: '응/더/왜' → 1번, '2번/두 번째/둘째' → 그 번호, 칩 글자 일부를 말하면 그 칩
+  function pickChip(said) {
+    const list = [...chipsEl.querySelectorAll('button:not(.lead):not([hidden])')].map(b => b.lastChild.textContent);
+    if (!list.length) return '';
+    const t = said.replace(/[.?!~\s]/g, '');
+    const suf = '(번|번째|째|번거|번째거|째거|거|꺼)?(요)?';
+    const NUM = [new RegExp('^(1|일|하나|첫|첫째|첫번째|처음)' + suf + '$'), new RegExp('^(2|이|둘|두)' + suf + '$'), new RegExp('^(3|삼|셋|세)' + suf + '$'), new RegExp('^(4|사|넷|네)' + suf + '$')];
+    for (let i = 0; i < NUM.length; i++) if (NUM[i].test(t) && list[i] && !(i === 1 && t === '이') && !(i === 3 && t === '네')) return list[i];
+    if (FOLLOW_RE.test(said)) return list[0];
+    if (t.length >= 3) { const hit = list.find(x => x.replace(/[.?!\s]/g, '').includes(t)); if (hit) return hit; }
+    return '';
+  }
+  const FOLLOW_RE = /^(응+|어+|엉|네|예|그래|좋아|더|더 알려 ?줘|더 말해 ?줘|왜|왜\?|그거|그거 ?뭐야|궁금해|응 ?궁금해|알려 ?줘|계속|그 ?다음)[.?!~\s]*$/;
   function showCard(items) {
     const seq = picSeq;
     const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
@@ -1353,7 +1382,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       if (key.length >= 2) sheet.querySelectorAll('.w').forEach(el => { if (el.textContent.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '').includes(key)) el.classList.add('wlink', 'pulse'); });
       if (hanja && word) {
         const last = items[items.length - 1].l, jong = t => (t.charCodeAt(t.length - 1) - 0xAC00) % 28 > 0;
-        speak(`${word}${jong(word) ? '은' : '는'} ${mean ? mean + '. ' : ''}${items.map(x => x.l).join(', ')}${/[가-힣]$/.test(last) && jong(last) ? '을' : '를'} 써.`);
+        cardLine = speak(`${word}${jong(word) ? '은' : '는'} ${mean ? mean + '. ' : ''}${items.map(x => x.l).join(', ')}${/[가-힣]$/.test(last) && jong(last) ? '을' : '를'} 써.`);
       }
     });
   }
@@ -1393,7 +1422,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
 
   // ---------- ask ----------
   async function ask(qIn) {
-    const q = String(qIn ?? input.value).trim();
+    let q = String(qIn ?? input.value).trim();
+    // 이어서: 답 뒤에 '응', '더', '왜?'처럼 짧게만 말하면 첫 번째 이어서 질문으로
+    if (followUp && !quiz) q = pickChip(q) || q;
+    followUp = ''; askSeq++; cardLine = Promise.resolve();
     if (!q || busy) return;
     if (!settings.apiKey) { setState('idle', '잠깐', '부모님이 설정에서 API 키를 넣어 줘야 해요.'); draw('아직 준비가 안 됐어. 부모님께 말해 줘.', false, 'plain'); return; }
     const blocked = gate(); if (blocked) { showBlocked(blocked); return; }
@@ -1424,8 +1456,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
         a = (m && m[0].length > 120) ? m[0].trim() : cut.trim() + '…';
       }
       if (quiz && /정답은/.test(a)) quiz = false;
+      if (graphemes(a.replace(/[《》]/g, '')).length <= 30) a = a.replace(/[《》]/g, ''); // 짧은 답은 전부 핵심이라 형광펜 안 씀
       current = a.replace(/[《》]/g, '');
       setChips(quiz ? ['힌트 줘', '정답 알려줘', '다른 문제'] : (qs && qs.length ? qs : ['왜?', '더 알려줘', '예를 들면?']), '이어서');
+      if (!quiz) { followUp = (qs && qs[0]) || ''; chipsEl.querySelector('button')?.classList.add('next'); }
       const noPhoto = /뜻|의미|무슨 말|영어|단어|문법|스펠링|철자|반대말|비슷한 말|예문|[A-Za-z]{3,}/.test(q);
       stripReserve = false;
       if ((card && card.length) || noPhoto) placePic('<div class="vcard pending"><div class="vc-word">&nbsp;</div></div>', '');
@@ -1433,6 +1467,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       setState(quiz ? 'quiz' : 'answer', quiz ? '퀴즈 중' : '답', quiz ? '답을 말해 봐. 모르겠으면 힌트를 눌러.' : '모르는 낱말은 눌러 봐.');
       const drawn = new Promise(r => setTimeout(r, graphemes(a).length * 28 + 400));
       answerDone = Promise.all([speak(current).catch(() => {}), drawn]);
+      { const mySeq = askSeq, fq = followUp; Promise.resolve(answerDone).catch(() => {}).then(() => new Promise(r => setTimeout(r, 60))).then(() => cardLine).catch(() => {}).then(() => new Promise(r => setTimeout(r, 500))).then(() => { if (mySeq === askSeq && fq && !busy && !listening && saverEl.hidden && app.dataset.state === 'answer') speak(`${fq} 궁금하면 버튼 누르고 "응" 해 봐. 다른 게 궁금하면 번호를 말해 줘.`); }); }
       if (card && card.length) { picSeq++; showCard(card); picDbg('낱말 카드 ' + card.map(x => x.g + ' ' + x.l).join(', ')); }
       else if (noPhoto) { picDbg('낱말 질문인데 카드가 안 와서 따로 요청'); fetchCard(q, current, ctl.signal); }
       else if (!term && !emoji && !/@@/.test(raw)) picDbg('답에 그림 줄(@@)이 안 왔음 — 모델이 규칙을 빼먹음'); else showPic(settings.picOn === 'off' ? '' : term, emoji, ctl.signal);
@@ -1566,7 +1601,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v69';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v70';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
