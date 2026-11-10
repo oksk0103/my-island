@@ -577,13 +577,13 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v71</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v72</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v71</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v72</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1346,13 +1346,18 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const picDbg = m => { try { const el = $('picDbg'); if (el) el.textContent = '마지막 그림: ' + m + (lastRaw ? ' ‖ 원문: ' + lastRaw.slice(0, 300).replace(/\n/g, '⏎') : ''); } catch (e) {} };
   let stripReserve = false, answerDone = Promise.resolve(), cardLine = Promise.resolve(), followUp = '', askSeq = 0;
   // 말로 이어서 질문 고르기: '응/더/왜' → 1번, '2번/두 번째/둘째' → 그 번호, 칩 글자 일부를 말하면 그 칩
+  function chipList() { return [...chipsEl.querySelectorAll('button:not(.lead)')].map(b => b.lastChild.textContent); }
   function pickChip(said) {
-    const list = [...chipsEl.querySelectorAll('button:not(.lead):not([hidden])')].map(b => b.lastChild.textContent);
+    const list = chipList();
     if (!list.length) return '';
-    const t = said.replace(/[.?!~\s]/g, '');
-    const suf = '(번|번째|째|번거|번째거|째거|거|꺼)?(요)?';
-    const NUM = [new RegExp('^(1|일|하나|첫|첫째|첫번째|처음)' + suf + '$'), new RegExp('^(2|이|둘|두)' + suf + '$'), new RegExp('^(3|삼|셋|세)' + suf + '$'), new RegExp('^(4|사|넷|네)' + suf + '$')];
-    for (let i = 0; i < NUM.length; i++) if (NUM[i].test(t) && list[i] && !(i === 1 && t === '이') && !(i === 3 && t === '네')) return list[i];
+    const t = said.replace(/[.?!~,\s]/g, '');
+    // 번호 + 번/번째/째 로 시작하면 뒤에 '거, 질문, 알려줘'가 붙어도 인정. 음성 인식이 헷갈리는 소리(새/내/투)도 받음
+    const N = [['1', '일', '한', '하나', '첫', '처음'], ['2', '이', '두', '둘', '투'], ['3', '삼', '세', '새', '셋', '쎄'], ['4', '사', '네', '내', '넷']];
+    const tail = '(거|꺼|질문|요|거요|알려줘|궁금해|물어봐)?$';
+    for (let i = 0; i < N.length; i++) {
+      const w = '(' + N[i].join('|') + ')';
+      if (new RegExp('^' + w + '(번째|째)' + tail).test(t) || new RegExp('^' + w + '번' + tail).test(t) || new RegExp('^(하나|둘|셋|넷)' + tail).test(t) && new RegExp('^' + w).test(t)) return list[i] || '';
+    }
     if (FOLLOW_RE.test(said)) return list[0];
     if (t.length >= 3) { const hit = list.find(x => x.replace(/[.?!\s]/g, '').includes(t)); if (hit) return hit; }
     return '';
@@ -1424,6 +1429,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   async function ask(qIn) {
     let q = String(qIn ?? input.value).trim();
     // 이어서: 답 뒤에 '응', '더', '왜?'처럼 짧게만 말하면 첫 번째 이어서 질문으로
+    const shownChips = followUp && !quiz ? chipList() : [];
     if (followUp && !quiz) q = pickChip(q) || q;
     followUp = ''; askSeq++; cardLine = Promise.resolve();
     if (!q || busy) return;
@@ -1443,6 +1449,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     for (const r of recent) { msgs.push({ role: 'user', content: r.q }); msgs.push({ role: 'assistant', content: r.a }); }
     let userText = q;
     if (quiz) userText = '(지금은 퀴즈 중이야. 아이의 말은 답을 맞히려는 시도일 수 있어. 맞으면 "정답은 ○○!"으로 짧게 확인하고 한 줄 설명을 덧붙여. 틀리면 힌트를 하나만 더 줘.)\n' + q;
+    if (shownChips.length && !quiz && q !== shownChips.find(x => x === q)) userText = `(화면에 보이던 이어서 질문: ${shownChips.map((x, i) => (i + 1) + '. ' + x).join(' / ')} — 아이가 번호나 '그거'로 말하면 이 중에서 골라 답해.)\n` + userText;
     msgs.push({ role: 'user', content: userText });
     try {
       const raw = await claude(msgs, { system: rules(), signal: ctl.signal });
@@ -1601,7 +1608,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v71';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v72';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
