@@ -462,6 +462,7 @@ button { cursor: pointer; }
 .era-name { font-size: min(1.6rem, 3.2vh); font-weight: 700; color: var(--ink); word-break: keep-all; }
 .era-ago { font-family: var(--f-display); font-size: min(3.6rem, 6.4vh); line-height: 1.05; color: var(--accent); font-weight: 800; letter-spacing: -.02em; }
 .era-ago.long { font-size: min(2.6rem, 4.8vh); }
+.fig figcaption .cap-t b.cap-era { font-size: 1.6rem; color: var(--accent); }
 .era-year { font-size: min(1.3rem, 2.6vh); color: var(--muted); }
 .era-blocks { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .6rem; max-width: 16rem; }
 .era-blocks i { width: 1.2rem; height: 1.2rem; border-radius: 4px; background: color-mix(in srgb, var(--accent) 70%, transparent); }
@@ -1451,16 +1452,15 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   const SCARY = /거미|타란툴라|뱀|독사|코브라|살무사|상어|지네|말벌|전갈|심해어|아귀|악어|피라냐|박쥐|구더기|바퀴벌레|흡혈/;
   const nightNow = () => { const h = new Date().getHours(); return h >= 19 || h < 7; };
-  function eraHtml(era, emoji) {
-    const w = String(era.when).trim(), y = /^-?\d{1,4}$/.test(w) ? parseInt(w, 10) : NaN;
-    const big = isNaN(y) ? w : (y < 0 ? `기원전 ${-y}년` : `${y}년`);
+  function eraYear(era) { const w = String(era.when).trim(), y = /^-?\d{1,4}$/.test(w) ? parseInt(w, 10) : NaN; return isNaN(y) ? w : (y < 0 ? `기원전 ${-y}년` : `${y}년`); }
+  function eraHtml(era) {
+    const big = eraYear(era);
     const esc2 = t => String(t).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
-    return `<div class="era">${emoji ? `<div class="era-emo">${emoji}</div>` : ''}<div class="era-name">${esc2(era.name)}</div><div class="era-ago${[...big].length > 7 ? ' long' : ''}">${esc2(big)}</div>${era.ctx ? `<div class="era-year">${esc2(era.ctx)}</div>` : ''}</div>`;
+    return `<div class="era"><div class="era-name">${esc2(era.name)}</div><div class="era-ago${[...big].length > 7 ? ' long' : ''}">${esc2(big)}</div>${era.ctx ? `<div class="era-year">${esc2(era.ctx)}</div>` : ''}</div>`;
   }
   async function showPic(term, emoji, signal, era, look) {
     const seq = ++picSeq;
     let note = term ? `검색어 "${term}"` : '검색어 없음';
-    if (era) { placePic(eraHtml(era, emoji), ''); picDbg(note + ` → 연표 ${era.name} ${era.when}`); return; }
     if (term && settings.scaryNight !== 'off' && nightNow() && SCARY.test(term)) { note += ' → 밤이라 무서운 동물 사진 숨김'; term = ''; }
     if (term) {
       try {
@@ -1475,7 +1475,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
           // 정사각형에 가까우면 칸을 꽉 채우고, 길쭉한 사진은 자르지 않고 다 보여 줌(가운데만 남아 주제가 사라지는 일 방지)
           const r = (img.naturalWidth || hit.w || 1) / (img.naturalHeight || hit.h || 1);
           const esc3 = t => String(t).replace(/</g, '&lt;');
-          figBox.innerHTML = ''; placePic('', `<span class="cap-t"><b>${esc3(hit.title)}</b>${look ? `<em>${esc3(look)}</em>` : ''}</span><span class="cap-s">위키백과</span>`);
+          const yr = era ? eraYear(era) : '';
+          figBox.innerHTML = ''; placePic('', era ? `<span class="cap-t"><b class="cap-era">${/년$/.test(yr) && !/전$/.test(yr) ? esc3(yr) + ' ' + esc3(era.name) : esc3(era.name) + ' · ' + esc3(yr)}</b><em>${esc3(hit.title)}${look ? ' — ' + esc3(look) : ''}${era.ctx ? ' · ' + esc3(era.ctx) : ''}</em></span><span class="cap-s">위키백과</span>` : `<span class="cap-t"><b>${esc3(hit.title)}</b>${look ? `<em>${esc3(look)}</em>` : ''}</span><span class="cap-s">위키백과</span>`);
           figBox.classList.toggle('fit-contain', r < 0.8 || r > 1.25);
           figBox.style.aspectRatio = (r < 0.8 || r > 1.25) ? String(Math.min(Math.max(r, 0.75), 1.333)) : '';
           figBox.append(img);
@@ -1485,6 +1486,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       } catch (e) { note += ' → ' + (e.name === 'AbortError' ? '4초 안에 응답 없음' : e.message === 'img' ? '사진 파일 로딩 실패' : '연결 실패(' + (e.message || e) + ')'); }
       if (seq !== picSeq) return;
     }
+    if (era) { placePic(eraHtml(era), ''); picDbg(note + ` → 연표 ${era.name} ${era.when}`); return; }
     if (emoji) { placePic(`<div class="emo">${emoji}</div>`, ''); picDbg(note + ` → 이모지 ${emoji}`); }
     else picDbg(note + ' → 이모지도 없음, 글만 표시');
   }
