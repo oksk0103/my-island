@@ -446,6 +446,28 @@ button { cursor: pointer; }
 .chips button .no { font-style: normal; font-size: .8em; font-weight: 800; color: var(--accent); margin-right: .55em; }
 .chips button.next { border-color: var(--accent) !important; border-width: 2px; color: var(--ink) !important; }
 
+
+/* v77: 그림 칸 — 길쭉한 사진은 자르지 않기, 캡션 키우기, 연표 카드 */
+.fig-box.fit-contain img { object-fit: contain; }
+.fig-box:has(img) { background: #211B16; border-radius: 16px; }
+.fig-box img { filter: saturate(.92); }
+.fig figcaption { align-items: baseline; }
+.fig figcaption .cap-t { display: flex; flex-direction: column; gap: .2rem; min-width: 0; }
+.fig figcaption .cap-t b { font-size: 1.2rem; color: var(--ink); font-weight: 700; }
+.fig figcaption .cap-t em { font-style: normal; font-size: 1rem; color: color-mix(in srgb, var(--ink) 72%, transparent); }
+.fig figcaption .cap-s { font-size: .7rem; color: color-mix(in srgb, var(--ink) 40%, transparent); flex: none; }
+.fig-box:has(.era) { aspect-ratio: auto; background: #211B16; border-left: 3px solid var(--accent); border-radius: 0 20px 20px 0; place-items: start stretch; }
+.era { display: flex; flex-direction: column; gap: .5rem; padding: min(2rem, 3vh) 2.2rem min(2.2rem, 3.2vh); }
+.era-emo { font-size: min(4.4rem, 8vh); line-height: 1.1; }
+.era-name { font-size: min(1.6rem, 3.2vh); font-weight: 700; color: var(--ink); word-break: keep-all; }
+.era-ago { font-family: var(--f-display); font-size: min(3.6rem, 6.4vh); line-height: 1.05; color: var(--accent); font-weight: 800; letter-spacing: -.02em; }
+.era-ago.long { font-size: min(2.6rem, 4.8vh); }
+.era-year { font-size: min(1.3rem, 2.6vh); color: var(--muted); }
+.era-blocks { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .6rem; max-width: 16rem; }
+.era-blocks i { width: 1.2rem; height: 1.2rem; border-radius: 4px; background: color-mix(in srgb, var(--accent) 70%, transparent); }
+.era-legend { font-size: .9rem; color: var(--muted); }
+@media (max-width: 760px) { .era { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: .3rem 1rem; padding: .9rem 1.1rem; } .era-emo { font-size: 2rem; } .era-ago { font-size: 1.8rem; } .era-blocks, .era-legend { display: none; } }
+
 /* v65: 먹색 팔레트 + 나눔스퀘어 네오 */
 @font-face { font-family: "NanumSquare Neo"; src: url("fonts/NanumSquareNeo-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 :root { --f-display: "NanumSquare Neo", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif !important; --f-ui: "NanumSquare Neo", "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif !important; }
@@ -577,13 +599,13 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v76</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v77</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v76</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v77</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -642,6 +664,8 @@ button { cursor: pointer; }
         <div class="row"><input id="wxName" placeholder="예: 영등포구" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 10rem"><button class="chip" id="wxFind" type="button">찾기</button><span class="empty" id="wxNote"></span></div>
         <label>위키백과 사진</label>
         <div class="row"><div class="seg" data-k="picOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔 (이모지만)</button></div></div>
+        <label>밤에 무서운 동물 사진</label>
+        <div class="row"><div class="seg" data-k="scaryNight"><button type="button" data-v="on">저녁 7시~아침 7시 숨김</button><button type="button" data-v="off">늘 보여 줌</button></div></div>
         <label>아침 날씨 화면</label>
         <div class="seg" data-k="wxOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔</button></div>
         <label>부모 비밀번호</label>
@@ -675,7 +699,7 @@ button { cursor: pointer; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 0, hTo: 24, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on' };
+  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 0, hTo: 24, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on', scaryNight: 'on' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
   const LEVEL = {
@@ -697,7 +721,7 @@ button { cursor: pointer; }
 - "더 알려줘", "왜?", "예를 들면?"처럼 이어서 물으면 방금 이야기를 한 단계 더 깊게, ${deep}자 이내로 답해.
 - 아이가 낱말의 뜻을 물으면(예: "광합성"이 뭐야?, 쉐어 뜻이 뭐야) 조사를 떼고 그 낱말만 2~3문장 안에 풀어 줘. 뜻이 여러 개면 아이 생활에서 쓰는 뜻 하나만 설명하고, 경제·법·회사에서 쓰는 뜻은 꺼내지 마.
 - 답 본문에는 꾸밈, 이모지, 마크다운, 줄바꿈을 쓰지 마. 문장만 써.
-- 답이 끝나면 줄을 바꾸고 마지막 줄에 "@@ 검색어 | 이모지 | 다음 질문 | 낱말 카드" 를 꼭 붙여. 낱말 카드: 질문에 "뜻", "의미", "무슨 말", "뭐야"처럼 낱말을 묻는 말이 있으면(음성 인식이 뭉개졌어도 네가 설명한 그 낱말로) 반드시 채워. 한자어면 한 글자씩 "秋:가을 추;毫:털 호;뜻:아주 가는 털" 꼴로(글자:훈 음, 끝에 뜻:초등학생이 알아듣는 쉬운 뜻 12자 이내). 영어 단어나 영어에서 온 외래어(쉐어→share, 액추얼→actual, 레벨→level)면 영어 철자로 "im·POR·tant:형용사 · 중요한" 꼴로(음절은 ·로 나누고 강세 음절만 대문자, 뒤에 품사 · 뜻). 순우리말이면 "낱말:뜻 한 줄" 꼴로. 낱말 질문이 아닐 때만 비워. 다음 질문은 이 답을 읽은 아이가 이어서 물어볼 만한 짧은 질문 4개(각 14자 이내, 서로 다른 방향으로: 이유, 비교, 예시, 엉뚱한 상상 등)를 ; 로 구분해서 써. 초등학생의 일상·학교·놀이·과학·자연·동물·이야기 범위 안에서만 내고, 시장·경제·주식·점유율·정치·회사·어른 직업 세계 같은 소재는 쓰지 마. 검색어는 답의 핵심이 되는 구체적인 사물·동물·식물·자연현상·우주·장소·유물·탈것 가운데 하나를 한국어 위키백과 표제어 그대로 적어(예: 달, 무지개, 티라노사우루스, 번개, 경복궁). 다음 경우엔 검색어를 반드시 비워: 낱말 뜻·영어 단어·문법·추상 개념·감정·관계·수학 원리, 사람 몸(신체 부위·장기·생식·출산), 질병, 폭력·무기·약물·술·담배, 특정 인물. 조금이라도 애매하면 비워. 이모지는 아이가 물어본 주인공(질문의 대상) 그 자체를 보여 주는 것 1개, 꼭 필요하면 2개(예: 무지개→🌈, 번개→⚡, 고양이 잠→🐱💤, 세종대왕→👑). 답에 잠깐 나온 곁가지나 비유로 고르지 마(예: '일본' 질문에 임진왜란이 나왔다고 🚢 쓰지 마). 주인공을 딱 보여 주는 이모지가 없으면 비워. 📖📚✏️📝💬🔤🧠💡❓ 같은 '공부·생각' 이모지는 쓰지 마. 이 줄은 화면에 안 보여.
+- 답이 끝나면 줄을 바꾸고 마지막 줄에 "@@ 검색어 > 볼 곳 | 이모지 | 다음 질문 | 낱말 카드 | 연표" 를 꼭 붙여. 낱말 카드: 질문에 "뜻", "의미", "무슨 말", "뭐야"처럼 낱말을 묻는 말이 있으면(음성 인식이 뭉개졌어도 네가 설명한 그 낱말로) 반드시 채워. 한자어면 한 글자씩 "秋:가을 추;毫:털 호;뜻:아주 가는 털" 꼴로(글자:훈 음, 끝에 뜻:초등학생이 알아듣는 쉬운 뜻 12자 이내). 영어 단어나 영어에서 온 외래어(쉐어→share, 액추얼→actual, 레벨→level)면 영어 철자로 "im·POR·tant:형용사 · 중요한" 꼴로(음절은 ·로 나누고 강세 음절만 대문자, 뒤에 품사 · 뜻). 순우리말이면 "낱말:뜻 한 줄" 꼴로. 낱말 질문이 아닐 때만 비워. 다음 질문은 이 답을 읽은 아이가 이어서 물어볼 만한 짧은 질문 4개(각 14자 이내, 서로 다른 방향으로: 이유, 비교, 예시, 엉뚱한 상상 등)를 ; 로 구분해서 써. 초등학생의 일상·학교·놀이·과학·자연·동물·이야기 범위 안에서만 내고, 시장·경제·주식·점유율·정치·회사·어른 직업 세계 같은 소재는 쓰지 마. 검색어는 아이가 '눈으로 봐야 이해되는 것' 하나를 한국어 위키백과 표제어 그대로 적어: 동물·식물·자연현상·우주·장소·건물·유물·탈것·기계(예: 달, 무지개, 티라노사우루스, 번개, 경복궁, 거북선, 측우기). 역사 질문이면 사건·인물 대신 그와 관련된 유물이나 장소를 적어. 검색어 뒤에 " > "를 붙이고 사진에서 볼 곳을 12자 이내로 적어(예: 거북선 > 등의 뾰족한 쇠못, 번개 > 구름에서 땅까지 갈라진 빛). 볼 곳이 마땅치 않으면 > 부분은 빼. 다음 경우엔 검색어를 반드시 비워: 낱말 뜻·영어 단어·문법·추상 개념·감정·관계·수학 원리, 나라 이름, 사람 몸(신체 부위·장기·생식·출산), 질병, 폭력·무기·약물·술·담배, 특정 인물, 전쟁 장면. 조금이라도 애매하면 비워. 이모지는 아이가 물어본 주인공(질문의 대상) 그 자체를 보여 주는 것 1개, 꼭 필요하면 2개(예: 무지개→🌈, 번개→⚡, 고양이 잠→🐱💤, 세종대왕→👑). 나라를 물으면 그 나라 국기 이모지(일본→🇯🇵, 미국→🇺🇸), 사람을 물으면 그 사람을 나타내는 것(임금→👑, 과학자→🔬, 장군→🛡️). 답에 잠깐 나온 곁가지나 비유로 고르지 마(예: '일본' 질문에 임진왜란이 나왔다고 🚢 쓰지 마). 주인공을 딱 보여 주는 이모지가 없으면 비워. 연표: 역사 속 사건·시대·인물을 물었을 때만 "이름;연도" 꼴로 하나 적어(연도는 숫자, 기원전은 -를 붙여. 예: 임진왜란;1592, 한글 만든 해;1443, 고조선;-2333). 아주 먼 옛날이면 "공룡이 사라진 때;6600만 년 전"처럼 적어. 역사 질문이 아니면 비워. 📖📚✏️📝💬🔤🧠💡❓ 같은 '공부·생각' 이모지는 쓰지 마. 이 줄은 화면에 안 보여.
 - 답에서 가장 중요한 구절 하나(2~6어절)를 《 》로 감싸. 꼭 한 군데만.
 - 대답해도 되는 것: 과학, 자연, 동물, 우주, 몸, 역사, 세계 여러 나라, 수학 원리, 미술과 음악, 로봇과 컴퓨터가 움직이는 원리, 책과 이야기, 말과 글자, 날씨와 계절, 생활 속 궁금증, 퀴즈, 수수께끼, 말놀이.
 - 퀴즈를 내 달라고 하면 중학생이 잠깐 생각해야 풀 만한 걸로 하나만 내고, 답은 맞히거나 "정답!"이라고 할 때 알려 줘. 정답을 알려 줄 때는 "정답은"이라는 말을 꼭 넣어.
@@ -1307,20 +1331,23 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (i >= 0) { tag = lines[i].replace(/^\s*@@\s*/, ''); lines.splice(i, 1); body = lines.join('\n').trim(); }
     else {
       const m = raw.match(/\s*@@\s*([^\n]*)\s*$/);
-      if (!m || m.index === 0) return { body: raw, term: '', emoji: '', qs: [] };
+      if (!m || m.index === 0) return { body: raw, term: '', emoji: '', qs: [], era: null, look: '' };
       tag = m[1]; body = raw.slice(0, m.index).trim();
     }
-    const [t = '', e = '', q = '', c = ''] = tag.split('|');
+    const [t0 = '', e = '', q = '', c = '', era0 = ''] = tag.split('|');
+    const [t = '', look = ''] = t0.split(/\s*[>＞]\s*/);
     const qs = q.split(/[;；\n]/).map(x => x.trim().replace(/^[-·•\d.\s]+/, '')).filter(x => x.length >= 2 && x.length <= 24).slice(0, 4);
     body = (body || raw).replace(/@@[^\n]*/g, '').trim();
     const card = c.split(';').map(x => x.trim()).filter(Boolean).map(x => { const i = x.indexOf(':'); return i > 0 ? { g: x.slice(0, i).trim(), l: x.slice(i + 1).trim() } : null; }).filter(x => x && x.g.length <= 14 && x.l.length <= 26).slice(0, 5);
-    return { body, term: cleanTerm(t), emoji: pickEmoji(e), qs, card };
+    const em = era0.split(/[;；]/).map(x => x.trim()); const era = em[0] && em[1] ? { name: em[0].slice(0, 16), when: em[1].slice(0, 16) } : null;
+    return { body, term: cleanTerm(t), look: cleanTerm(look).slice(0, 16), emoji: pickEmoji(e), qs, card, era };
   }
   const cleanTerm = t => (t || '').trim().replace(/^[\s"'「」]+|[\s"'「」]+$/g, '');
-  const BAD_EMOJI = /[🍺🍻🍷🍸🍹🥃🍾🚬🔪🗡️⚔️🔫💣🧨💊💉🩸🖕💀☠️🪦⚰️🍆🍑💦🔞👙🩲🩱👅🫦]/u;
-  const GENERIC_EMOJI = /[📖📚📕📗📘📙📓📔📒✏️✒️🖊️🖋️📝💬🗨️💭🔤🔡🔠🧠💡❓❔❗📌📎🔍🔎🗣️👂👀🤔🙂😊✨⭐]/u;
-  const pickEmoji = e => { const all = Array.from((e || '').matchAll(/\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic})*/gu), x => x[0]).filter(x => !BAD_EMOJI.test(x)); const meaningful = all.filter(x => !GENERIC_EMOJI.test(x)); return (meaningful.length ? meaningful : []).slice(0, 3).join(''); };
-  function hidePic() { picSeq++; fig.hidden = true; mainInner.classList.remove('has-fig'); figBox.innerHTML = ''; figCap.textContent = ''; const ws = $('wstrip'); ws.hidden = true; ws.innerHTML = ''; stripReserve = false; sheet.querySelectorAll('.w.wlink').forEach(el => el.classList.remove('wlink')); eyebrow.querySelector('.eyemo')?.remove(); fit(); }
+  // 이모지 금지·일반 목록 (변형 선택자 FE0F는 빼고 비교 — 예전엔 ☀️·✈️처럼 FE0F가 붙은 이모지가 전부 걸러졌음)
+  const BAD_SET = new Set(['🍺', '🍻', '🍷', '🍸', '🍹', '🥃', '🍾', '🚬', '🔪', '🗡', '⚔', '🔫', '💣', '🧨', '💊', '💉', '🩸', '🖕', '💀', '☠', '🪦', '⚰', '🍆', '🍑', '💦', '🔞', '👙', '🩲', '🩱', '👅', '🫦']), GENERIC_SET = new Set(['📖', '📚', '📕', '📗', '📘', '📙', '📓', '📔', '📒', '✏', '✒', '🖊', '🖋', '📝', '💬', '🗨', '💭', '🔤', '🔡', '🔠', '🧠', '💡', '❓', '❔', '❗', '📌', '📎', '🔍', '🔎', '🗣', '👂', '👀', '🤔', '🙂', '😊', '✨', '⭐']);
+  const BAD_EMOJI = { test: x => [...x.replace(/\uFE0F/g, '')].some(c => BAD_SET.has(c)) }, GENERIC_EMOJI = { test: x => GENERIC_SET.has(x.replace(/\uFE0F/g, '')) };
+  const pickEmoji = e => { const all = Array.from((e || '').matchAll(/\p{Regional_Indicator}{2}|\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic})*/gu), x => x[0]).filter(x => !BAD_EMOJI.test(x)); const meaningful = all.filter(x => !GENERIC_EMOJI.test(x)); return (meaningful.length ? meaningful : []).slice(0, 3).join(''); };
+  function hidePic() { picSeq++; figBox.classList.remove('fit-contain'); figBox.style.aspectRatio = ''; fig.hidden = true; mainInner.classList.remove('has-fig'); figBox.innerHTML = ''; figCap.textContent = ''; const ws = $('wstrip'); ws.hidden = true; ws.innerHTML = ''; stripReserve = false; sheet.querySelectorAll('.w.wlink').forEach(el => el.classList.remove('wlink')); eyebrow.querySelector('.eyemo')?.remove(); fit(); }
   function placePic(html, cap) {
     figBox.innerHTML = html; figCap.innerHTML = cap || '';
     fig.hidden = false; mainInner.classList.add('has-fig'); fig.style.animation = 'none'; void fig.offsetWidth; fig.style.animation = '';
@@ -1342,7 +1369,20 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const cats = (p.categories || []).map(c => c.title).join(' ');
     if (BLOCK.test(p.title) || BLOCK.test(cats) || BLOCK.test(p.pageimage || '')) return null;
     if (/\.svg$/i.test(p.pageimage || '') || /map|flag|icon|logo|nude|naked|corpse|autops|penis|vagin|vulva|blood|wound|burn|injur|dead|death|skull|sex|breast|anus|genital/i.test(p.pageimage || '')) return null;
-    return { src: p.thumbnail.source, title: p.title };
+    let best = { src: p.thumbnail.source, title: p.title, w: p.thumbnail.width, h: p.thumbnail.height };
+    // 위키데이터 대표 이미지(P18)가 있으면 그걸 먼저 — 문서 첫 사진보다 주제를 잘 보여 주는 경우가 많음
+    try {
+      const qid = p.pageprops && p.pageprops.wikibase_item;
+      if (qid) {
+        const c = await (await fetch(`https://www.wikidata.org/w/api.php?action=wbgetclaims&format=json&origin=*&property=P18&entity=${qid}`, { signal })).json();
+        const file = c.claims?.P18?.[0]?.mainsnak?.datavalue?.value;
+        if (file && !/\.svg$/i.test(file) && !/map|flag|icon|logo|nude|naked|corpse|blood|wound|dead|skull|sex|genital/i.test(file) && !BLOCK.test(file)) {
+          const ii = Object.values((await (await fetch(`https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&prop=imageinfo&iiprop=url|size|mime&iiurlwidth=900&titles=${encodeURIComponent('File:' + file)}`, { signal })).json()).query?.pages || {})[0]?.imageinfo?.[0];
+          if (ii && ii.thumburl && /jpeg|png|webp/.test(ii.mime || '') && Math.min(ii.width, ii.height) >= 600) best = { src: ii.thumburl, title: p.title, w: ii.width, h: ii.height, p18: true };
+        }
+      }
+    } catch (e) {}
+    return best;
   }
   const picDbg = m => { try { const el = $('picDbg'); if (el) el.textContent = '마지막 그림: ' + m + (lastRaw ? ' ‖ 원문: ' + lastRaw.slice(0, 300).replace(/\n/g, '⏎') : ''); } catch (e) {} };
   let stripReserve = false, answerDone = Promise.resolve(), cardLine = Promise.resolve(), followUp = '', askSeq = 0;
@@ -1409,12 +1449,26 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       else picDbg('낱말 카드 추가 요청 실패: ' + txt.slice(0, 60));
     } catch (e) { if (seq === picSeq) picDbg('낱말 카드 추가 요청 오류'); }
   }
-  async function showPic(term, emoji, signal) {
+  const SCARY = /거미|타란툴라|뱀|독사|코브라|살무사|상어|지네|말벌|전갈|심해어|아귀|악어|피라냐|박쥐|구더기|바퀴벌레|흡혈/;
+  const nightNow = () => { const h = new Date().getHours(); return h >= 19 || h < 7; };
+  function eraHtml(era, emoji) {
+    const y = parseInt(String(era.when).replace(/[^\d-]/g, ''), 10), now = new Date().getFullYear();
+    let big = era.when, sub = '', blocks = 0;
+    if (/^-?\d{1,4}$/.test(String(era.when).trim()) && !isNaN(y)) {
+      const ago = now - y; big = ago.toLocaleString() + '년 전'; sub = y < 0 ? `기원전 ${-y}년` : `${y}년`;
+      if (ago >= 100 && ago < 1100) blocks = Math.floor(ago / 100);
+    }
+    const esc2 = t => String(t).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+    return `<div class="era">${emoji ? `<div class="era-emo">${emoji}</div>` : ''}<div class="era-name">${esc2(era.name)}</div><div class="era-ago${[...String(big)].length > 6 ? ' long' : ''}">${esc2(big)}</div>${sub ? `<div class="era-year">${sub}</div>` : ''}${blocks ? `<div class="era-blocks" aria-hidden="true">${'<i></i>'.repeat(blocks)}</div><div class="era-legend">한 칸 = 100년</div>` : ''}</div>`;
+  }
+  async function showPic(term, emoji, signal, era, look) {
     const seq = ++picSeq;
     let note = term ? `검색어 "${term}"` : '검색어 없음';
+    if (era) { placePic(eraHtml(era, emoji), ''); picDbg(note + ` → 연표 ${era.name} ${era.when}`); return; }
+    if (term && settings.scaryNight !== 'off' && nightNow() && SCARY.test(term)) { note += ' → 밤이라 무서운 동물 사진 숨김'; term = ''; }
     if (term) {
       try {
-        const tctl = new AbortController(); const t = setTimeout(() => tctl.abort(), 4000);
+        const tctl = new AbortController(); const t = setTimeout(() => tctl.abort(), 6000);
         signal?.addEventListener('abort', () => tctl.abort());
         const hit = await wikiImage(term, tctl.signal); clearTimeout(t);
         if (seq !== picSeq) return;
@@ -1422,7 +1476,13 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
           const img = new Image(); img.alt = hit.title; img.src = hit.src;
           await new Promise((ok, no) => { img.onload = ok; img.onerror = () => no(new Error('img')); });
           if (seq !== picSeq) return;
-          figBox.innerHTML = ''; placePic('', `<b>${hit.title.replace(/</g, '&lt;')}</b><span>위키백과</span>`); figBox.append(img);
+          // 정사각형에 가까우면 칸을 꽉 채우고, 길쭉한 사진은 자르지 않고 다 보여 줌(가운데만 남아 주제가 사라지는 일 방지)
+          const r = (img.naturalWidth || hit.w || 1) / (img.naturalHeight || hit.h || 1);
+          const esc3 = t => String(t).replace(/</g, '&lt;');
+          figBox.innerHTML = ''; placePic('', `<span class="cap-t"><b>${esc3(hit.title)}</b>${look ? `<em>${esc3(look)}</em>` : ''}</span><span class="cap-s">위키백과</span>`);
+          figBox.classList.toggle('fit-contain', r < 0.8 || r > 1.25);
+          figBox.style.aspectRatio = (r < 0.8 || r > 1.25) ? String(Math.min(Math.max(r, 0.75), 1.333)) : '';
+          figBox.append(img);
           picDbg(`${note} → 사진 "${hit.title}" 표시`); return;
         }
         note += ' → 위키백과에 사진 없음';
@@ -1463,7 +1523,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     try {
       const raw = await claude(msgs, { system: rules(), signal: ctl.signal });
       lastRaw = raw; picDbg('응답 받음 (' + raw.length + '자)');
-      const { body: text, term, emoji, qs, card } = splitPic(raw);
+      const { body: text, term, emoji, qs, card, era, look } = splitPic(raw);
       let a = text.replace(/[*#_`>]/g, '').replace(/\p{Extended_Pictographic}/gu, '').replace(/\s+/g, ' ').trim();
       const g = graphemes(a);
       if (g.length > 320) { // 문장 끝에서 자르기
@@ -1487,7 +1547,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       { const mySeq = askSeq, fq = followUp; Promise.resolve(answerDone).catch(() => {}).then(() => new Promise(r => setTimeout(r, 60))).then(() => cardLine).catch(() => {}).then(() => new Promise(r => setTimeout(r, 500))).then(() => { if (mySeq === askSeq && fq && !busy && !listening && saverEl.hidden && app.dataset.state === 'answer') { const k = 'gk-hint-' + dayKey(new Date()), n = LS.get(k, 0); if (n < 2) { LS.set(k, n + 1); speak('더 궁금한 게 있으면 버튼 누르고 번호를 말해 줘.'); } } }); }
       if (card && card.length) { picSeq++; showCard(card); picDbg('낱말 카드 ' + card.map(x => x.g + ' ' + x.l).join(', ')); }
       else if (noPhoto) { picDbg('낱말 질문인데 카드가 안 와서 따로 요청'); fetchCard(q, current, ctl.signal); }
-      else if (!term && !emoji && !/@@/.test(raw)) picDbg('답에 그림 줄(@@)이 안 왔음 — 모델이 규칙을 빼먹음'); else showPic(settings.picOn === 'off' ? '' : term, emoji, ctl.signal);
+      else if (!term && !emoji && !era && !/@@/.test(raw)) picDbg('답에 그림 줄(@@)이 안 왔음 — 모델이 규칙을 빼먹음'); else showPic(settings.picOn === 'off' ? '' : term, emoji, ctl.signal, era, look);
       recent.push({ q, a: current }); while (recent.length > 3) recent.shift();
       todayCount(1); renderCount();
       saveLog(q, current);
@@ -1618,7 +1678,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v76';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v77';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
