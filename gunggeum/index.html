@@ -577,13 +577,13 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v73</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v74</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v73</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v74</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1058,9 +1058,10 @@ button { cursor: pointer; }
   function chime(up) { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); const t = actx.currentTime, o = actx.createOscillator(), gn = actx.createGain(); o.type = 'sine'; o.frequency.setValueAtTime(up ? 660 : 880, t); o.frequency.linearRampToValueAtTime(up ? 880 : 620, t + .12); gn.gain.setValueAtTime(.0001, t); gn.gain.exponentialRampToValueAtTime(.12, t + .02); gn.gain.exponentialRampToValueAtTime(.0001, t + .22); o.connect(gn).connect(actx.destination); o.start(t); o.stop(t + .25); } catch (e) {} }
 
   // ---------- chips ----------
+  let followChips = [];
   function setChips(list, label, lead) {
     chipsEl.innerHTML = '';
-    if (!list.length) followUp = '';
+    if (list.length) followChips = lead ? [] : list.slice(); // 듣기 시작하며 칩을 지워도 번호 고르기는 기억
     if (!list.length) return;
     if (label) { const l = document.createElement('span'); l.className = 'lbl'; l.textContent = label; chipsEl.append(l); }
     for (const t of list) {
@@ -1219,7 +1220,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function enterSaver(lockMsg) {
     saverLock = lockMsg || '';
     if (!saverEl.hidden) return;
-    recent.length = 0; quiz = false; hidePic(); setChips([]); input.value = ''; input.blur();
+    recent.length = 0; quiz = false; hidePic(); setChips([]); followChips = []; input.value = ''; input.blur();
     hush(); saverEl.hidden = false; $('svMsg').hidden = true; renderSaver(); fetchWeather().then(renderSaver).catch(() => {});
     clearInterval(saverTick); saverTick = setInterval(renderSaver, 15 * 1000); keepAwake();
     if (saverLock) { const m = $('svMsg'); m.textContent = saverLock; m.hidden = false; clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { m.hidden = true; }, 4000); }
@@ -1346,7 +1347,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const picDbg = m => { try { const el = $('picDbg'); if (el) el.textContent = '마지막 그림: ' + m + (lastRaw ? ' ‖ 원문: ' + lastRaw.slice(0, 300).replace(/\n/g, '⏎') : ''); } catch (e) {} };
   let stripReserve = false, answerDone = Promise.resolve(), cardLine = Promise.resolve(), followUp = '', askSeq = 0;
   // 말로 이어서 질문 고르기: '응/더/왜' → 1번, '2번/두 번째/둘째' → 그 번호, 칩 글자 일부를 말하면 그 칩
-  function chipList() { return [...chipsEl.querySelectorAll('button:not(.lead)')].map(b => b.lastChild.textContent); }
+  function chipList() { return followChips.slice(); }
   function pickChip(said) {
     const list = chipList();
     if (!list.length) return '';
@@ -1429,8 +1430,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   async function ask(qIn) {
     let q = String(qIn ?? input.value).trim();
     // 이어서: 답 뒤에 '응', '더', '왜?'처럼 짧게만 말하면 첫 번째 이어서 질문으로
-    const shownChips = followUp && !quiz ? chipList() : [];
-    if (followUp && !quiz) q = pickChip(q) || q;
+    const shownChips = !quiz ? chipList() : [];
+    if (shownChips.length) q = pickChip(q) || q;
+    followChips = [];
     followUp = ''; askSeq++; cardLine = Promise.resolve();
     if (!q || busy) return;
     if (!settings.apiKey) { setState('idle', '잠깐', '부모님이 설정에서 API 키를 넣어 줘야 해요.'); draw('아직 준비가 안 됐어. 부모님께 말해 줘.', false, 'plain'); return; }
@@ -1608,7 +1610,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v73';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v74';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
