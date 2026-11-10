@@ -414,6 +414,21 @@ button { cursor: pointer; }
 }
 .saver .sv-line b { color: var(--accent); }
 
+
+/* v68: 듣기·생각 화면에 큰 궁금이 */
+.app[data-state="listen"] .main .inner, .app[data-state="think"] .main .inner { opacity: .05; transition: opacity .25s; }
+.listen-ov { gap: 0; background: var(--bg); z-index: 3; }
+.lo-buddy { position: relative; width: 17rem; height: 15rem; display: grid; place-items: center; margin-bottom: 1.4rem; }
+.lo-buddy .gk { width: 17rem; height: 15rem; position: relative; z-index: 1; }
+.lo-glow { position: absolute; left: 50%; top: 58%; width: 11rem; height: 11rem; margin: -5.5rem 0 0 -5.5rem; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 22%, transparent) 0%, transparent 70%); opacity: 0; }
+.app[data-state="listen"] .lo-glow { animation: loglow 1.8s ease-out infinite; } .app[data-state="listen"] .lo-glow + .lo-glow { animation-delay: .9s; }
+@keyframes loglow { 0% { transform: scale(.8); opacity: .9; } 100% { transform: scale(2.1); opacity: 0; } }
+.app[data-state="think"] .lo-buddy .gk-body { animation: lothink 2.4s ease-in-out infinite; }
+@keyframes lothink { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg) translateY(-3px); } }
+.lo-cap { margin: 0 0 .9rem; font-size: 1.5rem; font-weight: 700; color: var(--accent); letter-spacing: .02em; }
+.lo-text { font-size: 3.4rem; }
+@media (max-width: 760px) { .lo-buddy, .lo-buddy .gk { width: 9rem; height: 8rem; } .lo-glow { width: 6rem; height: 6rem; margin: -3rem 0 0 -3rem; } .lo-cap { font-size: 1.1rem; } }
+@media (max-height: 820px) and (min-width: 761px) { .lo-buddy, .lo-buddy .gk { width: 13rem; height: 11.5rem; } .lo-text { font-size: 2.8rem; } }
 /* v65: 먹색 팔레트 + 나눔스퀘어 네오 */
 @font-face { font-family: "NanumSquare Neo"; src: url("fonts/NanumSquareNeo-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 :root { --f-display: "NanumSquare Neo", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif !important; --f-ui: "NanumSquare Neo", "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif !important; }
@@ -507,7 +522,7 @@ button { cursor: pointer; }
     </figure>
     <div class="chips" id="chips"></div>
   </div>
-  <div class="listen-ov" id="listenOv" aria-hidden="true"><div class="lo-ring"><b></b></div><div class="lo-dots"><i></i><i></i><i></i></div><p class="lo-text" id="loText"></p></div>
+  <div class="listen-ov" id="listenOv" aria-hidden="true"><div class="lo-buddy" id="loBuddy"><i class="lo-glow"></i><i class="lo-glow"></i></div><p class="lo-cap" id="loCap"></p><p class="lo-text" id="loText"></p></div>
   </section>
 
   <form class="qbar" id="form" autocomplete="off"><div class="inner">
@@ -545,13 +560,13 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v67</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v68</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v67</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v68</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1542,9 +1557,13 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   document.addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
 
 
+
+  // v68: 듣기·생각 오버레이에 큰 궁금이 (머리줄 캐릭터를 복제해서 같은 표정 애니메이션 사용)
+  (function () { const src = document.querySelector('.topbar .gk'); if (src) $('loBuddy').append(src.cloneNode(true)); })();
+  new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v67';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v68';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
