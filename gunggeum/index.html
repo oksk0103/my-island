@@ -577,13 +577,13 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v72</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v73</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v72</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v73</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1466,7 +1466,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       if (graphemes(a.replace(/[《》]/g, '')).length <= 30) a = a.replace(/[《》]/g, ''); // 짧은 답은 전부 핵심이라 형광펜 안 씀
       current = a.replace(/[《》]/g, '');
       setChips(quiz ? ['힌트 줘', '정답 알려줘', '다른 문제'] : (qs && qs.length ? qs : ['왜?', '더 알려줘', '예를 들면?']), '이어서');
-      if (!quiz) { followUp = (qs && qs[0]) || ''; chipsEl.querySelector('button')?.classList.add('next'); }
+      if (!quiz) { followUp = (qs && qs[0]) || '';  }
       const noPhoto = /뜻|의미|무슨 말|영어|단어|문법|스펠링|철자|반대말|비슷한 말|예문|[A-Za-z]{3,}/.test(q);
       stripReserve = false;
       if ((card && card.length) || noPhoto) placePic('<div class="vcard pending"><div class="vc-word">&nbsp;</div></div>', '');
@@ -1474,7 +1474,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       setState(quiz ? 'quiz' : 'answer', quiz ? '퀴즈 중' : '답', quiz ? '답을 말해 봐. 모르겠으면 힌트를 눌러.' : '모르는 낱말은 눌러 봐.');
       const drawn = new Promise(r => setTimeout(r, graphemes(a).length * 28 + 400));
       answerDone = Promise.all([speak(current).catch(() => {}), drawn]);
-      { const mySeq = askSeq, fq = followUp; Promise.resolve(answerDone).catch(() => {}).then(() => new Promise(r => setTimeout(r, 60))).then(() => cardLine).catch(() => {}).then(() => new Promise(r => setTimeout(r, 500))).then(() => { if (mySeq === askSeq && fq && !busy && !listening && saverEl.hidden && app.dataset.state === 'answer') speak(`${fq} 궁금하면 버튼 누르고 "응" 해 봐. 다른 게 궁금하면 번호를 말해 줘.`); }); }
+      { const mySeq = askSeq, fq = followUp; Promise.resolve(answerDone).catch(() => {}).then(() => new Promise(r => setTimeout(r, 60))).then(() => cardLine).catch(() => {}).then(() => new Promise(r => setTimeout(r, 500))).then(() => { if (mySeq === askSeq && fq && !busy && !listening && saverEl.hidden && app.dataset.state === 'answer') { const k = 'gk-hint-' + dayKey(new Date()), n = LS.get(k, 0); if (n < 2) { LS.set(k, n + 1); speak('더 궁금한 게 있으면 버튼 누르고 번호를 말해 줘.'); } } }); }
       if (card && card.length) { picSeq++; showCard(card); picDbg('낱말 카드 ' + card.map(x => x.g + ' ' + x.l).join(', ')); }
       else if (noPhoto) { picDbg('낱말 질문인데 카드가 안 와서 따로 요청'); fetchCard(q, current, ctl.signal); }
       else if (!term && !emoji && !/@@/.test(raw)) picDbg('답에 그림 줄(@@)이 안 왔음 — 모델이 규칙을 빼먹음'); else showPic(settings.picOn === 'off' ? '' : term, emoji, ctl.signal);
@@ -1608,7 +1608,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v72';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v73';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
