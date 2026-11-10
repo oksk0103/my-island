@@ -429,6 +429,9 @@ button { cursor: pointer; }
 .lo-text { font-size: 3.4rem; }
 @media (max-width: 760px) { .lo-buddy, .lo-buddy .gk { width: 9rem; height: 8rem; } .lo-glow { width: 6rem; height: 6rem; margin: -3rem 0 0 -3rem; } .lo-cap { font-size: 1.1rem; } }
 @media (max-height: 820px) and (min-width: 761px) { .lo-buddy, .lo-buddy .gk { width: 13rem; height: 11.5rem; } .lo-text { font-size: 2.8rem; } }
+/* v69: 입력칸 조금 얇게 */
+@media (min-width: 1100px) { .qbox { min-height: 3.2rem; } .qbox .mic { width: 3.2rem; height: 3.2rem; } .qbox .mic svg { width: 1.8rem; height: 1.8rem; } #q { font-size: 1.35rem; } }
+
 /* v65: 먹색 팔레트 + 나눔스퀘어 네오 */
 @font-face { font-family: "NanumSquare Neo"; src: url("fonts/NanumSquareNeo-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 :root { --f-display: "NanumSquare Neo", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif !important; --f-ui: "NanumSquare Neo", "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif !important; }
@@ -506,7 +509,7 @@ button { cursor: pointer; }
     <div class="toprow">
     <p class="eyebrow" id="eyebrow"></p>
       <div class="meta">
-        <span id="status">아래 칸을 누르고 말해 봐.</span>
+        <span id="status"></span>
         <button class="textbtn" id="replayBtn" type="button">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path d="M16 8.2a5.2 5.2 0 0 1 0 7.6"></path></svg>
           다시 듣기
@@ -531,7 +534,7 @@ button { cursor: pointer; }
         <svg class="micico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.2" y="2.5" width="7.6" height="12.2" rx="3.8"></rect><path d="M5.5 11.8a6.5 6.5 0 0 0 13 0M12 18.3v3.2M8.7 21.5h6.6"></path></svg>
         <svg class="wave" viewBox="0 0 30 24" aria-hidden="true"><rect x="1.5" y="6" width="3" height="12" rx=".5" fill="var(--accent)"></rect><rect x="7.5" y="2" width="3" height="20" rx=".5" fill="var(--accent)"></rect><rect x="13.5" y="0" width="3" height="24" rx=".5" fill="var(--accent)"></rect><rect x="19.5" y="4" width="3" height="16" rx=".5" fill="var(--accent)"></rect><rect x="25.5" y="7" width="3" height="10" rx=".5" fill="var(--accent)"></rect></svg>
       </button>
-      <input id="q" type="text" readonly placeholder="버튼이나 마이크를 누르고 말해 봐" enterkeyhint="send" maxlength="120" aria-label="궁금한 질문">
+      <input id="q" type="text" readonly placeholder="궁금한 걸 물어 봐" enterkeyhint="send" maxlength="120" aria-label="궁금한 질문">
       <button class="kbbtn" type="button" id="kbBtn" aria-label="글자로 물어보기"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"></rect><path d="M6 9.5h1M9.5 9.5h1M13 9.5h1M16.5 9.5h1M6 12.5h1M17 12.5h1M9.5 12.5h5M8 15.5h8"></path></svg></button>
     </div>
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
@@ -560,13 +563,13 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v68</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v69</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v68</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v69</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1129,7 +1132,7 @@ button { cursor: pointer; }
     recent.length = 0; quiz = false; // 홈으로 돌아오면 대화 맥락 초기화
     const p = piece(); current = p.f; hidePic();
     setEyebrow('piece'); setChips([p.q], '', true); draw(p.f, animate, 'plain');
-    setState('idle', '쉬는 중', settings.apiKey ? '마이크를 누르고 말해 봐.' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
+    setState('idle', '쉬는 중', settings.apiKey ? '' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
   }
   function showBlocked(msg) { enterSaver(msg); }
   let holdUntil = 0;
@@ -1218,7 +1221,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   document.addEventListener('keydown', e => { if (!saverEl.hidden) { e.preventDefault(); exitSaver(); } }, true);
 
   input.addEventListener('focus', () => { if (!busy && !listening) setState('type', '입력 중', '글자로 써도 돼. 다 쓰면 물어보기.'); });
-  input.addEventListener('blur', () => { if (!busy && !listening && app.dataset.state === 'type') setState(recent.length ? (quiz ? 'quiz' : 'answer') : 'idle', recent.length ? (quiz ? '퀴즈 중' : '답') : '쉬는 중', '마이크를 누르고 말해 봐.'); });
+  input.addEventListener('blur', () => { if (!busy && !listening && app.dataset.state === 'type') setState(recent.length ? (quiz ? 'quiz' : 'answer') : 'idle', recent.length ? (quiz ? '퀴즈 중' : '답') : '쉬는 중', recent.length ? undefined : ''); });
 
   // ---------- remote keys ----------
   const REPLAY_KEYS = ['F2', 'PageUp', 'ArrowLeft', 'ArrowUp'];
@@ -1563,7 +1566,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v68';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v69';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
