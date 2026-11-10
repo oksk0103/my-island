@@ -446,11 +446,16 @@ button { cursor: pointer; }
 .qbox { border-color: #3A3129; background: #1A1612; }
 .saver { background: #100D0A; }
 
+
+/* v67: 진단 기록 */
+#chgWarn { position: fixed; right: 1rem; bottom: 6.2rem; z-index: 30; background: #5A1E14; color: #FFE6D8; font-size: 1rem; font-weight: 700; padding: .5rem .9rem; border-radius: 999px; pointer-events: none; }
+#chgWarn[hidden] { display: none; }
 </style>
 
 </head>
 <body>
 <div class="app" id="app" data-state="idle">
+  <div id="chgWarn" hidden>🔌 충전 확인</div>
   <header class="topbar"><div class="inner">
     <button class="wordmark" id="title" type="button" title="2초 동안 누르면 부모님 화면이 열려요">궁금칸<svg class="eye" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="var(--accent)"></circle><circle cx="6.2" cy="9.4" r="4.3" fill="var(--bg)"></circle></svg></button>
     <div class="status" role="status" aria-live="polite">
@@ -540,13 +545,13 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v66</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v67</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v66</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v67</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -557,6 +562,16 @@ button { cursor: pointer; }
       <label>터치 확인</label>
       <div id="touchPad" style="border: 1px dashed var(--line); padding: 1.2rem; text-align: center; color: var(--muted); touch-action: none; user-select: none; -webkit-user-select: none">여기를 손가락·펜으로 톡 눌러 보세요</div>
       <p id="touchDbg" class="empty" style="white-space: pre-line"></p>
+    </div>
+    <div class="card" id="diagCard">
+      <h3>기기 상태 · 기록</h3>
+      <p id="devStat" class="empty" style="white-space: pre-line"></p>
+      <label>배터리 (최근 24시간 · 초록 = 충전 중)</label>
+      <svg id="batChart" viewBox="0 0 720 120" preserveAspectRatio="none" style="width:100%;height:120px;background:var(--bg);display:block"></svg>
+      <p id="batNote" class="empty"></p>
+      <label>최근 기록</label>
+      <div class="row" style="margin-bottom:.4rem"><select id="diagFilter"><option value="">전체</option><option value="bat">배터리</option><option value="err">오류</option><option value="api">서버</option><option value="wake">화면 켜짐</option><option value="saver">대기화면</option></select><button class="chip" id="diagCopy" type="button">기록 복사</button><button class="chip" id="diagClear" type="button">기록 지우기</button><span class="empty" id="diagNote"></span></div>
+      <pre id="diagLog" style="margin:0;max-height:16rem;overflow:auto;font:.78rem/1.5 ui-monospace,monospace;color:var(--muted);white-space:pre-wrap;background:var(--bg);padding:.6rem"></pre>
     </div>
     <div class="card">
       <h3>설정 (이 기기에 저장돼요)</h3>
@@ -1525,6 +1540,90 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   document.addEventListener('gesturestart', e => e.preventDefault(), { passive: false });
   document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
   document.addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
+
+
+  // ---------- 진단 기록 (v67) ----------
+  // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v67';
+  const pad2 = n => String(n).padStart(2, '0');
+  const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
+  function diag(kind, msg) {
+    try { const a = LS.get(DIAG_KEY, []); a.push([Date.now(), kind, String(msg).slice(0, 300)]); while (a.length > 400) a.shift(); LS.set(DIAG_KEY, a); } catch (e) {}
+    if (!logEl.hidden) renderDiag();
+  }
+  window.addEventListener('error', e => diag('err', `${e.message || '오류'} @${(e.filename || '').split('/').pop()}:${e.lineno || ''}`));
+  window.addEventListener('unhandledrejection', e => diag('err', '처리 안 된 오류: ' + ((e.reason && (e.reason.message || e.reason)) || '')));
+  window.addEventListener('online', () => diag('net', '인터넷 연결됨'));
+  window.addEventListener('offline', () => diag('net', '인터넷 끊김'));
+  document.addEventListener('visibilitychange', () => diag('vis', document.visibilityState === 'visible' ? '화면 다시 보임' : '화면 가려짐/꺼짐'));
+  // 서버 응답 기록 (키·내용은 남기지 않고 주소·상태·걸린 시간만)
+  const _fetch = window.fetch.bind(window);
+  window.fetch = async (u, o) => {
+    const t0 = performance.now(); let host = ''; try { host = new URL(typeof u === 'string' ? u : u.url, location.href).host; } catch (e) {}
+    try { const r = await _fetch(u, o); const ms = Math.round(performance.now() - t0); if (!r.ok || ms > 8000) diag('api', `${host} ${r.status} · ${ms}ms`); return r; }
+    catch (e) { if (e && e.name !== 'AbortError') diag('api', `${host} 실패 · ${e.message || e}`); throw e; }
+  };
+  // 대기화면 들어감/나옴
+  new MutationObserver(() => diag('saver', saverEl.hidden ? '대기화면 나옴' : '대기화면 들어감')).observe(saverEl, { attributes: true, attributeFilter: ['hidden'] });
+  // 화면 켜짐 유지 상태 변화
+  let lastWake = null;
+  setInterval(() => { const w = !!wakeLock; if (w !== lastWake) { diag('wake', w ? '화면 켜짐 유지 ON' : '화면 켜짐 유지 OFF' + ('wakeLock' in navigator ? '' : ' (이 브라우저는 지원 안 함)')); lastWake = w; } }, 5000);
+  // 배터리
+  let bat = null;
+  function batSample(why) {
+    if (!bat) return;
+    const lv = Math.round(bat.level * 100), ch = bat.charging;
+    try { const a = LS.get(BAT_KEY, []); a.push([Date.now(), lv, ch ? 1 : 0]); const cut = Date.now() - 48 * 3600e3; while (a.length && a[0][0] < cut) a.shift(); LS.set(BAT_KEY, a); } catch (e) {}
+    if (why) diag('bat', `${lv}% · ${ch ? '충전 중' : '충전 안 됨'} (${why})`);
+    $('chgWarn').hidden = ch || lv > 30;
+    if (!logEl.hidden) { renderDevStat(); renderBat(); }
+  }
+  if (navigator.getBattery) navigator.getBattery().then(b => {
+    bat = b; batSample('시작');
+    b.addEventListener('chargingchange', () => batSample(b.charging ? '충전 시작' : '충전 멈춤'));
+    let lastLv = Math.round(b.level * 100);
+    b.addEventListener('levelchange', () => { const lv = Math.round(b.level * 100); if (lv % 10 === 0 || lv <= 20 || lv === 100) batSample(lv > lastLv ? '오름' : '내림'); else batSample(''); lastLv = lv; });
+    setInterval(() => batSample(''), 5 * 60e3);
+  }).catch(() => diag('bat', '배터리 정보를 읽을 수 없음'));
+  else setTimeout(() => diag('bat', '이 브라우저는 배터리 정보를 안 알려줌'), 0);
+  function renderDevStat() {
+    const lines = [
+      `궁금칸 ${APP_V} · 화면 ${innerWidth}×${innerHeight} (배율 ${devicePixelRatio}) · ${navigator.onLine ? '온라인' : '오프라인'}`,
+      `배터리 ${bat ? Math.round(bat.level * 100) + '% · ' + (bat.charging ? '충전 중' : '충전 안 됨') : '알 수 없음'} · 화면 켜짐 유지 ${wakeLock ? 'ON' : 'OFF'}`,
+      `브라우저 ${(navigator.userAgent.match(/SamsungBrowser\/[\d.]+|Chrome\/[\d]+|Firefox\/[\d]+/) || ['?'])[0]} · 켜진 지 ${Math.round(performance.now() / 60000)}분`
+    ];
+    $('devStat').textContent = lines.join('\n');
+  }
+  function renderBat() {
+    const svg = $('batChart'), a = LS.get(BAT_KEY, []), now = Date.now(), span = 24 * 3600e3, W = 720, H = 120;
+    const X = t => ((t - (now - span)) / span) * W, Y = l => H - 6 - (l / 100) * (H - 12);
+    let g = `<line x1="0" x2="${W}" y1="${Y(20)}" y2="${Y(20)}" stroke="#5A1E14" stroke-dasharray="4 4"/>`;
+    for (let h = 0; h <= 24; h += 6) g += `<line x1="${W - h * W / 24}" x2="${W - h * W / 24}" y1="0" y2="${H}" stroke="var(--line)" stroke-width=".5"/>`;
+    const pts = a.filter(p => p[0] > now - span);
+    for (let i = 1; i < pts.length; i++) { const [t0, l0, c0] = pts[i - 1], [t1, l1] = pts[i]; if (t1 - t0 > 30 * 60e3) continue; g += `<line x1="${X(t0).toFixed(1)}" y1="${Y(l0).toFixed(1)}" x2="${X(t1).toFixed(1)}" y2="${Y(l1).toFixed(1)}" stroke="${c0 ? '#6FBF73' : 'var(--accent)'}" stroke-width="3" stroke-linecap="round"/>`; }
+    svg.innerHTML = g;
+    // 충전이 멈춘 뒤 다시 안 붙은 구간 찾기
+    let note = pts.length ? '' : '아직 기록이 없어요. 몇 시간 켜 두면 그래프가 생겨요.';
+    for (let i = 1; i < pts.length; i++) if (pts[i - 1][2] && !pts[i][2] && pts[i - 1][1] >= 95) { const t = new Date(pts[i][0]); note = `⚠ ${t.getHours()}시 ${pad2(t.getMinutes())}분, 거의 다 찬 뒤 충전이 멈췄어요.` + (pts.slice(i).some(p => p[2]) ? ' 나중에 다시 충전됐어요.' : ' 그 뒤로 다시 충전되지 않았어요 (케이블·모니터 전원 공급 문제 가능성).'); }
+    $('batNote').textContent = note + ' 왼쪽 끝이 24시간 전, 오른쪽 끝이 지금 · 빨간 점선 20%';
+  }
+  function renderDiag() {
+    const f = $('diagFilter').value, a = LS.get(DIAG_KEY, []).filter(r => !f || r[1] === f).slice(-150).reverse();
+    const lab = { bat: '배터리', err: '오류', api: '서버', wake: '켜짐', saver: '대기', vis: '화면', net: '인터넷', app: '앱' };
+    $('diagLog').textContent = a.length ? a.map(r => `${stamp(new Date(r[0]))}  [${lab[r[1]] || r[1]}] ${r[2]}`).join('\n') : '기록 없음';
+  }
+  $('diagFilter').addEventListener('change', renderDiag);
+  $('diagClear').addEventListener('click', () => { LS.set(DIAG_KEY, []); LS.set(BAT_KEY, []); renderDiag(); renderBat(); $('diagNote').textContent = '지웠어요'; });
+  $('diagCopy').addEventListener('click', async () => {
+    renderDevStat();
+    const a = LS.get(DIAG_KEY, []).slice(-200).map(r => `${stamp(new Date(r[0]))} [${r[1]}] ${r[2]}`);
+    const b = LS.get(BAT_KEY, []).slice(-150).map(r => `${stamp(new Date(r[0]))} ${r[1]}%${r[2] ? '+' : ''}`);
+    const txt = `[궁금칸 진단]\n${$('devStat').textContent}\n\n[기록]\n${a.join('\n')}\n\n[배터리 (+는 충전 중)]\n${b.join('  ')}`;
+    try { await navigator.clipboard.writeText(txt); $('diagNote').textContent = '복사됨 — 채팅에 붙여 넣어 주세요'; }
+    catch (e) { const r = document.createRange(); r.selectNodeContents($('diagLog')); getSelection().removeAllRanges(); getSelection().addRange(r); $('diagNote').textContent = '복사가 막혀서 기록을 선택해 뒀어요. 길게 눌러 복사하세요'; }
+  });
+  new MutationObserver(() => { if (!logEl.hidden) { renderDevStat(); renderBat(); renderDiag(); } }).observe(logEl, { attributes: true, attributeFilter: ['hidden'] });
+  diag('app', `궁금칸 ${APP_V} 시작 · ${innerWidth}×${innerHeight}`);
 
   // ---------- start ----------
   renderCount();
