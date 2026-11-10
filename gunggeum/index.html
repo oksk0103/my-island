@@ -252,7 +252,7 @@ button { cursor: pointer; }
 }
 
 /* parent panel */
-.log { position: fixed; inset: 0; background: var(--bg); z-index: 20; overflow-y: auto;
+.log { position: fixed; inset: 0; background: var(--bg); z-index: 40; overflow-y: auto;
   padding-block: calc(16px + env(safe-area-inset-top, 0px)) calc(16px + env(safe-area-inset-bottom, 0px));
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .log-in { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.1rem; }
@@ -600,13 +600,13 @@ button { cursor: pointer; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v77</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v78</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v77</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v78</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1261,8 +1261,17 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     }
     saverEl.hidden = true; clearInterval(saverTick); showPiece(false); touchIdle();
   }
-  saverEl.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); exitSaver(); }, true);
-  document.addEventListener('keydown', e => { if (!saverEl.hidden) { e.preventDefault(); exitSaver(); } }, true);
+  // 부모님용: 쉬는 시간에도 대기화면을 빠르게 5번 누르거나 2초 꾹 누르면 부모님 화면이 열림
+  let svTaps = [], svHold = null;
+  saverEl.addEventListener('pointerdown', e => {
+    e.preventDefault(); e.stopPropagation();
+    const now = Date.now(); svTaps = svTaps.filter(t => now - t < 3000); svTaps.push(now);
+    clearTimeout(svHold); svHold = setTimeout(() => { svTaps = []; openLog(); }, 2000);
+    if (svTaps.length >= 5) { svTaps = []; clearTimeout(svHold); openLog(); return; }
+    exitSaver();
+  }, true);
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => saverEl.addEventListener(ev, () => clearTimeout(svHold), true));
+  document.addEventListener('keydown', e => { if (!saverEl.hidden && logEl.hidden) { e.preventDefault(); exitSaver(); } }, true);
 
   input.addEventListener('focus', () => { if (!busy && !listening) setState('type', '입력 중', '글자로 써도 돼. 다 쓰면 물어보기.'); });
   input.addEventListener('blur', () => { if (!busy && !listening && app.dataset.state === 'type') setState(recent.length ? (quiz ? 'quiz' : 'answer') : 'idle', recent.length ? (quiz ? '퀴즈 중' : '답') : '쉬는 중', recent.length ? undefined : ''); });
@@ -1743,7 +1752,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v77';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v78';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
