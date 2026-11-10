@@ -612,6 +612,8 @@ button { cursor: pointer; }
     <div class="card">
       <h3>진단</h3>
       <p id="picDbg" class="empty">마지막 그림: 아직 질문 없음</p>
+      <label>최근 보인 사진 (이상한 사진은 눌러서 다시 안 나오게)</label>
+      <div id="picShown" style="display:flex;flex-wrap:wrap;gap:.4rem;margin:.3rem 0 .8rem"></div>
       <p id="linesDbg" class="empty"></p>
       <p id="keyTest" class="empty">딸깍 버튼(리모컨) 확인: 이 창을 열어 둔 채 버튼을 누르면 어떤 키인지 여기에 떠요.</p>
       <label>터치 확인</label>
@@ -1369,6 +1371,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (p.pageprops && 'disambiguation' in p.pageprops) return null; // 동음이의 문서는 제외
     const cats = (p.categories || []).map(c => c.title).join(' ');
     if (BLOCK.test(p.title) || BLOCK.test(cats) || BLOCK.test(p.pageimage || '')) return null;
+    // 안전 분야만: 문서 분류가 자연·사물·장소 쪽일 때만 사진을 씀 (몸·의학·사람 문서는 여기서 걸러짐)
+    if (!SAFE_CAT.test(cats)) { diag('pic', `안전 분야 아님: ${p.title} (${cats.replace(/분류:/g, '').slice(0, 90)})`); return null; }
+    if (picBlocked().includes(p.title)) return null;
     if (/분류:[^ ]*(?:년 출생|년 사망|살아있는 사람|생년 미상|몰년 미상)|분류:[^ ]*(?:배우|가수|모델|정치인|운동 선수|아이돌)/.test(cats)) return null; // 사람 문서는 사진을 쓰지 않음
     if (/\.svg$/i.test(p.pageimage || '') || /map|flag|icon|logo|nude|naked|corpse|autops|penis|vagin|vulva|blood|wound|burn|injur|dead|death|skull|sex|breast|anus|genital/i.test(p.pageimage || '')) return null;
     let best = { src: p.thumbnail.source, title: p.title, w: p.thumbnail.width, h: p.thumbnail.height };
@@ -1451,6 +1456,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       else picDbg('낱말 카드 추가 요청 실패: ' + txt.slice(0, 60));
     } catch (e) { if (seq === picSeq) picDbg('낱말 카드 추가 요청 오류'); }
   }
+  const SAFE_CAT = /동물|포유|조류|어류|물고기|곤충|파충|양서|공룡|화석|분류군|식물|꽃|나무|과일|채소|버섯|해조|천체|행성|항성|별자리|위성|은하|성운|혜성|우주|로켓|탐사선|기상|날씨|구름|바람|번개|무지개|자연 현상|지형|호수|바다|해협|화산|폭포|동굴|사막|빙하|광물|암석|보석|건축|건물|궁궐|성곽|교량|사찰|성당|기념물|랜드마크|관광지|국립공원|세계유산|문화유산|국보|보물|유물|유적|탈것|자동차|비행기|항공기|선박|군함|기차|철도|자전거|기계|도구|발명|악기|음식|요리|과자|음료|원소|국가|도시|수도|의 (?:산|강|섬|탑|절|궁|성|다리|배|새|떡|빵)(?=\s|$)/;
+  const PIC_BLOCK_KEY = 'gk-pic-block';
+  const picBlocked = () => LS.get(PIC_BLOCK_KEY, []);
+  const PIC_SHOWN_KEY = 'gk-pic-shown';
+  function rememberPic(title, src) { const a = LS.get(PIC_SHOWN_KEY, []); a.push({ t: Date.now(), title, src }); while (a.length > 40) a.shift(); LS.set(PIC_SHOWN_KEY, a); }
   // ---------- 사진 내용 안전 검사 (nsfwjs, 기기 안에서만 실행 — 사진을 밖으로 보내지 않음) ----------
   let nsfwModel = null, nsfwLoading = null;
   function loadScript(src) { return new Promise((ok, no) => { const sc = document.createElement('script'); sc.src = src; sc.onload = ok; sc.onerror = () => no(new Error('script ' + src)); document.head.append(sc); }); }
@@ -1466,13 +1476,29 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     return nsfwLoading;
   }
   setTimeout(() => nsfwReady().catch(() => {}), 8000); // 켜고 조금 뒤 미리 준비
+  function cropCanvas(img, f) { // 가운데를 f 비율만큼 잘라 확대한 캔버스
+    const w = img.naturalWidth, h = img.naturalHeight, cw = Math.round(w * f), ch = Math.round(h * f);
+    const c = document.createElement('canvas'); c.width = 224; c.height = 224;
+    c.getContext('2d').drawImage(img, (w - cw) / 2, (h - ch) / 2, cw, ch, 0, 0, 224, 224); return c;
+  }
+  function skinRatio(img) { // 살색 화소 비율 (간단한 YCbCr 규칙)
+    const c = cropCanvas(img, 1), d = c.getContext('2d').getImageData(0, 0, 224, 224).data; let n = 0;
+    for (let k = 0; k < d.length; k += 16) { const r = d[k], g = d[k + 1], b = d[k + 2]; const cb = 128 - .1687 * r - .3313 * g + .5 * b, cr = 128 + .5 * r - .4187 * g - .0813 * b; if (r > 60 && cr > 135 && cr < 175 && cb > 85 && cb < 135 && r > g && r > b) n++; }
+    return n / (d.length / 16);
+  }
   async function imageSafe(img) {
     try {
       const m = await Promise.race([nsfwReady(), new Promise((_, no) => setTimeout(() => no(new Error('timeout')), 15000))]);
-      const p = await m.classify(img); const g = k => (p.find(x => x.className === k) || {}).probability || 0;
-      const porn = g('Porn'), hentai = g('Hentai'), sexy = g('Sexy');
-      if (porn > 0.08 || hentai > 0.15 || sexy > 0.2 || porn + hentai + sexy > 0.25) return { ok: false, why: `선정성 ${Math.round((porn + hentai + sexy) * 100)}%` };
-      return { ok: true, why: `안전 ${Math.round((1 - porn - hentai - sexy) * 100)}%` };
+      let worst = 0, why = '';
+      for (const [label, src] of [['전체', img], ['가운데', cropCanvas(img, .6)]]) {
+        const p = await m.classify(src); const g = k => (p.find(x => x.className === k) || {}).probability || 0;
+        const porn = g('Porn'), hentai = g('Hentai'), sexy = g('Sexy'), bad = porn + hentai + sexy;
+        if (porn > 0.05 || hentai > 0.1 || sexy > 0.12 || bad > 0.18) return { ok: false, why: `${label} 선정성 ${Math.round(bad * 100)}%` };
+        worst = Math.max(worst, bad);
+      }
+      const skin = skinRatio(img);
+      if (skin > 0.45) return { ok: false, why: `살색이 ${Math.round(skin * 100)}%` };
+      return { ok: true, why: `안전 ${Math.round((1 - worst) * 100)}% · 살색 ${Math.round(skin * 100)}%` };
     } catch (e) { return { ok: false, why: '검사 못 함 — ' + (e.message || e) }; }
   }
   const SCARY = /거미|타란툴라|뱀|독사|코브라|살무사|상어|지네|말벌|전갈|심해어|아귀|악어|피라냐|박쥐|구더기|바퀴벌레|흡혈/;
@@ -1495,6 +1521,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
         const hit = await wikiImage(tm, tctl.signal); clearTimeout(t);
         if (seq !== picSeq) return;
         if (!hit) { note += ` → "${tm}" 사진 없음`; continue; }
+        if (!/^https:\/\/upload\.wikimedia\.org\//.test(hit.src)) { note += ` → 허용 안 된 사진 주소`; continue; }
         const img = new Image(); img.alt = hit.title; img.crossOrigin = 'anonymous'; img.src = hit.src;
         await new Promise((ok, no) => { img.onload = ok; img.onerror = () => no(new Error('img')); });
         if (seq !== picSeq) return;
@@ -1508,7 +1535,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
         figBox.innerHTML = ''; placePic('', era ? `<span class="cap-t"><b class="cap-era">${/년$/.test(yr) && !/전$/.test(yr) ? esc3(yr) + ' ' + esc3(era.name) : esc3(era.name) + ' · ' + esc3(yr)}</b><em>${esc3(hit.title)}${look ? ' — ' + esc3(look) : ''}${era.ctx ? ' · ' + esc3(era.ctx) : ''}</em></span><span class="cap-s">위키백과</span>` : `<span class="cap-t"><b>${esc3(hit.title)}</b>${look && tm === terms[0] ? `<em>${esc3(look)}</em>` : ''}</span><span class="cap-s">위키백과</span>`);
         figBox.classList.toggle('fit-contain', r < 0.8 || r > 1.25);
         figBox.style.aspectRatio = (r < 0.8 || r > 1.25) ? String(Math.min(Math.max(r, 0.75), 1.333)) : '';
-        figBox.append(img);
+        figBox.append(img); rememberPic(hit.title, hit.src);
         picDbg(`${note} → 사진 "${hit.title}" 표시 (검사 ${v.why})`); return;
       } catch (e) { note += ' → ' + (e.name === 'AbortError' ? '6초 안에 응답 없음' : e.message === 'img' ? '사진 파일 로딩 실패' : '연결 실패(' + (e.message || e) + ')'); if (seq !== picSeq) return; }
     }
@@ -1626,7 +1653,21 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     ['touchstart', 'touchend', 'touchcancel'].forEach(ev => pad.addEventListener(ev, e => log(`${ev} · 손가락 ${e.touches.length}`), { passive: true }));
     pad.addEventListener('contextmenu', e => e.preventDefault());
   })();
+  function renderPicShown() {
+    const box = $('picShown'); if (!box) return; box.innerHTML = '';
+    const a = LS.get(PIC_SHOWN_KEY, []).slice().reverse(), bl = picBlocked();
+    if (!a.length) { box.innerHTML = '<span class="empty">아직 없음</span>'; return; }
+    for (const it of a) {
+      const b = document.createElement('button'); b.type = 'button'; b.title = it.title + ' — 눌러서 막기';
+      b.style.cssText = 'width:5.2rem;padding:0;border:1px solid var(--line);background:var(--bg);color:var(--muted);font-size:.7rem;line-height:1.2;text-align:left';
+      const blocked = bl.includes(it.title);
+      b.innerHTML = `<img src="${it.src}" alt="" style="width:100%;height:4rem;object-fit:cover;display:block;${blocked ? 'opacity:.2' : ''}"><span style="display:block;padding:.15rem .25rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${blocked ? '⛔ ' : ''}${it.title.replace(/</g, '&lt;')}</span>`;
+      b.addEventListener('click', () => { const l = picBlocked(); const k = l.indexOf(it.title); if (k >= 0) l.splice(k, 1); else l.push(it.title); LS.set(PIC_BLOCK_KEY, l); diag('pic', (k >= 0 ? '막기 풂: ' : '부모가 막음: ') + it.title); renderPicShown(); });
+      box.append(b);
+    }
+  }
   function openLog() {
+    try { renderPicShown(); } catch (e) {}
     logEl.hidden = false; $('summary').hidden = true; applySettingsUI();
     try { const d = LS.get('gk-lines-dbg', null), n = Object.keys(LS.get(LINES_KEY, {})).length; $('linesDbg').textContent = `대기 화면 문장: 저장 ${n}개` + (d ? ` · 마지막 요청 ${d.at} (${d.need}개 요청 → ${d.ok}개 받음)` + (d.err ? ' · 오류: ' + d.err : '') + (d.raw ? ' · 원문: ' + d.raw.slice(0, 120) : '') : ' · 아직 요청 없음'); } catch (e) {}
     const days = loadDays(14);
