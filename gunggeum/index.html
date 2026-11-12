@@ -610,13 +610,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v83</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v84</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v83</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v84</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -723,9 +723,14 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 - 어려운 용어는 되도록 피하고, 꼭 써야 하면 바로 뒤에 쉬운 말로 풀어.
 - 유치하게 말하거나 "~란다", "참 잘했어" 같은 달래는 말은 쓰지 마. 쉽지만 정확하게.`
   };
+  function nowLine() { // 오늘 날짜·요일·시각 (AI는 스스로 날짜를 모르니까 매번 알려 줌)
+    const d = new Date(), h = d.getHours(), ampm = h < 12 ? '오전' : '오후', h12 = h % 12 || 12;
+    return `오늘은 ${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일이고, 지금은 ${ampm} ${h12}시 ${d.getMinutes()}분이야.`;
+  }
   function rules() {
     const [base, deep] = LEN[settings.len] || LEN.normal;
     return `너는 한 집에 있는 질문 화면 "궁금칸"이야. ${LEVEL[settings.level] || LEVEL.m1}
+${nowLine()} 날짜·요일·시간·계절이나 "○○까지 며칠 남았어?"를 물으면 이걸 기준으로 계산해서 답해(날짜를 지어내지 마).
 규칙:
 - 왜 그런지 원리나 이유를 꼭 넣어. 결과만 말하지 마.
 - 가능하면 구체적인 숫자나 비교를 하나 넣어(예: "빛은 1초에 지구를 7바퀴 반 돌아").
@@ -1781,7 +1786,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v83';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v84';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
