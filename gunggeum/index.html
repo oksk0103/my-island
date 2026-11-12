@@ -610,13 +610,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v82</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v83</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v82</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v83</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1163,7 +1163,8 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     try { if (d.sunrise?.[0]) LS.set('gk-sun', { rise: d.sunrise[0], set: d.sunset[0], day: dayKey(new Date()) }); } catch (e) {}
     wxCache = { hours, t: Math.round(c.temperature_2m), feel: Math.round(c.apparent_temperature), code: c.weather_code, dayCode: d.weather_code?.[0], hi: Math.round(d.temperature_2m_max[0]), lo: Math.round(d.temperature_2m_min[0]), pop: d.precipitation_probability_max?.[0] ?? null, pm10: a?.current?.pm10 ?? null, pm25: a?.current?.pm2_5 ?? null };
     try { if (d.temperature_2m_max?.[1] != null) wxCache.tom = { hi: Math.round(d.temperature_2m_max[1]), lo: Math.round(d.temperature_2m_min[1]), pop: d.precipitation_probability_max?.[1] ?? null, code: d.weather_code?.[1] }; } catch (e) {}
-    wxAt = Date.now(); return wxCache;
+    wxAt = Date.now(); try { LS.set('gk-wx-last', { at: wxAt, w: wxCache }); } catch (e) {}
+    return wxCache;
   }
   function dustGrade(pm10, pm25) {
     if (pm10 == null && pm25 == null) return null;
@@ -1596,12 +1597,16 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const wxAsk = !quiz && (WX_Q.test(said) || WX_Q.test(q) || (recent.length && recent[recent.length - 1].wx && /내일|모레|오늘|아침|저녁|밤|이따|주말|그럼|그러면/.test(said + q)));
     if (wxAsk) {
       try {
-        const w = await Promise.race([fetchWeather(), new Promise((_, no) => setTimeout(() => no(new Error('t')), 3000))]);
+        // 새로 받아 오되 5초 안에 안 오면 마지막으로 받아 둔 날씨(6시간 이내)를 씀
+        let w = await Promise.race([fetchWeather(), new Promise(ok => setTimeout(() => ok(null), 5000))]).catch(() => null);
+        if (!w) { const last = wxCache ? { at: wxAt, w: wxCache } : LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 6 * 3600e3) w = last.w; }
+        if (!w) throw new Error('날씨 없음');
+        diag('app', `날씨 질문: "${said.slice(0, 30)}" → ${w.t}° 정보 보냄`);
         const wt = c => (WX[c] || ['알 수 없음'])[0], dust = dustGrade(w.pm10, w.pm25);
         const hrs = (w.hours || []).slice(0, 6).map(x => `${x.h}시 ${x.t}°${x.pop != null ? '(비 ' + x.pop + '%)' : ''}`).join(', ');
         const tom = w.tom ? ` 내일: 최고 ${w.tom.hi}° 최저 ${w.tom.lo}°, ${wt(w.tom.code)}${w.tom.pop != null ? ', 비 올 확률 ' + w.tom.pop + '%' : ''}.` : '';
         userText = `(실제 날씨 정보 — ${settings.wxName || '우리 동네'}: 지금 ${w.t}°(체감 ${w.feel}°), ${wt(w.code)}. 오늘 최고 ${w.hi}° 최저 ${w.lo}°${w.pop != null ? ', 비 올 확률 ' + w.pop + '%' : ''}${dust ? ', 미세먼지 ' + dust : ''}. 앞으로: ${hrs}.${tom} 이 정보만 써서 짧게 답하고, 뭘 입거나 챙기면 좋을지 한마디 덧붙여. 사진 검색어는 비우고 이모지는 날씨에 맞게.)\n` + userText;
-      } catch (e) { userText = '(지금 날씨 정보를 못 받았어. 날씨는 모른다고 솔직히 말하고 창밖을 보라고 해.)\n' + userText; }
+      } catch (e) { diag('err', '날씨 질문인데 날씨를 못 받음: ' + (e.message || e)); userText = '(지금 날씨 정보를 못 받았어. 날씨는 모른다고 솔직히 말하고 창밖을 보라고 해.)\n' + userText; }
     }
     msgs.push({ role: 'user', content: userText });
     try {
@@ -1776,7 +1781,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v82';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v83';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
