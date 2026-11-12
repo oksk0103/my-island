@@ -610,13 +610,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v84</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v85</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v84</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v85</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1290,7 +1290,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     exitSaver();
   }, true);
   ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => saverEl.addEventListener(ev, () => clearTimeout(svHold), true));
-  document.addEventListener('keydown', e => { if (!saverEl.hidden && logEl.hidden) { e.preventDefault(); exitSaver(); } }, true);
+  document.addEventListener('keydown', e => { if (!saverEl.hidden && logEl.hidden) { e.preventDefault(); if (e.repeat || Date.now() - (window.__gkSaverAt || 0) < 1500) return; exitSaver(); } }, true);
 
   input.addEventListener('focus', () => { if (!busy && !listening) setState('type', '입력 중', '글자로 써도 돼. 다 쓰면 물어보기.'); });
   input.addEventListener('blur', () => { if (!busy && !listening && app.dataset.state === 'type') setState(recent.length ? (quiz ? 'quiz' : 'answer') : 'idle', recent.length ? (quiz ? '퀴즈 중' : '답') : '쉬는 중', recent.length ? undefined : ''); });
@@ -1300,6 +1300,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const CLEAR_KEYS = ['F4', 'Delete', 'MediaPlayPause', 'Escape'];
   const ASK_KEYS = ['Enter', 'ArrowRight', 'ArrowDown', 'PageDown', ' ', 'AudioVolumeUp', 'AudioVolumeDown', 'VolumeUp', 'VolumeDown', 'Camera', 'MediaTrackNext', 'F1'];
   const SAVER_KEYS = ['Home', 'End', 'F3'];
+  let lastAskAt = 0, askDownAt = 0;
+  // 리모컨 버튼을 빠르게 두 번 또는 1.2초 꾹 → 대기화면
+  const goSaver = () => { heard = ''; input.value = ''; if (listening) stopListening(); if (busy) ctl?.abort(); askDownAt = 0; lastAskAt = 0; input.blur(); window.__gkSaverAt = Date.now(); enterSaver(); diag('app', '리모컨으로 대기화면'); };
+  document.addEventListener('keyup', e => { if (ASK_KEYS.includes(e.key)) askDownAt = 0; });
   const ROLE = k => SAVER_KEYS.includes(k) ? '대기 화면으로' : ASK_KEYS.includes(k) ? '물어보기(말하기)' : REPLAY_KEYS.includes(k) ? '다시 듣기' : CLEAR_KEYS.includes(k) ? '지우기/멈추기' : '궁금칸에서 안 쓰는 키';
   const pinEl = $('pin'), pinInput = $('pinInput');
   const typing = () => { const a = document.activeElement; return a && (['INPUT', 'TEXTAREA', 'SELECT'].includes(a.tagName) || a.isContentEditable); };
@@ -1308,7 +1312,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (!logEl.hidden) { if (e.key !== 'Tab') { const mods = ['ctrlKey', 'altKey', 'shiftKey', 'metaKey'].filter(m => e[m]).map(m => m.replace('Key', '')).join('+'); keyTest.textContent = `받은 키: ${e.key === ' ' ? 'Space' : e.key}${mods ? ' (+' + mods + ')' : ''} · 코드 ${e.code || '-'}/${e.keyCode} → ${ROLE(e.key)}`; keyTest.style.color = 'var(--accent)'; } return; }
     if (e.isComposing) return;
     if (!typing() && e.key.length === 1 && e.key !== ' ' && !e.ctrlKey && !e.metaKey && !e.altKey && !listening && saverEl.hidden && logEl.hidden) enterTyping();
-    if (typing()) { if (document.activeElement === input && !input.value.trim() && ASK_KEYS.includes(e.key) && e.key !== 'Enter') { e.preventDefault(); if (!e.repeat) { if (listening) stopListening(); else startListening(); } } return; } // 글자 입력 중엔 단축키 없음 (Enter는 폼이 처리)
+    if (ASK_KEYS.includes(e.key) && e.repeat && saverEl.hidden) { e.preventDefault(); if (askDownAt && Date.now() - askDownAt > 1200) goSaver(); return; }
+    if (typing()) { if (document.activeElement === input && !input.value.trim() && ASK_KEYS.includes(e.key) && e.key !== 'Enter') { e.preventDefault(); if (!e.repeat) { const nt = Date.now(), dbl = nt - lastAskAt < 700; lastAskAt = nt; askDownAt = nt; if (dbl && listening && !heard.trim()) { goSaver(); return; } if (listening) stopListening(); else startListening(); } } return; } // 글자 입력 중엔 단축키 없음 (Enter는 폼이 처리)
     if (SAVER_KEYS.includes(e.key)) { if (e.defaultPrevented || e.repeat) return; e.preventDefault(); if (listening) stopListening(); if (busy) ctl?.abort(); enterSaver(); return; }
     if (REPLAY_KEYS.includes(e.key)) { e.preventDefault(); if (e.repeat) return; speak(current, true); statusEl.textContent = '한 번 더 읽어 줄게.'; return; }
     if (CLEAR_KEYS.includes(e.key)) {
@@ -1318,9 +1323,12 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       input.value = ''; statusEl.textContent = '지웠어. 다시 말해 봐.'; return;
     }
     if (ASK_KEYS.includes(e.key)) {
+      // 버튼을 빠르게 두 번(0.7초 안) 누르거나 1.2초 꾹 누르면 대기화면으로
       if (e.repeat) { e.preventDefault(); return; }
       if (document.activeElement && document.activeElement.tagName === 'BUTTON') return;
       e.preventDefault();
+      const nowT = Date.now(), dbl = nowT - lastAskAt < 700; lastAskAt = nowT; askDownAt = nowT;
+      if (dbl && listening && !heard.trim() && !input.value.trim()) { goSaver(); return; }
       if (listening) { stopListening(); return; }   // second press: stop early and ask
       if (input.value.trim() && !busy) { ask(input.value); return; }
       startListening();
@@ -1786,7 +1794,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v84';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v85';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
