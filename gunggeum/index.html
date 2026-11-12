@@ -515,6 +515,89 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 /* v67: 진단 기록 */
 #chgWarn { position: fixed; right: 1rem; bottom: 6.2rem; z-index: 30; background: #5A1E14; color: #FFE6D8; font-size: 1rem; font-weight: 700; padding: .5rem .9rem; border-radius: 999px; pointer-events: none; }
 #chgWarn[hidden] { display: none; }
+
+/* v86: 루아 신문 */
+.np-serif { font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; }
+/* 대기화면 1면 (시간 문장 대신) */
+.saver.has-paper .sv-inner { grid-template-columns: max-content 1px minmax(0, 1fr); max-width: 92rem; column-gap: 4vw; }
+.saver.has-paper .sv-line { display: none; }
+.sv-paper[hidden] { display: none; }
+.sv-paper { font-family: var(--f-ui); color: var(--ink); cursor: pointer; }
+.svp-mast { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; padding-bottom: .7rem; border-bottom: 3px double color-mix(in srgb, var(--ink) 70%, transparent); }
+.svp-name { font-family: var(--f-ui); font-weight: 900; font-size: clamp(2.2rem, 3.9vw, 3.8rem); line-height: 1; letter-spacing: -.03em; }
+.svp-meta { text-align: right; font-size: clamp(.8rem, 1.05vw, 1rem); font-weight: 700; color: var(--muted); line-height: 1.55; }
+.svp-lead { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 1.8rem; padding: 1.4rem 0; border-bottom: 1px solid var(--line); align-items: start; }
+.svp-lead.nopic { grid-template-columns: 1fr; }
+.svp-photo { aspect-ratio: 4 / 3; background: #1E1914; overflow: hidden; }
+.svp-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.svp-lead.nopic .svp-photo { display: none; }
+.svp-tag { font-size: clamp(.8rem, 1vw, 1rem); font-weight: 800; color: var(--accent); }
+.svp-hed { margin: .5rem 0 0; font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-weight: 700; font-size: clamp(1.6rem, 2.6vw, 2.6rem); line-height: 1.3; letter-spacing: -.03em; text-wrap: balance; word-break: keep-all; }
+.svp-lede { margin: .9rem 0 0; font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-size: clamp(1rem, 1.3vw, 1.3rem); line-height: 1.75; color: color-mix(in srgb, var(--ink) 78%, transparent); word-break: keep-all; text-wrap: pretty; }
+.svp-more { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding-top: 1.1rem; }
+.svp-more .svp-hed { font-size: clamp(1.05rem, 1.45vw, 1.45rem); margin-top: .35rem; }
+.svp-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 1.6rem; }
+.svp-unread { display: inline-flex; align-items: center; gap: .6rem; font-size: clamp(.85rem, 1.1vw, 1.1rem); font-weight: 700; color: var(--muted); }
+.svp-unread i { width: .7rem; height: .7rem; border-radius: 50%; background: var(--accent); }
+.svp-unread.read i { background: var(--line); }
+.svp-open { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: 0 1.6rem; border: 1px solid var(--accent); border-radius: 999px; color: var(--accent); font: inherit; font-size: clamp(1rem, 1.3vw, 1.3rem); font-weight: 800; background: none; }
+.svp-open svg { width: 1.1em; height: 1.1em; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 760px) { .saver.has-paper .sv-inner { grid-template-columns: 1fr; } .svp-lead { grid-template-columns: 1fr; } .svp-more { grid-template-columns: 1fr; gap: .8rem; } }
+
+/* 신문 펼친 화면 */
+.paper[hidden] { display: none; }
+.paper { position: absolute; inset: 0; z-index: 2; background: var(--bg); overflow: hidden; }
+.paper .inner { height: 100%; display: flex; flex-direction: column; padding-block: 1rem .4rem; min-height: 0; }
+.pp-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; padding-bottom: .6rem; border-bottom: 3px double color-mix(in srgb, var(--ink) 70%, transparent); flex: none; }
+.pp-head .l { display: flex; align-items: baseline; gap: 1.3rem; flex-wrap: wrap; min-width: 0; }
+.pp-mast { font-weight: 900; font-size: clamp(1.6rem, 2.3vw, 2.3rem); line-height: 1; letter-spacing: -.03em; }
+.pp-folio { font-size: clamp(.8rem, 1vw, 1rem); color: var(--muted); font-weight: 600; }
+.pp-folio b { color: var(--ink); font-weight: 800; margin-left: .3em; }
+.pp-head .r { display: flex; align-items: center; gap: 1.4rem; flex: none; }
+.pp-no { font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-size: 1.05rem; color: var(--muted); }
+.pp-no b { color: var(--ink); font-size: 1.5rem; font-weight: 700; }
+.pp-art { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) clamp(15rem, 27%, 24rem); column-gap: 3rem; padding-top: 1rem; overflow: hidden; }
+.pp-art.nopic .pp-side { justify-content: flex-start; }
+.pp-art.nopic .pp-photo, .pp-art.nopic .pp-cap { display: none; }
+.pp-main { min-height: 0; overflow: auto; scrollbar-width: none; }
+.pp-main::-webkit-scrollbar { display: none; }
+.pp-tag { display: inline-block; font-size: 1.05rem; font-weight: 800; color: var(--accent); padding-bottom: .15rem; border-bottom: 2px solid var(--accent); }
+.pp-hed { margin: .7rem 0 0; font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-weight: 700; font-size: clamp(1.9rem, min(3.5vw, 5.6vh), 3.6rem); line-height: 1.22; letter-spacing: -.035em; text-wrap: balance; word-break: keep-all; }
+.pp-lede { margin: 1.1rem 0 0; padding-top: 1rem; border-top: 1px solid var(--line); font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-size: clamp(1.15rem, min(1.75vw, 2.9vh), 1.75rem); line-height: 1.6; color: var(--ink); word-break: keep-all; text-wrap: pretty; max-width: 34em; }
+.pp-body { margin: .7rem 0 0; font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-size: clamp(1rem, min(1.55vw, 2.6vh), 1.55rem); line-height: 1.75; color: #D9CDB7; word-break: keep-all; text-wrap: pretty; max-width: 36em; }
+.pp-body mark { background: linear-gradient(transparent 10%, var(--hl) 10%, var(--hl) 92%, transparent 92%); color: var(--hl-ink); padding: 0 .08em; }
+.pp-src { margin-top: .8rem; font-size: .9rem; color: var(--muted); }
+.pp-side { min-height: 0; display: flex; flex-direction: column; gap: .8rem; }
+.pp-photo { flex: 1 1 0; min-height: 7rem; max-height: 22rem; background: #1E1914; overflow: hidden; }
+.pp-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pp-photo.contain img { object-fit: contain; }
+.pp-cap { font-size: .95rem; color: var(--muted); line-height: 1.45; padding-top: .5rem; border-top: 1px solid var(--line); }
+.pp-cap b { color: var(--ink); margin-right: .5em; }
+.pp-word { background: #251E18; border-left: 4px solid var(--accent); border-radius: 0 1rem 1rem 0; padding: 1.1rem 1.4rem 1.2rem; }
+.pp-word .lbl { font-size: .9rem; font-weight: 700; color: var(--muted); }
+.pp-word { flex: none; }
+.pp-word .w { font-weight: 800; font-size: clamp(1.8rem, min(2.6vw, 4.4vh), 2.6rem); color: var(--accent); line-height: 1.15; margin-top: .3rem; letter-spacing: -.02em; }
+.pp-word .m { font-size: 1.3rem; font-weight: 700; margin-top: .3rem; word-break: keep-all; }
+.pp-word .hj { display: flex; flex-wrap: wrap; gap: .6rem 1.6rem; margin-top: .9rem; padding-top: .9rem; border-top: 1px solid #3A3129; }
+.pp-word .hj div { display: flex; align-items: center; gap: .6rem; }
+.pp-word .hj span { font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 600; font-size: clamp(2rem, min(2.6vw, 4.6vh), 2.6rem); line-height: 1; }
+.pp-word .hj small { font-size: 1rem; color: var(--muted); }
+.pp-word .hj[hidden] { display: none; }
+.pp-nav { flex: none; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; padding-top: .8rem; margin-top: .8rem; border-top: 1px solid var(--line); }
+.pp-btn { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: 0 1.3rem; border: 1px solid var(--line); background: #1E1914; color: #D8CBB4; font: inherit; font-size: 1.15rem; font-weight: 700; cursor: pointer; }
+.pp-btn svg { width: 1.1rem; height: 1.1rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.pp-btn.close { justify-self: start; }
+.pp-btn.next { justify-self: end; border-color: var(--accent); color: var(--accent); }
+.pp-btn.listen { min-height: 2.6rem; font-size: 1rem; padding: 0 1rem; }
+.pp-tabs { display: flex; gap: .6rem; }
+.pp-tabs button { width: clamp(8rem, 12vw, 11.5rem); text-align: left; padding: .5rem .9rem 0; border: 0; border-top: 3px solid var(--line); background: none; color: var(--muted); font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-size: 1.05rem; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; min-height: 2.8rem; }
+.pp-tabs button b { font-family: var(--f-ui); font-weight: 800; margin-right: .4rem; }
+.pp-tabs button.cur { border-top-color: var(--accent); color: var(--ink); }
+.pp-tabs button.cur b { color: var(--accent); }
+.app[data-paper="1"] .main > .inner { visibility: hidden; }
+#backPaper { display: none; }
+.app[data-from-paper="1"] #backPaper { display: inline-flex; }
+@media (max-width: 760px) { .pp-art { grid-template-columns: 1fr; overflow: auto; } .pp-tabs { display: none; } }
 </style>
 
 </head>
@@ -561,6 +644,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path d="M16 8.2a5.2 5.2 0 0 1 0 7.6"></path></svg>
           다시 듣기
         </button>
+        <button class="textbtn" id="backPaper" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>신문으로</button>
       </div>
     </div>
     <p class="sheet plain" id="sheet" aria-live="polite"></p>
@@ -572,6 +656,31 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     </figure>
     <div class="chips" id="chips"></div>
   </div>
+  <div class="paper" id="paper" hidden><div class="inner">
+    <div class="pp-head">
+      <div class="l"><span class="pp-mast">루아 신문</span><span class="pp-folio" id="ppFolio"></span></div>
+      <div class="r"><button class="pp-btn listen" id="ppListen" type="button"><svg viewBox="0 0 24 24"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path d="M16 8.2a5.2 5.2 0 0 1 0 7.6"></path></svg>들려줘</button><span class="pp-no" id="ppNo"></span></div>
+    </div>
+    <article class="pp-art" id="ppArt">
+      <div class="pp-main">
+        <span class="pp-tag" id="ppTag"></span>
+        <h2 class="pp-hed" id="ppHed"></h2>
+        <p class="pp-lede" id="ppLede"></p>
+        <p class="pp-body" id="ppBody"></p>
+        <div class="pp-src" id="ppSrc"></div>
+      </div>
+      <aside class="pp-side">
+        <div class="pp-photo" id="ppPhoto"></div>
+        <div class="pp-cap" id="ppCap"></div>
+        <div class="pp-word" id="ppWord"><div class="lbl">새 낱말</div><div class="w" id="ppW"></div><div class="m" id="ppM"></div><div class="hj" id="ppHj"></div></div>
+      </aside>
+    </article>
+    <nav class="pp-nav">
+      <button class="pp-btn close" id="ppClose" type="button"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"></path></svg>신문 닫기</button>
+      <div class="pp-tabs" id="ppTabs"></div>
+      <button class="pp-btn next" id="ppNext" type="button"><span id="ppNextT">다음 기사</span><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button>
+    </nav>
+  </div></div>
   <div class="listen-ov" id="listenOv" aria-hidden="true"><div class="lo-buddy" id="loBuddy"><i class="lo-glow"></i><i class="lo-glow"></i></div><p class="lo-cap" id="loCap"></p><p class="lo-text" id="loText"></p></div>
   </section>
 
@@ -598,6 +707,12 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="sv-rule" aria-hidden="true"></div>
       <section class="sv-text">
         <p class="sv-line" id="svLine"></p>
+        <div class="sv-paper" id="svPaper" hidden>
+          <div class="svp-mast"><span class="svp-name">루아 신문</span><span class="svp-meta" id="svpMeta"></span></div>
+          <div class="svp-lead" id="svpLead"><div class="svp-photo" id="svpPhoto"></div><div><span class="svp-tag" id="svpTag"></span><h2 class="svp-hed" id="svpHed"></h2><p class="svp-lede" id="svpLede"></p></div></div>
+          <div class="svp-more" id="svpMore"></div>
+          <div class="svp-foot"><span class="svp-unread" id="svpUnread"><i></i><span></span></span><button class="svp-open" id="svpOpen" type="button">신문 펴기<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button></div>
+        </div>
         <div class="sv-msg" id="svMsg" hidden></div>
       </section>
     </div>
@@ -610,13 +725,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v85</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v86</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v85</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v86</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1195,7 +1310,8 @@ ${nowLine()} 날짜·요일·시간·계절이나 "○○까지 며칠 남았어
     recent.length = 0; quiz = false; // 홈으로 돌아오면 대화 맥락 초기화
     const p = piece(); current = p.f; hidePic();
     setEyebrow('piece'); setChips([p.q], '', true); draw(p.f, animate, 'plain');
-    setState('idle', '쉬는 중', settings.apiKey ? '' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
+    setState('idle', paperEl && !paperEl.hidden ? '신문 읽는 중' : '쉬는 중', settings.apiKey ? '' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
+    paperCtx = null; delete app.dataset.fromPaper;
   }
   function showBlocked(msg) { enterSaver(msg); }
   let holdUntil = 0;
@@ -1261,13 +1377,15 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const w = wxCache; const [txt] = (w && WX[w.code]) || [''];
     $('svWx').innerHTML = w ? `${(settings.wxName || '').replace(/</g, '&lt;')} ${w.t}° ${txt}<br>최고 ${w.hi}° · 최저 ${w.lo}°${w.pop != null ? ' · 비 ' + w.pop + '%' : ''}` : '';
     $('svTip').textContent = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : '';
-    if (d.getMinutes() % 10 === 0 || !LS.get(LINES_KEY, {})[hhmm(new Date(d.getTime() + 5 * 60000))]) fetchLines(d);
+    const hasPaper = renderFront();
+    if (!hasPaper && (d.getMinutes() % 10 === 0 || !LS.get(LINES_KEY, {})[hhmm(new Date(d.getTime() + 5 * 60000))])) fetchLines(d);
   }
   function enterSaver(lockMsg) {
     saverLock = lockMsg || '';
     if (!saverEl.hidden) return;
     recent.length = 0; quiz = false; hidePic(); setChips([]); followChips = []; input.value = ''; input.blur();
-    hush(); saverEl.hidden = false; $('svMsg').hidden = true; renderSaver(); fetchWeather().then(renderSaver).catch(() => {});
+    hidePaper(); paperCtx = null; delete app.dataset.fromPaper;
+    hush(); saverEl.hidden = false; loadNews().then(() => { if (!saverEl.hidden) renderSaver(); }); $('svMsg').hidden = true; renderSaver(); fetchWeather().then(renderSaver).catch(() => {});
     clearInterval(saverTick); saverTick = setInterval(renderSaver, 15 * 1000); keepAwake();
     if (saverLock) { const m = $('svMsg'); m.textContent = saverLock; m.hidden = false; clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { m.hidden = true; }, 4000); }
   }
@@ -1287,10 +1405,117 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const now = Date.now(); svTaps = svTaps.filter(t => now - t < 3000); svTaps.push(now);
     clearTimeout(svHold); svHold = setTimeout(() => { svTaps = []; openLog(); }, 2000);
     if (svTaps.length >= 5) { svTaps = []; clearTimeout(svHold); openLog(); return; }
+    const wantPaper = !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper');
     exitSaver();
+    if (wantPaper && saverEl.hidden) { clearTimeout(svHold); openPaper(0); }
   }, true);
   ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => saverEl.addEventListener(ev, () => clearTimeout(svHold), true));
   document.addEventListener('keydown', e => { if (!saverEl.hidden && logEl.hidden) { e.preventDefault(); if (e.repeat || Date.now() - (window.__gkSaverAt || 0) < 1500) return; exitSaver(); } }, true);
+
+  // ---------- 루아 신문: 매일 아침 news/latest.json 을 읽어 대기화면 1면과 기사 화면에 보여 줌 ----------
+  const NEWS_KEY = 'gk-news', NEWS_READ = 'gk-news-read';
+  let news = LS.get(NEWS_KEY, null), newsAt = 0, paperIdx = 0, paperCtx = null;
+  const paperEl = $('paper');
+  const escN = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  async function loadNews(force) {
+    if (!force && Date.now() - newsAt < 20 * 60e3) return news;
+    newsAt = Date.now();
+    try {
+      const r = await fetch('./news/latest.json?t=' + Math.floor(Date.now() / 600e3), { cache: 'no-store' });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const j = await r.json();
+      if (j && Array.isArray(j.articles) && j.articles.length) { if (!news || news.no !== j.no) diag('app', `루아 신문 제${j.no}호 받음`); news = j; LS.set(NEWS_KEY, j); }
+    } catch (e) { diag('err', '신문 못 받음: ' + (e.message || e)); }
+    return news;
+  }
+  function newsFresh() { // 3일 넘게 지난 신문은 1면에 걸지 않음
+    if (!news || !news.date) return false;
+    const d = new Date(news.date + 'T00:00:00'); return (Date.now() - d.getTime()) < 3.5 * 864e5 && d.getTime() - Date.now() < 864e5;
+  }
+  function newsDate() { const d = new Date(news.date + 'T00:00:00'); return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`; }
+  const newsRead = () => news && LS.get(NEWS_READ, 0) === news.no;
+  // 기사 사진: 질문 답과 똑같은 안전 검사(분류 허용 목록 + 기기 안 선정성 검사)를 통과한 사진만
+  const picMemo = new Map();
+  async function safePic(term) {
+    term = cleanTerm(term || ''); if (!term) return null;
+    if (settings.picOn === 'off') return null;
+    if (settings.scaryNight !== 'off' && nightNow() && SCARY.test(term)) return null;
+    if (picMemo.has(term)) return picMemo.get(term);
+    const job = (async () => {
+      try {
+        const tctl = new AbortController(); const t = setTimeout(() => tctl.abort(), 8000);
+        const hit = await wikiImage(term, tctl.signal); clearTimeout(t);
+        if (!hit || !/^https:\/\/upload\.wikimedia\.org\//.test(hit.src)) return null;
+        const img = new Image(); img.crossOrigin = 'anonymous'; img.src = hit.src; img.alt = hit.title;
+        await new Promise((ok, no) => { img.onload = ok; img.onerror = () => no(new Error('img')); });
+        const v = await imageSafe(img);
+        if (!v.ok) { diag('pic', `신문 사진 막음: ${hit.title} · ${v.why}`); return null; }
+        rememberPic(hit.title, hit.src);
+        return { src: hit.src, title: hit.title, r: img.naturalWidth / img.naturalHeight };
+      } catch (e) { return null; }
+    })();
+    picMemo.set(term, job);
+    const res = await job; if (!res) setTimeout(() => picMemo.delete(term), 10 * 60e3);
+    return res;
+  }
+  function putPic(box, pic) { box.innerHTML = ''; if (!pic) return; const im = new Image(); im.src = pic.src; im.alt = pic.title; box.append(im); box.classList.toggle('contain', pic.r < 0.8 || pic.r > 1.6); }
+  function bodyHtml(t) { return escN(t).replace(/《([^》]+)》/g, '<mark>$1</mark>'); }
+  function renderFront() {
+    const el = $('svPaper'), on = !!(news && newsFresh());
+    el.hidden = !on; saverEl.classList.toggle('has-paper', on);
+    if (!on) return false;
+    const [a, ...rest] = news.articles;
+    $('svpMeta').innerHTML = `제${escN(news.no)}호 · ${escN(newsDate())}${news.theme ? '<br>오늘의 주제 · ' + escN(news.theme) : ''}`;
+    $('svpTag').textContent = a.tag ? a.tag + ' · 1면' : '1면';
+    $('svpHed').textContent = a.title; $('svpLede').textContent = a.lede || '';
+    $('svpMore').innerHTML = rest.slice(0, 2).map((x, i) => `<div><span class="svp-tag">${escN(x.tag)} · ${i + 2}면</span><h3 class="svp-hed">${escN(x.title)}</h3></div>`).join('');
+    const words = news.articles.map(x => x.word && x.word.w).filter(Boolean).length;
+    const u = $('svpUnread'); u.classList.toggle('read', newsRead()); u.querySelector('span').textContent = newsRead() ? `기사 ${news.articles.length}개 · 새 낱말 ${words}개` : `아직 안 읽은 신문 · 새 낱말 ${words}개`;
+    const lead = $('svpLead'), box = $('svpPhoto'), key = news.no + ':' + a.pic;
+    if (box.dataset.k !== key) {
+      box.dataset.k = key; box.innerHTML = ''; lead.classList.add('nopic');
+      safePic(a.pic).then(pic => { if (box.dataset.k !== key) return; putPic(box, pic); lead.classList.toggle('nopic', !pic); });
+    }
+    return true;
+  }
+  const curArticle = () => news && news.articles[paperIdx];
+  function renderPaper() {
+    const A = curArticle(); if (!A) return;
+    const n = news.articles.length;
+    $('ppFolio').innerHTML = `제${escN(news.no)}호 · ${escN(newsDate())}${news.theme ? ' · 오늘의 주제<b>' + escN(news.theme) + '</b>' : ''}`;
+    $('ppNo').innerHTML = `<b>${paperIdx + 1}</b> / ${n}`;
+    $('ppTag').textContent = A.tag || ''; $('ppHed').textContent = A.title; $('ppLede').textContent = A.lede || '';
+    $('ppBody').innerHTML = bodyHtml(A.body || ''); $('ppSrc').textContent = A.source ? '출처 ' + A.source : '';
+    const W = A.word || {}; $('ppWord').hidden = !W.w; $('ppW').textContent = W.w || ''; $('ppM').textContent = W.mean || '';
+    const hj = $('ppHj'); hj.innerHTML = (W.hanja || []).map(h => `<div><span>${escN(h[0])}</span><small>${escN(h[1])}</small></div>`).join(''); hj.hidden = !(W.hanja || []).length;
+    $('ppTabs').innerHTML = news.articles.map((x, i) => `<button type="button" data-i="${i}" class="${i === paperIdx ? 'cur' : ''}"><b>${i + 1}</b>${escN(x.short || x.title)}</button>`).join('');
+    $('ppNextT').textContent = paperIdx < n - 1 ? '다음 기사' : '다 읽었어';
+    const art = $('ppArt'), box = $('ppPhoto'), key = news.no + ':' + paperIdx;
+    box.dataset.k = key; box.innerHTML = ''; art.classList.add('nopic');
+    $('ppCap').innerHTML = '';
+    safePic(A.pic).then(pic => { if (box.dataset.k !== key) return; putPic(box, pic); art.classList.toggle('nopic', !pic); $('ppCap').innerHTML = pic ? `<b>${escN(pic.title)}</b>${escN(A.cap || '')}` : ''; });
+    art.querySelector('.pp-main').scrollTop = 0;
+  }
+  function openPaper(i) {
+    if (!news || !news.articles.length) return;
+    paperIdx = Math.max(0, Math.min(i || 0, news.articles.length - 1));
+    hush(); setChips([]); followChips = []; hidePic(); paperCtx = null; delete app.dataset.fromPaper;
+    paperEl.hidden = false; app.dataset.paper = '1';
+    setState('idle', '신문 읽는 중', '');
+    renderPaper(); LS.set(NEWS_READ, news.no);
+    diag('app', `신문 펼침: ${paperIdx + 1}면`);
+  }
+  function hidePaper() { if (!paperEl) return; paperEl.hidden = true; delete app.dataset.paper; }
+  function closePaper(toSaver) { hush(); hidePaper(); if (toSaver) { window.__gkSaverAt = Date.now(); enterSaver(); } else showPiece(false); }
+  function paperNext() { hush(); if (paperIdx < news.articles.length - 1) { paperIdx++; renderPaper(); } else closePaper(true); }
+  function readArticle() { const A = curArticle(); if (A) speak(`${A.title}. ${A.lede || ''} ${String(A.body || '').replace(/[《》]/g, '')}`, true); }
+  $('ppNext').addEventListener('click', paperNext);
+  $('ppClose').addEventListener('click', () => closePaper(false));
+  $('ppListen').addEventListener('click', readArticle);
+  $('ppTabs').addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (b) { hush(); paperIdx = +b.dataset.i; renderPaper(); } });
+  $('backPaper').addEventListener('click', () => { if (news) openPaper(paperIdx); });
+  setInterval(() => loadNews(), 30 * 60e3);
+  loadNews(true).then(() => { if (!saverEl.hidden) renderSaver(); });
 
   input.addEventListener('focus', () => { if (!busy && !listening) setState('type', '입력 중', '글자로 써도 돼. 다 쓰면 물어보기.'); });
   input.addEventListener('blur', () => { if (!busy && !listening && app.dataset.state === 'type') setState(recent.length ? (quiz ? 'quiz' : 'answer') : 'idle', recent.length ? (quiz ? '퀴즈 중' : '답') : '쉬는 중', recent.length ? undefined : ''); });
@@ -1314,6 +1539,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (!typing() && e.key.length === 1 && e.key !== ' ' && !e.ctrlKey && !e.metaKey && !e.altKey && !listening && saverEl.hidden && logEl.hidden) enterTyping();
     if (ASK_KEYS.includes(e.key) && e.repeat && saverEl.hidden) { e.preventDefault(); if (askDownAt && Date.now() - askDownAt > 1200) goSaver(); return; }
     if (typing()) { if (document.activeElement === input && !input.value.trim() && ASK_KEYS.includes(e.key) && e.key !== 'Enter') { e.preventDefault(); if (!e.repeat) { const nt = Date.now(), dbl = nt - lastAskAt < 700; lastAskAt = nt; askDownAt = nt; if (dbl && listening && !heard.trim()) { goSaver(); return; } if (listening) stopListening(); else startListening(); } } return; } // 글자 입력 중엔 단축키 없음 (Enter는 폼이 처리)
+    if (!paperEl.hidden && !listening && !busy) {
+      if (CLEAR_KEYS.includes(e.key)) { e.preventDefault(); if (!e.repeat) closePaper(false); return; }
+      if (REPLAY_KEYS.includes(e.key)) { e.preventDefault(); if (!e.repeat) readArticle(); return; }
+    }
     if (SAVER_KEYS.includes(e.key)) { if (e.defaultPrevented || e.repeat) return; e.preventDefault(); if (listening) stopListening(); if (busy) ctl?.abort(); enterSaver(); return; }
     if (REPLAY_KEYS.includes(e.key)) { e.preventDefault(); if (e.repeat) return; speak(current, true); statusEl.textContent = '한 번 더 읽어 줄게.'; return; }
     if (CLEAR_KEYS.includes(e.key)) {
@@ -1597,6 +1826,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     lastQ = q; setEyebrow('q', q); $('loText').textContent = q; exitTyping();
     if (/퀴즈|문제\s*내|수수께끼/.test(q)) quiz = true;
     else if (quiz && !/힌트|정답|모르겠|다른 문제|^[가-힣A-Za-z0-9 ]{1,8}$/.test(q)) quiz = false; // 퀴즈 중 다른 질문을 하면 퀴즈 종료
+    if (!paperEl.hidden) { paperCtx = curArticle(); hidePaper(); app.dataset.fromPaper = '1'; }
     setState('think', '생각 중', quiz ? '문제를 고르고 있어.' : '잠깐만.');
     setChips([]); hidePic();
     draw(quiz ? '문제를 고르고 있어…' : '음… 생각하고 있어.', false, 'soft');
@@ -1605,6 +1835,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     for (const r of recent) { msgs.push({ role: 'user', content: r.q }); msgs.push({ role: 'assistant', content: r.a }); }
     let userText = q;
     if (quiz) userText = '(지금은 퀴즈 중이야. 아이의 말은 답을 맞히려는 시도일 수 있어. 맞으면 "정답은 ○○!"으로 짧게 확인하고 한 줄 설명을 덧붙여. 틀리면 힌트를 하나만 더 줘.)\n' + q;
+    if (paperCtx && !quiz) { const A = paperCtx; userText = `(아이는 지금 루아 신문 기사를 읽다가 물어본 거야. 기사 제목: ${A.title}. 기사 내용: ${A.lede} ${String(A.body).replace(/[《》]/g, '')} 질문이 이 기사와 관련 있으면 기사 내용을 바탕으로 답하고, 기사에 없는 부분은 네가 확실히 아는 사실로만 쉽게 보태. 기사와 상관없는 질문이면 그냥 답해.)\n` + userText; }
     if (shownChips.length && !quiz && q !== shownChips.find(x => x === q)) userText = `(화면에 보이던 이어서 질문: ${shownChips.map((x, i) => (i + 1) + '. ' + x).join(' / ')} — 아이가 번호나 '그거'로 말하면 이 중에서 골라 답해.)\n` + userText;
     // 날씨를 물으면 대기화면이 쓰는 실제 날씨 정보를 함께 보냄 (AI는 지금 날씨를 모르니까)
     const wxAsk = !quiz && (WX_Q.test(said) || WX_Q.test(q) || (recent.length && recent[recent.length - 1].wx && /내일|모레|오늘|아침|저녁|밤|이따|주말|그럼|그러면/.test(said + q)));
@@ -1794,7 +2025,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v85';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v86';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
