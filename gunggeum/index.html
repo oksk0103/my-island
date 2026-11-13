@@ -681,6 +681,11 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 
 /* 제호도 명조로 — 대기화면의 시계·제목과 같은 서체 */
 .svp-name, .pp-mast { font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif !important; font-weight: 900 !important; letter-spacing: -.02em; }
+
+/* v90: 루아 신문 제호 = 직접 그린 궁체 로고(이름 낙관 포함) */
+.svp-name img, .pp-mast img { display: block; height: 1.05em; width: auto; }
+.saver.paper-hero .svp-name { font-size: clamp(3rem, min(6.6vw, 12.4vh), 7.6rem); }
+.pp-mast { font-size: clamp(1.8rem, min(2.6vw, 4.6vh), 2.6rem); }
 </style>
 
 </head>
@@ -741,7 +746,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   </div>
   <div class="paper" id="paper" hidden><div class="inner">
     <div class="pp-head">
-      <div class="l"><span class="pp-mast">루아 신문</span><span class="pp-folio" id="ppFolio"></span></div>
+      <div class="l"><span class="pp-mast"><img src="./rua-masthead.svg" alt="루아 신문"></span><span class="pp-folio" id="ppFolio"></span></div>
       <div class="r"><button class="pp-btn listen" id="ppListen" type="button"><svg viewBox="0 0 24 24"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path d="M16 8.2a5.2 5.2 0 0 1 0 7.6"></path></svg>들려줘</button><span class="pp-no" id="ppNo"></span></div>
     </div>
     <article class="pp-art" id="ppArt">
@@ -792,7 +797,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <section class="sv-text">
         <p class="sv-line" id="svLine"></p>
         <div class="sv-paper" id="svPaper" hidden>
-          <div class="svp-mast"><span class="svp-name">루아 신문</span><span class="svp-meta" id="svpMeta"></span></div>
+          <div class="svp-mast"><span class="svp-name"><img src="./rua-masthead.svg" alt="루아 신문"></span><span class="svp-meta" id="svpMeta"></span></div>
           <div class="svp-lead" id="svpLead"><div class="svp-photo" id="svpPhoto"></div><div><span class="svp-tag" id="svpTag"></span><h2 class="svp-hed" id="svpHed"></h2><p class="svp-lede" id="svpLede"></p></div></div>
           <div class="svp-more" id="svpMore"></div>
           <div class="svp-foot"><span class="svp-unread" id="svpUnread"><i></i><span></span></span><button class="svp-open" id="svpOpen" type="button">신문 펴기<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button></div>
