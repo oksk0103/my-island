@@ -823,13 +823,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v91</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v92</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v91</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v92</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1520,7 +1520,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   document.addEventListener('keydown', e => { if (!saverEl.hidden && logEl.hidden) { e.preventDefault(); if (e.repeat || Date.now() - (window.__gkSaverAt || 0) < 1500) return; exitSaver(); } }, true);
 
   // ---------- 루아 신문: 매일 아침 news/latest.json 을 읽어 대기화면 1면과 기사 화면에 보여 줌 ----------
-  const NEWS_KEY = 'gk-news', NEWS_READ = 'gk-news-read';
+  const NEWS_KEY = 'gk-news', NEWS_READ = 'gk-news-read2', NEWS_DONE = 'gk-news-done2'; // 읽음 기록은 발행 날짜로
   let news = LS.get(NEWS_KEY, null), newsAt = 0, paperIdx = 0, paperCtx = null;
   const paperEl = $('paper');
   const escN = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -1540,7 +1540,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const d = new Date(news.date + 'T00:00:00'); return (Date.now() - d.getTime()) < 3.5 * 864e5 && d.getTime() - Date.now() < 864e5;
   }
   function newsDate() { const d = new Date(news.date + 'T00:00:00'); return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`; }
-  const newsRead = () => news && LS.get(NEWS_READ, 0) === news.no;
+  const newsRead = () => !!news && LS.get(NEWS_READ, '') === news.date;
   // 기사 사진: 질문 답과 똑같은 안전 검사(분류 허용 목록 + 기기 안 선정성 검사)를 통과한 사진만
   const picMemo = new Map();
   async function safePic(term) {
@@ -1583,7 +1583,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('svpMore').innerHTML = rest.slice(0, 2).map((x, i) => `<div><span class="svp-tag">${escN(x.tag)} · ${i + 2}면</span><h3 class="svp-hed">${escN(x.title)}</h3></div>`).join('');
     const words = news.articles.map(x => x.word && x.word.w).filter(Boolean).length;
     const u = $('svpUnread'); u.classList.toggle('read', newsRead()); u.querySelector('span').textContent = newsRead() ? `오늘 신문 다 읽음` : `오늘 새 소식 ${news.articles.length}개 · 오늘의 낱말 ${words}개`;
-    { const done = LS.get('gk-news-done', []); $('svpDoneT').textContent = `루아 신문 제${news.no}호 다 읽었어!`; $('svpCount').textContent = done.length > 1 ? `지금까지 ${done.length}호 읽음` : ''; }
+    { const done = LS.get(NEWS_DONE, []); $('svpDoneT').textContent = `루아 신문 제${news.no}호 다 읽었어!`; $('svpCount').textContent = done.length > 1 ? `지금까지 ${done.length}호 읽음` : ''; }
     const lead = $('svpLead'), box = $('svpPhoto'), key = news.no + ':' + a.pic;
     if (box.dataset.k !== key) {
       box.dataset.k = key; box.innerHTML = ''; lead.classList.add('nopic');
@@ -1615,8 +1615,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     hush(); setChips([]); followChips = []; hidePic(); paperCtx = null; delete app.dataset.fromPaper;
     paperEl.hidden = false; app.dataset.paper = '1';
     setState('idle', '신문 읽는 중', '');
-    renderPaper(); LS.set(NEWS_READ, news.no);
-    { const done = LS.get('gk-news-done', []); if (!done.includes(news.no)) { done.push(news.no); while (done.length > 400) done.shift(); LS.set('gk-news-done', done); } }
+    renderPaper(); LS.set(NEWS_READ, news.date);
+    { const done = LS.get(NEWS_DONE, []); if (!done.includes(news.date)) { done.push(news.date); while (done.length > 400) done.shift(); LS.set(NEWS_DONE, done); } }
     diag('app', `신문 펼침: ${paperIdx + 1}면`);
   }
   function hidePaper() { if (!paperEl) return; paperEl.hidden = true; delete app.dataset.paper; }
@@ -2139,7 +2139,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v91';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v92';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -2210,8 +2210,8 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   $('diagFilter').addEventListener('change', renderDiag);
   $('diagClear').addEventListener('click', () => { LS.set(DIAG_KEY, []); LS.set(BAT_KEY, []); renderDiag(); renderBat(); $('diagNote').textContent = '지웠어요'; });
   // 부모님 화면: 루아 신문 상태 (테스트용으로 안 읽음 되돌리기)
-  function newsNoteRender() { const n = news; $('newsNote').textContent = n ? `지금 신문: 제${n.no}호 (${n.date}) · ${newsRead() ? '읽음' : '안 읽음'} · 지금까지 ${LS.get('gk-news-done', []).length}호 읽음` : '아직 받은 신문이 없어요'; }
-  $('newsUnread').addEventListener('click', () => { LS.set(NEWS_READ, 0); if (news) { const d = LS.get('gk-news-done', []).filter(x => x !== news.no); LS.set('gk-news-done', d); } newsNoteRender(); diag('app', '신문을 안 읽은 상태로 되돌림'); });
+  function newsNoteRender() { const n = news; $('newsNote').textContent = n ? `지금 신문: 제${n.no}호 (${n.date}) · ${newsRead() ? '읽음' : '안 읽음'} · 지금까지 ${LS.get(NEWS_DONE, []).length}호 읽음` : '아직 받은 신문이 없어요'; }
+  $('newsUnread').addEventListener('click', () => { LS.set(NEWS_READ, ''); if (news) { const d = LS.get(NEWS_DONE, []).filter(x => x !== news.date); LS.set(NEWS_DONE, d); } newsNoteRender(); diag('app', '신문을 안 읽은 상태로 되돌림'); });
   $('newsReload').addEventListener('click', async () => { $('newsNote').textContent = '받는 중…'; await loadNews(true); newsNoteRender(); });
   new MutationObserver(() => { if (!logEl.hidden) newsNoteRender(); }).observe(logEl, { attributes: true, attributeFilter: ['hidden'] });
   $('diagCopy').addEventListener('click', async () => {
