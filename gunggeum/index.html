@@ -686,6 +686,14 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .svp-name img, .pp-mast img { display: block; height: 1.05em; width: auto; }
 .saver.paper-hero .svp-name { font-size: clamp(3rem, min(6.6vw, 12.4vh), 7.6rem); }
 .pp-mast { font-size: clamp(1.8rem, min(2.6vw, 4.6vh), 2.6rem); }
+
+/* 양옆 칸 정렬: 윗선(날짜·현재 날씨)과 아랫선(시계·한마디·제호)을 맞춤 */
+.saver.paper-hero .sv-top { align-self: start; padding: 0; line-height: 1; }
+.saver.paper-hero .sv-wx .wx-now { align-self: start; line-height: 1; }
+.saver.paper-hero .sv-time { line-height: .74; }
+.saver.paper-hero .sv-tip { line-height: .9; position: relative; top: .24em; }
+.saver.paper-hero .svp-name img { position: relative; top: .11em; }
+.saver.paper-hero .sv-rule { margin-top: 3.4vh; }
 </style>
 
 </head>
