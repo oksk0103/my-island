@@ -837,13 +837,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v94</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v95</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v94</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v95</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1367,7 +1367,7 @@ ${nowLine()} 날짜·요일·시간·계절이나 "○○까지 며칠 남았어
   applyTheme(); setInterval(applyTheme, 60 * 1000);
 
   // ---------- idle: piece / weather / clock ----------
-  let wxCache = null, wxAt = 0;
+  let wxCache = null, wxAt = 0, wxTryAt = 0;
   const WX_Q = /날씨|기온|몇\s*도|비\s*(와|올|오|온|내)|눈\s*(와|올|오|온|내)|우산|추워|춥|더워|덥|미세\s*먼지|황사|바람\s*(불|세)|뭐\s*입|외투|패딩/;
   const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
   const RAYS = (cx, cy, r1, r2) => Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4; return `<line x1="${(cx + Math.cos(a) * r1).toFixed(1)}" y1="${(cy + Math.sin(a) * r1).toFixed(1)}" x2="${(cx + Math.cos(a) * r2).toFixed(1)}" y2="${(cy + Math.sin(a) * r2).toFixed(1)}"/>`; }).join('');
@@ -1491,7 +1491,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const [bodyTxt, attr] = line.split(/\s+—\s+(?=[^—]+$)/);
     $('svLine').innerHTML = bodyTxt.replace(/</g, '&lt;').replace(/《([^》]+)》/g, '<b>$1</b>') + (attr ? `<span class="sv-attr">— ${attr.replace(/</g, '&lt;')}</span>` : '');
     $('svDow').textContent = DAYS[d.getDay()] + '요일'; $('svMon').textContent = (d.getMonth() + 1) + '월'; $('svDay').textContent = d.getDate() + '일'; $('svTime').textContent = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
-    let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 6 * 3600e3) w = last.w; } // 날씨를 못 받으면 6시간 안의 마지막 날씨
+    if ((!wxCache || Date.now() - wxAt > 20 * 60e3) && Date.now() - wxTryAt > 3 * 60e3) { // 대기화면에 있는 동안에도 날씨를 계속 새로 받음 (실패하면 3분 뒤 다시)
+      wxTryAt = Date.now(); fetchWeather().then(() => { if (!saverEl.hidden) renderSaver(); }).catch(e => diag('err', '대기화면 날씨 못 받음: ' + (e.message || e)));
+    }
+    let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 12 * 3600e3) w = last.w; } // 날씨를 못 받으면 12시간 안의 마지막 날씨
     const [txt] = (w && WX[w.code]) || [''];
     { const dg = w ? dustGrade(w.pm10, w.pm25) : null, nm = (settings.wxName || '').replace(/</g, '&lt;');
       $('svWx').innerHTML = w ? `<span class="wx-now"><b>${w.t}°</b> ${txt}</span><span class="wx-sub">${[`최고 ${w.hi}° 최저 ${w.lo}°`, w.pop != null ? '비 ' + w.pop + '%' : '', dg ? '먼지 ' + dg : ''].filter(Boolean).map(x => `<span class="wseg">${x}</span>`).join(' · ')}</span>` : ''; }
@@ -2153,7 +2156,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v94';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v95';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
