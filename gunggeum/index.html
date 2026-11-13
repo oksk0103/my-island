@@ -598,6 +598,19 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 #backPaper { display: none; }
 .app[data-from-paper="1"] #backPaper { display: inline-flex; }
 @media (max-width: 760px) { .pp-art { grid-template-columns: 1fr; overflow: auto; } .pp-tabs { display: none; } }
+
+/* v88: 대기화면 비율 — 3m에서 날씨가 읽히게, 시계는 조금 줄이고 신문은 그대로 */
+.sv-wx .wx-now, .sv-wx .wx-sub { display: block; }
+.saver.has-paper .sv-inner { grid-template-columns: minmax(0, 30fr) 1px minmax(0, 62fr); column-gap: 3.5vw; max-width: 94vw; }
+.saver.has-paper .sv-date { min-width: 0; }
+.saver.has-paper .sv-top { font-size: clamp(1.4rem, min(2vw, 3.6vh), 2.2rem); }
+.saver.has-paper .sv-time { font-size: clamp(5rem, min(8.4vw, 15vh), 9rem); margin-top: .5rem; }
+.saver.has-paper .sv-wx { margin-top: 2.2rem; line-height: 1.35; color: color-mix(in srgb, var(--sv-text) 70%, transparent); }
+.saver.has-paper .sv-wx .wx-now { font-size: clamp(2.4rem, min(3.4vw, 6.2vh), 3.6rem); color: color-mix(in srgb, var(--sv-text) 82%, transparent); letter-spacing: -.02em; white-space: nowrap; }
+.saver.has-paper .sv-wx .wx-now b { font-weight: 600; color: var(--ink); }
+.saver.has-paper .sv-wx .wx-sub { margin-top: .5rem; font-size: clamp(1.1rem, min(1.55vw, 2.8vh), 1.6rem); }
+.saver.has-paper .sv-tip { margin-top: .8rem; font-size: clamp(1.2rem, min(1.7vw, 3.1vh), 1.75rem); }
+.saver.has-paper .svp-more .svp-hed { font-size: clamp(1.15rem, min(1.6vw, 2.9vh), 1.6rem); }
 </style>
 
 </head>
@@ -725,13 +738,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v87</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v88</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v87</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v88</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1376,7 +1389,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('svDow').textContent = DAYS[d.getDay()] + '요일'; $('svMon').textContent = (d.getMonth() + 1) + '월'; $('svDay').textContent = d.getDate() + '일'; $('svTime').textContent = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
     let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 6 * 3600e3) w = last.w; } // 날씨를 못 받으면 6시간 안의 마지막 날씨
     const [txt] = (w && WX[w.code]) || [''];
-    $('svWx').innerHTML = w ? `${(settings.wxName || '').replace(/</g, '&lt;')} ${w.t}° ${txt}<br>최고 ${w.hi}° · 최저 ${w.lo}°${w.pop != null ? ' · 비 ' + w.pop + '%' : ''}` : '';
+    { const dg = w ? dustGrade(w.pm10, w.pm25) : null, nm = (settings.wxName || '').replace(/</g, '&lt;');
+      $('svWx').innerHTML = w ? `<span class="wx-now"><b>${w.t}°</b> ${txt}</span><span class="wx-sub">${nm ? nm + ' · ' : ''}최고 ${w.hi}° 최저 ${w.lo}°${w.pop != null ? ' · 비 ' + w.pop + '%' : ''}${dg ? ' · 먼지 ' + dg : ''}</span>` : ''; }
     $('svTip').textContent = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : '';
     const hasPaper = renderFront();
     if (!hasPaper && (d.getMinutes() % 10 === 0 || !LS.get(LINES_KEY, {})[hhmm(new Date(d.getTime() + 5 * 60000))])) fetchLines(d);
@@ -2026,7 +2040,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v87';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v88';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
