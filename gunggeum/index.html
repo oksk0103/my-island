@@ -837,13 +837,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v95</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v96</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v95</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v96</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1387,20 +1387,47 @@ ${nowLine()} 날짜·요일·시간·계절이나 "○○까지 며칠 남았어
     thermo: '<svg viewBox="0 0 64 64"><path d="M26 38V14a6 6 0 0 1 12 0v24a10 10 0 1 1-12 0Z"/><path d="M32 26v18"/></svg>'
   };
   const WX = { 0: ['맑음', 'sun'], 1: ['대체로 맑음', 'sunsmallcloud'], 2: ['구름 조금', 'suncloud'], 3: ['흐림', 'cloud'], 45: ['안개', 'fog'], 48: ['안개', 'fog'], 51: ['이슬비', 'drizzle'], 53: ['이슬비', 'drizzle'], 55: ['이슬비', 'drizzle'], 56: ['찬 이슬비', 'rain'], 57: ['찬 이슬비', 'rain'], 61: ['비', 'rain'], 63: ['비', 'rain'], 65: ['많은 비', 'rain'], 66: ['얼음비', 'rain'], 67: ['얼음비', 'rain'], 71: ['눈', 'snow'], 73: ['눈', 'snow'], 75: ['많은 눈', 'snow'], 77: ['싸락눈', 'snow'], 80: ['소나기', 'drizzle'], 81: ['소나기', 'rain'], 82: ['강한 소나기', 'thunder'], 85: ['소낙눈', 'snow'], 86: ['소낙눈', 'snow'], 95: ['천둥번개', 'thunder'], 96: ['천둥번개·우박', 'thunder'], 99: ['천둥번개·우박', 'thunder'] };
-  async function fetchWeather() {
-    if (wxCache && Date.now() - wxAt < 20 * 60 * 1000) return wxCache;
-    const lat = +settings.wxLat || 37.526, lon = +settings.wxLon || 126.896;
+  // 날씨: open-meteo 가 안 되면 wttr.in 으로 (둘 다 키 없이 쓰는 무료 날씨)
+  const WWO = c => { c = +c; if (c === 113) return 0; if (c === 116) return 2; if (c === 119 || c === 122) return 3; if ([143, 248, 260].includes(c)) return 45;
+    if ([263, 266, 176, 293].includes(c)) return 51; if ([296, 353].includes(c)) return 61; if ([299, 302, 356].includes(c)) return 63; if ([305, 308, 359].includes(c)) return 65;
+    if ([182, 185, 281, 284, 311, 314, 317, 320, 350, 362, 365, 374, 377].includes(c)) return 66; if ([179, 227, 323, 326, 368].includes(c)) return 71; if ([329, 332, 230, 335, 338, 371].includes(c)) return c >= 335 || c === 230 ? 75 : 73;
+    if ([200, 386, 389, 392, 395].includes(c)) return 95; return 3; };
+  const withTimeout = (pr, ms) => Promise.race([pr, new Promise((_, no) => setTimeout(() => no(new Error('시간 초과')), ms))]);
+  async function wxOpenMeteo(lat, lon) {
     const [f, a] = await Promise.all([
-      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,precipitation&hourly=temperature_2m,weather_code,precipitation_probability,is_day&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code,sunrise,sunset&timezone=Asia%2FSeoul&forecast_days=2`).then(r => r.json()),
-      fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=pm10,pm2_5&timezone=Asia%2FSeoul`).then(r => r.json()).catch(() => null)
+      withTimeout(fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code,precipitation&hourly=temperature_2m,weather_code,precipitation_probability,is_day&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code,sunrise,sunset&timezone=Asia%2FSeoul&forecast_days=2`).then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }), 8000),
+      wxAir(lat, lon)
     ]);
     const c = f.current, d = f.daily, hh = f.hourly || {};
     const now = new Date(); const startIdx = Math.max(0, (hh.time || []).findIndex(t => new Date(t) > now));
     const hours = (hh.time || []).slice(startIdx, startIdx + 8).map((t, k) => ({ h: new Date(t).getHours(), t: Math.round(hh.temperature_2m[startIdx + k]), code: hh.weather_code[startIdx + k], pop: hh.precipitation_probability?.[startIdx + k] ?? null, day: hh.is_day?.[startIdx + k] }));
     try { if (d.sunrise?.[0]) LS.set('gk-sun', { rise: d.sunrise[0], set: d.sunset[0], day: dayKey(new Date()) }); } catch (e) {}
-    wxCache = { hours, t: Math.round(c.temperature_2m), feel: Math.round(c.apparent_temperature), code: c.weather_code, dayCode: d.weather_code?.[0], hi: Math.round(d.temperature_2m_max[0]), lo: Math.round(d.temperature_2m_min[0]), pop: d.precipitation_probability_max?.[0] ?? null, pm10: a?.current?.pm10 ?? null, pm25: a?.current?.pm2_5 ?? null };
-    try { if (d.temperature_2m_max?.[1] != null) wxCache.tom = { hi: Math.round(d.temperature_2m_max[1]), lo: Math.round(d.temperature_2m_min[1]), pop: d.precipitation_probability_max?.[1] ?? null, code: d.weather_code?.[1] }; } catch (e) {}
-    wxAt = Date.now(); try { LS.set('gk-wx-last', { at: wxAt, w: wxCache }); } catch (e) {}
+    const w = { hours, t: Math.round(c.temperature_2m), feel: Math.round(c.apparent_temperature), code: c.weather_code, dayCode: d.weather_code?.[0], hi: Math.round(d.temperature_2m_max[0]), lo: Math.round(d.temperature_2m_min[0]), pop: d.precipitation_probability_max?.[0] ?? null, pm10: a?.pm10 ?? null, pm25: a?.pm25 ?? null, src: 'open-meteo' };
+    if (d.temperature_2m_max?.[1] != null) w.tom = { hi: Math.round(d.temperature_2m_max[1]), lo: Math.round(d.temperature_2m_min[1]), pop: d.precipitation_probability_max?.[1] ?? null, code: d.weather_code?.[1] };
+    return w;
+  }
+  async function wxAir(lat, lon) {
+    try { const j = await withTimeout(fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=pm10,pm2_5&timezone=Asia%2FSeoul`).then(r => r.json()), 6000); return { pm10: j?.current?.pm10 ?? null, pm25: j?.current?.pm2_5 ?? null }; } catch (e) { return null; }
+  }
+  async function wxWttr(lat, lon) {
+    const [j, a] = await Promise.all([withTimeout(fetch(`https://wttr.in/${(+lat).toFixed(3)},${(+lon).toFixed(3)}?format=j1`).then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }), 9000), wxAir(lat, lon)]);
+    const c = j.current_condition[0], d0 = j.weather[0], d1 = j.weather[1];
+    const pop = day => Math.max(...(day.hourly || []).map(x => +x.chanceofrain || 0));
+    const now = new Date(), hrs = [];
+    for (const [di, day] of [[0, d0], [1, d1]]) for (const x of (day?.hourly || [])) { const h = Math.floor(+x.time / 100); const t = new Date(now); t.setDate(now.getDate() + di); t.setHours(h, 0, 0, 0); if (t > now) hrs.push({ h, t: +x.tempC, code: WWO(x.weatherCode), pop: +x.chanceofrain || 0, day: h >= 7 && h < 18 ? 1 : 0 }); }
+    const w = { hours: hrs.slice(0, 8), t: +c.temp_C, feel: +c.FeelsLikeC, code: WWO(c.weatherCode), dayCode: WWO(d0.hourly?.[4]?.weatherCode ?? c.weatherCode), hi: +d0.maxtempC, lo: +d0.mintempC, pop: pop(d0), pm10: a?.pm10 ?? null, pm25: a?.pm25 ?? null, src: 'wttr.in' };
+    if (d1) w.tom = { hi: +d1.maxtempC, lo: +d1.mintempC, pop: pop(d1), code: WWO(d1.hourly?.[4]?.weatherCode ?? 116) };
+    return w;
+  }
+  let wxSrcLogged = '';
+  async function fetchWeather() {
+    if (wxCache && Date.now() - wxAt < 20 * 60 * 1000) return wxCache;
+    const lat = +settings.wxLat || 37.526, lon = +settings.wxLon || 126.896;
+    let w = null, err1 = null;
+    try { w = await wxOpenMeteo(lat, lon); } catch (e) { err1 = e; }
+    if (!w) { try { w = await wxWttr(lat, lon); } catch (e) { diag('err', `날씨 둘 다 실패 — open-meteo: ${err1?.message || err1} / wttr.in: ${e.message || e}`); throw e; } }
+    if (w.src !== wxSrcLogged) { diag('app', `날씨 받음 (${w.src})`); wxSrcLogged = w.src; }
+    wxCache = w; wxAt = Date.now(); try { LS.set('gk-wx-last', { at: wxAt, w: wxCache }); } catch (e) {}
     return wxCache;
   }
   function dustGrade(pm10, pm25) {
@@ -2156,7 +2183,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v95';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v96';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
