@@ -752,7 +752,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <aside class="pp-side">
         <div class="pp-photo" id="ppPhoto"></div>
         <div class="pp-cap" id="ppCap"></div>
-        <div class="pp-word" id="ppWord"><div class="lbl">새 낱말</div><div class="w" id="ppW"></div><div class="m" id="ppM"></div><div class="hj" id="ppHj"></div></div>
+        <div class="pp-word" id="ppWord"><div class="lbl">오늘의 낱말</div><div class="w" id="ppW"></div><div class="m" id="ppM"></div><div class="hj" id="ppHj"></div></div>
       </aside>
     </article>
     <nav class="pp-nav">
@@ -1561,8 +1561,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('svpHed').textContent = a.title; $('svpLede').textContent = a.lede || '';
     $('svpMore').innerHTML = rest.slice(0, 2).map((x, i) => `<div><span class="svp-tag">${escN(x.tag)} · ${i + 2}면</span><h3 class="svp-hed">${escN(x.title)}</h3></div>`).join('');
     const words = news.articles.map(x => x.word && x.word.w).filter(Boolean).length;
-    const u = $('svpUnread'); u.classList.toggle('read', newsRead()); u.querySelector('span').textContent = newsRead() ? `오늘 신문 다 읽음 · 새 낱말 ${words}개` : `오늘 새 소식 ${news.articles.length}개 · 새 낱말 ${words}개`;
-    { const done = LS.get('gk-news-done', []); $('svpDoneT').textContent = `루아 신문 제${news.no}호 읽었어 · 새 낱말 ${words}개 배웠어!`; $('svpCount').textContent = done.length > 1 ? `지금까지 ${done.length}호 읽음` : ''; }
+    const u = $('svpUnread'); u.classList.toggle('read', newsRead()); u.querySelector('span').textContent = newsRead() ? `오늘 신문 다 읽음` : `오늘 새 소식 ${news.articles.length}개 · 오늘의 낱말 ${words}개`;
+    { const done = LS.get('gk-news-done', []); $('svpDoneT').textContent = `루아 신문 제${news.no}호 다 읽었어!`; $('svpCount').textContent = done.length > 1 ? `지금까지 ${done.length}호 읽음` : ''; }
     const lead = $('svpLead'), box = $('svpPhoto'), key = news.no + ':' + a.pic;
     if (box.dataset.k !== key) {
       box.dataset.k = key; box.innerHTML = ''; lead.classList.add('nopic');
