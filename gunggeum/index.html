@@ -601,6 +601,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 
 /* v88: 대기화면 비율 — 3m에서 날씨가 읽히게, 시계는 조금 줄이고 신문은 그대로 */
 .sv-wx .wx-now, .sv-wx .wx-sub { display: block; }
+.sv-wx .wseg { white-space: nowrap; }
 .saver.has-paper .sv-inner { grid-template-columns: minmax(0, 30fr) 1px minmax(0, 62fr); column-gap: 3.5vw; max-width: 94vw; }
 .saver.has-paper .sv-date { min-width: 0; }
 .saver.has-paper .sv-top { font-size: clamp(1.4rem, min(2vw, 3.6vh), 2.2rem); }
@@ -617,6 +618,82 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .saver.has-paper .svp-lead { padding: 1.6rem 0; }
 .saver.has-paper .svp-more { padding-top: 1.4rem; }
 .saver.has-paper .svp-foot { margin-top: 2rem; }
+
+/* v90: 안 읽은 아침엔 신문이 주인공 — 시계·날씨는 제호 양옆 '귀'에 */
+.saver.paper-hero { padding: 3.5vh 5vw; }
+.saver.paper-hero .sv-inner { display: grid; width: 100%; max-width: 100rem; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); column-gap: 3vw; row-gap: 0;
+  grid-template-areas: "top name wxn" "time name wxs" "time name tip" "rule rule rule" "meta meta meta" "lead lead lead" "more more more" "foot foot foot" "msg msg msg"; align-items: end; }
+.saver.paper-hero .sv-date, .saver.paper-hero .sv-text, .saver.paper-hero .sv-paper, .saver.paper-hero .svp-mast { display: contents; }
+.saver.paper-hero .sv-line { display: none; }
+.saver.paper-hero .sv-top { grid-area: top; font-size: clamp(1.2rem, min(1.7vw, 3.1vh), 1.8rem); align-self: end; padding-bottom: .2rem; }
+.saver.paper-hero .sv-time { grid-area: time; font-size: clamp(4.8rem, min(8.4vw, 16vh), 10rem); margin: .2rem 0 0 -.03em; line-height: .82; align-self: end; }
+.saver.paper-hero .svp-name { grid-area: name; align-self: end; justify-self: center; font-size: clamp(3rem, min(6.3vw, 12vh), 7.2rem); font-weight: 800; line-height: .9; }
+.saver.paper-hero .sv-wx { display: contents; }
+.saver.paper-hero .sv-wx .wx-now { grid-area: wxn; justify-self: end; align-self: end; line-height: 1; }
+.saver.paper-hero .sv-wx .wx-sub { grid-area: wxs; justify-self: end; align-self: end; margin-top: .7rem; color: color-mix(in srgb, var(--sv-text) 62%, transparent); font-family: var(--f-serif); }
+.saver.paper-hero .sv-wx .wx-now { font-size: clamp(2.4rem, min(3.8vw, 7vh), 4.2rem); }
+.saver.paper-hero .sv-wx .wx-sub { font-size: clamp(1.1rem, min(1.45vw, 2.8vh), 1.6rem); }
+.saver.paper-hero .sv-tip { grid-area: tip; justify-self: end; align-self: end; margin-top: .5rem !important; font-size: clamp(1.4rem, min(2.1vw, 4vh), 2.3rem); line-height: 1; }
+.saver.paper-hero .sv-rule { grid-area: rule; height: 0; margin-top: 2.2vh; border-top: 3px solid color-mix(in srgb, var(--ink) 70%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--ink) 70%, transparent); padding-top: 4px; background: none; }
+.saver.paper-hero .svp-meta { grid-area: meta; text-align: center; padding-top: .8rem; font-size: clamp(.85rem, min(1.1vw, 2vh), 1.15rem); }
+.svp-meta .msep { display: none; }
+.saver.paper-hero .svp-meta br, .saver.paper-hero .svp-meta .mdate { display: none; }
+.saver.paper-hero .svp-meta .msep { display: inline; }
+.saver.paper-hero .svp-lead { grid-area: lead; padding: 2.4vh 0 2.6vh; }
+.saver.paper-hero .svp-lead .svp-hed { font-size: clamp(2rem, min(4.3vw, 8.2vh), 4.8rem); }
+.saver.paper-hero .svp-lede { font-size: clamp(1.05rem, min(1.55vw, 2.9vh), 1.6rem); }
+.saver.paper-hero .svp-tag { font-size: clamp(.95rem, min(1.2vw, 2.2vh), 1.25rem); }
+.saver.paper-hero .svp-more { grid-area: more; padding-top: 2.2vh; }
+.saver.paper-hero .svp-more .svp-hed { font-size: clamp(1.3rem, min(2.1vw, 4vh), 2.2rem); }
+.saver.paper-hero .svp-foot { grid-area: foot; margin-top: 3vh; }
+.saver.paper-hero .svp-unread { font-size: clamp(1rem, min(1.35vw, 2.5vh), 1.4rem); color: color-mix(in srgb, var(--ink) 75%, transparent); }
+.saver.paper-hero .svp-open { min-height: clamp(3.2rem, 7vh, 4.2rem); padding: 0 1.9rem; font-size: clamp(1.15rem, min(1.6vw, 3vh), 1.6rem); background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.saver.paper-hero .sv-msg { grid-area: msg; }
+
+/* v90: 대기화면 첫 문단은 빼고, 다 읽은 뒤·밤 화면 */
+.saver .svp-lede { display: none; }
+.svp-done, .sv-night { display: none; }
+.saver.paper-done .sv-inner { display: flex; flex-direction: column; align-items: center; max-width: none; text-align: center; }
+.saver.paper-done .sv-rule, .saver.paper-done .sv-line, .saver.paper-done .svp-mast, .saver.paper-done .svp-lead, .saver.paper-done .svp-more, .saver.paper-done .svp-foot { display: none; }
+.saver.paper-done .sv-date { align-items: center; }
+.saver.paper-done .sv-top { font-size: clamp(1.4rem, min(2.1vw, 3.9vh), 2.3rem); }
+.saver.paper-done .sv-time { font-size: clamp(6rem, min(14vw, 27vh), 16rem); margin: .4rem 0 0; line-height: .9; }
+.saver.paper-done .sv-wx { margin-top: 3vh !important; }
+.saver.paper-done .sv-wx .wx-now { font-size: clamp(2.4rem, min(4vw, 7.4vh), 4.4rem); }
+.saver.paper-done .sv-wx .wx-sub { font-size: clamp(1.1rem, min(1.5vw, 2.8vh), 1.6rem); margin-top: .5rem; }
+.saver.paper-done .sv-tip { font-size: clamp(1.4rem, min(2.1vw, 4vh), 2.3rem); margin-top: 1rem !important; }
+.saver.paper-done .svp-done { display: inline-flex; align-items: center; gap: 1.1rem; margin-top: 5vh; padding: .9rem 1.4rem .9rem 1rem; border: 1px solid var(--line); border-radius: 999px; text-align: left; }
+.svp-done .ok { width: 2.4rem; height: 2.4rem; border-radius: 50%; background: var(--accent); display: grid; place-items: center; flex: none; }
+.svp-done .ok svg { width: 1.4rem; height: 1.4rem; fill: none; stroke: var(--accent-ink); stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+.svp-done .t { display: flex; flex-direction: column; gap: .15rem; }
+.svp-done .t b { font-size: clamp(1.05rem, min(1.4vw, 2.6vh), 1.45rem); font-weight: 700; color: var(--ink); }
+.svp-done .t small { font-size: clamp(.85rem, min(1.05vw, 2vh), 1.05rem); color: var(--muted); }
+.svp-done .t small:empty { display: none; }
+.svp-done .again { margin-left: .6rem; font-size: clamp(.95rem, min(1.2vw, 2.2vh), 1.2rem); font-weight: 700; color: var(--accent); white-space: nowrap; }
+.saver.night { background: #000; }
+.saver.night .sv-inner { display: flex; flex-direction: column; align-items: center; max-width: none; }
+.saver.night .sv-rule, .saver.night .sv-line, .saver.night .sv-paper, .saver.night .sv-top, .saver.night .sv-wx, .saver.night .sv-tip { display: none !important; }
+.saver.night .sv-date { align-items: center; }
+.saver.night .sv-time { font-size: clamp(6rem, min(15vw, 28vh), 17rem); color: #5A4320; margin: 0; line-height: .9; }
+.saver.night .sv-night { display: block; margin-top: 3vh; font-size: clamp(1.3rem, min(1.9vw, 3.5vh), 2rem); color: #4A3820; }
+.saver.night .sv-night:empty { display: none; }
+.saver.night .sv-msg { text-align: center; }
+
+/* 제호도 명조로 — 대기화면의 시계·제목과 같은 서체 */
+.svp-name, .pp-mast { font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif !important; font-weight: 900 !important; letter-spacing: -.02em; }
+
+/* v90: 루아 신문 제호 = 직접 그린 궁체 로고(이름 낙관 포함) */
+.svp-name img, .pp-mast img { display: block; height: 1.05em; width: auto; }
+.saver.paper-hero .svp-name { font-size: clamp(3rem, min(6.6vw, 12.4vh), 7.6rem); }
+.pp-mast { font-size: clamp(1.8rem, min(2.6vw, 4.6vh), 2.6rem); }
+
+/* 양옆 칸 정렬: 윗선(날짜·현재 날씨)과 아랫선(시계·한마디·제호)을 맞춤 */
+.saver.paper-hero .sv-top { align-self: start; padding: 0; line-height: 1; }
+.saver.paper-hero .sv-wx .wx-now { align-self: start; line-height: 1; }
+.saver.paper-hero .sv-time { line-height: .74; }
+.saver.paper-hero .sv-tip { line-height: .9; position: relative; top: .24em; }
+.saver.paper-hero .svp-name img { position: relative; top: .11em; }
+.saver.paper-hero .sv-rule { margin-top: 3.4vh; }
 </style>
 
 </head>
@@ -677,7 +754,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   </div>
   <div class="paper" id="paper" hidden><div class="inner">
     <div class="pp-head">
-      <div class="l"><span class="pp-mast">루아 신문</span><span class="pp-folio" id="ppFolio"></span></div>
+      <div class="l"><span class="pp-mast"><img src="./rua-masthead.svg" alt="루아 신문"></span><span class="pp-folio" id="ppFolio"></span></div>
       <div class="r"><button class="pp-btn listen" id="ppListen" type="button"><svg viewBox="0 0 24 24"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path d="M16 8.2a5.2 5.2 0 0 1 0 7.6"></path></svg>들려줘</button><span class="pp-no" id="ppNo"></span></div>
     </div>
     <article class="pp-art" id="ppArt">
@@ -691,7 +768,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <aside class="pp-side">
         <div class="pp-photo" id="ppPhoto"></div>
         <div class="pp-cap" id="ppCap"></div>
-        <div class="pp-word" id="ppWord"><div class="lbl">새 낱말</div><div class="w" id="ppW"></div><div class="m" id="ppM"></div><div class="hj" id="ppHj"></div></div>
+        <div class="pp-word" id="ppWord"><div class="lbl">오늘의 낱말</div><div class="w" id="ppW"></div><div class="m" id="ppM"></div><div class="hj" id="ppHj"></div></div>
       </aside>
     </article>
     <nav class="pp-nav">
@@ -722,15 +799,17 @@ body { word-break: keep-all; overflow-wrap: break-word; }
         <div class="sv-time" id="svTime"></div>
         <div class="sv-wx" id="svWx"></div>
         <div class="sv-tip" id="svTip"></div>
+        <div class="sv-night" id="svNight"></div>
       </section>
       <div class="sv-rule" aria-hidden="true"></div>
       <section class="sv-text">
         <p class="sv-line" id="svLine"></p>
         <div class="sv-paper" id="svPaper" hidden>
-          <div class="svp-mast"><span class="svp-name">루아 신문</span><span class="svp-meta" id="svpMeta"></span></div>
+          <div class="svp-mast"><span class="svp-name"><img src="./rua-masthead.svg" alt="루아 신문"></span><span class="svp-meta" id="svpMeta"></span></div>
           <div class="svp-lead" id="svpLead"><div class="svp-photo" id="svpPhoto"></div><div><span class="svp-tag" id="svpTag"></span><h2 class="svp-hed" id="svpHed"></h2><p class="svp-lede" id="svpLede"></p></div></div>
           <div class="svp-more" id="svpMore"></div>
           <div class="svp-foot"><span class="svp-unread" id="svpUnread"><i></i><span></span></span><button class="svp-open" id="svpOpen" type="button">신문 펴기<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button></div>
+          <div class="svp-done" id="svpDone"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span class="t"><b id="svpDoneT"></b><small id="svpCount"></small></span><span class="again">다시 보기</span></div>
         </div>
         <div class="sv-msg" id="svMsg" hidden></div>
       </section>
@@ -744,13 +823,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v89</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v90</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v89</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v90</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1396,10 +1475,12 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 6 * 3600e3) w = last.w; } // 날씨를 못 받으면 6시간 안의 마지막 날씨
     const [txt] = (w && WX[w.code]) || [''];
     { const dg = w ? dustGrade(w.pm10, w.pm25) : null, nm = (settings.wxName || '').replace(/</g, '&lt;');
-      $('svWx').innerHTML = w ? `<span class="wx-now"><b>${w.t}°</b> ${txt}</span><span class="wx-sub">${nm ? nm + ' · ' : ''}최고 ${w.hi}° 최저 ${w.lo}°${w.pop != null ? ' · 비 ' + w.pop + '%' : ''}${dg ? ' · 먼지 ' + dg : ''}</span>` : ''; }
+      $('svWx').innerHTML = w ? `<span class="wx-now"><b>${w.t}°</b> ${txt}</span><span class="wx-sub">${[`최고 ${w.hi}° 최저 ${w.lo}°`, w.pop != null ? '비 ' + w.pop + '%' : '', dg ? '먼지 ' + dg : ''].filter(Boolean).map(x => `<span class="wseg">${x}</span>`).join(' · ')}</span>` : ''; }
     $('svTip').textContent = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : '';
+    { const t = w && w.tom; $('svNight').textContent = t ? `내일 아침 ${t.lo}°${t.pop != null && t.pop >= 50 ? ' · 우산!' : t.lo <= 5 ? ' · 겉옷!' : ''}` : '';
+      const o = [[0, 0], [4, 2], [-3, 4], [2, -4], [-4, -2], [3, 3]][Math.floor(Date.now() / 300e3) % 6]; saverEl.querySelector('.sv-inner').style.translate = `${o[0]}px ${o[1]}px`; } // 화면 자국 방지: 5분마다 몇 px씩
     const hasPaper = renderFront();
-    if (!hasPaper && (d.getMinutes() % 10 === 0 || !LS.get(LINES_KEY, {})[hhmm(new Date(d.getTime() + 5 * 60000))])) fetchLines(d);
+    if (!hasPaper && !saverEl.classList.contains('night') && (d.getMinutes() % 10 === 0 || !LS.get(LINES_KEY, {})[hhmm(new Date(d.getTime() + 5 * 60000))])) fetchLines(d);
   }
   function enterSaver(lockMsg) {
     saverLock = lockMsg || '';
@@ -1483,15 +1564,21 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function bodyHtml(t) { return escN(t).replace(/《([^》]+)》/g, '<mark>$1</mark>'); }
   function renderFront() {
     const el = $('svPaper'), on = !!(news && newsFresh());
-    el.hidden = !on; saverEl.classList.toggle('has-paper', on);
-    if (!on) return false;
+    const hr = new Date().getHours(), night = window.__gkNight ?? (hr >= 22 || hr < 6);
+    el.hidden = !on || night; saverEl.classList.toggle('has-paper', on && !night); saverEl.classList.toggle('night', night);
+    // 낮: 아직 안 읽었으면 신문이 주인공, 다 읽었으면 시계가 주인공 + 신문은 한 줄로 접힘. 밤(22~6시): 시계만 어둡게
+    saverEl.classList.toggle('paper-hero', on && !night && !newsRead());
+    saverEl.classList.toggle('paper-done', on && !night && newsRead());
+    if (!on) return night;
+    if (night) return true;
     const [a, ...rest] = news.articles;
-    $('svpMeta').innerHTML = `제${escN(news.no)}호 · ${escN(newsDate())}${news.theme ? '<br>오늘의 주제 · ' + escN(news.theme) : ''}`;
+    $('svpMeta').innerHTML = `제${escN(news.no)}호<span class="mdate"> · ${escN(newsDate())}</span>${news.theme ? '<br><span class="msep"> · </span>오늘의 주제 · ' + escN(news.theme) : ''}`;
     $('svpTag').textContent = a.tag ? a.tag + ' · 1면' : '1면';
     $('svpHed').textContent = a.title; $('svpLede').textContent = a.lede || '';
     $('svpMore').innerHTML = rest.slice(0, 2).map((x, i) => `<div><span class="svp-tag">${escN(x.tag)} · ${i + 2}면</span><h3 class="svp-hed">${escN(x.title)}</h3></div>`).join('');
     const words = news.articles.map(x => x.word && x.word.w).filter(Boolean).length;
-    const u = $('svpUnread'); u.classList.toggle('read', newsRead()); u.querySelector('span').textContent = newsRead() ? `기사 ${news.articles.length}개 · 새 낱말 ${words}개` : `아직 안 읽은 신문 · 새 낱말 ${words}개`;
+    const u = $('svpUnread'); u.classList.toggle('read', newsRead()); u.querySelector('span').textContent = newsRead() ? `오늘 신문 다 읽음` : `오늘 새 소식 ${news.articles.length}개 · 오늘의 낱말 ${words}개`;
+    { const done = LS.get('gk-news-done', []); $('svpDoneT').textContent = `루아 신문 제${news.no}호 다 읽었어!`; $('svpCount').textContent = done.length > 1 ? `지금까지 ${done.length}호 읽음` : ''; }
     const lead = $('svpLead'), box = $('svpPhoto'), key = news.no + ':' + a.pic;
     if (box.dataset.k !== key) {
       box.dataset.k = key; box.innerHTML = ''; lead.classList.add('nopic');
@@ -1524,6 +1611,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     paperEl.hidden = false; app.dataset.paper = '1';
     setState('idle', '신문 읽는 중', '');
     renderPaper(); LS.set(NEWS_READ, news.no);
+    { const done = LS.get('gk-news-done', []); if (!done.includes(news.no)) { done.push(news.no); while (done.length > 400) done.shift(); LS.set('gk-news-done', done); } }
     diag('app', `신문 펼침: ${paperIdx + 1}면`);
   }
   function hidePaper() { if (!paperEl) return; paperEl.hidden = true; delete app.dataset.paper; }
@@ -2046,7 +2134,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v89';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v90';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
