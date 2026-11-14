@@ -562,9 +562,9 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .pp-main { min-height: 0; overflow: auto; scrollbar-width: none; }
 .pp-main::-webkit-scrollbar { display: none; }
 .pp-tag { display: inline-block; font-size: 1.05rem; font-weight: 800; color: var(--accent); padding-bottom: .15rem; border-bottom: 2px solid var(--accent); }
-.pp-hed { margin: .7rem 0 0; font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-weight: 700; font-size: clamp(1.9rem, min(3.5vw, 5.6vh), 3.6rem); line-height: 1.22; letter-spacing: -.035em; text-wrap: balance; word-break: keep-all; }
-.pp-lede { margin: 1.1rem 0 0; padding-top: 1rem; border-top: 1px solid var(--line); font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-size: clamp(1.15rem, min(1.75vw, 2.9vh), 1.75rem); line-height: 1.6; color: var(--ink); word-break: keep-all; text-wrap: pretty; max-width: 34em; }
-.pp-body { margin: .7rem 0 0; font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-size: clamp(1rem, min(1.55vw, 2.6vh), 1.55rem); line-height: 1.75; color: #D9CDB7; word-break: keep-all; text-wrap: pretty; max-width: 36em; }
+.pp-hed { margin: .7rem 0 0; font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-weight: 700; font-size: calc(clamp(1.9rem, min(3.5vw, 5.6vh), 3.6rem) * var(--ppk, 1)); line-height: 1.22; letter-spacing: -.035em; text-wrap: balance; word-break: keep-all; }
+.pp-lede { margin: 1.1rem 0 0; padding-top: 1rem; border-top: 1px solid var(--line); font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-size: calc(clamp(1.15rem, min(1.75vw, 2.9vh), 1.75rem) * var(--ppk, 1)); line-height: 1.6; color: var(--ink); word-break: keep-all; text-wrap: pretty; max-width: 44em; }
+.pp-body { margin: .7rem 0 0; font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-size: calc(clamp(1rem, min(1.55vw, 2.6vh), 1.55rem) * var(--ppk, 1)); line-height: 1.75; color: #D9CDB7; word-break: keep-all; text-wrap: pretty; max-width: 48em; }
 .pp-body mark { background: linear-gradient(transparent 10%, var(--hl) 10%, var(--hl) 92%, transparent 92%); color: var(--hl-ink); padding: 0 .08em; }
 .pp-src { margin-top: .8rem; font-size: .9rem; color: var(--muted); }
 .pp-side { min-height: 0; display: flex; flex-direction: column; gap: .8rem; }
@@ -701,6 +701,18 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .app[data-state="listen"] .gk .gk-m, .app[data-state="think"] .gk .gk-m, .app[data-state="answer"] .gk .gk-m, .app[data-state="quiz"] .gk .gk-m, .app.clock-mode .gk .gk-m { display: none; }
 @keyframes gk-qbob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-2px) rotate(4deg); } }
 .app[data-state="idle"] .gk .gk-q { animation: gk-qbob 3.2s ease-in-out infinite; }
+
+/* v98: 기사 화면 세로 공간 아끼기 (1600×820 DeX에서 본문이 잘리지 않게) */
+.paper .inner { gap: 0 !important; row-gap: 0 !important; padding-block: .7rem .3rem; }
+.pp-art { padding-top: .7rem !important; }
+.pp-nav { margin-top: .5rem !important; padding-top: .55rem !important; }
+.pp-btn { min-height: 2.9rem; }
+.pp-tabs button { min-height: 2.6rem; }
+
+/* 박스 왼쪽 주황 강조선은 쓰지 않음 — 둥근 카드로 */
+.wstrip { border-left: 0 !important; border-radius: 1.2rem; }
+.fig-box:has(.vcard), .fig-box:has(.emo), .fig-box:has(.era) { border-left: 0 !important; border-radius: 20px !important; }
+.pp-word { border-left: 0 !important; border-radius: 1rem !important; }
 </style>
 
 </head>
@@ -837,13 +849,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v97</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v98</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v97</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v98</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1652,7 +1664,15 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('ppCap').innerHTML = '';
     safePic(A.pic).then(pic => { if (box.dataset.k !== key) return; putPic(box, pic); art.classList.toggle('nopic', !pic); $('ppCap').innerHTML = pic ? `<b>${escN(pic.title)}</b>${escN(A.cap || '')}` : ''; });
     art.querySelector('.pp-main').scrollTop = 0;
+    fitPaper();
   }
+  // 기사가 화면 아래로 잘리지 않게: 넘치면 글자를 조금씩 줄임 (최소 72%)
+  function fitPaper() {
+    const main = paperEl.querySelector('.pp-main'); if (!main || paperEl.hidden) return;
+    let k = 1; paperEl.style.setProperty('--ppk', 1);
+    while (main.scrollHeight > main.clientHeight + 2 && k > 0.8) { k = Math.round((k - 0.04) * 100) / 100; paperEl.style.setProperty('--ppk', k); }
+  }
+  addEventListener('resize', () => { if (paperEl && !paperEl.hidden) fitPaper(); });
   function openPaper(i) {
     if (!news || !news.articles.length) return;
     paperIdx = Math.max(0, Math.min(i || 0, news.articles.length - 1));
@@ -2183,7 +2203,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v97';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v98';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
