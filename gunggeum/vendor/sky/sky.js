@@ -132,8 +132,8 @@
       if (ms && ms.date < morning) { var hz = A.Horizon(ms.date, obs, A.Equator(A.Body.Moon, ms.date, obs, true, true).ra, A.Equator(A.Body.Moon, ms.date, obs, true, true).dec, 'normal'); mLines = [clock(ms.date), dir8(hz.azimuth) + '쪽으로 져']; }
       else mLines = ['밤새', '하늘에 떠 있어'];
     } else {
-      var mr = A.SearchRiseSet(A.Body.Moon, obs, +1, date, 1), lim = new Date(date); lim.setHours(29, 0, 0, 0);
-      if (mr && mr.date < lim) { var eq2 = A.Equator(A.Body.Moon, mr.date, obs, true, true), hz2 = A.Horizon(mr.date, obs, eq2.ra, eq2.dec, 'normal'); mLines = [clock(mr.date), dir8(hz2.azimuth) + '쪽에서 떠']; }
+      var mr = A.SearchRiseSet(A.Body.Moon, obs, +1, new Date(date.getTime() - 40 * 60e3), 1), lim = new Date(date); lim.setHours(29, 0, 0, 0);
+      if (mr && mr.date < lim) { var eq2 = A.Equator(A.Body.Moon, mr.date, obs, true, true), hz2 = A.Horizon(mr.date, obs, eq2.ra, eq2.dec, 'normal'); mLines = mr.date <= date ? ['지금 막', dir8(hz2.azimuth) + '쪽에서 떠올라'] : [clock(mr.date), dir8(hz2.azimuth) + '쪽에서 떠']; }
       else mLines = ['오늘 밤엔', ph < 180 ? '벌써 졌어' : '안 떠'];
     }
     // 다음 반달·보름달

@@ -966,13 +966,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v101</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v102</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v101</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v102</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1426,7 +1426,7 @@ ${nowLine()} 날짜·요일·시간·계절이나 "○○까지 며칠 남았어
     rec = new SR(); rec.lang = 'ko-KR'; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
     heard = ''; input.value = ''; listening = true; $('loText').textContent = ''; chime(true);
     setState('listen', '듣는 중', '말해 봐. 다 말하면 잠깐 기다려.');
-    draw('듣고 있어.', false, 'soft'); setChips([]); hidePic(); setEyebrow('piece'); eyebrow.textContent = '';
+    draw('듣고 있어.', false, 'soft'); setChips([]); hidePic(); setEyebrow('piece'); eyebrow.textContent = ''; delete app.dataset.home;
     rec.onresult = e => {
       let interim = '', final = '';
       for (let i = e.resultIndex; i < e.results.length; i++) { const t = e.results[i][0].transcript; if (e.results[i].isFinal) final += t; else interim += t; }
@@ -1747,9 +1747,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function bodyHtml(t) { return escN(t).replace(/《([^》]+)》/g, '<mark>$1</mark>'); }
   function renderFront() {
     const el = $('svPaper'), on = !!(news && newsFresh());
-    const hr = new Date().getHours(), force = window.__gkSky === true, night = !force && (window.__gkNight ?? (hr >= 22 || hr < 6));
+    const hr = new Date().getHours(), force = Date.now() - (window.__gkSky || 0) < 10 * 60e3, // 미리 보기는 10분 뒤 저절로 풀림
+       night = !force && (window.__gkNight ?? (hr >= 22 || hr < 6));
     // 저녁(18~22시): 신문을 다 읽었거나 신문이 없으면 '오늘 밤하늘'. 안 읽은 신문이 있으면 신문이 먼저.
-    const sky = !night && (force || ((window.__gkSky ?? (hr >= 18)) && !(on && !newsRead()))) && skyReady();
+    const sky = !night && (force || (hr >= 18 && !(on && !newsRead()))) && innerWidth >= 900 && Date.now() - skyBadAt > 10 * 60e3 && skyReady();
     saverEl.classList.toggle('sky', sky);
     saverEl.classList.toggle('plain', !on && !night && !sky);
     if (sky) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done'].forEach(c => saverEl.classList.remove(c)); renderSky(); return true; }
@@ -1775,6 +1776,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     return true;
   }
   // ---------- 오늘 밤하늘 (저녁 대기화면): 별 계산 라이브러리는 처음 필요할 때만 받음 ----------
+  var skyBadAt = 0;
   let skyLoading = null, skyFailAt = 0, skyKey = '', skyMoonKey = '';
   function skyReady() {
     if (window.GKSky && window.Astronomy && window.GK_SKY) return true;
@@ -1791,15 +1793,15 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const cv = $('skyMoon'), ms = Math.round(cv.getBoundingClientRect().width);
     const key = [Math.floor(Date.now() / 300e3), bw, bh, settings.wxLat, settings.wxLon].join('|'); // 5분마다 다시 계산
     if (key === skyKey) return;
-    let s; try { s = window.GKSky.build({ lat: settings.wxLat, lon: settings.wxLon, now: new Date(), W: bw, H: bh }); }
-    catch (e) { diag('err', '밤하늘 계산 실패: ' + (e.message || e)); skyFailAt = Date.now(); saverEl.classList.remove('sky'); return; }
+    let s; try { s = window.GKSky.build({ lat: +settings.wxLat || 37.526, lon: +settings.wxLon || 126.896, now: new Date(), W: bw, H: bh }); }
+    catch (e) { diag('err', '밤하늘 계산 실패: ' + (e.message || e)); skyBadAt = Date.now(); renderFront(); return; }
     skyKey = key; box.innerHTML = s.svg;
     $('skyMeta').textContent = [settings.wxName || '', '남쪽을 바라본 ' + s.when + ' 하늘', s.sunset ? '해 진 때 ' + s.sunset : ''].filter(Boolean).join(' · ');
     $('skyMName').textContent = s.moon.name; $('skyMName').classList.toggle('long', !!s.moon.long); $('skyMSub').textContent = s.moon.sub;
     $('skyMSet').innerHTML = `${escN(s.moon.lines[0])}<small>${escN(s.moon.lines[1])}</small>`;
     $('skyMNext').innerHTML = s.next.map(x => `<span><b>${escN(x[0])}</b> ${escN(x[1])}</span>`).join('');
     $('skyOne').hidden = !s.pick; if (s.pick) { $('skyOneH').innerHTML = `${escN(s.pick.head)} <b>${escN(s.pick.name)}</b>`; $('skyOneP').innerHTML = `${escN(s.pick.note)}<br>${escN(s.pick.sub)}`; }
-    const mk = [ms, Math.round(s.moon.phase), Math.round(s.moon.limb / 3)].join('|'); // 달은 모양이 달라질 때만 다시 그림
+    const mk = [ms, Math.round(s.moon.phase), Math.round(s.moon.limb / 8)].join('|'); // 달은 모양이 달라질 때만 다시 그림
     if (mk !== skyMoonKey && ms > 20) { skyMoonKey = mk; setTimeout(() => { try { window.GKSky.drawMoon(cv, ms, s.moon.phase, s.moon.limb); } catch (e) { skyMoonKey = ''; } }, 30); }
   }
   // ---------- 홈의 '오늘' 줄: 신문 · 밤하늘 · 날씨 ----------
@@ -1817,14 +1819,14 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (w) { $('tdWxT').textContent = '지금 날씨' + (settings.wxName ? ' · ' + settings.wxName : ''); $('tdWxH').textContent = `${w.t}° ${(WX[w.code] || [''])[0]}`; $('tdWxS').textContent = wxTip(w, dustGrade(w.pm10, w.pm25)); }
     if (skyReady()) {
       const key = Math.floor(Date.now() / 600e3) + '|' + settings.wxLat + '|' + settings.wxLon;
-      if (key !== tdSkyKey) { tdSkyKey = key; try { tdSky = window.GKSky.build({ lat: settings.wxLat, lon: settings.wxLon, now: new Date(), W: 968, H: 528 }); } catch (e) { tdSky = null; } }
+      if (key !== tdSkyKey) { tdSkyKey = key; try { tdSky = window.GKSky.build({ lat: +settings.wxLat || 37.526, lon: +settings.wxLon || 126.896, now: new Date(), W: 968, H: 528 }); } catch (e) { tdSky = null; } }
     }
     $('tdSky').hidden = !tdSky;
     if (tdSky) { const s = tdSky, pk = s.pick && s.pick.name !== '달' ? s.pick : null;
       $('tdSkyH').textContent = s.moon.name + (pk ? ' · ' + pk.name : ''); $('tdSkyS').textContent = pk ? `${pk.head.split(' ')[0]} 하늘에서 찾아봐` : s.moon.sub; }
   }
   $('tdNews').addEventListener('click', () => openPaper(0));
-  $('tdSky').addEventListener('click', () => { window.__gkSaverAt = Date.now(); window.__gkSky = true; enterSaver(); });
+  $('tdSky').addEventListener('click', () => { window.__gkSaverAt = Date.now(); window.__gkSky = Date.now(); enterSaver(); renderSaver(); });
   $('tdWx').addEventListener('click', () => ask('오늘 날씨 어때?'));
   setInterval(renderToday, 5 * 60e3);
   const curArticle = () => news && news.articles[paperIdx];
@@ -1844,7 +1846,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('ppCap').innerHTML = '';
     safePic(A.pic).then(pic => { if (box.dataset.k !== key) return; putPic(box, pic); art.classList.toggle('nopic', !pic); $('ppCap').innerHTML = pic ? `<b>${escN(pic.title)}</b>${escN(A.cap || '')}` : ''; });
     art.querySelector('.pp-main').scrollTop = 0;
-    fitPaper();
+    fitPaper(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPaper); // 글꼴이 늦게 바뀌어도 다시 맞춤
   }
   // 기사가 화면 아래로 잘리지 않게: 넘치면 글자를 조금씩 줄임 (최소 72%)
   function fitPaper() {
@@ -2382,7 +2384,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v101';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v102';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -2457,8 +2459,8 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   $('newsUnread').addEventListener('click', () => { LS.set(NEWS_READ, ''); if (news) { const d = LS.get(NEWS_DONE, []).filter(x => x !== news.date); LS.set(NEWS_DONE, d); } newsNoteRender(); diag('app', '신문을 안 읽은 상태로 되돌림'); });
   // 부모님 화면에서 바로 신문·대기화면으로 (테스트·확인용)
   $('newsOpen').addEventListener('click', async () => { if (!news) await loadNews(true); if (!news) { $('newsNote').textContent = '아직 받은 신문이 없어요'; return; } logEl.hidden = true; if (!saverEl.hidden) exitSaver(); openPaper(0); });
-  $('skySaver').addEventListener('click', () => { logEl.hidden = true; window.__gkSaverAt = Date.now(); window.__gkSky = true; enterSaver(); });
-  $('newsSaver').addEventListener('click', () => { logEl.hidden = true; window.__gkSaverAt = Date.now(); enterSaver(); });
+  $('skySaver').addEventListener('click', () => { logEl.hidden = true; window.__gkSaverAt = Date.now(); window.__gkSky = Date.now(); enterSaver(); renderSaver(); });
+  $('newsSaver').addEventListener('click', () => { logEl.hidden = true; delete window.__gkSky; window.__gkSaverAt = Date.now(); enterSaver(); });
   $('newsReload').addEventListener('click', async () => { $('newsNote').textContent = '받는 중…'; await loadNews(true); newsNoteRender(); });
   new MutationObserver(() => { if (!logEl.hidden) newsNoteRender(); }).observe(logEl, { attributes: true, attributeFilter: ['hidden'] });
   $('diagCopy').addEventListener('click', async () => {
