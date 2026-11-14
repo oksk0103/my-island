@@ -1030,6 +1030,8 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .saver.face { --bgi: url("bg/morn.jpg"); --bgk: .06; }
 .saver.face[data-tone="day"] { --bgi: url("bg/day.jpg"); --bgk: .2; }
 .saver.face[data-tone="eve"] { --bgi: url("bg/eve.jpg"); --bgk: 0; }
+/* v111: 타일 단위를 맞춤 — 가로 6칸 × 세로 3칸, 한 칸이 거의 정사각형 */
+.fc-grid { grid-template-rows: repeat(3, minmax(0, 1fr)); }
 .fc-t { -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5); }
 .sv-face::after { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; background: #05070B; opacity: 0; transition: opacity .35s ease-out; }
 .saver.face.late .sv-face::after { opacity: var(--late, 0); transition: opacity 20s linear; }
@@ -1251,13 +1253,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v110</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v111</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v110</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v111</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2374,7 +2376,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (on) { const h2 = todoRows(list, 'svt-row', 4); if ($('svTodoL').innerHTML !== h2) $('svTodoL').innerHTML = h2; $('svTodoN').textContent = left + '개 남았어'; }
     if (c.contains('face')) {
       $('fcTodoN').textContent = list.length ? left : '0'; $('fcTodoS').textContent = !list.length ? '할 일' : left ? '할 일 남았어' : '다 했어';
-      const hf = list.length ? todoRows(list, 'fc-row', 2).replace('svt-more', 'fc-more').replace('tdo-more', 'fc-more') : '<div class="fc-empty">할 일이 생기면 말해 줘.</div>';
+      const hf = list.length ? todoRows(list, 'fc-row', list.length <= 3 ? 3 : 2).replace('svt-more', 'fc-more').replace('tdo-more', 'fc-more') : '<div class="fc-empty">할 일이 생기면 말해 줘.</div>';
       if ($('fcTodoL').innerHTML !== hf) $('fcTodoL').innerHTML = hf;
     }
     let dn = $('svTodoDone'); const allDone = clockPage && !left && list.length > 0;
@@ -2971,7 +2973,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v110';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v111';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
