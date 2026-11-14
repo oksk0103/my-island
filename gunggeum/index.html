@@ -757,6 +757,33 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .saver.sky .sky-one .svp-hed b { color: #F0C374; font-weight: 900; }
 .saver.sky .sky-one p { margin: .7vh 0 0; font-size: clamp(1rem, min(1.35vw, 2.6vh), 1.45rem); font-weight: 500; line-height: 1.45; color: color-mix(in srgb, var(--ink) 80%, transparent); word-break: keep-all; }
 .saver.sky .sv-msg { grid-area: msg; }
+
+/* v100: 홈(쉬는 중) — 오늘의 한 조각은 명조로, 아래에는 '오늘' 줄(신문·밤하늘·날씨) */
+.today { display: none; }
+.app[data-home] .main .inner:not(.has-fig) #textcol { margin-top: auto; }
+.app[data-home] .sheet { font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-weight: 700; letter-spacing: -.035em; }
+.app[data-home] .main .inner:not(.has-fig) .today { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); column-gap: 2.6rem; margin-top: auto; padding-top: .9rem; border-top: 3px double color-mix(in srgb, var(--ink) 45%, transparent); }
+.today .td { all: unset; box-sizing: border-box; display: flex; flex-direction: column; gap: .3rem; min-width: 0; cursor: pointer; padding: .1rem 0 .2rem; text-align: left; }
+.today .td[hidden] { display: none; }
+.today .td .svp-tag { font-size: .8rem; }
+.today .td b { font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-weight: 700; font-size: 1.45rem; line-height: 1.3; letter-spacing: -.03em; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.today .td small { font-size: .9rem; font-weight: 600; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.today .td:active b { color: var(--accent); }
+.today .td .dot { display: inline-block; width: .5em; height: .5em; border-radius: 50%; background: var(--accent); margin-right: .45em; vertical-align: .08em; }
+@media (max-height: 560px), (max-width: 760px) { .app[data-home] .main .inner .today { display: none !important; } }
+
+/* v100: 신문이 없는 날의 대기화면 — 다 읽은 날과 같은 가운데 큰 시계 + 한 줄 */
+.saver.plain .sv-inner { display: flex; flex-direction: column; align-items: center; max-width: none; text-align: center; }
+.saver.plain .sv-rule { display: none; }
+.saver.plain .sv-date { align-items: center; }
+.saver.plain .sv-top { font-size: clamp(1.4rem, min(2.1vw, 3.9vh), 2.3rem); }
+.saver.plain .sv-time { font-size: clamp(6rem, min(14vw, 27vh), 16rem); margin: .4rem 0 0; line-height: .9; }
+.saver.plain .sv-wx { margin-top: 3vh; line-height: 1.35; }
+.saver.plain .sv-wx .wx-now { font-size: clamp(2.4rem, min(4vw, 7.4vh), 4.4rem); color: color-mix(in srgb, var(--sv-text) 82%, transparent); letter-spacing: -.02em; }
+.saver.plain .sv-wx .wx-now b { font-weight: 600; color: var(--ink); }
+.saver.plain .sv-wx .wx-sub { font-size: clamp(1.1rem, min(1.5vw, 2.8vh), 1.6rem); margin-top: .5rem; }
+.saver.plain .sv-tip { font-size: clamp(1.4rem, min(2.1vw, 4vh), 2.3rem); margin-top: 1rem; }
+.saver.plain .sv-line { margin-top: 4.5vh; padding-top: 3.2vh; border-top: 1px solid var(--line); max-width: 46rem; font-size: clamp(1.2rem, min(1.8vw, 3.4vh), 1.9rem); line-height: 1.5; }
 </style>
 
 </head>
@@ -821,6 +848,11 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <figcaption id="figCap"></figcaption>
     </figure>
     <div class="chips" id="chips"></div>
+    <div class="today" id="today">
+      <button type="button" class="td" id="tdNews" hidden><span class="svp-tag" id="tdNewsT"></span><b id="tdNewsH"></b><small id="tdNewsS"></small></button>
+      <button type="button" class="td" id="tdSky" hidden><span class="svp-tag">오늘 밤하늘</span><b id="tdSkyH"></b><small id="tdSkyS"></small></button>
+      <button type="button" class="td" id="tdWx" hidden><span class="svp-tag" id="tdWxT"></span><b id="tdWxH"></b><small id="tdWxS"></small></button>
+    </div>
   </div>
   <div class="paper" id="paper" hidden><div class="inner">
     <div class="pp-head">
@@ -908,13 +940,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v99</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v100</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v99</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v100</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -928,7 +960,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <label>최근 보인 사진 (이상한 사진은 눌러서 다시 안 나오게)</label>
       <div id="picShown" style="display:flex;flex-wrap:wrap;gap:.4rem;margin:.3rem 0 .8rem"></div>
       <p id="linesDbg" class="empty"></p>
-      <p id="keyTest" class="empty">딸깍 버튼(리모컨) 확인: 이 창을 열어 둔 채 버튼을 누르면 어떤 키인지 여기에 떠요.</p>
+      <p id="keyTest" class="empty">버튼(리모컨) 확인: 이 창을 열어 둔 채 버튼을 누르면 어떤 키인지 여기에 떠요.</p>
       <label>터치 확인</label>
       <div id="touchPad" style="border: 1px dashed var(--line); padding: 1.2rem; text-align: center; color: var(--muted); touch-action: none; user-select: none; -webkit-user-select: none">여기를 손가락·펜으로 톡 눌러 보세요</div>
       <p id="touchDbg" class="empty" style="white-space: pre-line"></p>
@@ -1128,6 +1160,7 @@ ${nowLine()} 날짜·요일·시간·계절이나 "○○까지 며칠 남았어
   }
   function setEyebrow(kind, text) {
     eyebrow.innerHTML = '';
+    if (kind === 'piece') app.dataset.home = '1'; else delete app.dataset.home;
     if (kind === 'piece') { const d = document.createElement('span'); d.className = 'dash'; eyebrow.append(d, '오늘의 한 조각'); return; }
     if (kind === 'q') { const sp = document.createElement('span'); sp.className = 'askq'; sp.textContent = '“' + text.replace(/[?？.]*$/, '') + (/[?？]$/.test(text) || !/[.!]$/.test(text) ? '?' : '') + '”'; eyebrow.append(sp); return; }
   }
@@ -1526,7 +1559,7 @@ ${nowLine()} 날짜·요일·시간·계절이나 "○○까지 며칠 남았어
     const p = piece(); current = p.f; hidePic();
     setEyebrow('piece'); setChips([p.q], '', true); draw(p.f, animate, 'plain');
     setState('idle', paperEl && !paperEl.hidden ? '신문 읽는 중' : '쉬는 중', settings.apiKey ? '' : '부모님이 설정에서 API 키를 넣어 줘야 해요.');
-    paperCtx = null; delete app.dataset.fromPaper;
+    paperCtx = null; delete app.dataset.fromPaper; renderToday();
   }
   function showBlocked(msg) { enterSaver(msg); }
   let holdUntil = 0;
@@ -1651,6 +1684,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       const j = await r.json();
       if (j && Array.isArray(j.articles) && j.articles.length) { if (!news || news.no !== j.no) diag('app', `루아 신문 제${j.no}호 받음`); news = j; LS.set(NEWS_KEY, j); }
     } catch (e) { diag('err', '신문 못 받음: ' + (e.message || e)); }
+    try { renderToday(); } catch (e) {}
     return news;
   }
   function newsFresh() { // 3일 넘게 지난 신문은 1면에 걸지 않음
@@ -1691,6 +1725,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     // 저녁(18~22시): 신문을 다 읽었거나 신문이 없으면 '오늘 밤하늘'. 안 읽은 신문이 있으면 신문이 먼저.
     const sky = !night && (force || ((window.__gkSky ?? (hr >= 18)) && !(on && !newsRead()))) && skyReady();
     saverEl.classList.toggle('sky', sky);
+    saverEl.classList.toggle('plain', !on && !night && !sky);
     if (sky) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done'].forEach(c => saverEl.classList.remove(c)); renderSky(); return true; }
     el.hidden = !on || night; saverEl.classList.toggle('has-paper', on && !night); saverEl.classList.toggle('night', night);
     // 낮: 아직 안 읽었으면 신문이 주인공, 다 읽었으면 시계가 주인공 + 신문은 한 줄로 접힘. 밤(22~6시): 시계만 어둡게
@@ -1720,7 +1755,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (!skyLoading && Date.now() - skyFailAt > 5 * 60e3) {
       const b = './vendor/sky/';
       skyLoading = loadScript(b + 'astronomy.min.js').then(() => loadScript(b + 'sky-data.js')).then(() => loadScript(b + 'sky.js'))
-        .then(() => { diag('app', '밤하늘 준비됨'); if (!saverEl.hidden) renderSaver(); })
+        .then(() => { diag('app', '밤하늘 준비됨'); if (!saverEl.hidden) renderSaver(); renderToday(); })
         .catch(e => { skyLoading = null; skyFailAt = Date.now(); diag('err', '밤하늘 못 받음: ' + (e.message || e)); });
     }
     return false;
@@ -1741,6 +1776,31 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const mk = [ms, Math.round(s.moon.phase), Math.round(s.moon.limb / 3)].join('|'); // 달은 모양이 달라질 때만 다시 그림
     if (mk !== skyMoonKey && ms > 20) { skyMoonKey = mk; setTimeout(() => { try { window.GKSky.drawMoon(cv, ms, s.moon.phase, s.moon.limb); } catch (e) { skyMoonKey = ''; } }, 30); }
   }
+  // ---------- 홈의 '오늘' 줄: 신문 · 밤하늘 · 날씨 ----------
+  var tdSkyKey = '', tdSky = null;
+  function josa(w) { return (w.charCodeAt(w.length - 1) - 0xAC00) % 28 ? '은' : '는'; }
+  function renderToday() {
+    if (!app.dataset.home) return;
+    const on = !!(news && newsFresh());
+    $('tdNews').hidden = !on;
+    if (on) { $('tdNewsT').textContent = `루아 신문 · 제${news.no}호`; $('tdNewsH').textContent = news.articles[0].title;
+      $('tdNewsS').innerHTML = newsRead() ? '다 읽었어 · 다시 보기' : `<i class="dot"></i>새 소식 ${news.articles.length}개 · 아직 안 읽었어`; }
+    let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 12 * 3600e3) w = last.w; }
+    if ((!wxCache || Date.now() - wxAt > 20 * 60e3) && Date.now() - wxTryAt > 3 * 60e3) { wxTryAt = Date.now(); fetchWeather().then(renderToday).catch(() => {}); }
+    $('tdWx').hidden = !w;
+    if (w) { $('tdWxT').textContent = '지금 날씨' + (settings.wxName ? ' · ' + settings.wxName : ''); $('tdWxH').textContent = `${w.t}° ${(WX[w.code] || [''])[0]}`; $('tdWxS').textContent = wxTip(w, dustGrade(w.pm10, w.pm25)); }
+    if (skyReady()) {
+      const key = Math.floor(Date.now() / 600e3) + '|' + settings.wxLat + '|' + settings.wxLon;
+      if (key !== tdSkyKey) { tdSkyKey = key; try { tdSky = window.GKSky.build({ lat: settings.wxLat, lon: settings.wxLon, now: new Date(), W: 968, H: 528 }); } catch (e) { tdSky = null; } }
+    }
+    $('tdSky').hidden = !tdSky;
+    if (tdSky) { const s = tdSky, pk = s.pick && s.pick.name !== '달' ? s.pick : null;
+      $('tdSkyH').textContent = s.moon.name + (pk ? ' · ' + pk.name : ''); $('tdSkyS').textContent = pk ? `${pk.name}${josa(pk.name)} ${pk.head.replace(',', '')}` : s.moon.sub; }
+  }
+  $('tdNews').addEventListener('click', () => openPaper(0));
+  $('tdSky').addEventListener('click', () => { window.__gkSaverAt = Date.now(); window.__gkSky = true; enterSaver(); });
+  $('tdWx').addEventListener('click', () => ask('오늘 날씨 어때?'));
+  setInterval(renderToday, 5 * 60e3);
   const curArticle = () => news && news.articles[paperIdx];
   function renderPaper() {
     const A = curArticle(); if (!A) return;
@@ -1763,7 +1823,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   // 기사가 화면 아래로 잘리지 않게: 넘치면 글자를 조금씩 줄임 (최소 72%)
   function fitPaper() {
     const main = paperEl.querySelector('.pp-main'); if (!main || paperEl.hidden) return;
-    let k = 1; paperEl.style.setProperty('--ppk', 1);
+    let k = 1.24; paperEl.style.setProperty('--ppk', k); // 자리가 남으면 글자를 키우고, 넘치면 줄임
     while (main.scrollHeight > main.clientHeight + 2 && k > 0.8) { k = Math.round((k - 0.04) * 100) / 100; paperEl.style.setProperty('--ppk', k); }
   }
   addEventListener('resize', () => { if (paperEl && !paperEl.hidden) fitPaper(); });
@@ -2297,7 +2357,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v99';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v100';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
