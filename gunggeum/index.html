@@ -1025,6 +1025,11 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     radial-gradient(70vw 50vw at 88% 100%, color-mix(in srgb, var(--f1) 80%, #fff 8%) 0, transparent 70%),
     radial-gradient(60vw 44vw at 0% 0%, color-mix(in srgb, var(--f1) 90%, #fff 10%) 0, transparent 72%),
     linear-gradient(155deg, var(--f1) 0%, var(--f0) 46%, var(--f2) 100%); }
+/* v110: 배경 그림 (못 받으면 아래 코드 배경이 그대로 보임) */
+.saver.face .sv-face::before { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(4,10,14,var(--bgk,.12)), rgba(4,10,14,var(--bgk,.12))), var(--bgi) center / cover no-repeat; }
+.saver.face { --bgi: url("bg/morn.jpg"); --bgk: .06; }
+.saver.face[data-tone="day"] { --bgi: url("bg/day.jpg"); --bgk: .2; }
+.saver.face[data-tone="eve"] { --bgi: url("bg/eve.jpg"); --bgk: 0; }
 .fc-t { -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5); }
 .sv-face::after { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; background: #05070B; opacity: 0; transition: opacity .35s ease-out; }
 .saver.face.late .sv-face::after { opacity: var(--late, 0); transition: opacity 20s linear; }
@@ -1246,13 +1251,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v109</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v110</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v109</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v110</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2966,7 +2971,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v109';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v110';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
