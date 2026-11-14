@@ -43,9 +43,9 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
     ok('APP_V 있음', !!v); ok('머리 표시 버전', html.includes(`<span style="opacity:.6">${v}</span>`)); ok('부모님 화면 버전', html.includes(`font-weight:400">${v}</small>`)); ok('sw.js 캐시 이름', sw.includes(`gk-${v}'`) || sw.includes(`gk-${v}"`), v); }
 
   console.log('2. 대기화면 상태 (시간대별)');
-  for (const [t, read, want] of [[newsDate + 'T07:42', false, 'has-paper paper-hero'], [newsDate + 'T08:15', true, 'has-paper paper-done'], [newsDate + 'T17:59', true, 'has-paper paper-done'], [newsDate + 'T18:01', true, 'sky'], [newsDate + 'T19:00', false, 'has-paper paper-hero'], [newsDate + 'T22:01', true, 'night'], [plus(newsDate, 1) + 'T05:59', true, 'night'], [plus(newsDate, 6) + 'T15:20', false, 'plain']]) {
-    p = await open(b, { time: t, read: read ? newsDate : null }); await p.saver(); s = await p.st(); ok(`${t} ${read ? '읽음' : '안 읽음'} → ${want}`, s.saver === want, s.saver); await p.context().close(); }
-  p = await open(b, { time: newsDate + 'T19:30', read: newsDate, noSky: true }); await p.saver(); s = await p.st(); ok('밤하늘 파일을 못 받으면 기본 화면', s.saver === 'has-paper paper-done', s.saver); await p.context().close();
+  for (const [t, read, want] of [[newsDate + 'T07:42', false, 'face morn news'], [newsDate + 'T08:15', true, 'face morn line'], [newsDate + 'T17:59', true, 'face day line'], [newsDate + 'T18:01', true, 'face eve moon'], [newsDate + 'T19:00', false, 'face eve news'], [newsDate + 'T22:01', true, 'night'], [plus(newsDate, 1) + 'T05:59', true, 'night'], [plus(newsDate, 1) + 'T06:01', true, 'face morn line'], [plus(newsDate, 6) + 'T15:20', false, 'face day line']]) {
+    p = await open(b, { time: t, read: read ? newsDate : null }); await p.saver(); s = await p.st(); const got = s.saver === 'face' ? await p.evaluate(() => 'face ' + document.getElementById('saver').dataset.tone + ' ' + document.getElementById('fcFeat').className.replace('fc-t fc-feat', '').replace('pic', '').trim()) : s.saver; ok(`${t} ${read ? '읽음' : '안 읽음'} → ${want}`, got === want, got); await p.context().close(); }
+  p = await open(b, { time: newsDate + 'T19:30', read: newsDate, noSky: true }); await p.saver(); s = await p.st(); ok('밤하늘 파일을 못 받으면 기본 화면', s.saver === 'face' && await p.evaluate(() => document.getElementById('fcFeat').classList.contains('line')), s.saver); await p.context().close();
 
   console.log('3. 미리 보기는 10분 뒤 풀림 (v102 버그)');
   p = await open(b, { time: newsDate + 'T16:00' });
@@ -56,17 +56,26 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
   console.log('4. 대기화면 넘기기·누르기');
   p = await open(b, { time: newsDate + 'T19:30' }); await p.saver();
   const swipe = async dir => { const x = dir > 0 ? 1100 : 500; await p.mouse.move(x, 400); await p.mouse.down(); await p.mouse.move(x - dir * 150, 405, { steps: 4 }); await p.mouse.move(x - dir * 300, 410, { steps: 4 }); await p.mouse.up(); await p.adv(1500); };
-  s = await p.st(); ok('처음: 신문 1면', s.saver === 'has-paper paper-hero', s.saver);
-  await swipe(1); s = await p.st(); ok('밀기 → 시계 장', s.saver.includes('plain'), s.saver);
+  s = await p.st(); ok('처음: 위젯 면', s.saver === 'face', s.saver);
+  await swipe(1); s = await p.st(); ok('밀기 → 신문 1면', s.saver === 'has-paper paper-hero', s.saver);
   await swipe(1); s = await p.st(); ok('밀기 → 밤하늘', s.saver === 'sky', s.saver);
-  await swipe(1); s = await p.st(); ok('밤하늘에서도 밀림 (v105 버그)', s.saver === 'has-paper paper-hero', s.saver);
-  await p.mouse.click(800, 520); await p.adv(1500); s = await p.st(); ok('신문을 누르면 신문이 열림', !s.saver && s.paper, s);
+  await swipe(1); s = await p.st(); ok('밤하늘에서도 밀림 (v105 버그)', s.saver === 'face', s.saver);
+  await swipe(1); await p.mouse.click(800, 520); await p.adv(1500); s = await p.st(); ok('신문을 누르면 신문이 열림', !s.saver && s.paper, s);
   await p.saver(); await p.mouse.click(60, 60); await p.adv(1000); s = await p.st(); ok('톡 누르면 깨어남', !s.saver, s.saver);
-  ok('강제 상태가 남지 않음', await p.evaluate(() => window.__gkForce === undefined)); await p.context().close();
+  ok('강제 상태가 남지 않음', await p.evaluate(() => window.__gkForce === undefined));
+  const tile = async n => { const bx = await p.locator(`#svFace [data-tile="${n}"]`).last().boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); };
+  await p.saver(); await tile('sky'); s = await p.st(); ok('밤하늘 타일 → 밤하늘 장', s.saver === 'sky', s.saver);
+  await p.adv(11 * 60e3); s = await p.st(); ok('밤하늘 장은 10분 뒤 위젯 면으로', s.saver === 'face', s.saver);
+  await tile('news'); s = await p.st(); ok('신문 타일 → 신문 열림', !s.saver && s.paper, s);
+  await p.saver(); await tile('wx'); s = await p.st(); ok('날씨 타일 → 깨어남', !s.saver && !s.paper, s);
+  ok('타일이 화면 밖으로 넘치지 않음', await p.evaluate(() => { document.getElementById('saver').hidden = false; const r = [...document.querySelectorAll('#svFace .fc-t')].every(t => { const b = t.getBoundingClientRect(); return b.left >= 0 && b.top >= 0 && b.right <= innerWidth && b.bottom <= innerHeight && t.scrollHeight <= t.clientHeight + 1; }); document.getElementById('saver').hidden = true; return r; }));
+  await p.context().close();
+  for (const [w, h] of [[1600, 820], [1920, 1000]]) { p = await open(b, { time: newsDate + 'T12:48', w, h }); await p.saver();
+    ok(`네 자리 시각이 시계 타일 안에 들어감 ${w}×${h}`, await p.evaluate(() => { const t = document.getElementById('fcTime'), r = document.createRange(); r.selectNodeContents(t); const a = r.getBoundingClientRect(), c = t.parentElement.getBoundingClientRect(); return a.left >= c.left + 8 && a.right <= c.right - 8; })); await p.context().close(); }
 
   console.log('5. 부모님 화면 바로가기');
   p = await open(b, {});
-  for (const [g, want] of [['hero', 'paper-hero'], ['done', 'paper-done'], ['sky', 'sky'], ['night', 'night'], ['plain', 'plain']]) {
+  for (const [g, want] of [['face', 'face'], ['hero', 'paper-hero'], ['sky', 'sky'], ['night', 'night']]) {
     await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click(`[data-go="${g}"]`); await p.waitForTimeout(g === 'sky' ? 2500 : 700); s = await p.st(); ok(`바로가기 ${g}`, s.saver.includes(want) && !s.log, s.saver);
     await p.waitForTimeout(1600); await p.mouse.click(60, 60); await p.waitForTimeout(400); }
   await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="paper"]'); await p.waitForTimeout(700); s = await p.st(); ok('바로가기 신문', s.paper, s);
@@ -115,14 +124,14 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
   await row.click(); await p.adv(500); s = await p.st(); ok('기준5 홈에서 눌러 줄 긋기', s.todo.find(x => x[0] === firstText)[2] === true && s.home, s.todo);
   await p.locator('#tdTodoL [data-todo].done', { hasText: firstText }).first().click(); await p.adv(500); s = await p.st(); ok('기준5 다시 누르면 되살아남', s.todo.find(x => x[0] === firstText)[2] === false, s.todo);
   // 대기화면 시계 장
-  await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="plain"]'); await p.adv(2500); s = await p.st(); ok('대기화면 시계 장에 할 일 단', s.saver.includes('plain') && s.saver.includes('todo'), s.saver);
+  await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="face"]'); await p.adv(2500); s = await p.st(); ok('대기화면 할 일 타일', s.saver === 'face' && await p.evaluate(() => document.querySelectorAll('#fcTodoL [data-todo]').length > 0 && +document.getElementById('fcTodoN').textContent > 0), s.saver);
   await p.screenshot({ path: path.join(__dirname, 'out-saver-todo.png') });
-  const sr = p.locator('#svTodoL [data-todo]:not(.done)').first(), srText = await sr.locator('.tx').textContent(), bb = await sr.boundingBox();
+  const sr = p.locator('#fcTodoL [data-todo]:not(.done)').first(), srText = await sr.locator('.tx').textContent(), bb = await sr.boundingBox();
   for (let i = 0; i < 2; i++) { await p.mouse.click(bb.x + 80, bb.y + bb.height / 2); await p.adv(400); }
-  s = await p.st(); ok('기준5 대기화면에서 눌러도 깨어나지 않음', s.saver.includes('plain') && !s.log, s);
+  s = await p.st(); ok('기준5 대기화면에서 눌러도 깨어나지 않음', s.saver === 'face' && !s.log, s);
   ok('기준5 두 번 누르면 원래대로', s.todo.find(x => x[0] === srText)[2] === false, s.todo);
   await p.mouse.click(bb.x + 80, bb.y + bb.height / 2); await p.adv(400); s = await p.st(); ok('기준5 대기화면에서 줄 긋기', s.todo.find(x => x[0] === srText)[2] === true, s.todo);
-  for (let i = 0; i < 6; i++) { await p.mouse.click(bb.x + 80, bb.y + bb.height / 2); await p.adv(150); } s = await p.st(); ok('여러 번 눌러도 부모님 화면이 안 열림', !s.log && s.saver.includes('plain'), s);
+  for (let i = 0; i < 6; i++) { await p.mouse.click(bb.x + 80, bb.y + bb.height / 2); await p.adv(150); } s = await p.st(); ok('여러 번 눌러도 부모님 화면이 안 열림', !s.log && s.saver === 'face', s);
   ok('재촉하는 문구 없음', !/밀렸|어제까지|째|늦었/.test(await p.evaluate(() => document.getElementById('saver').textContent + document.getElementById('today').textContent)));
   await p.mouse.click(60, 60); await p.adv(800);
   // 기준7: 날이 지나면

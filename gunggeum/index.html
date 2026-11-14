@@ -821,6 +821,69 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .saver.night .sv-dots i { background: #8A6A3A; opacity: .25; }
 .saver.night .sv-dots i.on { opacity: .6; }
 
+/* v107: 대기화면 위젯 면 — 색이 깔린 면 위에 둥근 유리 타일 */
+.sv-face { display: none; }
+.saver.face { padding: 0; background: var(--f0, #0D5A53); transition: background-color 4s linear; --f0: #0D5A53; --f1: #17786E; --f2: #0A4741; }
+.saver.face[data-tone="day"] { --f0: #1D4C8A; --f1: #2B66AE; --f2: #173C70; }
+.saver.face[data-tone="eve"] { --f0: #3A2B78; --f1: #51409C; --f2: #2C205E; }
+.saver.face .sv-inner { display: none; }
+.saver.face .sv-face { display: block; position: absolute; inset: 0; overflow: hidden; color: #fff; font-family: var(--f-ui);
+  background:
+    radial-gradient(circle at 18% 118%, var(--f1) 0 34%, transparent 34.2%),
+    radial-gradient(circle at 96% -12%, var(--f1) 0 30%, transparent 30.2%),
+    radial-gradient(circle at 58% 44%, var(--f2) 0 26%, transparent 26.2%),
+    linear-gradient(118deg, transparent 0 46%, color-mix(in srgb, var(--f1) 55%, transparent) 46% 61%, transparent 61%); }
+.fc-grid { position: absolute; inset: 3.2vh 2vw 4.4vh; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) minmax(0, .82fr); gap: 2vh 1.1vw; }
+.fc-t { position: relative; min-width: 0; min-height: 0; overflow: hidden; border-radius: clamp(28px, 5.4vh, 52px); background: linear-gradient(160deg, rgba(255,255,255,.26), rgba(255,255,255,.11) 55%, rgba(255,255,255,.16)); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.3), inset 0 2px 0 rgba(255,255,255,.22); padding: 2.6vh 1.6vw; display: flex; flex-direction: column; }
+.fc-lab { font-size: clamp(1.1rem, min(1.5vw, 2.9vh), 1.6rem); font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fc-sub { font-size: clamp(1rem, min(1.3vw, 2.5vh), 1.4rem); font-weight: 500; color: rgba(255,255,255,.66); line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fc-clock { grid-column: 1 / 5; grid-row: 1 / 3; align-items: center; justify-content: center; padding: 2vh 2vw; container-type: inline-size; }
+.fc-date { font-size: clamp(1.6rem, min(2.5vw, 4.8vh), 2.8rem); font-weight: 700; color: rgba(255,255,255,.78); line-height: 1; }
+.fc-date b { color: #fff; font-weight: 800; margin-left: .5em; }
+.fc-time { display: flex; align-items: baseline; font-size: min(32.5cqw, 40vh); font-weight: 800; letter-spacing: -.045em; line-height: .96; white-space: nowrap; font-variant-numeric: tabular-nums; margin-top: 1.2vh; }
+.fc-tip { font-size: clamp(1.4rem, min(2vw, 3.9vh), 2.2rem); font-weight: 600; color: rgba(255,255,255,.8); line-height: 1.2; margin-top: .6vh; min-height: 1.2em; }
+.fc-wx { grid-column: 5 / 7; grid-row: 1; flex-direction: row; align-items: center; gap: 1.2vw; }
+.fc-wx svg.wi { flex: none; width: min(7.6vw, 14.6vh); height: min(7.6vw, 14.6vh); }
+.fc-wx .tt { min-width: 0; display: flex; flex-direction: column; }
+.fc-temp { font-size: clamp(4rem, min(7.4vw, 14.4vh), 8rem); font-weight: 800; letter-spacing: -.04em; line-height: .95; font-variant-numeric: tabular-nums; }
+.fc-feat { grid-column: 5 / 7; grid-row: 2; justify-content: center; }
+.fc-feat.pic { flex-direction: row; align-items: stretch; padding: 0; }
+.fc-feat.pic .tx { flex: 1; min-width: 0; padding: 2.4vh 1.3vw 2.4vh 1.6vw; display: flex; flex-direction: column; justify-content: center; }
+.fc-feat .ph { flex: none; width: 42%; position: relative; }
+.fc-feat .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.fc-hed { margin-top: .8vh; font-size: clamp(1.4rem, min(2.05vw, 4vh), 2.3rem); font-weight: 800; line-height: 1.26; letter-spacing: -.02em; word-break: keep-all; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+.fc-feat.line .fc-hed { font-weight: 600; font-size: clamp(1.25rem, min(1.7vw, 3.3vh), 1.9rem); line-height: 1.4; -webkit-line-clamp: 4; }
+.fc-feat.line .fc-hed b { font-weight: 800; }
+.fc-feat.moon { flex-direction: row; align-items: center; gap: 1.3vw; }
+.fc-feat.moon canvas { flex: none; width: min(9.4vw, 18.4vh); height: min(9.4vw, 18.4vh); }
+.fc-feat.moon .tx { min-width: 0; }
+.fc-feat.moon .fc-hed { margin-top: .4vh; font-size: clamp(1.7rem, min(2.5vw, 4.9vh), 2.8rem); -webkit-line-clamp: 1; }
+.fc-todo { grid-column: 1 / 4; grid-row: 3; flex-direction: row; align-items: center; gap: 1.6vw; padding: 1.6vh 1.6vw; }
+.fc-n { flex: none; min-width: min(9vw, 17vh); text-align: center; }
+.fc-n b { display: block; font-size: clamp(4rem, min(6.6vw, 12.8vh), 7.2rem); font-weight: 800; line-height: .95; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.fc-n span { display: block; margin-top: .5vh; font-size: clamp(1.05rem, min(1.4vw, 2.7vh), 1.5rem); font-weight: 700; color: rgba(255,255,255,.72); white-space: nowrap; }
+.fc-list { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: .5vh; }
+.fc-row { display: flex; align-items: center; gap: .9vw; min-height: max(60px, 7.6vh); padding: 0 1vw; border-radius: 999px; background: rgba(255,255,255,.14); font-size: clamp(1.3rem, min(1.8vw, 3.5vh), 2rem); font-weight: 700; }
+.fc-row .bx { flex: none; width: 1.25em; height: 1.25em; border-radius: 50%; box-shadow: inset 0 0 0 2.5px rgba(255,255,255,.85); position: relative; }
+.fc-row .tx { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fc-row .du { flex: none; font-size: .78em; font-weight: 600; color: rgba(255,255,255,.7); }
+.fc-row.done { background: rgba(255,255,255,.07); color: rgba(255,255,255,.55); }
+.fc-row.done .tx { text-decoration: line-through; }
+.fc-row.done .bx { background: rgba(255,255,255,.85); box-shadow: none; }
+.fc-row.done .bx::after { content: ""; position: absolute; left: 30%; top: 16%; width: 32%; height: 52%; border: solid var(--f0); border-width: 0 3px 3px 0; transform: rotate(45deg); }
+.fc-more, .fc-empty { font-size: clamp(1.1rem, min(1.45vw, 2.8vh), 1.55rem); font-weight: 600; color: rgba(255,255,255,.68); padding-left: 1vw; }
+.fc-empty { font-size: clamp(1.3rem, min(1.8vw, 3.5vh), 2rem); padding: 0; }
+.fc-app { grid-row: 3; align-items: center; justify-content: center; text-align: center; padding: 1.6vh .8vw; gap: .5vh; }
+.fc-app svg { width: min(4.6vw, 8.8vh); height: min(4.6vw, 8.8vh); margin-bottom: .6vh; }
+.fc-app .fc-sub { max-width: 100%; }
+.fc-app .dot { display: inline-block; width: .55em; height: .55em; border-radius: 50%; background: #FFD27A; margin-right: .4em; vertical-align: .08em; }
+.sv-face svg { fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sv-face svg .f { fill: #fff; stroke: none; }
+.fc-msg { position: absolute; left: 50%; bottom: 7vh; transform: translateX(-50%); z-index: 3; padding: 1.4vh 2vw; border-radius: 999px; background: rgba(0,0,0,.62); color: #fff; font-size: clamp(1.3rem, 1.8vw, 2rem); font-weight: 700; white-space: nowrap; }
+.fc-msg[hidden] { display: none; }
+.saver.face .sv-dots i { background: #fff; opacity: .35; }
+.saver.face .sv-dots i.on { opacity: .95; }
+
 /* v106: 누르는 곳 60px 이상 */
 #replayBtn { min-height: 3rem; padding-inline: 1rem; }
 .top-right .iconbtn { width: 3rem; height: 3rem; }
@@ -974,6 +1037,15 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 
   <div class="saver" id="saver" hidden>
   <div class="sv-dots" id="svDots" hidden aria-hidden="true"></div>
+    <div class="sv-face" id="svFace"><div class="fc-grid" id="fcGrid">
+      <section class="fc-t fc-clock" data-tile="clock"><div class="fc-date" id="fcDate"></div><div class="fc-time" id="fcTime"></div><div class="fc-tip" id="fcTip"></div></section>
+      <section class="fc-t fc-wx" data-tile="wx" id="fcWx"></section>
+      <section class="fc-t fc-feat" id="fcFeat"></section>
+      <section class="fc-t fc-todo" data-tile="todo"><div class="fc-n"><b id="fcTodoN"></b><span id="fcTodoS"></span></div><div class="fc-list" id="fcTodoL"></div></section>
+      <section class="fc-t fc-app" data-tile="news"><svg viewBox="0 0 24 24"><path d="M5 4h11v16H6.5A1.5 1.5 0 0 1 5 18.500z"/><path d="M16 9h3v9.500a1.500 1.500 0 0 1-3 0"/><path d="M8 8h5M8 12h5M8 16h3"/></svg><div class="fc-lab">신문</div><div class="fc-sub" id="fcNewsS"></div></section>
+      <section class="fc-t fc-app" data-tile="sky"><svg viewBox="0 0 24 24"><path d="M15.500 14.500A6.500 6.500 0 0 1 9 5.200a7.500 7.500 0 1 0 9.800 9.800 6.500 6.500 0 0 1-3.300-.500z"/><path class="f" d="M17.500 3.500l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg><div class="fc-lab">밤하늘</div><div class="fc-sub" id="fcSkyS"></div></section>
+      <section class="fc-t fc-app" data-tile="ask"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.500 11.500a6.500 6.500 0 0 0 13 0M12 18v3"/></svg><div class="fc-lab">묻기</div><div class="fc-sub">눌러서 말해</div></section>
+    </div><div class="fc-msg" id="fcMsg" hidden></div></div>
     <div class="sv-inner">
       <section class="sv-date">
         <div class="sv-top"><span class="sv-mon" id="svMon"></span> <span class="sv-day" id="svDay"></span> <span class="sv-dow" id="svDow"></span></div>
@@ -1020,13 +1092,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v106</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v107</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v106</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v107</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1038,7 +1110,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <h3>화면 바로가기</h3>
       <div class="row" id="goRow"><button class="chip" data-go="home" type="button">홈</button><button class="chip" data-go="paper" type="button">신문 기사</button></div>
       <label>대기화면 미리 보기</label>
-      <div class="row" id="goRow2"><button class="chip" data-go="hero" type="button">아침 신문 1면</button><button class="chip" data-go="done" type="button">신문 다 읽은 날</button><button class="chip" data-go="sky" type="button">저녁 밤하늘</button><button class="chip" data-go="night" type="button">밤</button><button class="chip" data-go="plain" type="button">신문 없는 날</button></div>
+      <div class="row" id="goRow2"><button class="chip" data-go="face" type="button">대기화면</button><button class="chip" data-go="hero" type="button">신문 1면</button><button class="chip" data-go="sky" type="button">저녁 밤하늘</button><button class="chip" data-go="night" type="button">밤</button></div>
       <p class="empty">미리 보기는 화면을 누르면 끝나고, 그대로 두면 10분 뒤 원래 대기화면으로 돌아가요.</p>
     </div>
     <div class="card">
@@ -1721,7 +1793,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       $('svWx').innerHTML = w ? `<span class="wx-now"><b>${w.t}°</b> ${txt}</span><span class="wx-sub">${[`최고 ${w.hi}° 최저 ${w.lo}°`, w.pop != null ? '비 ' + w.pop + '%' : '', dg ? '먼지 ' + dg : ''].filter(Boolean).map(x => `<span class="wseg">${x}</span>`).join(' · ')}</span>` : ''; }
     $('svTip').textContent = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : '';
     { const t = w && w.tom; $('svNight').textContent = t ? `내일 아침 ${t.lo}°${t.pop != null && t.pop >= 50 ? ' · 우산!' : t.lo <= 5 ? ' · 겉옷!' : ''}` : '';
-      const o = [[0, 0], [4, 2], [-3, 4], [2, -4], [-4, -2], [3, 3]][Math.floor(Date.now() / 300e3) % 6]; saverEl.querySelector('.sv-inner').style.translate = `${o[0]}px ${o[1]}px`; } // 화면 자국 방지: 5분마다 몇 px씩
+      const o = [[0, 0], [4, 2], [-3, 4], [2, -4], [-4, -2], [3, 3]][Math.floor(Date.now() / 300e3) % 6]; saverEl.querySelector('.sv-inner').style.translate = $('fcGrid').style.translate = `${o[0]}px ${o[1]}px`; } // 화면 자국 방지: 5분마다 몇 px씩
     const hasPaper = renderFront(); svDots(); todoRender();
     if (saverEl.classList.contains('sky') && w) { // 저녁엔 옷차림 대신 별 보기 한마디 (비·눈·먼지 알림은 그대로)
       const tip = $('svTip').textContent; if (!/비|눈|먼지/.test(tip)) $('svTip').textContent = w.code <= 1 ? '하늘이 맑은 밤' : w.code === 2 ? '구름 사이로 별이 보여' : '구름이 많은 밤';
@@ -1733,16 +1805,17 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (!saverEl.hidden) return;
     recent.length = 0; quiz = false; hidePic(); setChips([]); followChips = []; input.value = ''; input.blur();
     hidePaper(); paperCtx = null; delete app.dataset.fromPaper;
-    hush(); saverEl.hidden = false; loadNews().then(() => { if (!saverEl.hidden) renderSaver(); }); $('svMsg').hidden = true; renderSaver(); fetchWeather().then(renderSaver).catch(() => {});
+    hush(); saverEl.hidden = false; loadNews().then(() => { if (!saverEl.hidden) renderSaver(); }); $('svMsg').hidden = $('fcMsg').hidden = true; renderSaver(); fetchWeather().then(renderSaver).catch(() => {});
     clearInterval(saverTick); saverTick = setInterval(renderSaver, 15 * 1000); keepAwake();
-    if (saverLock) { const m = $('svMsg'); m.textContent = saverLock; m.hidden = false; clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { m.hidden = true; }, 4000); }
+    if (saverLock) svSay(saverLock);
   }
   let lockMsgTimer = null;
+  function svSay(t) { for (const id of ['svMsg', 'fcMsg']) { const m = $(id); m.textContent = t; m.hidden = false; } clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { $('svMsg').hidden = $('fcMsg').hidden = true; }, 4000); }
   function exitSaver() {
     if (saverEl.hidden) return;
     const blocked = gate();
     if (blocked) { // 쉬는 시간: 안내만 잠깐 보여주고 계속 잠듦
-      const m = $('svMsg'); m.textContent = blocked; m.hidden = false; clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { m.hidden = true; }, 4000); return;
+      svSay(blocked); return;
     }
     saverEl.hidden = true; delete window.__gkForce; clearInterval(saverTick); showPiece(false); touchIdle();
   }
@@ -1751,15 +1824,15 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   // 대기화면 넘기기: 옆으로 밀면 신문 1면 ↔ 시계 ↔ 밤하늘. 톡 누르면 예전처럼 깨어남. (넘긴 화면은 10분 뒤 원래대로)
   function svPages() {
     const on = !!(news && newsFresh()), hr = new Date().getHours(), nightNow = window.__gkNight ?? (hr >= 22 || hr < 6), a = [];
+    if (innerWidth >= 900) { a.push(nightNow ? 'night' : 'face'); if (on) a.push('front'); if (window.GKSky) a.push('sky'); return a; } // 넓은 화면: 위젯 면이 첫 장
     if (on) a.push('front');
     a.push(nightNow ? 'night' : on && newsRead() ? 'done' : 'plain');
-    if (innerWidth >= 900 && window.GKSky) a.push('sky');
     return a;
   }
-  const svCur = () => { const c = saverEl.classList; return c.contains('sky') ? 'sky' : c.contains('paper-hero') ? 'front' : c.contains('night') ? 'night' : c.contains('paper-done') ? 'done' : 'plain'; };
+  const svCur = () => { const c = saverEl.classList; return c.contains('face') ? 'face' : c.contains('sky') ? 'sky' : c.contains('paper-hero') ? 'front' : c.contains('night') ? 'night' : c.contains('paper-done') ? 'done' : 'plain'; };
   function svDots() {
     const pg = svPages(), cur = svCur(), el = $('svDots'); el.hidden = pg.length < 2;
-    const html = pg.map(x => `<i${x === cur || (x !== 'front' && x !== 'sky' && cur !== 'front' && cur !== 'sky') ? ' class="on"' : ''}></i>`).join('');
+    const html = pg.map(x => `<i${x === cur || (x !== 'front' && x !== 'sky' && x !== 'face' && cur !== 'front' && cur !== 'sky' && cur !== 'face') ? ' class="on"' : ''}></i>`).join('');
     if (el.innerHTML !== html) el.innerHTML = html;
   }
   function svPage(dir) {
@@ -1774,7 +1847,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   saverEl.addEventListener('pointerdown', e => {
     e.preventDefault(); e.stopPropagation();
     const now = Date.now(), row = e.target.closest && e.target.closest('[data-todo]'); svTaps = svTaps.filter(t => now - t < 3000); if (!row) svTaps.push(now);
-    svDown = { x: e.clientX, y: e.clientY, todo: row ? row.dataset.todo : '', paper: !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper') };
+    const tile = !row && e.target.closest && e.target.closest('[data-tile]');
+    svDown = { x: e.clientX, y: e.clientY, todo: row ? row.dataset.todo : '', tile: tile ? tile.dataset.tile : '', paper: !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper') };
     clearTimeout(svHold); svHold = setTimeout(() => { svTaps = []; svDown = null; openLog(); }, 2000);
     if (svTaps.length >= 5) { svTaps = []; svDown = null; clearTimeout(svHold); openLog(); }
   }, true);
@@ -1785,8 +1859,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (Math.abs(dx) > 70 && Math.abs(dx) > 1.5 * Math.abs(dy)) { svTaps = []; svPage(dx < 0 ? 1 : -1); return; }
     if (Math.abs(dx) > 24 || Math.abs(dy) > 24) return; // 어중간하게 끌다 만 것은 무시
     if (d.todo) { todoToggle(d.todo); return; } // 할 일 줄: 줄만 긋고 화면은 그대로
+    if (d.tile === 'sky' && window.GKSky) { svTaps = []; window.__gkForce = { s: 'sky', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '타일 → 밤하늘'); return; }
+    const hadNews = !!(news && newsFresh());
     exitSaver();
-    if (d.paper && saverEl.hidden) openPaper(0);
+    if ((d.paper || (d.tile === 'news' && hadNews)) && saverEl.hidden) openPaper(0);
+    else if (d.tile === 'ask' && saverEl.hidden) { try { $('micBtn') && $('micBtn').click(); } catch (e) {} }
   }, true);
   ['pointercancel', 'pointerleave'].forEach(ev => saverEl.addEventListener(ev, e => { if (ev === 'pointerleave' && e.target !== saverEl) return; clearTimeout(svHold); svDown = null; }, true));
   document.addEventListener('keydown', e => { if (!saverEl.hidden && logEl.hidden) { e.preventDefault(); if (e.repeat) return; if (e.key === 'PageDown' || e.key === 'ArrowDown') { svPage(1); return; } if (e.key === 'PageUp' || e.key === 'ArrowUp' || e.key === 'ArrowLeft') { svPage(-1); return; } if (Date.now() - (window.__gkSaverAt || 0) < 1500) return; exitSaver(); } }, true);
@@ -1846,8 +1923,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const read = fz === 'hero' ? false : fz === 'done' ? true : newsRead();
     const hr = new Date().getHours(), night = fz ? fz === 'night' : (window.__gkNight ?? (hr >= 22 || hr < 6));
     // 저녁(18~22시): 신문을 다 읽었거나 신문이 없으면 '오늘 밤하늘'. 안 읽은 신문이 있으면 신문이 먼저.
-    const sky = !night && (fz ? fz === 'sky' : (hr >= 18 && !(on && !read))) && innerWidth >= 900 && Date.now() - skyBadAt > 10 * 60e3 && skyReady();
-    saverEl.classList.toggle('sky', sky);
+    const wide = innerWidth >= 900;
+    const sky = !night && (fz ? fz === 'sky' : (!wide && hr >= 18 && !(on && !read))) && wide && Date.now() - skyBadAt > 10 * 60e3 && skyReady();
+    const face = wide && !night && !sky && (!fz || fz === 'face' || fz === 'sky'); // 넓은 화면의 낮·저녁 기본: 위젯 면
+    saverEl.classList.toggle('sky', sky); saverEl.classList.toggle('face', face);
+    if (face) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain'].forEach(c => saverEl.classList.remove(c)); return renderFace(on, read, hr) !== 'line'; }
     saverEl.classList.toggle('plain', !on && !night && !sky);
     if (sky) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done'].forEach(c => saverEl.classList.remove(c)); renderSky(); return true; }
     el.hidden = !on || night; saverEl.classList.toggle('has-paper', on && !night); saverEl.classList.toggle('night', night);
@@ -1870,6 +1950,58 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       safePic(a.pic).then(pic => { if (box.dataset.k !== key) return; putPic(box, pic); lead.classList.toggle('nopic', !pic); });
     }
     return true;
+  }
+
+  // ---------- 대기화면 위젯 면 (v107): 큰 시계 타일 + 날씨 + 지금 볼 것 + 할 일 + 작은 타일 셋 ----------
+  const WI = { // 날씨 그림 (직접 그린 선 그림)
+    sun: '<circle cx="12" cy="12" r="4.200" class="f"/><path d="M12 2.500v2.500M12 19v2.500M2.500 12H5M19 12h2.500M5.300 5.300l1.800 1.800M16.900 16.900l1.800 1.800M5.300 18.700l1.800-1.800M16.900 7.100l1.800-1.800"/>',
+    moon: '<path class="f" d="M15.500 15A7 7 0 0 1 9 5.200a7.800 7.800 0 1 0 10 10.300 7 7 0 0 1-3.500-.500z"/>',
+    cloud: '<path class="f" d="M7.500 18.500a4 4 0 0 1-.4-8 5.500 5.500 0 0 1 10.600 1.300 3.400 3.400 0 0 1-.4 6.700z"/>',
+    part: '<circle cx="8" cy="8.500" r="3"/><path d="M8 2.800v1.400M2.600 8.500H4M4.200 4.700l1 1M11.800 4.700l-1 1"/><path class="f" d="M9.500 19.500a3.400 3.400 0 0 1-.3-6.800 4.700 4.700 0 0 1 9 1.100 2.900 2.900 0 0 1-.3 5.700z"/>',
+    rain: '<path class="f" d="M7.500 14.500a4 4 0 0 1-.4-8A5.500 5.500 0 0 1 17.700 7.800a3.400 3.400 0 0 1-.4 6.700z"/><path d="M8.500 17.500l-1 3M12.500 17.500l-1 3M16.500 17.500l-1 3"/>',
+    snow: '<path class="f" d="M7.500 14.500a4 4 0 0 1-.4-8A5.500 5.500 0 0 1 17.700 7.800a3.400 3.400 0 0 1-.4 6.700z"/><circle class="f" cx="8" cy="18.500" r="1.100"/><circle class="f" cx="12" cy="20.500" r="1.100"/><circle class="f" cx="16" cy="18.500" r="1.100"/>',
+    fog: '<path d="M4 8h16M6 12h12M4 16h16M8 20h8"/>' };
+  function wxIcon(code, dark) {
+    const k = [61, 63, 65, 66, 67, 51, 53, 55, 56, 57, 80, 81, 82, 95, 96, 99].includes(code) ? 'rain' : [71, 73, 75, 77, 85, 86].includes(code) ? 'snow' : code === 45 || code === 48 ? 'fog' : code === 3 ? 'cloud' : code === 2 ? (dark ? 'cloud' : 'part') : dark ? 'moon' : 'sun';
+    return `<svg class="wi" viewBox="0 0 24 24">${WI[k]}</svg>`;
+  }
+  let fcSky = null, fcSkyKey = '', fcMoonKey = '', fcFeatKey = '';
+  function faceSky() {
+    if (!skyReady()) return null;
+    const key = Math.floor(Date.now() / 600e3) + '|' + settings.wxLat + '|' + settings.wxLon;
+    if (key !== fcSkyKey) { fcSkyKey = key; try { fcSky = window.GKSky.build({ lat: +settings.wxLat || 37.526, lon: +settings.wxLon || 126.896, now: new Date(), W: 968, H: 528 }); } catch (e) { fcSky = null; } }
+    return fcSky;
+  }
+  const setH = (el, html) => { if (el.innerHTML !== html) el.innerHTML = html; };
+  function renderFace(on, read, hr) {
+    const d = new Date();
+    saverEl.dataset.tone = hr < 12 ? 'morn' : hr < 18 ? 'day' : 'eve';
+    setH($('fcDate'), `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일<b>${hr < 12 ? '오전' : '오후'}</b>`);
+    $('fcTime').textContent = `${hr % 12 || 12}:${pad(d.getMinutes())}`;
+    let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 12 * 3600e3) w = last.w; }
+    $('fcTip').textContent = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : '';
+    setH($('fcWx'), w ? `${wxIcon(w.code, hr >= 18 || hr < 7)}<div class="tt"><div class="fc-temp">${w.t}°</div><div class="fc-lab">${escN((WX[w.code] || [''])[0])}</div><div class="fc-sub">최고 ${w.hi}° · 최저 ${w.lo}°</div></div>` : `<div class="tt"><div class="fc-lab">날씨</div><div class="fc-sub">아직 못 받았어</div></div>`);
+    const sk = faceSky();
+    setH($('fcNewsS'), on ? (read ? '다 읽었어' : `<i class="dot"></i>새 소식 ${news.articles.length}개`) : '아직 안 왔어');
+    $('fcSkyS').textContent = sk ? sk.moon.name : '오늘의 달';
+    // 지금 볼 것: 안 읽은 신문 → 저녁엔 오늘의 달 → 그 밖에는 시각이 들어간 한 문장
+    const ft = $('fcFeat'), kind = on && !read ? 'news' : hr >= 18 && sk ? 'moon' : 'line';
+    if (kind === 'news') {
+      const a = news.articles[0], key = 'news|' + news.no + '|' + a.pic;
+      if (fcFeatKey !== key) { fcFeatKey = key; ft.className = 'fc-t fc-feat news'; ft.dataset.tile = 'news';
+        ft.innerHTML = `<div class="tx"><div class="fc-sub">루아 신문 · 제${escN(news.no)}호</div><div class="fc-hed">${escN(a.title)}</div></div><div class="ph" hidden></div>`;
+        safePic(a.pic).then(pic => { if (fcFeatKey !== key || !pic) return; const ph = ft.querySelector('.ph'); if (!ph) return; const im = new Image(); im.src = pic.src; im.alt = pic.title; ph.append(im); ph.hidden = false; ft.classList.add('pic'); }); }
+    } else if (kind === 'moon') {
+      const key = 'moon|' + sk.moon.name + '|' + sk.moon.lines.join('|');
+      if (fcFeatKey !== key) { fcFeatKey = key; fcMoonKey = ''; ft.className = 'fc-t fc-feat moon'; ft.dataset.tile = 'sky';
+        ft.innerHTML = `<canvas width="2" height="2"></canvas><div class="tx"><div class="fc-sub">오늘의 달</div><div class="fc-hed">${escN(sk.moon.name)}</div><div class="fc-sub">${escN(sk.moon.lines[0])}</div></div>`; }
+      const cv = ft.querySelector('canvas'), ms = Math.round(cv.getBoundingClientRect().width), mk = [ms, Math.round(sk.moon.phase), Math.round(sk.moon.limb / 8)].join('|');
+      if (mk !== fcMoonKey && ms > 20) { fcMoonKey = mk; try { window.GKSky.drawMoon(cv, ms, sk.moon.phase, sk.moon.limb); } catch (e) { fcMoonKey = ''; } }
+    } else {
+      const html = $('svLine').innerHTML.replace(/<span class="sv-attr">[\s\S]*$/, ''), key = 'line|' + html;
+      if (fcFeatKey !== key) { fcFeatKey = key; ft.className = 'fc-t fc-feat line'; ft.dataset.tile = 'clock'; ft.innerHTML = `<div class="fc-sub">지금 이 시각</div><div class="fc-hed">${html}</div>`; }
+    }
+    return kind;
   }
   // ---------- 오늘 밤하늘 (저녁 대기화면): 별 계산 라이브러리는 처음 필요할 때만 받음 ----------
   var skyBadAt = 0;
@@ -2067,6 +2199,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const c = saverEl.classList, clockPage = c.contains('plain') || c.contains('paper-done');
     const on = clockPage && left > 0; c.toggle('todo', on); $('svTodo').hidden = !on;
     if (on) { const h2 = todoRows(list, 'svt-row', 4); if ($('svTodoL').innerHTML !== h2) $('svTodoL').innerHTML = h2; $('svTodoN').textContent = left + '개 남았어'; }
+    if (c.contains('face')) {
+      $('fcTodoN').textContent = list.length ? left : '0'; $('fcTodoS').textContent = !list.length ? '할 일' : left ? '할 일 남았어' : '다 했어';
+      const hf = list.length ? todoRows(list, 'fc-row', 2).replace('svt-more', 'fc-more').replace('tdo-more', 'fc-more') : '<div class="fc-empty">할 일이 생기면 말해 줘.</div>';
+      if ($('fcTodoL').innerHTML !== hf) $('fcTodoL').innerHTML = hf;
+    }
     let dn = $('svTodoDone'); const allDone = clockPage && !left && list.length > 0;
     if (allDone && !dn) { dn = document.createElement('span'); dn.id = 'svTodoDone'; dn.className = 'sv-tododone'; $('svTip').after(dn); }
     if (dn) { dn.hidden = !allDone; if (allDone) dn.textContent = `오늘 할 일 ${list.length}개 다 했어`; }
@@ -2661,7 +2798,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v106';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v107';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
