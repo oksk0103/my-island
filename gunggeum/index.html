@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="./icon2-180.png">
 <title>궁금칸</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;600;700;900&display=swap">
 <style>
 html, body { margin: 0; }
 [hidden] { display: none !important; }
@@ -713,6 +713,50 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .wstrip { border-left: 0 !important; border-radius: 1.2rem; }
 .fig-box:has(.vcard), .fig-box:has(.emo), .fig-box:has(.era) { border-left: 0 !important; border-radius: 20px !important; }
 .pp-word { border-left: 0 !important; border-radius: 1rem !important; }
+
+/* v99: 저녁(18~22시) 대기화면 = 오늘 밤하늘 — 아침 신문과 같은 제호 띠, 아래는 남쪽 하늘과 오늘의 달 */
+.sv-sky { display: none; }
+.saver.sky { padding: 3.5vh 5vw; }
+.saver.sky .sv-inner { display: grid; width: 100%; height: 100%; max-width: 100rem; align-items: stretch; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-rows: auto auto auto auto auto minmax(0, 1fr) auto; column-gap: 3vw; row-gap: 0;
+  grid-template-areas: "top name wxn" "time name wxs" "time name tip" "rule rule rule" "meta meta meta" "body body body" "msg msg msg"; }
+.saver.sky .sv-date, .saver.sky .sv-text, .saver.sky .sv-sky, .saver.sky .sv-wx { display: contents; }
+.saver.sky .sv-line, .saver.sky .sv-paper, .saver.sky .sv-night { display: none !important; }
+.saver.sky .sv-top { grid-area: top; font-size: clamp(1.2rem, min(1.7vw, 3.1vh), 1.8rem); align-self: start; padding: 0; line-height: 1; }
+.saver.sky .sv-time { grid-area: time; font-size: clamp(4.8rem, min(8.4vw, 16vh), 10rem); margin: .2rem 0 0 -.03em; line-height: .74; align-self: end; }
+.saver.sky .sky-name { grid-area: name; align-self: end; justify-self: center; font-family: var(--f-serif); font-weight: 900; font-size: clamp(2.6rem, min(5.7vw, 10.8vh), 6.6rem); line-height: .86; letter-spacing: -.035em; white-space: nowrap; color: var(--ink); }
+.saver.sky .sv-wx .wx-now { grid-area: wxn; justify-self: end; align-self: start; line-height: 1; font-size: clamp(2.4rem, min(3.8vw, 7vh), 4.2rem); color: color-mix(in srgb, var(--sv-text) 82%, transparent); letter-spacing: -.02em; white-space: nowrap; }
+.saver.sky .sv-wx .wx-now b { font-weight: 600; color: var(--ink); }
+.saver.sky .sv-wx .wx-sub { grid-area: wxs; justify-self: end; align-self: end; margin-top: .7rem; font-size: clamp(1.1rem, min(1.45vw, 2.8vh), 1.6rem); color: color-mix(in srgb, var(--sv-text) 62%, transparent); font-family: var(--f-serif); }
+.saver.sky .sv-tip { grid-area: tip; justify-self: end; align-self: end; margin-top: .5rem !important; font-size: clamp(1.4rem, min(2.1vw, 4vh), 2.3rem); line-height: .9; position: relative; top: .24em; }
+.saver.sky .sv-rule { grid-area: rule; width: auto; height: 0; margin-top: 3.4vh; border-top: 3px solid color-mix(in srgb, var(--ink) 70%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--ink) 70%, transparent); padding-top: 4px; background: none; }
+.saver.sky .sky-meta { grid-area: meta; text-align: center; padding-top: .8rem; font-size: clamp(.85rem, min(1.1vw, 2vh), 1.15rem); font-weight: 700; color: var(--muted); line-height: 1.55; }
+.saver.sky .sky-body { grid-area: body; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) min(33%, 31rem); column-gap: 3vw; padding-top: 1.6vh; }
+.saver.sky .sky-chart { min-width: 0; min-height: 0; position: relative; }
+.sky-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.sky-svg .lb { font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-size: 26px; fill: #E8DDC9; font-weight: 600; paint-order: stroke; stroke: #100D0A; stroke-width: 4px; stroke-linejoin: round; }
+.sky-svg .lb.pl { fill: #F0C374; font-weight: 700; }
+.sky-svg .lb.hi { fill: #F0C374; font-size: 38px; font-weight: 900; }
+.sky-svg .lb.hi2 { fill: #F0C374; font-weight: 900; }
+.sky-svg .dir { font-family: var(--f-ui); font-size: 18px; fill: #A39682; text-anchor: middle; font-weight: 800; }
+.sky-svg .dir.s { fill: #E8DDC9; }
+.saver.sky .sky-col { min-width: 0; display: flex; flex-direction: column; padding: .4vh 0 1.2vh; text-align: left; }
+.saver.sky .sky-col .svp-tag { font-size: clamp(.95rem, min(1.2vw, 2.2vh), 1.25rem); display: block; }
+.saver.sky .sky-moon { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 1.7vw; align-items: center; margin-top: 1vh; }
+.saver.sky #skyMoon { display: block; width: min(16.6vw, 32.4vh); height: min(16.6vw, 32.4vh); margin-left: -.3vw; }
+.sky-mtxt { display: flex; flex-direction: column; min-width: 0; }
+.sky-mname { font-family: var(--f-serif); font-weight: 900; font-size: clamp(2rem, min(3.4vw, 6.6vh), 3.9rem); letter-spacing: -.04em; line-height: 1.05; color: var(--ink); word-break: keep-all; }
+.sky-mname.long { font-size: clamp(1.5rem, min(2.5vw, 4.8vh), 2.9rem); white-space: nowrap; }
+.sky-msub { margin-top: .9vh; font-size: clamp(1rem, min(1.3vw, 2.5vh), 1.4rem); font-weight: 600; color: color-mix(in srgb, var(--ink) 80%, transparent); word-break: keep-all; }
+.sky-mset { margin-top: 2vh; padding-top: 1.8vh; border-top: 1px solid var(--line); font-family: var(--f-serif); font-weight: 600; font-size: clamp(1.1rem, min(1.5vw, 2.9vh), 1.65rem); line-height: 1.35; color: var(--ink); }
+.sky-mset small { display: block; font-family: var(--f-ui); font-size: .78em; font-weight: 700; color: var(--muted); }
+.sky-mnext { margin-top: 1.6vh; font-size: clamp(.95rem, min(1.2vw, 2.3vh), 1.3rem); font-weight: 700; color: var(--muted); line-height: 1.5; }
+.sky-mnext span { display: block; white-space: nowrap; }
+.sky-mnext b { color: color-mix(in srgb, var(--ink) 85%, transparent); font-weight: 700; }
+.saver.sky .sky-one { border-top: 1px solid var(--line); padding-top: 1.8vh; margin-top: auto; }
+.saver.sky .sky-one .svp-hed { margin-top: .5vh; font-size: clamp(1.5rem, min(2.3vw, 4.4vh), 2.6rem); line-height: 1.25; font-weight: 700; }
+.saver.sky .sky-one .svp-hed b { color: #F0C374; font-weight: 900; }
+.saver.sky .sky-one p { margin: .7vh 0 0; font-size: clamp(1rem, min(1.35vw, 2.6vh), 1.45rem); font-weight: 500; line-height: 1.45; color: color-mix(in srgb, var(--ink) 80%, transparent); word-break: keep-all; }
+.saver.sky .sv-msg { grid-area: msg; }
 </style>
 
 </head>
@@ -837,6 +881,21 @@ body { word-break: keep-all; overflow-wrap: break-word; }
           <div class="svp-foot"><span class="svp-unread" id="svpUnread"><i></i><span></span></span><button class="svp-open" id="svpOpen" type="button">신문 펴기<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button></div>
           <div class="svp-done" id="svpDone"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span class="t"><b id="svpDoneT"></b><small id="svpCount"></small></span><span class="again">다시 보기</span></div>
         </div>
+        <div class="sv-sky" id="svSky">
+          <div class="sky-name">오늘 밤하늘</div>
+          <div class="sky-meta" id="skyMeta"></div>
+          <div class="sky-body">
+            <div class="sky-chart" id="skyChart"></div>
+            <div class="sky-col">
+              <span class="svp-tag">오늘의 달</span>
+              <div class="sky-moon">
+                <canvas id="skyMoon" width="2" height="2"></canvas>
+                <div class="sky-mtxt"><b class="sky-mname" id="skyMName"></b><span class="sky-msub" id="skyMSub"></span><span class="sky-mset" id="skyMSet"></span><span class="sky-mnext" id="skyMNext"></span></div>
+              </div>
+              <div class="sky-one" id="skyOne"><span class="svp-tag">오늘 밤 하나</span><h2 class="svp-hed" id="skyOneH"></h2><p id="skyOneP"></p></div>
+            </div>
+          </div>
+        </div>
         <div class="sv-msg" id="svMsg" hidden></div>
       </section>
     </div>
@@ -849,19 +908,19 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v98</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v99</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v98</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v99</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
       <h3>루아 신문</h3>
       <p class="empty" id="newsNote"></p>
-      <div class="row"><button class="chip" id="newsOpen" type="button">신문 화면 열기</button><button class="chip" id="newsSaver" type="button">대기화면 보기</button><button class="chip" id="newsUnread" type="button">안 읽은 상태로 되돌리기</button><button class="chip" id="newsReload" type="button">신문 다시 받기</button></div>
+      <div class="row"><button class="chip" id="newsOpen" type="button">신문 화면 열기</button><button class="chip" id="newsSaver" type="button">대기화면 보기</button><button class="chip" id="skySaver" type="button">저녁 밤하늘 보기</button><button class="chip" id="newsUnread" type="button">안 읽은 상태로 되돌리기</button><button class="chip" id="newsReload" type="button">신문 다시 받기</button></div>
     </div>
     <div class="card">
       <h3>진단</h3>
@@ -1541,6 +1600,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     { const t = w && w.tom; $('svNight').textContent = t ? `내일 아침 ${t.lo}°${t.pop != null && t.pop >= 50 ? ' · 우산!' : t.lo <= 5 ? ' · 겉옷!' : ''}` : '';
       const o = [[0, 0], [4, 2], [-3, 4], [2, -4], [-4, -2], [3, 3]][Math.floor(Date.now() / 300e3) % 6]; saverEl.querySelector('.sv-inner').style.translate = `${o[0]}px ${o[1]}px`; } // 화면 자국 방지: 5분마다 몇 px씩
     const hasPaper = renderFront();
+    if (saverEl.classList.contains('sky') && w) { // 저녁엔 옷차림 대신 별 보기 한마디 (비·눈·먼지 알림은 그대로)
+      const tip = $('svTip').textContent; if (!/비|눈|먼지/.test(tip)) $('svTip').textContent = w.code <= 1 ? '별 보기 좋은 밤' : w.code === 2 ? '구름 사이로 별이 보여요' : '구름이 많은 밤';
+    }
     if (!hasPaper && !saverEl.classList.contains('night') && (d.getMinutes() % 10 === 0 || !LS.get(LINES_KEY, {})[hhmm(new Date(d.getTime() + 5 * 60000))])) fetchLines(d);
   }
   function enterSaver(lockMsg) {
@@ -1559,7 +1621,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (blocked) { // 쉬는 시간: 안내만 잠깐 보여주고 계속 잠듦
       const m = $('svMsg'); m.textContent = blocked; m.hidden = false; clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { m.hidden = true; }, 4000); return;
     }
-    saverEl.hidden = true; clearInterval(saverTick); showPiece(false); touchIdle();
+    saverEl.hidden = true; delete window.__gkSky; clearInterval(saverTick); showPiece(false); touchIdle();
   }
   // 부모님용: 쉬는 시간에도 대기화면을 빠르게 5번 누르거나 2초 꾹 누르면 부모님 화면이 열림
   let svTaps = [], svHold = null;
@@ -1625,7 +1687,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function bodyHtml(t) { return escN(t).replace(/《([^》]+)》/g, '<mark>$1</mark>'); }
   function renderFront() {
     const el = $('svPaper'), on = !!(news && newsFresh());
-    const hr = new Date().getHours(), night = window.__gkNight ?? (hr >= 22 || hr < 6);
+    const hr = new Date().getHours(), force = window.__gkSky === true, night = !force && (window.__gkNight ?? (hr >= 22 || hr < 6));
+    // 저녁(18~22시): 신문을 다 읽었거나 신문이 없으면 '오늘 밤하늘'. 안 읽은 신문이 있으면 신문이 먼저.
+    const sky = !night && (force || ((window.__gkSky ?? (hr >= 18)) && !(on && !newsRead()))) && skyReady();
+    saverEl.classList.toggle('sky', sky);
+    if (sky) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done'].forEach(c => saverEl.classList.remove(c)); renderSky(); return true; }
     el.hidden = !on || night; saverEl.classList.toggle('has-paper', on && !night); saverEl.classList.toggle('night', night);
     // 낮: 아직 안 읽었으면 신문이 주인공, 다 읽었으면 시계가 주인공 + 신문은 한 줄로 접힘. 밤(22~6시): 시계만 어둡게
     saverEl.classList.toggle('paper-hero', on && !night && !newsRead());
@@ -1646,6 +1712,34 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       safePic(a.pic).then(pic => { if (box.dataset.k !== key) return; putPic(box, pic); lead.classList.toggle('nopic', !pic); });
     }
     return true;
+  }
+  // ---------- 오늘 밤하늘 (저녁 대기화면): 별 계산 라이브러리는 처음 필요할 때만 받음 ----------
+  let skyLoading = null, skyFailAt = 0, skyKey = '', skyMoonKey = '';
+  function skyReady() {
+    if (window.GKSky && window.Astronomy && window.GK_SKY) return true;
+    if (!skyLoading && Date.now() - skyFailAt > 5 * 60e3) {
+      const b = './vendor/sky/';
+      skyLoading = loadScript(b + 'astronomy.min.js').then(() => loadScript(b + 'sky-data.js')).then(() => loadScript(b + 'sky.js'))
+        .then(() => { diag('app', '밤하늘 준비됨'); if (!saverEl.hidden) renderSaver(); })
+        .catch(e => { skyLoading = null; skyFailAt = Date.now(); diag('err', '밤하늘 못 받음: ' + (e.message || e)); });
+    }
+    return false;
+  }
+  function renderSky() {
+    const box = $('skyChart'), bw = box.clientWidth, bh = box.clientHeight; if (!bw || !bh) return;
+    const cv = $('skyMoon'), ms = Math.round(cv.getBoundingClientRect().width);
+    const key = [Math.floor(Date.now() / 300e3), bw, bh, settings.wxLat, settings.wxLon].join('|'); // 5분마다 다시 계산
+    if (key === skyKey) return;
+    let s; try { s = window.GKSky.build({ lat: settings.wxLat, lon: settings.wxLon, now: new Date(), W: bw, H: bh }); }
+    catch (e) { diag('err', '밤하늘 계산 실패: ' + (e.message || e)); skyFailAt = Date.now(); saverEl.classList.remove('sky'); return; }
+    skyKey = key; box.innerHTML = s.svg;
+    $('skyMeta').textContent = [settings.wxName || '', '남쪽을 바라본 ' + s.when + ' 하늘', s.sunset ? '해 진 때 ' + s.sunset : ''].filter(Boolean).join(' · ');
+    $('skyMName').textContent = s.moon.name; $('skyMName').classList.toggle('long', !!s.moon.long); $('skyMSub').textContent = s.moon.sub;
+    $('skyMSet').innerHTML = `${escN(s.moon.lines[0])}<small>${escN(s.moon.lines[1])}</small>`;
+    $('skyMNext').innerHTML = s.next.map(x => `<span><b>${escN(x[0])}</b> ${escN(x[1])}</span>`).join('');
+    $('skyOne').hidden = !s.pick; if (s.pick) { $('skyOneH').innerHTML = `${escN(s.pick.head)} <b>${escN(s.pick.name)}</b>`; $('skyOneP').textContent = s.pick.sub; }
+    const mk = [ms, Math.round(s.moon.phase), Math.round(s.moon.limb / 3)].join('|'); // 달은 모양이 달라질 때만 다시 그림
+    if (mk !== skyMoonKey && ms > 20) { skyMoonKey = mk; setTimeout(() => { try { window.GKSky.drawMoon(cv, ms, s.moon.phase, s.moon.limb); } catch (e) { skyMoonKey = ''; } }, 30); }
   }
   const curArticle = () => news && news.articles[paperIdx];
   function renderPaper() {
@@ -2203,7 +2297,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v98';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v99';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -2278,6 +2372,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   $('newsUnread').addEventListener('click', () => { LS.set(NEWS_READ, ''); if (news) { const d = LS.get(NEWS_DONE, []).filter(x => x !== news.date); LS.set(NEWS_DONE, d); } newsNoteRender(); diag('app', '신문을 안 읽은 상태로 되돌림'); });
   // 부모님 화면에서 바로 신문·대기화면으로 (테스트·확인용)
   $('newsOpen').addEventListener('click', async () => { if (!news) await loadNews(true); if (!news) { $('newsNote').textContent = '아직 받은 신문이 없어요'; return; } logEl.hidden = true; if (!saverEl.hidden) exitSaver(); openPaper(0); });
+  $('skySaver').addEventListener('click', () => { logEl.hidden = true; window.__gkSaverAt = Date.now(); window.__gkSky = true; enterSaver(); });
   $('newsSaver').addEventListener('click', () => { logEl.hidden = true; window.__gkSaverAt = Date.now(); enterSaver(); });
   $('newsReload').addEventListener('click', async () => { $('newsNote').textContent = '받는 중…'; await loadNews(true); newsNoteRender(); });
   new MutationObserver(() => { if (!logEl.hidden) newsNoteRender(); }).observe(logEl, { attributes: true, attributeFilter: ['hidden'] });
