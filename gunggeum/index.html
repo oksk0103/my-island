@@ -784,6 +784,32 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .saver.plain .sv-wx .wx-sub { font-size: clamp(1.1rem, min(1.5vw, 2.8vh), 1.6rem); margin-top: .5rem; }
 .saver.plain .sv-tip { font-size: clamp(1.4rem, min(2.1vw, 4vh), 2.3rem); margin-top: 1rem; }
 .saver.plain .sv-line { margin-top: 4.5vh; padding-top: 3.2vh; border-top: 1px solid var(--line); max-width: 46rem; font-size: clamp(1.2rem, min(1.8vw, 3.4vh), 1.9rem); line-height: 1.5; }
+
+/* v101: 검토 반영 — 12시간제, 직각 통일, 버튼 문법, 다 읽은 날 한 줄, 작은 글씨 키움 */
+.sv-time small { font-size: .2em; font-weight: 400; letter-spacing: 0; margin-right: .35em; color: color-mix(in srgb, currentColor 72%, transparent); }
+.fig-box:has(img), .fig-box:has(.vcard), .fig-box:has(.era), .fig-box, .fig-box img { border-radius: 0 !important; }
+.pp-word { background: none !important; border-radius: 0 !important; padding: .9rem 0 0 !important; border-top: 1px solid var(--line) !important; }
+.pp-nav { border-top: 0 !important; }
+.pp-folio { font-size: clamp(.95rem, 1.15vw, 1.15rem); }
+.svp-open { border-radius: 0 !important; }
+.chips button { border-radius: 0 !important; background: transparent !important; }
+.chips button .no { display: none; }
+.saver.paper-done .svp-done { display: block; margin-top: 4.5vh; padding: 3.2vh 0 0; border: 0; border-top: 1px solid var(--line); border-radius: 0; min-width: min(40rem, 70vw); text-align: center; font-family: var(--f-serif); font-size: clamp(1.2rem, min(1.8vw, 3.4vh), 1.9rem); line-height: 1.5; color: color-mix(in srgb, var(--sv-text) 88%, transparent); }
+.svp-done b { font-weight: 400; color: inherit; font-size: 1em; }
+.svp-done small { font-size: 1em; color: var(--muted); }
+.svp-done .again { margin-left: .9em; font-family: var(--f-serif); font-size: 1em; font-weight: 600; color: var(--accent); }
+.saver.night .sv-night { font-family: var(--f-serif); }
+.saver.paper-hero .svp-meta, .saver.sky .sky-meta { font-size: clamp(1rem, min(1.35vw, 2.6vh), 1.4rem); }
+.saver.paper-hero .svp-tag, .saver.sky .sky-col .svp-tag { font-size: clamp(1.05rem, min(1.4vw, 2.7vh), 1.45rem); }
+.sky-svg .dir { font-size: 22px; }
+.sky-mset small, .sky-mnext { font-family: var(--f-ui); font-size: clamp(1.05rem, min(1.35vw, 2.6vh), 1.45rem); font-weight: 700; color: var(--muted); }
+.sky-mnext b { color: inherit; }
+.today .td .svp-tag { font-size: 1.05rem; }
+.today .td b { font-size: 1.6rem; }
+.today .td small { font-size: 1.15rem; }
+.today .td .svp-tag::after { content: "  ›"; white-space: pre; }
+.saver.paper-done .sv-time, .saver.plain .sv-time, .saver.night .sv-time { position: relative; }
+.saver.paper-done .sv-time small, .saver.plain .sv-time small, .saver.night .sv-time small { position: absolute; right: 100%; bottom: .95em; margin-right: .6em; white-space: nowrap; }
 </style>
 
 </head>
@@ -911,7 +937,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
           <div class="svp-lead" id="svpLead"><div class="svp-photo" id="svpPhoto"></div><div><span class="svp-tag" id="svpTag"></span><h2 class="svp-hed" id="svpHed"></h2><p class="svp-lede" id="svpLede"></p></div></div>
           <div class="svp-more" id="svpMore"></div>
           <div class="svp-foot"><span class="svp-unread" id="svpUnread"><i></i><span></span></span><button class="svp-open" id="svpOpen" type="button">신문 펴기<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button></div>
-          <div class="svp-done" id="svpDone"><span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><span class="t"><b id="svpDoneT"></b><small id="svpCount"></small></span><span class="again">다시 보기</span></div>
+          <div class="svp-done" id="svpDone"><b id="svpDoneT"></b><small id="svpCount"></small><span class="again">다시 보기</span></div>
         </div>
         <div class="sv-sky" id="svSky">
           <div class="sky-name">오늘 밤하늘</div>
@@ -924,7 +950,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
                 <canvas id="skyMoon" width="2" height="2"></canvas>
                 <div class="sky-mtxt"><b class="sky-mname" id="skyMName"></b><span class="sky-msub" id="skyMSub"></span><span class="sky-mset" id="skyMSet"></span><span class="sky-mnext" id="skyMNext"></span></div>
               </div>
-              <div class="sky-one" id="skyOne"><span class="svp-tag">오늘 밤 하나</span><h2 class="svp-hed" id="skyOneH"></h2><p id="skyOneP"></p></div>
+              <div class="sky-one" id="skyOne"><span class="svp-tag">오늘 밤 찾아볼 것</span><h2 class="svp-hed" id="skyOneH"></h2><p id="skyOneP"></p></div>
             </div>
           </div>
         </div>
@@ -940,13 +966,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 나와요 <b>·</b> <span style="opacity:.6">v100</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v101</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v100</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v101</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card">
@@ -1586,7 +1612,7 @@ ${nowLine()} 날짜·요일·시간·계절이나 "○○까지 며칠 남았어
   async function loadQuotes() { if (QUOTES) return QUOTES; try { QUOTES = await fetch('./quotes.json', { cache: 'force-cache' }).then(r => r.json()); } catch (e) { QUOTES = {}; } return QUOTES; }
   const hhmm = d => pad(d.getHours()) + ':' + pad(d.getMinutes());
   const koTime = (h, m) => `${h}시 ${m}분`;
-  function fallbackLine(h, m) { const p = PIECES[(h * 60 + m) % PIECES.length]; return `《${koTime(h, m)}》. ${p.f}`; }
+  function fallbackLine(h, m) { const p = PIECES[(h * 60 + m) % PIECES.length]; return p.f; }
   async function fetchLines(from) { // from: Date — 그 시각부터 10분치
     if (linesBusy || !settings.apiKey) return;
     const lines = LS.get(LINES_KEY, {}); const need = [];
@@ -1621,7 +1647,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const line = (LS.get(LINES_KEY, {})[k]) || fallbackLine(d.getHours(), d.getMinutes());
     const [bodyTxt, attr] = line.split(/\s+—\s+(?=[^—]+$)/);
     $('svLine').innerHTML = bodyTxt.replace(/</g, '&lt;').replace(/《([^》]+)》/g, '<b>$1</b>') + (attr ? `<span class="sv-attr">— ${attr.replace(/</g, '&lt;')}</span>` : '');
-    $('svDow').textContent = DAYS[d.getDay()] + '요일'; $('svMon').textContent = (d.getMonth() + 1) + '월'; $('svDay').textContent = d.getDate() + '일'; $('svTime').textContent = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+    $('svDow').textContent = DAYS[d.getDay()] + '요일'; $('svMon').textContent = (d.getMonth() + 1) + '월'; $('svDay').textContent = d.getDate() + '일'; $('svTime').innerHTML = `<small>${d.getHours() < 12 ? '오전' : '오후'}</small>${d.getHours() % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')}`;
     if ((!wxCache || Date.now() - wxAt > 20 * 60e3) && Date.now() - wxTryAt > 3 * 60e3) { // 대기화면에 있는 동안에도 날씨를 계속 새로 받음 (실패하면 3분 뒤 다시)
       wxTryAt = Date.now(); fetchWeather().then(() => { if (!saverEl.hidden) renderSaver(); }).catch(e => diag('err', '대기화면 날씨 못 받음: ' + (e.message || e)));
     }
@@ -1634,7 +1660,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       const o = [[0, 0], [4, 2], [-3, 4], [2, -4], [-4, -2], [3, 3]][Math.floor(Date.now() / 300e3) % 6]; saverEl.querySelector('.sv-inner').style.translate = `${o[0]}px ${o[1]}px`; } // 화면 자국 방지: 5분마다 몇 px씩
     const hasPaper = renderFront();
     if (saverEl.classList.contains('sky') && w) { // 저녁엔 옷차림 대신 별 보기 한마디 (비·눈·먼지 알림은 그대로)
-      const tip = $('svTip').textContent; if (!/비|눈|먼지/.test(tip)) $('svTip').textContent = w.code <= 1 ? '별 보기 좋은 밤' : w.code === 2 ? '구름 사이로 별이 보여요' : '구름이 많은 밤';
+      const tip = $('svTip').textContent; if (!/비|눈|먼지/.test(tip)) $('svTip').textContent = w.code <= 1 ? '하늘이 맑은 밤' : w.code === 2 ? '구름 사이로 별이 보여' : '구름이 많은 밤';
     }
     if (!hasPaper && !saverEl.classList.contains('night') && (d.getMinutes() % 10 === 0 || !LS.get(LINES_KEY, {})[hhmm(new Date(d.getTime() + 5 * 60000))])) fetchLines(d);
   }
@@ -1740,7 +1766,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('svpMore').innerHTML = rest.slice(0, 2).map((x, i) => `<div><span class="svp-tag">${escN(x.tag)} · ${i + 2}면</span><h3 class="svp-hed">${escN(x.title)}</h3></div>`).join('');
     const words = news.articles.map(x => x.word && x.word.w).filter(Boolean).length;
     const u = $('svpUnread'); u.classList.toggle('read', newsRead()); u.querySelector('span').textContent = newsRead() ? `오늘 신문 다 읽음` : `오늘 새 소식 ${news.articles.length}개 · 오늘의 낱말 ${words}개`;
-    { const done = LS.get(NEWS_DONE, []); $('svpDoneT').textContent = `루아 신문 제${news.no}호 다 읽었어!`; $('svpCount').textContent = done.length > 1 ? `지금까지 ${done.length}호 읽음` : ''; }
+    { const done = LS.get(NEWS_DONE, []); $('svpDoneT').textContent = `루아 신문 제${news.no}호 다 읽었어`; $('svpCount').textContent = done.length > 1 ? ` · 지금까지 ${done.length}호` : ''; }
     const lead = $('svpLead'), box = $('svpPhoto'), key = news.no + ':' + a.pic;
     if (box.dataset.k !== key) {
       box.dataset.k = key; box.innerHTML = ''; lead.classList.add('nopic');
@@ -1772,7 +1798,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('skyMName').textContent = s.moon.name; $('skyMName').classList.toggle('long', !!s.moon.long); $('skyMSub').textContent = s.moon.sub;
     $('skyMSet').innerHTML = `${escN(s.moon.lines[0])}<small>${escN(s.moon.lines[1])}</small>`;
     $('skyMNext').innerHTML = s.next.map(x => `<span><b>${escN(x[0])}</b> ${escN(x[1])}</span>`).join('');
-    $('skyOne').hidden = !s.pick; if (s.pick) { $('skyOneH').innerHTML = `${escN(s.pick.head)} <b>${escN(s.pick.name)}</b>`; $('skyOneP').textContent = s.pick.sub; }
+    $('skyOne').hidden = !s.pick; if (s.pick) { $('skyOneH').innerHTML = `${escN(s.pick.head)} <b>${escN(s.pick.name)}</b>`; $('skyOneP').innerHTML = `${escN(s.pick.note)}<br>${escN(s.pick.sub)}`; }
     const mk = [ms, Math.round(s.moon.phase), Math.round(s.moon.limb / 3)].join('|'); // 달은 모양이 달라질 때만 다시 그림
     if (mk !== skyMoonKey && ms > 20) { skyMoonKey = mk; setTimeout(() => { try { window.GKSky.drawMoon(cv, ms, s.moon.phase, s.moon.limb); } catch (e) { skyMoonKey = ''; } }, 30); }
   }
@@ -1795,7 +1821,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     }
     $('tdSky').hidden = !tdSky;
     if (tdSky) { const s = tdSky, pk = s.pick && s.pick.name !== '달' ? s.pick : null;
-      $('tdSkyH').textContent = s.moon.name + (pk ? ' · ' + pk.name : ''); $('tdSkyS').textContent = pk ? `${pk.name}${josa(pk.name)} ${pk.head.replace(',', '')}` : s.moon.sub; }
+      $('tdSkyH').textContent = s.moon.name + (pk ? ' · ' + pk.name : ''); $('tdSkyS').textContent = pk ? `${pk.head.split(' ')[0]} 하늘에서 찾아봐` : s.moon.sub; }
   }
   $('tdNews').addEventListener('click', () => openPaper(0));
   $('tdSky').addEventListener('click', () => { window.__gkSaverAt = Date.now(); window.__gkSky = true; enterSaver(); });
@@ -2137,8 +2163,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       } catch (e) { note += ' → ' + (e.name === 'AbortError' ? '6초 안에 응답 없음' : e.message === 'img' ? '사진 파일 로딩 실패' : '연결 실패(' + (e.message || e) + ')'); if (seq !== picSeq) return; }
     }
     if (era) { placePic(eraHtml(era), ''); picDbg(note + ` → 연표 ${era.name} ${era.when}`); return; }
-    if (emoji) { placePic(`<div class="emo">${emoji}</div>`, ''); picDbg(note + ` → 이모지 ${emoji}`); }
-    else picDbg(note + ' → 이모지도 없음, 글만 표시');
+    picDbg(note + ' → 사진 없음, 글만 표시');
   }
 
   // ---------- ask ----------
@@ -2200,7 +2225,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       if (!quiz) { const m = a.match(/^([\s\S]*[.!])\s+[^.!?]*[?？]$/); if (m && m[1].length > 20) a = m[1].trim(); } // 되묻는 마지막 문장은 칩이 대신하니 뗌
       if (graphemes(a.replace(/[《》]/g, '')).length <= 30) a = a.replace(/[《》]/g, ''); // 짧은 답은 전부 핵심이라 형광펜 안 씀
       current = a.replace(/[《》]/g, '');
-      setChips(quiz ? ['힌트 줘', '정답 알려줘', '다른 문제'] : (qs && qs.length ? qs : ['왜?', '더 알려줘', '예를 들면?']), '이어서');
+      setChips(quiz ? ['힌트 줘', '정답 알려줘', '다른 문제'] : (qs && qs.length ? qs : ['왜?', '더 알려줘', '예를 들면?']), '더 궁금하면');
       if (!quiz) { followUp = (qs && qs[0]) || '';  }
       const noPhoto = /뜻|의미|무슨 말|영어|단어|문법|스펠링|철자|반대말|비슷한 말|예문|[A-Za-z]{3,}/.test(q);
       stripReserve = false;
@@ -2357,7 +2382,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v100';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v101';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {

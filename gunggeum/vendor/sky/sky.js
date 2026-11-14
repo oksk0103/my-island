@@ -14,7 +14,7 @@
   function fists(alt) { // 팔을 쭉 뻗은 주먹 하나 ≈ 10°
     if (alt < 8) return '땅 가까이 아주 낮게';
     if (alt > 76) return '머리 바로 위쯤';
-    return '주먹 ' + NUM[Math.max(1, Math.round(alt / 10))] + ' 개 높이';
+    return '팔을 쭉 뻗고 주먹 ' + NUM[Math.max(1, Math.round(alt / 10))] + ' 개를 쌓은 높이';
   }
   var howHigh = function (alt) { return alt < 20 ? '하늘 낮게' : alt < 40 ? '하늘에' : '하늘 높이'; };
 
@@ -28,12 +28,12 @@
     '레굴루스': '사자의 심장', '카스토르': '쌍둥이자리의 흰 별', '북극성': '언제나 북쪽에 있는 별' };
 
   function moonName(ph) { // ph: 0 삭 → 180 보름 → 360
-    if (ph < 20 || ph > 340) return ['숨은 달', '오늘은 안 보여요'];
-    if (ph < 75) return ['초승달', '눈썹처럼 가는 달'];
+    if (ph < 20 || ph > 340) return ['숨은 달', '오늘은 안 보여'];
+    if (ph < 75) return ['초승달', '손톱 모양 달'];
     if (ph < 105) return ['반달', '오른쪽 반이 밝은 달'];
-    if (ph < 165) return ['커지는 달', '보름달이 되어 가요'];
+    if (ph < 165) return ['커지는 달', '보름달이 되어 가'];
     if (ph < 195) return ['보름달', '둥글고 환한 달'];
-    if (ph < 255) return ['기우는 달', '조금씩 작아져요'];
+    if (ph < 255) return ['기우는 달', '조금씩 작아져'];
     if (ph < 285) return ['반달', '왼쪽 반이 밝은 달'];
     return ['그믐달', '새벽에 뜨는 가는 달'];
   }
@@ -80,7 +80,7 @@
     var col = function (bv) { return bv < 0.1 ? '#F6F1E6' : bv < 0.7 ? '#F0E6D2' : bv < 1.2 ? '#EDD3A4' : '#E8BC84'; };
     var starSvg = '', glowSvg = '';
     stars.forEach(function (s) {
-      var r = rOf(s.mag), c = col(s.bv), op = s.mag > 3.4 ? 0.72 : s.mag > 2.4 ? 0.9 : 1;
+      var r = rOf(s.mag), c = col(s.bv), op = s.mag > 3.4 ? 0.4 : s.mag > 2.4 ? 0.62 : s.mag > 1.6 ? 0.85 : 1; // 도시 하늘: 어두운 별은 흐리게
       if (s.alt < 8) op *= 0.45 + s.alt / 15;
       if (s.mag < 2.6) glowSvg += '<circle cx="' + f1(s.x) + '" cy="' + f1(s.y) + '" r="' + f1(r * 4.2) + '" fill="url(#gkSg)" opacity="' + (s.mag < 1.6 ? .5 : .28) + '"/>';
       if (s.mag < 1.7) { var L = r * 3.6;
@@ -126,15 +126,15 @@
     var moonUp = moon.alt > 2, fold = ph > 180 ? 360 - ph : ph; // drawMoon 은 0(삭)…180(보름)
     if (!moonUp) limb = ph > 180 ? 270 : 90; // 안 떠 있으면 똑바로 세운 모습으로
     var nm = moonName(ph), mLines = [];
-    if (nm[0] === '숨은 달') mLines = ['달빛이 없어', '별이 더 잘 보여요'];
+    if (nm[0] === '숨은 달') mLines = ['달빛이 없어', '별이 더 잘 보여'];
     else if (moonUp) {
       var ms = A.SearchRiseSet(A.Body.Moon, obs, -1, date, 1), morning = new Date(date); morning.setHours(30, 0, 0, 0);
-      if (ms && ms.date < morning) { var hz = A.Horizon(ms.date, obs, A.Equator(A.Body.Moon, ms.date, obs, true, true).ra, A.Equator(A.Body.Moon, ms.date, obs, true, true).dec, 'normal'); mLines = [clock(ms.date), dir8(hz.azimuth) + '쪽으로 져요']; }
-      else mLines = ['밤새', '하늘에 떠 있어요'];
+      if (ms && ms.date < morning) { var hz = A.Horizon(ms.date, obs, A.Equator(A.Body.Moon, ms.date, obs, true, true).ra, A.Equator(A.Body.Moon, ms.date, obs, true, true).dec, 'normal'); mLines = [clock(ms.date), dir8(hz.azimuth) + '쪽으로 져']; }
+      else mLines = ['밤새', '하늘에 떠 있어'];
     } else {
       var mr = A.SearchRiseSet(A.Body.Moon, obs, +1, date, 1), lim = new Date(date); lim.setHours(29, 0, 0, 0);
-      if (mr && mr.date < lim) { var eq2 = A.Equator(A.Body.Moon, mr.date, obs, true, true), hz2 = A.Horizon(mr.date, obs, eq2.ra, eq2.dec, 'normal'); mLines = [clock(mr.date), dir8(hz2.azimuth) + '쪽에서 떠요']; }
-      else mLines = ['오늘 밤엔', ph < 180 ? '벌써 졌어요' : '안 떠요'];
+      if (mr && mr.date < lim) { var eq2 = A.Equator(A.Body.Moon, mr.date, obs, true, true), hz2 = A.Horizon(mr.date, obs, eq2.ra, eq2.dec, 'normal'); mLines = [clock(mr.date), dir8(hz2.azimuth) + '쪽에서 떠']; }
+      else mLines = ['오늘 밤엔', ph < 180 ? '벌써 졌어' : '안 떠'];
     }
     // 다음 반달·보름달
     var next = [], mq = A.SearchMoonQuarter(date), today = new Date(now), seen = {}; today.setHours(0, 0, 0, 0);
@@ -190,7 +190,7 @@
         '<path d="M0,' + -rm + 'A' + rm + ',' + rm + ' 0 0 1 0,' + rm + 'A' + f1(Math.abs(k) * rm) + ',' + rm + ' 0 0 ' + (k > 0 ? 0 : 1) + ' 0,' + -rm + 'Z" fill="#F3E8D0"/></g></g>';
     }
     planets.forEach(function (p) { if (p.vis && pick && pick.name === p.name) place(p.x, p.y, p.name, 38, 'hi', 18); });
-    if (moonVis) place(pm.x, pm.y, '달', 26, pick && pick.name === '달' ? 'hi2' : '', 12);
+    if (moonVis) place(pm.x, pm.y, '달', 26, pick && pick.name === '달' ? 'hi2' : '', 18);
     planets.forEach(function (p) { if (p.vis && !(pick && pick.name === p.name)) place(p.x, p.y, p.name, 26, 'pl', 6); });
     named.filter(function (s) { return s.alt > 9 && s.y < H - 70; }).sort(function (a, b) { return a.mag - b.mag; }).forEach(function (s) {
       if (count >= 6) return; var hi = pick && pick.name === s.name; place(s.x, s.y, s.name, hi ? 34 : 26, hi ? 'hi' : '', rOf(s.mag));
@@ -216,7 +216,7 @@
     return {
       svg: svg, when: when, live: live, sunset: sunset ? clock(sunset) : '',
       moon: { phase: ph, limb: limb, long: nm[0].length > 3, name: nm[0], sub: nm[1], lines: mLines, up: moonUp }, next: next,
-      pick: pick ? { name: pick.name, head: dir8(pick.az) + '쪽 ' + howHigh(pick.alt) + ',', sub: fists(pick.alt) + ' · ' + pick.note } : null
+      pick: pick ? { name: pick.name, head: dir8(pick.az) + '쪽 ' + howHigh(pick.alt) + ',', sub: fists(pick.alt), note: pick.note } : null
     };
   }
 
@@ -275,7 +275,7 @@
       var lam = nx * sx + nz * sz, lit = 0;
       if (lam > 0) lit = Math.pow(lam, .55) * (.84 + .16 * z);
       lit *= Math.max(0, Math.min(1, (u * sx + z * sz + .05) / .1));
-      var es = .068 * alb * (.55 + .45 * z);
+      var es = .03 * alb * (.55 + .45 * z);
       var R = 270 * alb * lit + 150 * es, G = 254 * alb * lit + 141 * es, B = 222 * alb * lit + 128 * es;
       var aa = Math.max(0, Math.min(1, (1 - Math.sqrt(rr)) * rad + .5));
       d[o] = Math.min(255, R + 13); d[o + 1] = Math.min(255, G + 10.5); d[o + 2] = Math.min(255, B + 8); d[o + 3] = 255 * aa;
