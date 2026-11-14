@@ -903,6 +903,139 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .saver.cal .sv-dots i { background: var(--c-num); opacity: .3; }
 .saver.cal .sv-dots i.on { opacity: .9; }
 .fc-date { cursor: pointer; }
+/* ===== council3/A 시안: 재질·서체·여백 손질 ===== */
+.saver.face { --f0: #0C5B54; --f1: #14756B; --f2: #083F3A; }
+.saver.face[data-tone="day"] { --f0: #1B4A88; --f1: #2762AA; --f2: #133562; }
+.saver.face[data-tone="eve"] { --f0: #382A76; --f1: #4C3C96; --f2: #251A52; }
+.saver.face .sv-face { background:
+    radial-gradient(circle at 6% 150%, transparent 0 30%, rgba(255,255,255,.03) 42%, rgba(255,255,255,.09) 51.8%, transparent 52%),
+    radial-gradient(circle at 108% -30%, transparent 0 20%, rgba(255,255,255,.03) 30%, rgba(255,255,255,.10) 40.8%, transparent 41%),
+    radial-gradient(circle at 70% 120%, rgba(0,0,0,.16) 0 20%, rgba(0,0,0,.05) 41.8%, transparent 42%),
+    linear-gradient(155deg, var(--f1) 0%, var(--f0) 46%, var(--f2) 100%); }
+.fc-grid { inset: 28px 28px 44px; gap: 16px; grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) minmax(0, .8fr); }
+.fc-t { border-radius: 44px; padding: 28px 32px;
+  background: linear-gradient(150deg, rgba(255,255,255,.17) 0%, rgba(255,255,255,.07) 42%, rgba(255,255,255,.05) 70%, rgba(255,255,255,.10) 100%);
+  box-shadow: inset 0 -22px 34px -24px rgba(0,0,0,.20), 0 10px 26px rgba(0,0,0,.13);
+  transition: transform .16s cubic-bezier(.3,.7,.3,1), background-color .16s; }
+.fc-t::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  background: linear-gradient(140deg, rgba(255,255,255,.62) 0%, rgba(255,255,255,.16) 30%, rgba(255,255,255,.07) 62%, rgba(255,255,255,.30) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+.fc-t[data-tile]:active { transform: scale(.972); background-color: rgba(255,255,255,.08); }
+.fc-lab { font-size: 28px; font-weight: 700; letter-spacing: -.01em; }
+.fc-sub { font-size: 23px; font-weight: 500; color: rgba(255,255,255,.64); }
+/* 시계 */
+.fc-clock { padding: 24px 32px; }
+.fc-date { font-size: 40px; font-weight: 600; color: rgba(255,255,255,.66); letter-spacing: -.01em; }
+.fc-date b { font-weight: 600; color: rgba(255,255,255,.66); margin-left: .35em; }
+.fc-time { font-size: min(31cqw, 39vh); font-weight: 640; letter-spacing: -.035em; line-height: .98; margin-top: 4px; }
+.fc-tip { font-size: 34px; font-weight: 600; color: rgba(255,255,255,.86); margin-top: 2px; }
+/* 날씨: 숫자는 왼쪽 위, 그림은 오른쪽 위, 글은 왼쪽 아래 */
+.fc-wx { flex-direction: row-reverse; justify-content: space-between; align-items: stretch; gap: 0; }
+.fc-wx svg.wi { width: 104px; height: 104px; align-self: flex-start; margin: -4px -6px 0 0; }
+.fc-wx .tt { justify-content: space-between; }
+.fc-temp { font-size: 124px; font-weight: 600; letter-spacing: -.045em; line-height: .86; margin-left: -4px; }
+.fc-temp i { font-style: normal; font-weight: 400; margin-left: .02em; }
+.fc-wx .fc-lab { font-size: 30px; }
+/* 지금 볼 것: 꼬리표는 위, 제목은 아래 */
+.fc-feat { justify-content: space-between; }
+.fc-feat .tx { display: contents; }
+.fc-feat.pic .tx { display: flex; justify-content: space-between; padding: 28px 20px 28px 32px; }
+.fc-hed { margin-top: 0; font-size: 37px; font-weight: 700; line-height: 1.24; letter-spacing: -.025em; }
+.fc-feat.line .fc-hed { font-size: 31px; font-weight: 600; line-height: 1.36; }
+.fc-feat.moon { justify-content: flex-start; gap: 24px; }
+.fc-feat.moon .tx { display: block; }
+.fc-feat.moon canvas { width: 150px; height: 150px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(255,255,255,.14), 0 0 34px rgba(255,255,255,.10); }
+.fc-feat.moon .fc-hed { font-size: 46px; margin: 4px 0; }
+/* 할 일: 알약 대신 가는 금 */
+.fc-todo { padding: 16px 32px 16px 12px; gap: 12px; }
+.fc-n { min-width: 168px; }
+.fc-n b { font-size: 108px; font-weight: 600; line-height: .9; }
+.fc-n span { margin-top: 8px; font-size: 22px; font-weight: 600; color: rgba(255,255,255,.64); }
+.fc-list { gap: 0; }
+.fc-row { min-height: 62px; padding: 0; gap: 16px; border-radius: 0; background: none; font-size: 31px; font-weight: 600; letter-spacing: -.015em; }
+.fc-row + .fc-row { box-shadow: inset 0 1px 0 rgba(255,255,255,.16); }
+.fc-row .bx { width: 34px; height: 34px; box-shadow: inset 0 0 0 2.5px rgba(255,255,255,.72); }
+.fc-row .du { font-size: 22px; font-weight: 600; color: #FFD98A; padding: 3px 12px; border-radius: 999px; background: rgba(255,217,138,.16); }
+.fc-row.done { background: none; }
+.fc-more { font-size: 22px; padding: 6px 0 0 50px; color: rgba(255,255,255,.6); }
+.fc-empty { font-size: 31px; }
+/* 작은 타일: 채운 그림, 왼쪽 정렬 */
+.fc-app { align-items: flex-start; justify-content: space-between; text-align: left; padding: 24px 26px 22px; gap: 0; }
+.fc-app svg { width: 62px; height: 62px; margin: 0 0 0 -3px; }
+.fc-app .fc-lab { margin-top: auto; }
+.fc-app svg, .fc-wx svg.wi { stroke-width: 2.2; filter: drop-shadow(0 2px 6px rgba(0,0,0,.14)); }
+.fc-app .dot { width: 10px; height: 10px; background: #FFD98A; margin-right: 8px; vertical-align: 2px; }
+.saver.face .sv-dots, .saver.cal .sv-dots { bottom: 17px; gap: 12px; }
+.saver.face .sv-dots i, .saver.cal .sv-dots i { width: 9px; height: 9px; }
+.saver.face .sv-dots i { opacity: .3; }
+
+/* 달력 */
+.saver.cal { background: #E4E5EA; --c-num: #2A6FD6; --c-big: #A9E486; --c-head: #2F9A18; --c-dim: rgba(42,111,214,.26); }
+.saver.cal[data-tone="eve"] { background: #101217; --c-num: #6C9FEA; --c-big: rgba(64,140,34,.5); --c-head: #63B441; --c-dim: rgba(108,159,234,.28); }
+.saver.cal .sv-cal { inset: 30px 56px 44px; }
+.cal-head { padding: 0 52px; font-size: 60px; font-weight: 600; letter-spacing: -.035em; }
+.cal-head small { font-size: .56em; font-weight: 600; margin-right: .3em; letter-spacing: -.02em; }
+.cal-dow { margin-top: 20px; font-size: 34px; font-weight: 600; opacity: .62; }
+.cal-grid { font-size: 64px; font-weight: 500; letter-spacing: -.03em; }
+.cal-grid span { width: 1.62em; height: 1.62em; }
+.cal-grid .t { font-weight: 700; box-shadow: 0 6px 18px rgba(42,111,214,.28); }
+.cal-grid .d::after { bottom: -.02em; width: 12px; height: 12px; margin-left: -6px; background: #F08A24; }
+.cal-grid .t.d::after { bottom: .1em; width: 9px; height: 9px; margin-left: -4.5px; background: #fff; }
+.fc-row .du:empty { display: none; }
+.saver.cal[data-tone="eve"] .cal-grid .t.d::after { background: #101217; }
+.saver.cal[data-tone="eve"] .cal-grid .t { box-shadow: none; }
+/*over2*/
+/* ===== 2라운드: 1.5 m 글자(40~46px) + 굵은 달력 + 할 일 알약 복귀 ===== */
+.fc-date, .fc-date b { font-size: 46px; color: rgba(255,255,255,.8); }
+.fc-time { font-size: min(30cqw, 37.5vh); }
+.fc-tip { font-size: 44px; font-weight: 700; color: #fff; margin-top: 0; }
+.fc-hed { font-size: 44px; line-height: 1.2; }
+.fc-feat.line .fc-hed { font-size: 40px; line-height: 1.26; -webkit-line-clamp: 3; }
+.fc-lab { font-size: 34px; }
+.fc-wx .fc-lab { font-size: 40px; }
+.fc-sub { font-size: 26px; color: rgba(255,255,255,.82); }
+.fc-temp { font-size: 116px; }
+.fc-app svg { width: 58px; height: 58px; }
+.fc-app { padding: 22px 24px 18px; }
+.fc-todo { padding: 14px 16px 14px 8px; gap: 8px; }
+.fc-n { min-width: 150px; }
+.fc-n span { font-size: 24px; color: rgba(255,255,255,.82); }
+.fc-list { gap: 8px; }
+.fc-row { min-height: 66px; padding: 0 18px 0 14px; border-radius: 999px; font-size: 40px; font-weight: 700;
+  background: rgba(255,255,255,.10); box-shadow: inset 0 0 0 1px rgba(255,255,255,.20), inset 0 1px 0 rgba(255,255,255,.22); }
+.fc-row + .fc-row { box-shadow: inset 0 0 0 1px rgba(255,255,255,.20), inset 0 1px 0 rgba(255,255,255,.22); }
+.fc-row:active { transform: scale(.985); background: rgba(255,255,255,.2); }
+.fc-row .bx { width: 40px; height: 40px; box-shadow: inset 0 0 0 3px rgba(255,255,255,.85); }
+.fc-row .du { font-size: 26px; background: none; padding: 0; }
+.fc-more { font-size: 24px; padding: 0 0 0 18px; margin-top: -2px; color: rgba(255,255,255,.82); }
+.saver.cal { --c-num: #1F5FCC; --c-big: #A6E283; --c-head: #267F12; }
+.saver.cal .sv-cal .cal-big { font-weight: 800; letter-spacing: -.05em; font-size: min(96vh, 46vw); top: 55%; }
+.fc-row { min-height: 62px; } .fc-list { gap: 6px; }
+.cal-grid { font-weight: 600; }
+.cal-dow { opacity: .8; font-size: 38px; }
+
+.cal-big { top: 56%; font-size: min(98vh, 48vw); font-weight: 420; letter-spacing: -.06em; }
+
+
+/* v109: 진짜 유리(뒤가 흐려 비침), 부드러운 배경, 쉬는 막, 숫자 넘김, 달력 손질 */
+.saver.face .sv-face { background:
+    radial-gradient(60vw 60vw at 6% 150%, transparent 0 58%, rgba(255,255,255,.05) 72%, rgba(255,255,255,.16) 99.6%, transparent 100%),
+    radial-gradient(52vw 52vw at 108% -30%, transparent 0 50%, rgba(255,255,255,.05) 70%, rgba(255,255,255,.18) 99.6%, transparent 100%),
+    radial-gradient(34vw 34vw at 63% 58%, rgba(0,0,0,.22) 0 60%, rgba(0,0,0,.08) 99.6%, transparent 100%),
+    radial-gradient(70vw 50vw at 88% 100%, color-mix(in srgb, var(--f1) 80%, #fff 8%) 0, transparent 70%),
+    radial-gradient(60vw 44vw at 0% 0%, color-mix(in srgb, var(--f1) 90%, #fff 10%) 0, transparent 72%),
+    linear-gradient(155deg, var(--f1) 0%, var(--f0) 46%, var(--f2) 100%); }
+.fc-t { -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5); }
+.sv-face::after { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; background: #05070B; opacity: 0; transition: opacity .35s ease-out; }
+.saver.face.late .sv-face::after { opacity: var(--late, 0); transition: opacity 20s linear; }
+.saver.face.rest .sv-face::after { opacity: max(.35, var(--late, 0)); transition: opacity 8s linear; }
+.saver.face.rest[data-tone="eve"] .sv-face::after { opacity: max(.2, var(--late, 0)); }
+.fc-time i { display: inline-block; font-style: normal; }
+.fc-time i.chg { animation: fcChg .42s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes fcChg { from { opacity: 0; transform: translateY(.08em); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+@media (prefers-reduced-motion: reduce) { .fc-time i.chg { animation-duration: .01s; } }
+.saver.cal .sv-cal .cal-big, .cal-big { top: 55%; font-size: min(96vh, 46vw); font-weight: 800; letter-spacing: -.05em; }
+.cal-grid .o { visibility: hidden; }
 
 /* v106: 누르는 곳 60px 이상 */
 #replayBtn { min-height: 3rem; padding-inline: 1rem; }
@@ -1063,9 +1196,9 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <section class="fc-t fc-wx" data-tile="wx" id="fcWx"></section>
       <section class="fc-t fc-feat" id="fcFeat"></section>
       <section class="fc-t fc-todo" data-tile="todo"><div class="fc-n"><b id="fcTodoN"></b><span id="fcTodoS"></span></div><div class="fc-list" id="fcTodoL"></div></section>
-      <section class="fc-t fc-app" data-tile="news"><svg viewBox="0 0 24 24"><path d="M5 4h11v16H6.5A1.5 1.5 0 0 1 5 18.500z"/><path d="M16 9h3v9.500a1.500 1.500 0 0 1-3 0"/><path d="M8 8h5M8 12h5M8 16h3"/></svg><div class="fc-lab">신문</div><div class="fc-sub" id="fcNewsS"></div></section>
-      <section class="fc-t fc-app" data-tile="sky"><svg viewBox="0 0 24 24"><path d="M15.500 14.500A6.500 6.500 0 0 1 9 5.200a7.500 7.500 0 1 0 9.800 9.800 6.500 6.500 0 0 1-3.300-.500z"/><path class="f" d="M17.500 3.500l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg><div class="fc-lab">밤하늘</div><div class="fc-sub" id="fcSkyS"></div></section>
-      <section class="fc-t fc-app" data-tile="ask"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.500 11.500a6.500 6.500 0 0 0 13 0M12 18v3"/></svg><div class="fc-lab">묻기</div><div class="fc-sub">눌러서 말해</div></section>
+      <section class="fc-t fc-app" data-tile="news"><svg viewBox="0 0 24 24"><path class="f" fill-rule="evenodd" d="M3.500 6A2.500 2.500 0 0 1 6 3.500h8.500A2.500 2.500 0 0 1 17 6v2h1.500A2.500 2.500 0 0 1 21 10.500V17a3.500 3.500 0 0 1-3.500 3.500H7A3.500 3.500 0 0 1 3.500 17zM6.500 6.800v3.400h7.500V6.800zM6.500 12.600v1.600h7.500v-1.600zM6.500 16v1.600h5V16zM17 10v7a.75.75 0 0 0 1.500 0v-7z"/></svg><div class="fc-lab">신문</div><div class="fc-sub" id="fcNewsS"></div></section>
+      <section class="fc-t fc-app" data-tile="sky"><svg viewBox="0 0 24 24"><path class="f" d="M14.800 15.200A7 7 0 0 1 8.600 4.300a8.300 8.300 0 1 0 11.100 11.100 7 7 0 0 1-4.900-.2z"/><path class="f" d="M17.300 2.800l.9 2.300 2.300.9-2.300.9-.9 2.300-.9-2.300-2.300-.9 2.300-.9z"/></svg><div class="fc-lab">밤하늘</div><div class="fc-sub" id="fcSkyS"></div></section>
+      <section class="fc-t fc-app" data-tile="ask"><svg viewBox="0 0 24 24"><rect class="f" x="8.500" y="2.500" width="7" height="12.500" rx="3.500"/><path d="M5.200 11.500a6.800 6.800 0 0 0 13.600 0M12 18.500v3"/></svg><div class="fc-lab">묻기</div><div class="fc-sub">눌러서 말해</div></section>
     </div><div class="fc-msg" id="fcMsg" hidden></div></div>
     <div class="sv-inner">
       <section class="sv-date">
@@ -1113,13 +1246,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v108</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v109</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v108</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v109</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1824,7 +1957,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function enterSaver(lockMsg) {
     saverLock = lockMsg || '';
     if (!saverEl.hidden) return;
-    recent.length = 0; quiz = false; hidePic(); setChips([]); followChips = []; input.value = ''; input.blur();
+    svTouchAt = Date.now(); recent.length = 0; quiz = false; hidePic(); setChips([]); followChips = []; input.value = ''; input.blur();
     hidePaper(); paperCtx = null; delete app.dataset.fromPaper;
     hush(); saverEl.hidden = false; loadNews().then(() => { if (!saverEl.hidden) renderSaver(); }); $('svMsg').hidden = $('fcMsg').hidden = true; renderSaver(); fetchWeather().then(renderSaver).catch(() => {});
     clearInterval(saverTick); saverTick = setInterval(renderSaver, 15 * 1000); keepAwake();
@@ -1864,9 +1997,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const inner = saverEl.querySelector('.sv-inner'); inner.style.animation = 'none'; renderSaver(); void inner.offsetWidth; inner.style.animation = '';
     diag('saver', '대기화면 넘김 → ' + nx);
   }
-  let svDown = null;
+  let svDown = null; var svTouchAt = Date.now();
   saverEl.addEventListener('pointerdown', e => {
-    e.preventDefault(); e.stopPropagation();
+    e.preventDefault(); e.stopPropagation(); svTouchAt = Date.now(); saverEl.classList.remove('rest');
     const now = Date.now(), row = e.target.closest && e.target.closest('[data-todo]'); svTaps = svTaps.filter(t => now - t < 3000); if (!row) svTaps.push(now);
     const tile = !row && e.target.closest && e.target.closest('[data-tile]');
     svDown = { x: e.clientX, y: e.clientY, todo: row ? row.dataset.todo : '', tile: tile ? tile.dataset.tile : '', paper: !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper') };
@@ -1879,7 +2012,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const dx = e.clientX - d.x, dy = e.clientY - d.y;
     if (Math.abs(dx) > 70 && Math.abs(dx) > 1.5 * Math.abs(dy)) { svTaps = []; svPage(dx < 0 ? 1 : -1); return; }
     if (Math.abs(dx) > 24 || Math.abs(dy) > 24) return; // 어중간하게 끌다 만 것은 무시
-    if (d.todo) { todoToggle(d.todo); return; } // 할 일 줄: 줄만 긋고 화면은 그대로
+    if (d.todo) { todoToggle(d.todo); return; }
+    if (saverEl.classList.contains('cal')) { svTaps = []; delete window.__gkForce; renderSaver(); return; } // 달력을 누르면 위젯 면으로 // 할 일 줄: 줄만 긋고 화면은 그대로
     if (d.tile === 'cal') { svTaps = []; window.__gkForce = { s: 'cal', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날짜 → 달력'); return; }
     if (d.tile === 'sky' && window.GKSky) { svTaps = []; window.__gkForce = { s: 'sky', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '타일 → 밤하늘'); return; }
     const hadNews = !!(news && newsFresh());
@@ -1940,7 +2074,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function putPic(box, pic) { box.innerHTML = ''; if (!pic) return; const im = new Image(); im.src = pic.src; im.alt = pic.title; box.append(im); box.classList.toggle('contain', pic.r < 0.8 || pic.r > 1.6); }
   function bodyHtml(t) { return escN(t).replace(/《([^》]+)》/g, '<mark>$1</mark>'); }
   function renderFront() {
-    const fz = window.__gkForce && Date.now() - window.__gkForce.at < 10 * 60e3 ? window.__gkForce.s : ''; // 부모님 화면의 미리 보기 (10분 뒤 저절로 풀림)
+    const fz = window.__gkForce && Date.now() - window.__gkForce.at < (window.__gkForce.s === 'cal' ? 90e3 : 10 * 60e3) ? window.__gkForce.s : ''; // 달력은 90초 // 부모님 화면의 미리 보기 (10분 뒤 저절로 풀림)
     const el = $('svPaper'), on = !!(news && newsFresh()) && fz !== 'plain';
     const read = fz === 'hero' ? false : fz === 'done' ? true : newsRead();
     const hr = new Date().getHours(), night = fz ? fz === 'night' : (window.__gkNight ?? (hr >= 22 || hr < 6));
@@ -1949,7 +2083,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const sky = !night && (fz ? fz === 'sky' : (!wide && hr >= 18 && !(on && !read))) && wide && Date.now() - skyBadAt > 10 * 60e3 && skyReady();
     const face = wide && !night && !sky && (!fz || fz === 'face' || fz === 'sky'); // 넓은 화면의 낮·저녁 기본: 위젯 면
     const cal = wide && !night && fz === 'cal';
-    saverEl.classList.toggle('sky', sky); saverEl.classList.toggle('face', face); saverEl.classList.toggle('cal', cal);
+    saverEl.classList.toggle('sky', sky); saverEl.classList.toggle('face', face); saverEl.classList.toggle('cal', cal); if (!face) saverEl.classList.remove('rest', 'late');
     if (cal) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain'].forEach(c => saverEl.classList.remove(c)); renderCal(hr); return true; }
     if (face) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain'].forEach(c => saverEl.classList.remove(c)); return renderFace(on, read, hr) !== 'line'; }
     saverEl.classList.toggle('plain', !on && !night && !sky);
@@ -1978,7 +2112,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
 
   // ---------- 대기화면 위젯 면 (v107): 큰 시계 타일 + 날씨 + 지금 볼 것 + 할 일 + 작은 타일 셋 ----------
   const WI = { // 날씨 그림 (직접 그린 선 그림)
-    sun: '<circle cx="12" cy="12" r="4.200" class="f"/><path d="M12 2.500v2.500M12 19v2.500M2.500 12H5M19 12h2.500M5.300 5.300l1.800 1.800M16.900 16.900l1.800 1.800M5.300 18.700l1.800-1.800M16.900 7.100l1.800-1.800"/>',
+    sun: '<circle cx="12" cy="12" r="4.700" class="f"/><path d="M12 2.500v2.500M12 19v2.500M2.500 12H5M19 12h2.500M5.300 5.300l1.800 1.800M16.900 16.900l1.800 1.800M5.300 18.700l1.800-1.800M16.900 7.100l1.800-1.800"/>',
     moon: '<path class="f" d="M15.500 15A7 7 0 0 1 9 5.200a7.800 7.800 0 1 0 10 10.300 7 7 0 0 1-3.500-.500z"/>',
     cloud: '<path class="f" d="M7.500 18.500a4 4 0 0 1-.4-8 5.500 5.500 0 0 1 10.600 1.300 3.400 3.400 0 0 1-.4 6.700z"/>',
     part: '<circle cx="8" cy="8.500" r="3"/><path d="M8 2.800v1.400M2.600 8.500H4M4.200 4.700l1 1M11.800 4.700l-1 1"/><path class="f" d="M9.500 19.500a3.400 3.400 0 0 1-.3-6.800 4.700 4.700 0 0 1 9 1.100 2.900 2.900 0 0 1-.3 5.700z"/>',
@@ -1999,8 +2133,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const setH = (el, html) => { if (el.innerHTML !== html) el.innerHTML = html; };
   function renderCal(hr) { // 달력 장: 이번 달 + 오늘 날짜를 크게 겹침. 할 일 기한이 있는 날에는 점
     const d = new Date(), y = d.getFullYear(), m = d.getMonth(), first = new Date(y, m, 1).getDay(), n = new Date(y, m + 1, 0).getDate(), rows = Math.ceil((first + n) / 7);
-    saverEl.dataset.tone = hr < 12 ? 'morn' : hr < 18 ? 'day' : 'eve';
-    $('calMon').textContent = `${y}년 ${m + 1}월`; $('calTime').textContent = `${hr % 12 || 12}:${pad(d.getMinutes())}`; $('calBig').textContent = d.getDate();
+    saverEl.dataset.tone = hr >= 9 && hr < 17 ? 'day' : 'eve'; saverEl.classList.remove('rest', 'late'); // 밝은 달력은 9~17시만
+    $('calMon').textContent = `${y}년 ${m + 1}월`; setH($('calTime'), `<small>${hr < 12 ? '오전' : '오후'}</small>${hr % 12 || 12}:${pad(d.getMinutes())}`); $('calBig').textContent = d.getDate();
     const due = new Set(todoOpen(todoLoad()).map(x => x.due).filter(Boolean)); let h = '';
     for (let i = 0; i < rows * 7; i++) { const c = new Date(y, m, i - first + 1), k = dayKey(c), cls = [c.getMonth() !== m ? 'o' : '', c.getMonth() === m && c.getDate() === d.getDate() ? 't' : '', due.has(k) ? 'd' : ''].filter(Boolean).join(' '); h += `<span${cls ? ` class="${cls}"` : ''}>${c.getDate()}</span>`; }
     setH($('calGrid'), h);
@@ -2008,11 +2142,13 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function renderFace(on, read, hr) {
     const d = new Date();
     saverEl.dataset.tone = hr < 12 ? 'morn' : hr < 18 ? 'day' : 'eve';
+    saverEl.classList.toggle('rest', Date.now() - svTouchAt > 180e3); // 3분 손대지 않으면 얇은 어두운 막
+    saverEl.classList.toggle('late', hr === 21); saverEl.style.setProperty('--late', hr === 21 ? (d.getMinutes() / 60 * .45).toFixed(3) : '0'); // 밤 9~10시: 밤 화면으로 가는 낙차 줄이기
     setH($('fcDate'), `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일<b>${hr < 12 ? '오전' : '오후'}</b>`);
-    $('fcTime').textContent = `${hr % 12 || 12}:${pad(d.getMinutes())}`;
+    { const t = `${hr % 12 || 12}:${pad(d.getMinutes())}`, el = $('fcTime'), old = el.dataset.t || ''; if (old !== t) { el.dataset.t = t; el.innerHTML = [...t].map((ch, i) => `<i${old && old.length === t.length && old[i] !== ch ? ' class="chg"' : ''}>${ch}</i>`).join(''); } } // 바뀐 자리 숫자만 넘어감
     let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 12 * 3600e3) w = last.w; }
     $('fcTip').textContent = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : '';
-    setH($('fcWx'), w ? `${wxIcon(w.code, hr >= 18 || hr < 7)}<div class="tt"><div class="fc-temp">${w.t}°</div><div class="fc-lab">${escN((WX[w.code] || [''])[0])}</div><div class="fc-sub">최고 ${w.hi}° · 최저 ${w.lo}°</div></div>` : `<div class="tt"><div class="fc-lab">날씨</div><div class="fc-sub">아직 못 받았어</div></div>`);
+    setH($('fcWx'), w ? `${wxIcon(w.code, hr >= 18 || hr < 7)}<div class="tt"><div class="fc-temp">${w.t}<i>°</i></div><div class="fc-lab">${escN((WX[w.code] || [''])[0])}</div><div class="fc-sub">최고 ${w.hi}° · 최저 ${w.lo}°</div></div>` : `<div class="tt"><div class="fc-lab">날씨</div><div class="fc-sub">아직 못 받았어</div></div>`);
     const sk = faceSky();
     setH($('fcNewsS'), on ? (read ? '다 읽었어' : `<i class="dot"></i>새 소식 ${news.articles.length}개`) : '아직 안 왔어');
     $('fcSkyS').textContent = sk ? sk.moon.name : '오늘의 달';
@@ -2830,7 +2966,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v108';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v109';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {

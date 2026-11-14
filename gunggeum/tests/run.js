@@ -66,9 +66,13 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
   await p.saver(); await p.mouse.click(60, 60); await p.adv(1000); s = await p.st(); ok('톡 누르면 깨어남', !s.saver, s.saver);
   ok('강제 상태가 남지 않음', await p.evaluate(() => window.__gkForce === undefined));
   const tile = async n => { const bx = await p.locator(`#svFace [data-tile="${n}"]`).last().boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); };
-  await p.saver(); await tile('cal'); s = await p.st(); ok('날짜를 누르면 달력', s.saver === 'cal', s.saver); await p.mouse.click(800, 400); await p.adv(1000); s = await p.st(); ok('달력을 톡 누르면 깨어남', !s.saver, s.saver);
-  await p.saver(); await tile('sky'); s = await p.st(); ok('밤하늘 타일 → 밤하늘 장', s.saver === 'sky', s.saver);
-  await p.adv(11 * 60e3); s = await p.st(); ok('밤하늘 장은 10분 뒤 위젯 면으로', s.saver === 'face', s.saver);
+  await p.saver(); await tile('cal'); s = await p.st(); ok('날짜를 누르면 달력', s.saver === 'cal', s.saver); ok('다음 달 날짜는 숨김', await p.evaluate(() => [...document.querySelectorAll('#calGrid .o')].every(x => getComputedStyle(x).visibility === 'hidden')));
+  await p.mouse.click(800, 400); await p.adv(1000); s = await p.st(); ok('달력을 누르면 위젯 면으로', s.saver === 'face', s.saver);
+  await tile('cal'); await p.adv(100e3); s = await p.st(); ok('달력은 90초 뒤 위젯 면으로', s.saver === 'face', s.saver);
+  await p.adv(3 * 60e3); s = await p.st(); ok('3분 손대지 않으면 쉬는 막', s.saver === 'face rest', s.saver);
+  await p.mouse.move(700, 300); await p.mouse.down(); ok('손대면 바로 밝아짐', !(await p.st()).saver.includes('rest')); await p.mouse.move(700, 380); await p.mouse.up(); await p.adv(500);
+  await tile('sky'); s = await p.st(); ok('밤하늘 타일 → 밤하늘 장', s.saver === 'sky', s.saver);
+  await p.adv(11 * 60e3); s = await p.st(); ok('밤하늘 장은 10분 뒤 위젯 면으로', s.saver === 'face rest', s.saver);
   await tile('news'); s = await p.st(); ok('신문 타일 → 신문 열림', !s.saver && s.paper, s);
   await p.saver(); await tile('wx'); s = await p.st(); ok('날씨 타일 → 깨어남', !s.saver && !s.paper, s);
   ok('타일이 화면 밖으로 넘치지 않음', await p.evaluate(() => { document.getElementById('saver').hidden = false; const r = [...document.querySelectorAll('#svFace .fc-t')].every(t => { const b = t.getBoundingClientRect(); return b.left >= 0 && b.top >= 0 && b.right <= innerWidth && b.bottom <= innerHeight && t.scrollHeight <= t.clientHeight + 1; }); document.getElementById('saver').hidden = true; return r; }));
