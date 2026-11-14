@@ -831,11 +831,11 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 @media (max-width: 900px) { .tb-clock { display: none; } }
 /* v106: 루아의 할 일 — 홈 '오늘' 줄 네 번째 칸 */
 .app[data-home] .main .inner:not(.has-fig) .today { grid-auto-flow: initial; grid-template-columns: minmax(0, 1.5fr) minmax(0, .9fr) minmax(0, .8fr) minmax(0, 1.3fr); column-gap: 2rem; align-items: start; }
-.today .td.tdo { cursor: default; gap: .15rem; }
+.today .td.tdo { cursor: default; gap: 0; }
 .today .td.tdo .svp-tag::after { content: none; }
 .today .td.tdo .svp-tag b { all: unset; color: var(--muted); font-weight: 700; margin-left: .6em; }
 .tdo-row, .svt-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: .7em; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.tdo-row { min-height: 3rem; font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 600; font-size: 1.45rem; letter-spacing: -.03em; color: var(--ink); }
+.tdo-row { min-height: 2.3rem; font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 600; font-size: 1.35rem; letter-spacing: -.03em; color: var(--ink); }
 .tdo-row .tx, .svt-row .tx { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; justify-self: start; max-width: 100%; }
 .tdo-row .bx, .svt-row .bx { width: .78em; height: .78em; border: 1.5px solid var(--ink); box-sizing: border-box; }
 .tdo-row .du, .svt-row .du { font-family: var(--f-ui, "NanumSquare Neo", sans-serif); font-size: .62em; font-weight: 700; color: var(--muted); letter-spacing: 0; }
@@ -1020,13 +1020,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v105</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v106</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v105</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v106</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1935,9 +1935,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const TD_NOUN = /숙제|준비물|할\s*일/, TD_CMD = /(추가|적어|넣어)\s*(해\s*)?(줘|줄래|놔|둬|주세요)/;
   const TD_DICT = /숙제|준비물|받아쓰기|일기|독서록|독후감|익힘책|학습지|문제집|알림장|피아노|태권도|학원|줄넘기|실내화|체육복|리코더|색종이|색연필|가위|풀|우산|물통|필통|신청서|가져가|챙겨|연습/;
   const TD_DUTY = /(해야|가야|내야|써야|풀어야|읽어야|외워야|챙겨야|가져가야|사야|빨아야|해\s*가야)\s*(돼|해|되|됨|한대|된대)|까지야|있어$|있대$/;
-  const TD_ASKW = /왜|뭐|뭘|무슨|무엇|어떻게|어떡해|누가|누구|언제|어디|꼭|진짜|정말|몇|얼마|어느|인가|일까|을까|ㄹ까|니$|나요$|까$/;
+  const TD_ASKW = /왜|뭐|뭘|무슨|무엇|어떻게|어떡해|누가|누구|언제|어디|꼭|진짜|정말|몇|얼마|어느|인가$|일까$|을까$|니$|나요$|까$/;
   function todoClean(said) {
-    let t = ' ' + said.replace(/[.,!?~]/g, ' ') + ' ';
+    let t = ' ' + said.replace(/[.,!?~]/g, ' ') + ' ', when = '';
+    t = t.replace(/((오전|오후|아침|저녁|밤)\s*)?([0-9]{1,2}|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열|열한|열두)\s*시(\s*반)?(에|까지)?(?=\s)/, m => { when = m.replace(/(에|까지)$/, '').trim(); return ' '; }); // "네 시에"는 뒤에 따로 붙임
     t = t.replace(/(할\s*일|숙제|준비물)?(에|로|으로|을|를)?\s*(추가|적어|넣어|써)\s*(해\s*)?(줘|줄래|놔|둬|주세요)/g, ' ');
     t = t.replace(/(다음\s*주\s*)?[월화수목금토일]요일(까지|에|날)?|오늘(까지|은)?|내일(까지|은)?|모레(까지)?/g, ' ');
     t = t.replace(/\s(나|나는|난|저|음|어|그|저기|근데|그리고|엄마가|선생님이)\s/g, ' ');
@@ -1946,7 +1947,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       .replace(/\s*읽어야\s*(돼|해|되|됨|한대|된대)/g, ' 읽기').replace(/\s*외워야\s*(돼|해|되|됨|한대|된대)/g, ' 외우기').replace(/\s*챙겨야\s*(돼|해|되|됨|한대|된대)/g, ' 챙기기')
       .replace(/\s*사야\s*(돼|해|되|됨|한대|된대)/g, ' 사기').replace(/\s*빨아야\s*(돼|해|되|됨|한대|된대)/g, ' 빨기').replace(/\s*해야\s*(돼|해|되|됨|한대|된대)/g, ' ');
     t = t.replace(/\s*(까지야|이야|있어|있대)\s*$/g, ' ').replace(/(이|가|을|를)\s*$/g, ' ');
-    return t.replace(/\s+/g, ' ').trim().slice(0, 40);
+    t = t.replace(/\s+/g, ' ').trim().slice(0, 40);
+    return t && when ? t + ' · ' + when : t;
   }
   function todoMatch(said, d) { // 말한 것과 가장 닮은 '아직 안 한' 줄
     const open = todoOpen(d); if (!open.length) return { none: true };
@@ -2659,7 +2661,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v105';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v106';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
