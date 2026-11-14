@@ -813,6 +813,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .fold > summary { cursor: pointer; padding: .7rem 1rem; background: var(--surface); color: var(--muted); font-weight: 700; font-size: .9rem; }
 .fold[open] > summary { margin-bottom: 1.1rem; }
 .fold > .card + .card { margin-top: 1.1rem; }
+.saver { touch-action: none; }
+.sv-dots { position: absolute; left: 0; right: 0; bottom: 1.6vh; display: flex; justify-content: center; gap: .7rem; pointer-events: none; z-index: 2; }
+.sv-dots[hidden] { display: none; }
+.sv-dots i { width: .5rem; height: .5rem; border-radius: 50%; background: var(--sv-text, #E8DDC9); opacity: .22; }
+.sv-dots i.on { opacity: .75; }
+.saver.night .sv-dots i { background: #8A6A3A; opacity: .25; }
+.saver.night .sv-dots i.on { opacity: .6; }
 </style>
 
 </head>
@@ -924,6 +931,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   </div></form>
 
   <div class="saver" id="saver" hidden>
+  <div class="sv-dots" id="svDots" hidden aria-hidden="true"></div>
     <div class="sv-inner">
       <section class="sv-date">
         <div class="sv-top"><span class="sv-mon" id="svMon"></span> <span class="sv-day" id="svDay"></span> <span class="sv-dow" id="svDow"></span></div>
@@ -969,13 +977,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v104</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v105</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v104</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v105</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1670,7 +1678,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('svTip').textContent = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : '';
     { const t = w && w.tom; $('svNight').textContent = t ? `내일 아침 ${t.lo}°${t.pop != null && t.pop >= 50 ? ' · 우산!' : t.lo <= 5 ? ' · 겉옷!' : ''}` : '';
       const o = [[0, 0], [4, 2], [-3, 4], [2, -4], [-4, -2], [3, 3]][Math.floor(Date.now() / 300e3) % 6]; saverEl.querySelector('.sv-inner').style.translate = `${o[0]}px ${o[1]}px`; } // 화면 자국 방지: 5분마다 몇 px씩
-    const hasPaper = renderFront();
+    const hasPaper = renderFront(); svDots();
     if (saverEl.classList.contains('sky') && w) { // 저녁엔 옷차림 대신 별 보기 한마디 (비·눈·먼지 알림은 그대로)
       const tip = $('svTip').textContent; if (!/비|눈|먼지/.test(tip)) $('svTip').textContent = w.code <= 1 ? '하늘이 맑은 밤' : w.code === 2 ? '구름 사이로 별이 보여' : '구름이 많은 밤';
     }
@@ -1696,17 +1704,47 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   // 부모님용: 쉬는 시간에도 대기화면을 빠르게 5번 누르거나 2초 꾹 누르면 부모님 화면이 열림
   let svTaps = [], svHold = null;
+  // 대기화면 넘기기: 옆으로 밀면 신문 1면 ↔ 시계 ↔ 밤하늘. 톡 누르면 예전처럼 깨어남. (넘긴 화면은 10분 뒤 원래대로)
+  function svPages() {
+    const on = !!(news && newsFresh()), hr = new Date().getHours(), nightNow = window.__gkNight ?? (hr >= 22 || hr < 6), a = [];
+    if (on) a.push('front');
+    a.push(nightNow ? 'night' : on && newsRead() ? 'done' : 'plain');
+    if (innerWidth >= 900 && window.GKSky) a.push('sky');
+    return a;
+  }
+  const svCur = () => { const c = saverEl.classList; return c.contains('sky') ? 'sky' : c.contains('paper-hero') ? 'front' : c.contains('night') ? 'night' : c.contains('paper-done') ? 'done' : 'plain'; };
+  function svDots() {
+    const pg = svPages(), cur = svCur(), el = $('svDots'); el.hidden = pg.length < 2;
+    const html = pg.map(x => `<i${x === cur || (x !== 'front' && x !== 'sky' && cur !== 'front' && cur !== 'sky') ? ' class="on"' : ''}></i>`).join('');
+    if (el.innerHTML !== html) el.innerHTML = html;
+  }
+  function svPage(dir) {
+    const pg = svPages(); if (pg.length < 2) return;
+    const cur = svCur(); let i = pg.indexOf(cur); if (i < 0) i = pg.findIndex(x => x !== 'front' && x !== 'sky');
+    const nx = pg[(i + dir + pg.length) % pg.length];
+    window.__gkForce = { s: nx, at: Date.now() }; window.__gkSaverAt = Date.now();
+    const inner = saverEl.querySelector('.sv-inner'); inner.style.animation = 'none'; renderSaver(); void inner.offsetWidth; inner.style.animation = '';
+    diag('saver', '대기화면 넘김 → ' + nx);
+  }
+  let svDown = null;
   saverEl.addEventListener('pointerdown', e => {
     e.preventDefault(); e.stopPropagation();
     const now = Date.now(); svTaps = svTaps.filter(t => now - t < 3000); svTaps.push(now);
-    clearTimeout(svHold); svHold = setTimeout(() => { svTaps = []; openLog(); }, 2000);
-    if (svTaps.length >= 5) { svTaps = []; clearTimeout(svHold); openLog(); return; }
-    const wantPaper = !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper');
-    exitSaver();
-    if (wantPaper && saverEl.hidden) { clearTimeout(svHold); openPaper(0); }
+    svDown = { x: e.clientX, y: e.clientY, paper: !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper') };
+    clearTimeout(svHold); svHold = setTimeout(() => { svTaps = []; svDown = null; openLog(); }, 2000);
+    if (svTaps.length >= 5) { svTaps = []; svDown = null; clearTimeout(svHold); openLog(); }
   }, true);
-  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => saverEl.addEventListener(ev, () => clearTimeout(svHold), true));
-  document.addEventListener('keydown', e => { if (!saverEl.hidden && logEl.hidden) { e.preventDefault(); if (e.repeat || Date.now() - (window.__gkSaverAt || 0) < 1500) return; exitSaver(); } }, true);
+  saverEl.addEventListener('pointermove', e => { if (svDown && Math.abs(e.clientX - svDown.x) > 14) clearTimeout(svHold); }, true);
+  saverEl.addEventListener('pointerup', e => {
+    clearTimeout(svHold); const d = svDown; svDown = null; if (!d || saverEl.hidden || !logEl.hidden) return;
+    const dx = e.clientX - d.x, dy = e.clientY - d.y;
+    if (Math.abs(dx) > 70 && Math.abs(dx) > 1.5 * Math.abs(dy)) { svTaps = []; svPage(dx < 0 ? 1 : -1); return; }
+    if (Math.abs(dx) > 24 || Math.abs(dy) > 24) return; // 어중간하게 끌다 만 것은 무시
+    exitSaver();
+    if (d.paper && saverEl.hidden) openPaper(0);
+  }, true);
+  ['pointercancel', 'pointerleave'].forEach(ev => saverEl.addEventListener(ev, e => { if (ev === 'pointerleave' && e.target !== saverEl) return; clearTimeout(svHold); svDown = null; }, true));
+  document.addEventListener('keydown', e => { if (!saverEl.hidden && logEl.hidden) { e.preventDefault(); if (e.repeat) return; if (e.key === 'PageDown' || e.key === 'ArrowDown') { svPage(1); return; } if (e.key === 'PageUp' || e.key === 'ArrowUp' || e.key === 'ArrowLeft') { svPage(-1); return; } if (Date.now() - (window.__gkSaverAt || 0) < 1500) return; exitSaver(); } }, true);
 
   // ---------- 루아 신문: 매일 아침 news/latest.json 을 읽어 대기화면 1면과 기사 화면에 보여 줌 ----------
   const NEWS_KEY = 'gk-news', NEWS_READ = 'gk-news-read2', NEWS_DONE = 'gk-news-done2'; // 읽음 기록은 발행 날짜로
@@ -1769,8 +1807,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (sky) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done'].forEach(c => saverEl.classList.remove(c)); renderSky(); return true; }
     el.hidden = !on || night; saverEl.classList.toggle('has-paper', on && !night); saverEl.classList.toggle('night', night);
     // 낮: 아직 안 읽었으면 신문이 주인공, 다 읽었으면 시계가 주인공 + 신문은 한 줄로 접힘. 밤(22~6시): 시계만 어둡게
-    saverEl.classList.toggle('paper-hero', on && !night && !read);
-    saverEl.classList.toggle('paper-done', on && !night && read);
+    saverEl.classList.toggle('paper-hero', on && !night && (!read || fz === 'front'));
+    saverEl.classList.toggle('paper-done', on && !night && read && fz !== 'front');
     if (!on) return night;
     if (night) return true;
     const [a, ...rest] = news.articles;
@@ -2397,7 +2435,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v104';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v105';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
