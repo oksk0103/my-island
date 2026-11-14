@@ -820,6 +820,46 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .sv-dots i.on { opacity: .75; }
 .saver.night .sv-dots i { background: #8A6A3A; opacity: .25; }
 .saver.night .sv-dots i.on { opacity: .6; }
+
+/* v106: 누르는 곳 60px 이상 */
+#replayBtn { min-height: 3rem; padding-inline: 1rem; }
+.top-right .iconbtn { width: 3rem; height: 3rem; }
+.pp-listen, #ppClose, #ppNext, .pp-tabs button { min-height: 3rem; }
+/* v106: 홈 시계 (머리띠) */
+.tb-clock { font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-size: 1.7rem; font-weight: 600; letter-spacing: -.02em; color: var(--ink); font-variant-numeric: tabular-nums; margin-right: .6rem; white-space: nowrap; }
+.tb-clock small { font-family: var(--f-ui, inherit); font-size: .5em; font-weight: 700; color: var(--muted); margin-right: .35em; letter-spacing: 0; }
+@media (max-width: 900px) { .tb-clock { display: none; } }
+/* v106: 루아의 할 일 — 홈 '오늘' 줄 네 번째 칸 */
+.app[data-home] .main .inner:not(.has-fig) .today { grid-auto-flow: initial; grid-template-columns: minmax(0, 1.5fr) minmax(0, .9fr) minmax(0, .8fr) minmax(0, 1.3fr); column-gap: 2rem; align-items: start; }
+.today .td.tdo { cursor: default; gap: .15rem; }
+.today .td.tdo .svp-tag::after { content: none; }
+.today .td.tdo .svp-tag b { all: unset; color: var(--muted); font-weight: 700; margin-left: .6em; }
+.tdo-row, .svt-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: .7em; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.tdo-row { min-height: 3rem; font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 600; font-size: 1.45rem; letter-spacing: -.03em; color: var(--ink); }
+.tdo-row .tx, .svt-row .tx { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; justify-self: start; max-width: 100%; }
+.tdo-row .bx, .svt-row .bx { width: .78em; height: .78em; border: 1.5px solid var(--ink); box-sizing: border-box; }
+.tdo-row .du, .svt-row .du { font-family: var(--f-ui, "NanumSquare Neo", sans-serif); font-size: .62em; font-weight: 700; color: var(--muted); letter-spacing: 0; }
+.tdo-row.done, .svt-row.done { color: var(--muted); }
+.tdo-row.done .bx, .svt-row.done .bx { background: var(--muted); border-color: var(--muted); }
+.tdo-row .tx::after, .svt-row .tx::after { content: ""; position: absolute; left: 0; top: 54%; height: 1.5px; width: 0; background: currentColor; transition: width .24s ease-out; }
+.tdo-row.done .tx::after, .svt-row.done .tx::after { width: 100%; }
+.tdo-more, .tdo-empty { font-size: .95rem; font-weight: 600; color: var(--muted); padding-top: .2rem; }
+.tdo-empty { padding-top: .5rem; }
+/* v106: 대기화면 시계 장 — 할 일이 있을 때만 좌우 두 단 */
+.sv-todo { display: none; }
+.saver.todo.plain .sv-inner, .saver.todo.paper-done .sv-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 7vw; align-items: center; width: 100%; max-width: 90rem; text-align: left; }
+.saver.todo.plain .sv-text, .saver.todo.paper-done .sv-text, .saver.todo .sv-rule { display: none; }
+.saver.todo.plain .sv-date, .saver.todo.paper-done .sv-date { align-items: flex-start; }
+.saver.todo.plain .sv-time, .saver.todo.paper-done .sv-time { font-size: clamp(5rem, min(11.5vw, 22.5vh), 13rem); }
+.saver.todo.plain .sv-time small, .saver.todo.paper-done .sv-time small { position: static; margin-right: .35em; }
+.saver.todo.plain .sv-wx, .saver.todo.paper-done .sv-wx { text-align: left; }
+.saver.todo .sv-todo { display: block; min-width: 0; }
+.svt-head { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: .9rem; border-bottom: 3px double color-mix(in srgb, var(--ink) 55%, transparent); }
+.svt-head .svp-tag { font-size: clamp(1.05rem, min(1.5vw, 2.9vh), 1.5rem); }
+.svt-left { font-size: clamp(1rem, min(1.4vw, 2.7vh), 1.4rem); font-weight: 700; color: var(--muted); }
+.svt-row { min-height: clamp(3.6rem, 10.2vh, 5.4rem); font-family: var(--f-serif); font-weight: 600; font-size: clamp(1.7rem, min(2.75vw, 5.4vh), 2.9rem); letter-spacing: -.03em; color: var(--ink); border-bottom: 1px solid var(--line); }
+.svt-more { padding-top: .9rem; font-size: clamp(1rem, min(1.4vw, 2.7vh), 1.4rem); font-weight: 700; color: var(--muted); }
+.sv-tododone { display: block; margin-top: 1.2vh; font-family: var(--f-serif); font-size: clamp(1.1rem, min(1.6vw, 3vh), 1.7rem); color: color-mix(in srgb, var(--sv-text) 80%, transparent); }
 </style>
 
 </head>
@@ -855,6 +895,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <span id="stateLabel">쉬는 중</span>
     </div>
     <div class="top-right">
+      <span class="tb-clock" id="tbClock" aria-hidden="true"></span>
       <button class="iconbtn gear" id="gearBtn" type="button" aria-label="부모님 설정"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg></button>
       <button class="iconbtn" id="soundBtn" type="button" aria-pressed="true" aria-label="소리 켜짐/꺼짐" title="소리">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path class="waves" d="M16 8.2a5.2 5.2 0 0 1 0 7.6M18.5 5.7a8.7 8.7 0 0 1 0 12.6"></path></svg>
@@ -888,6 +929,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <button type="button" class="td" id="tdNews" hidden><span class="svp-tag" id="tdNewsT"></span><b id="tdNewsH"></b><small id="tdNewsS"></small></button>
       <button type="button" class="td" id="tdSky" hidden><span class="svp-tag">오늘 밤하늘</span><b id="tdSkyH"></b><small id="tdSkyS"></small></button>
       <button type="button" class="td" id="tdWx" hidden><span class="svp-tag" id="tdWxT"></span><b id="tdWxH"></b><small id="tdWxS"></small></button>
+      <div class="td tdo" id="tdTodo"><span class="svp-tag" id="tdTodoT">루아의 할 일</span><div class="tdo-list" id="tdTodoL"></div></div>
     </div>
   </div>
   <div class="paper" id="paper" hidden><div class="inner">
@@ -967,6 +1009,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
         </div>
         <div class="sv-msg" id="svMsg" hidden></div>
       </section>
+      <section class="sv-todo" id="svTodo" hidden><div class="svt-head"><span class="svp-tag">루아의 할 일</span><span class="svt-left" id="svTodoN"></span></div><div class="svt-list" id="svTodoL"></div></section>
     </div>
   </div>
   <div class="pin" id="pin" hidden>
@@ -1111,7 +1154,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   function rules() {
     const [base, deep] = LEN[settings.len] || LEN.normal;
     return `너는 한 집에 있는 질문 화면 "궁금칸"이야. ${LEVEL[settings.level] || LEVEL.m1}
-${nowLine()} 날짜·요일·시간·계절이나 "○○까지 며칠 남았어?"를 물으면 이걸 기준으로 계산해서 답해(날짜를 지어내지 마).
+질문 맨 앞 괄호 안에 오늘 날짜와 지금 시각을 적어 줄게. 날짜·요일·시간·계절이나 "○○까지 며칠 남았어?"를 물으면 이걸 기준으로 계산해서 답해(날짜를 지어내지 마).
 규칙:
 - 왜 그런지 원리나 이유를 꼭 넣어. 결과만 말하지 마.
 - 가능하면 구체적인 숫자나 비교를 하나 넣어(예: "빛은 1초에 지구를 7바퀴 반 돌아").
@@ -1161,6 +1204,7 @@ ${nowLine()} 날짜·요일·시간·계절이나 "○○까지 며칠 남았어
     $('apiSave').addEventListener('click', () => { saveSettings({ apiKey: $('apiKey').value.trim() }); });
     applySettingsUI();
   })();
+  function restNow() { const h = new Date().getHours(); return !(settings.hFrom === settings.hTo ? true : settings.hFrom < settings.hTo ? (h >= settings.hFrom && h < settings.hTo) : (h >= settings.hFrom || h < settings.hTo)); }
   function gate() {
     const h = new Date().getHours();
     const open = settings.hFrom === settings.hTo ? true : settings.hFrom < settings.hTo ? (h >= settings.hFrom && h < settings.hTo) : (h >= settings.hFrom || h < settings.hTo);
@@ -1440,7 +1484,7 @@ ${nowLine()} 날짜·요일·시간·계절이나 "○○까지 며칠 남았어
   function startListening() {
     if (busy || listening) return;
     if (!SR) { statusEl.textContent = '이 브라우저는 음성 인식이 안 돼요. Chrome에서 열어 주세요.'; enterTyping(); return; }
-    const blocked = gate(); if (blocked) { showBlocked(blocked); return; }
+    const blocked = gate(); if (blocked && restNow()) { showBlocked(blocked); return; }
     hush();
     keepAwake();
     rec = new SR(); rec.lang = 'ko-KR'; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
@@ -1678,7 +1722,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('svTip').textContent = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : '';
     { const t = w && w.tom; $('svNight').textContent = t ? `내일 아침 ${t.lo}°${t.pop != null && t.pop >= 50 ? ' · 우산!' : t.lo <= 5 ? ' · 겉옷!' : ''}` : '';
       const o = [[0, 0], [4, 2], [-3, 4], [2, -4], [-4, -2], [3, 3]][Math.floor(Date.now() / 300e3) % 6]; saverEl.querySelector('.sv-inner').style.translate = `${o[0]}px ${o[1]}px`; } // 화면 자국 방지: 5분마다 몇 px씩
-    const hasPaper = renderFront(); svDots();
+    const hasPaper = renderFront(); svDots(); todoRender();
     if (saverEl.classList.contains('sky') && w) { // 저녁엔 옷차림 대신 별 보기 한마디 (비·눈·먼지 알림은 그대로)
       const tip = $('svTip').textContent; if (!/비|눈|먼지/.test(tip)) $('svTip').textContent = w.code <= 1 ? '하늘이 맑은 밤' : w.code === 2 ? '구름 사이로 별이 보여' : '구름이 많은 밤';
     }
@@ -1729,8 +1773,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   let svDown = null;
   saverEl.addEventListener('pointerdown', e => {
     e.preventDefault(); e.stopPropagation();
-    const now = Date.now(); svTaps = svTaps.filter(t => now - t < 3000); svTaps.push(now);
-    svDown = { x: e.clientX, y: e.clientY, paper: !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper') };
+    const now = Date.now(), row = e.target.closest && e.target.closest('[data-todo]'); svTaps = svTaps.filter(t => now - t < 3000); if (!row) svTaps.push(now);
+    svDown = { x: e.clientX, y: e.clientY, todo: row ? row.dataset.todo : '', paper: !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper') };
     clearTimeout(svHold); svHold = setTimeout(() => { svTaps = []; svDown = null; openLog(); }, 2000);
     if (svTaps.length >= 5) { svTaps = []; svDown = null; clearTimeout(svHold); openLog(); }
   }, true);
@@ -1740,6 +1784,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const dx = e.clientX - d.x, dy = e.clientY - d.y;
     if (Math.abs(dx) > 70 && Math.abs(dx) > 1.5 * Math.abs(dy)) { svTaps = []; svPage(dx < 0 ? 1 : -1); return; }
     if (Math.abs(dx) > 24 || Math.abs(dy) > 24) return; // 어중간하게 끌다 만 것은 무시
+    if (d.todo) { todoToggle(d.todo); return; } // 할 일 줄: 줄만 긋고 화면은 그대로
     exitSaver();
     if (d.paper && saverEl.hidden) openPaper(0);
   }, true);
@@ -1855,10 +1900,184 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const mk = [ms, Math.round(s.moon.phase), Math.round(s.moon.limb / 8)].join('|'); // 달은 모양이 달라질 때만 다시 그림
     if (mk !== skyMoonKey && ms > 20) { skyMoonKey = mk; setTimeout(() => { try { window.GKSky.drawMoon(cv, ms, s.moon.phase, s.moon.limb); } catch (e) { skyMoonKey = ''; } }, 30); }
   }
+
+  // ---------- 루아의 할 일: 말로 적고, 눌러서 줄 긋기. 알아듣기·저장은 모두 기기에서 (AI를 부르지 않음) ----------
+  const TODO_KEY = 'gk-todo', TODO_MAX = 7;
+  var todoPend = null; // { text, due, orig, until } 또는 { wait: true, until }
+  const tdNorm = t => String(t).replace(/\s+/g, '').replace(/[.,!?~]/g, '');
+  function todoLoad() {
+    const d = LS.get(TODO_KEY, null) || { items: [], last: null }, today = dayKey(new Date()), now = Date.now();
+    const n = d.items.length;
+    d.items = d.items.filter(it => {
+      if (it.done) return dayKey(new Date(it.done)) === today; // 다 한 줄은 다음 날 아침에 사라짐
+      const base = it.due ? new Date(it.due + 'T00:00:00').getTime() : it.at; // 묵은 것은 7일 뒤 말없이 사라짐
+      return now - Math.max(base, it.at - 0) < 8 * 864e5 && now - base < 8 * 864e5;
+    });
+    if (d.items.length !== n) LS.set(TODO_KEY, d);
+    return d;
+  }
+  const todoSave = d => { LS.set(TODO_KEY, d); todoRender(); };
+  const todoOpen = d => d.items.filter(x => !x.done);
+  function dueWord(due) { // 기한이 지난 것은 표시 없이 '오늘'
+    if (!due) return '';
+    const t0 = new Date(); t0.setHours(0, 0, 0, 0); const n = Math.round((new Date(due + 'T00:00:00') - t0) / 864e5);
+    return n <= 0 ? '오늘' : n === 1 ? '내일' : n === 2 ? '모레' : n < 7 ? DAYS[new Date(due + 'T00:00:00').getDay()] + '요일' : `${+due.slice(5, 7)}월 ${+due.slice(8)}일`;
+  }
+  function todoDue(s) { // 오늘·내일·모레·○요일·다음 주 ○요일만 알아들음
+    const d = new Date(); d.setHours(0, 0, 0, 0); let m;
+    if (/모레/.test(s)) d.setDate(d.getDate() + 2);
+    else if (/내일/.test(s)) d.setDate(d.getDate() + 1);
+    else if ((m = s.match(/(다음\s*주\s*)?([월화수목금토일])요일/))) { let add = ('일월화수목금토'.indexOf(m[2]) - d.getDay() + 7) % 7; if (m[1]) add += 7; d.setDate(d.getDate() + add); }
+    else if (/오늘/.test(s)) { /* 오늘 */ }
+    else return null;
+    return dayKey(d);
+  }
+  const TD_NOUN = /숙제|준비물|할\s*일/, TD_CMD = /(추가|적어|넣어)\s*(해\s*)?(줘|줄래|놔|둬|주세요)/;
+  const TD_DICT = /숙제|준비물|받아쓰기|일기|독서록|독후감|익힘책|학습지|문제집|알림장|피아노|태권도|학원|줄넘기|실내화|체육복|리코더|색종이|색연필|가위|풀|우산|물통|필통|신청서|가져가|챙겨|연습/;
+  const TD_DUTY = /(해야|가야|내야|써야|풀어야|읽어야|외워야|챙겨야|가져가야|사야|빨아야|해\s*가야)\s*(돼|해|되|됨|한대|된대)|까지야|있어$|있대$/;
+  const TD_ASKW = /왜|뭐|뭘|무슨|무엇|어떻게|어떡해|누가|누구|언제|어디|꼭|진짜|정말|몇|얼마|어느|인가|일까|을까|ㄹ까|니$|나요$|까$/;
+  function todoClean(said) {
+    let t = ' ' + said.replace(/[.,!?~]/g, ' ') + ' ';
+    t = t.replace(/(할\s*일|숙제|준비물)?(에|로|으로|을|를)?\s*(추가|적어|넣어|써)\s*(해\s*)?(줘|줄래|놔|둬|주세요)/g, ' ');
+    t = t.replace(/(다음\s*주\s*)?[월화수목금토일]요일(까지|에|날)?|오늘(까지|은)?|내일(까지|은)?|모레(까지)?/g, ' ');
+    t = t.replace(/\s(나|나는|난|저|음|어|그|저기|근데|그리고|엄마가|선생님이)\s/g, ' ');
+    t = t.replace(/\s*해\s*가야\s*(돼|해|되|됨|한대|된대)/g, ' 해 가기').replace(/\s*가져가야\s*(돼|해|되|됨|한대|된대)/g, ' 가져가기').replace(/\s*가야\s*(돼|해|되|됨|한대|된대)/g, ' 가기')
+      .replace(/\s*내야\s*(돼|해|되|됨|한대|된대)/g, ' 내기').replace(/\s*써야\s*(돼|해|되|됨|한대|된대)/g, ' 쓰기').replace(/\s*풀어야\s*(돼|해|되|됨|한대|된대)/g, ' 풀기')
+      .replace(/\s*읽어야\s*(돼|해|되|됨|한대|된대)/g, ' 읽기').replace(/\s*외워야\s*(돼|해|되|됨|한대|된대)/g, ' 외우기').replace(/\s*챙겨야\s*(돼|해|되|됨|한대|된대)/g, ' 챙기기')
+      .replace(/\s*사야\s*(돼|해|되|됨|한대|된대)/g, ' 사기').replace(/\s*빨아야\s*(돼|해|되|됨|한대|된대)/g, ' 빨기').replace(/\s*해야\s*(돼|해|되|됨|한대|된대)/g, ' ');
+    t = t.replace(/\s*(까지야|이야|있어|있대)\s*$/g, ' ').replace(/(이|가|을|를)\s*$/g, ' ');
+    return t.replace(/\s+/g, ' ').trim().slice(0, 40);
+  }
+  function todoMatch(said, d) { // 말한 것과 가장 닮은 '아직 안 한' 줄
+    const open = todoOpen(d); if (!open.length) return { none: true };
+    const key = tdNorm(said.replace(/(다\s*)?(했어|끝났어|끝냈어|끝|썼어|갔다\s*왔어|다녀왔어|챙겼어|풀었어|냈어|읽었어|외웠어|지워\s*줘|지워|빼\s*줘|빼|숙제|할\s*일|나|이제|방금|그거|거|것)/g, ''));
+    if (key.length < 2) return open.length === 1 ? { hit: open[0] } : { many: open };
+    const grams = t => { const a = []; for (let i = 0; i < t.length - 1; i++) a.push(t.slice(i, i + 2)); return a; };
+    const kg = grams(key), sc = open.map(it => { const tg = new Set(grams(tdNorm(it.text + (it.raw || '')))); return [kg.filter(g => tg.has(g)).length / kg.length, it]; }).sort((a, b) => b[0] - a[0]);
+    if (sc[0][0] >= 0.5 && (sc.length < 2 || sc[0][0] - sc[1][0] >= 0.2)) return { hit: sc[0][1] };
+    if (sc[0][0] >= 0.34) return { many: sc.filter(x => x[0] >= 0.34).map(x => x[1]) };
+    return { miss: true };
+  }
+  function todoShow(said, text, chips) { // 답 화면 자리에 기기의 한마디 (AI 답 아님)
+    if (!saverEl.hidden) exitSaver(); if (!paperEl.hidden) hidePaper();
+    hush(); input.value = ''; input.blur(); exitTyping(); hidePic(); followUp = '';
+    setEyebrow('q', /[.!?]$/.test(said) ? said : said + '.'); setState('idle', '쉬는 중', ''); draw(text, false, 'plain');
+    setChips(chips || [], chips && chips.length ? '할 일' : '');
+    speak(text.replace(/[《》]/g, ''));
+  }
+  function todoAdd(said, text, due, raw) {
+    const d = todoLoad();
+    if (todoOpen(d).some(x => tdNorm(x.text) === tdNorm(text))) { todoShow(said, `《${text}》, 그건 벌써 적혀 있어.`, ['할 일 읽어 줘']); return; }
+    if (todoOpen(d).length >= TODO_MAX) { todoShow(said, '할 일 칸이 다 찼어. 다 한 것부터 눌러서 줄을 그어 줘.', ['할 일 읽어 줘']); return; }
+    const it = { id: Date.now().toString(36), text, raw: raw || said, due: due || null, at: Date.now(), done: null };
+    d.items.push(it); d.last = { op: 'add', id: it.id, at: Date.now() }; todoSave(d);
+    diag('todo', `추가: "${text}"${due ? ' · ' + due : ''} ← "${String(raw || said).slice(0, 40)}"`);
+    todoShow(said, `적어 뒀어. 《${(dueWord(due) ? dueWord(due) + ' · ' : '') + text}》`, ['할 일 읽어 줘', '아니야, 지워 줘']);
+  }
+  function todoToggle(id, by) {
+    const d = todoLoad(), it = d.items.find(x => x.id === id); if (!it) return null;
+    it.done = it.done ? null : Date.now(); d.last = { op: it.done ? 'done' : 'undone', id, at: Date.now() }; todoSave(d);
+    diag('todo', `${it.done ? '끝' : '되살림'}: "${it.text}" (${by || '누름'})`);
+    return it;
+  }
+  function todoUndo(said) {
+    const d = todoLoad(), L = d.last, it = L && d.items.find(x => x.id === L.id);
+    if (!L || !it) { todoShow(said, '방금 한 게 없어.', ['할 일 읽어 줘']); return; }
+    if (L.op === 'add') { d.items = d.items.filter(x => x.id !== L.id); d.last = null; todoSave(d); diag('todo', `되돌림(추가 취소): "${it.text}"`); todoShow(said, `《${it.text}》, 지웠어.`, []); }
+    else if (L.op === 'done') { it.done = null; d.last = null; todoSave(d); diag('todo', `되돌림(끝 취소): "${it.text}"`); todoShow(said, `《${it.text}》, 다시 남겨 뒀어.`, ['할 일 읽어 줘']); }
+    else todoShow(said, '방금 한 게 없어.', ['할 일 읽어 줘']);
+  }
+  function todoList(said) {
+    const open = todoOpen(todoLoad());
+    if (!open.length) { todoShow(said, '지금은 할 일이 없어. 생기면 말해 줘.', []); return; }
+    todoShow(said, `남은 건 ${open.length}개야. ` + open.map((x, i) => (i === 0 ? `《${x.text}》` : x.text) + (dueWord(x.due) && dueWord(x.due) !== '오늘' ? ` (${dueWord(x.due)})` : '')).join(', ') + '.', open.slice(0, 4).map(x => `${x.text} 다 했어`));
+  }
+  // 아이의 말이 할 일에 관한 것이면 여기서 끝내고 true. 아니면 false (평소 질문으로)
+  function todoHandle(said) {
+    const s = said.trim(), t = tdNorm(s), now = Date.now();
+    if (todoPend && now > todoPend.until) todoPend = null;
+    if (todoPend) {
+      const P = todoPend; todoPend = null;
+      if (P.wait) { const tx = todoClean(s); if (tx) { todoAdd(s, tx, todoDue(s), s); return true; } }
+      else if (/^(적어줘|적어|응+|어+|엉|그래|맞아|네|예|좋아)$/.test(t)) { todoAdd(P.orig, P.text, P.due, P.orig); return true; }
+      else if (/물어본거야|아니야|아니|됐어|괜찮아/.test(t)) { if (/물어본/.test(t)) { ask(P.orig, { noTodo: true }); return true; } todoShow(s, '알았어. 안 적을게.', []); return true; }
+    }
+    const d = todoLoad(), L = d.last;
+    if (/^(아니야?|취소|취소해줘|되돌려줘?)(,?지워줘?|,?되돌려줘?)?$/.test(t) && L && now - L.at < 60e3) { todoUndo(s); return true; }
+    if (/^(아니야?,?)?(방금(거|것|꺼)?)?(지워줘?|취소해?줘?|되돌려줘?)$/.test(t) && L && now - L.at < 5 * 60e3) { todoUndo(s); return true; }
+    if (s.length > 44) return false;
+    if (/(할\s*일|숙제|준비물)\s*(이|은|는|가)?\s*(뭐\s*(있|남|야|지|더라)|읽어|알려|보여|말해)/.test(s) || /^(나|오늘|이제)?\s*뭐\s*(해야|남았)\s*(돼|해|되|어|지)?\??$/.test(s)) { todoList(s); return true; }
+    if (TD_CMD.test(s) && (TD_NOUN.test(s) || /할\s*일|적어/.test(s))) { // "숙제 추가해 줘, 수학 익힘책 34쪽"
+      const tx = todoClean(s);
+      if (!tx) { todoPend = { wait: true, until: now + 25e3 }; todoShow(s, '뭐라고 적을까?', []); return true; }
+      todoAdd(s, tx, todoDue(s)); return true;
+    }
+    const open = todoOpen(d);
+    if (/(다\s*)?(했어|끝났어|끝냈어|썼어|갔다\s*왔어|다녀왔어|챙겼어|풀었어|냈어|읽었어|외웠어)$/.test(s) && open.length && !TD_ASKW.test(s)) {
+      const m = todoMatch(s, d);
+      if (m.hit) { todoToggle(m.hit.id, '말'); const left = todoOpen(todoLoad()).length; todoShow(s, `《${m.hit.text}》, 끝.` + (left ? '' : ' 오늘 할 일 다 했어.'), ['할 일 읽어 줘', '아니야, 되돌려 줘']); return true; }
+      if (m.many && (TD_NOUN.test(s) || /^(다\s*)?(했어|끝났어|끝냈어)$/.test(s.replace(/^(나|이제)\s*/, '')))) { todoShow(s, '어떤 걸 다 했어?', m.many.slice(0, 4).map(x => `${x.text} 다 했어`)); return true; }
+      return false;
+    }
+    if (/(지워|빼)\s*(줘|줄래)?$/.test(s) && open.length) {
+      const m = todoMatch(s, d);
+      if (m.hit) { d.items = d.items.filter(x => x.id !== m.hit.id); d.last = null; todoSave(d); diag('todo', `지움: "${m.hit.text}"`); todoShow(s, `《${m.hit.text}》, 지웠어.`, ['할 일 읽어 줘']); return true; }
+      if (m.many && TD_NOUN.test(s)) { todoShow(s, '어떤 걸 지울까?', m.many.slice(0, 4).map(x => `${x.text} 지워 줘`)); return true; }
+      return false;
+    }
+    if (TD_ASKW.test(s)) return false; // 물어보는 말은 평소 질문으로
+    const duty = TD_DUTY.test(s), dict = TD_DICT.test(s);
+    if (duty && dict) { const tx = todoClean(s); if (tx.length >= 2) { todoAdd(s, tx, todoDue(s)); return true; } }
+    // 한쪽만 맞으면 바로 적지 않고 되물음 ("받아쓰기"가 사전에 없던 시절의 "○○ 연습해야 돼", "실내화 빨아야 돼")
+    if (duty && !/있어$|있대$/.test(s) && !/[가-힣]{2,}(은|는)\s/.test(s.replace(/^(나는|저는|오늘은|내일은|이번에는)\s/, '')) && s.length <= 26) {
+      const tx = todoClean(s);
+      if (tx.length >= 2) { todoPend = { text: tx, due: todoDue(s), orig: s, until: now + 40e3 }; diag('todo', `되물음: "${s.slice(0, 40)}"`); todoShow(s, `《${tx}》, 할 일에 적을까?`, ['적어 줘', '아니야, 그냥 물어본 거야']); return true; }
+    }
+    return false;
+  }
+  // 기기가 바로 답하는 말 (시각·요일·신문·밤하늘): 인터넷 없이, 질문 수에 세지 않음
+  function quickHandle(said) {
+    const s = said.trim(), t = tdNorm(s); if (t.length > 14) return false;
+    const d = new Date();
+    if (/^(지금)?몇시(야|니|지|예요|에요|인지알려줘)?$/.test(t)) { const h = d.getHours(); todoShow(s, `지금은 《${h < 12 ? '오전' : '오후'} ${h % 12 || 12}시 ${d.getMinutes() ? d.getMinutes() + '분' : ''}》이야.`.replace(' 》', '》'), []); return true; }
+    let m;
+    if ((m = t.match(/^(오늘|내일)?(은|이)?(무슨요일|며칠|몇월며칠|몇일)(이야|야|이지|지|이에요)?$/))) { if (m[1] === '내일') d.setDate(d.getDate() + 1); todoShow(s, `${m[1] || '오늘'}은 《${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일》이야.`, []); return true; }
+    if (/^(루아|오늘)?신문(을|좀)?(보여줘|펴줘|열어줘|읽어줘|볼래|보자|줘|보여|펴)$/.test(t)) { if (news && newsFresh()) { if (!saverEl.hidden) exitSaver(); hush(); openPaper(0); } else todoShow(s, '오늘 신문이 아직 안 왔어.', []); return true; }
+    if (/^(오늘)?(밤하늘|달)(을|좀)?(보여줘|열어줘|볼래|보자|보여)$/.test(t)) { if (window.GKSky) previewSaver('sky'); else todoShow(s, '밤하늘은 지금 못 보여 줘.', []); return true; }
+    return false;
+  }
+  // 화면에 그리기: 홈 '오늘' 줄의 칸 + 대기화면 시계 장의 단
+  function todoRows(list, cls, max) {
+    const shown = list.slice(0, max);
+    return shown.map(it => `<div class="${cls}${it.done ? ' done' : ''}" data-todo="${it.id}"><span class="bx"></span><span class="tx">${escN(it.text)}</span><span class="du">${it.done ? '' : escN(dueWord(it.due))}</span></div>`).join('') + (list.length > max ? `<div class="${cls === 'svt-row' ? 'svt-more' : 'tdo-more'}">그리고 ${list.length - max}개 더</div>` : '');
+  }
+  function todoSorted(d) { // 남은 것 먼저(기한 순). 방금 그은 줄은 2분 동안 제자리에 둬서 바로 되살릴 수 있게
+    const now = Date.now(), sunk = x => (x.done && now - x.done > 120e3 ? 1 : 0);
+    return d.items.slice().sort((a, b) => sunk(a) - sunk(b) || ((a.due || '9') < (b.due || '9') ? -1 : (a.due || '9') > (b.due || '9') ? 1 : a.at - b.at));
+  }
+  function todoRender() {
+    const d = todoLoad(), list = todoSorted(d), left = todoOpen(d).length;
+    const head = $('tdTodoT'), hh = '루아의 할 일' + (list.length ? `<b>${left ? left + '개 남았어' : '다 했어'}</b>` : '');
+    if (head.innerHTML !== hh) head.innerHTML = hh;
+    const h1 = list.length ? todoRows(list, 'tdo-row', 2) : '<div class="tdo-empty">할 일이 생기면 말해 줘.</div>';
+    if ($('tdTodoL').innerHTML !== h1) $('tdTodoL').innerHTML = h1;
+    // 대기화면: 남은 것이 있을 때만 두 단. 다 했으면 가운데 정렬로 돌아가고 한 줄만
+    const c = saverEl.classList, clockPage = c.contains('plain') || c.contains('paper-done');
+    const on = clockPage && left > 0; c.toggle('todo', on); $('svTodo').hidden = !on;
+    if (on) { const h2 = todoRows(list, 'svt-row', 4); if ($('svTodoL').innerHTML !== h2) $('svTodoL').innerHTML = h2; $('svTodoN').textContent = left + '개 남았어'; }
+    let dn = $('svTodoDone'); const allDone = clockPage && !left && list.length > 0;
+    if (allDone && !dn) { dn = document.createElement('span'); dn.id = 'svTodoDone'; dn.className = 'sv-tododone'; $('svTip').after(dn); }
+    if (dn) { dn.hidden = !allDone; if (allDone) dn.textContent = `오늘 할 일 ${list.length}개 다 했어`; }
+  }
+  $('tdTodoL').addEventListener('click', e => { const r = e.target.closest('[data-todo]'); if (r) todoToggle(r.dataset.todo); });
+  function tbClock() { const d = new Date(), h = d.getHours(), html = `<small>${h < 12 ? '오전' : '오후'}</small>${h % 12 || 12}:${pad(d.getMinutes())}`; if ($('tbClock').innerHTML !== html) $('tbClock').innerHTML = html; }
+  tbClock(); setInterval(tbClock, 15e3);
+
   // ---------- 홈의 '오늘' 줄: 신문 · 밤하늘 · 날씨 ----------
   var tdSkyKey = '', tdSky = null;
   function josa(w) { return (w.charCodeAt(w.length - 1) - 0xAC00) % 28 ? '은' : '는'; }
   function renderToday() {
+    todoRender();
     if (!app.dataset.home) return;
     const on = !!(news && newsFresh());
     $('tdNews').hidden = !on;
@@ -1890,7 +2109,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('ppBody').innerHTML = bodyHtml(A.body || ''); $('ppSrc').textContent = A.source ? '출처 ' + A.source : '';
     const W = A.word || {}; $('ppWord').hidden = !W.w; $('ppW').textContent = W.w || ''; $('ppM').textContent = W.mean || '';
     const hj = $('ppHj'); hj.innerHTML = (W.hanja || []).map(h => `<div><span>${escN(h[0])}</span><small>${escN(h[1])}</small></div>`).join(''); hj.hidden = !(W.hanja || []).length;
-    $('ppTabs').innerHTML = news.articles.map((x, i) => `<button type="button" data-i="${i}" class="${i === paperIdx ? 'cur' : ''}"><b>${i + 1}</b>${escN(x.short || x.title)}</button>`).join('');
+    $('ppTabs').innerHTML = news.articles.map((x, i) => `<button type="button" data-i="${i}" class="${i === paperIdx ? 'cur' : ''}">${escN(x.short || x.title)}</button>`).join('');
     $('ppNextT').textContent = paperIdx < n - 1 ? '다음 기사' : '다 읽었어';
     const art = $('ppArt'), box = $('ppPhoto'), key = news.no + ':' + paperIdx;
     box.dataset.k = key; box.innerHTML = ''; art.classList.add('nopic');
@@ -1979,8 +2198,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
 
   // ---------- Claude API ----------
   let thinkingOff = { type: 'between_tools' };
+  let noCache = false;
   async function claude(messages, { system, maxTokens = 1000, signal, _retry } = {}) {
-    const body = { model: settings.model || DEFAULTS.model, max_tokens: maxTokens, system, messages };
+    // 긴 지시문은 캐시에 올려 둠 (같은 지시문을 질문마다 다시 계산하지 않게). 모델이 안 받으면 한 번 더 보통 방식으로
+    const body = { model: settings.model || DEFAULTS.model, max_tokens: maxTokens, system: system && !noCache && system.length > 600 ? [{ type: 'text', text: system, cache_control: { type: 'ephemeral' } }] : system, messages };
     if (thinkingOff) body.thinking = thinkingOff;
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST', signal,
@@ -1990,6 +2211,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (!res.ok) {
       const err = new Error('api'); err.status = res.status; try { err.detail = (await res.json()).error?.message; } catch (e) {}
       // 모델이 thinking 옵션을 안 받으면 옵션 없이 한 번 더
+      if (res.status === 400 && /cache/i.test(err.detail || '') && !noCache) { noCache = true; diag('api', '지시문 캐시를 못 써서 끔'); return claude(messages, { system, maxTokens, signal, _retry }); }
       if (res.status === 400 && /thinking/i.test(err.detail || '') && !_retry) { thinkingOff = /disabled/.test(err.detail) ? { type: 'disabled' } : null; return claude(messages, { system, maxTokens, signal, _retry: true }); }
       throw err;
     }
@@ -2220,8 +2442,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
 
   // ---------- ask ----------
-  async function ask(qIn) {
+  async function ask(qIn, opt) {
     let q = String(qIn ?? input.value).trim(); const said = q;
+    // 할 일·시각·신문 같은 말은 기기가 바로 처리 (AI를 부르지 않고, 질문 수에도 안 셈). 쉬는 시간에는 평소처럼 막힘
+    if (q && !busy && !(opt && opt.noTodo) && !restNow()) { try { if (todoHandle(q) || quickHandle(q)) return; } catch (e) { diag('err', '할 일 처리 실패: ' + (e.message || e)); } }
     // 이어서: 답 뒤에 '응', '더', '왜?'처럼 짧게만 말하면 첫 번째 이어서 질문으로
     const shownChips = !quiz ? chipList() : [];
     if (shownChips.length) q = pickChip(q) || q;
@@ -2262,7 +2486,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
         userText = `(실제 날씨 정보 — ${settings.wxName || '우리 동네'}: 지금 ${w.t}°(체감 ${w.feel}°), ${wt(w.code)}. 오늘 최고 ${w.hi}° 최저 ${w.lo}°${w.pop != null ? ', 비 올 확률 ' + w.pop + '%' : ''}${dust ? ', 미세먼지 ' + dust : ''}. 앞으로: ${hrs}.${tom} 이 정보만 써서 짧게 답하고, 뭘 입거나 챙기면 좋을지 한마디 덧붙여. 사진 검색어는 비우고 이모지는 날씨에 맞게.)\n` + userText;
       } catch (e) { diag('err', '날씨 질문인데 날씨를 못 받음: ' + (e.message || e)); userText = '(지금 날씨 정보를 못 받았어. 날씨는 모른다고 솔직히 말하고 창밖을 보라고 해.)\n' + userText; }
     }
-    msgs.push({ role: 'user', content: userText });
+    msgs.push({ role: 'user', content: `(${nowLine()})\n` + userText });
     try {
       const raw = await claude(msgs, { system: rules(), signal: ctl.signal });
       lastRaw = raw; picDbg('응답 받음 (' + raw.length + '자)');
