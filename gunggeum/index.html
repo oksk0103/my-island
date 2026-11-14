@@ -810,6 +810,9 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .today .td .svp-tag::after { content: "  ›"; white-space: pre; }
 .saver.paper-done .sv-time, .saver.plain .sv-time, .saver.night .sv-time { position: relative; }
 .saver.paper-done .sv-time small, .saver.plain .sv-time small, .saver.night .sv-time small { position: absolute; right: 100%; bottom: .95em; margin-right: .6em; white-space: nowrap; }
+.fold > summary { cursor: pointer; padding: .7rem 1rem; background: var(--surface); color: var(--muted); font-weight: 700; font-size: .9rem; }
+.fold[open] > summary { margin-bottom: 1.1rem; }
+.fold > .card + .card { margin-top: 1.1rem; }
 </style>
 
 </head>
@@ -966,20 +969,29 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v102</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v103</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v102</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v103</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
+    </div>
+    <div class="card">
+      <h3>화면 바로가기</h3>
+      <div class="row" id="goRow"><button class="chip" data-go="home" type="button">홈</button><button class="chip" data-go="paper" type="button">신문 기사</button></div>
+      <label>대기화면 미리 보기</label>
+      <div class="row" id="goRow2"><button class="chip" data-go="hero" type="button">아침 신문 1면</button><button class="chip" data-go="done" type="button">신문 다 읽은 날</button><button class="chip" data-go="sky" type="button">저녁 밤하늘</button><button class="chip" data-go="night" type="button">밤</button><button class="chip" data-go="plain" type="button">신문 없는 날</button></div>
+      <p class="empty">미리 보기는 화면을 누르면 끝나고, 그대로 두면 10분 뒤 원래 대기화면으로 돌아가요.</p>
     </div>
     <div class="card">
       <h3>루아 신문</h3>
       <p class="empty" id="newsNote"></p>
-      <div class="row"><button class="chip" id="newsOpen" type="button">신문 화면 열기</button><button class="chip" id="newsSaver" type="button">대기화면 보기</button><button class="chip" id="skySaver" type="button">저녁 밤하늘 보기</button><button class="chip" id="newsUnread" type="button">안 읽은 상태로 되돌리기</button><button class="chip" id="newsReload" type="button">신문 다시 받기</button></div>
+      <div class="row"><button class="chip" id="newsUnread" type="button">안 읽은 상태로 되돌리기</button><button class="chip" id="newsReload" type="button">신문 다시 받기</button></div>
     </div>
+    <details class="fold">
+    <summary>문제 해결용 (진단 · 기기 기록)</summary>
     <div class="card">
       <h3>진단</h3>
       <p id="picDbg" class="empty">마지막 그림: 아직 질문 없음</p>
@@ -987,8 +999,6 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div id="picShown" style="display:flex;flex-wrap:wrap;gap:.4rem;margin:.3rem 0 .8rem"></div>
       <p id="linesDbg" class="empty"></p>
       <p id="keyTest" class="empty">버튼(리모컨) 확인: 이 창을 열어 둔 채 버튼을 누르면 어떤 키인지 여기에 떠요.</p>
-      <label>터치 확인</label>
-      <div id="touchPad" style="border: 1px dashed var(--line); padding: 1.2rem; text-align: center; color: var(--muted); touch-action: none; user-select: none; -webkit-user-select: none">여기를 손가락·펜으로 톡 눌러 보세요</div>
       <p id="touchDbg" class="empty" style="white-space: pre-line"></p>
     </div>
     <div class="card" id="diagCard">
@@ -1001,6 +1011,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="row" style="margin-bottom:.4rem"><select id="diagFilter"><option value="">전체</option><option value="bat">배터리</option><option value="err">오류</option><option value="api">서버</option><option value="wake">화면 켜짐</option><option value="saver">대기화면</option><option value="pic">사진 검사</option></select><button class="chip" id="diagCopy" type="button">기록 복사</button><button class="chip" id="diagClear" type="button">기록 지우기</button><span class="empty" id="diagNote"></span></div>
       <pre id="diagLog" style="margin:0;max-height:16rem;overflow:auto;font:.78rem/1.5 ui-monospace,monospace;color:var(--muted);white-space:pre-wrap;background:var(--bg);padding:.6rem"></pre>
     </div>
+    </details>
     <div class="card">
       <h3>설정 (이 기기에 저장돼요)</h3>
       <div class="set">
@@ -1037,13 +1048,9 @@ body { word-break: keep-all; overflow-wrap: break-word; }
         <label>날씨 지역</label>
         <div class="row"><input id="wxName" placeholder="예: 영등포구" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 10rem"><button class="chip" id="wxFind" type="button">찾기</button><span class="empty" id="wxNote"></span></div>
         <label>위키백과 사진</label>
-        <div class="row"><div class="seg" data-k="picOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔 (이모지만)</button></div></div>
+        <div class="row"><div class="seg" data-k="picOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔</button></div></div>
         <label>밤에 무서운 동물 사진</label>
         <div class="row"><div class="seg" data-k="scaryNight"><button type="button" data-v="on">저녁 7시~아침 7시 숨김</button><button type="button" data-v="off">늘 보여 줌</button></div></div>
-        <label>아침 날씨 화면</label>
-        <div class="seg" data-k="wxOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔</button></div>
-        <label>부모 비밀번호</label>
-        <div class="row"><input id="pinSet" type="text" inputmode="numeric" maxlength="4" placeholder="4자리" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 6rem"><button class="chip" id="pinSave" type="button">저장</button><span class="empty">지금은 비밀번호 없이 ⚙로 바로 열려요</span></div>
         <label>하루 질문 상한</label>
         <select id="cap"><option value="0">제한 없음</option><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option><option value="50">50개</option></select>
       </div>
@@ -1122,7 +1129,7 @@ ${nowLine()} 날짜·요일·시간·계절이나 "○○까지 며칠 남았어
     $('ttsVoice').value = ttsVoiceName();
     $('ttsKey').placeholder = prov === 'google' ? 'Google Cloud API 키 (AIza…)' : prov === 'azure' ? 'Azure 음성 KEY 1' : 'OpenAI API 키 (sk-…)';
     $('ttsRegion').hidden = prov !== 'azure'; $('ttsRegion').value = settings.ttsRegion || 'koreacentral';
-    $('pinSet').value = settings.pin || '1234';
+
     $('wxName').value = settings.wxName || ''; $('wxNote').textContent = settings.wxName ? `${settings.wxName} (${(+settings.wxLat).toFixed(2)}, ${(+settings.wxLon).toFixed(2)})` : '';
     $('ttsNote').textContent = settings.ttsKey ? `AI 목소리 사용 중 (키 ${settings.ttsKey.length}자 · …${settings.ttsKey.slice(-4)})` : '없으면 폰 목소리로 읽어요';
     $('apiNote').textContent = settings.apiKey ? '키 저장됨' : '키가 없으면 대답을 못 해요';
@@ -1680,7 +1687,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (blocked) { // 쉬는 시간: 안내만 잠깐 보여주고 계속 잠듦
       const m = $('svMsg'); m.textContent = blocked; m.hidden = false; clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { m.hidden = true; }, 4000); return;
     }
-    saverEl.hidden = true; delete window.__gkSky; clearInterval(saverTick); showPiece(false); touchIdle();
+    saverEl.hidden = true; delete window.__gkForce; clearInterval(saverTick); showPiece(false); touchIdle();
   }
   // 부모님용: 쉬는 시간에도 대기화면을 빠르게 5번 누르거나 2초 꾹 누르면 부모님 화면이 열림
   let svTaps = [], svHold = null;
@@ -1746,18 +1753,19 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function putPic(box, pic) { box.innerHTML = ''; if (!pic) return; const im = new Image(); im.src = pic.src; im.alt = pic.title; box.append(im); box.classList.toggle('contain', pic.r < 0.8 || pic.r > 1.6); }
   function bodyHtml(t) { return escN(t).replace(/《([^》]+)》/g, '<mark>$1</mark>'); }
   function renderFront() {
-    const el = $('svPaper'), on = !!(news && newsFresh());
-    const hr = new Date().getHours(), force = Date.now() - (window.__gkSky || 0) < 10 * 60e3, // 미리 보기는 10분 뒤 저절로 풀림
-       night = !force && (window.__gkNight ?? (hr >= 22 || hr < 6));
+    const fz = window.__gkForce && Date.now() - window.__gkForce.at < 10 * 60e3 ? window.__gkForce.s : ''; // 부모님 화면의 미리 보기 (10분 뒤 저절로 풀림)
+    const el = $('svPaper'), on = !!(news && newsFresh()) && fz !== 'plain';
+    const read = fz === 'hero' ? false : fz === 'done' ? true : newsRead();
+    const hr = new Date().getHours(), night = fz ? fz === 'night' : (window.__gkNight ?? (hr >= 22 || hr < 6));
     // 저녁(18~22시): 신문을 다 읽었거나 신문이 없으면 '오늘 밤하늘'. 안 읽은 신문이 있으면 신문이 먼저.
-    const sky = !night && (force || (hr >= 18 && !(on && !newsRead()))) && innerWidth >= 900 && Date.now() - skyBadAt > 10 * 60e3 && skyReady();
+    const sky = !night && (fz ? fz === 'sky' : (hr >= 18 && !(on && !read))) && innerWidth >= 900 && Date.now() - skyBadAt > 10 * 60e3 && skyReady();
     saverEl.classList.toggle('sky', sky);
     saverEl.classList.toggle('plain', !on && !night && !sky);
     if (sky) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done'].forEach(c => saverEl.classList.remove(c)); renderSky(); return true; }
     el.hidden = !on || night; saverEl.classList.toggle('has-paper', on && !night); saverEl.classList.toggle('night', night);
     // 낮: 아직 안 읽었으면 신문이 주인공, 다 읽었으면 시계가 주인공 + 신문은 한 줄로 접힘. 밤(22~6시): 시계만 어둡게
-    saverEl.classList.toggle('paper-hero', on && !night && !newsRead());
-    saverEl.classList.toggle('paper-done', on && !night && newsRead());
+    saverEl.classList.toggle('paper-hero', on && !night && !read);
+    saverEl.classList.toggle('paper-done', on && !night && read);
     if (!on) return night;
     if (night) return true;
     const [a, ...rest] = news.articles;
@@ -1766,7 +1774,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('svpHed').textContent = a.title; $('svpLede').textContent = a.lede || '';
     $('svpMore').innerHTML = rest.slice(0, 2).map((x, i) => `<div><span class="svp-tag">${escN(x.tag)} · ${i + 2}면</span><h3 class="svp-hed">${escN(x.title)}</h3></div>`).join('');
     const words = news.articles.map(x => x.word && x.word.w).filter(Boolean).length;
-    const u = $('svpUnread'); u.classList.toggle('read', newsRead()); u.querySelector('span').textContent = newsRead() ? `오늘 신문 다 읽음` : `오늘 새 소식 ${news.articles.length}개 · 오늘의 낱말 ${words}개`;
+    const u = $('svpUnread'); u.classList.toggle('read', read); u.querySelector('span').textContent = read ? `오늘 신문 다 읽음` : `오늘 새 소식 ${news.articles.length}개 · 오늘의 낱말 ${words}개`;
     { const done = LS.get(NEWS_DONE, []); $('svpDoneT').textContent = `루아 신문 제${news.no}호 다 읽었어`; $('svpCount').textContent = done.length > 1 ? ` · 지금까지 ${done.length}호` : ''; }
     const lead = $('svpLead'), box = $('svpPhoto'), key = news.no + ':' + a.pic;
     if (box.dataset.k !== key) {
@@ -1826,7 +1834,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       $('tdSkyH').textContent = s.moon.name + (pk ? ' · ' + pk.name : ''); $('tdSkyS').textContent = pk ? `${pk.head.split(' ')[0]} 하늘에서 찾아봐` : s.moon.sub; }
   }
   $('tdNews').addEventListener('click', () => openPaper(0));
-  $('tdSky').addEventListener('click', () => { window.__gkSaverAt = Date.now(); window.__gkSky = Date.now(); enterSaver(); renderSaver(); });
+  $('tdSky').addEventListener('click', () => previewSaver('sky'));
   $('tdWx').addEventListener('click', () => ask('오늘 날씨 어때?'));
   setInterval(renderToday, 5 * 60e3);
   const curArticle = () => news && news.articles[paperIdx];
@@ -2363,7 +2371,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   $('gearBtn').addEventListener('click', () => askPin());
   $('pinCancel').addEventListener('click', () => { pinEl.hidden = true; });
   $('pinForm').addEventListener('submit', e => { e.preventDefault(); if (pinInput.value === String(settings.pin || '1234')) { pinEl.hidden = true; openLog(); } else { $('pinNote').textContent = '비밀번호가 달라요'; pinInput.value = ''; pinInput.focus(); } });
-  $('pinSave').addEventListener('click', () => { const v = $('pinSet').value.trim(); if (!/^\d{4}$/.test(v)) { $('saved').textContent = '숫자 4자리로 적어 주세요'; return; } saveSettings({ pin: v }); });
+
 
   // 제목 5번 빠르게 탭 → 비밀번호 창 (길게 누르기는 DeX 창 제스처와 충돌해서 뺌)
   const title = $('title');
@@ -2384,7 +2392,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v102';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v103';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -2458,9 +2466,13 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   function newsNoteRender() { const n = news; $('newsNote').textContent = n ? `지금 신문: 제${n.no}호 (${n.date}) · ${newsRead() ? '읽음' : '안 읽음'} · 지금까지 ${LS.get(NEWS_DONE, []).length}호 읽음` : '아직 받은 신문이 없어요'; }
   $('newsUnread').addEventListener('click', () => { LS.set(NEWS_READ, ''); if (news) { const d = LS.get(NEWS_DONE, []).filter(x => x !== news.date); LS.set(NEWS_DONE, d); } newsNoteRender(); diag('app', '신문을 안 읽은 상태로 되돌림'); });
   // 부모님 화면에서 바로 신문·대기화면으로 (테스트·확인용)
-  $('newsOpen').addEventListener('click', async () => { if (!news) await loadNews(true); if (!news) { $('newsNote').textContent = '아직 받은 신문이 없어요'; return; } logEl.hidden = true; if (!saverEl.hidden) exitSaver(); openPaper(0); });
-  $('skySaver').addEventListener('click', () => { logEl.hidden = true; window.__gkSaverAt = Date.now(); window.__gkSky = Date.now(); enterSaver(); renderSaver(); });
-  $('newsSaver').addEventListener('click', () => { logEl.hidden = true; delete window.__gkSky; window.__gkSaverAt = Date.now(); enterSaver(); });
+  function previewSaver(st) { logEl.hidden = true; window.__gkSaverAt = Date.now(); window.__gkForce = { s: st, at: Date.now() }; enterSaver(); renderSaver(); }
+  document.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', async () => {
+    const go = b.dataset.go;
+    if (go === 'home') { logEl.hidden = true; if (!saverEl.hidden) exitSaver(); if (saverEl.hidden) { hush(); hidePaper(); showPiece(false); } return; }
+    if (go === 'paper') { if (!news) await loadNews(true); if (!news) { $('newsNote').textContent = '아직 받은 신문이 없어요'; return; } logEl.hidden = true; if (!saverEl.hidden) exitSaver(); if (saverEl.hidden) openPaper(0); return; }
+    previewSaver(go);
+  }));
   $('newsReload').addEventListener('click', async () => { $('newsNote').textContent = '받는 중…'; await loadNews(true); newsNoteRender(); });
   new MutationObserver(() => { if (!logEl.hidden) newsNoteRender(); }).observe(logEl, { attributes: true, attributeFilter: ['hidden'] });
   $('diagCopy').addEventListener('click', async () => {
