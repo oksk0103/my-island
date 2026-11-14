@@ -57,13 +57,16 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
   p = await open(b, { time: newsDate + 'T19:30' }); await p.saver();
   const swipe = async dir => { const x = dir > 0 ? 1100 : 500; await p.mouse.move(x, 400); await p.mouse.down(); await p.mouse.move(x - dir * 150, 405, { steps: 4 }); await p.mouse.move(x - dir * 300, 410, { steps: 4 }); await p.mouse.up(); await p.adv(1500); };
   s = await p.st(); ok('처음: 위젯 면', s.saver === 'face', s.saver);
+  await swipe(1); s = await p.st(); ok('밀기 → 달력', s.saver === 'cal', s.saver);
+  ok('달력에 오늘 표시와 큰 날짜', await p.evaluate(() => { const t = document.querySelectorAll('#calGrid .t'), n = String(new Date().getDate()); return t.length === 1 && t[0].textContent === n && document.getElementById('calBig').textContent === n && document.querySelectorAll('#calGrid span').length % 7 === 0; }));
   await swipe(1); s = await p.st(); ok('밀기 → 신문 1면', s.saver === 'has-paper paper-hero', s.saver);
   await swipe(1); s = await p.st(); ok('밀기 → 밤하늘', s.saver === 'sky', s.saver);
   await swipe(1); s = await p.st(); ok('밤하늘에서도 밀림 (v105 버그)', s.saver === 'face', s.saver);
-  await swipe(1); await p.mouse.click(800, 520); await p.adv(1500); s = await p.st(); ok('신문을 누르면 신문이 열림', !s.saver && s.paper, s);
+  await swipe(1); await swipe(1); await p.mouse.click(800, 520); await p.adv(1500); s = await p.st(); ok('신문을 누르면 신문이 열림', !s.saver && s.paper, s);
   await p.saver(); await p.mouse.click(60, 60); await p.adv(1000); s = await p.st(); ok('톡 누르면 깨어남', !s.saver, s.saver);
   ok('강제 상태가 남지 않음', await p.evaluate(() => window.__gkForce === undefined));
   const tile = async n => { const bx = await p.locator(`#svFace [data-tile="${n}"]`).last().boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); };
+  await p.saver(); await tile('cal'); s = await p.st(); ok('날짜를 누르면 달력', s.saver === 'cal', s.saver); await p.mouse.click(800, 400); await p.adv(1000); s = await p.st(); ok('달력을 톡 누르면 깨어남', !s.saver, s.saver);
   await p.saver(); await tile('sky'); s = await p.st(); ok('밤하늘 타일 → 밤하늘 장', s.saver === 'sky', s.saver);
   await p.adv(11 * 60e3); s = await p.st(); ok('밤하늘 장은 10분 뒤 위젯 면으로', s.saver === 'face', s.saver);
   await tile('news'); s = await p.st(); ok('신문 타일 → 신문 열림', !s.saver && s.paper, s);
@@ -75,7 +78,7 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
 
   console.log('5. 부모님 화면 바로가기');
   p = await open(b, {});
-  for (const [g, want] of [['face', 'face'], ['hero', 'paper-hero'], ['sky', 'sky'], ['night', 'night']]) {
+  for (const [g, want] of [['face', 'face'], ['cal', 'cal'], ['hero', 'paper-hero'], ['sky', 'sky'], ['night', 'night']]) {
     await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click(`[data-go="${g}"]`); await p.waitForTimeout(g === 'sky' ? 2500 : 700); s = await p.st(); ok(`바로가기 ${g}`, s.saver.includes(want) && !s.log, s.saver);
     await p.waitForTimeout(1600); await p.mouse.click(60, 60); await p.waitForTimeout(400); }
   await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="paper"]'); await p.waitForTimeout(700); s = await p.st(); ok('바로가기 신문', s.paper, s);

@@ -884,6 +884,26 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .saver.face .sv-dots i { background: #fff; opacity: .35; }
 .saver.face .sv-dots i.on { opacity: .95; }
 
+/* v108: 달력 장 — 밝은 면, 파란 날짜, 오늘 날짜가 화면 가득 겹쳐짐 */
+.sv-cal { display: none; }
+.saver.cal { padding: 0; background: #E9EAEE; --c-num: #2F7BE6; --c-big: rgba(92, 200, 40, .78); --c-head: #3FA61E; --c-dim: rgba(47,123,230,.3); --c-blend: multiply; }
+.saver.cal[data-tone="eve"] { background: #14161C; --c-num: #6FA4F2; --c-big: rgba(70, 150, 34, .62); --c-head: #6CC046; --c-dim: rgba(111,164,242,.28); --c-blend: screen; }
+.saver.cal .sv-inner, .saver.cal .sv-face { display: none; }
+.saver.cal .sv-cal { display: grid; position: absolute; inset: 3.4vh 4vw 5vh; grid-template-rows: auto auto minmax(0, 1fr); font-family: var(--f-ui); color: var(--c-num); }
+.cal-head { display: flex; justify-content: space-between; align-items: baseline; color: var(--c-head); font-size: clamp(2.4rem, min(4vw, 7.8vh), 4.6rem); font-weight: 700; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.cal-dow, .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); justify-items: center; align-items: center; }
+.cal-dow { margin-top: 2.6vh; font-size: clamp(1.6rem, min(2.6vw, 5vh), 3rem); font-weight: 700; }
+.cal-grid { grid-auto-rows: minmax(0, 1fr); font-size: clamp(2rem, min(3.5vw, 6.8vh), 4rem); font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; position: relative; z-index: 1; }
+.cal-grid span { position: relative; display: grid; place-items: center; width: 1.75em; height: 1.75em; border-radius: 50%; line-height: 1; }
+.cal-grid .o { color: var(--c-dim); }
+.cal-grid .t { background: var(--c-num); color: #fff; font-weight: 800; }
+.saver.cal[data-tone="eve"] .cal-grid .t { color: #14161C; }
+.cal-grid .d::after { content: ""; position: absolute; bottom: .08em; left: 50%; width: .22em; height: .22em; margin-left: -.11em; border-radius: 50%; background: #F08A24; }
+.cal-big { position: absolute; left: 0; right: 0; top: 54%; transform: translateY(-50%); z-index: 2; text-align: center; pointer-events: none; font-family: var(--f-ui); font-size: min(96vh, 46vw); font-weight: 800; letter-spacing: -.05em; line-height: .8; color: var(--c-big); mix-blend-mode: var(--c-blend); }
+.saver.cal .sv-dots i { background: var(--c-num); opacity: .3; }
+.saver.cal .sv-dots i.on { opacity: .9; }
+.fc-date { cursor: pointer; }
+
 /* v106: 누르는 곳 60px 이상 */
 #replayBtn { min-height: 3rem; padding-inline: 1rem; }
 .top-right .iconbtn { width: 3rem; height: 3rem; }
@@ -1037,8 +1057,9 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 
   <div class="saver" id="saver" hidden>
   <div class="sv-dots" id="svDots" hidden aria-hidden="true"></div>
+    <div class="sv-cal" id="svCal"><div class="cal-head"><span id="calMon"></span><span id="calTime"></span></div><div class="cal-dow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div><div class="cal-grid" id="calGrid"></div><div class="cal-big" id="calBig"></div></div>
     <div class="sv-face" id="svFace"><div class="fc-grid" id="fcGrid">
-      <section class="fc-t fc-clock" data-tile="clock"><div class="fc-date" id="fcDate"></div><div class="fc-time" id="fcTime"></div><div class="fc-tip" id="fcTip"></div></section>
+      <section class="fc-t fc-clock" data-tile="clock"><div class="fc-date" id="fcDate" data-tile="cal"></div><div class="fc-time" id="fcTime"></div><div class="fc-tip" id="fcTip"></div></section>
       <section class="fc-t fc-wx" data-tile="wx" id="fcWx"></section>
       <section class="fc-t fc-feat" id="fcFeat"></section>
       <section class="fc-t fc-todo" data-tile="todo"><div class="fc-n"><b id="fcTodoN"></b><span id="fcTodoS"></span></div><div class="fc-list" id="fcTodoL"></div></section>
@@ -1092,13 +1113,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v107</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v108</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v107</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v108</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1110,7 +1131,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <h3>화면 바로가기</h3>
       <div class="row" id="goRow"><button class="chip" data-go="home" type="button">홈</button><button class="chip" data-go="paper" type="button">신문 기사</button></div>
       <label>대기화면 미리 보기</label>
-      <div class="row" id="goRow2"><button class="chip" data-go="face" type="button">대기화면</button><button class="chip" data-go="hero" type="button">신문 1면</button><button class="chip" data-go="sky" type="button">저녁 밤하늘</button><button class="chip" data-go="night" type="button">밤</button></div>
+      <div class="row" id="goRow2"><button class="chip" data-go="face" type="button">대기화면</button><button class="chip" data-go="cal" type="button">달력</button><button class="chip" data-go="hero" type="button">신문 1면</button><button class="chip" data-go="sky" type="button">저녁 밤하늘</button><button class="chip" data-go="night" type="button">밤</button></div>
       <p class="empty">미리 보기는 화면을 누르면 끝나고, 그대로 두면 10분 뒤 원래 대기화면으로 돌아가요.</p>
     </div>
     <div class="card">
@@ -1824,15 +1845,15 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   // 대기화면 넘기기: 옆으로 밀면 신문 1면 ↔ 시계 ↔ 밤하늘. 톡 누르면 예전처럼 깨어남. (넘긴 화면은 10분 뒤 원래대로)
   function svPages() {
     const on = !!(news && newsFresh()), hr = new Date().getHours(), nightNow = window.__gkNight ?? (hr >= 22 || hr < 6), a = [];
-    if (innerWidth >= 900) { a.push(nightNow ? 'night' : 'face'); if (on) a.push('front'); if (window.GKSky) a.push('sky'); return a; } // 넓은 화면: 위젯 면이 첫 장
+    if (innerWidth >= 900) { a.push(nightNow ? 'night' : 'face'); if (!nightNow) a.push('cal'); if (on) a.push('front'); if (window.GKSky) a.push('sky'); return a; } // 넓은 화면: 위젯 면이 첫 장
     if (on) a.push('front');
     a.push(nightNow ? 'night' : on && newsRead() ? 'done' : 'plain');
     return a;
   }
-  const svCur = () => { const c = saverEl.classList; return c.contains('face') ? 'face' : c.contains('sky') ? 'sky' : c.contains('paper-hero') ? 'front' : c.contains('night') ? 'night' : c.contains('paper-done') ? 'done' : 'plain'; };
+  const svCur = () => { const c = saverEl.classList; return c.contains('cal') ? 'cal' : c.contains('face') ? 'face' : c.contains('sky') ? 'sky' : c.contains('paper-hero') ? 'front' : c.contains('night') ? 'night' : c.contains('paper-done') ? 'done' : 'plain'; };
   function svDots() {
     const pg = svPages(), cur = svCur(), el = $('svDots'); el.hidden = pg.length < 2;
-    const html = pg.map(x => `<i${x === cur || (x !== 'front' && x !== 'sky' && x !== 'face' && cur !== 'front' && cur !== 'sky' && cur !== 'face') ? ' class="on"' : ''}></i>`).join('');
+    const html = pg.map(x => `<i${x === cur || (!['front', 'sky', 'face', 'cal'].includes(x) && !['front', 'sky', 'face', 'cal'].includes(cur)) ? ' class="on"' : ''}></i>`).join('');
     if (el.innerHTML !== html) el.innerHTML = html;
   }
   function svPage(dir) {
@@ -1859,6 +1880,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (Math.abs(dx) > 70 && Math.abs(dx) > 1.5 * Math.abs(dy)) { svTaps = []; svPage(dx < 0 ? 1 : -1); return; }
     if (Math.abs(dx) > 24 || Math.abs(dy) > 24) return; // 어중간하게 끌다 만 것은 무시
     if (d.todo) { todoToggle(d.todo); return; } // 할 일 줄: 줄만 긋고 화면은 그대로
+    if (d.tile === 'cal') { svTaps = []; window.__gkForce = { s: 'cal', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날짜 → 달력'); return; }
     if (d.tile === 'sky' && window.GKSky) { svTaps = []; window.__gkForce = { s: 'sky', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '타일 → 밤하늘'); return; }
     const hadNews = !!(news && newsFresh());
     exitSaver();
@@ -1926,7 +1948,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const wide = innerWidth >= 900;
     const sky = !night && (fz ? fz === 'sky' : (!wide && hr >= 18 && !(on && !read))) && wide && Date.now() - skyBadAt > 10 * 60e3 && skyReady();
     const face = wide && !night && !sky && (!fz || fz === 'face' || fz === 'sky'); // 넓은 화면의 낮·저녁 기본: 위젯 면
-    saverEl.classList.toggle('sky', sky); saverEl.classList.toggle('face', face);
+    const cal = wide && !night && fz === 'cal';
+    saverEl.classList.toggle('sky', sky); saverEl.classList.toggle('face', face); saverEl.classList.toggle('cal', cal);
+    if (cal) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain'].forEach(c => saverEl.classList.remove(c)); renderCal(hr); return true; }
     if (face) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain'].forEach(c => saverEl.classList.remove(c)); return renderFace(on, read, hr) !== 'line'; }
     saverEl.classList.toggle('plain', !on && !night && !sky);
     if (sky) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done'].forEach(c => saverEl.classList.remove(c)); renderSky(); return true; }
@@ -1973,6 +1997,14 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     return fcSky;
   }
   const setH = (el, html) => { if (el.innerHTML !== html) el.innerHTML = html; };
+  function renderCal(hr) { // 달력 장: 이번 달 + 오늘 날짜를 크게 겹침. 할 일 기한이 있는 날에는 점
+    const d = new Date(), y = d.getFullYear(), m = d.getMonth(), first = new Date(y, m, 1).getDay(), n = new Date(y, m + 1, 0).getDate(), rows = Math.ceil((first + n) / 7);
+    saverEl.dataset.tone = hr < 12 ? 'morn' : hr < 18 ? 'day' : 'eve';
+    $('calMon').textContent = `${y}년 ${m + 1}월`; $('calTime').textContent = `${hr % 12 || 12}:${pad(d.getMinutes())}`; $('calBig').textContent = d.getDate();
+    const due = new Set(todoOpen(todoLoad()).map(x => x.due).filter(Boolean)); let h = '';
+    for (let i = 0; i < rows * 7; i++) { const c = new Date(y, m, i - first + 1), k = dayKey(c), cls = [c.getMonth() !== m ? 'o' : '', c.getMonth() === m && c.getDate() === d.getDate() ? 't' : '', due.has(k) ? 'd' : ''].filter(Boolean).join(' '); h += `<span${cls ? ` class="${cls}"` : ''}>${c.getDate()}</span>`; }
+    setH($('calGrid'), h);
+  }
   function renderFace(on, read, hr) {
     const d = new Date();
     saverEl.dataset.tone = hr < 12 ? 'morn' : hr < 18 ? 'day' : 'eve';
@@ -2798,7 +2830,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v107';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v108';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
