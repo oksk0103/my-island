@@ -13,7 +13,7 @@ const ANSWER = '달은 스스로 빛을 내지 못해. 《햇빛을 반사》해
 
 async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h = 820, pre, sw } = {}) {
   const ctx = await b.newContext({ viewport: { width: w, height: h }, timezoneId: 'Asia/Seoul', serviceWorkers: sw || 'allow' }); const p = await ctx.newPage(); p.api = 0;
-  p.on('pageerror', e => errs.push(e.message));
+  p.on('pageerror', e => { errs.push(e.message); if (process.env.V) console.log('ERR', e.message); });
   const day = (time || '2026-11-14T10:00').slice(0, 10), H = [...Array(48)].map((_, i) => `${day}T${String(i % 24).padStart(2, '0')}:00`);
   await p.route(/open-meteo/, r => offline ? r.abort() : r.request().url().includes('air-quality') ? r.fulfill({ json: { current: { pm10: 28, pm2_5: 12 } }, headers: CORS }) : r.fulfill({ headers: CORS, json: { current: { temperature_2m: 7.2, apparent_temperature: 4, weather_code: 0, precipitation: 0 }, hourly: { time: H, temperature_2m: H.map(() => 8), weather_code: H.map(() => 0), precipitation_probability: H.map(() => 0), is_day: H.map(() => 1) }, daily: { temperature_2m_max: [13, 13], temperature_2m_min: [4, 4], precipitation_probability_max: [0, 10], weather_code: [0, 1], sunrise: [day + 'T07:11', 'x'], sunset: [day + 'T17:22', 'x'] } } }));
   await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); if (offline) return r.abort(); p.api++; p.lastBody = JSON.parse(r.request().postData()); r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: ANSWER }], stop_reason: 'end_turn' } }); });
@@ -26,6 +26,7 @@ async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h 
   p.adv = async (ms = 2000) => { if (time) await p.clock.runFor(ms); await p.waitForTimeout(time ? 350 : Math.min(ms, 1500)); };
   p.jump = async ms => { await p.clock.fastForward(ms); await p.adv(1500); }; // 긴 시간은 건너뛰기 (타이머를 하나하나 돌리지 않음)
   await p.adv(2500); await p.addStyleTag({ content: '.sv-inner{animation:none!important}' });
+  p.go = async k => { await p.evaluate(k => { document.getElementById('log').hidden = false; document.querySelector(`[data-go="${k}"]`).click(); }, k); }; // 부모님 화면의 바로가기(구역이 접혀 있어도 누른다)
   p.say = async (text, wait = 1200) => { await p.evaluate(t => { const q = document.getElementById('q'); q.readOnly = false; q.value = t; }, text); await p.press('#q', 'Enter'); await p.adv(wait); };
   p.st = () => p.evaluate(() => ({ saver: document.getElementById('saver').hidden ? '' : document.getElementById('saver').className.replace('saver', '').trim(), paper: !document.getElementById('paper').hidden, log: !document.getElementById('log').hidden, home: !!document.getElementById('app').dataset.home, sheet: document.getElementById('sheet').textContent, chips: [...document.querySelectorAll('#chips button')].map(b => b.textContent.replace(/^\d/, '')), todo: (JSON.parse(localStorage.getItem('gk-todo') || '{"items":[]}').items || []).map(x => [x.text, x.due, !!x.done]), count: +document.querySelector('#count b').textContent }));
   p.saver = async () => { await p.keyboard.press('F3'); await p.adv(3000); await p.adv(16000); };
@@ -164,7 +165,7 @@ async function newsTests(b) {
 
   console.log('3. 미리 보기는 10분 뒤 풀림 (v102 버그)');
   p = await open(b, { time: newsDate + 'T16:00' });
-  await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="sky"]'); await p.adv(4000); s = await p.st(); ok('미리 보기 → sky', s.saver === 'sky', s.saver);
+  await p.go("sky"); await p.adv(4000); s = await p.st(); ok('미리 보기 → sky', s.saver === 'sky', s.saver);
   await p.adv(12 * 60e3); s = await p.st(); ok('12분 뒤 원래 화면', s.saver !== 'sky' && s.saver !== '', s.saver);
   await p.jump(7 * 3600e3); await p.adv(16000); s = await p.st(); ok('밤 11시에도 검은 밤 화면 없이 위젯 면 (v122)', s.saver.startsWith('face') && await p.evaluate(() => document.getElementById('saver').dataset.tone === 'eve'), s.saver);
   await p.jump(3 * 3600e3); await p.adv(16000); s = await p.st(); ok('새벽 2시에도 위젯 면, 저녁 하늘 (아침 하늘 아님)', s.saver.startsWith('face') && await p.evaluate(() => document.getElementById('saver').dataset.tone === 'eve'), s.saver); await p.context().close();
@@ -210,10 +211,10 @@ async function newsTests(b) {
   console.log('5. 부모님 화면 바로가기');
   p = await open(b, {});
   for (const [g, want] of [['face', 'face'], ['cal', 'cal'], ['hero', 'paper-hero'], ['sky', 'sky'], ['night', 'night']]) {
-    await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click(`[data-go="${g}"]`); await p.waitForTimeout(g === 'sky' ? 2500 : 700); s = await p.st(); ok(`바로가기 ${g}`, s.saver.includes(want) && !s.log, s.saver);
+    await p.go(g); await p.waitForTimeout(g === 'sky' ? 2500 : 700); s = await p.st(); ok(`바로가기 ${g}`, s.saver.includes(want) && !s.log, s.saver);
     await p.waitForTimeout(1600); await p.mouse.click(60, 60); await p.waitForTimeout(400); }
-  await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="paper"]'); await p.waitForTimeout(700); s = await p.st(); await p.adv(4000); ok('신문이 바깥(위키) 사진을 부르지 않음', p.wiki === 0, p.wiki); ok('바로가기 신문', s.paper, s);
-  await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="home"]'); await p.waitForTimeout(700); s = await p.st(); ok('바로가기 홈', s.home && !s.paper && !s.saver, s); await p.context().close();
+  await p.go("paper"); await p.waitForTimeout(700); s = await p.st(); await p.adv(4000); ok('신문이 바깥(위키) 사진을 부르지 않음', p.wiki === 0, p.wiki); ok('바로가기 신문', s.paper, s);
+  await p.go("home"); await p.waitForTimeout(700); s = await p.st(); ok('바로가기 홈', s.home && !s.paper && !s.saver, s); await p.context().close();
 
   console.log('6. 밤하늘 계산 (달)');
   p = await open(b, { time: '2026-11-14T12:00' }); await p.waitForFunction(() => window.GKSky, null, { timeout: 8000 }).catch(() => {});
@@ -256,13 +257,13 @@ async function newsTests(b) {
   await p.say('신문 보여 줘'); s = await p.st(); ok('"신문 보여 줘" → 신문', s.paper || /아직 안 왔어/.test(s.sheet), s);
   await p.say('옛날 사람들은 몇 시인지 어떻게 알았어', 9000); ok('긴 질문은 AI로', p.api === api8 + 1);
   // 홈 칸에서 눌러 줄 긋기
-  await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="home"]'); await p.adv(1000);
-  await p.adv(3 * 60e3); await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="home"]'); await p.adv(800); // 말로 끝낸 줄이 뒤로 물러난 뒤
+  await p.go("home"); await p.adv(1000);
+  await p.adv(3 * 60e3); await p.go("home"); await p.adv(800); // 말로 끝낸 줄이 뒤로 물러난 뒤
   const row = p.locator('#tdTodoL [data-todo]:not(.done)').first(); ok('홈에 할 일 칸', await row.count() === 1); const firstText = await row.locator('.tx').textContent();
   await row.click(); await p.adv(500); s = await p.st(); ok('기준5 홈에서 눌러 줄 긋기', s.todo.find(x => x[0] === firstText)[2] === true && s.home, s.todo);
   await p.locator('#tdTodoL [data-todo].done', { hasText: firstText }).first().click(); await p.adv(500); s = await p.st(); ok('기준5 다시 누르면 되살아남', s.todo.find(x => x[0] === firstText)[2] === false, s.todo);
   // 대기화면 시계 장
-  await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="face"]'); await p.adv(2500); s = await p.st(); ok('대기화면 할 일 타일', s.saver === 'face' && await p.evaluate(() => document.querySelectorAll('#fcTodoL [data-todo]').length > 0 && +document.getElementById('fcTodoN').textContent > 0), s.saver);
+  await p.go("face"); await p.adv(2500); s = await p.st(); ok('대기화면 할 일 타일', s.saver === 'face' && await p.evaluate(() => document.querySelectorAll('#fcTodoL [data-todo]').length > 0 && +document.getElementById('fcTodoN').textContent > 0), s.saver);
   await p.screenshot({ path: path.join(__dirname, 'out-saver-todo.png') });
   const sr = p.locator('#fcTodoL [data-todo]:not(.done)').first(), srText = await sr.locator('.tx').textContent(), bb = await sr.boundingBox();
   for (let i = 0; i < 2; i++) { await p.mouse.click(bb.x + 80, bb.y + bb.height / 2); await p.adv(400); }
@@ -273,10 +274,10 @@ async function newsTests(b) {
   ok('재촉하는 문구 없음', !/밀렸|어제까지|째|늦었/.test(await p.evaluate(() => document.getElementById('saver').textContent + document.getElementById('today').textContent)));
   await p.mouse.click(60, 60); await p.adv(800);
   // 기준7: 날이 지나면
-  await p.jump(24 * 3600e3); await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="home"]'); await p.adv(800); s = await p.st();
+  await p.jump(24 * 3600e3); await p.go("home"); await p.adv(800); s = await p.st();
   ok('기준7 다 한 줄은 다음 날 사라짐', !s.todo.some(x => x[2]), s.todo); const left = s.todo.length; ok('기준7 안 한 줄은 남음', left >= 1, s.todo);
   ok('기준7 기한 지난 줄에 표시 없음', !/밀렸|어제|지난/.test(await p.evaluate(() => document.getElementById('today').textContent)));
-  await p.jump(9 * 24 * 3600e3); await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="home"]'); await p.adv(800); s = await p.st(); ok('기준7 묵은 줄은 사라짐', s.todo.length === 0, s.todo);
+  await p.jump(9 * 24 * 3600e3); await p.go("home"); await p.adv(800); s = await p.st(); ok('기준7 묵은 줄은 사라짐', s.todo.length === 0, s.todo);
   await p.context().close();
 
   console.log('9. 인터넷이 안 될 때·질문 상한');
