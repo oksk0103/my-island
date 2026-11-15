@@ -83,6 +83,9 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
   ok('깨어나면 갈래 강제가 지워짐', await p.evaluate(() => window.__gkCover === undefined));
   await p.saver(); await tile('todo'); s = await p.st(); ok('할 일 빈 곳 → 깨어남', !s.saver && !s.paper, s);
   ok('타일이 화면 밖으로 넘치지 않음', await p.evaluate(() => { document.getElementById('saver').hidden = false; const r = [...document.querySelectorAll('#svFace .fc-t')].every(t => { const b = t.getBoundingClientRect(); return b.left >= 0 && b.top >= 0 && b.right <= innerWidth && b.bottom <= innerHeight && (t.classList.contains('fc-feat') || t.scrollHeight <= t.clientHeight + 1); }); document.getElementById('saver').hidden = true; return r; }));
+  await p.saver(); await tile('study'); s = await p.st(); ok('공부 모드 → 표지가 조용해짐 (깨어나지 않음)', s.saver.startsWith('face') && await feat() === 'study' && await p.evaluate(() => document.getElementById('fcStudyL').textContent === '공부 끝'), [s.saver, await feat()]);
+  await tile('study'); ok('한 번 더 누르면 공부 모드 끝', await feat() !== 'study' && await p.evaluate(() => document.getElementById('fcStudyL').textContent === '공부 모드' && !localStorage.getItem('gk-study')), await feat());
+  await tile('study'); await p.adv(95 * 60e3); ok('공부 모드는 90분 뒤 스스로 꺼짐', await feat() !== 'study', await feat());
   await p.context().close();
   for (const [w, h] of [[1600, 820], [1920, 1000]]) { p = await open(b, { time: newsDate + 'T12:48', w, h }); await p.saver();
     ok(`네 자리 시각이 시계 타일 안에 들어감 ${w}×${h}`, await p.evaluate(() => { const t = document.getElementById('fcTime'), r = document.createRange(); r.selectNodeContents(t); const a = r.getBoundingClientRect(), c = t.parentElement.getBoundingClientRect(); return a.left >= c.left + 8 && a.right <= c.right - 8; })); await p.context().close(); }
