@@ -37,7 +37,9 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
 // ---------- 10. 루아 신문 지면 (v121): 1면 · 기사 · 그림 안전 규칙 ----------
 // 가짜 신문 JSON 과 tests/fix/pic.jpg 로만 확인한다 (news/img 에는 아무것도 두지 않는다).
 const PIC = fs.readFileSync(path.join(__dirname, 'fix/pic.jpg')), PIC_HASH = require('crypto').createHash('sha256').update(PIC).digest('hex');
-const BASE_NEWS = JSON.parse(fs.readFileSync(path.join(ROOT, 'news/latest.json'), 'utf8'));
+// 지면 점검은 고정해 둔 제3호(tests/fix/news.json)로 한다. 그날 신문에 기대면 호가 바뀔 때마다 점검이 깨진다(제4호 때 겪음).
+const BASE_NEWS = JSON.parse(fs.readFileSync(path.join(__dirname, 'fix/news.json'), 'utf8'));
+const TODAY_NEWS = JSON.parse(fs.readFileSync(path.join(ROOT, 'news/latest.json'), 'utf8'));
 const LONG_BODY = ' 굴 껍데기는 해마다 30만 톤쯤 나오는데, 그동안은 쓸 곳이 마땅치 않아 바닷가에 쌓아 두는 일이 많았다. 냄새가 나고 보기에도 좋지 않아 어민들의 걱정거리였다. 정부는 앞으로 굴 껍데기를 비료나 건축 재료로도 쓸 수 있게 돕기로 했다. 굴 껍데기는 석회석과 성분이 거의 같아서 여러 곳에 쓸 수 있다.';
 function fakeNews(o = {}) { // o.img / o.hash: 첫 기사 그림 필드를 바꿔 본다. o.old: 옛 형식(img·num 없음). o.long: 본문 450자쯤
   const j = JSON.parse(JSON.stringify(BASE_NEWS)); j.articles.forEach(a => { delete a.img; delete a.imgHash; delete a.num; });
@@ -130,6 +132,11 @@ async function newsTests(b) {
 
   p = await openNews(b, { news: fakeNews({ long: 1 }) }); await p.front(); a = await p.evaluate(SHEET_AUDIT);
   ok('긴 본문: 1면은 문장 끝에서 덜어 내 넘치지 않음', clean(a) && await p.evaluate(() => { const ps = document.querySelectorAll('#rnText p'), t = ps[ps.length - 1].textContent.trim(); return /[.!?]$/.test(t) && document.getElementById('rnText').textContent.length < 400; }), a); await p.context().close();
+  // 오늘 실제로 나갈 신문(news/latest.json)이 지면에 들어가는가 — 낱말 줄(한자 훈·음이 길면 넘친다)과 본문
+  for (const h of [820, 760]) { const tn = JSON.parse(JSON.stringify(TODAY_NEWS)); tn.articles.forEach(x => { if (x.img) x.imgHash = PIC_HASH; });
+    p = await openNews(b, { news: tn, time: tn.date + 'T07:42', w: 1600, h }); await p.front(); a = await p.evaluate(SHEET_AUDIT); ok(`오늘 신문 1600×${h}: 1면 넘침 없음`, clean(a), a);
+    for (let i = 0; i < tn.articles.length; i++) { if (i === 0) await p.tap('#rnFront [data-rn="art"][data-i="0"]'); else await p.tap('#ppNext'); a = await p.evaluate(SHEET_AUDIT); ok(`오늘 신문 1600×${h}: 기사 ${i + 1} 넘침 없음`, clean(a), a); }
+    await p.context().close(); }
   if (process.env.QUICK) return; // (점검을 고칠 때만) 크기별 점검 건너뛰기
   // 화면 크기 × 그림/본문 길이
   for (const [w, h] of [[1600, 820], [1600, 760], [1920, 1000]]) for (const [nm, o] of [['그림', {}], ['긴 본문', { long: 1 }], ['옛 형식', { old: true }]]) {
