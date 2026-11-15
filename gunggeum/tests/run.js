@@ -151,7 +151,7 @@ async function newsTests(b) {
     ok('APP_V 있음', !!v); ok('머리 표시 버전', html.includes(`<span style="opacity:.6">${v}</span>`)); ok('부모님 화면 버전', html.includes(`font-weight:400">${v}</small>`)); ok('sw.js 캐시 이름', sw.includes(`gk-${v}'`) || sw.includes(`gk-${v}"`), v); }
 
   console.log('2. 대기화면 상태 (시간대별)');
-  for (const [t, read, want] of [[newsDate + 'T07:42', false, 'face morn news'], [newsDate + 'T08:15', true, 'face morn word'], [newsDate + 'T17:59', true, 'face day word'], [newsDate + 'T18:01', true, 'face eve moon'], [newsDate + 'T19:00', false, 'face eve news'], [newsDate + 'T22:01', true, 'night'], [plus(newsDate, 1) + 'T05:59', true, 'night'], [plus(newsDate, 1) + 'T06:01', true, 'face morn word'], [plus(newsDate, 6) + 'T15:20', false, 'face day moon']]) {
+  for (const [t, read, want] of [[newsDate + 'T07:42', false, 'face morn news'], [newsDate + 'T08:15', true, 'face morn word'], [newsDate + 'T17:59', true, 'face day word'], [newsDate + 'T18:01', true, 'face eve moon'], [newsDate + 'T19:00', false, 'face eve news'], [newsDate + 'T22:01', true, 'face eve moon'], [plus(newsDate, 1) + 'T05:59', true, 'face morn word'], [plus(newsDate, 1) + 'T06:01', true, 'face morn word'], [plus(newsDate, 6) + 'T15:20', false, 'face day moon']]) {
     p = await open(b, { time: t, read: read ? newsDate : null }); await p.saver(); s = await p.st(); const got = s.saver === 'face' ? await p.evaluate(() => 'face ' + document.getElementById('saver').dataset.tone + ' ' + document.getElementById('fcFeat').className.replace('fc-t fc-feat', '').replace('pic', '').trim()) : s.saver; ok(`${t} ${read ? '읽음' : '안 읽음'} → ${want}`, got === want, got); await p.context().close(); }
   p = await open(b, { time: newsDate + 'T19:30', read: newsDate, noSky: true }); await p.saver(); s = await p.st(); ok('밤하늘 파일을 못 받으면 기본 화면', s.saver === 'face' && await p.evaluate(() => document.getElementById('fcFeat').classList.contains('word')), s.saver); await p.context().close();
 
@@ -159,7 +159,8 @@ async function newsTests(b) {
   p = await open(b, { time: newsDate + 'T16:00' });
   await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="sky"]'); await p.adv(4000); s = await p.st(); ok('미리 보기 → sky', s.saver === 'sky', s.saver);
   await p.adv(12 * 60e3); s = await p.st(); ok('12분 뒤 원래 화면', s.saver !== 'sky' && s.saver !== '', s.saver);
-  await p.jump(7 * 3600e3); await p.adv(16000); s = await p.st(); ok('밤에는 밤 화면', s.saver === 'night', s.saver); await p.context().close();
+  await p.jump(7 * 3600e3); await p.adv(16000); s = await p.st(); ok('밤 11시에도 검은 밤 화면 없이 위젯 면 (v122)', s.saver.startsWith('face') && await p.evaluate(() => document.getElementById('saver').dataset.tone === 'eve'), s.saver);
+  await p.jump(3 * 3600e3); await p.adv(16000); s = await p.st(); ok('새벽 2시에도 위젯 면, 저녁 하늘 (아침 하늘 아님)', s.saver.startsWith('face') && await p.evaluate(() => document.getElementById('saver').dataset.tone === 'eve'), s.saver); await p.context().close();
 
   console.log('4. 대기화면 넘기기·누르기');
   p = await open(b, { time: newsDate + 'T19:30' }); await p.saver();

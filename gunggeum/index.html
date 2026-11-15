@@ -1511,13 +1511,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v121</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v122</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v121</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v122</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2243,12 +2243,14 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   let svTaps = [], svHold = null;
   // 대기화면 넘기기: 옆으로 밀면 신문 1면 ↔ 시계 ↔ 밤하늘. 톡 누르면 예전처럼 깨어남. (넘긴 화면은 10분 뒤 원래대로)
   function svPages() {
-    const on = !!(news && newsFresh()), hr = new Date().getHours(), nightNow = window.__gkNight ?? (hr >= 22 || hr < 6), a = [];
+    const on = !!(news && newsFresh()), hr = new Date().getHours(), nightNow = window.__gkNight ?? (NIGHT_SCREEN && (hr >= 22 || hr < 6)), a = [];
     if (innerWidth >= 900) { a.push(nightNow ? 'night' : 'face'); if (!nightNow) a.push('cal'); if (on) a.push('front'); if (window.GKSky) a.push('sky'); return a; } // 넓은 화면: 위젯 면이 첫 장
     if (on) a.push('front');
     a.push(nightNow ? 'night' : on && newsRead() ? 'done' : 'plain');
     return a;
   }
+  // v122: 밤 10시~새벽 6시의 검은 밤 화면을 끈다(부모 요청). 밤에도 위젯 면이 그대로 보인다. 다시 켜려면 true.
+  const NIGHT_SCREEN = false;
   const svCur = () => { const c = saverEl.classList; return c.contains('cal') ? 'cal' : c.contains('face') ? 'face' : c.contains('sky') ? 'sky' : c.contains('paper-hero') ? 'front' : c.contains('night') ? 'night' : c.contains('paper-done') ? 'done' : 'plain'; };
   function svDots() {
     const pg = svPages(), cur = svCur(), el = $('svDots'); el.hidden = pg.length < 2;
@@ -2391,7 +2393,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const fz = window.__gkForce && Date.now() - window.__gkForce.at < (window.__gkForce.s === 'cal' ? 90e3 : 10 * 60e3) ? window.__gkForce.s : ''; // 달력은 90초 // 부모님 화면의 미리 보기 (10분 뒤 저절로 풀림)
     const el = $('svPaper'), on = !!(news && newsFresh()) && fz !== 'plain';
     const read = fz === 'hero' ? false : fz === 'done' ? true : newsRead();
-    const hr = new Date().getHours(), night = fz ? fz === 'night' : (window.__gkNight ?? (hr >= 22 || hr < 6));
+    const hr = new Date().getHours(), night = fz ? fz === 'night' : (window.__gkNight ?? (NIGHT_SCREEN && (hr >= 22 || hr < 6)));
     // 저녁(18~22시): 신문을 다 읽었거나 신문이 없으면 '오늘 밤하늘'. 안 읽은 신문이 있으면 신문이 먼저.
     const wide = innerWidth >= 900;
     const sky = !night && (fz ? fz === 'sky' : (!wide && hr >= 18 && !(on && !read))) && wide && Date.now() - skyBadAt > 10 * 60e3 && skyReady();
@@ -2458,9 +2460,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   function renderFace(on, read, hr) {
     const d = new Date();
-    saverEl.dataset.tone = hr < 12 ? 'morn' : hr < 18 ? 'day' : 'eve';
+    saverEl.dataset.tone = hr >= 5 && hr < 12 ? 'morn' : hr >= 12 && hr < 18 ? 'day' : 'eve'; // 밤에도 위젯 면 그대로: 자정~새벽 5시는 저녁 하늘
     saverEl.classList.toggle('rest', Date.now() - svTouchAt > 180e3); // 3분 손대지 않으면 얇은 어두운 막
-    saverEl.classList.toggle('late', hr === 21); saverEl.style.setProperty('--late', hr === 21 ? (d.getMinutes() / 60 * .45).toFixed(3) : '0'); // 밤 9~10시: 밤 화면으로 가는 낙차 줄이기
+    saverEl.classList.toggle('late', NIGHT_SCREEN && hr === 21); saverEl.style.setProperty('--late', NIGHT_SCREEN && hr === 21 ? (d.getMinutes() / 60 * .45).toFixed(3) : '0'); // 밤 9~10시: 밤 화면으로 가는 낙차 줄이기
     setH($('fcDate'), `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`);
     { const t = `${hr % 12 || 12}:${pad(d.getMinutes())}`, el = $('fcTime'), old = el.dataset.t || ''; if (old !== t) { el.dataset.t = t; el.innerHTML = [...t].map((ch, i) => `<i${old && old.length === t.length && old[i] !== ch ? ' class="chg"' : ''}>${ch}</i>`).join(''); } } // 바뀐 자리 숫자만 넘어감
     let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 12 * 3600e3) w = last.w; }
@@ -3312,7 +3314,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v121';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v122';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
