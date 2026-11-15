@@ -338,6 +338,11 @@ async function newsTests(b) {
       await p.context().close(); }
     p = await open(b, { time: newsDate + 'T13:30', read: newsDate, wx: { code: 61 }, settings: { wxStill: 'on' } }); await p.saver(); await box('#fcWx');
     ok('부모 설정 "날씨 하늘 멈춤"이면 움직이지 않음', await p.evaluate(() => document.getAnimations().filter(a => a.effect && a.effect.target && a.effect.target.closest && a.effect.target.closest('#wxSky')).length === 0)); await p.context().close();
+    for (const [w, h] of [[1600, 760], [1920, 1000]]) { p = await open(b, { time: newsDate + 'T13:30', read: newsDate, w, h, wx: { code: 73, t: -12 } }); await p.saver(); await box('#fcWx');
+      const o1 = await p.evaluate(() => Math.max(...[...document.querySelectorAll('.wx-foot b, .wx-foot small, .wx-b p')].map(e => e.getBoundingClientRect().bottom)) <= innerHeight && Math.max(...[...document.querySelectorAll('.wx-foot div, .wx-b p')].map(e => e.getBoundingClientRect().right)) <= innerWidth);
+      await p.click('#gkHome'); await p.adv(1200); await p.go('cal'); await p.adv(2500); const o2 = await p.evaluate(() => document.getElementById('agFoot').getBoundingClientRect().bottom <= innerHeight && document.getElementById('cqGrid').getBoundingClientRect().bottom <= innerHeight);
+      await p.click('#gkHome'); await p.adv(1200); await p.mouse.click(20, 20); await p.adv(1500); const o3 = await p.evaluate(() => { const r = document.querySelector('.qbox').getBoundingClientRect(); return r.right <= innerWidth && r.bottom <= innerHeight && document.documentElement.scrollWidth <= innerWidth; });
+      ok(`${w}×${h}: 날씨(−12°)·달력·궁금칸 넘침 없음`, o1 && o2 && o3, [o1, o2, o3]); await p.context().close(); }
     // 부모님 화면: 삭제한 것 · 새 설정 · 옛 저장값
     p = await open(b, { time: newsDate + 'T23:30', read: newsDate, settings: { scaryNight: 'off', oldKey: 1 } }); await p.saver(); s = await p.st(); ok('밤 10시 화면 설정 기본 끔 → 밤 11시 반에도 위젯 면', /^face/.test(s.saver), s.saver);
     await p.mouse.move(30, 30); await p.mouse.down(); await p.adv(2400); await p.mouse.up(); await p.adv(500);
