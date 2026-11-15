@@ -1576,13 +1576,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v117</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v118</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v117</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v118</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -3319,7 +3319,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v117';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v118';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -3739,6 +3739,15 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
 .cc-hz.n3 .h small { font-size: 24px; margin-top: 6px; padding-top: 10px; }
 .cc-hz .h small { box-shadow: inset 0 1px 0 rgba(246,243,234,.2); }
 .saver.face .fc-clock, .saver.face .fc-todo { box-shadow: var(--rim), 0 18px 40px -8px rgba(0,0,0,.34), 0 2px 5px rgba(0,0,0,.12); }
+
+</style>
+<style id="bg-sky">
+/* v118: 배경 = 지금 하늘. 실제 하늘의 색 관계(천정의 짙은 파랑, 지평선의 옅은 띠, 해 둘레의 따뜻한 번짐)를 어둡게 옮김.
+   해는 표지 뒤 왼쪽에 두어 오른쪽 유리 타일 위 글자 대비(작은 글 4.5:1 이상)를 지킨다. 표지는 하늘빛이 비치는 색유리 */
+#saver.saver.face{--bgi:url('bg/sky-morn.jpg');--bgk:0;--bgf:none;--vg:.26;--f0:#23527E;--f1:#3F7399;--f2:#17395C;--sx:17%;--sy:112%;--gl:#C09A64;--gk:22%}
+#saver.saver.face[data-tone=day]{--bgi:url('bg/sky-day.jpg');--bgk:0;--bgf:none;--vg:.26;--f0:#1B4C8C;--f1:#3672AC;--f2:#123666;--sx:22%;--sy:-16%;--gl:#5E9CCB;--gk:16%}
+#saver.saver.face[data-tone=eve]{--bgi:url('bg/sky-eve.jpg');--bgk:0;--bgf:none;--vg:.22;--f0:#262A60;--f1:#4A4488;--f2:#191C48;--sx:56%;--sy:114%;--gl:#7C4C4C;--gk:14%}
+#saver.saver.face .fc-feat{background:var(--grain),radial-gradient(75% 60% at var(--sx) var(--sy),color-mix(in srgb,var(--gl) var(--gk),transparent),transparent 72%),linear-gradient(168deg,color-mix(in srgb,color-mix(in srgb,var(--f2) 62%,#05080C) 90%,transparent),color-mix(in srgb,color-mix(in srgb,var(--f2) 40%,#04060A) 74%,transparent) 92%) !important}
 
 </style>
 </body>
