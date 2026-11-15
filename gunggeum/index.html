@@ -2327,30 +2327,6 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   // 기사 사진: 질문 답과 똑같은 안전 검사(분류 허용 목록 + 기기 안 선정성 검사)를 통과한 사진만
   // v120: 바깥(위키) 사진은 모두 끈다 — 기기가 실행 중에 고른 사진은 아무도 미리 본 적이 없어, 허용 목록·기기 안 검사로도 부적절한 사진을 다 막지 못한다. 다시 켜려면 발행 때 사람이 본 고정 그림만 쓰는 방식으로.
   const WIKI_PICS = false;
-  const picMemo = new Map();
-  async function safePic(term) {
-    if (!WIKI_PICS) return null;
-    term = cleanTerm(term || ''); if (!term) return null;
-    if (settings.picOn === 'off') return null;
-    if (settings.scaryNight !== 'off' && nightNow() && SCARY.test(term)) return null;
-    if (picMemo.has(term)) return picMemo.get(term);
-    const job = (async () => {
-      try {
-        const tctl = new AbortController(); const t = setTimeout(() => tctl.abort(), 8000);
-        const hit = await wikiImage(term, tctl.signal); clearTimeout(t);
-        if (!hit || !/^https:\/\/upload\.wikimedia\.org\//.test(hit.src)) return null;
-        const img = new Image(); img.crossOrigin = 'anonymous'; img.src = hit.src; img.alt = hit.title;
-        await new Promise((ok, no) => { img.onload = ok; img.onerror = () => no(new Error('img')); });
-        const v = await imageSafe(img);
-        if (!v.ok) { diag('pic', `신문 사진 막음: ${hit.title} · ${v.why}`); return null; }
-        rememberPic(hit.title, hit.src);
-        return { src: hit.src, title: hit.title, r: img.naturalWidth / img.naturalHeight };
-      } catch (e) { return null; }
-    })();
-    picMemo.set(term, job);
-    const res = await job; if (!res) setTimeout(() => picMemo.delete(term), 10 * 60e3);
-    return res;
-  }
   function putPic(box, pic) { box.innerHTML = ''; if (!pic) return; const im = new Image(); im.src = pic.src; im.alt = pic.title; box.append(im); box.classList.toggle('contain', pic.r < 0.8 || pic.r > 1.6); }
   // ---------- 루아 신문의 그림 (v121): 발행 때 사람이 본 같은 출처 파일만 ----------
   // 규칙 (하나라도 어긋나면 그림 없이 — 지면은 그림 없는 조판으로 접힌다):
@@ -4066,6 +4042,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   .rn-phead{height:72px;grid-template-columns:auto 1fr auto} .rn-pmid{display:none} .rn-phead .rn-home{left:-6px;top:4px} .rn-sec{padding-left:136px;font-size:26px}
   .rn-art{display:block;overflow-y:auto} .rn-art .rn-text{columns:auto !important;overflow:visible} .rn-art::before{content:none}
   .rn-hed{font-size:34px;line-height:44px;-webkit-line-clamp:4} .rn-deck{font-size:24px;line-height:36px}
+  .rn-w{flex-wrap:wrap;gap:0 14px;overflow:visible} .rn-pright{gap:10px}
   .rn-art .rn-fig{height:52vw;margin-bottom:0} .rn-art .rn-word{margin:26px 0 18px} .rn-src{background:none;padding:8px 0 0;text-align:right}
 }
 </style>

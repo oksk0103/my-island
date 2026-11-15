@@ -118,7 +118,7 @@ async function newsTests(b) {
   ok('CSP: 바깥 그림은 브라우저가 막음', await p.evaluate(() => new Promise(res => { const im = new Image(); im.onload = () => res(false); im.onerror = () => res(true); im.src = 'https://evil.example/x.jpg'; setTimeout(() => res('timeout'), 4000); })) === true);
   await p.context().close();
   { const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8'), i0 = html.indexOf('function renderNpFront'), i1 = html.indexOf('function renderPaper'), i2 = html.indexOf('function openPaper');
-    ok('신문 지면 코드에 safePic·pic 필드가 없음', i0 > 0 && i1 > 0 && !/safePic|\.pic\b|wikiImage/.test(html.slice(i0, html.indexOf('function npFit')) + html.slice(i1, i2)) && !/safePic\(/.test(html.replace(/async function safePic\(/, ''))); 
+    ok('신문 지면 코드에 safePic·pic 필드가 없음', i0 > 0 && i1 > 0 && !/safePic|\.pic\b|wikiImage/.test(html.slice(i0, html.indexOf('function npFit')) + html.slice(i1, i2)) && !/safePic/.test(html)); 
     ok('바깥 사진 스위치는 꺼진 채 그대로', /const WIKI_PICS = false;/.test(html)); }
 
   // 옛 형식(img · num 없음)
@@ -128,6 +128,8 @@ async function newsTests(b) {
   await p.tap('#rnFront [data-rn="art"][data-i="1"]'); s = await p.st(); ok('옛 형식: 옆 기사 → 2면 기사', s.paper && await p.evaluate(() => document.getElementById('ppNo').textContent === '2면' && document.querySelectorAll('#ppBody p').length >= 2), s);
   a = await p.evaluate(SHEET_AUDIT); ok('옛 형식: 기사 넘침·작은 글자 없음', clean(a), a); await p.context().close();
 
+  p = await openNews(b, { news: fakeNews({ long: 1 }) }); await p.front(); a = await p.evaluate(SHEET_AUDIT);
+  ok('긴 본문: 1면은 문장 끝에서 덜어 내 넘치지 않음', clean(a) && await p.evaluate(() => { const ps = document.querySelectorAll('#rnText p'), t = ps[ps.length - 1].textContent.trim(); return /[.!?]$/.test(t) && document.getElementById('rnText').textContent.length < 400; }), a); await p.context().close();
   if (process.env.QUICK) return; // (점검을 고칠 때만) 크기별 점검 건너뛰기
   // 화면 크기 × 그림/본문 길이
   for (const [w, h] of [[1600, 820], [1600, 760], [1920, 1000]]) for (const [nm, o] of [['그림', {}], ['긴 본문', { long: 1 }], ['옛 형식', { old: true }]]) {
