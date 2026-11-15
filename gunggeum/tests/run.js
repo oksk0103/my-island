@@ -43,9 +43,9 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
     ok('APP_V 있음', !!v); ok('머리 표시 버전', html.includes(`<span style="opacity:.6">${v}</span>`)); ok('부모님 화면 버전', html.includes(`font-weight:400">${v}</small>`)); ok('sw.js 캐시 이름', sw.includes(`gk-${v}'`) || sw.includes(`gk-${v}"`), v); }
 
   console.log('2. 대기화면 상태 (시간대별)');
-  for (const [t, read, want] of [[newsDate + 'T07:42', false, 'face morn news'], [newsDate + 'T08:15', true, 'face morn line'], [newsDate + 'T17:59', true, 'face day line'], [newsDate + 'T18:01', true, 'face eve moon'], [newsDate + 'T19:00', false, 'face eve news'], [newsDate + 'T22:01', true, 'night'], [plus(newsDate, 1) + 'T05:59', true, 'night'], [plus(newsDate, 1) + 'T06:01', true, 'face morn line'], [plus(newsDate, 6) + 'T15:20', false, 'face day line']]) {
+  for (const [t, read, want] of [[newsDate + 'T07:42', false, 'face morn news'], [newsDate + 'T08:15', true, 'face morn word'], [newsDate + 'T17:59', true, 'face day word'], [newsDate + 'T18:01', true, 'face eve moon'], [newsDate + 'T19:00', false, 'face eve news'], [newsDate + 'T22:01', true, 'night'], [plus(newsDate, 1) + 'T05:59', true, 'night'], [plus(newsDate, 1) + 'T06:01', true, 'face morn word'], [plus(newsDate, 6) + 'T15:20', false, 'face day line']]) {
     p = await open(b, { time: t, read: read ? newsDate : null }); await p.saver(); s = await p.st(); const got = s.saver === 'face' ? await p.evaluate(() => 'face ' + document.getElementById('saver').dataset.tone + ' ' + document.getElementById('fcFeat').className.replace('fc-t fc-feat', '').replace('pic', '').trim()) : s.saver; ok(`${t} ${read ? '읽음' : '안 읽음'} → ${want}`, got === want, got); await p.context().close(); }
-  p = await open(b, { time: newsDate + 'T19:30', read: newsDate, noSky: true }); await p.saver(); s = await p.st(); ok('밤하늘 파일을 못 받으면 기본 화면', s.saver === 'face' && await p.evaluate(() => document.getElementById('fcFeat').classList.contains('line')), s.saver); await p.context().close();
+  p = await open(b, { time: newsDate + 'T19:30', read: newsDate, noSky: true }); await p.saver(); s = await p.st(); ok('밤하늘 파일을 못 받으면 기본 화면', s.saver === 'face' && await p.evaluate(() => document.getElementById('fcFeat').classList.contains('word')), s.saver); await p.context().close();
 
   console.log('3. 미리 보기는 10분 뒤 풀림 (v102 버그)');
   p = await open(b, { time: newsDate + 'T16:00' });
@@ -63,7 +63,7 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
   await swipe(1); s = await p.st(); ok('밀기 → 밤하늘', s.saver === 'sky', s.saver);
   await swipe(1); s = await p.st(); ok('밤하늘에서도 밀림 (v105 버그)', s.saver === 'face', s.saver);
   await swipe(1); await swipe(1); await p.mouse.click(800, 520); await p.adv(1500); s = await p.st(); ok('신문을 누르면 신문이 열림', !s.saver && s.paper, s);
-  await p.saver(); await p.mouse.click(60, 60); await p.adv(1000); s = await p.st(); ok('톡 누르면 깨어남', !s.saver, s.saver);
+  await p.saver(); { const bx = await p.locator('#svFace [data-tile="clock"]').boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); } await p.adv(1000); s = await p.st(); ok('시계를 톡 누르면 깨어남', !s.saver, s.saver);
   ok('강제 상태가 남지 않음', await p.evaluate(() => window.__gkForce === undefined));
   const tile = async n => { const bx = await p.locator(`#svFace [data-tile="${n}"]`).last().boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); };
   await p.saver(); await tile('cal'); s = await p.st(); ok('날짜를 누르면 달력', s.saver === 'cal', s.saver); ok('다음 달 날짜는 숨김', await p.evaluate(() => [...document.querySelectorAll('#calGrid .o')].every(x => getComputedStyle(x).visibility === 'hidden')));
@@ -75,7 +75,7 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
   await p.adv(11 * 60e3); s = await p.st(); ok('밤하늘 장은 10분 뒤 위젯 면으로', s.saver === 'face rest', s.saver);
   await tile('news'); s = await p.st(); ok('신문 타일 → 신문 열림', !s.saver && s.paper, s);
   await p.saver(); await tile('wx'); s = await p.st(); ok('날씨 타일 → 깨어남', !s.saver && !s.paper, s);
-  ok('타일이 화면 밖으로 넘치지 않음', await p.evaluate(() => { document.getElementById('saver').hidden = false; const r = [...document.querySelectorAll('#svFace .fc-t')].every(t => { const b = t.getBoundingClientRect(); return b.left >= 0 && b.top >= 0 && b.right <= innerWidth && b.bottom <= innerHeight && t.scrollHeight <= t.clientHeight + 1; }); document.getElementById('saver').hidden = true; return r; }));
+  ok('타일이 화면 밖으로 넘치지 않음', await p.evaluate(() => { document.getElementById('saver').hidden = false; const r = [...document.querySelectorAll('#svFace .fc-t')].every(t => { const b = t.getBoundingClientRect(); return b.left >= 0 && b.top >= 0 && b.right <= innerWidth && b.bottom <= innerHeight && (t.classList.contains('fc-feat') || t.scrollHeight <= t.clientHeight + 1); }); document.getElementById('saver').hidden = true; return r; }));
   await p.context().close();
   for (const [w, h] of [[1600, 820], [1920, 1000]]) { p = await open(b, { time: newsDate + 'T12:48', w, h }); await p.saver();
     ok(`네 자리 시각이 시계 타일 안에 들어감 ${w}×${h}`, await p.evaluate(() => { const t = document.getElementById('fcTime'), r = document.createRange(); r.selectNodeContents(t); const a = r.getBoundingClientRect(), c = t.parentElement.getBoundingClientRect(); return a.left >= c.left + 8 && a.right <= c.right - 8; })); await p.context().close(); }

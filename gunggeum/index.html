@@ -1044,6 +1044,94 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .saver.cal .sv-cal .cal-big, .cal-big { top: 55%; font-size: min(96vh, 46vw); font-weight: 800; letter-spacing: -.05em; }
 .cal-grid .o { visibility: hidden; }
 
+/* 책상 거리 배치 시안: 할 일이 주인공, 시계는 가로 3칸 × 세로 1칸 (타이머가 이 자리에서 돎) */
+.fc-todo { grid-column: 1 / 4; grid-row: 1 / 3; flex-direction: column; align-items: stretch; padding: 26px 28px; gap: 0; }
+.fc-n { display: flex; align-items: baseline; gap: 14px; min-width: 0; text-align: left; height: 62px; padding-left: 6px; }
+.fc-n b { font-size: 68px; line-height: 1; }
+.fc-n span { margin: 0; font-size: 32px; font-weight: 700; color: rgba(255,255,255,.86); }
+.fc-list { flex: none; justify-content: flex-start; gap: 8px; margin-top: 16px; }
+.fc-row { min-height: 64px; font-size: 36px; }
+.fc-more { font-size: 26px; padding: 6px 0 0 18px; margin: 0; }
+.fc-empty { font-size: 34px; padding: 12px 6px; }
+.fc-clock { grid-column: 4 / 7; grid-row: 1; flex-direction: row; align-items: center; justify-content: space-between; padding: 22px 34px 22px 32px; container-type: normal; }
+.fc-clock .cl-l { display: flex; flex-direction: column; gap: 12px; min-width: 0; align-items: flex-start; }
+.fc-date, .fc-date b { font-size: 34px; line-height: 1.2; }
+.fc-date b { display: block; margin: 0; }
+.fc-tip { font-size: 27px; font-weight: 600; color: rgba(255,255,255,.86); max-width: 250px; line-height: 1.25; margin: 0; word-break: keep-all; }
+.fc-time { font-size: 164px; margin: 0; line-height: 1; }
+.fc-feat { grid-column: 4 / 6; grid-row: 2; }
+.fc-hed { font-size: 38px; }
+.fc-feat.line .fc-hed { font-size: 34px; }
+.fc-feat.moon canvas { width: 128px; height: 128px; }
+.fc-wx { grid-column: 6; grid-row: 2; padding: 22px 24px; }
+.fc-wx svg.wi { width: 56px; height: 56px; margin: 0; }
+.fc-temp { font-size: 84px; }
+.fc-wx .fc-lab { font-size: 32px; }
+.fc-wx .fc-sub { font-size: 22px; }
+.fc-app { grid-row: 3; }
+.fc-app[data-tile="ask"] { grid-column: 1 / 3; flex-direction: row; align-items: center; justify-content: flex-start; gap: 22px; padding: 22px 28px; }
+.fc-app[data-tile="ask"] .mic { flex: none; width: 124px; height: 124px; border-radius: 50%; background: #F4F6F8; display: grid; place-items: center; box-shadow: 0 0 0 12px rgba(255,255,255,.12), 0 10px 26px rgba(0,0,0,.2); }
+.fc-app[data-tile="ask"] .mic svg { width: 64px; height: 64px; margin: 0; filter: none; stroke: var(--f0); }
+.fc-app[data-tile="ask"] .mic svg .f { fill: var(--f0); }
+.fc-app[data-tile="ask"] .fc-lab { margin: 0; font-size: 36px; white-space: normal; line-height: 1.2; word-break: keep-all; }
+.fc-app[data-tile="tm"] { grid-column: 3; } .fc-app[data-tile="cal"] { grid-column: 4; } .fc-app[data-tile="sky"] { grid-column: 5; } .fc-app[data-tile="news"] { grid-column: 6; }
+.fc-app .big { font-size: 62px; font-weight: 640; line-height: 1; letter-spacing: -.04em; margin: -2px 0 0 -2px; }
+/* 타이머가 도는 동안: 시계 타일이 검은 타이머로 */
+.fc-tm { display: none; }
+.saver.tm .fc-clock { background: #07080A; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: 0 10px 26px rgba(0,0,0,.3); padding: 0 44px; }
+.saver.tm .fc-clock::before { display: none; }
+.saver.tm .fc-clock .cl-l, .saver.tm .fc-clock .fc-time { display: none; }
+.saver.tm .fc-tm { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+.fc-tm svg.tk { position: absolute; inset: 12px; width: calc(100% - 24px); height: calc(100% - 24px); stroke-linecap: round; }
+.fc-tm .tl { display: flex; flex-direction: column; gap: 8px; }
+.fc-tm .tl b { font-size: 30px; font-weight: 700; color: #FFB648; }
+.fc-tm .tl span { font-size: 26px; font-weight: 600; color: rgba(255,255,255,.6); }
+.fc-tm .tr { font-size: 150px; font-weight: 640; letter-spacing: -.035em; line-height: 1; font-variant-numeric: tabular-nums; color: #fff; }
+
+/* 책상 배치 2안: 가장 큰 자리는 매일 바뀌는 볼거리. 할 일은 가로 3칸 한 줄, 마이크는 유리로 조용하게 */
+.fc-feat { grid-column: 1 / 4; grid-row: 1 / 3; padding: 34px 38px; justify-content: flex-start; }
+.fc-feat .tx { display: flex; flex-direction: column; height: 100%; min-width: 0; }
+.fc-feat .fc-sub { font-size: 28px; color: rgba(255,255,255,.8); font-weight: 700; }
+.fc-feat .fc-hed { margin-top: 22px; font-size: 62px; font-weight: 800; line-height: 1.16; letter-spacing: -.03em; -webkit-line-clamp: 3; }
+.fc-feat .lede { margin-top: 20px; font-size: 31px; font-weight: 500; line-height: 1.42; color: rgba(255,255,255,.86); word-break: keep-all; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+.fc-feat .go { margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; min-height: 62px; padding: 0 26px; border-radius: 999px; background: rgba(255,255,255,.14); box-shadow: inset 0 0 0 1px rgba(255,255,255,.24); font-size: 28px; font-weight: 700; }
+.fc-feat .go .dot { width: 10px; height: 10px; border-radius: 50%; background: #FFD98A; }
+.fc-feat.pic { padding: 0; }
+.fc-feat.pic .tx { padding: 34px 26px 34px 38px; }
+.fc-feat.pic .fc-hed { font-size: 50px; }
+.fc-feat .ph { width: 40%; }
+.fc-feat.word .w { margin-top: 18px; font-size: 128px; font-weight: 800; letter-spacing: -.04em; line-height: 1.05; }
+.fc-feat.word .hj { display: flex; gap: 12px; margin-top: 16px; }
+.fc-feat.word .hj div { min-width: 96px; padding: 10px 16px 12px; border-radius: 22px; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); text-align: center; }
+.fc-feat.word .hj span { display: block; font-family: "Noto Serif KR", serif; font-size: 50px; font-weight: 600; line-height: 1.15; }
+.fc-feat.word .hj small { display: block; font-size: 22px; font-weight: 600; color: rgba(255,255,255,.8); }
+.fc-feat.word .lede { -webkit-line-clamp: 2; font-size: 34px; }
+.fc-feat.line .fc-hed { font-size: 52px; font-weight: 700; line-height: 1.3; -webkit-line-clamp: 5; }
+.fc-feat.moon { flex-direction: row; align-items: center; gap: 40px; }
+.fc-feat.moon canvas { width: 300px; height: 300px; }
+.fc-feat.moon .tx { height: auto; }
+.fc-feat.moon .fc-hed { font-size: 76px; margin: 10px 0; }
+.fc-clock { grid-column: 4 / 6; grid-row: 1; flex-direction: column; align-items: flex-start; justify-content: center; padding: 20px 32px; }
+.fc-clock .cl-l { display: contents; }
+.fc-date, .fc-date b { font-size: 30px; }
+.fc-date b { display: inline; margin-left: .35em; }
+.fc-time { order: 2; font-size: 128px; margin: 4px 0 2px -4px; }
+.fc-tip { order: 3; font-size: 25px; max-width: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+.fc-wx { grid-column: 6; grid-row: 1; }
+.fc-todo { grid-column: 4 / 7; grid-row: 2; flex-direction: row; align-items: center; padding: 14px 16px 14px 8px; gap: 8px; }
+.fc-n { display: block; height: auto; min-width: 132px; text-align: center; padding: 0; }
+.fc-n b { font-size: 92px; }
+.fc-n span { display: block; margin-top: 6px; font-size: 22px; }
+.fc-list { flex: 1; margin: 0; justify-content: center; gap: 6px; }
+.fc-row { min-height: 62px; font-size: 34px; }
+.fc-empty { font-size: 30px; padding: 0 6px; }
+.fc-app[data-tile="ask"] .mic { width: 104px; height: 104px; background: rgba(255,255,255,.14); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.34); }
+.fc-app[data-tile="ask"] .mic svg { width: 54px; height: 54px; stroke: #fff; }
+.fc-app[data-tile="ask"] .mic svg .f { fill: #fff; }
+.fc-app[data-tile="ask"] .fc-lab { font-size: 34px; }
+.fc-app[data-tile="cal"] { grid-column: 3; } .fc-app[data-tile="sky"] { grid-column: 4; } .fc-app[data-tile="word"] { grid-column: 5; } .fc-app[data-tile="news"] { grid-column: 6; }
+.fc-app .big.ko { font-size: 44px; font-weight: 800; letter-spacing: -.03em; margin-top: 4px; white-space: nowrap; }
+
 /* v106: 누르는 곳 60px 이상 */
 #replayBtn { min-height: 3rem; padding-inline: 1rem; }
 .top-right .iconbtn { width: 3rem; height: 3rem; }
@@ -1085,6 +1173,238 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .sv-tododone { display: block; margin-top: 1.2vh; font-family: var(--f-serif); font-size: clamp(1.1rem, min(1.6vw, 3vh), 1.7rem); color: color-mix(in srgb, var(--sv-text) 80%, transparent); }
 </style>
 
+<style id="Bcss">
+/* ===== B안: 큰 자리는 "그림 타일"(불투명), 나머지는 조용한 유리 ===== */
+@font-face { font-family: "Pretendard"; src: url("fonts/PretendardVariable.woff2") format("woff2"); font-weight: 45 920; font-display: swap; }
+:root { --f-ui: "Pretendard", "Noto Sans KR", sans-serif !important; --f-display: "Pretendard", "Noto Sans KR", sans-serif !important; --f-serif: "Noto Serif KR", "Noto Serif CJK KR", serif; }
+.saver.face { --bgk: .18; } .saver.face[data-tone="day"] { --bgk: .26; } .saver.face[data-tone="eve"] { --bgk: .12; }
+.fc-t { padding: 24px 28px; background: linear-gradient(160deg, rgba(255,255,255,.17), rgba(255,255,255,.07) 60%, rgba(255,255,255,.10)); }
+.fc-lab { font-size: 28px; font-weight: 700; letter-spacing: -.02em; }
+.fc-sub { font-size: 22px; font-weight: 500; letter-spacing: -.01em; color: rgba(255,255,255,.68); }
+/* 자리 */
+.fc-feat { grid-column: 1 / 5; grid-row: 1 / 3; padding: 0; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: 0 22px 48px rgba(0,0,0,.26), 0 2px 6px rgba(0,0,0,.18); }
+.fc-feat::before { display: none; }
+.fc-clock { grid-column: 5 / 7; grid-row: 1; padding: 22px 28px 20px; justify-content: space-between; }
+.fc-wx { grid-column: 6; grid-row: 1; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; pointer-events: none; padding: 62px 28px 0 0; flex-direction: row; align-items: flex-start; justify-content: flex-end; gap: 10px; z-index: 2; }
+.fc-wx::before { display: none; }
+.fc-todo { grid-column: 5 / 7; grid-row: 2; padding: 22px 24px; }
+.fc-app[data-tile="ask"] { grid-column: 1 / 3; } .fc-app[data-tile="study"] { grid-column: 3; } .fc-app[data-tile="cal"] { grid-column: 4; } .fc-app[data-tile="sky"] { grid-column: 5; } .fc-app[data-tile="news"] { grid-column: 6; }
+.fc-app[data-tile="word"] { display: none; }
+/* 시계 + 날씨 (숫자 타일) */
+.fc-date, .fc-date b { font-size: 24px; font-weight: 600; color: rgba(255,255,255,.72); letter-spacing: -.01em; }
+.fc-time { font-size: 112px; font-weight: 600; letter-spacing: -.045em; line-height: .92; margin: 0 0 0 -5px; order: 2; }
+.fc-tip { font-size: 24px; font-weight: 500; color: rgba(255,255,255,.86); order: 3; }
+.fc-wx svg.wi { width: 40px; height: 40px; margin: 8px 0 0; filter: none; align-self: flex-start; }
+.fc-wx .tt { align-items: flex-end; justify-content: flex-start; gap: 0; }
+.fc-temp { font-size: 54px; font-weight: 600; line-height: 1.05; letter-spacing: -.04em; margin: 0; }
+.fc-wx .fc-lab { font-size: 24px; font-weight: 600; } .fc-wx .fc-sub { font-size: 22px; }
+/* 할 일 (줄 타일) */
+.fc-n { display: none; }
+.fc-list { gap: 0; }
+.fc-row { min-height: 62px; padding: 0 4px; border-radius: 0; background: none; box-shadow: none; font-size: 28px; font-weight: 600; letter-spacing: -.02em; gap: 16px; }
+.fc-row + .fc-row { box-shadow: inset 0 1px 0 rgba(255,255,255,.14); }
+.fc-row .bx { width: 32px; height: 32px; box-shadow: inset 0 0 0 2.5px rgba(255,255,255,.7); }
+.fc-row .du { font-size: 22px; font-weight: 600; color: #FFD98A; }
+.fc-row.rt { color: rgba(255,255,255,.74); font-weight: 500; }
+.fc-row.rt .bx { box-shadow: none; border: 2.5px dashed rgba(255,255,255,.5); }
+.fc-row.rt .du { color: rgba(255,255,255,.55); }
+/* 단추 타일 */
+.fc-app { padding: 24px 26px 22px; }
+.fc-app svg { width: 52px; height: 52px; }
+.fc-app .big { font-size: 56px; font-weight: 600; }
+.fc-app[data-tile="ask"] { gap: 20px; padding: 24px 28px; }
+.fc-app[data-tile="ask"] .mic { width: 76px; height: 76px; background: rgba(255,255,255,.10); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.26); }
+.fc-app[data-tile="ask"] .mic svg { width: 40px; height: 40px; }
+.fc-app[data-tile="ask"] .fc-lab { font-size: 30px; white-space: nowrap; }
+.fc-app[data-tile="ask"] .tx2 { display: flex; flex-direction: column; gap: 4px; }
+/* 큰 타일 공통: 넘김 점(세로) */
+.ft-dots { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 9px; z-index: 3; }
+.ft-dots i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: .28; }
+.ft-dots i.on { opacity: .9; height: 20px; border-radius: 4px; }
+
+/* --- 1. 신문 1면: 종이 --- */
+.fc-feat.news { background: radial-gradient(130% 100% at 15% 0%, #F3EDDF, #E7DFCD 80%); color: #1F1C18; }
+.np { position: absolute; inset: 0; padding: 28px 44px 28px 40px; display: flex; flex-direction: column; }
+.np-top { display: flex; align-items: baseline; justify-content: space-between; }
+.np-mast { font-family: var(--f-serif); font-weight: 900; font-size: 34px; letter-spacing: -.02em; }
+.np-meta { font-size: 22px; font-weight: 600; color: rgba(31,28,24,.62); letter-spacing: -.01em; }
+.np-meta b { color: #B5432A; font-weight: 700; }
+.np-rule { height: 6px; margin: 12px 0 0; border-top: 3px solid #1F1C18; border-bottom: 1px solid #1F1C18; }
+.np-body { flex: 1; min-height: 0; display: flex; gap: 36px; padding-top: 22px; }
+.np-l { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.np-kick { font-size: 22px; font-weight: 800; letter-spacing: .02em; color: #B5432A; }
+.np-hed { margin: 10px 0 0; font-family: var(--f-serif); font-weight: 700; font-size: 56px; line-height: 1.2; letter-spacing: -.035em; word-break: keep-all; text-wrap: balance; }
+.np-lede { margin: 16px 0 0; font-size: 25px; font-weight: 500; line-height: 1.5; letter-spacing: -.015em; color: rgba(31,28,24,.82); word-break: keep-all; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+.np-foot { margin-top: auto; display: flex; align-items: center; gap: 22px; }
+.np-go { display: inline-flex; align-items: center; min-height: 60px; padding: 0 30px; border-radius: 999px; background: #1F1C18; color: #F3EDDF; font-size: 25px; font-weight: 700; }
+.np-next { font-size: 23px; font-weight: 600; color: rgba(31,28,24,.72); white-space: nowrap; }
+.np-next b { font-weight: 800; color: #1F1C18; margin-right: 6px; }
+.np-art { flex: none; width: 350px; margin: 0; display: flex; flex-direction: column; }
+.np-art svg { display: block; width: 350px; height: 284px; border-radius: 30px; background: #D5E0C2; }
+.np-art figcaption { margin-top: 12px; font-size: 22px; font-weight: 500; line-height: 1.3; color: rgba(31,28,24,.66); word-break: keep-all; }
+.np-art figcaption b { display: block; color: #1F1C18; font-weight: 700; }
+.np-theme { font-family: var(--f-serif); font-weight: 600; font-size: 22px; color: rgba(31,28,24,.7); letter-spacing: -.01em; }
+.fc-feat svg { stroke: none; }
+
+/* --- 2. 오늘의 낱말: 먹빛 공책 --- */
+.fc-feat.word { background: linear-gradient(165deg, #2A3447, #171C28 85%); color: #F3ECDD; }
+.wd { position: absolute; inset: 0; padding: 32px 48px 32px 44px; display: flex; align-items: center; gap: 40px; }
+.wd-l { flex: 1; min-width: 0; align-self: stretch; display: flex; flex-direction: column; }
+.wd-lab { font-size: 24px; font-weight: 700; color: rgba(243,236,221,.7); display: flex; gap: 12px; align-items: baseline; }
+.wd-lab i { font-style: normal; font-weight: 600; font-size: 22px; color: rgba(243,236,221,.45); font-variant-numeric: tabular-nums; }
+.wd-w { margin: 14px 0 0 -4px; font-size: 136px; font-weight: 800; letter-spacing: -.045em; line-height: 1.02; white-space: nowrap; }
+.wd-mean { margin-top: 12px; font-size: 32px; font-weight: 600; line-height: 1.3; letter-spacing: -.02em; word-break: keep-all; }
+.wd-use { margin-top: auto; font-size: 24px; font-weight: 500; line-height: 1.5; color: rgba(243,236,221,.72); word-break: keep-all; letter-spacing: -.01em; }
+.wd-use mark { background: none; color: #FFD98A; font-weight: 700; }
+.wd-use small { display: block; margin-top: 6px; font-size: 22px; color: rgba(243,236,221,.48); }
+.wd-r { flex: none; display: grid; grid-template-columns: repeat(2, auto); gap: 18px 18px; }
+.hz { width: 236px; text-align: center; }
+.hz .bx { position: relative; width: 236px; height: 236px; border-radius: 24px; background: rgba(243,236,221,.045); box-shadow: inset 0 0 0 1.5px rgba(243,236,221,.3); display: grid; place-items: center; }
+.hz .bx svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hz .bx span { position: relative; font-family: var(--f-serif); font-weight: 700; font-size: 176px; line-height: 1; margin-top: -10px; }
+.hz small { display: block; margin-top: 12px; font-size: 26px; font-weight: 500; color: rgba(243,236,221,.7); }
+.hz small b { font-weight: 800; color: #FF9A7A; margin-left: 4px; }
+.wd-r.n4 .hz, .wd-r.n4 .hz .bx { width: 164px; } .wd-r.n4 .hz .bx { height: 164px; border-radius: 18px; } .wd-r.n4 .hz .bx span { font-size: 120px; margin-top: -6px; } .wd-r.n4 .hz small { font-size: 22px; margin-top: 6px; } .wd-r.n4 { gap: 10px 14px; }
+.wd.n4 .wd-w { font-size: 108px; }
+
+/* --- 3. 오늘의 달: 밤하늘 --- */
+.fc-feat.moon { display: block; background: linear-gradient(180deg, #060A20 0%, #101741 62%, #232C66 100%); color: #EEF0FF; }
+.mn { position: absolute; inset: 0; }
+.mn svg.st, .mn svg.hz2 { position: absolute; left: 0; width: 100%; }
+.mn svg.st { top: 0; height: 100%; } .mn svg.hz2 { bottom: 0; height: 84px; }
+.mn .glow { position: absolute; right: 16px; top: -14px; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(closest-side, rgba(190,200,255,.07) 70%, rgba(190,200,255,.10) 76%, rgba(190,200,255,.03) 88%, transparent); }
+.fc-feat.moon canvas.big { position: absolute; right: 86px; top: 46px; width: 380px; height: 380px; mix-blend-mode: screen; border-radius: 50%; box-shadow: none; filter: brightness(1.22) contrast(1.12); }
+.mn-tx { position: absolute; left: 44px; top: 32px; }
+.mn-lab { font-size: 24px; font-weight: 700; color: rgba(238,240,255,.7); }
+.mn-name { margin: 10px 0 0 -4px; font-size: 112px; font-weight: 800; letter-spacing: -.045em; line-height: 1.05; }
+.mn-sub { margin-top: 8px; font-size: 30px; font-weight: 600; letter-spacing: -.02em; }
+.mn-sub2 { margin-top: 6px; font-size: 24px; font-weight: 500; color: rgba(238,240,255,.66); }
+.mn-wk { position: absolute; left: 44px; bottom: 30px; display: flex; gap: 6px; }
+.mn-wk div { width: 62px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 10px 0 8px; border-radius: 18px; font-size: 22px; font-weight: 600; color: rgba(238,240,255,.6); }
+.mn-wk div.on { background: rgba(238,240,255,.12); box-shadow: inset 0 0 0 1.5px rgba(238,240,255,.3); color: #fff; font-weight: 800; }
+.fc-feat.moon .mn-wk canvas { width: 40px; height: 40px; mix-blend-mode: screen; box-shadow: none; }
+
+</style>
+<script>
+(function(){
+  const e = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const DOW = '일월화수목금토';
+  const dots = n => `<div class="ft-dots">${[0,1,2].map(i => `<i${i === n ? ' class="on"' : ''}></i>`).join('')}</div>`;
+  // 직접 그린 도장 그림: 낱말(pic)로 고르고, 없으면 면(tag) 그림
+  const ART = {
+    '대왕판다': `<svg viewBox="0 0 316 316" preserveAspectRatio="xMidYMid slice"><defs><clipPath id="ac"><rect width="316" height="316" rx="30"/></clipPath></defs><g clip-path="url(#ac)">
+      <circle cx="238" cy="70" r="46" fill="#E6EDD6"/>
+      <g fill="#7FA65C"><rect x="22" y="-10" width="20" height="340" rx="6"/><rect x="266" y="-10" width="24" height="340" rx="7"/></g><g fill="#5E8747"><rect x="52" y="-10" width="11" height="340" rx="4"/><rect x="22" y="78" width="20" height="5"/><rect x="22" y="178" width="20" height="5"/><rect x="266" y="118" width="24" height="5"/><rect x="266" y="226" width="24" height="5"/><rect x="52" y="140" width="11" height="4"/></g>
+      <g fill="#5E8747"><path d="M42 80c26-22 52-22 70-10-24 2-44 10-70 10z"/><path d="M42 84c30-2 48 10 58 28-22-12-38-18-58-28z"/><path d="M266 120c-26-22-50-24-68-14 24 2 42 10 68 14z"/></g>
+      <ellipse cx="158" cy="322" rx="128" ry="96" fill="#23211E"/><ellipse cx="158" cy="336" rx="74" ry="70" fill="#FBF8F1"/>
+      <circle cx="92" cy="122" r="31" fill="#23211E"/><circle cx="224" cy="122" r="31" fill="#23211E"/>
+      <ellipse cx="158" cy="186" rx="92" ry="82" fill="#FBF8F1"/>
+      <ellipse cx="122" cy="186" rx="21" ry="27" transform="rotate(28 122 186)" fill="#23211E"/><ellipse cx="194" cy="186" rx="21" ry="27" transform="rotate(-28 194 186)" fill="#23211E"/>
+      <circle cx="126" cy="181" r="7" fill="#FBF8F1"/><circle cx="190" cy="181" r="7" fill="#FBF8F1"/><circle cx="127" cy="182" r="3.4" fill="#23211E"/><circle cx="189" cy="182" r="3.4" fill="#23211E"/>
+      <path d="M148 212h20a4 4 0 0 1 3 7l-10 9a4 4 0 0 1-6 0l-10-9a4 4 0 0 1 3-7z" fill="#23211E"/><path d="M158 229v9M144 240q14 11 28 0" fill="none" stroke="#23211E" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="96" cy="222" r="11" fill="#F1C4B2" opacity=".7"/><circle cx="220" cy="222" r="11" fill="#F1C4B2" opacity=".7"/>
+      <path d="M64 318L170 262" stroke="#7FA65C" stroke-width="13" stroke-linecap="round"/><path d="M168 262c14-22 34-28 52-22-18 6-32 16-52 22z" fill="#5E8747"/><path d="M170 264c24-6 42 2 52 16-18-8-32-12-52-16z" fill="#7FA65C"/>
+      <ellipse cx="88" cy="298" rx="40" ry="25" transform="rotate(-28 88 298)" fill="#23211E"/><ellipse cx="232" cy="304" rx="38" ry="25" transform="rotate(24 232 304)" fill="#23211E"/>
+    </g></svg>` };
+  window.B_news = function(news){
+    const a = news.articles[0], d = new Date(news.date + 'T00:00:00+09:00'), rest = news.articles.slice(1, 3);
+    return `<div class="np"><div class="np-top"><span class="np-mast">루아 신문</span>${news.theme?`<span class="np-theme">${e(news.theme)}</span>`:""}<span class="np-meta">제${e(news.no)}호 · ${d.getMonth()+1}월 ${d.getDate()}일 ${DOW[d.getDay()]}요일</span></div><div class="np-rule"></div>
+      <div class="np-body"><div class="np-l"><div class="np-kick">${e(a.tag)} · 1면</div><h2 class="np-hed">${e(a.title)}</h2><p class="np-lede">${e(a.lede)}</p>
+      <div class="np-foot"><span class="np-go">읽기</span>${rest.map((x,i)=>`<span class="np-next"><b>${i+2}면</b>${e(x.short||x.tag)}</span>`).join('')}</div></div>
+      <figure class="np-art">${ART[a.pic]||''}<figcaption><b>${e(a.pic)}</b>${e(a.cap)}</figcaption></figure></div></div>${dots(0)}`;
+  };
+  const GUIDE = `<svg viewBox="0 0 100 100" style="fill:none;stroke:rgba(243,236,221,.17);stroke-width:.6;stroke-dasharray:2 2.2;stroke-linecap:butt"><path d="M50 4v92M4 50h92M6 6l88 88M94 6L6 94"/></svg>`;
+  window.B_word = function(W, news){
+    const art = news.articles.find(x => x.word && x.word.w === W.w) || {}, idx = news.articles.indexOf(art);
+    const m = (art.body || '').split(/(?<=다\.)\s*/).find(s => s.includes('《' + W.w + '》')) || '';
+    const use = e(m).replace('《' + e(W.w) + '》', `<mark>${e(W.w)}</mark>`), n4 = (W.hanja||[]).length > 2;
+    return `<div class="wd${n4?' n4':''}"><div class="wd-l"><div class="wd-lab">오늘의 낱말<i>${idx+1} / ${news.articles.length}</i></div><div class="wd-w">${e(W.w)}</div><div class="wd-mean">${e(W.mean)}</div>
+      ${use?`<div class="wd-use">${use}<small>${e(art.short||'')} 기사에서</small></div>`:''}</div>
+      <div class="wd-r${n4?' n4':''}">${(W.hanja||[]).map(h=>{const p=h[1].lastIndexOf(' ');return `<div class="hz"><div class="bx">${GUIDE}<span>${e(h[0])}</span></div><small>${e(h[1].slice(0,p))}<b>${e(h[1].slice(p+1))}</b></small></div>`}).join('')}</div></div>${dots(1)}`;
+  };
+  function rnd(seed){ let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
+  window.B_moon = function(sk){
+    const r = rnd(20261114); let st = '';
+    for (let i = 0; i < 70; i++) { const x = r()*1024, y = r()*380, z = r(); st += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(z<.12?2.1:z<.4?1.4:.9)}" fill="#fff" opacity="${(.25+r()*.55).toFixed(2)}"/>`; }
+    const now = new Date(); let wk = '';
+    for (let i = 0; i < 7; i++) { const d = new Date(now.getTime() + i*864e5); wk += `<div${i===0?' class="on"':''}><canvas data-d="${i}" width="2" height="2"></canvas>${i===0?'오늘':DOW[d.getDay()]}</div>`; }
+    const nx = (sk.next||[])[0];
+    return `<div class="mn"><svg class="st" viewBox="0 0 1024 494" preserveAspectRatio="none">${st}</svg><div class="glow"></div>
+      <svg class="hz2" viewBox="0 0 1024 84" preserveAspectRatio="none"><path fill="#050818" d="M0 84V60h520v-8h40V34h64v18h30V22h52v30h36V8h58v44h30V30h70v22h40V44h84v40z"/><g fill="#FFD98A" opacity=".75"><rect x="672" y="34" width="8" height="8"/><rect x="752" y="20" width="8" height="8"/><rect x="772" y="36" width="8" height="8"/><rect x="858" y="42" width="8" height="8"/><rect x="590" y="46" width="8" height="8"/></g></svg>
+      <div class="mn-tx"><div class="mn-lab">오늘의 달</div><div class="mn-name">${e(sk.moon.name)}</div><div class="mn-sub">${e(sk.moon.lines.join(" · "))}</div>${nx?`<div class="mn-sub2">${e(nx[1])}은 ${e(nx[0])}</div>`:''}</div>
+      <div class="mn-wk">${wk}</div></div><canvas class="big" width="2" height="2"></canvas>${dots(2)}`;
+  };
+  window.B_moonAfter = function(ft, sk){
+    ft.querySelectorAll('.mn-wk canvas').forEach(cv => { const d = new Date(Date.now() + (+cv.dataset.d)*864e5); try { window.GKSky.drawMoon(cv, 40, window.Astronomy.MoonPhase(d), sk.moon.limb); } catch (er) {} });
+  };
+  window.B_routine = () => [['책가방 싸기','매일'],['책 20분 읽기','매일'],['숙제 꺼내 놓기','매일']].map(x => `<div class="fc-row rt"><span class="bx"></span><span class="tx">${x[0]}</span><span class="du">${x[1]}</span></div>`).join('');
+})();
+
+</script>
+<style id="Acss">
+/* ===== A+B 통합: B의 표지 타일 + A의 체계(글자 6단계 128/76/54/30/28/24, 타일 안 상자 0, 뼈대 통일) ===== */
+.saver.face { --bgk: .22; } .saver.face[data-tone="day"] { --bgk: .28; } .saver.face[data-tone="eve"] { --bgk: .14; }
+.fc-t { border-radius: 40px; padding: 30px; background: rgba(255,255,255,.105); box-shadow: inset 0 0 0 1px rgba(255,255,255,.13), inset 0 1px 0 rgba(255,255,255,.2); -webkit-backdrop-filter: blur(36px) saturate(1.35); backdrop-filter: blur(36px) saturate(1.35); }
+.fc-lab { font-size: 30px; font-weight: 700; line-height: 38px; letter-spacing: -.02em; }
+.fc-sub { font-size: 24px; font-weight: 500; line-height: 30px; color: rgba(255,255,255,.7); }
+/* 숫자 타일: 숫자 76 좌상 / 이름 30 + 덧글 24 좌하 */
+.fc-clock { padding: 30px; justify-content: flex-start; }
+.fc-time { order: 1; font-size: 76px; font-weight: 600; line-height: 64px; letter-spacing: -.035em; margin: 2px 0 0 -3px; }
+.fc-date { order: 2; margin-top: auto; } .fc-date, .fc-date b { font-size: 30px; font-weight: 700; line-height: 38px; color: #fff; letter-spacing: -.02em; }
+.fc-tip { order: 3; font-size: 24px; font-weight: 500; line-height: 30px; color: rgba(255,255,255,.7); }
+.fc-wx { padding: 30px 30px 30px 0; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 0; }
+.fc-wx .tt { flex: 1; display: flex; flex-direction: column; align-items: flex-start; }
+.fc-temp { font-size: 76px; font-weight: 600; line-height: 64px; letter-spacing: -.035em; margin: 2px 0 0 -3px; }
+.fc-wx .fc-lab { margin-top: auto; font-size: 30px; font-weight: 700; } .fc-wx .fc-sub { font-size: 24px; }
+.fc-wx svg.wi { position: absolute; right: 30px; top: 34px; width: 48px; height: 48px; margin: 0; }
+.fc-app { padding: 30px; }
+.fc-app .big { font-size: 76px; font-weight: 600; line-height: 64px; letter-spacing: -.035em; margin: 2px 0 0 -3px; }
+.fc-app svg { width: 48px; height: 48px; margin: 0; filter: none; }
+.fc-app .dot { width: 9px; height: 9px; background: #F6CF86; }
+/* 단추 타일: 묻기도 같은 뼈대(원 없음). 자리와 2칸 폭으로만 구별 */
+.fc-app[data-tile="ask"] { flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 0; padding: 30px; background: rgba(255,255,255,.075); }
+.fc-app[data-tile="study"] { background: rgba(255,255,255,.075); }
+.fc-app[data-tile="ask"] .mic { width: 48px; height: 48px; background: none; box-shadow: none; border-radius: 0; }
+.fc-app[data-tile="ask"] .mic svg { width: 48px; height: 48px; }
+.fc-app[data-tile="ask"] .tx2 { gap: 0; }
+/* 목록 타일 */
+.fc-todo { padding: 0 30px; }
+.fc-list { justify-content: center; }
+.fc-row { min-height: 61px; padding: 0; font-size: 30px; gap: 18px; }
+.fc-row + .fc-row { box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
+.fc-row .bx { width: 30px; height: 30px; box-shadow: inset 0 0 0 2px rgba(255,255,255,.6); }
+.fc-row .du { font-size: 24px; font-weight: 500; color: rgba(255,255,255,.7); }
+.fc-row.rt .bx { border-width: 2px; } .fc-row.rt .du { color: rgba(255,255,255,.46); }
+/* 표지: B 그대로 두되 글자는 6단계로, 종이는 한 톤 어둡게, 단추 상자는 글+화살표로 */
+.fc-feat { border-radius: 40px; box-shadow: 0 18px 40px rgba(0,0,0,.22); }
+.fc-feat.news { background: radial-gradient(130% 100% at 15% 0%, #E9E2D2, #DBD2BF 85%); }
+.np { padding: 34px 46px 34px 46px; }
+.np-mast { font-size: 30px; } .np-meta, .np-theme, .np-kick { font-size: 24px; } .np-kick { font-weight: 700; letter-spacing: 0; }
+.np-rule { margin-top: 14px; } .np-body { padding-top: 24px; gap: 40px; }
+.np-hed { font-size: 54px; line-height: 68px; margin-top: 8px; }
+.np-lede { font-size: 28px; line-height: 42px; margin-top: 14px; -webkit-line-clamp: 2; }
+.np-go { min-height: 60px; padding: 0; background: none; color: #1F1C18; font-size: 30px; font-weight: 700; }
+.np-go::after { content: ""; width: 30px; height: 30px; margin-left: 10px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath d='M7 18h20M19 9.500l8.500 8.500-8.500 8.500' fill='none' stroke='%231F1C18' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; }
+.np-foot { gap: 26px; } .np-next { font-size: 24px; font-weight: 500; } .np-next b { font-weight: 700; }
+.np-art { width: 330px; } .np-art svg { width: 330px; height: 268px; border-radius: 24px; }
+.np-art figcaption { font-size: 24px; line-height: 30px; }
+.wd { padding: 34px 54px 34px 46px; }
+.wd-lab { font-weight: 500; } .wd-lab i { font-size: 24px; }
+.wd-w { font-size: 128px; font-weight: 700; line-height: 140px; margin-top: 8px; }
+.wd-mean { font-size: 30px; font-weight: 700; margin-top: 6px; }
+.wd-use { font-size: 24px; line-height: 36px; } .wd-use small { font-size: 24px; }
+.hz small { font-size: 24px; }
+.mn-tx { left: 46px; top: 34px; } .mn-lab { font-weight: 500; }
+.mn-name { font-size: 128px; font-weight: 700; line-height: 140px; margin-top: 8px; }
+.mn-sub { font-size: 30px; font-weight: 700; margin-top: 6px; } .mn-sub2 { font-size: 24px; }
+.mn-wk { left: 40px; bottom: 34px; gap: 4px; }
+.mn-wk div { font-size: 24px; font-weight: 500; padding: 8px 0 0; width: 66px; }
+.mn-wk div.on { background: none; box-shadow: none; font-weight: 700; }
+.ft-dots { right: 18px; }
+
+.fc-wx { background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.np-hed { line-height: 64px; margin-top: 6px; } .np-lede { margin-top: 10px; line-height: 40px; } .np-body { padding-top: 20px; }
+</style>
 </head>
 <body>
 <div class="app" id="app" data-state="idle">
@@ -1199,13 +1519,16 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   <div class="sv-dots" id="svDots" hidden aria-hidden="true"></div>
     <div class="sv-cal" id="svCal"><div class="cal-head"><span id="calMon"></span><span id="calTime"></span></div><div class="cal-dow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div><div class="cal-grid" id="calGrid"></div><div class="cal-big" id="calBig"></div></div>
     <div class="sv-face" id="svFace"><div class="fc-grid" id="fcGrid">
-      <section class="fc-t fc-clock" data-tile="clock"><div class="fc-date" id="fcDate" data-tile="cal"></div><div class="fc-time" id="fcTime"></div><div class="fc-tip" id="fcTip"></div></section>
+      <section class="fc-t fc-clock" data-tile="clock"><div class="cl-l"><div class="fc-date" id="fcDate"></div><div class="fc-tip" id="fcTip"></div></div><div class="fc-time" id="fcTime"></div><div class="fc-tm" id="fcTm"></div></section>
       <section class="fc-t fc-wx" data-tile="wx" id="fcWx"></section>
       <section class="fc-t fc-feat" id="fcFeat"></section>
       <section class="fc-t fc-todo" data-tile="todo"><div class="fc-n"><b id="fcTodoN"></b><span id="fcTodoS"></span></div><div class="fc-list" id="fcTodoL"></div></section>
-      <section class="fc-t fc-app" data-tile="news"><svg viewBox="0 0 24 24"><path class="f" fill-rule="evenodd" d="M3.500 6A2.500 2.500 0 0 1 6 3.500h8.500A2.500 2.500 0 0 1 17 6v2h1.500A2.500 2.500 0 0 1 21 10.500V17a3.500 3.500 0 0 1-3.500 3.500H7A3.500 3.500 0 0 1 3.500 17zM6.500 6.800v3.400h7.500V6.800zM6.500 12.600v1.600h7.500v-1.600zM6.500 16v1.600h5V16zM17 10v7a.75.75 0 0 0 1.500 0v-7z"/></svg><div class="fc-lab">신문</div><div class="fc-sub" id="fcNewsS"></div></section>
-      <section class="fc-t fc-app" data-tile="sky"><svg viewBox="0 0 24 24"><path class="f" d="M14.800 15.200A7 7 0 0 1 8.600 4.300a8.300 8.300 0 1 0 11.100 11.100 7 7 0 0 1-4.900-.2z"/><path class="f" d="M17.300 2.800l.9 2.300 2.300.9-2.300.9-.9 2.300-.9-2.300-2.300-.9 2.300-.9z"/></svg><div class="fc-lab">밤하늘</div><div class="fc-sub" id="fcSkyS"></div></section>
-      <section class="fc-t fc-app" data-tile="ask"><svg viewBox="0 0 24 24"><rect class="f" x="8.500" y="2.500" width="7" height="12.500" rx="3.500"/><path d="M5.200 11.500a6.800 6.800 0 0 0 13.600 0M12 18.500v3"/></svg><div class="fc-lab">묻기</div><div class="fc-sub">눌러서 말해</div></section>
+      <section class="fc-t fc-app" data-tile="news"><svg viewBox="0 0 24 24"><path class="f" fill-rule="evenodd" d="M3.5 5.75A2.25 2.25 0 0 1 5.75 3.5h9A2.25 2.25 0 0 1 17 5.75V18a2.5 2.5 0 0 0 1.2 2.5H6A2.5 2.5 0 0 1 3.5 18zM6.6 6.6h7.3v3.6H6.6zM6.6 12.4h7.3v1.7H6.6zM6.6 16h5v1.7h-5z"/><path class="f" d="M18.2 8.6h1.1a1.7 1.7 0 0 1 1.7 1.7V18a1.4 1.4 0 0 1-2.8 0z"/></svg><div class="fc-lab">신문</div><div class="fc-sub" id="fcNewsS"></div></section>
+      <section class="fc-t fc-app" data-tile="sky"><svg viewBox="0 0 24 24"><path class="f" d="M19.6 15.1A8 8 0 0 1 9.1 4.4a8.4 8.4 0 1 0 10.5 10.7z"/><path class="f" d="M17.6 2.4l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z"/></svg><div class="fc-lab">밤하늘</div><div class="fc-sub" id="fcSkyS"></div></section>
+      <section class="fc-t fc-app" data-tile="ask"><div class="mic"><svg viewBox="0 0 24 24"><rect class="f" x="8.2" y="2.4" width="7.6" height="12.4" rx="3.8"/><path d="M5.4 11.4a6.6 6.6 0 0 0 13.2 0M12 18v3"/></svg></div><div class="tx2"><div class="fc-lab">궁금한 걸 물어 봐</div><div class="fc-sub">눌러서 말해</div></div></section>
+      <section class="fc-t fc-app" data-tile="study"><svg viewBox="0 0 24 24"><path class="f" d="M2.8 5.6c0-.6.4-1.1 1-1.2 2.6-.6 5.1-.2 7.2 1.2v14.1c-2.1-1.3-4.6-1.7-7.2-1.1-.5.1-1-.3-1-.8zM21.2 5.6c0-.6-.4-1.1-1-1.2-2.6-.6-5.1-.2-7.2 1.2v14.1c2.1-1.3 4.6-1.7 7.2-1.1.5.1 1-.3 1-.8z"/></svg><div class="fc-lab">공부 모드</div><div class="fc-sub">화면을 조용하게</div></section>
+      <section class="fc-t fc-app" data-tile="word"><div class="big ko" id="fcWordN"></div><div class="fc-lab">오늘의 낱말</div><div class="fc-sub" id="fcWordS"></div></section>
+      <section class="fc-t fc-app" data-tile="cal"><div class="big" id="fcCalN"></div><div class="fc-lab">달력</div><div class="fc-sub" id="fcCalS"></div></section>
     </div><div class="fc-msg" id="fcMsg" hidden></div></div>
     <div class="sv-inner">
       <section class="sv-date">
@@ -1253,13 +1576,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v111</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v112</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v111</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v112</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2119,8 +2442,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
 
   // ---------- 대기화면 위젯 면 (v107): 큰 시계 타일 + 날씨 + 지금 볼 것 + 할 일 + 작은 타일 셋 ----------
   const WI = { // 날씨 그림 (직접 그린 선 그림)
-    sun: '<circle cx="12" cy="12" r="4.700" class="f"/><path d="M12 2.500v2.500M12 19v2.500M2.500 12H5M19 12h2.500M5.300 5.300l1.800 1.800M16.900 16.900l1.800 1.800M5.300 18.700l1.800-1.800M16.900 7.100l1.800-1.800"/>',
-    moon: '<path class="f" d="M15.500 15A7 7 0 0 1 9 5.200a7.800 7.800 0 1 0 10 10.300 7 7 0 0 1-3.500-.500z"/>',
+    sun: '<circle cx="12" cy="12" r="4.4" class="f"/><path d="M12 2.6v2M12 19.4v2M2.6 12h2M19.4 12h2M5.35 5.35l1.4 1.4M17.25 17.25l1.4 1.4M5.35 18.65l1.4-1.4M17.25 6.75l1.4-1.4"/>',
+    moon: '<path class="f" d="M19.6 15.1A8 8 0 0 1 9.1 4.4a8.4 8.4 0 1 0 10.5 10.7z"/>',
     cloud: '<path class="f" d="M7.500 18.500a4 4 0 0 1-.4-8 5.500 5.500 0 0 1 10.600 1.300 3.400 3.400 0 0 1-.4 6.700z"/>',
     part: '<circle cx="8" cy="8.500" r="3"/><path d="M8 2.800v1.400M2.600 8.500H4M4.200 4.700l1 1M11.800 4.700l-1 1"/><path class="f" d="M9.500 19.500a3.400 3.400 0 0 1-.3-6.800 4.700 4.700 0 0 1 9 1.100 2.900 2.900 0 0 1-.3 5.700z"/>',
     rain: '<path class="f" d="M7.500 14.500a4 4 0 0 1-.4-8A5.500 5.500 0 0 1 17.700 7.800a3.400 3.400 0 0 1-.4 6.700z"/><path d="M8.500 17.500l-1 3M12.500 17.500l-1 3M16.500 17.500l-1 3"/>',
@@ -2137,6 +2460,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (key !== fcSkyKey) { fcSkyKey = key; try { fcSky = window.GKSky.build({ lat: +settings.wxLat || 37.526, lon: +settings.wxLon || 126.896, now: new Date(), W: 968, H: 528 }); } catch (e) { fcSky = null; } }
     return fcSky;
   }
+  window.__tmMock = (rem, total) => { // 시안용: 남은 초, 전체 초
+    saverEl.classList.add('tm'); const el = $('fcTm'), b = el.getBoundingClientRect(), W = 764 - 24, H = 239 - 24, d = new Date(), f = rem / total;
+    const R = `x="3" y="3" width="${W - 6}" height="${H - 6}" rx="34" fill="none" pathLength="120"`;
+    el.innerHTML = `<svg class="tk" viewBox="0 0 ${W} ${H}"><mask id="tmM"><rect ${R} stroke="#fff" stroke-width="16" stroke-dasharray="${(f * 120).toFixed(2)} 120" stroke-linecap="butt"/></mask><rect ${R} stroke="rgba(255,255,255,.14)" stroke-width="7" stroke-dasharray=".28 1.72"/><rect ${R} stroke="#FFB648" stroke-width="7" stroke-dasharray=".28 1.72" mask="url(#tmM)"/></svg><div class="tl"><b>남은 시간</b><span>지금 ${d.getHours() < 12 ? '오전' : '오후'} ${d.getHours() % 12 || 12}:${pad(d.getMinutes())}</span></div><div class="tr">${Math.floor(rem / 60)}:${pad(rem % 60)}</div>`;
+  };
   const setH = (el, html) => { if (el.innerHTML !== html) el.innerHTML = html; };
   function renderCal(hr) { // 달력 장: 이번 달 + 오늘 날짜를 크게 겹침. 할 일 기한이 있는 날에는 점
     const d = new Date(), y = d.getFullYear(), m = d.getMonth(), first = new Date(y, m, 1).getDay(), n = new Date(y, m + 1, 0).getDate(), rows = Math.ceil((first + n) / 7);
@@ -2151,26 +2479,33 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     saverEl.dataset.tone = hr < 12 ? 'morn' : hr < 18 ? 'day' : 'eve';
     saverEl.classList.toggle('rest', Date.now() - svTouchAt > 180e3); // 3분 손대지 않으면 얇은 어두운 막
     saverEl.classList.toggle('late', hr === 21); saverEl.style.setProperty('--late', hr === 21 ? (d.getMinutes() / 60 * .45).toFixed(3) : '0'); // 밤 9~10시: 밤 화면으로 가는 낙차 줄이기
-    setH($('fcDate'), `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일<b>${hr < 12 ? '오전' : '오후'}</b>`);
+    setH($('fcDate'), `${DAYS[d.getDay()]}요일 ${hr < 12 ? '오전' : '오후'}`);
     { const t = `${hr % 12 || 12}:${pad(d.getMinutes())}`, el = $('fcTime'), old = el.dataset.t || ''; if (old !== t) { el.dataset.t = t; el.innerHTML = [...t].map((ch, i) => `<i${old && old.length === t.length && old[i] !== ch ? ' class="chg"' : ''}>${ch}</i>`).join(''); } } // 바뀐 자리 숫자만 넘어감
     let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 12 * 3600e3) w = last.w; }
+    $('fcCalN').textContent = d.getDate(); $('fcCalS').textContent = `${d.getMonth() + 1}월`;
     $('fcTip').textContent = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : '';
-    setH($('fcWx'), w ? `${wxIcon(w.code, hr >= 18 || hr < 7)}<div class="tt"><div class="fc-temp">${w.t}<i>°</i></div><div class="fc-lab">${escN((WX[w.code] || [''])[0])}</div><div class="fc-sub">최고 ${w.hi}° · 최저 ${w.lo}°</div></div>` : `<div class="tt"><div class="fc-lab">날씨</div><div class="fc-sub">아직 못 받았어</div></div>`);
+    setH($('fcWx'), w ? `${wxIcon(w.code, hr >= 18 || hr < 7)}<div class="tt"><div class="fc-temp">${w.t}<i>°</i></div><div class="fc-lab">${escN((WX[w.code] || [''])[0])}</div><div class="fc-sub">${w.hi}° / ${w.lo}°</div></div>` : `<div class="tt"><div class="fc-lab">날씨</div><div class="fc-sub">아직 못 받았어</div></div>`);
     const sk = faceSky();
     setH($('fcNewsS'), on ? (read ? '다 읽었어' : `<i class="dot"></i>새 소식 ${news.articles.length}개`) : '아직 안 왔어');
     $('fcSkyS').textContent = sk ? sk.moon.name : '오늘의 달';
     // 지금 볼 것: 안 읽은 신문 → 저녁엔 오늘의 달 → 그 밖에는 시각이 들어간 한 문장
-    const ft = $('fcFeat'), kind = on && !read ? 'news' : hr >= 18 && sk ? 'moon' : 'line';
+    const WS = on ? news.articles.map(x => x.word).filter(x => x && x.w) : [], W = WS.length ? WS[Math.min(WS.length - 1, hr < 13 ? 0 : hr < 15 ? 1 : 2)] : null; // 낱말은 낮 동안 차례로
+    $('fcWordN').textContent = W ? W.w : '—'; $('fcWordS').textContent = W ? '눌러서 뜻 보기' : '신문이 오면 나와';
+    const ft = $('fcFeat'), kind = on && !read ? 'news' : hr >= 18 && sk ? 'moon' : W ? 'word' : 'line';
     if (kind === 'news') {
       const a = news.articles[0], key = 'news|' + news.no + '|' + a.pic;
-      if (fcFeatKey !== key) { fcFeatKey = key; ft.className = 'fc-t fc-feat news'; ft.dataset.tile = 'news';
-        ft.innerHTML = `<div class="tx"><div class="fc-sub">루아 신문 · 제${escN(news.no)}호</div><div class="fc-hed">${escN(a.title)}</div></div><div class="ph" hidden></div>`;
-        safePic(a.pic).then(pic => { if (fcFeatKey !== key || !pic) return; const ph = ft.querySelector('.ph'); if (!ph) return; const im = new Image(); im.src = pic.src; im.alt = pic.title; ph.append(im); ph.hidden = false; ft.classList.add('pic'); }); }
+      if (fcFeatKey !== key) { fcFeatKey = key; ft.className = 'fc-t fc-feat news'; ft.dataset.tile = 'news'; ft.innerHTML = B_news(news); }
+
+
+    } else if (kind === 'word') {
+      const key = 'word|' + news.no + '|' + W.w;
+      if (fcFeatKey !== key) { fcFeatKey = key; ft.className = 'fc-t fc-feat word'; ft.dataset.tile = 'clock'; ft.innerHTML = B_word(W, news); }
+
     } else if (kind === 'moon') {
       const key = 'moon|' + sk.moon.name + '|' + sk.moon.lines.join('|');
-      if (fcFeatKey !== key) { fcFeatKey = key; fcMoonKey = ''; ft.className = 'fc-t fc-feat moon'; ft.dataset.tile = 'sky';
-        ft.innerHTML = `<canvas width="2" height="2"></canvas><div class="tx"><div class="fc-sub">오늘의 달</div><div class="fc-hed">${escN(sk.moon.name)}</div><div class="fc-sub">${escN(sk.moon.lines[0])}</div></div>`; }
-      const cv = ft.querySelector('canvas'), ms = Math.round(cv.getBoundingClientRect().width), mk = [ms, Math.round(sk.moon.phase), Math.round(sk.moon.limb / 8)].join('|');
+      if (fcFeatKey !== key) { fcFeatKey = key; fcMoonKey = ''; ft.className = 'fc-t fc-feat moon'; ft.dataset.tile = 'sky'; ft.innerHTML = B_moon(sk); B_moonAfter(ft, sk); }
+
+      const cv = ft.querySelector('canvas.big'), ms = Math.round(cv.getBoundingClientRect().width), mk = [ms, Math.round(sk.moon.phase), Math.round(sk.moon.limb / 8)].join('|');
       if (mk !== fcMoonKey && ms > 20) { fcMoonKey = mk; try { window.GKSky.drawMoon(cv, ms, sk.moon.phase, sk.moon.limb); } catch (e) { fcMoonKey = ''; } }
     } else {
       const html = $('svLine').innerHTML.replace(/<span class="sv-attr">[\s\S]*$/, ''), key = 'line|' + html;
@@ -2973,7 +3308,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v111';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v112';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -3108,5 +3443,135 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   if (!settings.apiKey) setTimeout(() => { if (!settings.apiKey) openLog(); }, 800);
 })();
 </script>
+
+<style>
+/* 통일안: 표지 세 장이 같은 면(시간대 색을 머금은 짙은 면) · 같은 뼈대(왼쪽 글, 오른쪽 한 가지) */
+.fc-feat.news, .fc-feat.word, .fc-feat.moon { background: linear-gradient(165deg, color-mix(in srgb, var(--f2) 70%, #0B0E15), color-mix(in srgb, var(--f2) 34%, #07090D) 88%) !important; color: #F3ECDD !important; }
+.cv { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 48px; height: 100%; }
+.cv-l { display: flex; flex-direction: column; min-width: 0; }
+.cv-lab { font-size: 24px; font-weight: 500; color: rgba(243,236,221,.7); }
+.cv-hed { margin: 14px 0 0; font-size: 58px; font-weight: 800; line-height: 1.2; letter-spacing: -.035em; word-break: keep-all; color: #F7F1E4; }
+.cv-lede { margin: 18px 0 0; font-size: 28px; font-weight: 500; line-height: 1.5; color: rgba(243,236,221,.8); word-break: keep-all; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+.cv-go { margin-top: auto; font-size: 30px; font-weight: 700; color: #FFD98A; display: flex; align-items: center; gap: 12px; }
+.cv-r { display: flex; flex-direction: column; justify-content: center; }
+.cv-r .it { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: center; column-gap: 18px; padding: 20px 0; }
+.cv-r .it + .it { box-shadow: inset 0 1px 0 rgba(243,236,221,.14); }
+.cv-r .it b { grid-row: 1 / 3; font-size: 76px; font-weight: 600; line-height: 1; letter-spacing: -.04em; color: rgba(243,236,221,.34); }
+.cv-r .it.on b { color: #F7F1E4; }
+.cv-r .it small { font-size: 24px; font-weight: 500; color: rgba(243,236,221,.66); }
+.cv-r .it span { font-size: 30px; font-weight: 700; letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mn .hz2 { display: none; }
+.mn svg.st { opacity: .5; }
+.wd-use mark { color: #FFD98A; }
+</style>
+<script>
+(function(){ const e = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  window.B_news = function(news){ const a = news.articles[0];
+    return `<div class="cv"><div class="cv-l"><div class="cv-lab">루아 신문 · 제${e(news.no)}호${news.theme ? ' · ' + e(news.theme) : ''}</div><h2 class="cv-hed">${e(a.title)}</h2><p class="cv-lede">${e(a.lede)}</p><div class="cv-go">읽기 <svg viewBox="0 0 36 36" width="30" height="30" style="stroke:#FFD98A;stroke-width:3;fill:none"><path d="M7 18h20M19 9.500l8.500 8.500-8.500 8.500"/></svg></div></div>
+      <div class="cv-r">${news.articles.slice(0, 3).map((x, i) => `<div class="it${i ? '' : ' on'}"><b>${i + 1}</b><small>${e(x.tag)}</small><span>${e(x.short || x.title)}</span></div>`).join('')}</div></div>`; };
+})();
+</script>
+<style id="Apro">
+/* ===== A 시안: 같은 구성, 애플 위젯 수준의 마감 =====
+   재질 3층(흐림 면 + 위가 밝은 빛 테두리 + 바깥 그림자 두 겹) / 글자 5단계(80·54·28·24 + 눈썹 24) / 그림 한 벌(24 격자, 선 2, 채움) */
+:root { --r: 36px; --pad: 30px; --amber: #FFD27A; --ink: #F6F1E7; --ink2: rgba(246,241,231,.62); --ink3: rgba(246,241,231,.36); }
+.saver.face .sv-face { -webkit-font-smoothing: antialiased; }
+/* 배경: 같은 그림 위에 아래로 어두워지는 막 + 가장자리 비네트 → 타일이 떠 보이게 */
+.saver.face .sv-face::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(120% 90% at 50% 30%, transparent 55%, rgba(0,0,0,.22) 100%), linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.14)); }
+.fc-grid { z-index: 1; }
+/* 타일 재질 */
+.fc-t { border-radius: var(--r); padding: var(--pad);
+  background: linear-gradient(180deg, rgba(255,255,255,.155) 0%, rgba(255,255,255,.085) 55%, rgba(255,255,255,.07) 100%);
+  -webkit-backdrop-filter: blur(44px) saturate(1.45) brightness(.9); backdrop-filter: blur(44px) saturate(1.45) brightness(.9);
+  box-shadow: 0 1px 2px rgba(0,0,0,.10), 0 14px 34px -10px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.16); }
+.fc-t::before { display: block !important; content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; z-index: 4;
+  background: linear-gradient(178deg, rgba(255,255,255,.46) 0%, rgba(255,255,255,.16) 18%, rgba(255,255,255,.06) 55%, rgba(255,255,255,.12) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+.fc-t::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 0;
+  background: radial-gradient(90% 70% at 18% 0%, rgba(255,255,255,.07), transparent 70%); }
+.fc-app[data-tile="ask"], .fc-app[data-tile="study"] { background: linear-gradient(180deg, rgba(255,255,255,.155) 0%, rgba(255,255,255,.085) 55%, rgba(255,255,255,.07) 100%); }
+.fc-wx { background: none !important; box-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+.fc-wx::before, .fc-wx::after { display: none !important; }
+/* 글자 위계 */
+.fc-lab { font-size: 28px; font-weight: 650; line-height: 34px; letter-spacing: -.022em; color: #fff; }
+.fc-sub { font-size: 24px; font-weight: 500; line-height: 30px; letter-spacing: -.012em; color: rgba(255,255,255,.62); margin-top: 2px; }
+/* 시계 + 날씨: 두 숫자를 같은 기준선·같은 크기, 사이에 머리카락 선 */
+.fc-clock { padding: var(--pad); }
+.fc-time, .fc-temp, .fc-app .big { font-size: 74px; font-weight: 590; line-height: 62px; letter-spacing: -.04em; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; margin: 4px 0 0 -4px; }
+.fc-time i { font-style: normal; }
+.fc-temp i { font-weight: 300; margin-left: 0; color: rgba(255,255,255,.92); }
+.fc-date, .fc-date b { font-size: 28px; font-weight: 650; line-height: 34px; letter-spacing: -.022em; color: #fff; }
+.fc-tip { font-size: 24px; font-weight: 500; line-height: 30px; letter-spacing: -.012em; color: rgba(255,255,255,.62); margin-top: 2px; }
+.fc-wx { padding: var(--pad) var(--pad) var(--pad) 0; }
+.fc-wx .fc-lab { font-size: 28px; font-weight: 650; margin-top: auto; }
+.fc-wx .fc-sub { font-variant-numeric: tabular-nums; }
+.fc-wx svg.wi { right: calc(var(--pad) - 3px); top: 34px; width: 50px; height: 50px; filter: none; }
+.fc-temp { font-weight: 400; color: rgba(255,255,255,.94); }
+/* 그림 한 벌: 같은 크기, 같은 선, 그림자 없음 */
+.sv-face svg:not(.st):not(.tk) { stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; filter: none !important; }
+.sv-face svg .f { fill: #fff; stroke: none; }
+.fc-app svg, .fc-app[data-tile="ask"] .mic, .fc-app[data-tile="ask"] .mic svg { width: 50px !important; height: 50px !important; margin: 0 0 0 -3px !important; }
+.fc-app[data-tile="ask"] .mic svg .f { fill: #fff; }
+.fc-app { padding: var(--pad); justify-content: space-between; }
+.fc-app .fc-lab { margin-top: auto; }
+.fc-app .dot { width: 8px; height: 8px; margin-right: 8px; vertical-align: 3px; background: var(--amber); box-shadow: 0 0 0 3px rgba(255,210,122,.16); }
+/* 할 일: 동그라미는 가늘게, 구분선은 글자 시작점부터 */
+.fc-todo { padding: 8px var(--pad); }
+.fc-row { min-height: 62px; font-size: 28px; font-weight: 600; letter-spacing: -.022em; gap: 18px; }
+.fc-row + .fc-row { box-shadow: none; background: linear-gradient(rgba(255,255,255,.13), rgba(255,255,255,.13)) 48px 0 / calc(100% - 48px) 1px no-repeat; }
+.fc-row .bx { width: 30px; height: 30px; box-shadow: inset 0 0 0 2px rgba(255,255,255,.5); }
+.fc-row .du { font-size: 24px; font-weight: 600; color: var(--amber); background: none; padding: 0; letter-spacing: -.01em; }
+
+/* ----- 표지: 깊은 면 + 같은 빛 테두리 ----- */
+.fc-feat { border-radius: var(--r); box-shadow: 0 1px 2px rgba(0,0,0,.14), 0 22px 48px -14px rgba(0,0,0,.5) !important; }
+.fc-feat.news, .fc-feat.word, .fc-feat.moon { background:
+   radial-gradient(80% 90% at 0% 0%, color-mix(in srgb, var(--f1) 30%, transparent), transparent 70%),
+   linear-gradient(170deg, color-mix(in srgb, var(--f2) 62%, #0A0C12) 0%, color-mix(in srgb, var(--f2) 30%, #06070B) 100%) !important; color: var(--ink) !important; }
+.fc-feat::before { background: linear-gradient(178deg, rgba(255,255,255,.32) 0%, rgba(255,255,255,.10) 16%, rgba(255,255,255,.04) 60%, rgba(255,255,255,.08) 100%); }
+.fc-feat::after { display: none; }
+.fc-feat.news { padding: 38px 44px 34px; }
+.cv { grid-template-columns: minmax(0, 1fr) 372px; gap: 56px; }
+.cv-lab, .wd-lab, .mn-lab { font-size: 24px; font-weight: 600; letter-spacing: -.01em; color: var(--ink2); }
+.cv-hed { margin-top: 18px; font-size: 56px; font-weight: 750; line-height: 66px; letter-spacing: -.034em; color: var(--ink); text-wrap: balance; }
+.cv-lede { margin-top: 18px; font-size: 26px; font-weight: 450; line-height: 40px; letter-spacing: -.015em; color: rgba(246,241,231,.72); }
+.cv-go { align-self: flex-start; min-height: 60px; padding: 0 22px 0 28px; border-radius: 999px; gap: 8px; font-size: 26px; font-weight: 650; letter-spacing: -.015em;
+  color: var(--amber); background: rgba(255,210,122,.12); box-shadow: inset 0 0 0 1px rgba(255,210,122,.22); }
+.cv-go svg { width: 26px; height: 26px; stroke: var(--amber) !important; stroke-width: 3 !important; }
+.cv-r .it { grid-template-columns: 56px minmax(0, 1fr); column-gap: 20px; padding: 22px 0; }
+.cv-r .it + .it { box-shadow: none; background: linear-gradient(rgba(246,241,231,.12), rgba(246,241,231,.12)) 76px 0 / calc(100% - 76px) 1px no-repeat; }
+.cv-r .it b { font-size: 64px; font-weight: 500; letter-spacing: -.04em; font-variant-numeric: tabular-nums; color: var(--ink3); text-align: left; }
+.cv-r .it.on b { color: var(--ink); }
+.cv-r .it small { font-size: 24px; font-weight: 500; line-height: 30px; color: var(--ink2); }
+.cv-r .it span { font-size: 28px; font-weight: 650; line-height: 36px; letter-spacing: -.022em; color: var(--ink); }
+.cv-r .it:not(.on) span { color: rgba(246,241,231,.8); }
+/* 낱말 */
+.wd { padding: 38px 56px 34px 44px; }
+.wd-w { margin-top: 12px; font-size: 128px; font-weight: 700; line-height: 136px; letter-spacing: -.045em; color: var(--ink); }
+.wd-mean { font-size: 28px; font-weight: 650; letter-spacing: -.022em; color: var(--ink); }
+.wd-use { font-size: 24px; line-height: 36px; color: rgba(246,241,231,.72); } .wd-use small { color: var(--ink3); }
+.wd-use mark { color: var(--amber); }
+.wd-lab i { color: var(--ink3); font-weight: 500; }
+.hz .bx { border-radius: 28px; background: linear-gradient(180deg, rgba(246,241,231,.07), rgba(246,241,231,.025)); box-shadow: inset 0 0 0 1px rgba(246,241,231,.16), inset 0 1px 0 rgba(246,241,231,.12), 0 10px 24px -12px rgba(0,0,0,.5); }
+.hz .bx span { color: var(--ink); }
+.hz small { color: var(--ink2); } .hz small b { color: var(--amber); }
+/* 달 */
+.mn-tx { left: 44px; top: 38px; }
+.mn-name { margin-top: 12px; font-size: 128px; font-weight: 700; line-height: 136px; letter-spacing: -.045em; color: var(--ink); }
+.mn-sub { font-size: 28px; font-weight: 650; letter-spacing: -.022em; font-variant-numeric: tabular-nums; }
+.mn-sub2 { font-size: 24px; color: var(--ink2); font-variant-numeric: tabular-nums; }
+.mn-wk { left: 38px; bottom: 34px; gap: 2px; }
+.mn-wk div { width: 66px; font-size: 24px; font-weight: 500; color: rgba(246,241,231,.5); }
+.fc-feat.moon canvas.big { right: 104px; }
+.mn .glow { right: 34px; }
+.mn-wk div.on { color: var(--ink); font-weight: 650; }
+/* 넘김 점 */
+.ft-dots { right: 18px; gap: 8px; } .ft-dots i { width: 6px; height: 6px; opacity: .24; } .ft-dots i.on { height: 18px; border-radius: 3px; opacity: .8; }
+.saver.face .sv-dots i { width: 8px; height: 8px; opacity: .28; } .saver.face .sv-dots i.on { opacity: .9; }
+.fc-more { font-size: 24px; font-weight: 500; line-height: 30px; padding: 12px 0 0 48px; color: rgba(255,255,255,.62); background: linear-gradient(rgba(255,255,255,.13), rgba(255,255,255,.13)) 48px 0 / calc(100% - 48px) 1px no-repeat; }
+/* v112: 공부 모드는 다음 판에서 — 그때까지 묻기가 세 칸 */
+.fc-app[data-tile="study"] { display: none; }
+.fc-app[data-tile="ask"] { grid-column: 1 / 4; }
+</style>
 </body>
 </html>
