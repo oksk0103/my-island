@@ -4,13 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#17130F">
+<!-- 그림은 같은 출처(그리고 기기 안에서 만든 data:/blob:)만. 바깥 그림은 브라우저가 막는다 -->
+<meta http-equiv="Content-Security-Policy" content="img-src 'self' data: blob:">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon2-32.png" sizes="32x32"><link rel="icon" href="./icon2-192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="./icon2-180.png">
 <title>궁금칸</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap">
 <style>
 html, body { margin: 0; }
 [hidden] { display: none !important; }
@@ -545,59 +547,9 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 @media (max-width: 760px) { .saver.has-paper .sv-inner { grid-template-columns: 1fr; } .svp-lead { grid-template-columns: 1fr; } .svp-more { grid-template-columns: 1fr; gap: .8rem; } }
 
 /* 신문 펼친 화면 */
-.paper[hidden] { display: none; }
-.paper { position: absolute; inset: 0; z-index: 2; background: var(--bg); overflow: hidden; }
-.paper .inner { height: 100%; display: flex; flex-direction: column; padding-block: 1rem .4rem; min-height: 0; }
-.pp-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; padding-bottom: .6rem; border-bottom: 3px double color-mix(in srgb, var(--ink) 70%, transparent); flex: none; }
-.pp-head .l { display: flex; align-items: baseline; gap: 1.3rem; flex-wrap: wrap; min-width: 0; }
-.pp-mast { font-weight: 900; font-size: clamp(1.6rem, 2.3vw, 2.3rem); line-height: 1; letter-spacing: -.03em; }
-.pp-folio { font-size: clamp(.8rem, 1vw, 1rem); color: var(--muted); font-weight: 600; }
-.pp-folio b { color: var(--ink); font-weight: 800; margin-left: .3em; }
-.pp-head .r { display: flex; align-items: center; gap: 1.4rem; flex: none; }
-.pp-no { font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-size: 1.05rem; color: var(--muted); }
-.pp-no b { color: var(--ink); font-size: 1.5rem; font-weight: 700; }
-.pp-art { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) clamp(15rem, 27%, 24rem); column-gap: 3rem; padding-top: 1rem; overflow: hidden; }
-.pp-art.nopic .pp-side { justify-content: flex-start; }
-.pp-art.nopic .pp-photo, .pp-art.nopic .pp-cap { display: none; }
-.pp-main { min-height: 0; overflow: auto; scrollbar-width: none; }
-.pp-main::-webkit-scrollbar { display: none; }
-.pp-tag { display: inline-block; font-size: 1.05rem; font-weight: 800; color: var(--accent); padding-bottom: .15rem; border-bottom: 2px solid var(--accent); }
-.pp-hed { margin: .7rem 0 0; font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-weight: 700; font-size: calc(clamp(1.9rem, min(3.5vw, 5.6vh), 3.6rem) * var(--ppk, 1)); line-height: 1.22; letter-spacing: -.035em; text-wrap: balance; word-break: keep-all; }
-.pp-lede { margin: 1.1rem 0 0; padding-top: 1rem; border-top: 1px solid var(--line); font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-size: calc(clamp(1.15rem, min(1.75vw, 2.9vh), 1.75rem) * var(--ppk, 1)); line-height: 1.6; color: var(--ink); word-break: keep-all; text-wrap: pretty; max-width: 44em; }
-.pp-body { margin: .7rem 0 0; font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-size: calc(clamp(1rem, min(1.55vw, 2.6vh), 1.55rem) * var(--ppk, 1)); line-height: 1.75; color: #D9CDB7; word-break: keep-all; text-wrap: pretty; max-width: 48em; }
-.pp-body mark { background: linear-gradient(transparent 10%, var(--hl) 10%, var(--hl) 92%, transparent 92%); color: var(--hl-ink); padding: 0 .08em; }
-.pp-src { margin-top: .8rem; font-size: .9rem; color: var(--muted); }
-.pp-side { min-height: 0; display: flex; flex-direction: column; gap: .8rem; }
-.pp-photo { flex: 1 1 0; min-height: 7rem; max-height: 22rem; background: #1E1914; overflow: hidden; }
-.pp-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.pp-photo.contain img { object-fit: contain; }
-.pp-cap { font-size: .95rem; color: var(--muted); line-height: 1.45; padding-top: .5rem; border-top: 1px solid var(--line); }
-.pp-cap b { color: var(--ink); margin-right: .5em; }
-.pp-word { background: #251E18; border-left: 4px solid var(--accent); border-radius: 0 1rem 1rem 0; padding: 1.1rem 1.4rem 1.2rem; }
-.pp-word .lbl { font-size: .9rem; font-weight: 700; color: var(--muted); }
-.pp-word { flex: none; }
-.pp-word .w { font-weight: 800; font-size: clamp(1.8rem, min(2.6vw, 4.4vh), 2.6rem); color: var(--accent); line-height: 1.15; margin-top: .3rem; letter-spacing: -.02em; }
-.pp-word .m { font-size: 1.3rem; font-weight: 700; margin-top: .3rem; word-break: keep-all; }
-.pp-word .hj { display: flex; flex-wrap: wrap; gap: .6rem 1.6rem; margin-top: .9rem; padding-top: .9rem; border-top: 1px solid #3A3129; }
-.pp-word .hj div { display: flex; align-items: center; gap: .6rem; }
-.pp-word .hj span { font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 600; font-size: clamp(2rem, min(2.6vw, 4.6vh), 2.6rem); line-height: 1; }
-.pp-word .hj small { font-size: 1rem; color: var(--muted); }
-.pp-word .hj[hidden] { display: none; }
-.pp-nav { flex: none; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; padding-top: .8rem; margin-top: .8rem; border-top: 1px solid var(--line); }
-.pp-btn { display: inline-flex; align-items: center; gap: .6rem; min-height: 3.2rem; padding: 0 1.3rem; border: 1px solid var(--line); background: #1E1914; color: #D8CBB4; font: inherit; font-size: 1.15rem; font-weight: 700; cursor: pointer; }
-.pp-btn svg { width: 1.1rem; height: 1.1rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.pp-btn.close { justify-self: start; }
-.pp-btn.next { justify-self: end; border-color: var(--accent); color: var(--accent); }
-.pp-btn.listen { min-height: 2.6rem; font-size: 1rem; padding: 0 1rem; }
-.pp-tabs { display: flex; gap: .6rem; }
-.pp-tabs button { width: clamp(8rem, 12vw, 11.5rem); text-align: left; padding: .5rem .9rem 0; border: 0; border-top: 3px solid var(--line); background: none; color: var(--muted); font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-size: 1.05rem; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; min-height: 2.8rem; }
-.pp-tabs button b { font-family: var(--f-ui); font-weight: 800; margin-right: .4rem; }
-.pp-tabs button.cur { border-top-color: var(--accent); color: var(--ink); }
-.pp-tabs button.cur b { color: var(--accent); }
 .app[data-paper="1"] .main > .inner { visibility: hidden; }
 #backPaper { display: none; }
 .app[data-from-paper="1"] #backPaper { display: inline-flex; }
-@media (max-width: 760px) { .pp-art { grid-template-columns: 1fr; overflow: auto; } .pp-tabs { display: none; } }
 
 /* v88: 대기화면 비율 — 3m에서 날씨가 읽히게, 시계는 조금 줄이고 신문은 그대로 */
 .sv-wx .wx-now, .sv-wx .wx-sub { display: block; }
@@ -680,12 +632,11 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .saver.night .sv-msg { text-align: center; }
 
 /* 제호도 명조로 — 대기화면의 시계·제목과 같은 서체 */
-.svp-name, .pp-mast { font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif !important; font-weight: 900 !important; letter-spacing: -.02em; }
+.svp-name { font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif !important; font-weight: 900 !important; letter-spacing: -.02em; }
 
 /* v90: 루아 신문 제호 = 직접 그린 궁체 로고(이름 낙관 포함) */
-.svp-name img, .pp-mast img { display: block; height: 1.05em; width: auto; }
+.svp-name img { display: block; height: 1.05em; width: auto; }
 .saver.paper-hero .svp-name { font-size: clamp(3rem, min(6.6vw, 12.4vh), 7.6rem); }
-.pp-mast { font-size: clamp(1.8rem, min(2.6vw, 4.6vh), 2.6rem); }
 
 /* 양옆 칸 정렬: 윗선(날짜·현재 날씨)과 아랫선(시계·한마디·제호)을 맞춤 */
 .saver.paper-hero .sv-top { align-self: start; padding: 0; line-height: 1; }
@@ -703,16 +654,10 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .app[data-state="idle"] .gk .gk-q { animation: gk-qbob 3.2s ease-in-out infinite; }
 
 /* v98: 기사 화면 세로 공간 아끼기 (1600×820 DeX에서 본문이 잘리지 않게) */
-.paper .inner { gap: 0 !important; row-gap: 0 !important; padding-block: .7rem .3rem; }
-.pp-art { padding-top: .7rem !important; }
-.pp-nav { margin-top: .5rem !important; padding-top: .55rem !important; }
-.pp-btn { min-height: 2.9rem; }
-.pp-tabs button { min-height: 2.6rem; }
 
 /* 박스 왼쪽 주황 강조선은 쓰지 않음 — 둥근 카드로 */
 .wstrip { border-left: 0 !important; border-radius: 1.2rem; }
 .fig-box:has(.vcard), .fig-box:has(.emo), .fig-box:has(.era) { border-left: 0 !important; border-radius: 20px !important; }
-.pp-word { border-left: 0 !important; border-radius: 1rem !important; }
 
 /* v99: 저녁(18~22시) 대기화면 = 오늘 밤하늘 — 아침 신문과 같은 제호 띠, 아래는 남쪽 하늘과 오늘의 달 */
 .sv-sky { display: none; }
@@ -788,9 +733,6 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 /* v101: 검토 반영 — 12시간제, 직각 통일, 버튼 문법, 다 읽은 날 한 줄, 작은 글씨 키움 */
 .sv-time small { font-size: .2em; font-weight: 400; letter-spacing: 0; margin-right: .35em; color: color-mix(in srgb, currentColor 72%, transparent); }
 .fig-box:has(img), .fig-box:has(.vcard), .fig-box:has(.era), .fig-box, .fig-box img { border-radius: 0 !important; }
-.pp-word { background: none !important; border-radius: 0 !important; padding: .9rem 0 0 !important; border-top: 1px solid var(--line) !important; }
-.pp-nav { border-top: 0 !important; }
-.pp-folio { font-size: clamp(.95rem, 1.15vw, 1.15rem); }
 .svp-open { border-radius: 0 !important; }
 .chips button { border-radius: 0 !important; background: transparent !important; }
 .chips button .no { display: none; }
@@ -1135,7 +1077,6 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 /* v106: 누르는 곳 60px 이상 */
 #replayBtn { min-height: 3rem; padding-inline: 1rem; }
 .top-right .iconbtn { width: 3rem; height: 3rem; }
-.pp-listen, #ppClose, #ppNext, .pp-tabs button { min-height: 3rem; }
 /* v106: 홈 시계 (머리띠) */
 .tb-clock { font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-size: 1.7rem; font-weight: 600; letter-spacing: -.02em; color: var(--ink); font-variant-numeric: tabular-nums; margin-right: .6rem; white-space: nowrap; }
 .tb-clock small { font-family: var(--f-ui, inherit); font-size: .5em; font-weight: 700; color: var(--muted); margin-right: .35em; letter-spacing: 0; }
@@ -1475,30 +1416,23 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="td tdo" id="tdTodo"><span class="svp-tag" id="tdTodoT">루아의 할 일</span><div class="tdo-list" id="tdTodoL"></div></div>
     </div>
   </div>
-  <div class="paper" id="paper" hidden><div class="inner">
-    <div class="pp-head">
-      <div class="l"><span class="pp-mast"><img src="./rua-masthead.svg" alt="루아 신문"></span><span class="pp-folio" id="ppFolio"></span></div>
-      <div class="r"><button class="pp-btn listen" id="ppListen" type="button"><svg viewBox="0 0 24 24"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path d="M16 8.2a5.2 5.2 0 0 1 0 7.6"></path></svg>들려줘</button><span class="pp-no" id="ppNo"></span></div>
-    </div>
-    <article class="pp-art" id="ppArt">
-      <div class="pp-main">
-        <span class="pp-tag" id="ppTag"></span>
-        <h2 class="pp-hed" id="ppHed"></h2>
-        <p class="pp-lede" id="ppLede"></p>
-        <p class="pp-body" id="ppBody"></p>
-        <div class="pp-src" id="ppSrc"></div>
-      </div>
-      <aside class="pp-side">
-        <div class="pp-photo" id="ppPhoto"></div>
-        <div class="pp-cap" id="ppCap"></div>
-        <div class="pp-word" id="ppWord"><div class="lbl">오늘의 낱말</div><div class="w" id="ppW"></div><div class="m" id="ppM"></div><div class="hj" id="ppHj"></div></div>
-      </aside>
+  <div class="paper" id="paper" hidden><div class="rn-sheet">
+    <header class="rn-phead">
+      <button class="rn-home" id="ppHome" type="button" aria-label="홈으로"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 11.2 12 3.9l8.4 7.3M6 9.6V19a1 1 0 0 0 1 1h3.4v-5.2h3.2V20H17a1 1 0 0 0 1-1V9.6"/></svg><span>홈</span></button>
+      <b class="rn-sec" id="ppTag"></b>
+      <span class="rn-pmid"><img src="./rua-masthead.svg" alt="루아 신문"><span id="ppFolio"></span></span>
+      <span class="rn-pright"><span id="ppNo"></span><button class="rn-rb" id="ppAsk" type="button" aria-label="물어보기"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="2.5" width="7" height="12.5" rx="3.5"></rect><path d="M5.2 11.5a6.8 6.8 0 0 0 13.6 0M12 18.5v3"></path></svg></button><button class="rn-rb" id="ppListen" type="button" aria-label="들려줘"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path d="M16 8.2a5.2 5.2 0 0 1 0 7.6"></path></svg></button></span>
+    </header>
+    <article class="rn-art nopic" id="ppArt">
+      <h2 class="rn-hed" id="ppHed"></h2>
+      <p class="rn-deck" id="ppLede"></p>
+      <figure class="rn-fig" id="ppPhoto"></figure>
+      <div class="rn-cap" id="ppCap"></div>
+      <div class="rn-box rn-word" id="ppWord"><span class="rn-lab">오늘의 낱말</span><div class="rn-w"><b id="ppW"></b><span id="ppHj" style="display:contents"></span></div><p id="ppM"></p></div>
+      <div class="rn-text" id="ppBody"></div>
+      <div class="rn-src" id="ppSrc"></div>
     </article>
-    <nav class="pp-nav">
-      <button class="pp-btn close" id="ppClose" type="button"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"></path></svg>신문 닫기</button>
-      <div class="pp-tabs" id="ppTabs"></div>
-      <button class="pp-btn next" id="ppNext" type="button"><span id="ppNextT">다음 기사</span><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button>
-    </nav>
+    <nav class="rn-pnav"><button id="ppPrev" type="button" hidden></button><span id="ppDots"></span><button id="ppNext" type="button"></button></nav>
   </div></div>
   <div class="listen-ov" id="listenOv" aria-hidden="true"><div class="lo-buddy" id="loBuddy"><i class="lo-glow"></i><i class="lo-glow"></i></div><p class="lo-cap" id="loCap"></p><p class="lo-text" id="loText"></p></div>
   </section>
@@ -1516,6 +1450,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   </div></form>
 
   <div class="saver" id="saver" hidden>
+    <div class="rn-front" id="rnFront" hidden></div>
   <div class="sv-dots" id="svDots" hidden aria-hidden="true"></div>
     <div class="sv-cal" id="svCal"><div class="cal-head"><span id="calMon"></span><span id="calTime"></span></div><div class="cal-dow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div><div class="cal-grid" id="calGrid"></div><div class="cal-big" id="calBig"></div></div>
     <div class="sv-face" id="svFace"><div class="fc-grid" id="fcGrid">
@@ -2333,7 +2268,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     e.preventDefault(); e.stopPropagation(); svTouchAt = Date.now(); saverEl.classList.remove('rest');
     const now = Date.now(), row = e.target.closest && e.target.closest('[data-todo]'); svTaps = svTaps.filter(t => now - t < 3000); if (!row) svTaps.push(now);
     const cvt = !row && e.target.closest && e.target.closest('[data-cv]'); const tile = !row && !cvt && e.target.closest && e.target.closest('[data-tile]');
-    svDown = { x: e.clientX, y: e.clientY, todo: row ? row.dataset.todo : '', tile: tile ? tile.dataset.tile : '', cv: cvt ? cvt.dataset.cv : '', paper: !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper') };
+    const npa = e.target.closest && e.target.closest('[data-rn]');
+    svDown = { np: npa && saverEl.classList.contains('rnp') ? npa.dataset.rn : '', npi: npa ? +npa.dataset.i || 0 : 0, x: e.clientX, y: e.clientY, todo: row ? row.dataset.todo : '', tile: tile ? tile.dataset.tile : '', cv: cvt ? cvt.dataset.cv : '', paper: !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper') };
     clearTimeout(svHold); svHold = setTimeout(() => { svTaps = []; svDown = null; openLog(); }, 2000);
     if (svTaps.length >= 5) { svTaps = []; svDown = null; clearTimeout(svHold); openLog(); }
   }, true);
@@ -2347,12 +2283,17 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (Math.abs(dx) > 70 && Math.abs(dx) > 1.5 * Math.abs(dy)) { svTaps = []; svPage(dx < 0 ? 1 : -1); return; }
     if (Math.abs(dx) > 24 || Math.abs(dy) > 24) return; // 어중간하게 끌다 만 것은 무시
     if (d.todo) { todoToggle(d.todo); return; }
+    if (saverEl.classList.contains('rnp')) { svTaps = []; // 신문 1면: 홈 단추와 기사만 눌린다 (빈 곳은 아무 일도 없다)
+      if (d.np === 'home') { delete window.__gkForce; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '1면 → 홈'); }
+      else if (d.np === 'art') { exitSaver(); if (saverEl.hidden) openPaper(d.npi); }
+      return; }
     if (saverEl.classList.contains('cal')) { svTaps = []; delete window.__gkForce; renderSaver(); return; } // 달력을 누르면 위젯 면으로 // 할 일 줄: 줄만 긋고 화면은 그대로
     if (d.cv) { svTaps = []; window.__gkCover = { k: d.cv, at: Date.now() }; renderSaver(); return; }
     if (d.tile === 'study') { svTaps = []; try { studyOn() ? localStorage.removeItem('gk-study') : localStorage.setItem('gk-study', String(Date.now())); } catch (e) {} window.__gkSaverAt = Date.now(); delete window.__gkCover; renderSaver(); diag('saver', '공부 모드 ' + (studyOn() ? '켬' : '끔')); return; }
     if (d.tile === 'cal') { svTaps = []; window.__gkForce = { s: 'cal', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날짜 → 달력'); return; }
     if (d.tile === 'sky' && window.GKSky) { svTaps = []; window.__gkForce = { s: 'sky', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '타일 → 밤하늘'); return; }
     const hadNews = !!(news && newsFresh());
+    if (d.tile === 'news' && hadNews && innerWidth >= 900) { svTaps = []; window.__gkForce = { s: 'front', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '표지 → 신문 1면'); return; }
     exitSaver();
     if ((d.paper || (d.tile === 'news' && hadNews)) && saverEl.hidden) openPaper(0);
     else if (d.tile === 'ask' && saverEl.hidden) { try { $('micBtn') && $('micBtn').click(); } catch (e) {} }
@@ -2411,6 +2352,64 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     return res;
   }
   function putPic(box, pic) { box.innerHTML = ''; if (!pic) return; const im = new Image(); im.src = pic.src; im.alt = pic.title; box.append(im); box.classList.toggle('contain', pic.r < 0.8 || pic.r > 1.6); }
+  // ---------- 루아 신문의 그림 (v121): 발행 때 사람이 본 같은 출처 파일만 ----------
+  // 규칙 (하나라도 어긋나면 그림 없이 — 지면은 그림 없는 조판으로 접힌다):
+  //  1) 기사의 img 가 news/img/YYYY-MM-DD-[1-3].(jpg|webp) 꼴일 때만 (바깥 주소 · 상위 경로 · 다른 이름은 요청조차 하지 않는다)
+  //  2) 받은 파일의 SHA-256 이 기사의 imgHash 와 같을 때만 (발행 뒤 파일이 바뀌면 싣지 않는다)
+  //  3) 부모 설정 '그림'이 꺼져 있으면 싣지 않는다
+  //  기사의 pic(옛 위키 검색어)은 신문에서 읽지 않는다. 화면에는 검사한 그 바이트로 만든 blob: 주소만 쓴다.
+  const NEWS_IMG = /^news\/img\/\d{4}-\d{2}-\d{2}-[1-3]\.(jpg|webp)$/, npImgMemo = new Map();
+  function newsImg(i) {
+    const a = (news && news.articles[i]) || {}, img = a.img, hash = String(a.imgHash || '').toLowerCase();
+    if (settings.picOn === 'off' || typeof img !== 'string' || !NEWS_IMG.test(img) || !/^[0-9a-f]{64}$/.test(hash) || !(window.crypto && crypto.subtle)) return Promise.resolve(null);
+    const key = img + '|' + hash; if (npImgMemo.has(key)) return npImgMemo.get(key);
+    if (npImgMemo.size > 12) { npImgMemo.forEach(p => p.then(x => { if (x) try { URL.revokeObjectURL(x.src); } catch (e) {} })); npImgMemo.clear(); }
+    const job = (async () => {
+      try {
+        const r = await fetch('./' + img, { cache: 'no-cache', credentials: 'same-origin', redirect: 'error' }); if (!r.ok) return null;
+        const buf = await r.arrayBuffer(); if (buf.byteLength > 3e6) return null;
+        const got = [...new Uint8Array(await crypto.subtle.digest('SHA-256', buf))].map(b => b.toString(16).padStart(2, '0')).join('');
+        if (got !== hash) { diag('pic', `신문 그림 막음(해시 다름): ${img}`); return null; }
+        const src = URL.createObjectURL(new Blob([buf], { type: /\.webp$/.test(img) ? 'image/webp' : 'image/jpeg' }));
+        await new Promise((ok, no) => { const im = new Image(); im.onload = ok; im.onerror = () => no(new Error('img')); im.src = src; });
+        return { src, title: '그림 · ' + String(a.cap || a.short || a.tag || '').replace(/^그림\s*·\s*/, ''), r: 1.6 };
+      } catch (e) { return null; }
+    })();
+    npImgMemo.set(key, job); job.then(x => { if (!x) setTimeout(() => npImgMemo.delete(key), 10 * 60e3); });
+    return job;
+  }
+  // 조판 도우미: 어절은 쪼개지지 않게(괄호 · 숫자가 섞여도), 숫자와 단위는 한 덩어리로, 문단은 두 문장씩 들여 쓴다
+  const npGlue = t => String(t).replace(/(\d+월) (\d+일)/g, '$1 $2').replace(/(\d[\d,.]*\s?[만억천]?) (톤|개|년|명|일|시간|번|살|마리|도|원|㎞|km)/g, '$1 $2').replace(/(한|두|세|네|몇) (시간|개|번|명|살)/g, '$1 $2');
+  const npWords = (t, mark) => npGlue(t).split(/ +/).filter(Boolean).map(x => `<span class="w">${mark ? bodyHtml(x) : escN(x.replace(/[《》]/g, ''))}</span>`).join(' ');
+  const npSents = t => String(t || '').match(/[^.!?]+[.!?]+["'”’)]*\s*/g) || (t ? [String(t)] : []);
+  const npParas = (t, mark) => { const S = npSents(t), out = []; for (let i = 0; i < S.length; i += 2) out.push('<p>' + npWords(S.slice(i, i + 2).join('').trim(), mark) + '</p>'); return out.join(''); };
+  const npWordBox = W => W && W.w ? `<div class="rn-box rn-word"><span class="rn-lab">오늘의 낱말</span><div class="rn-w"><b>${escN(W.w)}</b>${(W.hanja || []).map(h => `<span><i>${escN(h[0])}</i><small>${escN(h[1])}</small></span>`).join('')}</div><p>${escN(W.mean || '')}</p></div>` : '';
+  const npTone = () => { const h = new Date().getHours(); return h >= 21 || h < 6 ? 'late' : h >= 18 ? 'eve' : 'day'; }; // 저녁엔 둘레만, 밤 9시 뒤엔 종이도 한 단 낮춘다
+  let npPic0 = null, npPicKey = '';
+  function renderNpFront() { // 신문 1면(넓은 화면): 제호(왼쪽 귀 = 홈, 오른쪽 귀 = 날씨) · 겹괘선 · 발행 줄 · 머리기사 네 단 + 옆 기사 두 단
+    const host = $('rnFront'), A = news.articles, a = A[0], d = new Date(news.date + 'T00:00:00');
+    let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 12 * 3600e3) w = last.w; }
+    const pk = news.date + '|' + news.no + '|' + (a.img || '') + '|' + (a.imgHash || '') + '|' + settings.picOn;
+    if (pk !== npPicKey) { npPicKey = pk; npPic0 = null; newsImg(0).then(pic => { if (npPicKey !== pk) return; npPic0 = pic || false; if (!saverEl.hidden && saverEl.classList.contains('rnp')) renderNpFront(); }); }
+    host.dataset.t = npTone();
+    const pic = npPic0 || null, num = a.num && a.num.n ? a.num : null, word = npWordBox(a.word);
+    const key = [pk, pic ? 1 : 0, innerWidth, innerHeight, w ? w.t + '|' + w.code + '|' + w.hi + '|' + w.lo : '', JSON.stringify(A).length].join('|'); if (host.dataset.k === key) return; host.dataset.k = key;
+    host.innerHTML = `<div class="rn-sheet"><span class="rn-home" data-rn="home" role="button" aria-label="홈으로"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 11.2 12 3.9l8.4 7.3M6 9.6V19a1 1 0 0 0 1 1h3.4v-5.2h3.2V20H17a1 1 0 0 0 1-1V9.6"/></svg><span>홈</span></span>
+      <header class="rn-mast"><img class="rn-logo" src="./rua-masthead.svg" alt="루아 신문">${w ? `<div class="rn-ear"><b>${escN(w.t)}°</b><span>${escN((WX[w.code] || [''])[0])} · ${escN(w.hi)}° / ${escN(w.lo)}°</span></div>` : ''}<div class="rn-rule2"></div>
+        <div class="rn-date"><span>제${escN(news.no)}호 · ${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일</span><span>${A.slice(1, 3).map((x, i) => `${i + 2}면 ${escN(x.tag || '')}`).join(' · ')}</span><span>1면</span></div></header>
+      <div class="rn-body"><article class="rn-lead${pic ? '' : ' nopic'}" data-rn="art" data-i="0"><span class="rn-lab">${escN(a.tag || '오늘')}</span><h2>${escN(a.title)}</h2>
+        <div class="rn-cols"><div class="rn-left">${pic ? `<figure class="rn-fig"><img src="${pic.src}" alt=""></figure><div class="rn-cap">${escN(pic.title)}</div>${num ? word : ''}` : ''}</div>
+        <div class="rn-right"><div class="rn-text" id="rnText">${a.lede ? '<p class="ld">' + npWords(a.lede) + '</p>' : ''}${npParas(a.body, false)}</div><span class="rn-more">이어 읽기 ▸</span>${!pic && num ? word : ''}</div></div></article>
+      <aside class="rn-side">${A.slice(1, 3).map((x, i) => `<div class="rn-it" data-rn="art" data-i="${i + 1}"><span class="rn-lab">${escN(x.tag || '')}<i>${i + 2}면</i></span><h3>${escN(x.title)}</h3><p>${npWords(x.lede || '')}</p></div>`).join('')}
+        ${num ? `<div class="rn-box rn-num"><span class="rn-lab">오늘의 숫자</span><b>${escN(npGlue(num.n))}</b><p>${npWords(num.t || '')}</p></div>` : word}</aside></div></div>`;
+    npFit(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(npFit);
+  }
+  function npFit() { // 1면 본문이 넘치면 뒤에서부터 문장 단위로 덜어 낸다 (나머지는 기사 화면에서 이어진다)
+    const box = $('rnText'); if (!box) return; const lead = box.closest('.rn-lead'), cols = lead.querySelector('.rn-cols'), nopic = lead.classList.contains('nopic');
+    const over = () => nopic ? cols.scrollWidth > cols.clientWidth + 2 || cols.scrollHeight > cols.clientHeight + 2 : box.scrollHeight > box.clientHeight + 2;
+    let guard = 40; while (over() && guard-- > 0) { const ps = box.querySelectorAll('p:not(.ld)'), last = ps[ps.length - 1]; if (!last) break; const ws = [...last.querySelectorAll('.w')]; let cut = -1; for (let i = ws.length - 2; i >= 0; i--) if (/[.!?]["'”’)]*$/.test(ws[i].textContent)) { cut = i; break; }
+      if (cut < 0) last.remove(); else { while (last.lastChild && last.lastChild !== ws[cut]) last.lastChild.remove(); } }
+  }
   function bodyHtml(t) { return escN(t).replace(/《([^》]+)》/g, '<mark>$1</mark>'); }
   function renderFront() {
     const fz = window.__gkForce && Date.now() - window.__gkForce.at < (window.__gkForce.s === 'cal' ? 90e3 : 10 * 60e3) ? window.__gkForce.s : ''; // 달력은 90초 // 부모님 화면의 미리 보기 (10분 뒤 저절로 풀림)
@@ -2423,6 +2422,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const face = wide && !night && !sky && (!fz || fz === 'face' || fz === 'sky'); // 넓은 화면의 낮·저녁 기본: 위젯 면
     const cal = wide && !night && fz === 'cal';
     saverEl.classList.toggle('sky', sky); saverEl.classList.toggle('face', face); saverEl.classList.toggle('cal', cal); if (!face) saverEl.classList.remove('rest', 'late');
+    saverEl.classList.remove('rnp'); $('rnFront').hidden = true;
     if (cal) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain'].forEach(c => saverEl.classList.remove(c)); renderCal(hr); return true; }
     if (face) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain'].forEach(c => saverEl.classList.remove(c)); return renderFace(on, read, hr) !== 'line'; }
     saverEl.classList.toggle('plain', !on && !night && !sky);
@@ -2433,6 +2433,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     saverEl.classList.toggle('paper-done', on && !night && read && fz !== 'front');
     if (!on) return night;
     if (night) return true;
+    if (wide && saverEl.classList.contains('paper-hero')) { saverEl.classList.add('rnp'); $('rnFront').hidden = false; renderNpFront(); return true; } // 넓은 화면의 1면: 신문 한 장
     const [a, ...rest] = news.articles;
     $('svpMeta').innerHTML = `제${escN(news.no)}호<span class="mdate"> · ${escN(newsDate())}</span>${news.theme ? '<br><span class="msep"> · </span>오늘의 주제 · ' + escN(news.theme) : ''}`;
     $('svpTag').textContent = a.tag ? a.tag + ' · 1면' : '1면';
@@ -2441,11 +2442,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const words = news.articles.map(x => x.word && x.word.w).filter(Boolean).length;
     const u = $('svpUnread'); u.classList.toggle('read', read); u.querySelector('span').textContent = read ? `오늘 신문 다 읽음` : `오늘 새 소식 ${news.articles.length}개 · 오늘의 낱말 ${words}개`;
     { const done = LS.get(NEWS_DONE, []); $('svpDoneT').textContent = `루아 신문 제${news.no}호 다 읽었어`; $('svpCount').textContent = done.length > 1 ? ` · 지금까지 ${done.length}호` : ''; }
-    const lead = $('svpLead'), box = $('svpPhoto'), key = news.no + ':' + a.pic;
-    if (box.dataset.k !== key) {
-      box.dataset.k = key; box.innerHTML = ''; lead.classList.add('nopic');
-      safePic(a.pic).then(pic => { if (box.dataset.k !== key) return; putPic(box, pic); lead.classList.toggle('nopic', !pic); });
-    }
+    $('svpLead').classList.add('nopic'); $('svpPhoto').innerHTML = ''; // 좁은 화면의 옛 1면: 그림 없이
     return true;
   }
 
@@ -2770,27 +2767,31 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const curArticle = () => news && news.articles[paperIdx];
   function renderPaper() {
     const A = curArticle(); if (!A) return;
-    const n = news.articles.length;
-    $('ppFolio').innerHTML = `제${escN(news.no)}호 · ${escN(newsDate())}${news.theme ? ' · 오늘의 주제<b>' + escN(news.theme) + '</b>' : ''}`;
-    $('ppNo').innerHTML = `<b>${paperIdx + 1}</b> / ${n}`;
-    $('ppTag').textContent = A.tag || ''; $('ppHed').textContent = A.title; $('ppLede').textContent = A.lede || '';
-    $('ppBody').innerHTML = bodyHtml(A.body || ''); $('ppSrc').textContent = A.source ? '출처 ' + A.source : '';
+    const n = news.articles.length, art = $('ppArt'), box = $('ppPhoto'), key = news.no + ':' + paperIdx, tag = i => (news.articles[i] && news.articles[i].tag) || '';
+    paperEl.dataset.t = npTone();
+    $('ppTag').textContent = A.tag || ''; $('ppFolio').textContent = newsDate(); $('ppNo').textContent = `${paperIdx + 1}면`;
+    $('ppHed').textContent = A.title; $('ppLede').innerHTML = npWords(A.lede || ''); $('ppLede').hidden = !A.lede;
+    $('ppBody').innerHTML = npParas(A.body || '', true); $('ppSrc').textContent = A.source ? '출처 ' + A.source : '';
     const W = A.word || {}; $('ppWord').hidden = !W.w; $('ppW').textContent = W.w || ''; $('ppM').textContent = W.mean || '';
-    const hj = $('ppHj'); hj.innerHTML = (W.hanja || []).map(h => `<div><span>${escN(h[0])}</span><small>${escN(h[1])}</small></div>`).join(''); hj.hidden = !(W.hanja || []).length;
-    $('ppTabs').innerHTML = news.articles.map((x, i) => `<button type="button" data-i="${i}" class="${i === paperIdx ? 'cur' : ''}">${escN(x.short || x.title)}</button>`).join('');
-    $('ppNextT').textContent = paperIdx < n - 1 ? '다음 기사' : '다 읽었어';
-    const art = $('ppArt'), box = $('ppPhoto'), key = news.no + ':' + paperIdx;
-    box.dataset.k = key; box.innerHTML = ''; art.classList.add('nopic');
-    $('ppCap').innerHTML = '';
-    safePic(A.pic).then(pic => { if (box.dataset.k !== key) return; putPic(box, pic); art.classList.toggle('nopic', !pic); $('ppCap').innerHTML = pic ? `<b>${escN(pic.title)}</b>${escN(A.cap || '')}` : ''; });
-    art.querySelector('.pp-main').scrollTop = 0;
-    fitPaper(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPaper); // 글꼴이 늦게 바뀌어도 다시 맞춤
+    $('ppHj').innerHTML = (W.hanja || []).map(h => `<span><i>${escN(h[0])}</i><small>${escN(h[1])}</small></span>`).join('');
+    $('ppPrev').hidden = !paperIdx; $('ppPrev').textContent = paperIdx ? `◂  ${paperIdx}면 ${tag(paperIdx - 1)}` : '';
+    $('ppDots').textContent = `${paperIdx + 1} / ${n}`; $('ppNext').textContent = paperIdx < n - 1 ? `${paperIdx + 2}면 ${tag(paperIdx + 1)}  ▸` : '첫 면으로  ▸';
+    box.dataset.k = key; box.innerHTML = ''; $('ppCap').textContent = ''; art.classList.add('nopic'); art.dataset.hasimg = '';
+    $('ppBody').scrollTop = 0; fitPaper(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPaper); // 글꼴이 늦게 바뀌어도 다시 맞춤
+    newsImg(paperIdx).then(pic => { if (box.dataset.k !== key || !pic) return; putPic(box, pic); box.classList.remove('contain'); $('ppCap').textContent = pic.title; art.dataset.hasimg = '1'; fitPaper(); });
   }
-  // 기사가 화면 아래로 잘리지 않게: 넘치면 글자를 조금씩 줄임 (최소 72%)
+  // 기사가 종이 밖으로 넘치지 않게: 글자를 한 단씩 줄이고(24px 아래로는 줄이지 않는다), 그래도 넘치면 그림을 접어 세 단으로, 그래도 넘치면 본문 단만 넘겨 본다
   function fitPaper() {
-    const main = paperEl.querySelector('.pp-main'); if (!main || paperEl.hidden) return;
-    let k = 1.24; paperEl.style.setProperty('--ppk', k); // 자리가 남으면 글자를 키우고, 넘치면 줄임
-    while (main.scrollHeight > main.clientHeight + 2 && k > 0.8) { k = Math.round((k - 0.04) * 100) / 100; paperEl.style.setProperty('--ppk', k); }
+    const body = $('ppBody'), art = $('ppArt'); if (!body || paperEl.hidden) return;
+    if (innerWidth < 900) { art.classList.toggle('nopic', !art.dataset.hasimg); art.classList.remove('scroll', 'tight'); art.style.removeProperty('--pf'); return; }
+    const big = innerWidth >= 1800 && innerHeight >= 940 ? 4 : 0, over = () => body.scrollHeight > body.clientHeight + 2 || body.scrollWidth > body.clientWidth + 2;
+    const tryFit = (from) => { for (let f = from; f >= 24; f--) { art.style.setProperty('--pf', f + 'px'); if (!over()) return true; } return false; };
+    art.classList.remove('scroll', 'tight'); art.classList.toggle('nopic', !art.dataset.hasimg);
+    let ok = tryFit((art.dataset.hasimg ? 28 : 32) + big);
+    if (!ok && art.dataset.hasimg) { art.classList.add('nopic'); ok = tryFit(30 + big); }
+    if (!ok) { art.classList.add('tight'); ok = tryFit(28 + big); } // 낱말 상자를 접는다(낱말은 본문에 굵게 남는다)
+    if (!ok) art.classList.add('scroll');
+    art.style.setProperty('--ruleTop', (body.offsetTop + 2) + 'px');
   }
   addEventListener('resize', () => { if (paperEl && !paperEl.hidden) fitPaper(); });
   function openPaper(i) {
@@ -2805,12 +2806,16 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   function hidePaper() { if (!paperEl) return; paperEl.hidden = true; delete app.dataset.paper; }
   function closePaper(toSaver) { hush(); hidePaper(); if (toSaver) { window.__gkSaverAt = Date.now(); enterSaver(); } else showPiece(false); }
-  function paperNext() { hush(); if (paperIdx < news.articles.length - 1) { paperIdx++; renderPaper(); } else closePaper(true); }
+  function paperNext() { hush(); if (paperIdx < news.articles.length - 1) { paperIdx++; renderPaper(); return; }
+    hidePaper(); window.__gkSaverAt = Date.now(); if (innerWidth >= 900 && newsFresh()) window.__gkForce = { s: 'front', at: Date.now() }; enterSaver(); renderSaver(); } // 마지막 기사 → 첫 면(1면)으로. 좁은 화면은 예전처럼 대기화면
+  function paperPrev() { hush(); if (paperIdx > 0) { paperIdx--; renderPaper(); } }
+  function paperHome() { hush(); delete window.__gkForce; window.__gkSaverAt = Date.now(); closePaper(true); renderSaver(); diag('app', '기사 → 홈'); } // 홈 단추: 기사를 닫고 대기화면(넓은 화면은 위젯 면)으로
   function readArticle() { const A = curArticle(); if (A) speak(`${A.title}. ${A.lede || ''} ${String(A.body || '').replace(/[《》]/g, '')}`, true); }
   $('ppNext').addEventListener('click', paperNext);
-  $('ppClose').addEventListener('click', () => closePaper(false));
+  $('ppPrev').addEventListener('click', paperPrev);
+  $('ppHome').addEventListener('click', paperHome);
+  $('ppAsk').addEventListener('click', () => { try { $('micBtn').click(); } catch (e) {} }); // 기사를 읽다가 물어보기 (듣는 동안은 기사가 가려진다)
   $('ppListen').addEventListener('click', readArticle);
-  $('ppTabs').addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (b) { hush(); paperIdx = +b.dataset.i; renderPaper(); } });
   $('backPaper').addEventListener('click', () => { if (news) openPaper(paperIdx); });
   setInterval(() => loadNews(), 30 * 60e3);
   loadNews(true).then(() => { if (!saverEl.hidden) renderSaver(); });
@@ -3935,6 +3940,134 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
 #saver.saver.face.study .fc-app[data-tile="study"] .fc-lab{color:var(--t1);font-weight:600}
 #saver.saver.face .fc-feat.study .cc-mid{grid-template-columns:minmax(0,1fr)}
 #saver.saver.face .fc-feat.study .cc-big{opacity:.92}
+</style>
+<style id="np-paper">
+/* ===== 루아 신문 (v121): 1면과 기사 = 화면 가운데 놓인 신문 한 장 =====
+   종이 안쪽 40 → 판면을 여섯 단으로 보고, 글은 두 단 묶음(--cw, 1600에서 464px · 한 줄 18자 안팎) 셋으로만 흘린다.
+   종이 안에는 카드 · 둥근 판 · 색 단추가 없다. 먹색 하나, 괘선, 명조. 종이 자리는 두 화면에서 같다.
+   그림은 발행 때 사람이 본 같은 출처 파일만(newsImg) — 없거나 검사에 걸리면 그림 없는 조판으로 접힌다. */
+.rn-front, .paper{ --nk:#1B1712; --nk2:#4A4239; --nrule:rgb(27 23 18 / .3); --sheet:#F7F3E9; --desk:linear-gradient(180deg,#E2D2B8,#EBDFCB); --S:90 64 30;
+  --serif:"Noto Serif KR","Noto Serif CJK KR","Nanum Myeongjo",serif; --sans:"Pretendard",system-ui,sans-serif; --cw:calc((100vw - 208px) / 3);
+  position:fixed;inset:0;background:var(--desk);color:var(--nk);font-family:var(--serif);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;cursor:default}
+.rn-front[data-t=eve], .paper[data-t=eve], .rn-front[data-t=late], .paper[data-t=late]{ --desk:linear-gradient(180deg,#D6C0B4,#E2D2C6) }
+.rn-front[data-t=late], .paper[data-t=late]{ --sheet:#EDE6D8 }
+.rn-front[hidden], .paper[hidden]{display:none}
+.paper{z-index:20}
+.app[data-state=listen] .paper, .app[data-state=think] .paper{visibility:hidden} /* 기사에서 물어볼 때는 듣는 화면이 보이게 */
+#saver.rnp .sv-inner, #saver.rnp .sv-dots{display:none !important}
+.rn-sheet{position:absolute;left:40px;right:40px;top:20px;bottom:20px;box-sizing:border-box;padding:12px 40px 0;background:var(--sheet);border-radius:2px;display:grid;grid-template-columns:minmax(0,1fr);
+  box-shadow:0 0 0 1px rgb(27 23 18 / .1), 0 1px 1px rgb(var(--S) / .35), 0 3px 6px -2px rgb(var(--S) / .3), 0 16px 24px -14px rgb(var(--S) / .5)}
+.rn-sheet p, .rn-sheet h2, .rn-sheet h3{margin:0;word-break:keep-all;overflow-wrap:break-word;line-break:strict;text-align:left;hyphens:none;text-wrap:pretty;orphans:2;widows:2}
+.rn-sheet .w{white-space:nowrap}
+/* 조작부: 유리 캡슐 '홈'(왼쪽 귀) · 유리 원(오른쪽 귀) */
+.rn-home, .rn-rb{box-sizing:border-box;height:64px;border:0;border-radius:32px;display:inline-flex;align-items:center;justify-content:center;gap:10px;flex:none;cursor:pointer;color:var(--nk);font:600 28px/1 var(--sans);letter-spacing:-.012em;
+  background:linear-gradient(180deg,rgb(255 254 250 / .82),rgb(255 248 236 / .62));box-shadow:inset 0 1.5px 0 rgb(255 255 255 / .95), inset 0 0 0 1px rgb(27 23 18 / .14), 0 8px 14px -8px rgb(var(--S) / .5);-webkit-tap-highlight-color:transparent}
+.rn-home{position:absolute;z-index:2;left:8px;top:20px;width:132px;padding:0 6px 0 0}
+.rn-rb{width:64px;padding:0}
+.rn-home svg, .rn-rb svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.rn-home:active, .rn-rb:active{transform:scale(.97);box-shadow:inset 0 0 0 1px rgb(27 23 18 / .14)}
+/* 꼬리표 · 그림 · 상자 */
+.rn-lab{font:700 22px/28px var(--sans);letter-spacing:.1em;color:var(--nk)}
+.rn-lab i{font-style:normal;font-weight:500;letter-spacing:.04em;color:var(--nk2)} .rn-lab i::before{content:" · "}
+.rn-fig{margin:0;min-height:0;overflow:hidden}
+.rn-fig img{display:block;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;filter:grayscale(1) brightness(1.07) contrast(1.12)}
+.rn-cap{font:600 22px/30px var(--sans);letter-spacing:.02em;color:var(--nk2);margin-top:6px}
+.rn-box{position:relative;border:1px solid var(--nk);padding:14px 18px 10px;margin-top:22px}
+.rn-box > .rn-lab{position:absolute;left:12px;top:-15px;background:var(--sheet);padding:0 8px}
+.rn-w{display:flex;align-items:baseline;gap:16px;white-space:nowrap;overflow:hidden}
+.rn-w b{font:900 36px/46px var(--serif);letter-spacing:-.03em}
+.rn-w span{display:inline-flex;align-items:baseline;gap:5px}
+.rn-w i{font:700 36px/46px var(--serif);font-style:normal}
+.rn-w small{font:600 22px/1 var(--sans);color:var(--nk2)}
+.rn-box p{font:400 24px/34px var(--serif);text-wrap:balance}
+.rn-num{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:20px;align-items:center}
+.rn-num b{font:900 50px/60px var(--serif);letter-spacing:-.04em;white-space:nowrap}
+.rn-num p{font:400 24px/33px var(--serif)}
+.rn-text p{font:500 26px/40px var(--serif);letter-spacing:-.012em;text-indent:1em}
+.rn-text p.ld{font-weight:700;text-indent:0;margin-bottom:8px}
+.rn-text mark{background:none;padding:0;color:inherit;font-weight:900;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:6px;text-decoration-color:rgb(27 23 18 / .45)}
+
+/* ---------- 1면 ---------- */
+.rn-front .rn-sheet{grid-template-rows:auto minmax(0,1fr)}
+.rn-mast{position:relative}
+.rn-logo{display:block;height:78px;margin:6px auto 12px;filter:brightness(0);clip-path:inset(0 7.5% 0 0);transform:translateX(3.75%)}
+.rn-ear{position:absolute;right:0;top:6px;height:78px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;font:600 22px/30px var(--sans);letter-spacing:.02em;color:var(--nk2)}
+.rn-ear b{font:900 34px/40px var(--serif);color:var(--nk);letter-spacing:-.02em}
+.rn-rule2{height:8px;border-top:3px solid var(--nk);border-bottom:1px solid var(--nk);box-sizing:border-box}
+.rn-date{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:38px;border-bottom:1px solid var(--nk);font:600 22px/1 var(--sans);letter-spacing:.06em;white-space:nowrap}
+.rn-date span:last-child{text-align:right}
+.rn-body{display:grid;grid-template-columns:calc(var(--cw) * 2 + 24px) var(--cw);column-gap:24px;min-height:0;padding:14px 0;position:relative}
+.rn-body::before{content:"";position:absolute;top:10px;bottom:10px;left:calc(var(--cw) * 2 + 36px);width:1px;background:var(--nrule)}
+.rn-lead{min-width:0;min-height:0;display:flex;flex-direction:column;cursor:pointer}
+.rn-lead h2{margin:2px 0 8px;font:900 54px/66px var(--serif);letter-spacing:-.035em;text-wrap:balance;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.rn-cols{flex:1 1 0;min-height:0;display:grid;grid-template-columns:var(--cw) var(--cw);column-gap:24px;position:relative}
+.rn-cols::before{content:"";position:absolute;top:0;bottom:0;left:calc(var(--cw) + 12px);width:1px;background:var(--nrule)}
+.rn-left, .rn-right{min-width:0;min-height:0;display:flex;flex-direction:column}
+.rn-left .rn-fig{flex:1 1 0}
+.rn-left .rn-box{flex:none}
+.rn-lead .rn-text{flex:0 1 auto;min-height:0;overflow:hidden}
+.rn-more{align-self:flex-end;height:30px;margin:auto 0 0;padding-top:6px;display:flex;align-items:flex-end;box-sizing:border-box;font:700 24px/1 var(--sans);letter-spacing:.02em;white-space:nowrap}
+/* 그림 없는 날: 본문이 그림 자리까지 두 단으로 흘러든다 */
+.rn-lead.nopic .rn-cols{display:block;columns:2;column-gap:24px;column-fill:auto;overflow:hidden}
+.rn-lead.nopic .rn-left{display:none}
+.rn-lead.nopic .rn-right, .rn-lead.nopic .rn-text{display:contents}
+.rn-lead.nopic .rn-more{display:block;height:auto;margin:10px 0 0;padding:0;text-align:right;break-before:avoid}
+.rn-lead.nopic .rn-box{break-inside:avoid;margin-top:26px}
+.rn-side{min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.rn-it{cursor:pointer;min-height:60px;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid var(--nrule)}
+.rn-it h3{margin:2px 0 4px;font:700 32px/42px var(--serif);letter-spacing:-.03em;text-wrap:balance;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rn-it p{font:400 24px/35px var(--serif);letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.rn-side .rn-box{margin-top:auto;flex:none}
+
+/* ---------- 기사 ---------- */
+.paper .rn-sheet{grid-template-rows:auto minmax(0,1fr) 61px}
+.rn-phead{position:relative;height:86px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:3px solid var(--nk);box-shadow:0 4px 0 var(--sheet), 0 5px 0 var(--nk);margin-bottom:5px}
+.rn-phead .rn-home{left:-32px;top:8px}
+.rn-sec{padding-left:128px;font:900 34px/1 var(--serif);letter-spacing:-.02em;white-space:nowrap}
+.rn-pmid{display:flex;align-items:center;gap:22px;font:600 22px/1 var(--sans);letter-spacing:.06em;white-space:nowrap}
+.rn-pmid img{height:30px;filter:brightness(0);clip-path:inset(0 7.5% 0 0);margin-right:-10px}
+.rn-pright{justify-self:end;display:flex;align-items:center;gap:16px;font:600 22px/1 var(--sans);letter-spacing:.06em}
+.rn-art{display:grid;grid-template-columns:var(--cw) var(--cw) var(--cw);grid-template-rows:auto auto minmax(0,1fr) auto auto auto;column-gap:24px;min-height:0;padding:12px 0;position:relative}
+.rn-hed{grid-column:1 / -1;grid-row:1;font:900 54px/66px var(--serif);letter-spacing:-.035em;text-wrap:balance;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rn-deck{grid-column:1 / -1;grid-row:2;margin:4px 0 14px !important;font:700 28px/40px var(--serif);letter-spacing:-.015em;text-wrap:balance}
+.rn-art .rn-fig{grid-column:1;grid-row:3}
+.rn-art .rn-cap{grid-column:1;grid-row:4}
+.rn-art .rn-word{grid-column:1;grid-row:5}
+.rn-art .rn-word[hidden]{display:none}
+.rn-art .rn-text{grid-column:2 / 4;grid-row:3 / 6;min-height:0;overflow:hidden;columns:2;column-gap:24px;column-fill:balance;column-rule:1px solid var(--nrule)}
+.rn-art .rn-text p{font-size:var(--pf,28px);line-height:1.58}
+.rn-art::before{content:"";position:absolute;left:calc(var(--cw) + 12px);top:var(--ruleTop,150px);bottom:10px;width:1px;background:var(--nrule)}
+.rn-src{grid-column:1 / -1;grid-row:6;justify-self:end;font:600 22px/30px var(--sans);letter-spacing:.04em;color:var(--nk2);min-height:0}
+.rn-src:empty{display:none}
+.rn-art.nopic .rn-fig, .rn-art.nopic .rn-cap{display:none}
+.rn-art.nopic .rn-text{grid-column:1 / -1;grid-row:3;columns:3}
+.rn-art.nopic::before{content:none}
+.rn-art.nopic .rn-word{margin-top:26px}
+.rn-art.tight .rn-word{display:none}
+.rn-art.scroll{overflow-y:auto;grid-template-rows:auto auto auto auto auto auto} .rn-art.scroll .rn-text{overflow:visible}
+.rn-pnav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-top:1px solid var(--nk)}
+.rn-pnav button{height:60px;min-width:60px;padding:0;border:0;background:none;color:var(--nk);font:700 24px/1 var(--sans);letter-spacing:.02em;cursor:pointer;white-space:nowrap}
+.rn-pnav button[hidden]{display:none}
+#ppPrev{grid-column:1;justify-self:start} #ppNext{grid-column:3;justify-self:end}
+#ppDots{grid-column:2;font:600 22px/1 var(--sans);letter-spacing:.1em}
+@media (max-height:780px){
+  .rn-logo{height:70px;margin:4px auto 8px} .rn-ear{height:70px;top:4px}
+  .rn-lead h2{font-size:50px;line-height:60px}
+  .rn-it h3{font-size:30px;line-height:39px} .rn-it{padding-bottom:9px;margin-bottom:9px}
+  .rn-it p{-webkit-line-clamp:2}
+  .rn-num b{font-size:44px;line-height:52px}
+  .rn-phead{height:80px} .rn-hed{font-size:50px;line-height:60px} .rn-deck{margin:2px 0 10px !important;line-height:38px}
+}
+@media (min-width:1800px) and (min-height:940px){ /* 큰 화면: 글자를 한 단 키운다 */
+  .rn-text p{font-size:30px;line-height:47px} .rn-art .rn-text p{font-size:var(--pf,32px)} .rn-lead h2, .rn-hed{font-size:64px;line-height:78px} .rn-it h3{font-size:38px;line-height:50px} .rn-it p{font-size:27px;line-height:40px} .rn-deck{font-size:32px;line-height:46px}
+}
+@media (max-width:899px){ /* 좁은 화면(전화): 기사는 한 단으로 길게 */
+  .rn-sheet{left:0;right:0;top:0;bottom:0;padding:8px 18px 0}
+  .rn-phead{height:72px;grid-template-columns:auto 1fr auto} .rn-pmid{display:none} .rn-phead .rn-home{left:-6px;top:4px} .rn-sec{padding-left:136px;font-size:26px}
+  .rn-art{display:block;overflow-y:auto} .rn-art .rn-text{columns:auto !important;overflow:visible} .rn-art::before{content:none}
+  .rn-hed{font-size:34px;line-height:44px;-webkit-line-clamp:4} .rn-deck{font-size:24px;line-height:36px}
+  .rn-art .rn-fig{height:52vw;margin-bottom:0} .rn-art .rn-word{margin:26px 0 18px} .rn-src{background:none;padding:8px 0 0;text-align:right}
+}
 </style>
 </body>
 </html>
