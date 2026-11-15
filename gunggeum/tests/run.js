@@ -17,7 +17,7 @@ async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h 
   const day = (time || '2026-11-14T10:00').slice(0, 10), H = [...Array(48)].map((_, i) => `${day}T${String(i % 24).padStart(2, '0')}:00`);
   await p.route(/open-meteo/, r => offline ? r.abort() : r.request().url().includes('air-quality') ? r.fulfill({ json: { current: { pm10: 28, pm2_5: 12 } }, headers: CORS }) : r.fulfill({ headers: CORS, json: { current: { temperature_2m: 7.2, apparent_temperature: 4, weather_code: 0, precipitation: 0 }, hourly: { time: H, temperature_2m: H.map(() => 8), weather_code: H.map(() => 0), precipitation_probability: H.map(() => 0), is_day: H.map(() => 1) }, daily: { temperature_2m_max: [13, 13], temperature_2m_min: [4, 4], precipitation_probability_max: [0, 10], weather_code: [0, 1], sunrise: [day + 'T07:11', 'x'], sunset: [day + 'T17:22', 'x'] } } }));
   await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); if (offline) return r.abort(); p.api++; p.lastBody = JSON.parse(r.request().postData()); r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: ANSWER }], stop_reason: 'end_turn' } }); });
-  await p.route(/wttr|googleapis|gstatic|wikidata|wikimedia|wikipedia|tts\.speech/, r => r.abort());
+  p.wiki = 0; await p.route(/wttr|googleapis|gstatic|wikidata|wikimedia|wikipedia|tts\.speech/, r => { if (/wikidata|wikimedia|wikipedia/.test(r.request().url())) p.wiki++; return r.abort(); });
   if (noSky) await p.route(/vendor\/sky/, r => r.abort());
   await p.addInitScript(([day, st, read]) => { localStorage.setItem('gk-settings', JSON.stringify(Object.assign({ apiKey: 'sk-test', hFrom: 0, hTo: 24, wxName: '영등포구' }, st))); if (read) { localStorage.setItem('gk-news-read2', JSON.stringify(read)); localStorage.setItem('gk-news-done2', JSON.stringify([read])); } }, [day, settings, read]);
   if (time) await p.clock.install({ time: new Date(time + ':00+09:00') });
@@ -95,7 +95,7 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
   for (const [g, want] of [['face', 'face'], ['cal', 'cal'], ['hero', 'paper-hero'], ['sky', 'sky'], ['night', 'night']]) {
     await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click(`[data-go="${g}"]`); await p.waitForTimeout(g === 'sky' ? 2500 : 700); s = await p.st(); ok(`바로가기 ${g}`, s.saver.includes(want) && !s.log, s.saver);
     await p.waitForTimeout(1600); await p.mouse.click(60, 60); await p.waitForTimeout(400); }
-  await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="paper"]'); await p.waitForTimeout(700); s = await p.st(); ok('바로가기 신문', s.paper, s);
+  await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="paper"]'); await p.waitForTimeout(700); s = await p.st(); await p.adv(4000); ok('신문이 바깥(위키) 사진을 부르지 않음', p.wiki === 0, p.wiki); ok('바로가기 신문', s.paper, s);
   await p.evaluate(() => { document.getElementById('log').hidden = false; }); await p.click('[data-go="home"]'); await p.waitForTimeout(700); s = await p.st(); ok('바로가기 홈', s.home && !s.paper && !s.saver, s); await p.context().close();
 
   console.log('6. 밤하늘 계산 (달)');
@@ -108,7 +108,7 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
 
   console.log('7. 질문 흐름');
   p = await open(b, {}); s = await p.st(); ok('홈에서 시작', s.home, s);
-  await p.say('달은 왜 모양이 바뀌어?', 9000); s = await p.st(); ok('답이 보임', /햇빛을 반사/.test(s.sheet) && p.api >= 1, s.sheet); ok('이어서 칩 4개', s.chips.length === 4, s.chips); ok('질문 수 1', s.count === 1, s.count);
+  await p.say('달은 왜 모양이 바뀌어?', 9000); s = await p.st(); ok('답이 보임', /햇빛을 반사/.test(s.sheet) && p.api >= 1, s.sheet); await p.adv(6000); ok('답 화면이 바깥(위키) 사진을 부르지 않음', p.wiki === 0, p.wiki); ok('이어서 칩 4개', s.chips.length === 4, s.chips); ok('질문 수 1', s.count === 1, s.count);
   ok('지시문이 캐시 블록으로 감', Array.isArray(p.lastBody.system) && p.lastBody.system[0].cache_control && !/지금은 (오전|오후)/.test(p.lastBody.system[0].text));
   ok('질문 앞에 오늘 날짜·시각', /^\(오늘은 \d+년/.test(p.lastBody.messages.at(-1).content), p.lastBody.messages.at(-1).content.slice(0, 40));
   const n0 = p.api; await p.click('#chips button'); await p.adv(9000); ok('칩을 누르면 다시 물음', p.api > n0); await p.context().close();

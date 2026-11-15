@@ -1576,13 +1576,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v119</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v120</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v119</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v120</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2384,8 +2384,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function newsDate() { const d = new Date(news.date + 'T00:00:00'); return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`; }
   const newsRead = () => !!news && LS.get(NEWS_READ, '') === news.date;
   // 기사 사진: 질문 답과 똑같은 안전 검사(분류 허용 목록 + 기기 안 선정성 검사)를 통과한 사진만
+  // v120: 바깥(위키) 사진은 모두 끈다 — 기기가 실행 중에 고른 사진은 아무도 미리 본 적이 없어, 허용 목록·기기 안 검사로도 부적절한 사진을 다 막지 못한다. 다시 켜려면 발행 때 사람이 본 고정 그림만 쓰는 방식으로.
+  const WIKI_PICS = false;
   const picMemo = new Map();
   async function safePic(term) {
+    if (!WIKI_PICS) return null;
     term = cleanTerm(term || ''); if (!term) return null;
     if (settings.picOn === 'off') return null;
     if (settings.scaryNight !== 'off' && nightNow() && SCARY.test(term)) return null;
@@ -2925,6 +2928,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const BLOCK = new RegExp(['성기','성교','성행위','성관계','생식','음부','음경','음핵','자궁','고환','유방','항문','나체','누드','포르노','성적 ','섹스','야동','자위','강간','성폭','성희롱','매춘','성매매','해부','시신','시체','살해','살인','자살','학살','처형','고문','폭력','테러','총기','권총','소총','폭탄','폭발물','칼부림','마약','필로폰','코카인','헤로인','담배','흡연','음주','소주','맥주','도박','카지노','질병','종양','감염','출혈','피부병','배설물','대변','소변','욕설','혐오','인종차별','나치','극단주의','낙태','임신','출산','피임','성인물','19금','교미','짝짓기','번식기','심장','뇌','허파','간장','신장','혀','해골','두개골','미라','화상','부상','골절','외상','핵무기','미사일','전쟁','전투','사형','익사','사고','재난','장례','묘지','와인','위스키','막걸리','소맥','다비드상','비너스','아담과 이브','나체화','누드화','피','혈액',
     ALONE('질'), ALONE('젖'), ALONE('술'), ALONE('암'), ALONE('무기'), ALONE('장기'), ALONE('대마'), ALONE('똥'), ALONE('오줌'), ALONE('상처'), ALONE('사망'), ALONE('성인'), ALONE('칼'), ALONE('총'), ALONE('활'), ALONE('폐'), ALONE('간'), ALONE('위'), '분류:[^ ]*(?:성행위|성기|성교|성적|성인|음란|포르노|누드|해부학|생식기|생식 기관|범죄|살인|질병|사망|무기|약물|마약|담배|주류|음주|도박)'].join('|'));
   async function wikiImage(term, signal) {
+    if (!WIKI_PICS) return null;
     if (!term || term.length > 20 || BLOCK.test(term)) return null;
     const u = 'https://ko.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages|categories|pageprops&piprop=thumbnail|name&pithumbsize=900&cllimit=max&clshow=!hidden&titles=' + encodeURIComponent(term);
     const res = await fetch(u, { signal }); if (!res.ok) return null;
@@ -3074,6 +3078,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   async function showPic(term, emoji, signal, era, look) {
     const seq = ++picSeq;
+    if (!WIKI_PICS) term = '';
     let note = term ? `검색어 "${term}"` : '검색어 없음';
     if (term && settings.scaryNight !== 'off' && nightNow() && SCARY.test(term)) { note += ' → 밤이라 무서운 동물 사진 숨김'; term = ''; }
     const terms = term ? term.split(/\s*[,，、]\s*/).map(cleanTerm).filter(Boolean).slice(0, 3) : [];
@@ -3326,7 +3331,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v119';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v120';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
