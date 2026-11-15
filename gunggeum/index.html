@@ -1519,14 +1519,14 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   <div class="sv-dots" id="svDots" hidden aria-hidden="true"></div>
     <div class="sv-cal" id="svCal"><div class="cal-head"><span id="calMon"></span><span id="calTime"></span></div><div class="cal-dow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div><div class="cal-grid" id="calGrid"></div><div class="cal-big" id="calBig"></div></div>
     <div class="sv-face" id="svFace"><div class="fc-grid" id="fcGrid">
-      <section class="fc-t fc-clock" data-tile="clock"><div class="cl-l"><div class="fc-date" id="fcDate"></div><div class="fc-tip" id="fcTip"></div></div><div class="fc-time" id="fcTime"></div><div class="fc-tm" id="fcTm"></div></section>
+      <section class="fc-t fc-clock" data-tile="cal"><div class="cl-l"><div class="fc-date" id="fcDate"></div><div class="fc-tip" id="fcTip"></div></div><div class="fc-time" id="fcTime"></div><div class="fc-tm" id="fcTm"></div></section>
       <section class="fc-t fc-wx" data-tile="wx" id="fcWx"></section>
       <section class="fc-t fc-feat" id="fcFeat"></section>
       <section class="fc-t fc-todo" data-tile="todo"><div class="fc-n"><b id="fcTodoN"></b><span id="fcTodoS"></span></div><div class="fc-list" id="fcTodoL"></div></section>
-      <section class="fc-t fc-app" data-tile="news"><svg viewBox="0 0 24 24"><path class="f" fill-rule="evenodd" d="M3.5 5.75A2.25 2.25 0 0 1 5.75 3.5h9A2.25 2.25 0 0 1 17 5.75V18a2.5 2.5 0 0 0 1.2 2.5H6A2.5 2.5 0 0 1 3.5 18zM6.6 6.6h7.3v3.6H6.6zM6.6 12.4h7.3v1.7H6.6zM6.6 16h5v1.7h-5z"/><path class="f" d="M18.2 8.6h1.1a1.7 1.7 0 0 1 1.7 1.7V18a1.4 1.4 0 0 1-2.8 0z"/></svg><div class="fc-lab">신문</div><div class="fc-sub" id="fcNewsS"></div></section>
-      <section class="fc-t fc-app" data-tile="sky"><svg viewBox="0 0 24 24"><path class="f" d="M19.6 15.1A8 8 0 0 1 9.1 4.4a8.4 8.4 0 1 0 10.5 10.7z"/><path class="f" d="M17.6 2.4l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z"/></svg><div class="fc-lab">밤하늘</div><div class="fc-sub" id="fcSkyS"></div></section>
-      <section class="fc-t fc-app" data-tile="ask"><div class="mic"><svg viewBox="0 0 24 24"><rect class="f" x="8.2" y="2.4" width="7.6" height="12.4" rx="3.8"/><path d="M5.4 11.4a6.6 6.6 0 0 0 13.2 0M12 18v3"/></svg></div><div class="tx2"><div class="fc-lab">궁금한 걸 물어 봐</div><div class="fc-sub">눌러서 말해</div></div></section>
-      <section class="fc-t fc-app" data-tile="study"><svg viewBox="0 0 24 24"><path class="f" d="M2.8 5.6c0-.6.4-1.1 1-1.2 2.6-.6 5.1-.2 7.2 1.2v14.1c-2.1-1.3-4.6-1.7-7.2-1.1-.5.1-1-.3-1-.8zM21.2 5.6c0-.6-.4-1.1-1-1.2-2.6-.6-5.1-.2-7.2 1.2v14.1c2.1-1.3 4.6-1.7 7.2-1.1.5.1 1-.3 1-.8z"/></svg><div class="fc-lab">공부 모드</div><div class="fc-sub">화면을 조용하게</div></section>
+      <section class="fc-t fc-app" data-tile="news"><svg viewBox="0 0 24 24"><path class="f" fill-rule="evenodd" d="M3.500 6A2.500 2.500 0 0 1 6 3.500h8.500A2.500 2.500 0 0 1 17 6v2h1.500A2.500 2.500 0 0 1 21 10.500V17a3.500 3.500 0 0 1-3.500 3.500H7A3.500 3.500 0 0 1 3.500 17zM6.500 6.800v3.400h7.500V6.800zM6.500 12.600v1.600h7.500v-1.600zM6.500 16v1.600h5V16zM17 10v7a.75.75 0 0 0 1.500 0v-7z"/></svg><div class="fc-lab">신문</div><div class="fc-sub" id="fcNewsS"></div></section>
+      <section class="fc-t fc-app" data-tile="sky"><svg viewBox="0 0 24 24"><path class="f" d="M14.800 15.200A7 7 0 0 1 8.600 4.300a8.300 8.300 0 1 0 11.100 11.100 7 7 0 0 1-4.900-.2z"/><path class="f" d="M17.300 2.800l.9 2.300 2.300.9-2.300.9-.9 2.300-.9-2.300-2.300-.9 2.300-.9z"/></svg><div class="fc-lab">밤하늘</div><div class="fc-sub" id="fcSkyS"></div></section>
+      <section class="fc-t fc-app" data-tile="ask"><div class="mic"><svg viewBox="0 0 24 24"><rect class="f" x="8.5" y="2.5" width="7" height="12.5" rx="3.5"/><path d="M5.2 11.5a6.8 6.8 0 0 0 13.600 0M12 18.500v3"/></svg></div><div class="tx2"><div class="fc-lab">궁금한 걸 물어 봐</div><div class="fc-sub">눌러서 말해</div></div></section>
+      <section class="fc-t fc-app" data-tile="study"><svg viewBox="0 0 24 24"><path class="f" d="M12.2 3.2l5.300 3.100a1 1 0 0 1 .3 1.500l-3.300 4.400a1 1 0 0 1-1.300.3L8.400 9.700a1 1 0 0 1-.4-1.300l2.800-4.700a1 1 0 0 1 1.400-.5z"/><path d="M9.2 10.400L6.500 15l2 5M4.500 20.500h9"/></svg><div class="fc-lab">공부 모드</div><div class="fc-sub">화면을 조용하게</div></section>
       <section class="fc-t fc-app" data-tile="word"><div class="big ko" id="fcWordN"></div><div class="fc-lab">오늘의 낱말</div><div class="fc-sub" id="fcWordS"></div></section>
       <section class="fc-t fc-app" data-tile="cal"><div class="big" id="fcCalN"></div><div class="fc-lab">달력</div><div class="fc-sub" id="fcCalS"></div></section>
     </div><div class="fc-msg" id="fcMsg" hidden></div></div>
@@ -1576,13 +1576,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v112</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v113</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v112</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v113</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2301,7 +2301,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (blocked) { // 쉬는 시간: 안내만 잠깐 보여주고 계속 잠듦
       svSay(blocked); return;
     }
-    saverEl.hidden = true; delete window.__gkForce; clearInterval(saverTick); showPiece(false); touchIdle();
+    saverEl.hidden = true; delete window.__gkForce; delete window.__gkCover; clearInterval(saverTick); showPiece(false); touchIdle();
   }
   // 부모님용: 쉬는 시간에도 대기화면을 빠르게 5번 누르거나 2초 꾹 누르면 부모님 화면이 열림
   let svTaps = [], svHold = null;
@@ -2331,8 +2331,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   saverEl.addEventListener('pointerdown', e => {
     e.preventDefault(); e.stopPropagation(); svTouchAt = Date.now(); saverEl.classList.remove('rest');
     const now = Date.now(), row = e.target.closest && e.target.closest('[data-todo]'); svTaps = svTaps.filter(t => now - t < 3000); if (!row) svTaps.push(now);
-    const tile = !row && e.target.closest && e.target.closest('[data-tile]');
-    svDown = { x: e.clientX, y: e.clientY, todo: row ? row.dataset.todo : '', tile: tile ? tile.dataset.tile : '', paper: !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper') };
+    const cvt = !row && e.target.closest && e.target.closest('[data-cv]'); const tile = !row && !cvt && e.target.closest && e.target.closest('[data-tile]');
+    svDown = { x: e.clientX, y: e.clientY, todo: row ? row.dataset.todo : '', tile: tile ? tile.dataset.tile : '', cv: cvt ? cvt.dataset.cv : '', paper: !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper') };
     clearTimeout(svHold); svHold = setTimeout(() => { svTaps = []; svDown = null; openLog(); }, 2000);
     if (svTaps.length >= 5) { svTaps = []; svDown = null; clearTimeout(svHold); openLog(); }
   }, true);
@@ -2344,6 +2344,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (Math.abs(dx) > 24 || Math.abs(dy) > 24) return; // 어중간하게 끌다 만 것은 무시
     if (d.todo) { todoToggle(d.todo); return; }
     if (saverEl.classList.contains('cal')) { svTaps = []; delete window.__gkForce; renderSaver(); return; } // 달력을 누르면 위젯 면으로 // 할 일 줄: 줄만 긋고 화면은 그대로
+    if (d.cv) { svTaps = []; window.__gkCover = { k: d.cv, at: Date.now() }; renderSaver(); return; }
     if (d.tile === 'cal') { svTaps = []; window.__gkForce = { s: 'cal', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날짜 → 달력'); return; }
     if (d.tile === 'sky' && window.GKSky) { svTaps = []; window.__gkForce = { s: 'sky', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '타일 → 밤하늘'); return; }
     const hadNews = !!(news && newsFresh());
@@ -2442,8 +2443,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
 
   // ---------- 대기화면 위젯 면 (v107): 큰 시계 타일 + 날씨 + 지금 볼 것 + 할 일 + 작은 타일 셋 ----------
   const WI = { // 날씨 그림 (직접 그린 선 그림)
-    sun: '<circle cx="12" cy="12" r="4.4" class="f"/><path d="M12 2.6v2M12 19.4v2M2.6 12h2M19.4 12h2M5.35 5.35l1.4 1.4M17.25 17.25l1.4 1.4M5.35 18.65l1.4-1.4M17.25 6.75l1.4-1.4"/>',
-    moon: '<path class="f" d="M19.6 15.1A8 8 0 0 1 9.1 4.4a8.4 8.4 0 1 0 10.5 10.7z"/>',
+    sun: '<circle cx="12" cy="12" r="4.700" class="f"/><path d="M12 2.500v2.500M12 19v2.500M2.500 12H5M19 12h2.500M5.300 5.300l1.800 1.800M16.900 16.900l1.800 1.800M5.300 18.700l1.800-1.800M16.900 7.100l1.800-1.800"/>',
+    moon: '<path class="f" d="M15.500 15A7 7 0 0 1 9 5.200a7.800 7.800 0 1 0 10 10.300 7 7 0 0 1-3.500-.500z"/>',
     cloud: '<path class="f" d="M7.500 18.500a4 4 0 0 1-.4-8 5.500 5.500 0 0 1 10.600 1.300 3.400 3.400 0 0 1-.4 6.700z"/>',
     part: '<circle cx="8" cy="8.500" r="3"/><path d="M8 2.800v1.400M2.600 8.500H4M4.200 4.700l1 1M11.800 4.700l-1 1"/><path class="f" d="M9.500 19.500a3.400 3.400 0 0 1-.3-6.800 4.700 4.700 0 0 1 9 1.100 2.900 2.900 0 0 1-.3 5.700z"/>',
     rain: '<path class="f" d="M7.500 14.500a4 4 0 0 1-.4-8A5.500 5.500 0 0 1 17.700 7.800a3.400 3.400 0 0 1-.4 6.700z"/><path d="M8.500 17.500l-1 3M12.500 17.500l-1 3M16.500 17.500l-1 3"/>',
@@ -2479,7 +2480,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     saverEl.dataset.tone = hr < 12 ? 'morn' : hr < 18 ? 'day' : 'eve';
     saverEl.classList.toggle('rest', Date.now() - svTouchAt > 180e3); // 3분 손대지 않으면 얇은 어두운 막
     saverEl.classList.toggle('late', hr === 21); saverEl.style.setProperty('--late', hr === 21 ? (d.getMinutes() / 60 * .45).toFixed(3) : '0'); // 밤 9~10시: 밤 화면으로 가는 낙차 줄이기
-    setH($('fcDate'), `${DAYS[d.getDay()]}요일 ${hr < 12 ? '오전' : '오후'}`);
+    setH($('fcDate'), `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`);
     { const t = `${hr % 12 || 12}:${pad(d.getMinutes())}`, el = $('fcTime'), old = el.dataset.t || ''; if (old !== t) { el.dataset.t = t; el.innerHTML = [...t].map((ch, i) => `<i${old && old.length === t.length && old[i] !== ch ? ' class="chg"' : ''}>${ch}</i>`).join(''); } } // 바뀐 자리 숫자만 넘어감
     let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 12 * 3600e3) w = last.w; }
     $('fcCalN').textContent = d.getDate(); $('fcCalS').textContent = `${d.getMonth() + 1}월`;
@@ -2490,8 +2491,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('fcSkyS').textContent = sk ? sk.moon.name : '오늘의 달';
     // 지금 볼 것: 안 읽은 신문 → 저녁엔 오늘의 달 → 그 밖에는 시각이 들어간 한 문장
     const WS = on ? news.articles.map(x => x.word).filter(x => x && x.w) : [], W = WS.length ? WS[Math.min(WS.length - 1, hr < 13 ? 0 : hr < 15 ? 1 : 2)] : null; // 낱말은 낮 동안 차례로
+    const cvf = window.__gkCover && Date.now() - window.__gkCover.at < 120e3 ? window.__gkCover.k : ''; // 갈래를 누르면 2분 동안 그 표지
     $('fcWordN').textContent = W ? W.w : '—'; $('fcWordS').textContent = W ? '눌러서 뜻 보기' : '신문이 오면 나와';
-    const ft = $('fcFeat'), kind = on && !read ? 'news' : hr >= 18 && sk ? 'moon' : W ? 'word' : 'line';
+    const auto = on && !read ? 'news' : hr >= 18 && sk ? 'moon' : W ? 'word' : sk ? 'moon' : 'line';
+    const ft = $('fcFeat'), kind = cvf === 'news' && on ? 'news' : cvf === 'word' && W ? 'word' : cvf === 'moon' && sk ? 'moon' : auto;
     if (kind === 'news') {
       const a = news.articles[0], key = 'news|' + news.no + '|' + a.pic;
       if (fcFeatKey !== key) { fcFeatKey = key; ft.className = 'fc-t fc-feat news'; ft.dataset.tile = 'news'; ft.innerHTML = B_news(news); }
@@ -3308,7 +3311,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v112';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v113';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -3471,107 +3474,118 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
       <div class="cv-r">${news.articles.slice(0, 3).map((x, i) => `<div class="it${i ? '' : ' on'}"><b>${i + 1}</b><small>${e(x.tag)}</small><span>${e(x.short || x.title)}</span></div>`).join('')}</div></div>`; };
 })();
 </script>
-<style id="Apro">
-/* ===== A 시안: 같은 구성, 애플 위젯 수준의 마감 =====
-   재질 3층(흐림 면 + 위가 밝은 빛 테두리 + 바깥 그림자 두 겹) / 글자 5단계(80·54·28·24 + 눈썹 24) / 그림 한 벌(24 격자, 선 2, 채움) */
-:root { --r: 36px; --pad: 30px; --amber: #FFD27A; --ink: #F6F1E7; --ink2: rgba(246,241,231,.62); --ink3: rgba(246,241,231,.36); }
-.saver.face .sv-face { -webkit-font-smoothing: antialiased; }
-/* 배경: 같은 그림 위에 아래로 어두워지는 막 + 가장자리 비네트 → 타일이 떠 보이게 */
-.saver.face .sv-face::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
-  background: radial-gradient(120% 90% at 50% 30%, transparent 55%, rgba(0,0,0,.22) 100%), linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.14)); }
-.fc-grid { z-index: 1; }
-/* 타일 재질 */
-.fc-t { border-radius: var(--r); padding: var(--pad);
-  background: linear-gradient(180deg, rgba(255,255,255,.155) 0%, rgba(255,255,255,.085) 55%, rgba(255,255,255,.07) 100%);
-  -webkit-backdrop-filter: blur(44px) saturate(1.45) brightness(.9); backdrop-filter: blur(44px) saturate(1.45) brightness(.9);
-  box-shadow: 0 1px 2px rgba(0,0,0,.10), 0 14px 34px -10px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.16); }
-.fc-t::before { display: block !important; content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; z-index: 4;
-  background: linear-gradient(178deg, rgba(255,255,255,.46) 0%, rgba(255,255,255,.16) 18%, rgba(255,255,255,.06) 55%, rgba(255,255,255,.12) 100%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
-.fc-t::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 0;
-  background: radial-gradient(90% 70% at 18% 0%, rgba(255,255,255,.07), transparent 70%); }
-.fc-app[data-tile="ask"], .fc-app[data-tile="study"] { background: linear-gradient(180deg, rgba(255,255,255,.155) 0%, rgba(255,255,255,.085) 55%, rgba(255,255,255,.07) 100%); }
-.fc-wx { background: none !important; box-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
-.fc-wx::before, .fc-wx::after { display: none !important; }
-/* 글자 위계 */
-.fc-lab { font-size: 28px; font-weight: 650; line-height: 34px; letter-spacing: -.022em; color: #fff; }
-.fc-sub { font-size: 24px; font-weight: 500; line-height: 30px; letter-spacing: -.012em; color: rgba(255,255,255,.62); margin-top: 2px; }
-/* 시계 + 날씨: 두 숫자를 같은 기준선·같은 크기, 사이에 머리카락 선 */
-.fc-clock { padding: var(--pad); }
-.fc-time, .fc-temp, .fc-app .big { font-size: 74px; font-weight: 590; line-height: 62px; letter-spacing: -.04em; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; margin: 4px 0 0 -4px; }
-.fc-time i { font-style: normal; }
-.fc-temp i { font-weight: 300; margin-left: 0; color: rgba(255,255,255,.92); }
-.fc-date, .fc-date b { font-size: 28px; font-weight: 650; line-height: 34px; letter-spacing: -.022em; color: #fff; }
-.fc-tip { font-size: 24px; font-weight: 500; line-height: 30px; letter-spacing: -.012em; color: rgba(255,255,255,.62); margin-top: 2px; }
-.fc-wx { padding: var(--pad) var(--pad) var(--pad) 0; }
-.fc-wx .fc-lab { font-size: 28px; font-weight: 650; margin-top: auto; }
-.fc-wx .fc-sub { font-variant-numeric: tabular-nums; }
-.fc-wx svg.wi { right: calc(var(--pad) - 3px); top: 34px; width: 50px; height: 50px; filter: none; }
-.fc-temp { font-weight: 400; color: rgba(255,255,255,.94); }
-/* 그림 한 벌: 같은 크기, 같은 선, 그림자 없음 */
-.sv-face svg:not(.st):not(.tk) { stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; filter: none !important; }
-.sv-face svg .f { fill: #fff; stroke: none; }
-.fc-app svg, .fc-app[data-tile="ask"] .mic, .fc-app[data-tile="ask"] .mic svg { width: 50px !important; height: 50px !important; margin: 0 0 0 -3px !important; }
-.fc-app[data-tile="ask"] .mic svg .f { fill: #fff; }
-.fc-app { padding: var(--pad); justify-content: space-between; }
-.fc-app .fc-lab { margin-top: auto; }
-.fc-app .dot { width: 8px; height: 8px; margin-right: 8px; vertical-align: 3px; background: var(--amber); box-shadow: 0 0 0 3px rgba(255,210,122,.16); }
-/* 할 일: 동그라미는 가늘게, 구분선은 글자 시작점부터 */
-.fc-todo { padding: 8px var(--pad); }
-.fc-row { min-height: 62px; font-size: 28px; font-weight: 600; letter-spacing: -.022em; gap: 18px; }
-.fc-row + .fc-row { box-shadow: none; background: linear-gradient(rgba(255,255,255,.13), rgba(255,255,255,.13)) 48px 0 / calc(100% - 48px) 1px no-repeat; }
-.fc-row .bx { width: 30px; height: 30px; box-shadow: inset 0 0 0 2px rgba(255,255,255,.5); }
-.fc-row .du { font-size: 24px; font-weight: 600; color: var(--amber); background: none; padding: 0; letter-spacing: -.01em; }
+<style id="Ccss">
+/* ===== C안: 덜어내기 — 두 단(표지 | 시계·할 일·단추 한 판), 넓은 가장자리, 한 가지 왼쪽 선 ===== */
+.saver.face .fc-grid { inset: 52px 60px 64px; grid-template-columns: minmax(0, 1fr) 476px; grid-template-rows: 204px minmax(0, 1fr) 188px; gap: 24px; }
+.saver.face .fc-t { border-radius: 36px; background: rgba(255,255,255,.085); box-shadow: inset 0 0 0 1px rgba(255,255,255,.10); -webkit-backdrop-filter: blur(40px) saturate(1.2); backdrop-filter: blur(40px) saturate(1.2); }
+.saver.face .fc-t::before { display: none; }
+.saver.face .fc-app[data-tile="news"], .saver.face .fc-app[data-tile="sky"], .saver.face .fc-app[data-tile="cal"], .saver.face .fc-app[data-tile="word"] { display: none; }
+.saver.face .fc-lab { font-size: 28px; font-weight: 600; line-height: 36px; letter-spacing: -.02em; }
+.saver.face .fc-sub { font-size: 24px; font-weight: 400; line-height: 30px; color: rgba(255,255,255,.62); }
 
-/* ----- 표지: 깊은 면 + 같은 빛 테두리 ----- */
-.fc-feat { border-radius: var(--r); box-shadow: 0 1px 2px rgba(0,0,0,.14), 0 22px 48px -14px rgba(0,0,0,.5) !important; }
-.fc-feat.news, .fc-feat.word, .fc-feat.moon { background:
-   radial-gradient(80% 90% at 0% 0%, color-mix(in srgb, var(--f1) 30%, transparent), transparent 70%),
-   linear-gradient(170deg, color-mix(in srgb, var(--f2) 62%, #0A0C12) 0%, color-mix(in srgb, var(--f2) 30%, #06070B) 100%) !important; color: var(--ink) !important; }
-.fc-feat::before { background: linear-gradient(178deg, rgba(255,255,255,.32) 0%, rgba(255,255,255,.10) 16%, rgba(255,255,255,.04) 60%, rgba(255,255,255,.08) 100%); }
-.fc-feat::after { display: none; }
-.fc-feat.news { padding: 38px 44px 34px; }
-.cv { grid-template-columns: minmax(0, 1fr) 372px; gap: 56px; }
-.cv-lab, .wd-lab, .mn-lab { font-size: 24px; font-weight: 600; letter-spacing: -.01em; color: var(--ink2); }
-.cv-hed { margin-top: 18px; font-size: 56px; font-weight: 750; line-height: 66px; letter-spacing: -.034em; color: var(--ink); text-wrap: balance; }
-.cv-lede { margin-top: 18px; font-size: 26px; font-weight: 450; line-height: 40px; letter-spacing: -.015em; color: rgba(246,241,231,.72); }
-.cv-go { align-self: flex-start; min-height: 60px; padding: 0 22px 0 28px; border-radius: 999px; gap: 8px; font-size: 26px; font-weight: 650; letter-spacing: -.015em;
-  color: var(--amber); background: rgba(255,210,122,.12); box-shadow: inset 0 0 0 1px rgba(255,210,122,.22); }
-.cv-go svg { width: 26px; height: 26px; stroke: var(--amber) !important; stroke-width: 3 !important; }
-.cv-r .it { grid-template-columns: 56px minmax(0, 1fr); column-gap: 20px; padding: 22px 0; }
-.cv-r .it + .it { box-shadow: none; background: linear-gradient(rgba(246,241,231,.12), rgba(246,241,231,.12)) 76px 0 / calc(100% - 76px) 1px no-repeat; }
-.cv-r .it b { font-size: 64px; font-weight: 500; letter-spacing: -.04em; font-variant-numeric: tabular-nums; color: var(--ink3); text-align: left; }
-.cv-r .it.on b { color: var(--ink); }
-.cv-r .it small { font-size: 24px; font-weight: 500; line-height: 30px; color: var(--ink2); }
-.cv-r .it span { font-size: 28px; font-weight: 650; line-height: 36px; letter-spacing: -.022em; color: var(--ink); }
-.cv-r .it:not(.on) span { color: rgba(246,241,231,.8); }
-/* 낱말 */
-.wd { padding: 38px 56px 34px 44px; }
-.wd-w { margin-top: 12px; font-size: 128px; font-weight: 700; line-height: 136px; letter-spacing: -.045em; color: var(--ink); }
-.wd-mean { font-size: 28px; font-weight: 650; letter-spacing: -.022em; color: var(--ink); }
-.wd-use { font-size: 24px; line-height: 36px; color: rgba(246,241,231,.72); } .wd-use small { color: var(--ink3); }
-.wd-use mark { color: var(--amber); }
-.wd-lab i { color: var(--ink3); font-weight: 500; }
-.hz .bx { border-radius: 28px; background: linear-gradient(180deg, rgba(246,241,231,.07), rgba(246,241,231,.025)); box-shadow: inset 0 0 0 1px rgba(246,241,231,.16), inset 0 1px 0 rgba(246,241,231,.12), 0 10px 24px -12px rgba(0,0,0,.5); }
-.hz .bx span { color: var(--ink); }
-.hz small { color: var(--ink2); } .hz small b { color: var(--amber); }
-/* 달 */
-.mn-tx { left: 44px; top: 38px; }
-.mn-name { margin-top: 12px; font-size: 128px; font-weight: 700; line-height: 136px; letter-spacing: -.045em; color: var(--ink); }
-.mn-sub { font-size: 28px; font-weight: 650; letter-spacing: -.022em; font-variant-numeric: tabular-nums; }
-.mn-sub2 { font-size: 24px; color: var(--ink2); font-variant-numeric: tabular-nums; }
-.mn-wk { left: 38px; bottom: 34px; gap: 2px; }
-.mn-wk div { width: 66px; font-size: 24px; font-weight: 500; color: rgba(246,241,231,.5); }
-.fc-feat.moon canvas.big { right: 104px; }
-.mn .glow { right: 34px; }
-.mn-wk div.on { color: var(--ink); font-weight: 650; }
-/* 넘김 점 */
-.ft-dots { right: 18px; gap: 8px; } .ft-dots i { width: 6px; height: 6px; opacity: .24; } .ft-dots i.on { height: 18px; border-radius: 3px; opacity: .8; }
-.saver.face .sv-dots i { width: 8px; height: 8px; opacity: .28; } .saver.face .sv-dots i.on { opacity: .9; }
-.fc-more { font-size: 24px; font-weight: 500; line-height: 30px; padding: 12px 0 0 48px; color: rgba(255,255,255,.62); background: linear-gradient(rgba(255,255,255,.13), rgba(255,255,255,.13)) 48px 0 / calc(100% - 48px) 1px no-repeat; }
-/* v112: 공부 모드는 다음 판에서 — 그때까지 묻기가 세 칸 */
-.fc-app[data-tile="study"] { display: none; }
-.fc-app[data-tile="ask"] { grid-column: 1 / 4; }
+/* 표지: 왼쪽 단 전체 */
+.saver.face .fc-feat { grid-column: 1; grid-row: 1 / 4; padding: 0; border-radius: 44px; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: 0 24px 60px rgba(0,0,0,.24), inset 0 0 0 1px rgba(255,255,255,.07); background: linear-gradient(170deg, color-mix(in srgb, var(--f2) 46%, #080A10), color-mix(in srgb, var(--f2) 22%, #05060A) 90%) !important; color: #F1ECE0 !important; overflow: hidden; }
+
+/* 시계 + 날씨: 한 칸, 상자 하나 */
+.saver.face .fc-clock { grid-column: 2; grid-row: 1; padding: 34px 36px 32px; display: flex; flex-direction: column; justify-content: space-between; }
+.saver.face .fc-clock .cl-l { order: 2; display: block; }
+.saver.face .fc-time { order: 1; font-size: 92px; font-weight: 500; line-height: 76px; letter-spacing: -.04em; margin: 0 0 0 -4px; font-variant-numeric: tabular-nums; }
+.saver.face .fc-date, .saver.face .fc-date b { margin: 0; font-size: 24px; font-weight: 500; line-height: 30px; color: rgba(255,255,255,.62); letter-spacing: -.01em; }
+.saver.face .fc-tip { display: none; }
+.saver.face .fc-wx { grid-column: 2; grid-row: 1; padding: 34px 36px 32px; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; pointer-events: none; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-rows: 76px minmax(0, 1fr); column-gap: 14px; align-items: center; z-index: 2; }
+.saver.face .fc-wx .tt { display: contents; }
+.saver.face .fc-temp { font-size: 52px; font-weight: 500; line-height: 76px; letter-spacing: -.03em; margin: 0 -6px 0 0; grid-column: 3; grid-row: 1; }
+.saver.face .fc-wx svg.wi { position: static; grid-column: 2; grid-row: 1; align-self: center; width: 38px; height: 38px; margin: 6px 0 0; opacity: .9; }
+.saver.face .fc-wx .fc-lab { display: none; }
+.saver.face .fc-wx .fc-sub { grid-column: 1 / 4; grid-row: 2; justify-self: end; align-self: end; font-size: 24px; line-height: 30px; margin: 0; font-variant-numeric: tabular-nums; }
+
+/* 할 일 */
+.saver.face .fc-todo { grid-column: 2; grid-row: 2; padding: 0 36px; }
+.saver.face .fc-list { justify-content: center; }
+.saver.face .fc-row { min-height: 64px; font-size: 28px; font-weight: 500; gap: 18px; }
+.saver.face .fc-row + .fc-row { box-shadow: inset 0 1px 0 rgba(255,255,255,.09); }
+.saver.face .fc-row .bx { width: 28px; height: 28px; box-shadow: inset 0 0 0 2px rgba(255,255,255,.46); }
+.saver.face .fc-row .du { font-size: 24px; font-weight: 400; color: rgba(255,255,255,.62); }
+.saver.face .fc-row:nth-child(n+4) { display: none; }
+
+/* 단추 한 판: 묻기 | 공부 모드 — 상자 하나, 가는 금 하나 */
+.saver.face .fc-grid::after { content: ""; grid-column: 2; grid-row: 3; border-radius: 36px; background: rgba(255,255,255,.085); box-shadow: inset 0 0 0 1px rgba(255,255,255,.10); -webkit-backdrop-filter: blur(40px) saturate(1.2); backdrop-filter: blur(40px) saturate(1.2); }
+.saver.face .fc-app[data-tile="ask"], .saver.face .fc-app[data-tile="study"] { grid-row: 3; grid-column: 2; position: relative; z-index: 1; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: 0; box-sizing: border-box; padding: 32px 0 30px 36px; flex-direction: column; align-items: flex-start; justify-content: space-between; text-align: left; gap: 0; }
+.saver.face .fc-app[data-tile="ask"] { width: 256px; justify-self: start; }
+.saver.face .fc-app[data-tile="study"] { width: 220px; justify-self: end; padding-left: 30px; }
+.saver.face .fc-app[data-tile="study"]::after { content: ""; position: absolute; left: 0; top: 34px; bottom: 34px; width: 1px; background: rgba(255,255,255,.12); }
+.saver.face .fc-app svg, .saver.face .fc-app[data-tile="ask"] .mic svg { width: 40px; height: 40px; margin: 0 0 0 -3px; filter: none; opacity: .92; }
+.saver.face .fc-app[data-tile="ask"] .mic { width: 40px; height: 40px; background: none; box-shadow: none; border-radius: 0; display: block; }
+.saver.face .fc-app .fc-lab { margin: auto 0 0; white-space: nowrap; }
+.saver.face .fc-app[data-tile="ask"] .tx2 { margin-top: auto; display: block; }
+.saver.face .fc-app .fc-sub { white-space: nowrap; }
+
+/* 표지 뼈대: 윗줄(이름 | 갈래) · 가운데(글 | 한 가지) · 아랫줄(한 줄) */
+.cc { position: absolute; inset: 0; padding: 40px 56px 44px; display: grid; grid-template-rows: 60px minmax(0, 1fr) 60px; }
+.cc-top { display: flex; align-items: center; justify-content: space-between; }
+.cc-lab { font-size: 24px; font-weight: 500; letter-spacing: -.01em; color: rgba(241,236,224,.6); }
+.cc-tabs { display: flex; margin-right: -14px; }
+.cc-tabs span { min-height: 60px; min-width: 60px; padding: 0 14px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 500; color: rgba(241,236,224,.36); }
+.cc-tabs span.on { color: #F1ECE0; font-weight: 700; }
+.cc-mid { display: grid; grid-template-columns: minmax(0, 1fr) 372px; column-gap: 52px; align-items: center; }
+.cc-l { min-width: 0; }
+.cc-big { margin: 0 0 0 -6px; font-size: 148px; font-weight: 700; line-height: 160px; letter-spacing: -.05em; white-space: nowrap; color: #F7F2E6; }
+.cc-big.s { font-size: 104px; line-height: 120px; margin-left: -4px; }
+.cc-h { margin: 0; font-size: 60px; font-weight: 700; line-height: 76px; letter-spacing: -.04em; word-break: keep-all; text-wrap: balance; color: #F7F2E6; }
+.cc-s1 { margin-top: 18px; font-size: 30px; font-weight: 600; line-height: 42px; letter-spacing: -.02em; word-break: keep-all; }
+.cc-s2 { margin-top: 10px; font-size: 26px; font-weight: 400; line-height: 40px; color: rgba(241,236,224,.66); word-break: keep-all; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+.cc-s2 mark { background: none; color: #F1ECE0; font-weight: 600; }
+.cc-foot { display: flex; align-items: center; gap: 12px; font-size: 24px; font-weight: 500; color: rgba(241,236,224,.6); }
+.cc-foot.rd { font-size: 28px; font-weight: 700; color: #E9C98A; }
+.cc-foot svg { width: 28px; height: 28px; fill: none; stroke: #E9C98A !important; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+/* 오른쪽 한 가지 */
+.cc-r { width: 372px; }
+.cc-r .it { display: grid; grid-template-columns: 56px minmax(0, 1fr); align-items: center; column-gap: 12px; padding: 22px 0; }
+.cc-r .it + .it { box-shadow: inset 0 1px 0 rgba(241,236,224,.11); }
+.cc-r .it b { grid-row: 1 / 3; font-size: 60px; font-weight: 300; line-height: 1; letter-spacing: -.04em; color: rgba(241,236,224,.3); font-variant-numeric: tabular-nums; }
+.cc-r .it.on b { color: #F7F2E6; }
+.cc-r .it small { font-size: 24px; font-weight: 400; line-height: 30px; color: rgba(241,236,224,.56); }
+.cc-r .it span { font-size: 28px; font-weight: 600; line-height: 38px; letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgba(241,236,224,.8); }
+.cc-r .it.on span { color: #F7F2E6; }
+.cc-hz { display: grid; grid-template-columns: repeat(2, 168px); gap: 28px 36px; justify-content: space-between; }
+.cc-hz .h { text-align: center; }
+.cc-hz .h span { display: block; font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 700; font-size: 152px; line-height: 180px; color: #F7F2E6; margin: 0 -10px; }
+.cc-hz .h small { display: block; margin-top: 8px; padding-top: 14px; box-shadow: inset 0 1px 0 rgba(241,236,224,.14); font-size: 24px; font-weight: 400; line-height: 30px; color: rgba(241,236,224,.6); white-space: nowrap; }
+.cc-hz .h small b { font-weight: 700; color: #F1ECE0; margin-left: 6px; }
+.cc-hz.n4 .h span { font-size: 112px; line-height: 128px; }
+.cc-hz.n4 .h small { margin-top: 2px; padding-top: 8px; font-size: 22px; }
+.cc-moon { position: relative; width: 372px; height: 372px; }
+.saver.face .fc-feat.moon canvas.big { position: absolute; right: 56px; top: 50%; left: auto; width: 372px; height: 372px; margin-top: -186px; mix-blend-mode: screen; border-radius: 50%; box-shadow: none; filter: brightness(1.18) contrast(1.08); }
+.cc-st { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .45; pointer-events: none; }
+.saver.face .sv-dots { bottom: 26px; }
+/* v113: 표지 갈래는 누르는 곳 — 60px 높이. 공부 모드는 다음 판에서 */
+.cc-tabs span { display: inline-flex; align-items: center; min-height: 60px; padding: 0 14px; margin: -18px -2px; cursor: pointer; }
+.saver.face .fc-app[data-tile="study"] { display: none; }
+.saver.face .fc-app[data-tile="ask"] { width: auto; justify-self: stretch; }
 </style>
+<script>
+(function(){ const e = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const tabs = n => `<div class="cc-tabs">${[['news','신문'],['word','낱말'],['moon','달']].map((t, i) => `<span data-cv="${t[0]}"${i === n ? ' class="on"' : ''}>${t[1]}</span>`).join('')}</div>`;
+  const ARW = `<svg viewBox="0 0 36 36"><path d="M7 18h20M19 9.500l8.500 8.500-8.500 8.500"/></svg>`;
+  const shell = (lab, n, l, r, foot, go) => `<div class="cc"><div class="cc-top"><div class="cc-lab">${lab}</div>${tabs(n)}</div><div class="cc-mid"><div class="cc-l">${l}</div>${r}</div><div class="cc-foot${go ? ' rd' : ''}">${foot}</div></div>`;
+  window.B_news = function(news){ const a = news.articles[0];
+    return shell(`루아 신문 · 제${e(news.no)}호`, 0, `<h2 class="cc-h">${e(a.title)}</h2><p class="cc-s2">${e(a.lede)}</p>`,
+      `<div class="cc-r">${news.articles.slice(0, 3).map((x, i) => `<div class="it${i ? '' : ' on'}"><b>${i + 1}</b><small>${e(x.tag)}</small><span>${e(x.short || x.title)}</span></div>`).join('')}</div>`, `읽기 ${ARW}`, 1); };
+  window.B_word = function(W, news){
+    const art = news.articles.find(x => x.word && x.word.w === W.w) || {};
+    const m = (art.body || '').split(/(?<=다\.)\s*/).find(s => s.includes('《' + W.w + '》')) || '';
+    const use = e(m).replace('《' + e(W.w) + '》', `<mark>${e(W.w)}</mark>`), n4 = (W.hanja || []).length > 2;
+    return shell('오늘의 낱말', 1, `<div class="cc-big${W.w.length > 3 ? ' s' : ''}">${e(W.w)}</div><div class="cc-s1">${e(W.mean)}</div>${use ? `<div class="cc-s2">${use}</div>` : ''}`,
+      `<div class="cc-r cc-hz${n4 ? ' n4' : ''}">${(W.hanja || []).map(h => { const p = h[1].lastIndexOf(' '); return `<div class="h"><span>${e(h[0])}</span><small>${e(h[1].slice(0, p))}<b>${e(h[1].slice(p + 1))}</b></small></div>`; }).join('')}</div>`,
+      art.short ? `${e(art.short)} 기사에서` : ''); };
+  function rnd(seed){ let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
+  window.B_moon = function(sk){ const r = rnd(20261114); let st = '';
+    for (let i = 0; i < 46; i++) { const x = r() * 1000, y = r() * 700, z = r(); st += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${z < .12 ? 1.8 : z < .4 ? 1.2 : .8}" fill="#fff" opacity="${(.2 + r() * .5).toFixed(2)}"/>`; }
+    const nx = (sk.next || [])[0];
+    return `<svg class="cc-st" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">${st}</svg>` + shell('오늘의 달', 2, `<div class="cc-big${sk.moon.name.length > 3 ? ' s' : ''}">${e(sk.moon.name)}</div><div class="cc-s1">${e(sk.moon.lines[0] || '')}</div><div class="cc-s2">${e(sk.moon.lines.slice(1).join(' · '))}</div>`,
+      `<div class="cc-moon"></div>`, nx ? `${e(nx[1])}은 ${e(nx[0])}` : '') + `<canvas class="big" width="2" height="2"></canvas>`; };
+  window.B_moonAfter = function(){};
+})();
+</script>
 </body>
 </html>
