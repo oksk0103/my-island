@@ -115,6 +115,8 @@ const plus = (d, n) => { const x = new Date(d + 'T12:00:00+09:00'); x.setDate(x.
   await p.say('내일 수학 숙제 있어'); s = await p.st();
   ok('기준1 바로 적힘', s.todo.length === 1 && s.todo[0][0] === '수학 숙제' && s.todo[0][1] === '2026-11-17' && /적어 뒀어/.test(s.sheet) && /내일 · 수학 숙제/.test(s.sheet), s);
   ok('기준1 AI를 부르지 않음', p.api === 0 && s.count === 0, [p.api, s.count]);
+  { const api0 = p.api; for (const [said, want] of [['오늘 할 일에 수학 문제 추가', '수학 문제'], ['할 일에 리코더 연습 넣어', '리코더 연습'], ['숙제에 독서록 쓰기 추가해', '독서록 쓰기'], ['할 일에다가 줄넘기 적어 줘', '줄넘기']]) { await p.say(said, 3000); s = await p.st(); ok(`끝말 없이도 적힘: ${said}`, s.todo.some(x => x[0] === want) && p.api === api0, s.todo.map(x => x[0])); }
+    await p.evaluate(() => { const d = JSON.parse(localStorage.getItem('gk-todo')); d.items = d.items.slice(-1).filter(x => x.text === '수학 숙제').concat(d.items.filter(x => x.text === '수학 숙제')).slice(0, 1); localStorage.setItem('gk-todo', JSON.stringify(d)); }); }
   await p.say('사람은 왜 자야 돼', 9000); s = await p.st(); ok('기준2 질문은 평소처럼', p.api === 1 && s.todo.length === 1 && /햇빛/.test(s.sheet), s);
   await p.say('받아쓰기 연습해야 돼'); s = await p.st(); ok('사전에 있는 말은 바로 적힘', s.todo.length === 2 && s.todo[1][0] === '받아쓰기 연습', s.todo);
   await p.say('실내화 빨아야 돼'); s = await p.st(); ok('사전+끝말 → 적힘', s.todo.some(x => x[0] === '실내화 빨기'), s.todo);

@@ -1576,13 +1576,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v115</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v116</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v115</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v116</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1711,6 +1711,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     const [base, deep] = LEN[settings.len] || LEN.normal;
     return `너는 한 집에 있는 질문 화면 "궁금칸"이야. ${LEVEL[settings.level] || LEVEL.m1}
 질문 맨 앞 괄호 안에 오늘 날짜와 지금 시각을 적어 줄게. 날짜·요일·시간·계절이나 "○○까지 며칠 남았어?"를 물으면 이걸 기준으로 계산해서 답해(날짜를 지어내지 마).
+궁금칸에는 "할 일" 목록이 있어. 아이가 할 일이나 숙제를 적어 달라고 하는데 네가 답하게 됐다면, 못 한다고 하지 말고 "할 일에 ○○ 추가해 줘"라고 다시 말해 보라고 짧게 알려 줘(네가 직접 적을 수는 없어).
 규칙:
 - 왜 그런지 원리나 이유를 꼭 넣어. 결과만 말하지 마.
 - 가능하면 구체적인 숫자나 비교를 하나 넣어(예: "빛은 1초에 지구를 7바퀴 반 돌아").
@@ -2578,6 +2579,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     return dayKey(d);
   }
   const TD_NOUN = /숙제|준비물|할\s*일/, TD_CMD = /(추가|적어|넣어)\s*(해\s*)?(줘|줄래|놔|둬|주세요)/;
+  const TD_INTO = /(할\s*일|숙제|준비물)\s*(목록)?\s*(에|에다|에다가|로|으로)\s*.*(추가|적어|넣어|기록|써)\s*(해|하자|할래|할게|해\s*줘|해\s*줄래|줘|줄래|놔|둬|주세요)?\s*$/; // "오늘 할 일에 수학 문제 추가" (음성 인식은 끝말을 자주 떼어 먹는다)
   const TD_DICT = /숙제|준비물|받아쓰기|일기|독서록|독후감|익힘책|학습지|문제집|알림장|피아노|태권도|학원|줄넘기|실내화|체육복|리코더|색종이|색연필|가위|풀|우산|물통|필통|신청서|가져가|챙겨|연습/;
   const TD_DUTY = /(해야|가야|내야|써야|풀어야|읽어야|외워야|챙겨야|가져가야|사야|빨아야|해\s*가야)\s*(돼|해|되|됨|한대|된대)|까지야|있어$|있대$/;
   const TD_ASKW = /왜|뭐|뭘|무슨|무엇|어떻게|어떡해|누가|누구|언제|어디|꼭|진짜|정말|몇|얼마|어느|인가$|일까$|을까$|니$|나요$|까$/;
@@ -2585,6 +2587,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     let t = ' ' + said.replace(/[.,!?~]/g, ' ') + ' ', when = '';
     t = t.replace(/((오전|오후|아침|저녁|밤)\s*)?([0-9]{1,2}|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열|열한|열두)\s*시(\s*반)?(에|까지)?(?=\s)/, m => { when = m.replace(/(에|까지)$/, '').trim(); return ' '; }); // "네 시에"는 뒤에 따로 붙임
     t = t.replace(/(할\s*일|숙제|준비물)?(에|로|으로|을|를)?\s*(추가|적어|넣어|써)\s*(해\s*)?(줘|줄래|놔|둬|주세요)/g, ' ');
+    if (TD_INTO.test(said.replace(/[.,!?~]/g, ' ').trim())) t = t.replace(/(할\s*일|숙제|준비물)\s*(목록)?\s*(에다가|에다|에|으로|로)\s/, ' ').replace(/\s*(을|를)?\s*(추가|적어|넣어|기록|써)\s*(해|하자|할래|할게)?\s*$/, ' ');
     t = t.replace(/(다음\s*주\s*)?[월화수목금토일]요일(까지|에|날)?|오늘(까지|은)?|내일(까지|은)?|모레(까지)?/g, ' ');
     t = t.replace(/\s(나|나는|난|저|음|어|그|저기|근데|그리고|엄마가|선생님이)\s/g, ' ');
     t = t.replace(/\s*해\s*가야\s*(돼|해|되|됨|한대|된대)/g, ' 해 가기').replace(/\s*가져가야\s*(돼|해|되|됨|한대|된대)/g, ' 가져가기').replace(/\s*가야\s*(돼|해|되|됨|한대|된대)/g, ' 가기')
@@ -2654,7 +2657,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (/^(아니야?,?)?(방금(거|것|꺼)?)?(지워줘?|취소해?줘?|되돌려줘?)$/.test(t) && L && now - L.at < 5 * 60e3) { todoUndo(s); return true; }
     if (s.length > 44) return false;
     if (/(할\s*일|숙제|준비물)\s*(이|은|는|가)?\s*(뭐\s*(있|남|야|지|더라)|읽어|알려|보여|말해)/.test(s) || /^(나|오늘|이제)?\s*뭐\s*(해야|남았)\s*(돼|해|되|어|지)?\??$/.test(s)) { todoList(s); return true; }
-    if (TD_CMD.test(s) && (TD_NOUN.test(s) || /할\s*일|적어/.test(s))) { // "숙제 추가해 줘, 수학 익힘책 34쪽"
+    if ((TD_CMD.test(s) && (TD_NOUN.test(s) || /할\s*일|적어/.test(s))) || TD_INTO.test(s)) { // "숙제 추가해 줘, 수학 익힘책 34쪽"
       const tx = todoClean(s);
       if (!tx) { todoPend = { wait: true, until: now + 25e3 }; todoShow(s, '뭐라고 적을까?', []); return true; }
       todoAdd(s, tx, todoDue(s)); return true;
@@ -3313,7 +3316,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v115';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v116';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
