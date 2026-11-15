@@ -1576,13 +1576,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v113</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v114</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v113</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v114</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -3259,10 +3259,12 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function showPieceIfIdle() { if (!recent.length && !busy) showPiece(false); }
   $('fsBtn').addEventListener('click', async () => {
     const el = document.documentElement;
-    try { if (document.fullscreenElement) { await document.exitFullscreen(); return; } await el.requestFullscreen({ navigationUI: 'hide' }); logEl.hidden = true; setTimeout(fit, 300); }
+    try { if (document.fullscreenElement) { LS.set('gk-fs', 0); await document.exitFullscreen(); return; } await el.requestFullscreen({ navigationUI: 'hide' }); LS.set('gk-fs', 1); logEl.hidden = true; setTimeout(fit, 300); }
     catch (e) { $('fsBtn').textContent = '전체 화면이 안 돼요. Chrome 메뉴 → 홈 화면에 추가를 써 보세요'; }
   });
-  document.addEventListener('fullscreenchange', () => setTimeout(fit, 300));
+  document.addEventListener('fullscreenchange', () => { setTimeout(fit, 300); $('fsBtn').textContent = document.fullscreenElement ? '전체 화면 끄기' : '전체 화면으로'; });
+  // v114: 한 번 전체 화면을 켜 두면, 새로고침이나 다시 열기로 풀려도 다음에 화면을 누를 때 스스로 다시 전체 화면이 된다
+  let fsTryAt = 0; ['pointerup', 'keydown'].forEach(ev => document.addEventListener(ev, () => { if (!LS.get('gk-fs', 0) || document.fullscreenElement || Date.now() - fsTryAt < 3000) return; fsTryAt = Date.now(); try { const pr = document.documentElement.requestFullscreen({ navigationUI: 'hide' }); if (pr && pr.catch) pr.catch(() => {}); } catch (e) {} }, true));
 
   // ---------- parent: weekly summary ----------
   $('sumBtn').addEventListener('click', async () => {
@@ -3311,7 +3313,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v113';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v114';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
