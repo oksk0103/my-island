@@ -12,7 +12,7 @@
    "source": "연합뉴스",
    "url": "https://www.koreancenter.or.kr/news/articleView.html?idxno=1437774",
    "pic": "참굴",
-   "cap": "바닷가 바위에 붙어 사는 조개",
+   "cap": "굴 껍데기",
    "word": {
     "w": "재활용",
     "mean": "다 쓴 것을 다시 쓸모 있게 쓰는 일",
@@ -30,6 +30,12 @@
       "쓸 용"
      ]
     ]
+   },
+   "img": "news/img/2026-11-15-1.jpg",
+   "imgHash": "2d5c7e4bdbf1f6aed2af3016b338354dff2b48363b3353d065d6af41e10ab57a",
+   "num": {
+    "n": "2만 톤",
+    "t": "발전소에 보내기로 한 굴 껍데기 탈황제의 양"
    }
   },
   {
@@ -41,7 +47,7 @@
    "source": "Star Walk",
    "url": "https://starwalk.space/ko/news/leonid-meteor-shower",
    "pic": "사자자리 유성군",
-   "cap": "해마다 11월에 보이는 별똥별 무리",
+   "cap": "별똥별",
    "word": {
     "w": "유성",
     "mean": "밤하늘에 빛을 내며 떨어지는 별똥별",
@@ -55,7 +61,9 @@
       "별 성"
      ]
     ]
-   }
+   },
+   "img": "news/img/2026-11-15-2.jpg",
+   "imgHash": "55e7c10e10fd7fadb129d4525761194a702a8f8b98720dec33bea06bb3fed021"
   },
   {
    "tag": "스포츠",
@@ -66,7 +74,7 @@
    "source": "스타뉴스",
    "url": "https://www.starnewskorea.com/sports/2026/11/14/2026111414462936271",
    "pic": "서울종합운동장 야구장",
-   "cap": "1982년에 문을 연 서울의 야구장",
+   "cap": "야구공과 베이스",
    "word": {
     "w": "철거",
     "mean": "건물이나 시설을 헐어서 치우는 일",
@@ -80,7 +88,9 @@
       "갈 거"
      ]
     ]
-   }
+   },
+   "img": "news/img/2026-11-15-3.jpg",
+   "imgHash": "6c656730348bfc5621a5c691fbf3b5d2cb167c050da900bc8691ca1b32eb1f5f"
   }
  ]
 }
