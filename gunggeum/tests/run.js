@@ -354,6 +354,66 @@ async function newsTests(b) {
     await p.mouse.move(30, 30); await p.mouse.down(); await p.adv(2400); await p.mouse.up(); await p.adv(500); ok('밤 화면을 켰을 때는 바로가기 "밤 화면"이 보임 (2초 누르기로 부모님 화면)', await p.evaluate(() => !document.getElementById('log').hidden && !document.querySelector('#log [data-go="night"]').hidden)); await p.context().close();
   }
 
+  // ---------- v122 검토에서 나온 결함의 되풀이 점검 ----------
+  console.log('v122-검토. 누른 뒤 최종 상태 · 달력 되묻기 · 없는 날짜 · 쉬는 시간');
+  { const D0 = '2026-11-16'; // 월요일
+    const fakeSR = fail => async p => { await p.addInitScript(fail => { window.SpeechRecognition = window.webkitSpeechRecognition = class { start() { if (fail) throw new Error('no mic'); setTimeout(() => this.onstart && this.onstart(), 0); } stop() { setTimeout(() => this.onend && this.onend(), 0); } abort() { this.stop(); } }; }, fail); };
+    const box = async sel => { const bx = await p.locator(sel).first().boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); };
+    const cal = () => p.evaluate(() => (JSON.parse(localStorage.getItem('gk-cal') || '{"items":[]}').items || []).map(x => x.date + ' ' + x.text));
+    const ask = () => p.evaluate(() => { const a = document.getElementById('agAsk'); return a.hidden ? '' : a.textContent; });
+    const st8 = () => p.evaluate(() => document.getElementById('app').dataset.state);
+    let s, c;
+    // A1. 묻기 줄을 누르면 듣는 중이 되고 그대로 있다(처리기가 둘이면 켜자마자 꺼진다)
+    let p = await open(b, { time: D0 + 'T16:10', read: D0, pre: fakeSR(false) });
+    await box('.qbox'); const l1 = await st8(); await p.adv(2000); const l2 = await st8(); ok('궁금칸: 묻기 줄 가운데를 누르면 듣는 중, 2초 뒤에도 듣는 중', l1 === 'listen' && l2 === 'listen', [l1, l2]);
+    await box('.qbox'); ok('듣는 중에 다시 누르면 멈춤', await st8() !== 'listen', await st8());
+    await p.say('달은 왜 모양이 바뀌어?', 9000); await box('.qbox'); const l3 = await st8(); await p.adv(2000); const l4 = await st8(); ok('답 화면: "더 물어 봐" 줄을 누르면 듣는 중, 2초 뒤에도 듣는 중', l3 === 'listen' && l4 === 'listen', [l3, l4]);
+    await box('.qbox'); ok('답 화면: 듣는 중에 다시 누르면 멈춤', await st8() !== 'listen', await st8());
+    // 5. 일정 말하기를 누르고 말없이 끝나면 일정 받기 상태가 풀린다
+    await p.go('cal'); await p.adv(2500); await box('[data-act="evadd"]'); const l5 = await st8(); await box('.qbox'); await p.adv(1500); s = await p.st();
+    ok('일정 말하기 → 듣는 중 → 말없이 끝나면 달력으로 돌아옴', l5 === 'listen' && /\bcal\b/.test(s.saver), [l5, s.saver]);
+    await p.click('#gkHome'); await p.adv(1200); await p.mouse.click(20, 20); await p.adv(1500); await p.say('27일에 치과 가', 5000); c = await cal(); ok('말없이 끝난 뒤의 다음 말은 일정으로 가지 않음', c.length === 0, c);
+    // 11. 밤하늘 화면에도 홈 캡슐
+    await p.go('sky'); await p.adv(4000); s = await p.st(); const hb = await p.evaluate(() => { const h = document.getElementById('gkHome'), r = h.getBoundingClientRect(); return [!h.hidden, Math.round(r.left), Math.round(r.top), Math.round(r.height)]; });
+    await p.click('#gkHome'); await p.adv(1500); const s2 = await p.st(); ok('밤하늘 화면: 홈 캡슐이 같은 자리에 있고 누르면 위젯 면(깨어나지 않음)', s.saver === 'sky' && hb[0] && Math.abs(hb[1] - 48) <= 4 && Math.abs(hb[2] - 40) <= 4 && hb[3] >= 60 && /^face/.test(s2.saver), [s.saver, hb, s2.saver]);
+    ok('지운 진단 줄(linesDbg)을 참조하는 코드가 없음', !fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8').includes('linesDbg')); await p.context().close();
+    // 7. 마이크를 못 켜면 묻기 줄 아래에 한 줄
+    p = await open(b, { time: D0 + 'T16:10', read: D0, pre: fakeSR(true) }); await box('.qbox');
+    ok('마이크를 켜지 못하면 묻기 줄 아래에 28px 한 줄', await p.evaluate(() => { const n = document.getElementById('micNote'), q = document.querySelector('.qbox').getBoundingClientRect(), r = n.getBoundingClientRect(); return /마이크를 켜지 못했어/.test(n.textContent) && getComputedStyle(n).fontSize === '28px' && r.height > 0 && r.top >= q.bottom; })); await p.context().close();
+    // 2·9·4. 달력 되묻기는 화면에 글과 단추로, 없는 날짜는 저장하지 않는다
+    p = await open(b, { time: D0 + 'T16:10', read: D0 }); await p.go('cal'); await p.adv(2500);
+    await box('[data-act="evadd"]'); await p.say('12월 3일에 할머니 생신', 3000); await p.adv(2500); c = await cal(); let q = await ask();
+    ok('다른 달 일정은 되묻는다: 화면에 문장과 단추 둘(60px 이상)', c.length === 0 && /12월 3일 목 · 할머니 생신.*달력에 적을까/.test(q) && await p.evaluate(() => { const bs = [...document.querySelectorAll('#agAsk .pc')]; return bs.length === 2 && bs[0].textContent === '응, 적어 줘' && bs[1].textContent === '아니' && bs.every(x => x.getBoundingClientRect().height >= 60 && x.getBoundingClientRect().right <= innerWidth); }), [c, q]);
+    await box('#agAsk [data-act="evyes"]'); c = await cal(); ok('"응, 적어 줘" → 저장', c.length === 1 && c[0] === '2026-12-03 할머니 생신' && await ask() === '', c);
+    await box('[data-act="evadd"]'); await p.say('11월 3일 소풍', 3000); await p.adv(2500); c = await cal(); q = await ask(); ok('지난 날짜는 내년으로 넘기기 전에 되묻는다', c.length === 1 && /내년 11월 3일.*소풍.*내년 11월 3일에 적을까/.test(q), [c, q]);
+    await box('[data-act="evadd"]'); await p.say('아니', 3000); await p.adv(2500); c = await cal(); ok('되묻기에 "일정 말하기"로 "아니"라고 말하면 적지 않음', c.length === 1 && await ask() === '', [c, await ask()]);
+    await box('[data-act="evadd"]'); await p.say('11월 3일 소풍', 3000); await p.adv(2500); await box('[data-act="evadd"]'); await p.say('응', 3000); await p.adv(2500); c = await cal(); ok('되묻기에 "응"이라고 말하면 적음', c.includes('2027-11-03 소풍'), c);
+    await box('[data-act="evadd"]'); await p.say('31일에 치과', 3000); await p.adv(2500); c = await cal(); q = await ask(); ok('없는 날짜(11월 31일)는 저장하지 않고 되묻는다', c.length === 2 && /11월에는 31일이 없어/.test(q), [c, q]);
+    await box('[data-act="evadd"]'); await p.say('2월 30일 여행', 3000); await p.adv(2500); c = await cal(); q = await ask(); ok('없는 날짜(2월 30일)는 저장하지 않고 되묻는다', c.length === 2 && /2월에는 30일이 없어/.test(q), [c, q]);
+    await box('[data-act="evadd"]'); await p.say('이십칠 일에 치과', 3000); await p.adv(2500); c = await cal(); ok('한글 숫자 "이십칠 일에 치과"', c.includes('2026-11-27 치과'), c);
+    await box('[data-act="evadd"]'); await p.say('금요일까지 독서록 내야 돼', 3000); await p.adv(2500); c = await cal(); ok('"금요일까지 독서록 내야 돼" → 이번 주 금요일', c.includes('2026-11-20 독서록'), c);
+    await box('[data-act="evadd"]'); await p.say('십이월 삼일 발표회', 3000); await p.adv(2500); q = await ask(); ok('한글 숫자 "십이월 삼일" → 12월 3일로 알아듣고 되묻는다', /12월 3일 목 · 발표회/.test(q), q); await box('#agAsk [data-act="evno"]'); ok('"아니" 단추 → 되묻기 사라짐, 저장 안 함', await ask() === '' && !(await cal()).some(x => /발표회/.test(x)));
+    await box('#cqGrid [data-k$="-19"]'); await box('[data-act="evadd"]'); await p.say('25일에 수영', 3000); await p.adv(2500); c = await cal(); ok('날짜 칸을 골랐어도 말 속 날짜를 따른다', c.includes('2026-11-25 수영') && !c.some(x => /-19 /.test(x)), c);
+    // 3. 긴 일정 이름
+    const LONG30 = '가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나';
+    await box('[data-act="evadd"]'); await p.say('28일에 ' + LONG30, 3000); await p.adv(2500); c = await cal(); const lt = (c.find(x => x.startsWith('2026-11-28')) || '').slice(11);
+    ok('긴 이름은 24자 안으로 잘라 저장, 줄·단추가 화면 밖으로 나가지 않음', lt.length >= 2 && lt.length <= 24 && await p.evaluate(() => [...document.querySelectorAll('.ag-row, #agFoot > *')].every(e => e.getBoundingClientRect().right <= innerWidth - 40)), [lt, lt.length]);
+    await p.evaluate(L => { const d = JSON.parse(localStorage.getItem('gk-cal')); d.items = [{ id: 'L', date: '2026-11-17', text: L, raw: '', at: 1 }]; d.last = null; localStorage.setItem('gk-cal', JSON.stringify(d)); }, LONG30); await p.go('cal'); await p.adv(2500);
+    ok('옛 저장값의 띄어쓰기 없는 30자: 한 줄 말줄임, "일정 말하기"가 화면 안', await p.evaluate(() => { const r = document.querySelector('.ag-row'), z = document.querySelector('#agFoot .zbar').getBoundingClientRect(), tx = r.querySelector('.tx'); return r.getBoundingClientRect().right <= innerWidth - 40 && z.right <= innerWidth - 40 && tx.scrollWidth > tx.clientWidth && r.getBoundingClientRect().height < 100; }));
+    // 12. 평소 말: "달력에 … 적어 줘"
+    await p.click('#gkHome'); await p.adv(1200); await p.mouse.click(20, 20); await p.adv(1500); const a2 = p.api, n2 = (await p.st()).count;
+    await p.say('달력에 27일 치과 적어 줘', 3000); c = await cal(); s = await p.st(); ok('"달력에 27일 치과 적어 줘" → 일정으로, AI 안 부름, 질문 수 그대로, "지울래" 칩', c.includes('2026-11-27 치과') && p.api === a2 && s.count === n2 && /달력에 적었어.*27일 금 · 치과/.test(s.sheet) && s.chips.includes('지울래') && s.todo.length === 0, [c, s.sheet, s.chips]);
+    await p.say('지울래', 3000); c = await cal(); ok('"지울래" → 되돌림', !c.includes('2026-11-27 치과'), c); await p.context().close();
+    // 8. 오늘이 토요일·일요일이어도 파란 원 안 숫자는 흰색
+    for (const [d, n] of [['2026-11-21', '토'], ['2026-11-22', '일']]) { p = await open(b, { time: d + 'T16:10', read: d }); await p.go('cal'); await p.adv(2500);
+      ok(`오늘이 ${n}요일: 파란 원 안 숫자는 흰색`, await p.evaluate(() => getComputedStyle(document.querySelector('#cqGrid span.t b')).color === 'rgb(255, 255, 255)')); await p.context().close(); }
+    // 6. 질문 상한이어도 일정 넣기는 된다, 쉬는 시간에는 조용한 한 줄
+    p = await open(b, { time: D0 + 'T16:00', read: D0, settings: { cap: 10 } }); await p.evaluate(() => localStorage.setItem('gk-count-2026-11-16', '10')); await p.go('cal'); await p.adv(2500);
+    await box('[data-act="evadd"]'); s = await p.st(); await p.say('27일에 치과 가', 3000); await p.adv(2500); c = await cal(); ok('질문 상한에 걸려도 일정 말하기는 된다 (AI 안 부름)', !s.saver && c.includes('2026-11-27 치과') && p.api === 0, [s.saver, c]); await p.context().close();
+    p = await open(b, { time: D0 + 'T23:30', read: D0, settings: { hFrom: 7, hTo: 21 } }); await p.go('cal'); await p.adv(2500); await box('[data-act="evadd"]'); s = await p.st(); q = await ask();
+    ok('쉬는 시간: 일정 말하기는 막고 조용한 한 줄', /\bcal\b/.test(s.saver) && /^지금은 쉬는 시간이야/.test(q), [s.saver, q]); await p.context().close();
+  }
+
   await newsTests(b);
   ok('페이지 오류 없음', errs.length === 0, errs.slice(0, 3));
   await b.close(); server.close();

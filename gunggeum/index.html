@@ -1424,6 +1424,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <input id="q" type="text" readonly placeholder="궁금한 걸 물어 봐" enterkeyhint="send" maxlength="120" aria-label="궁금한 질문">
       <button class="kbbtn" type="button" id="kbBtn" aria-label="글자로 물어보기"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"></rect><path d="M6 9.5h1M9.5 9.5h1M13 9.5h1M16.5 9.5h1M6 12.5h1M17 12.5h1M9.5 12.5h5M8 15.5h8"></path></svg></button>
     </div>
+    <p class="mic-note" id="micNote" role="status"></p>
     <div class="z-under" id="zUnder"></div>
     <button id="askBtn" type="submit">물어보기 <span aria-hidden="true">→</span></button>
   </div></form>
@@ -1437,7 +1438,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
         <div class="pn cq"><div class="cq-head"><b id="cqMon"></b><span class="cq-nav"><i class="pc" id="cqNow" data-act="monnow" hidden>이번 달</i><i class="rb" data-act="mon" data-d="-1" aria-label="지난달"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></i><i class="rb" data-act="mon" data-d="1" aria-label="다음 달"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></i></span></div>
           <div class="cq-dow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
           <div class="cq-body"><canvas class="cq-big" id="cqBig" width="2" height="2" aria-hidden="true"></canvas><div class="cq-grid" id="cqGrid"></div></div></div>
-        <div class="pn ag"><div class="ag-head"><b id="agTtl"></b></div><div class="ag-list" id="agList"></div><div class="ag-foot" id="agFoot"></div></div>
+        <div class="pn ag"><div class="ag-head"><b id="agTtl"></b></div><div class="ag-list" id="agList"></div><div class="ag-ask" id="agAsk" hidden></div><div class="ag-foot" id="agFoot"></div></div>
       </section>
       <section class="pg-s pg-wx" id="pgWx"></section>
     </div>
@@ -1963,10 +1964,15 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   // ---------- speech in (Web Speech API) ----------
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   let rec = null, listening = false, heard = '', silenceTimer = null;
+  function micNote(t) { const el = $('micNote'); if (el) el.textContent = t || ''; } // 마이크 안내: 묻기 줄 아래 한 줄
+  // 달력의 '일정 말하기'로 듣다가 말없이 끝나면(무음·취소·오류) 일정 받기 상태를 바로 풀고 달력으로 돌아간다
+  // fresh: '일정 말하기'를 누른 바로 그 듣기에만 푼다(말을 받은 뒤 늦게 끝나는 옛 듣기가 새 되묻기를 지우지 않게)
+  function evListenEnd() { if (!evPend || evPend.from !== 'cal' || !evPend.fresh) return false; evPend = null; evMsg = ''; previewSaver('cal'); return true; }
   function stopListening() { if (rec) { try { rec.stop(); } catch (e) {} } }
   function startListening() {
     if (busy || listening) return;
-    if (!SR) { statusEl.textContent = '이 브라우저는 음성 인식이 안 돼요. Chrome에서 열어 주세요.'; enterTyping(); return; }
+    micNote('');
+    if (!SR) { statusEl.textContent = '이 브라우저는 음성 인식이 안 돼요. Chrome에서 열어 주세요.'; micNote('여기서는 말로 못 물어봐. 글자로 물어봐 줘.'); enterTyping(); return; }
     const blocked = gate(); if (blocked && restNow()) { showBlocked(blocked); return; }
     hush();
     keepAwake();
@@ -1985,14 +1991,14 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     rec.onerror = e => {
       listening = false; clearTimeout(silenceTimer);
       const msg = { 'not-allowed': '마이크 사용을 허용해 줘야 해. 주소창 옆 자물쇠에서 마이크를 허용으로.', 'audio-capture': '마이크를 찾을 수 없어. 폰이 잘 연결돼 있는지 봐 줘.', 'no-speech': '아무 말도 못 들었어. 다시 눌러서 말해 봐.', 'network': '인터넷이 잠깐 끊겼어. 다시 해 봐.' }[e.error] || '잘 못 들었어. 다시 눌러서 말해 봐.';
-      setState('idle', '잠깐', ''); draw(msg, false, 'msg');
+      setState('idle', '잠깐', ''); if (e.error === 'not-allowed' || e.error === 'audio-capture') micNote(msg.split('. ')[0] + '.'); if (!evListenEnd()) draw(msg, false, 'msg');
     };
     rec.onend = () => { chime(false);
       listening = false; clearTimeout(silenceTimer);
       const q = (heard || input.value).trim();
-      if (q) ask(q); else if (app.dataset.state === 'listen') { setState('idle', '쉬는 중', ''); draw('아무 말도 못 들었어. 다시 눌러서 말해 봐.', false, 'msg'); }
+      if (q) ask(q); else if (evListenEnd()) { setState('idle', '쉬는 중', ''); } else if (app.dataset.state === 'listen') { setState('idle', '쉬는 중', ''); draw('아무 말도 못 들었어. 다시 눌러서 말해 봐.', false, 'msg'); }
     };
-    try { rec.start(); } catch (e) { listening = false; setState('idle', '잠깐', '마이크를 켜지 못했어. 다시 눌러 봐.'); }
+    try { rec.start(); } catch (e) { listening = false; setState('idle', '잠깐', '마이크를 켜지 못했어. 다시 눌러 봐.'); micNote('마이크를 켜지 못했어. 다시 눌러 봐.'); evListenEnd(); }
   }
   $('micBtn').addEventListener('click', () => { if (listening) stopListening(); else startListening(); });
   // 말하기 막대: 막대 어디를 눌러도 말하기, 글자는 ⌨ 버튼으로만
@@ -2236,9 +2242,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   let lockMsgTimer = null;
   function svSay(t) { for (const id of ['svMsg', 'fcMsg']) { const m = $(id); m.textContent = t; m.hidden = false; } clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { $('svMsg').hidden = $('fcMsg').hidden = true; }, 4000); }
-  function exitSaver() {
+  function exitSaver(force) { // force: 달력의 일정 말하기(질문 상한과 상관없이 깨어난다 — 쉬는 시간은 부르는 쪽에서 막는다)
     if (saverEl.hidden) return;
-    const blocked = gate();
+    const blocked = force ? '' : gate();
     if (blocked) { // 쉬는 시간: 안내만 잠깐 보여주고 계속 잠듦
       svSay(blocked); return;
     }
@@ -2680,7 +2686,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   // ---------- 일정: 말로 적고 달력 장에서 본다. 알아듣기·저장은 모두 기기에서 (AI를 부르지 않음) ----------
   // 저장: localStorage 'gk-cal' = { v:1, items:[{ id, date:'YYYY-MM-DD', text, raw, at }], last:{ op:'add'|'del'|'move', id, at, item?, prev? } }
   const CAL_KEY = 'gk-cal', EV_MAX = 40, EV_DAY_MAX = 3, EV_SLOTS = 5;
-  var evPend = null, evFlash = null, calSel = '', calOff = 0, agPage = 0;
+  var evPend = null, evFlash = null, evMsg = '', calSel = '', calOff = 0, agPage = 0; // evMsg: 달력 오른쪽 열에 보여 줄 한 줄(되묻기·안내)
   function evLoad() {
     const d = LS.get(CAL_KEY, null) || { v: 1, items: [], last: null }, cut = dayKey(new Date(Date.now() - 35 * 864e5)), n = d.items.length;
     d.items = (d.items || []).filter(x => x && x.date >= cut).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : a.at - b.at); // 지난 일정은 35일 뒤 말없이 사라짐
@@ -2690,22 +2696,28 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const evSave = d => { LS.set(CAL_KEY, d); if (!saverEl.hidden) renderSaver(); };
   const evDay = k => new Date(k + 'T00:00:00');
   const evWord = k => { const d = evDay(k); return `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`; };
+  const evShort = k => { const d = evDay(k), y = d.getFullYear() > new Date().getFullYear(); return `${y ? '내년 ' : ''}${d.getMonth() === new Date().getMonth() && !y ? '' : d.getMonth() + 1 + '월 '}${d.getDate()}일 ${DAYS[d.getDay()]}`; }; // "27일 금", "12월 3일 수", "내년 11월 3일 화"
   const evAway = k => { const t0 = new Date(); t0.setHours(0, 0, 0, 0); const n = Math.round((evDay(k) - t0) / 864e5); return n === 0 ? '오늘' : n === 1 ? '내일' : n === 2 ? '모레' : n > 0 ? n + '일 뒤' : '지남'; };
   // 날짜 알아듣기 → { key, span(지울 말), near(오늘·내일·요일만), roll(달/해가 넘어감) } | { bad } | null
-  function evDate(s) {
+  function evKoNum(s) { // "이십칠 일", "십이월 삼일", "시월" → 숫자로
+    const N = { 일: 1, 이: 2, 삼: 3, 사: 4, 오: 5, 육: 6, 칠: 7, 팔: 8, 구: 9 };
+    return s.replace(/(^|\s)(유|시)월/g, (m, a, b) => a + (b === '유' ? 6 : 10) + '월').replace(/(^|\s)([이삼]?십)?([일이삼사오육칠팔구])?\s*(월|일)(?=\s|에|날|까지|부터|은|는|이|$)/g, (m, a, t, u, w) => { if (!t && !u) return m; const n = (t ? (t.length === 2 ? N[t[0]] : 1) * 10 : 0) + (u ? N[u] : 0); return a + n + w; });
+  }
+  function evDate(s0) { return evDate0(evKoNum(s0)); } // 지울 말(span)은 숫자로 바꾼 문장 기준 — evClean 도 같은 변환을 한다
+  function evDate0(s) {
     const t0 = new Date(); t0.setHours(0, 0, 0, 0); const y = t0.getFullYear(); let m, d;
     const ok = (dt, span, o) => Object.assign({ key: dayKey(dt), span }, o || {});
     if ((m = s.match(/(내년\s*)?(\d{1,2})\s*월\s*(\d{1,2})\s*일(날)?/))) { // "11월 25일"
       const mo = +m[2], da = +m[3]; let yy = y + (m[1] ? 1 : 0);
-      if (mo < 1 || mo > 12 || da < 1 || da > new Date(yy, mo, 0).getDate()) return { bad: 1 };
+      if (mo < 1 || mo > 12 || da < 1 || da > new Date(yy, mo, 0).getDate()) return { bad: 1, mo, da };
       d = new Date(yy, mo - 1, da); let roll = false; if (d < t0) { d = new Date(++yy, mo - 1, da); roll = true; } // 지난 날짜면 내년으로 보고 되묻는다
       return ok(d, m[0], { roll });
     }
     if ((m = s.match(/(\d{1,2})\s*일\s*(뒤|후)/))) { d = new Date(t0); d.setDate(d.getDate() + +m[1]); return ok(d, m[0]); } // "3일 뒤"
-    if ((m = s.match(/(다음\s*달|이번\s*달|이달)?\s*(\d{1,2})\s*일(날)?(?!\s*(동안|째|간|만에|치|씩|밖에))/))) { // "20일", "다음 달 3일"
+    if ((m = s.match(/(다음\s*달|이번\s*달|이달)?\s*(\d{1,2})\s*일(날)?(?!\s*(동안|째|간|만에|치(?!과)|씩|밖에))/))) { // "20일", "다음 달 3일" ("3일 치"는 날짜가 아니지만 "27일 치과"는 날짜)
       const da = +m[2]; let mo = t0.getMonth() + (/다음/.test(m[1] || '') ? 1 : 0), roll = false;
       if (!m[1] && da < t0.getDate()) { mo++; roll = true; } // 이미 지난 날짜는 다음 달로 보고 되묻는다
-      if (da < 1 || da > new Date(y, mo + 1, 0).getDate()) return { bad: 1 };
+      if (da < 1 || da > new Date(y, mo + 1, 0).getDate()) return { bad: 1, mo: mo % 12 + 1, da };
       return ok(new Date(y, mo, da), m[0].trim(), { roll });
     }
     if ((m = s.match(/(다다음\s*주|다음\s*주|이번\s*주)\s*([월화수목금토일])요일(날)?/))) { // 주는 월요일에 시작한다고 본다
@@ -2721,20 +2733,20 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const EV_DUTY = /(해야|내야|써야|풀어야|읽어야|외워야|챙겨야|가져가야|사야|빨아야|해\s*가야)\s*(돼|해|되|됨|한대|된대)/; // "해야 하는 일"은 할 일
   const EV_CMD = /(적어|넣어|추가|기록|표시)\s*(해\s*)?(줘|줄래|놔|둬|주세요|줘요)?\s*$/;
   function evClean(said, span) {
-    let t = ' ' + said.replace(/[.,!?~]/g, ' ') + ' ';
-    if (span) t = t.replace(new RegExp(span.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(에는|엔|에|은|이)?(?=\\s)'), ' ');
+    let t = ' ' + evKoNum(said).replace(/[.,!?~]/g, ' ') + ' ';
+    if (span) t = t.replace(new RegExp(span.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(까지|에는|엔|에|은|이)?(?=\\s)'), ' ');
     t = t.replace(/\s(달력|일정|캘린더)\s*(에다가|에다|에|으로|로)?(?=\s)/g, ' ');
     t = t.replace(/\s*(을|를)?\s(적어|넣어|추가|기록|표시)\s*(해\s*)?(줘|줄래|놔|둬|주세요|줘요)?\s*$/, ' ');
     t = t.replace(/\s(나|나는|난|우리|우리는|저|음|어|그날|그때|근데|그리고|엄마가|아빠가|선생님이)(?=\s)/g, ' ');
     t = t.replace(/([가-힣])기로\s*(했어|했대|함)\s*$/, '$1기');
-    t = t.replace(/\s*(가야|봐야|해야)\s*(돼|해|한대|된대)\s*$/, ' ').replace(/\s(가|간대|갈\s*거야|가기로\s*했어|한대|한다|해|봐|본대)\s*$/, ' ');
+    t = t.replace(/\s*(가야|봐야|해야|내야)\s*(돼|해|한대|된대)\s*$/, ' ').replace(/\s(가|간대|갈\s*거야|가기로\s*했어|한대|한다|해|봐|본대)\s*$/, ' ');
     t = t.replace(/(이|가)?\s+(있어|있대|있다|있음)\s*$/, ' ').replace(/(이야|이래|이에요|이다|날이야)\s*$/, ' ').replace(/([가-힣])(야|래|예요)\s*$/, '$1');
     return t.replace(/\s+/g, ' ').trim().slice(0, 20);
   }
   function evSay(said, text, chips) { todoShow(said, text, chips, '달력'); }
   function evDone(said, text, chips, id, P) { // 달력 장에서 말한 것은 달력 장으로 돌아가 '들은 대로' 보여 준다
     evFlash = id ? { id, said, at: Date.now() } : null;
-    if (P && P.from === 'cal') { todoShow(said, text, chips, '달력'); previewSaver('cal'); speak(text.replace(/[《》]/g, '')); }
+    if (P && P.from === 'cal') { evMsg = id ? '' : text.replace(/[《》]/g, ''); todoShow(said, text, chips, '달력'); previewSaver('cal'); speak(text.replace(/[《》]/g, '')); }
     else todoShow(said, text, chips, '달력');
   }
   function evAdd(said, text, key, P) {
@@ -2745,13 +2757,14 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const it = { id: Date.now().toString(36), date: key, text, raw: String(said).slice(0, 60), at: Date.now() };
     d.items.push(it); d.last = { op: 'add', id: it.id, at: Date.now() }; evSave(d);
     diag('cal', `추가: ${key} "${text}" ← "${String(said).slice(0, 40)}"`);
-    evDone(said, `《${evWord(key)}, ${text}》. 적었어.`, ['달력 보여 줘', '날짜가 달라', '아니야, 지워 줘'], it.id, P);
+    if (P && P.plain) evDone(said, `달력에 적었어. 《${evShort(key)} · ${text}》`, ['지울래'], it.id, P);
+    else evDone(said, `《${evWord(key)}, ${text}》. 적었어.`, ['달력 보여 줘', '날짜가 달라', '아니야, 지워 줘'], it.id, P);
   }
   function evTry(s, tx, D, P, sure) { // 바로 적을지, 요일까지 읽어 주고 되물을지
     const far = D.key.slice(0, 7) !== dayKey(new Date()).slice(0, 7); // 화면에 안 보이는 다른 달
     if (sure && !D.roll && !D.ask && !far) { evAdd(s, tx, D.key, P); return; }
-    evPend = { wait: 'yn', text: tx, date: D.key, orig: s, from: P && P.from, until: Date.now() + 40e3 }; diag('cal', `되물음: "${s.slice(0, 40)}"`);
-    evDone(s, `《${evWord(D.key)}, ${tx}》. 달력에 적을까?`, ['적어 줘', '날짜가 달라', '아니야'], '', P);
+    evPend = { wait: 'yn', text: tx, date: D.key, orig: s, from: P && P.from, plain: P && P.plain, until: Date.now() + (P && P.from === 'cal' ? 180e3 : 40e3) }; diag('cal', `되물음: "${s.slice(0, 40)}"`);
+    evDone(s, `《${evShort(D.key)} · ${tx}》 — ${evDay(D.key).getFullYear() > new Date().getFullYear() ? evShort(D.key).replace(/ .$/, '') + '에 적을까?' : '달력에 적을까?'}`, ['적어 줘', '날짜가 달라', '아니야'], '', P);
   }
   function evUndo(said, quiet) {
     const d = evLoad(), L = d.last; let msg = '방금 한 게 없어.';
@@ -2775,19 +2788,23 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   // 아이의 말이 일정에 관한 것이면 여기서 끝내고 true. 아니면 false (할 일 규칙 → 평소 질문으로)
   function evHandle(said) {
     const s = said.trim(), t = tdNorm(s), now = Date.now();
+    if (evPend) evPend.fresh = 0; // 말을 받았다
     if (evPend && now > evPend.until) evPend = null;
     if (todoPend && now <= todoPend.until) return false; // 할 일 되묻기에 대한 대답이 먼저
     const d = evLoad(), L = d.last, tl = ((LS.get(TODO_KEY, null) || {}).last || {}).at || 0, YES = /^(적어줘|적어|응+|어+|엉|그래|맞아|네|예|좋아)$/;
     if (evPend) {
       const P = evPend; evPend = null;
       if (P.wait === 'yn') {
-        if (YES.test(t)) { evAdd(P.orig, P.text, P.date, P); return true; }
+        if (YES.test(t)) { evMsg = ''; evAdd(P.orig, P.text, P.date, P); return true; }
+        if (P.from === 'cal' && /^(아니야?|됐어|괜찮아)/.test(t)) { evMsg = ''; evFlash = null; previewSaver('cal'); return true; }
         if (/물어본거야/.test(t)) { ask(P.orig, { noTodo: true }); return true; }
         if (/^날짜가?(달라|틀려|아니야)$/.test(t)) { evPend = { wait: 'date', text: P.text, orig: P.orig, from: P.from, until: now + 30e3 }; evDone(s, `《${P.text}》, 며칠이야?`, [], '', P); return true; }
         if (/^(아니야?|됐어|괜찮아)/.test(t)) { evSay(s, '알았어. 안 적을게.', []); return true; }
-      } else if (P.wait === 'date') { const D = evDate(s); if (D && D.key) { evTry(P.orig, P.text, D, P, true); return true; } }
+      } else if (P.wait === 'date') { const D = evDate(s); if (D && D.key) { evTry(P.orig, P.text, D, P, true); return true; }
+        if (D && D.bad && P.from === 'cal') { evPend = P; P.until = now + 45e3; evDone(s, D.mo && D.da ? `${D.mo}월에는 ${D.da}일이 없어. 며칠인지 다시 말해 줘.` : '그런 날짜는 달력에 없어. 며칠인지 다시 말해 줘.', [], '', P); return true; } }
       else if (P.wait === 'text' && !TD_ASKW.test(s) && s.length <= 44) { // 날짜를 눌렀거나 "무슨 일정이야?" 뒤
         const D = evDate(s) || {}, key = D.key || P.date, tx = evClean(s, D.span);
+        if (D.bad) { evPend = { wait: 'text', date: P.date, from: P.from, orig: '', until: now + 45e3 }; evDone(s, D.mo && D.da ? `${D.mo}월에는 ${D.da}일이 없어. 며칠인지 다시 말해 줘.` : '그런 날짜는 달력에 없어. 며칠인지 다시 말해 줘.', [], '', P); return true; }
         if (D.key && tx.length >= 2) { evTry(s, tx, D, P, true); return true; }
         if (key && tx.length >= 2) { evAdd(s, tx, key, P); return true; } // 날짜를 눌러 고른 뒤 말한 것은 바로 적는다
         if (tx.length >= 2) { evPend = { wait: 'date', text: tx, orig: s, from: P.from, until: now + 25e3 }; evDone(s, `《${tx}》, 며칠이야?`, [], '', P); return true; }
@@ -2797,14 +2814,17 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (/^날짜가?(달라|틀려|아니야)$/.test(t) && L && L.op === 'add' && L.at > tl && now - L.at < 5 * 60e3) { // 방금 적은 것의 날짜만 다시
       const it = d.items.find(x => x.id === L.id); if (it) { const P = { from: saverEl.hidden ? '' : 'cal' }; evUndo('', true); evPend = { wait: 'date', text: it.text, orig: it.raw || s, from: P.from, until: now + 30e3 }; evSay(s, `《${it.text}》, 며칠이야?`, []); return true; } }
     // 되돌리기: 일정과 할 일 가운데 더 나중에 바꾼 쪽을 되돌린다
-    if (L && L.at > tl && ((/^(아니야?|취소|취소해줘|되돌려줘?)(,?지워줘?|,?되돌려줘?)?$/.test(t) && now - L.at < 60e3) || (/^(아니야?,?)?(방금(거|것|꺼)?)?(지워줘?|취소해?줘?|되돌려줘?)$/.test(t) && now - L.at < 5 * 60e3))) { evUndo(s); return true; }
+    if (L && L.at > tl && ((/^(아니야?|취소|취소해줘|되돌려줘?)(,?지워줘?|,?되돌려줘?)?$/.test(t) && now - L.at < 60e3) || (/^(아니야?,?)?(방금(거|것|꺼)?)?(지워줘?|지울래|취소해?줘?|되돌려줘?)$/.test(t) && now - L.at < 5 * 60e3))) { evUndo(s); return true; }
     if (s.length > 44) return false;
     const calw = /달력|일정/.test(s);
     if (calw && /(일정|달력)\s*(이|은|는|을|좀)?\s*(뭐\s*(있|남|야|지|더라)|읽어|알려|말해)/.test(s)) { // "이번 달 일정 뭐 있어?"
       const up = d.items.filter(x => x.date >= dayKey(new Date())).slice(0, 4);
       evSay(s, up.length ? '앞으로 ' + up.map((x, i) => (i ? '' : '《') + `${evWord(x.date).replace(/^\d+월 /, '')} ${x.text}` + (i ? '' : '》')).join(', ') + '.' : '적어 둔 일정이 없어.', ['달력 보여 줘']); return true;
     }
-    return false; // v122: 일정은 달력 화면의 '일정 말하기'에서 말한 것만 적는다 (평소 말은 할 일·질문으로)
+    if (/달력에/.test(s) && EV_CMD.test(s)) { const D2 = evDate(s); // "달력에 27일 치과 적어 줘": 기기가 바로 적는다(질문 수에 세지 않음)
+      if (D2 && D2.bad) { evSay(s, D2.mo && D2.da ? `${D2.mo}월에는 ${D2.da}일이 없어. 며칠인지 다시 말해 줘.` : '그런 날짜는 달력에 없어. 며칠인지 다시 말해 줘.', []); return true; }
+      if (D2 && D2.key) { const tx2 = evClean(s, D2.span); if (tx2.length >= 2) { evTry(s, tx2, D2, { plain: 1 }, true); return true; } } }
+    return false; // v122: 그 밖의 평소 말은 일정으로 적지 않는다 (할 일·질문으로)
     const D = evDate(s), has = !!(D && D.key), cmd = EV_CMD.test(s);
     if (TD_NOUN.test(s) && !calw) return false; // "숙제·준비물·할 일"이라고 하면 할 일
     if (/(지워|빼|취소)\s*(해\s*)?(줘|줄래)?$/.test(s) && (calw || has)) {
@@ -2837,7 +2857,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   // ---------- 홈 단추: 화면 전체에 하나(#gkHome). 어디서 눌러도 위젯 면으로 ----------
   const hourTone = () => { const h = new Date().getHours(); return h < 12 ? 'morn' : h < 18 ? 'day' : 'eve'; };
   function homeSync() { // 보일 때: 깨어난 화면 전부, 대기화면의 달력·신문 1면·밤하늘. 안 보일 때: 위젯 면·밤 화면
-    const sv = !saverEl.hidden, on = sv ? saverEl.classList.contains('pgx') : !app.dataset.paper; // 신문(1면·기사)은 제 홈 단추가 있다
+    const sv = !saverEl.hidden, on = sv ? (saverEl.classList.contains('pgx') || saverEl.classList.contains('sky')) : !app.dataset.paper; // 신문(1면·기사)은 제 홈 단추가 있다
     $('gkHome').hidden = !on;
     document.body.dataset.tone = sv && saverEl.classList.contains('pgx') && saverEl.dataset.tone ? saverEl.dataset.tone : hourTone();
     document.body.toggleAttribute('data-late', new Date().getHours() >= 21); // 21시 뒤에만 밝은 판을 한 단 낮춘다
@@ -2852,13 +2872,15 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     diag('app', '홈 단추');
   }
   $('gkHome').addEventListener('click', goHome); setTimeout(homeSync, 0);
-  setTimeout(() => { $('zUnder').addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (b) { e.preventDefault(); if (b.classList.contains('zu-prev')) reopenLast(); else ask(b.dataset.q); } }); $('form').querySelector('.qbox').addEventListener('click', e => { if (input.readOnly && !e.target.closest('button')) { try { $('micBtn').click(); } catch (er) {} } }); }, 0);
+  // 묻기 줄(.qbox) 누르기는 '말하기 막대' 처리기 하나만 맡는다. 여기에 또 달면 듣기가 켜지자마자 꺼진다(v122 검토에서 나온 버그)
+  setTimeout(() => { $('zUnder').addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (b) { e.preventDefault(); if (b.classList.contains('zu-prev')) reopenLast(); else ask(b.dataset.q); } }); }, 0);
 
   // ---------- 새 장: 달력 · 신문 1면 · 밤하늘 ----------
   function pgPre(kind) { saverEl.classList.toggle('pgx', !!kind); if (kind) saverEl.dataset.pg = kind; else delete saverEl.dataset.pg; }
   function pgSync() {
     const c = saverEl.classList;
     const pg = c.contains('pgx') ? saverEl.dataset.pg : '';
+    if (pg !== 'cal' && evPend && evPend.from === 'cal') { evPend = null; evMsg = ''; } // 달력 화면을 벗어나면 일정 받기 상태를 푼다
     if (pg === 'cal') { setH($('pgTtl'), ''); }
     if (pg !== 'wx') delete saverEl.dataset.wx;
     $('gkHome').style.translate = $('pg').style.translate = saverEl.querySelector('.sv-inner').style.translate; // 화면 자국 방지 이동을 같이 탄다
@@ -2890,6 +2912,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (!all.length) r = `<div class="ag-none">${calSel ? '이날은 일정이 없어.' : '적어 둔 일정이 없어.'}</div>`;
     if (all.length > SL) r += `<div class="ag-row more" data-act="more"><span class="tx">${left > 0 ? `그리고 ${left}개 더` : '처음으로'}</span></div>`;
     setH($('agList'), r);
+    if (evPend && Date.now() > evPend.until) { evPend = null; evMsg = ''; }
+    const yn = evPend && evPend.wait === 'yn' && evPend.from === 'cal';
+    setH($('agAsk'), evMsg && !fl ? `<p>${escN(evMsg)}</p>` + (yn ? `<span class="pc" data-act="evyes">응, 적어 줘</span><span class="pc" data-act="evno">아니</span>` : '') : ''); $('agAsk').hidden = !(evMsg && !fl);
     setH($('agFoot'), (fl ? `<span class="pc" data-act="evdate">다시 말할래</span><span class="pc" data-act="evundo">지울래</span>` : '') + `<span class="zbar" data-act="evadd" role="button">${MIC}${calSel ? evDay(calSel).getDate() + '일에 ' : ''}일정 말하기</span>`);
   }
   // ---------- 날씨 화면(Z): 화면 전체가 지금 날씨의 하늘. 앱이 이미 받는 값만 쓴다 ----------
@@ -3022,17 +3047,21 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   addEventListener('resize', () => { bigKey = ''; if (!saverEl.hidden && saverEl.dataset.pg === 'cal') bigFit(); });
   function pgTap(el) { // 새 장 안에서 누른 곳 (data-act). 빈 곳을 눌러도 아무 일도 일어나지 않는다
     const a = el && el.closest && el.closest('[data-act]'); if (!a) return; const act = a.dataset.act;
-    if (act === 'day') { calSel = calSel === a.dataset.k ? '' : a.dataset.k; agPage = 0; evFlash = null; renderSaver(); }
+    if (act === 'day') { calSel = calSel === a.dataset.k ? '' : a.dataset.k; agPage = 0; evFlash = null; if (!(evPend && evPend.wait === 'yn')) evMsg = ''; renderSaver(); }
     else if (act === 'mon') { calOff = Math.max(-1, Math.min(11, calOff + +a.dataset.d)); calSel = ''; agPage = 0; renderSaver(); }
     else if (act === 'more') { agPage++; renderSaver(); }
     else if (act === 'wxmore') { wxMore = !wxMore; renderSaver(); }
     else if (act === 'monnow') { calOff = 0; calSel = ''; agPage = 0; renderSaver(); }
     else if (act === 'evundo') { evUndo('', true); renderSaver(); }
+    else if (act === 'evyes') { const P = evPend; evPend = null; evMsg = ''; if (P) evAdd(P.orig, P.text, P.date, P); renderSaver(); }
+    else if (act === 'evno') { evPend = null; evMsg = ''; renderSaver(); }
     else if (act === 'evdate') { const d = evLoad(), it = d.last && d.items.find(x => x.id === d.last.id); if (!it) return; // 날짜만 다시 말하기
-      exitSaver(); if (!saverEl.hidden) return; evUndo('', true); evPend = { wait: 'date', text: it.text, orig: it.raw, from: 'cal', until: Date.now() + 45e3 }; try { $('micBtn').click(); } catch (e) {} }
+      if (restNow()) { evMsg = gate() || '지금은 쉬는 시간이야.'; renderSaver(); return; } exitSaver(true); if (!saverEl.hidden) return; evUndo('', true); evPend = { wait: 'date', text: it.text, orig: it.raw, from: 'cal', until: Date.now() + 45e3 }; try { $('micBtn').click(); } catch (e) {} }
     else if (act === 'evadd') { // 달력 장에서 말하기: 깨어나 듣고, 적은 뒤 달력 장으로 돌아온다
-      const key = calSel; exitSaver(); if (!saverEl.hidden) return; // 쉬는 시간이면 안내만
-      evPend = { wait: 'text', date: key || null, from: 'cal', orig: '', until: Date.now() + 45e3 };
+      const key = calSel; if (restNow()) { evMsg = gate() || '지금은 쉬는 시간이야.'; renderSaver(); return; } // 쉬는 시간: 조용한 한 줄만
+      const keep = evPend && evPend.wait === 'yn' && evPend.from === 'cal' ? evPend : null;
+      exitSaver(true); if (!saverEl.hidden) return; // 일정 넣기는 기기 규칙이라 질문 상한과 상관없이 된다
+      evMsg = ''; evPend = keep || { wait: 'text', date: key || null, from: 'cal', orig: '', fresh: 1, until: Date.now() + 45e3 };
       try { $('micBtn').click(); } catch (e) {}
     }
   }
@@ -3603,7 +3632,6 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function openLog() {
     try { renderPicShown(); } catch (e) {}
     logEl.hidden = false; $('summary').hidden = true; applySettingsUI();
-    try { const d = LS.get('gk-lines-dbg', null), n = Object.keys(LS.get(LINES_KEY, {})).length; $('linesDbg').textContent = `대기 화면 문장: 저장 ${n}개` + (d ? ` · 마지막 요청 ${d.at} (${d.need}개 요청 → ${d.ok}개 받음)` + (d.err ? ' · 오류: ' + d.err : '') + (d.raw ? ' · 원문: ' + d.raw.slice(0, 120) : '') : ' · 아직 요청 없음'); } catch (e) {}
     const days = loadDays(14);
     logBody.textContent = '';
     if (!days.length) { logBody.innerHTML = '<p class="empty">아직 물어본 질문이 없어요. 첫 질문을 하면 여기에 날짜별로 쌓여요.</p>'; return; }
@@ -5313,7 +5341,6 @@ body[data-wxstill] .wx-sky *{animation:none !important}
 .pr-main{top:128px}
 .log .log-head{top:36px}
 }
-.log[data-v2] #linesDbg{display:none !important}
 .pr-sec{gap:10px}
 .pr-row{min-height:72px;padding-top:8px;padding-bottom:8px}
 .pr-sec h3, .log .pr-sec h3{margin-top:14px}
@@ -5361,6 +5388,21 @@ body[data-wxstill] .wx-sky *{animation:none !important}
 /* 윗줄(시각)은 누르는 곳이 아니다: 아래의 달 넘기기 단추를 가리지 않게 */
 #saver .pg-top{pointer-events:none}
 
+/* ---- v122 검토 뒤 고침 ---- */
+.mic-note{margin:14px 0 0 4px;font:500 28px/36px "Pretendard",sans-serif;letter-spacing:-.015em;color:var(--zk2)} .mic-note:empty{display:none}
+#app:not([data-home]) .mic-note{position:absolute;left:0;top:100%;white-space:nowrap}
+.ag, .ag-list{min-width:0} .ag-row{min-width:0;max-width:100%;overflow:hidden}
+.ag-row .tx{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ag-row .aw{flex:none}
+.ag-foot{min-width:0;flex-wrap:nowrap}
+.ag-ask{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:14px 0 14px;padding:18px 24px;border-radius:24px;background:#fff;box-shadow:var(--strips)}
+.ag-ask[hidden]{display:none}
+.ag-ask p{flex:1 0 100%;margin:0 0 4px;font:500 30px/40px "Pretendard",sans-serif;letter-spacing:-.02em;color:var(--zk);word-break:keep-all}
+.ag-ask .pc{height:64px;padding:0 26px;border-radius:22px;background:var(--strip);box-shadow:var(--strips);color:var(--zk);font:600 28px/1 "Pretendard",sans-serif;cursor:pointer}
+.ag{grid-template-rows:auto minmax(0,1fr) auto 72px}
+.cq-grid span.t b, .cq-grid span.t.sa b, .cq-grid span.t.su b{color:#fff !important}
+body[data-scr=sky] .gk-home{background:rgb(255 255 255 / .14);color:#fff;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .22);-webkit-backdrop-filter:none;backdrop-filter:none}
+.saver.sky .sv-date{padding-left:150px}
 </style>
 </body>
 </html>
