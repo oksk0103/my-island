@@ -1576,13 +1576,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v116</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v117</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v116</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v117</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2596,6 +2596,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       .replace(/\s*사야\s*(돼|해|되|됨|한대|된대)/g, ' 사기').replace(/\s*빨아야\s*(돼|해|되|됨|한대|된대)/g, ' 빨기').replace(/\s*해야\s*(돼|해|되|됨|한대|된대)/g, ' ');
     t = t.replace(/\s*(까지야|이야|있어|있대)\s*$/g, ' ').replace(/(이|가|을|를)\s*$/g, ' ');
     t = t.replace(/\s+/g, ' ').trim().slice(0, 40);
+    // 할 일은 "~기"로 끝나게 다듬는다: "밥 맛있게 먹게" → "밥 맛있게 먹기", "양치하자" → "양치하기" (가게·무게 같은 이름씨는 그대로)
+    if (!/(^|\s)(가게|무게|집게|지게|꽃게|대게|빨래집게)$/.test(t)) t = t.replace(/([가-힣])(게|도록)$/, '$1기');
+    t = t.replace(/\s*(하자|할래|할게|하고|해)$/, m => /^\s/.test(m) ? ' 하기' : '하기').replace(/([가-힣])(자)$/, (m, a) => /[먹읽씻닦놀찾풀쓰걷뛰]/.test(a) ? a + '기' : m);
     return t && when ? t + ' · ' + when : t;
   }
   function todoMatch(said, d) { // 말한 것과 가장 닮은 '아직 안 한' 줄
@@ -3316,7 +3319,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v116';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v117';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
