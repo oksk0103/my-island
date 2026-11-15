@@ -11,11 +11,13 @@ let fails = 0, passes = 0; const errs = [];
 const ok = (name, cond, info) => { if (process.env.V) console.log('   · ' + name); if (cond) passes++; else { fails++; console.log('  ✗ ' + name + (info !== undefined ? '  → ' + JSON.stringify(info) : '')); } };
 const ANSWER = '달은 스스로 빛을 내지 못해. 《햇빛을 반사》해서 밝게 보이는 거야.\n@@ 달 | 🌙 | 왜 달은 안 떨어져?; 달에도 바다가 있어?; 보름달은 왜 둥글어?; 달에서 뛰면 어떻게 돼?';
 
-async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h = 820, pre, sw } = {}) {
+async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h = 820, pre, sw, wx = {} } = {}) {
   const ctx = await b.newContext({ viewport: { width: w, height: h }, timezoneId: 'Asia/Seoul', serviceWorkers: sw || 'allow' }); const p = await ctx.newPage(); p.api = 0;
   p.on('pageerror', e => { errs.push(e.message); if (process.env.V) console.log('ERR', e.message); });
+  p.cerr = []; p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource|net::ERR/.test(m.text())) p.cerr.push(m.text().slice(0, 120)); });
+  p.ext = []; p.on('request', q => { const u = q.url(); if (!/^(http:\/\/localhost|data:|blob:)/.test(u) && !/open-meteo|api\.anthropic\.com|wttr|tts\.speech|fonts\.(googleapis|gstatic)/.test(u)) p.ext.push(u.slice(0, 80)); }); // 날씨·답·목소리·글꼴(전부터 있던 것) 말고 바깥으로 나가는 요청
   const day = (time || '2026-11-14T10:00').slice(0, 10), H = [...Array(48)].map((_, i) => `${day}T${String(i % 24).padStart(2, '0')}:00`);
-  await p.route(/open-meteo/, r => offline ? r.abort() : r.request().url().includes('air-quality') ? r.fulfill({ json: { current: { pm10: 28, pm2_5: 12 } }, headers: CORS }) : r.fulfill({ headers: CORS, json: { current: { temperature_2m: 7.2, apparent_temperature: 4, weather_code: 0, precipitation: 0 }, hourly: { time: H, temperature_2m: H.map(() => 8), weather_code: H.map(() => 0), precipitation_probability: H.map(() => 0), is_day: H.map(() => 1) }, daily: { temperature_2m_max: [13, 13], temperature_2m_min: [4, 4], precipitation_probability_max: [0, 10], weather_code: [0, 1], sunrise: [day + 'T07:11', 'x'], sunset: [day + 'T17:22', 'x'] } } }));
+  await p.route(/open-meteo/, r => offline ? r.abort() : r.request().url().includes('air-quality') ? r.fulfill({ json: { current: { pm10: 28, pm2_5: 12 } }, headers: CORS }) : r.fulfill({ headers: CORS, json: { current: { temperature_2m: wx.t ?? 7.2, apparent_temperature: 4, weather_code: wx.code ?? 0, precipitation: 0 }, hourly: { time: H, temperature_2m: H.map(() => 8), weather_code: H.map(() => 0), precipitation_probability: H.map(() => 0), is_day: H.map(() => 1) }, daily: { temperature_2m_max: [13, 13], temperature_2m_min: [4, 4], precipitation_probability_max: [0, 10], weather_code: [0, 1], sunrise: [day + 'T07:11', 'x'], sunset: [day + 'T17:22', 'x'] } } }));
   await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); if (offline) return r.abort(); p.api++; p.lastBody = JSON.parse(r.request().postData()); r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: ANSWER }], stop_reason: 'end_turn' } }); });
   p.wiki = 0; await p.route(/wttr|googleapis|gstatic|wikidata|wikimedia|wikipedia|tts\.speech/, r => { if (/wikidata|wikimedia|wikipedia/.test(r.request().url())) p.wiki++; return r.abort(); });
   if (noSky) await p.route(/vendor\/sky/, r => r.abort());
@@ -174,8 +176,8 @@ async function newsTests(b) {
   p = await open(b, { time: newsDate + 'T19:30' }); await p.saver();
   const swipe = async dir => { const x = dir > 0 ? 1100 : 500; await p.mouse.move(x, 400); await p.mouse.down(); await p.mouse.move(x - dir * 150, 405, { steps: 4 }); await p.mouse.move(x - dir * 300, 410, { steps: 4 }); await p.mouse.up(); await p.adv(1500); };
   s = await p.st(); ok('처음: 위젯 면', s.saver === 'face', s.saver);
-  await swipe(1); s = await p.st(); ok('밀기 → 달력', s.saver === 'cal', s.saver);
-  ok('달력에 오늘 표시와 큰 날짜', await p.evaluate(() => { const t = document.querySelectorAll('#calGrid .t'), n = String(new Date().getDate()); return t.length === 1 && t[0].textContent === n && document.getElementById('calBig').textContent === n && document.querySelectorAll('#calGrid span').length % 7 === 0; }));
+  await swipe(1); s = await p.st(); ok('밀기 → 달력', /\bcal\b/.test(s.saver), s.saver);
+  ok('달력에 오늘 표시와 큰 날짜', await p.evaluate(() => { const t = document.querySelectorAll('#cqGrid span.t'), n = String(new Date().getDate()); return t.length === 1 && t[0].textContent.trim() === n && document.querySelector('#agTtl b').textContent === n && document.querySelectorAll('#cqGrid > span').length % 7 === 0; }));
   await swipe(1); s = await p.st(); ok('밀기 → 신문 1면', s.saver === 'has-paper paper-hero rnp', s.saver);
   await swipe(1); s = await p.st(); ok('밀기 → 밤하늘', s.saver === 'sky', s.saver);
   await swipe(1); s = await p.st(); ok('밤하늘에서도 밀림 (v105 버그)', s.saver === 'face', s.saver);
@@ -183,9 +185,10 @@ async function newsTests(b) {
   await p.saver(); await p.mouse.click(20, 20); await p.adv(1000); s = await p.st(); ok('빈 곳을 톡 누르면 깨어남', !s.saver, s.saver);
   ok('강제 상태가 남지 않음', await p.evaluate(() => window.__gkForce === undefined));
   const tile = async n => { const bx = await p.locator(`#svFace [data-tile="${n}"]:visible, #svFace [data-cv="${n.replace('cv-', '')}"]:visible`).first().boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); };
-  await p.saver(); await tile('cal'); s = await p.st(); ok('시계를 누르면 달력', s.saver === 'cal', s.saver); ok('다음 달 날짜는 숨김', await p.evaluate(() => [...document.querySelectorAll('#calGrid .o')].every(x => getComputedStyle(x).visibility === 'hidden')));
-  await p.mouse.click(800, 400); await p.adv(1000); s = await p.st(); ok('달력을 누르면 위젯 면으로', s.saver === 'face', s.saver);
-  await tile('cal'); await p.adv(100e3); s = await p.st(); ok('달력은 90초 뒤 위젯 면으로', s.saver === 'face', s.saver);
+  await p.saver(); await tile('cal'); s = await p.st(); ok('시계를 누르면 달력', /\bcal\b/.test(s.saver), s.saver); ok('다음 달 날짜는 흐리게, 일요일은 빨강', await p.evaluate(() => { const g = e => getComputedStyle(e.querySelector('b')).color, x = document.querySelector('#cqGrid span.x'), su = document.querySelector('#cqGrid span.su:not(.x):not(.t)'), d = document.querySelector('#cqGrid span:not(.x):not(.t):not(.su):not(.sa)'); return (!x || g(x) !== g(d)) && su && g(su) !== g(d); }));
+  await p.mouse.click(1250, 700); await p.adv(1000); s = await p.st(); ok('달력의 빈 곳을 눌러도 달력 그대로 (v122)', /\bcal\b/.test(s.saver), s.saver);
+  await p.click('#gkHome'); await p.adv(1000); s = await p.st(); ok('달력의 홈 단추 → 위젯 면', s.saver === 'face', s.saver);
+  await tile('cal'); await p.adv(100e3); s = await p.st(); const calStill = /\bcal\b/.test(s.saver); await p.adv(100e3); s = await p.st(); ok('달력은 마지막으로 만진 뒤 3분이 지나면 위젯 면으로 (v122: 90초 → 3분)', calStill && /^face/.test(s.saver), s.saver);
   await p.adv(3 * 60e3); s = await p.st(); ok('3분 손대지 않으면 쉬는 막', s.saver === 'face rest', s.saver);
   await p.mouse.move(700, 300); await p.mouse.down(); ok('손대면 바로 밝아짐', !(await p.st()).saver.includes('rest')); await p.mouse.move(700, 380); await p.mouse.up(); await p.adv(500);
   await tile('sky'); s = await p.st(); ok('밤하늘 타일 → 밤하늘 장', s.saver === 'sky', s.saver);
@@ -259,9 +262,9 @@ async function newsTests(b) {
   // 홈 칸에서 눌러 줄 긋기
   await p.go("home"); await p.adv(1000);
   await p.adv(3 * 60e3); await p.go("home"); await p.adv(800); // 말로 끝낸 줄이 뒤로 물러난 뒤
-  const row = p.locator('#tdTodoL [data-todo]:not(.done)').first(); ok('홈에 할 일 칸', await row.count() === 1); const firstText = await row.locator('.tx').textContent();
-  await row.click(); await p.adv(500); s = await p.st(); ok('기준5 홈에서 눌러 줄 긋기', s.todo.find(x => x[0] === firstText)[2] === true && s.home, s.todo);
-  await p.locator('#tdTodoL [data-todo].done', { hasText: firstText }).first().click(); await p.adv(500); s = await p.st(); ok('기준5 다시 누르면 되살아남', s.todo.find(x => x[0] === firstText)[2] === false, s.todo);
+  // v122: 궁금칸(깨어난 첫 화면)의 아래 네 칸이 없어졌다 → 할 일은 대기화면 타일에서만 누른다(아래 '대기화면에서 줄 긋기'가 같은 기준5를 본다)
+  ok('궁금칸에 아래 네 칸 없음 (v122)', await p.evaluate(() => { const t = document.querySelector('.today'); return !t || getComputedStyle(t).display === 'none'; }));
+  ok('궁금칸: 뭐가 궁금해? + 묻기 줄', await p.evaluate(() => document.getElementById('sheet').textContent === '뭐가 궁금해?' && document.querySelector('.qbox').getBoundingClientRect().width > 600));
   // 대기화면 시계 장
   await p.go("face"); await p.adv(2500); s = await p.st(); ok('대기화면 할 일 타일', s.saver === 'face' && await p.evaluate(() => document.querySelectorAll('#fcTodoL [data-todo]').length > 0 && +document.getElementById('fcTodoN').textContent > 0), s.saver);
   await p.screenshot({ path: path.join(__dirname, 'out-saver-todo.png') });
@@ -286,6 +289,65 @@ async function newsTests(b) {
   await p.say('일기 써야 돼'); s = await p.st(); ok('기준6 상한 뒤에도 적힘', s.todo.length === 1 && s.todo[0][0] === '일기 쓰기' && !s.saver, s);
   await p.say('달은 왜 모양이 바뀌어?', 3000); s = await p.st(); ok('상한 뒤 질문은 막힘', p.api === 0 && !!s.saver, s); await p.context().close();
   p = await open(b, { time: '2026-11-16T23:30', settings: { hFrom: 7, hTo: 21 } }); await p.say('일기 써야 돼'); s = await p.st(); ok('쉬는 시간에는 할 일도 막힘', s.todo.length === 0, s); await p.context().close();
+
+  // ---------- v122 새 화면 ----------
+  console.log('v122. 새 화면 (조각 장 · 궁금칸 · 답 · 달력 · 날씨 · 부모님 화면)');
+  { const LONG = '달은 스스로 빛을 내지 못하고 햇빛을 받아서 빛나. 달은 공처럼 둥글어서 언제나 절반은 햇빛을 받고 절반은 그늘이야. 달이 지구 둘레를 한 달에 한 바퀴 도는 동안, 지구에서 보이는 《밝은 쪽의 넓이》가 날마다 조금씩 달라져. 해와 같은 쪽에 있으면 밝은 면이 안 보여서 그믐이 되고, 해 반대쪽에 있으면 밝은 면이 다 보여서 보름달이 돼. 그 사이에는 초승달과 반달로 보여. 그래서 달 모양이 날마다 바뀌는 것처럼 보이는 거야.\n@@ 달 | 🌙 | 왜 달은 안 떨어져?; 달에도 바다가 있어?; 보름달은 왜 둥글어?';
+    const box = async sel => { const bx = await p.locator(sel).first().boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); };
+    let p = await open(b, { time: newsDate + 'T16:10', read: newsDate }), s;
+    ok('캐릭터(궁금이) 요소 없음', await p.evaluate(() => !document.querySelector('svg.gk, #loBuddy, .lo-buddy, .lo-glow, .wordmark .eye')));
+    // 조각 장 → 궁금칸 → 답 → 아까 물은 것
+    await p.saver(); await box('#svFace [data-cv="piece"]'); ok('표지 갈래 넷: 신문·낱말·조각·달', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent).join('') === '신문낱말조각달' && document.getElementById('fcFeat').classList.contains('piece')));
+    await box('#fcFeat .cc-h'); s = await p.st(); ok('조각 장 본문 → 궁금칸(조각과 이어 묻기 딸려 옴)', s.home && !s.saver && s.sheet === '뭐가 궁금해?' && await p.evaluate(() => !!document.querySelector('#zUnder .zu-pc') && !!document.querySelector('#zUnder .zu-chip')), s);
+    const R = () => p.evaluate(() => { const r = document.querySelector('.qbox').getBoundingClientRect(); return [r.left, r.top, r.right, r.bottom].map(Math.round).join(','); });
+    const r0 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'listen'; }); await p.adv(400); const r1 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'think'; }); await p.adv(400); const r2 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'idle'; });
+    ok('묻기 줄이 궁금칸·듣는 중·생각하는 중에서 같은 자리', r0 === r1 && r1 === r2 && r0 === '160,407,1040,511', [r0, r1, r2]);
+    const a0 = p.api; await p.click('#zUnder .zu-chip'); await p.adv(9000); s = await p.st(); ok('궁금칸의 이어 묻기 → 답', p.api === a0 + 1 && !s.home && /햇빛/.test(s.sheet), s);
+    ok('답 화면에 소리 글리프(60px 이상)', await p.evaluate(() => { const r = document.getElementById('soundBtn').getBoundingClientRect(); return r.width >= 60 && r.height >= 60 && getComputedStyle(document.getElementById('soundBtn')).display !== 'none'; }));
+    const cnt = (await p.st()).count; await p.click('#gkHome'); await p.adv(1500); s = await p.st(); ok('답의 홈 단추 → 위젯 면', /^face/.test(s.saver), s.saver);
+    await p.mouse.click(20, 20); await p.adv(1500); ok('궁금칸에 아까 물은 것 한 줄', await p.evaluate(() => !!document.querySelector('#zUnder .zu-prev')));
+    await p.click('#zUnder .zu-prev'); await p.adv(1500); s = await p.st(); ok('아까 물은 것 → 그 답을 다시 엶 (다시 묻지 않음, 질문 수 그대로)', p.api === a0 + 1 && !s.home && /햇빛/.test(s.sheet) && s.count === cnt, [p.api, s.count, cnt]);
+    await p.click('#gkHome'); await p.adv(1500); await box('#svFace [data-cv="piece"]'); await box('#fcFeat .cc-foot'); await p.adv(8000); s = await p.st(); ok('조각 장의 이어 묻기 칩 → 궁금칸을 거치지 않고 바로 답', p.api > a0 + 1 && !s.home && !s.saver && s.count === cnt + 1, [p.api - a0, s.count, cnt]);
+    // 긴 답: 문장 끝에서만 쪽 나눔
+    await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); p.api++; r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: LONG }], stop_reason: 'end_turn' } }); });
+    await p.say('달은 왜 모양이 바뀌어?', 12000);
+    const pg = await p.evaluate(() => { const n = document.querySelector('#ansPg .pn'), br = [...document.querySelectorAll('#sheet .pgbrk')]; return { shown: !document.getElementById('ansPg').hidden, n: n && n.textContent, ends: br.map(b => (b.previousElementSibling.textContent || '').trim().slice(-1)), fs: getComputedStyle(document.getElementById('sheet')).fontSize }; });
+    ok('긴 답: 쪽 표시 "1 / N", 쪽은 문장 끝에서만', pg.shown && /^1 \/ [2-9]$/.test(pg.n) && pg.ends.length >= 1 && pg.ends.every(c => /[.!?]/.test(c)), pg);
+    await p.click('#ansPg button'); await p.adv(600); ok('쪽 화살 → 2쪽', await p.evaluate(() => /^2 \//.test(document.querySelector('#ansPg .pn').textContent) && document.getElementById('sheet').scrollTop > 0));
+    ok('이 흐름에서 바깥 요청 0 · 콘솔 오류 0', p.ext.length === 0 && p.cerr.length === 0, [p.ext.slice(0, 3), p.cerr.slice(0, 3)]); await p.context().close();
+    // 달력: 일정 말하기 (기기 규칙 — AI를 부르지 않고, 질문 수에 세지 않는다)
+    p = await open(b, { time: newsDate + 'T16:10', read: newsDate }); const cal = () => p.evaluate(() => (JSON.parse(localStorage.getItem('gk-cal') || '{"items":[]}').items || []).map(x => x.date.slice(8) + ' ' + x.text));
+    await p.say('27일에 치과 가', 5000); let c = await cal(); ok('평소에 한 말은 일정으로 들어가지 않음', c.length === 0, c);
+    const a1 = p.api, n1 = (await p.st()).count; await p.go('cal'); await p.adv(2500); ok('일정이 없을 때: 조용한 한 줄', await p.evaluate(() => /일정이 없어/.test(document.getElementById('agList').textContent)));
+    await box('[data-act="evadd"]'); await p.say('27일에 치과 가', 3000); await p.adv(3000); c = await cal(); s = await p.st();
+    ok('일정 말하기 → 기기가 바로 저장, 달력으로 돌아와 들은 대로 보여 줌', c.length === 1 && /^27 치과/.test(c[0]) && /\bcal\b/.test(s.saver) && p.api === a1 && s.count === n1 && await p.evaluate(() => !!document.querySelector('#agFoot [data-act="evdate"]') && !!document.querySelector('#agFoot [data-act="evundo"]') && /치과/.test(document.getElementById('agList').textContent)), [c, s.saver, p.api - a1]);
+    await box('#agFoot [data-act="evundo"]'); c = await cal(); ok('지울래 → 되돌림', c.length === 0, c);
+    await box('[data-act="evadd"]'); await p.say('치과 가', 3000); c = await cal(); s = await p.st(); ok('날짜를 못 알아들으면 저장하지 않고 되물음', c.length === 0 && /며칠/.test(s.sheet), [c, s.sheet]);
+    await p.evaluate(() => { const t = new Date(), ym = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}`; localStorage.setItem('gk-cal', JSON.stringify({ v: 1, last: null, items: [17, 18, 19, 20, 21, 22, 23].map((d, i) => ({ id: 'x' + i, date: `${ym}-${d}`, text: '일정 ' + i, raw: '', at: i })) })); });
+    await p.go('cal'); await p.adv(2500); ok('일정이 많을 때: "그리고 N개 더", 넘침 없음', await p.evaluate(() => /그리고 \d+개 더/.test(document.getElementById('agList').textContent) && document.getElementById('agFoot').getBoundingClientRect().bottom <= innerHeight));
+    await box('.cq-nav [data-d="1"]'); { const m = await p.evaluate(() => [document.getElementById('cqMon').textContent, document.getElementById('cqNow').hidden, document.querySelectorAll('#cqGrid > span').length]); ok('달 넘기기 → 12월, "이번 달" 단추, 칸 수는 7의 배수', m[0] === '12월' && !m[1] && m[2] % 7 === 0, m); }
+    await p.context().close();
+    // 날씨: 코드마다 제 하늘, 한마디는 지금 상태
+    const SKY = ['day-clear', 'day-part', 'day-cloud', 'day-rain', 'day-snow', 'dusk-clear', 'dusk-cloud', 'night-clear', 'night-cloud'], LAYER = ['cloud-a', 'cloud-b', 'cloud-s', 'cloud-p', 'fog', 'rain-1', 'rain-2', 'rain-3', 'snow-1', 'snow-2', 'snow-3'];
+    ok('하늘 그림 파일이 모두 있음', SKY.concat(LAYER).every(n => fs.existsSync(path.join(ROOT, 'bg', `wx-${n}.webp`))));
+    for (const [code, t, time, sky, fx, tip] of [[0, 7.2, 'T13:30', 'day-clear', 'ca1', ''], [2, 7.2, 'T13:30', 'day-part', 'ca3', ''], [45, 7.2, 'T13:30', 'day-cloud', 'cb fog', '안개가 꼈어. 앞을 잘 보고 걸어.'], [61, 7.2, 'T13:30', 'day-rain', 'cb r2', '비가 와. 우산 챙겨!'], [95, 7.2, 'T13:30', 'day-rain', 'cb r3 fl', '비가 많이 와. 우산 꼭 챙겨!'], [73, -3, 'T13:30', 'day-snow', 'cb s1', '눈이 와. 따뜻하게 입자.'], [0, 7.2, 'T17:30', 'dusk-clear', 'ca1', ''], [63, 7.2, 'T21:30', 'night-cloud', 'cb r2', '비가 와. 우산 챙겨!']]) {
+      p = await open(b, { time: newsDate + time, read: newsDate, wx: { code, t } }); await p.saver(); await box('#fcWx');
+      const g = await p.evaluate(() => { const sv = document.getElementById('saver'), k = document.getElementById('wxSky'); return { pg: sv.dataset.pg, sky: sv.dataset.sky, fx: k && k.dataset.fx, tip: (document.querySelector('.wx-b p') || {}).textContent, one: getComputedStyle(document.querySelector('.wx-b p')).whiteSpace === 'nowrap', bottom: Math.max(...[...document.querySelectorAll('.wx-foot b')].map(e => e.getBoundingClientRect().bottom)), anim: document.getAnimations().filter(a => a.effect && a.effect.target && a.effect.target.closest && a.effect.target.closest('#wxSky')).length }; });
+      ok(`날씨 코드 ${code} ${time.slice(1)} → ${sky} · ${fx}`, g.pg === 'wx' && g.sky === sky && g.fx === fx && (!tip || g.tip === tip) && g.one && g.bottom <= 820 && g.anim > 0, g);
+      if (code === 61) { await p.click('#gkHome'); await p.adv(1500); ok('날씨 화면을 닫으면 움직임이 멈춤', await p.evaluate(() => getComputedStyle(document.getElementById('wxSky')).display === 'none' && document.getAnimations().filter(a => a.effect && a.effect.target && a.effect.target.closest && a.effect.target.closest('#wxSky')).length === 0)); }
+      await p.context().close(); }
+    p = await open(b, { time: newsDate + 'T13:30', read: newsDate, wx: { code: 61 }, settings: { wxStill: 'on' } }); await p.saver(); await box('#fcWx');
+    ok('부모 설정 "날씨 하늘 멈춤"이면 움직이지 않음', await p.evaluate(() => document.getAnimations().filter(a => a.effect && a.effect.target && a.effect.target.closest && a.effect.target.closest('#wxSky')).length === 0)); await p.context().close();
+    // 부모님 화면: 삭제한 것 · 새 설정 · 옛 저장값
+    p = await open(b, { time: newsDate + 'T23:30', read: newsDate, settings: { scaryNight: 'off', oldKey: 1 } }); await p.saver(); s = await p.st(); ok('밤 10시 화면 설정 기본 끔 → 밤 11시 반에도 위젯 면', /^face/.test(s.saver), s.saver);
+    await p.mouse.move(30, 30); await p.mouse.down(); await p.adv(2400); await p.mouse.up(); await p.adv(500);
+    ok('밤 화면이 꺼져 있으면 바로가기 "밤 화면"은 감춤', await p.evaluate(() => !document.getElementById('log').hidden && document.querySelector('#log [data-go="night"]').hidden));
+    ok('부모님 화면: 삭제한 항목 없음, 새 설정 둘, 옛 저장값으로도 오류 없음', await p.evaluate(() => !document.querySelector('[data-k="scaryNight"]') && !document.getElementById('linesDbg') && !!document.querySelector('.seg[data-k="night10"]') && !!document.querySelector('.seg[data-k="wxStill"]') && !!document.querySelector('.pr-nav')) && p.cerr.length === 0 && errs.length === 0, [p.cerr, errs]);
+    ok('부모님 화면: 글자 24px 이상 · 누르는 곳 56px 이상', await p.evaluate(() => { const bad = []; document.querySelectorAll('.pr-nav button').forEach(nb => { nb.click(); document.querySelectorAll('.pr-sec.on *').forEach(e => { if (!e.getClientRects().length) return; const cs = getComputedStyle(e); if ([...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) && parseFloat(cs.fontSize) < 24) bad.push(e.textContent.trim().slice(0, 8) + cs.fontSize); if (/^(BUTTON|SELECT|INPUT)$/.test(e.tagName) && e.getBoundingClientRect().height < 56) bad.push((e.textContent || e.id).trim().slice(0, 8) + Math.round(e.getBoundingClientRect().height)); }); }); return bad; }).then(x => x.length === 0 || (console.log('   ', x.slice(0, 6)), false)));
+    await p.context().close();
+    p = await open(b, { time: newsDate + 'T23:30', read: newsDate, settings: { night10: 'on' } }); await p.saver(); s = await p.st(); ok('밤 10시 화면 켬 → 밤 화면', /night/.test(s.saver), s.saver);
+    await p.mouse.move(30, 30); await p.mouse.down(); await p.adv(2400); await p.mouse.up(); await p.adv(500); ok('밤 화면을 켰을 때는 바로가기 "밤 화면"이 보임 (2초 누르기로 부모님 화면)', await p.evaluate(() => !document.getElementById('log').hidden && !document.querySelector('#log [data-go="night"]').hidden)); await p.context().close();
+  }
 
   await newsTests(b);
   ok('페이지 오류 없음', errs.length === 0, errs.slice(0, 3));
