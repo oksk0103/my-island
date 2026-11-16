@@ -120,6 +120,12 @@
 - 다음에는: 톤·배치를 바꾸면 390×780(세로 전화)과 820×380(가로 전화)도 같이 찍어 본다. 고정 좌표를 쓰는 규칙에는 같은 블록 안에 좁은 화면 값도 적는다.
 - 관련: v123, index.html 끝의 `@media (max-width:899px)` 묶음, tests/run.js "13. 좁은 화면(전화)"
 
+## 숨긴 화면을 display 로 덮어쓰지 않는다 (hidden 은 CSS 한 줄에 진다)
+- 무슨 일: v124~v130 전화에서 "읽기"를 눌러도 반응이 없어 보였다. 진단 기록에는 "신문 펼침"과 "대기화면 나옴"이 찍혀 있었다 — 기사는 열렸는데, 숨긴 표지가 그 위를 그대로 덮고 있었다.
+- 진짜 원인: 전화용 CSS `#saver.saver.face{display:block !important}` 가 `hidden` 속성(브라우저 기본 display:none)을 이겼다. 자동 점검은 hidden 속성만 보고 통과시켰다.
+- 다음에는: hidden 으로 숨기는 요소에 display 를 줄 때는 `:not([hidden])` 을 붙이고, 끝에 `#요소[hidden]{display:none !important}` 를 둔다. 화면 전환 점검은 속성이 아니라 elementFromPoint 로 "실제로 맨 위에 보이는 것"을 확인한다. 실제 기기 문제는 추측으로 고치기 전에 진단 기록부터 받는다(v127·v128은 헛짚었다).
+- 관련: v131, index.html `#saver[hidden]`, tests/run.js "14. 전화 홈"
+
 ## 대기화면의 톡 누르기는 pointerup 하나에만 기대지 않는다
 - 무슨 일: v124~v126 전화 표지에서 "읽기"·기사·탭을 눌러도 반응이 없고, 계속 누르면 부모님 화면(5번 연타)이 열렸다. 자동 점검(마우스·터치 흉내)에서는 모두 통과했다.
 - 진짜 원인(추정): 전화 표지를 위아래로 밀 수 있게(touch-action: pan-y) 바꾸자, 실제 기기에서는 톡 누른 손가락이 pointerup 대신 pointercancel 로 끝나는 경우가 생겼다. 누른 횟수는 pointerdown 에서 세므로 연타로만 읽혔다.

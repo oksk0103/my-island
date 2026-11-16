@@ -440,7 +440,8 @@ async function newsTests(b) {
     await tapAt(p, '#gkHome'); await p.evaluate(() => { document.getElementById('saver').scrollTop = 600; }); await p.go('sky'); await p.adv(2500);
     ok('전화 밤하늘: 새 배치(맨 위부터, 제목·하늘 그림·달이 위에서 아래로)', await p.evaluate(() => { const sv = document.getElementById('saver'), y = q => document.querySelector(q).getBoundingClientRect().top; return sv.classList.contains('sky') && sv.scrollTop === 0 && y('.sky-name') > 60 && y('.sky-name') < y('#skyChart svg') && y('#skyChart svg') < y('#skyMoon') && getComputedStyle(document.querySelector('.sky-name')).writingMode === 'horizontal-tb'; }));
     x = await side(); ok('전화 밤하늘: 옆으로 넘치는 것 없음', !x.length, x);
-    await tapAt(p, '#gkHome'); await tapAt(p, '#fcFeat .cc-h'); s = await p.st(); ok('전화: 표지의 신문 → 기사 화면 바로(1면을 거치지 않음)', s.paper && !s.saver, s); await p.context().close();
+    await tapAt(p, '#gkHome'); await tapAt(p, '#fcFeat .cc-h'); s = await p.st(); ok('전화: 표지의 신문 → 기사 화면 바로(1면을 거치지 않음)', s.paper && !s.saver, s);
+    ok('전화: 기사 화면이 실제로 맨 위에 보인다(숨긴 표지가 덮지 않음)', await p.evaluate(() => getComputedStyle(document.getElementById('saver')).display === 'none' && [[160, 200], [160, 500]].every(([x, y]) => { const e = document.elementFromPoint(x, y); return e && !e.closest('#saver'); }))); await p.context().close();
     p = await open(b, { time: newsDate + 'T12:19', w: 390, h: 780, settings: { hFrom: 15, hTo: 21 } }); await p.saver(); await tapAt(p, '.fc-app[data-tile="ask"]');
     ok('전화 쉬는 시간: 묻기를 누르면 막히고 안내가 화면 안에 보인다', await p.evaluate(() => { const m = document.getElementById('fcMsg'), r = m.getBoundingClientRect(); return !m.hidden && /쉬는 시간/.test(m.textContent) && r.top >= 0 && r.bottom <= innerHeight && !document.getElementById('saver').hidden; }));
     await tapAt(p, '#fcFeat .cc-h'); s = await p.st(); ok('쉬는 시간에도 신문 기사는 열린다', s.paper && !s.saver, s); await p.context().close();
