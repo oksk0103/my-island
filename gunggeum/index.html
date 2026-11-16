@@ -6097,6 +6097,7 @@ body[data-theme=night] .cq-grid span.t b{color:#0A1130 !important}
 #saver.saver.face .fc-app svg.ds-ic .ds-dot{fill:var(--ds-dot) !important;stroke:none !important}
 #saver.saver.face .fc-app[data-tile=ask] .mic{width:40px !important;height:40px !important}
 #saver.saver.face .fc-app[data-tile=ask] .mic svg.ds-ic, #saver.saver.face .fc-app[data-tile=study] svg.ds-ic{stroke:#fff !important;color:#fff}
+#saver.saver.face.study .fc-app[data-tile=study] svg.ds-ic path:first-child{fill:#fff !important} /* 켜짐일 때만 채움(부품 규칙) — 공부 중이면 책이 채워진다 */
 /* 답 화면의 '더 물어 봐': 입력칸이 아니라 같은 알약 */
 #app:not([data-home]):not([data-state=listen]):not([data-state=think]) .qbox{height:64px !important;min-height:64px !important;border-radius:32px !important;background:var(--pill) !important;box-shadow:var(--pill-edge),var(--pill-shadow) !important;border:0 !important}
 #app:not([data-home]):not([data-state=listen]):not([data-state=think]) #q, #app:not([data-home]):not([data-state=listen]):not([data-state=think]) #q::placeholder{color:var(--pill-ink) !important;font:600 28px/1 "Pretendard",sans-serif !important;opacity:1 !important}
