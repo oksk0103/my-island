@@ -515,8 +515,6 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 
 
 /* v67: 진단 기록 */
-#chgWarn { position: fixed; right: 1rem; bottom: 6.2rem; z-index: 30; background: #5A1E14; color: #FFE6D8; font-size: 1rem; font-weight: 700; padding: .5rem .9rem; border-radius: 999px; pointer-events: none; }
-#chgWarn[hidden] { display: none; }
 
 /* v86: 루아 신문 */
 .np-serif { font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; }
@@ -1350,7 +1348,6 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 <body>
 <button id="gkHome" class="gk-home" type="button" hidden aria-label="홈으로"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 11.2 12 3.9l8.4 7.3M6 9.6V19a1 1 0 0 0 1 1h3.4v-5.2h3.2V20H17a1 1 0 0 0 1-1V9.6"/></svg><span>홈</span></button>
 <div class="app" id="app" data-state="idle">
-  <div id="chgWarn" hidden>🔌 충전 확인</div>
   <header class="topbar"><div class="inner">
     <button class="wordmark" id="title" type="button" title="2초 동안 누르면 부모님 화면이 열려요">루아</button>
     <div class="status" role="status" aria-live="polite">
@@ -3755,7 +3752,6 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
     const lv = Math.round(bat.level * 100), ch = bat.charging;
     try { const a = LS.get(BAT_KEY, []); a.push([Date.now(), lv, ch ? 1 : 0]); const cut = Date.now() - 48 * 3600e3; while (a.length && a[0][0] < cut) a.shift(); LS.set(BAT_KEY, a); } catch (e) {}
     if (why) diag('bat', `${lv}% · ${ch ? '충전 중' : '충전 안 됨'} (${why})`);
-    $('chgWarn').hidden = ch || lv > 30;
     if (!logEl.hidden) { renderDevStat(); renderBat(); }
   }
   if (navigator.getBattery) navigator.getBattery().then(b => {
