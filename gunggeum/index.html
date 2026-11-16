@@ -2957,22 +2957,22 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   // ---------- 할 일 화면(v135, 아내 요청): 대기화면의 할 일 타일을 누르면 달력처럼 따로 크게. 한 번에 일곱 줄, 줄을 누르면 했다/안 했다 ----------
   let tdPage = 0, tdShowDone = false;
-  function renderTodoPg() { // 할 일 앱: 못 한 것 · 오늘 · 내일 · 다음에 칸으로 나누고, 다 한 것은 한 줄로 접는다(인기 할 일 앱들의 '오늘' 보기를 따름)
-    const d = todoLoad(), all = todoSorted(d), open = all.filter(x => !x.done), done = all.filter(x => x.done), left = open.length;
-    setH($('pgTtl'), `루아의 할 일${all.length ? `<span class="td-n">${left ? left + '개 남았어' : '다 했어'}</span>` : ''}`); setH($('pgSub'), zClock());
+  function renderTodoPg() { // 할 일 앱: 큼직한 두 단 — 왼쪽 '지난 것·오늘', 오른쪽 '내일·다음에'. 다 한 것은 한 줄로 접는다
+    const d = todoLoad(), all = todoSorted(d), open = all.filter(x => !x.done), done = all.filter(x => x.done);
     const t0 = new Date(); t0.setHours(0, 0, 0, 0); const dd = it => it.due ? Math.round((new Date(it.due + 'T00:00:00') - t0) / 864e5) : 0;
-    const G = [['못 한 것', open.filter(x => dd(x) < 0)], ['오늘', open.filter(x => dd(x) === 0)], ['내일', open.filter(x => dd(x) === 1)], ['다음에', open.filter(x => dd(x) >= 2)]];
-    const row = (it, du) => ({ h: 72, html: `<div class="td-row${it.done ? ' done' : ''}" data-todo="${it.id}"><span class="bx"></span><span class="tx">${escN(it.text)}</span><span class="du">${du}</span></div>` });
-    const E = []; // 칸 머리와 줄을 차례로 늘어놓고, 높이에 맞춰 쪽을 나눈다
-    for (const [name, list] of G) if (list.length) { E.push({ h: 52, html: `<div class="td-h">${name}</div>` }); list.forEach(it => E.push(row(it, name === '다음에' ? escN(dueWord(it.due)) : ''))); }
-    if (done.length) { E.push({ h: 64, html: `<div class="td-doneline" data-act="tddone">다 한 것 ${done.length}개<i>${tdShowDone ? '접기' : '보기'}</i></div>` }); if (tdShowDone) done.forEach(it => E.push(row(it, '했어'))); }
-    const BUD = innerHeight >= 780 ? 560 : 520, pages = [[]]; let used = 0;
-    for (const e of E) { if (used + e.h > BUD && pages[pages.length - 1].length) { pages.push([]); used = 0; } pages[pages.length - 1].push(e); used += e.h; }
-    if (tdPage >= pages.length) tdPage = 0;
-    let h = pages[tdPage].map(e => e.html).join('');
+    const today = open.filter(x => dd(x) <= 0).length;
+    setH($('pgTtl'), `루아의 할 일${all.length ? `<span class="td-n">${open.length ? (today ? '오늘 ' + today + '개' : '오늘은 없어') : '다 했어'}</span>` : ''}`); setH($('pgSub'), zClock());
+    const row = (it, du) => ({ h: 92, html: `<div class="td-row${it.done ? ' done' : ''}" data-todo="${it.id}"><span class="bx"></span><span class="tx">${escN(it.text)}</span><span class="du">${du}</span></div>` });
+    const col = groups => { const E = []; for (const [name, list, du] of groups) if (list.length) { E.push({ h: 56, html: `<div class="td-h">${name}</div>` }); list.forEach(it => E.push(row(it, du ? escN(dueWord(it.due)) : ''))); } return E; };
+    const L = col([['지난 것', open.filter(x => dd(x) < 0)], ['오늘', open.filter(x => dd(x) === 0)]]), R = col([['내일', open.filter(x => dd(x) === 1)], ['다음에', open.filter(x => dd(x) >= 2), true]]);
+    if (done.length) { L.push({ h: 68, html: `<div class="td-doneline" data-act="tddone">다 한 것 ${done.length}개<i>${tdShowDone ? '접기' : '보기'}</i></div>` }); if (tdShowDone) done.forEach(it => L.push(row(it, ''))); }
+    const BUD = innerHeight >= 780 ? 540 : 500, split = E => { const P = [[]]; let u = 0; for (const e of E) { if (u + e.h > BUD && P[P.length - 1].length) { P.push([]); u = 0; } P[P.length - 1].push(e); u += e.h; } return P; };
+    const PL = split(L), PR = split(R), pages = Math.max(PL.length, PR.length); if (tdPage >= pages) tdPage = 0;
+    const part = P => (P[tdPage] || []).map(e => e.html).join('');
+    let h = `<div class="td-col">${part(PL)}</div><div class="td-col">${part(PR)}</div>`;
     if (!all.length) h = '<div class="td-none">적어 둔 할 일이 없어.<small>"내일 수학 숙제 있어"처럼 말하면 여기 적혀.</small></div>';
-    const foot = (pages.length > 1 ? `<span class="pc" data-act="tdmore">${tdPage + 1 < pages.length ? '다음 쪽' : '처음으로'} <small>${tdPage + 1} / ${pages.length}</small></span>` : '') + `<span class="zbar" data-act="tdadd" role="button">${MIC}할 일 말하기</span>`;
-    setH($('pgTodo'), `<div class="td-list">${h}</div><div class="td-foot">${foot}</div>`);
+    const foot = (pages > 1 ? `<span class="pc" data-act="tdmore">${tdPage + 1 < pages ? '다음 쪽' : '처음으로'} <small>${tdPage + 1} / ${pages}</small></span>` : '') + `<span class="zbar" data-act="tdadd" role="button">${MIC}할 일 말하기</span>`;
+    setH($('pgTodo'), `<div class="td-list${all.length ? ' two' : ''}">${h}</div><div class="td-foot">${foot}</div>`);
   }
   // ---------- 날씨 화면(Z): 화면 전체가 지금 날씨의 하늘. 앱이 이미 받는 값만 쓴다 ----------
   // 답 글자 단: 한두 줄 80 → 서너 줄 72 → 다섯 줄까지 64. 그보다 길면 64 · 다섯 줄씩 쪽을 나눈다(흐림 없음)
@@ -5540,6 +5540,20 @@ body[data-scr=todo] .gk-home svg{stroke:var(--zk) !important}
 .pg-todo .td-doneline{flex:none;height:64px;display:flex;align-items:center;gap:14px;padding:0 8px;margin-top:6px;box-shadow:inset 0 1px 0 rgba(20,30,60,.10);font:600 26px/1 "Pretendard",sans-serif;color:var(--zk2);cursor:pointer}
 .pg-todo .td-doneline i{font-style:normal;font-weight:500;font-size:22px;color:var(--zac)}
 .pg-todo .td-foot .pc small{font-size:.8em;color:var(--zk2);margin-left:6px}
+/* 큼직한 두 단(아내·부모 요청): 1.5m에서 읽히는 52px 줄, 굵은 고리 */
+#saver[data-pg=todo] .pg-todo{left:112px !important;right:112px !important;top:120px !important}
+#saver .pg-todo .td-list.two{display:grid !important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:72px;align-items:start}
+#saver .pg-todo .td-col{display:flex;flex-direction:column;min-width:0}
+#saver .pg-todo .td-h{height:56px;font-size:26px;padding:0 4px 10px}
+#saver .pg-todo .td-row{height:92px;grid-template-columns:64px minmax(0,1fr) auto;column-gap:24px;padding:0 4px}
+#saver .pg-todo .td-row + .td-row, #saver .pg-todo .td-h + .td-row{box-shadow:none}
+#saver .pg-todo .td-row .bx{width:52px;height:52px;box-shadow:inset 0 0 0 5px var(--zk)}
+#saver .pg-todo .td-row .tx{font:700 52px/1.15 "Pretendard",sans-serif;letter-spacing:-.03em}
+#saver .pg-todo .td-row .du{font:500 26px/1 "Pretendard",sans-serif}
+#saver .pg-todo .td-row.done .bx{box-shadow:none}
+#saver .pg-todo .td-row.done .bx::after{left:17px;top:10px;width:13px;height:24px;border-width:0 6px 6px 0}
+#saver .pg-todo .td-row.done .tx{text-decoration-thickness:4px}
+#saver .pg-todo .td-doneline{height:68px;margin-top:8px;box-shadow:none;padding:0 4px}
 #saver.pgx[data-pg=todo]{background:var(--paperbg) !important;color:var(--zk)}
 #saver[data-pg=todo] .pg-ttl, #saver[data-pg=todo] .pg-sub{color:var(--zk)}
 #saver[data-pg=todo] .pg-sub small{color:var(--zk2)}
