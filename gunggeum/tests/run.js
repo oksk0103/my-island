@@ -130,7 +130,7 @@ async function newsTests(b) {
   p = await openNews(b, { news: fakeNews({ old: true }) }); await p.front(); g = await p.pics();
   ok('옛 형식: 1면이 그림 없는 조판으로', g.nopicF && await p.evaluate(() => { const r = document.getElementById('rnFront'); return r.querySelector('h2').textContent.length > 5 && r.querySelectorAll('#rnText p').length >= 2 && !r.querySelector('.rn-num') && !!r.querySelector('.rn-word') && r.querySelectorAll('.rn-it').length === 2; }), g);
   let a = await p.evaluate(SHEET_AUDIT); ok('옛 형식: 1면 넘침·작은 글자 없음', clean(a), a);
-  await p.tap('#rnFront [data-rn="art"][data-i="1"]'); s = await p.st(); ok('옛 형식: 옆 기사 → 2면 기사', s.paper && await p.evaluate(() => document.getElementById('ppNo').textContent === '2면' && document.querySelectorAll('#ppBody p').length >= 2), s);
+  await p.tap('#rnFront [data-rn="art"][data-i="1"]'); s = await p.st(); ok('옛 형식: 옆 기사 → 2면 기사', s.paper && await p.evaluate(() => /2면/.test(document.getElementById('ppTag').textContent) && document.querySelectorAll('#ppBody p').length >= 2), s);
   a = await p.evaluate(SHEET_AUDIT); ok('옛 형식: 기사 넘침·작은 글자 없음', clean(a), a); await p.context().close();
 
   p = await openNews(b, { news: fakeNews({ long: 1 }) }); await p.front(); a = await p.evaluate(SHEET_AUDIT);
@@ -232,7 +232,11 @@ async function newsTests(b) {
   await p.say('달은 왜 모양이 바뀌어?', 9000); s = await p.st(); ok('답이 보임', /햇빛을 반사/.test(s.sheet) && p.api >= 1, s.sheet); await p.adv(6000); ok('답 화면이 바깥(위키) 사진을 부르지 않음', p.wiki === 0, p.wiki); ok('이어서 칩 4개', s.chips.length === 4, s.chips); ok('질문 수 1', s.count === 1, s.count);
   ok('지시문이 캐시 블록으로 감', Array.isArray(p.lastBody.system) && p.lastBody.system[0].cache_control && !/지금은 (오전|오후)/.test(p.lastBody.system[0].text));
   ok('질문 앞에 오늘 날짜·시각', /^\(오늘은 \d+년/.test(p.lastBody.messages.at(-1).content), p.lastBody.messages.at(-1).content.slice(0, 40));
-  const n0 = p.api; await p.click('#chips button'); await p.adv(9000); ok('칩을 누르면 다시 물음', p.api > n0); await p.context().close();
+  const n0 = p.api; await p.click('#chips button'); await p.adv(9000); ok('칩을 누르면 다시 물음', p.api > n0);
+  { const lastQ = () => p.lastBody.messages.at(-1).content.split('\n').at(-1);
+    await p.say('보름달', 9000); ok('칩 낱말만 말하면 그 칩으로 물음 ("보름달" → 보름달은 왜 둥글어?)', /보름달은 왜 둥글어/.test(lastQ()), lastQ());
+    await p.say('달에서 뛰면', 9000); await p.say('보름달은 언제 떠', 9000); ok('낱말 하나 겹친 새 질문은 칩으로 바꾸지 않음 (v136 버그)', /보름달은 언제 떠/.test(lastQ()) && !/둥글어/.test(lastQ()), lastQ()); }
+  await p.context().close();
 
   console.log('8. 루아의 할 일');
   p = await open(b, { time: '2026-11-16T16:00' }); // 월요일
