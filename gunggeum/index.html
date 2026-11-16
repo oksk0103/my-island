@@ -1528,8 +1528,8 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     <div class="card">
       <h3>진단</h3>
       <p id="picDbg" class="empty">마지막 그림: 아직 질문 없음</p>
-      <label>최근 보인 사진 (이상한 사진은 눌러서 다시 안 나오게)</label>
-      <div id="picShown" style="display:flex;flex-wrap:wrap;gap:.4rem;margin:.3rem 0 .8rem"></div>
+      <label hidden>최근 보인 사진</label>
+      <div id="picShown" hidden style="display:none"></div>
       <p id="keyTest" class="empty">버튼(리모컨) 확인: 이 창을 열어 둔 채 버튼을 누르면 어떤 키인지 여기에 떠요.</p>
       <p id="touchDbg" class="empty" style="white-space: pre-line"></p>
     </div>
@@ -1579,7 +1579,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
         <div class="seg" data-k="pitch"><button type="button" data-v="0.9">낮게</button><button type="button" data-v="1">보통</button><button type="button" data-v="1.15">높게</button></div>
         <label>날씨 지역</label>
         <div class="row"><input id="wxName" placeholder="예: 영등포구" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 10rem"><button class="chip" id="wxFind" type="button">찾기</button><span class="empty" id="wxNote"></span></div>
-        <label>위키백과 사진</label>
+        <label>신문 그림</label>
         <div class="row"><div class="seg" data-k="picOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔</button></div></div>
         <label>날씨 하늘</label>
         <div class="row"><div class="seg" data-k="wxStill"><button type="button" data-v="off">움직임</button><button type="button" data-v="on">멈춤</button></div></div>
@@ -1685,10 +1685,14 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     applySettingsUI();
   })();
   function restNow() { const h = new Date().getHours(); return !(settings.hFrom === settings.hTo ? true : settings.hFrom < settings.hTo ? (h >= settings.hFrom && h < settings.hTo) : (h >= settings.hFrom || h < settings.hTo)); }
+  function restNext() { // v135: 쉬는 시간이 끝나는 때를 아이 말로 — '내일 아침 7시', '오늘 오후 1시'
+    const h = new Date().getHours(), f = +settings.hFrom || 0, w = f === 0 ? '밤 12시' : f < 12 ? `아침 ${f}시` : f === 12 ? '낮 12시' : f < 18 ? `오후 ${f - 12}시` : `저녁 ${f - 12}시`;
+    return (h < f ? '' : '내일 ') + w;
+  }
   function gate() {
     const h = new Date().getHours();
     const open = settings.hFrom === settings.hTo ? true : settings.hFrom < settings.hTo ? (h >= settings.hFrom && h < settings.hTo) : (h >= settings.hFrom || h < settings.hTo);
-    if (!open) return `지금은 쉬는 시간이야. ${settings.hFrom}시부터 물어볼 수 있어.`;
+    if (!open) return `지금은 쉬는 시간이야. ${restNext()}에 다시 물어볼 수 있어.`;
     if (settings.cap && todayCount() >= settings.cap) return `오늘 질문은 여기까지. 내일 또 물어봐.`;
     return null;
   }
@@ -2122,6 +2126,17 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     const wet = c => [51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99].includes(c);
     const soon = (w.hours || []).slice(0, 8);
     const rainy = soon.some(x => (x.pop != null && x.pop >= 50) || wet(x.code)) || wet(w.code);
+    const hr = new Date().getHours();
+    if (hr >= 18 || hr < 5) { // v135: 저녁·밤에는 '잘 다녀와' 대신 내일 아침 이야기
+      const late = hr < 5, t = late ? { lo: w.lo, pop: w.pop, code: w.dayCode ?? w.code } : w.tom, D = late ? '아침은' : '내일 아침은', D2 = late ? '오늘은' : '내일은';
+      if (wet(w.code)) return '지금 비가 와.'; if (!t || t.lo == null) return '';
+      if ([71,73,75,77,85,86].includes(t.code)) return `${D2} 눈이 올 수 있어. 따뜻하게 입자.`;
+      if ((t.pop != null && t.pop >= 50) || wet(t.code)) return `${D2} 비가 올 수 있어. 우산 챙기자.`;
+      if (t.lo <= 0) return `${D} 영하 ${-t.lo}°야. 두꺼운 외투!`;
+      if (t.lo <= 5) return `${D} ${t.lo}°. 따뜻하게 입자.`;
+      if (t.lo <= 12) return `${D} ${t.lo}°. 겉옷 챙기자.`;
+      return `${D2} 날씨가 좋아.`;
+    }
     if ([71,73,75,77,85,86].includes(w.code)) return '눈이 와. 따뜻하게 입자.';
     if ([65,82,95,96,99].includes(w.code)) return '비가 많이 와. 우산 꼭 챙겨!';
     if (wet(w.code)) return [51,53,55,56,57].includes(w.code) ? '이슬비가 와. 우산 챙겨!' : '비가 와. 우산 챙겨!';
@@ -2242,7 +2257,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     homeSync();
   }
   let lockMsgTimer = null;
-  function svSay(t) { for (const id of ['svMsg', 'fcMsg']) { const m = $(id); m.textContent = t; m.hidden = false; } clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { $('svMsg').hidden = $('fcMsg').hidden = true; }, 4000); }
+  function svSay(t) { for (const id of ['svMsg', 'fcMsg']) { const m = $(id); m.textContent = t; m.hidden = false; } clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { $('svMsg').hidden = $('fcMsg').hidden = true; }, 8000); } // v135: 2학년이 다 읽게 8초
   function exitSaver(force) { // force: 달력의 일정 말하기(질문 상한과 상관없이 깨어난다 — 쉬는 시간은 부르는 쪽에서 막는다)
     if (saverEl.hidden) return;
     const blocked = force ? '' : gate();
@@ -2493,6 +2508,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 12 * 3600e3) w = last.w; }
     $('fcCalN').textContent = d.getDate(); $('fcCalS').textContent = `${d.getMonth() + 1}월`;
     $('fcTip').textContent = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : '';
+    { const L = document.querySelector('.fc-app[data-tile="ask"] .fc-lab'), S = document.querySelector('.fc-app[data-tile="ask"] .fc-sub'), g = gate(), rest = !!g && /쉬는 시간/.test(g); // v135: 쉬는 시간엔 묻기 타일도 알려 준다
+      if (L) L.textContent = rest ? `${restNext()}에 만나` : '궁금한 걸 물어 봐'; if (S) S.textContent = rest ? '지금은 쉬는 시간' : '눌러서 말해'; }
     setH($('fcWx'), w ? `${wxIcon(w.code, hr >= 18 || hr < 7)}<div class="tt"><div class="fc-temp">${w.t}<i>°</i></div><div class="fc-lab">${escN((WX[w.code] || [''])[0])}</div><div class="fc-sub">${w.hi}° / ${w.lo}°</div></div>` : `<div class="tt"><div class="fc-lab">날씨</div><div class="fc-sub">아직 못 받았어</div></div>`);
     const sk = faceSky();
     setH($('fcNewsS'), on ? (read ? '다 읽었어' : `<i class="dot"></i>새 소식 ${news.articles.length}개`) : '아직 안 왔어');
@@ -2877,6 +2894,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('gkHome').hidden = !on;
     document.body.dataset.tone = sv && saverEl.classList.contains('pgx') && saverEl.dataset.tone ? saverEl.dataset.tone : hourTone();
     document.body.toggleAttribute('data-late', new Date().getHours() >= 21); // 21시 뒤에만 밝은 판을 한 단 낮춘다
+    { const h = new Date().getHours(); document.body.toggleAttribute('data-night', h >= 22 || h < 6); } // v135: 밤 10시~아침 6시엔 묻기·답 화면도 어둡게(부모 요청)
     document.body.dataset.scr = sv ? (saverEl.classList.contains('pgx') ? saverEl.dataset.pg : saverEl.classList.contains('rnp') ? 'front' : saverEl.classList.contains('sky') ? 'sky' : 'face') : app.dataset.paper ? 'paper' : 'ask'; // 조작부 재질이 화면을 따라가게
   }
   function goHome() {
@@ -2973,7 +2991,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (!last) { // v135: 칩이 없는 답(오류·할 일 확인)에서는 글 바로 아래 왼쪽에 둔다 — 구석으로 튀지 않게
       const sr = sheet.getBoundingClientRect(); if (!sr.width || app.dataset.state === 'listen' || app.dataset.state === 'think') { st.left = st.top = st.right = st.bottom = ''; return; }
       st.left = sr.left + 'px'; st.top = Math.min(sr.bottom + 36, innerHeight - 64 - 40) + 'px'; st.right = 'auto'; st.bottom = 'auto'; return; }
-    const r = last.getBoundingClientRect(), fr = bs[0].getBoundingClientRect(), wrap = r.right + 14 + 236 > innerWidth - 56;
+    const r = last.getBoundingClientRect(), fr = bs[0].getBoundingClientRect(), lim = $('mainInner').classList.contains('has-fig') && !fig.hidden ? fig.getBoundingClientRect().left - 32 : innerWidth - 56, wrap = r.right + 14 + 236 > lim; // v135: 카드가 있으면 카드 앞에서 줄을 바꾼다
     st.left = (wrap ? fr.left : r.right + 14) + 'px'; st.top = (wrap ? r.bottom + 14 : r.top) + 'px'; st.right = 'auto'; st.bottom = 'auto'; }
   setTimeout(() => { new MutationObserver(placeAsk).observe(chipsEl, { childList: true }); new MutationObserver(placeAsk).observe(app, { attributes: true }); new MutationObserver(placeAsk).observe(sheet, { attributes: true, childList: true });
     try { new ResizeObserver(placeAsk).observe($('mainInner')); new ResizeObserver(placeAsk).observe(chipsEl); } catch (e) {} addEventListener('resize', placeAsk); placeAsk(); }, 0);
@@ -2994,7 +3012,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     s.append(h3('읽어 주는 목소리'), row('서비스', P['AI 목소리 서비스']), row('서비스 키', P['AI 목소리 키']), row('목소리', P['AI 목소리']), row('말 빠르기', P['말 빠르기']), row('목소리 높이', P['목소리 높이']), h3('키가 없거나 안 될 때'), row('폰 목소리', P['폰 목소리']));
     s = sec('scr', '화면');
     const go = mk('div', 'row'); [['face', '홈'], ['piece', '조각 장'], ['home', '묻기'], ['cal', '달력'], ['wx', '날씨'], ['hero', '신문 1면'], ['paper', '신문 기사'], ['sky', '밤하늘'], ['night', '밤 화면']].forEach(([k, t]) => { let b = L.querySelector(`[data-go="${k}"]`); if (!b) { b = mk('button', 'chip', t); b.type = 'button'; b.dataset.go = k; b.addEventListener('click', () => { previewSaver('face'); window.__gkForce = { s: 'wx', at: Date.now() }; renderSaver(); }); } b.textContent = t; go.append(b); });
-    s.append(h3('날씨'), row('날씨 지역', P['날씨 지역']), row('날씨 하늘', P['날씨 하늘']), h3('밤'), row('밤 10시 화면', P['밤 10시 화면']), h3('사진'), row('위키백과 사진', P['위키백과 사진']), h3('화면 바로가기'), row('열어 보기', [go, note('열어 본 화면은 홈 단추로 돌아와요. 그대로 두면 10분 뒤 홈으로 가요.')], true), h3('기기'), row('전체 화면', $('fsBtn')));
+    s.append(h3('날씨'), row('날씨 지역', P['날씨 지역']), row('날씨 하늘', P['날씨 하늘']), h3('밤'), row('밤 10시 화면', P['밤 10시 화면']), h3('그림'), row('신문 그림', P['신문 그림']), h3('화면 바로가기'), row('열어 보기', [go, note('열어 본 화면은 홈 단추로 돌아와요. 그대로 두면 10분 뒤 홈으로 가요.')], true), h3('기기'), row('전체 화면', $('fsBtn')));
     const inst = $('installCard'); if (inst) { const r = row('앱으로 설치', [$('installBtn'), $('installNote')]); s.append(r); new MutationObserver(() => { r.hidden = inst.hidden; }).observe(inst, { attributes: true }); r.hidden = inst.hidden; }
     s = sec('news', '신문');
     s.append(h3('루아 신문'), row('오늘 신문', [$('newsNote'), $('newsReload')]));
@@ -3015,7 +3033,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const host = $('pgWx'), d = new Date(), hr = d.getHours();
     let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 12 * 3600e3) w = last.w; }
     setH($('pgSub'), zClock());
-    if (!w) { saverEl.dataset.wx = 'cloud'; setH($('pgTtl'), '날씨'); setH(host, '<div class="wx-none">날씨를 아직 못 받았어.</div>'); return; }
+    if (!w) { saverEl.dataset.wx = 'none'; delete saverEl.dataset.sky; // v135: 'cloud'로 두면 밝은 사진용 진한 시계가 단색 파랑 위에 묻힌다
+      setH($('pgTtl'), '날씨'); setH(host, '<div class="wx-none">날씨를 아직 못 받았어.</div>'); return; }
     const sun = LS.get('gk-sun', null), rise = sun && sun.rise ? new Date(sun.rise).getHours() + new Date(sun.rise).getMinutes() / 60 : 7, set = sun && sun.set ? new Date(sun.set).getHours() + new Date(sun.set).getMinutes() / 60 : 18, dark = hr + d.getMinutes() / 60 >= set + .5 || hr + d.getMinutes() / 60 < rise - .5;
     const c = w.code, wet = [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99].includes(c), snow = [71, 73, 75, 77, 85, 86].includes(c);
     delete saverEl.dataset.wx;
@@ -3127,7 +3146,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (dn) { dn.hidden = !allDone; if (allDone) dn.textContent = `오늘 할 일 ${list.length}개 다 했어`; }
   }
   $('tdTodoL').addEventListener('click', e => { const r = e.target.closest('[data-todo]'); if (r) todoToggle(r.dataset.todo); });
-  function tbClock() { const d = new Date(), h = d.getHours(), html = `<small>${ampm(h)}</small>${h % 12 || 12}:${pad(d.getMinutes())}`; if ($('tbClock').innerHTML !== html) $('tbClock').innerHTML = html; }
+  function tbClock() { const d = new Date(), h = d.getHours(); document.body.toggleAttribute('data-night', h >= 22 || h < 6); const html = `<small>${ampm(h)}</small>${h % 12 || 12}:${pad(d.getMinutes())}`; if ($('tbClock').innerHTML !== html) $('tbClock').innerHTML = html; }
   tbClock(); setInterval(() => { tbClock(); homeSync(); }, 15e3);
 
   // ---------- 홈의 '오늘' 줄: 신문 · 밤하늘 · 날씨 ----------
@@ -3576,6 +3595,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       }
       if (quiz && /정답은/.test(a)) quiz = false;
       if (!quiz) { const m = a.match(/^([\s\S]*[.!])\s+[^.!?]*[?？]$/); if (m && m[1].length > 20) a = m[1].trim(); } // 되묻는 마지막 문장은 칩이 대신하니 뗌
+      a = a.replace(/\p{Extended_Pictographic}|[\uFE0F\u20E3\u200D]|[\u2460-\u24FF\u2776-\u2793\u3251-\u325F\u32B1-\u32BF]/gu, '').replace(/[ \t]{2,}/g, ' ').trim(); // v135: 이모지·동그라미 숫자는 그리기 전에 지운다(모델이 규칙을 어겨도)
       if (graphemes(a.replace(/[《》]/g, '')).length <= 30) a = a.replace(/[《》]/g, ''); // 짧은 답은 전부 핵심이라 형광펜 안 씀
       current = a.replace(/[《》]/g, '');
       setChips(quiz ? ['힌트 줘', '정답 알려줘', '다른 문제'] : (qs && qs.length ? qs : ['왜?', '더 알려줘', '예를 들면?']), '더 궁금하면');
@@ -4877,7 +4897,7 @@ body[data-scr=cal] .gk-home, body[data-scr=ask] .gk-home, body[data-scr=cal] .rb
 .cq-grid, .cq-grid.w6{grid-template-rows:none}
 .cq-grid b, .cq-grid.w6 b{width:72px;height:72px;font:500 46px/1 "Pretendard",sans-serif;letter-spacing:-.02em;color:var(--zk)}
 .cq-grid span.su b{color:var(--red);font-weight:500}
-.cq-grid span.sa b{color:#8A8F9A;font-weight:500}
+.cq-grid span.sa b{color:#2E5FC9;font-weight:500} /* v135: 토요일은 파랑 — 회색이면 다음 달 날짜처럼 보인다 */
 .cq-grid span.x b{color:#C2C6CE;font-weight:500}
 .cq-grid span.t b{background:var(--zac);color:#fff;font-weight:600}
 .cq-grid span.t.s b{box-shadow:0 0 0 4px #F3F2EF, 0 0 0 7px var(--zac)}
@@ -5462,6 +5482,14 @@ body[data-scr=sky] .gk-home{top:28px}
 #app:not([data-home]) #mainInner.has-fig .fig-box{width:100%}
 #app:not([data-home]) #mainInner.has-fig #textcol, #app:not([data-home]) #mainInner.has-fig .sheet, #app:not([data-home]) #mainInner.has-fig .sheet[data-len]{max-width:calc(100vw - 2 * var(--X) - 112px - 380px - 64px) !important}
 #app:not([data-home]) #mainInner.has-fig .chips, #app:not([data-home]) #mainInner.has-fig .chips:has(button:not(.lead)){align-self:flex-start !important;max-width:calc(100vw - 2 * var(--X) - 112px - 380px - 64px) !important;flex-wrap:wrap}
+}
+/* v135: 밤(22~6시) 묻기·답 화면 — 대기화면에서 말을 걸어도 방이 확 밝아지지 않게. 따뜻한 먹색 바탕, 흰 글씨 대신 옅은 미색 */
+body[data-night] #app{--paperbg:linear-gradient(#17181C,#121316);--zbg:#141519;--zk:#E6E1D6;--zk2:#9C978B;--zrow:#24262C;--zhl:#F2A15C;--zhlbg:#3A2A1C;--zac:#9DB6EC;
+  --strip:rgba(255,255,255,.07);--strips:inset 0 1px 0 rgba(255,255,255,.06), 0 10px 24px -14px rgba(0,0,0,.7);--ink:#E6E1D6;--muted:#9C978B;--skyink:#E6E1D6;color:#E6E1D6}
+body[data-night][data-scr=ask] .gk-home{background:#24262C !important;color:#E6E1D6 !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 8px 20px -12px rgba(0,0,0,.7) !important}
+body[data-night][data-scr=ask] .gk-home svg{stroke:#E6E1D6 !important}
+@media (min-width:900px){
+#saver .fc-msg{left:34%;bottom:9vh;max-width:56%;white-space:normal;text-align:center} /* v135: 안내 띠는 왼쪽 큰 카드 안 — 묻기 타일을 가리지 않게 */
 }
 @media (max-width:899px){
 #app:not([data-home]) #mainInner.has-fig .fig{position:static;margin:24px 0 0 !important;width:auto;max-width:none;align-self:stretch;transform:none}

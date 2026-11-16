@@ -493,6 +493,51 @@ async function newsTests(b) {
     await p.context().close();
   }
 
+  { // 18. 에이전트 검토(v135)에서 나온 것들
+    console.log('18. 검토 반영 (v135)');
+    const answer = async (p, text, status = 200) => { await p.unroute(/api\.anthropic\.com/); await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); const t = typeof text === 'function' ? text(JSON.parse(r.request().postData())) : text; if (t == null) return; r.fulfill({ status, headers: CORS, json: status === 200 ? { content: [{ type: 'text', text: t }], stop_reason: 'end_turn' } : { error: { message: 'x' } } }); }); };
+    const card = p => p.evaluate(() => { const f = document.getElementById('fig'), b = document.getElementById('figBox'); if (f.hidden) return { shown: false }; const r = b.getBoundingClientRect(); const over = [...b.querySelectorAll('.vc-g, .vc-l, .vc-word')].some(e => { const q = e.getBoundingClientRect(); return q.right > r.right + 1 || q.bottom > r.bottom + 1; }); return { shown: true, text: b.innerText.trim(), over }; });
+    let p = await open(b, { time: newsDate + 'T12:19' });
+    // 카드 줄이 안 오고, 따로 요청한 카드도 형식이 틀리면 빈 카드가 남지 않는다
+    await answer(p, body => /낱말 카드'만/.test(JSON.stringify(body)) ? '잘 모르겠어' : '"인터내셔널"은 영어 《international》이야.\n@@  | | 반대말은 뭐야?; 문장 만들어 줘');
+    await p.say('인터내셔널 뜻이 뭐야', 15000); let c = await card(p); ok('카드를 못 받으면 빈 흰 카드를 치운다', !c.shown, c);
+    // 긴 영어 낱말은 카드 안에 들어온다 (가운뎃점 빼고 20자까지 받음)
+    await answer(p, '"인터내셔널"은 영어 《international》이야.\n@@  | | 반대말은 뭐야? | in·ter·NA·tion·al:형용사 · 여러 나라 사이의');
+    await p.say('인터내셔널 뜻이 뭐야', 15000); c = await card(p); ok('긴 영어 낱말 카드: 보이고 카드 밖으로 안 나감', c.shown && /tion/.test(c.text) && !c.over, c);
+    await answer(p, '일석이조는 한 번에 두 가지를 얻는다는 뜻이야. 《일석이조》라고 해.\n@@  | | 비슷한 말은 뭐야? | 一:한 일;石:돌 석;二:두 이;鳥:새 조;뜻:한 번에 두 가지 이득');
+    await p.say('일석이조가 뭐야', 15000); c = await card(p); ok('한자 4글자 카드: 마지막 글자까지 카드 안', c.shown && /鳥/.test(c.text) && !c.over, c);
+    // 퀴즈 모드 없음, '?'는 묻는 말에만
+    await answer(p, '와, 다 풀었구나. 문제를 끝까지 푼 건 대단한 일이야.\n@@  | | 어떤 문제였어?; 수학은 왜 배워?; 계산을 빨리 하려면?');
+    await p.say('이 문제 내가 다 풀었어', 9000); let q = await p.evaluate(() => ({ chips: [...document.querySelectorAll('#chips button')].map(x => x.textContent), eb: document.querySelector('.eyebrow .askq')?.textContent, st: document.getElementById('app').dataset.state }));
+    ok('"문제"라는 말에 퀴즈 칩이 안 나옴', !q.chips.some(x => /힌트|정답/.test(x)) && q.st !== 'quiz', q);
+    ok('평범한 말 끝에 "?"를 붙이지 않음', q.eb === '이 문제 내가 다 풀었어', q.eb);
+    // 오류 문구는 아이 말로 한 가지
+    await answer(p, '', 401); await p.say('달은 왜 빛나', 6000); q = await p.evaluate(() => document.getElementById('sheet').textContent);
+    ok('API 키 오류: 아이에게는 "엄마 아빠한테 말해 줘"만', /엄마 아빠한테 말해 줘/.test(q) && !/API|키|모델|충전/.test(q), q);
+    // 응답이 멈추면 30초 뒤 '생각하는 중'에서 빠져나온다
+    await answer(p, () => null); await p.say('달은 왜 빛나', 2000); await p.adv(31000); await p.adv(2000);
+    q = await p.evaluate(() => ({ st: document.getElementById('app').dataset.state, t: document.getElementById('sheet').textContent }));
+    ok('응답이 30초 넘게 없으면 "연결이 안 됐어"로', q.st !== 'think' && /연결이 안 됐어/.test(q.t), q);
+    await p.context().close();
+    // 할 일: '색종이'가 '색종'으로 잘리지 않음
+    p = await open(b, { time: newsDate + 'T16:00', offline: true }); await p.say('준비물 색종이 적어 줘');
+    const td = await p.evaluate(() => JSON.stringify(localStorage.getItem('gk-todo') || '') + document.body.innerText.slice(0, 0)); ok('할 일 "색종이"가 그대로 적힘', /색종이/.test(td), td.slice(0, 160)); await p.context().close();
+    // 밤 10시~아침 6시: 답 화면도 어둡게
+    p = await open(b, { time: newsDate + 'T22:40' }); await p.say('달은 왜 빛나', 9000);
+    q = await p.evaluate(() => { const L = c => { const m = c.match(/[\d.]+/g).map(Number); return (m[0] * 299 + m[1] * 587 + m[2] * 114) / 1000; }; return { night: document.body.hasAttribute('data-night'), ink: L(getComputedStyle(document.getElementById('sheet')).color), bg: L(getComputedStyle(document.body).backgroundColor), app: getComputedStyle(document.getElementById('app')).backgroundImage.slice(0, 60) }; });
+    ok('밤 답 화면: 어두운 바탕에 밝은 글씨', q.night && q.ink > 180 && /rgb\(23, 24, 28\)/.test(q.app), q); await p.context().close();
+    p = await open(b, { time: newsDate + 'T21:50' }); await p.say('달은 왜 빛나', 9000); q = await p.evaluate(() => document.body.hasAttribute('data-night')); ok('밤 9시 50분 답 화면은 아직 밝음', !q); await p.context().close();
+    // 쉬는 시간: 언제 다시 되는지 아이 말로, 묻기 타일도 알려 줌
+    p = await open(b, { time: newsDate + 'T21:30', settings: { hFrom: 7, hTo: 21 } }); await p.saver();
+    q = await p.evaluate(() => document.querySelector('.fc-app[data-tile="ask"] .fc-lab').textContent); ok('쉬는 시간 묻기 타일: "내일 아침 7시에 만나"', q === '내일 아침 7시에 만나', q);
+    const bx = await p.locator('.fc-app[data-tile="ask"]').boundingBox(); await p.mouse.click(bx.x + 60, bx.y + 60); await p.adv(1200);
+    q = await p.evaluate(() => { const m = document.getElementById('fcMsg'), r = m.getBoundingClientRect(), a = document.querySelector('.fc-app[data-tile="ask"]').getBoundingClientRect(); return { t: m.textContent, hid: m.hidden, hit: r.right > a.left && r.left < a.right && r.bottom > a.top && r.top < a.bottom }; });
+    ok('쉬는 시간 안내: "내일 아침 7시"를 말하고 타일을 안 가림', /내일 아침 7시/.test(q.t) && !q.hid && !q.hit, q);
+    await p.adv(6000); q = await p.evaluate(() => !document.getElementById('fcMsg').hidden); ok('안내는 6초 뒤에도 보임(8초)', q); await p.context().close();
+    // 밤 12시대 표기
+    p = await open(b, { time: newsDate + 'T00:20' }); q = await p.evaluate(() => document.getElementById('tbClock').textContent); ok('0시 20분 시계: "밤 12:20"', /^밤\s*12:20$/.test(q.trim()), q); await p.context().close();
+  }
+
   await newsTests(b);
   ok('페이지 오류 없음', errs.length === 0, errs.slice(0, 3));
   await b.close(); server.close();
