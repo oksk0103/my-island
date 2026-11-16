@@ -1396,7 +1396,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     <header class="rn-phead">
       <button class="rn-home" id="ppHome" type="button" aria-label="홈으로"><svg class="ds-lg" viewBox="96 92 320 344" aria-hidden="true"><path d="M116 112H206V169H116V226H206"/><circle cx="348" cy="169" r="46"/><path d="M128 296C186 366 320 372 386 288"/><circle class="ds-dot" cx="258" cy="412" r="24"/></svg></button>
       <b class="rn-sec" id="ppTag"></b>
-      <span class="rn-pmid"><img src="./rua-masthead.svg" alt="루아 신문"><span id="ppFolio"></span></span>
+      <span class="rn-pmid"><b class="rn-name">루아 신문</b><span id="ppFolio"></span></span>
       <span class="rn-pright"><span id="ppNo"></span><button class="rn-rb" id="ppAsk" type="button" aria-label="물어보기"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="2.5" width="7" height="12.5" rx="3.5"></rect><path d="M5.2 11.5a6.8 6.8 0 0 0 13.6 0M12 18.5v3"></path></svg></button><button class="rn-rb" id="ppListen" type="button" aria-label="들려줘"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path d="M16 8.2a5.2 5.2 0 0 1 0 7.6"></path></svg></button><span class="ds-clock" id="ppClock"></span></span>
     </header>
     <article class="rn-art nopic" id="ppArt">
@@ -2423,8 +2423,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const pic = npPic0 || null, num = a.num && a.num.n ? a.num : null, word = npWordBox(a.word);
     const key = [pk, pic ? 1 : 0, innerWidth, innerHeight, w ? w.t + '|' + w.code + '|' + w.hi + '|' + w.lo : '', JSON.stringify(A).length].join('|'); if (host.dataset.k === key) return; host.dataset.k = key;
     setTimeout(tbClock, 0); host.innerHTML = `<div class="rn-sheet"><span class="rn-home" data-rn="home" role="button" aria-label="홈으로"><svg class="ds-lg" viewBox="96 92 320 344" aria-hidden="true"><path d="M116 112H206V169H116V226H206"/><circle cx="348" cy="169" r="46"/><path d="M128 296C186 366 320 372 386 288"/><circle class="ds-dot" cx="258" cy="412" r="24"/></svg></span>
-      <header class="rn-mast"><img class="rn-logo" src="./rua-masthead.svg" alt="루아 신문"><div class="rn-ear ds-clock"></div><div class="rn-rule2"></div>
-        <div class="rn-date"><span>제${escN(news.no)}호 · ${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일${w ? ` · ${escN(w.t)}° ${escN((WX[w.code] || [''])[0])}` : ''}</span><span>${A.slice(1, 3).map((x, i) => `${i + 2}면 ${escN(x.tag || '')}`).join(' · ')}</span><span>1면</span></div></header>
+      <header class="rn-mast"><div class="rn-mhead"><b class="rn-name">루아 신문</b><span class="rn-nsub">제${escN(news.no)}호</span></div><div class="rn-ear ds-clock"></div><div class="rn-rule2"></div>
+        <div class="rn-date"><span>${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일${w ? ` · ${escN(w.t)}° ${escN((WX[w.code] || [''])[0])}` : ''}</span><span>${A.slice(1, 3).map((x, i) => `${i + 2}면 ${escN(x.tag || '')}`).join(' · ')}</span><span>1면</span></div></header>
       <div class="rn-body"><article class="rn-lead${pic ? '' : ' nopic'}" data-rn="art" data-i="0"><span class="rn-lab">${escN(a.tag || '오늘')}</span><h2>${escN(a.title)}</h2>
         <div class="rn-cols"><div class="rn-left">${pic ? `<figure class="rn-fig"><img src="${pic.src}" alt=""></figure><div class="rn-cap">${escN(pic.title)}</div>${num ? word : ''}` : ''}</div>
         <div class="rn-right"><div class="rn-text" id="rnText">${a.lede ? '<p class="ld">' + npWords(a.lede) + '</p>' : ''}${npParas(a.body, false)}</div><span class="rn-more">이어 읽기 ▸</span>${!pic && num ? word : ''}</div></div></article>
@@ -6005,13 +6005,17 @@ body.log-open .ds-name{display:none}
 #app .tb-clock{margin:0 !important;padding:0 !important}
 /* 신문 1면: 날씨 귀 자리에 공통 시계 */
 .rn-ear.ds-clock{position:absolute !important;right:0 !important;top:8px !important;height:64px !important;display:flex !important;flex-direction:row !important;align-items:center !important;justify-content:flex-end;color:var(--nk) !important}
+/* 신문 제호도 다른 앱 이름과 같은 글씨로(v136, 부모 요청): 붓글씨 제호 그림 대신 '루아 신문' 30/600 */
+.rn-name{font:600 30px/1 "Pretendard",sans-serif !important;letter-spacing:-.02em !important;color:var(--nk);white-space:nowrap}
+.rn-nsub{font:500 26px/1 "Pretendard",sans-serif;letter-spacing:-.01em;color:var(--nk2);white-space:nowrap}
+.rn-mast{position:relative;padding-top:8px !important;height:auto !important;min-height:0 !important}
+.rn-mhead{height:64px;display:flex;align-items:center;gap:16px;margin:0 0 12px 56px}
 /* 신문 기사 머리줄: 홈 · 제호(앱 이름 자리) · 갈래 │ 면 · 묻기 · 듣기 · 시계 */
 .rn-phead{display:flex !important;align-items:center;gap:16px;height:80px !important}
 .rn-phead .rn-pright{margin-right:-32px}
 .rn-ear.ds-clock{right:-32px !important}
 .rn-phead .rn-home{position:absolute !important;left:-32px !important;top:8px !important}
 .rn-phead .rn-pmid{order:1;margin-left:56px;gap:0}
-.rn-phead .rn-pmid img{height:34px !important;margin-right:0 !important}
 .rn-phead .rn-pmid #ppFolio{display:none}
 .rn-phead .rn-sec{order:2;padding-left:0 !important;font:500 26px/1 "Pretendard",sans-serif !important;letter-spacing:-.01em !important;color:var(--nk2)}
 .rn-phead .rn-pright{order:3;margin-left:auto;gap:20px !important}
