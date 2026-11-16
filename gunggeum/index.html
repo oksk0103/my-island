@@ -1358,7 +1358,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <span class="tb-clock" id="tbClock" aria-hidden="true"></span>
       <button class="iconbtn gear" id="gearBtn" type="button" aria-label="부모님 설정"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg></button>
       <button class="iconbtn" id="soundBtn" type="button" aria-pressed="true" aria-label="소리 켜짐/꺼짐" title="소리">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path class="waves" d="M16 8.2a5.2 5.2 0 0 1 0 7.6M18.5 5.7a8.7 8.7 0 0 1 0 12.6"></path></svg>
+        <svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><path d="M4.6 11.2h3.5l5-4.3v14.2l-5-4.3H4.6z"/><path class="waves" d="M17.2 10.7a4.6 4.6 0 0 1 0 6.6M20.3 7.7a8.8 8.8 0 0 1 0 12.6"/><path class="slash" d="M18 11l6 6M24 11l-6 6"/></svg>
       </button>
       <div class="count" id="count"><span>오늘 질문 <b>0</b></span><span class="dots" aria-hidden="true"></span></div>
     </div>
@@ -1397,7 +1397,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <button class="rn-home" id="ppHome" type="button" aria-label="홈으로"><svg class="ds-lg" viewBox="96 92 320 344" aria-hidden="true"><path d="M116 112H206V169H116V226H206"/><circle cx="348" cy="169" r="46"/><path d="M128 296C186 366 320 372 386 288"/><circle class="ds-dot" cx="258" cy="412" r="24"/></svg></button>
       <b class="rn-sec" id="ppTag"></b>
       <span class="rn-pmid"><b class="rn-name">루아 신문</b><span id="ppFolio"></span></span>
-      <span class="rn-pright"><span id="ppNo"></span><button class="rn-rb" id="ppAsk" type="button" aria-label="물어보기"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="2.5" width="7" height="12.5" rx="3.5"></rect><path d="M5.2 11.5a6.8 6.8 0 0 0 13.6 0M12 18.5v3"></path></svg></button><button class="rn-rb" id="ppListen" type="button" aria-label="들려줘"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path d="M16 8.2a5.2 5.2 0 0 1 0 7.6"></path></svg></button><span class="ds-clock" id="ppClock"></span></span>
+      <span class="rn-pright"><span id="ppNo"></span><button class="ds-pillbtn" id="ppAsk" type="button" aria-label="물어보기"><svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><rect x="10.2" y="3.2" width="7.6" height="12" rx="3.8"/><path d="M7 12.6a7 7 0 0 0 14 0"/><circle class="ds-dot" cx="14" cy="23.6" r="1.9"/></svg><span>물어보기</span></button><button class="rn-rb ds-snd" id="ppListen" type="button" aria-pressed="false" aria-label="소리 켜짐/꺼짐"><svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><path d="M4.6 11.2h3.5l5-4.3v14.2l-5-4.3H4.6z"/><path class="waves" d="M17.2 10.7a4.6 4.6 0 0 1 0 6.6M20.3 7.7a8.8 8.8 0 0 1 0 12.6"/><path class="slash" d="M18 11l6 6M24 11l-6 6"/></svg></button><span class="ds-clock" id="ppClock"></span></span>
     </header>
     <article class="rn-art nopic" id="ppArt">
       <h2 class="rn-hed" id="ppHed"></h2>
@@ -2981,9 +2981,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   // ---------- 날씨 화면(Z): 화면 전체가 지금 날씨의 하늘. 앱이 이미 받는 값만 쓴다 ----------
   // 답 글자 단: 한두 줄 80 → 서너 줄 72 → 다섯 줄까지 64. 그보다 길면 64 · 다섯 줄씩 쪽을 나눈다(흐림 없음)
   let LPP = 5, PGH = 450, ansPages = 1, ansPage = 0; // 한 쪽 줄 수: 높이 780 미만이면 넷
-  const ansPg = document.createElement('div'); ansPg.id = 'ansPg'; ansPg.hidden = true; ansPg.innerHTML = '<span class="pn"></span><button type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5.5 12.5 12 19l6.5-6.5"/></svg></button>';
+  const ansPg = document.createElement('div'); ansPg.id = 'ansPg'; ansPg.hidden = true; ansPg.innerHTML = '<button type="button"><b class="lb">다음 쪽</b><span class="pn"></span></button>'; // v136: 할 일과 같은 '다음 쪽 n/m' 알약 — 바닥줄 맨 앞
   $('textcol').append(ansPg);
-  function ansShow() { sheet.scrollTop = ansPage * PGH; const last = ansPage === ansPages - 1; ansPg.classList.toggle('up', last); ansPg.querySelector('button').setAttribute('aria-label', last ? '처음 쪽' : '다음 쪽');
+  function ansShow() { sheet.scrollTop = ansPage * PGH; const last = ansPage === ansPages - 1; ansPg.classList.toggle('up', last); ansPg.querySelector('button').setAttribute('aria-label', last ? '처음 쪽' : '다음 쪽'); ansPg.querySelector('.lb').textContent = last ? '처음으로' : '다음 쪽';
     ansPg.querySelector('.pn').textContent = (ansPage + 1) + ' / ' + ansPages; }
   // 쪽은 문장 끝에서만 나눈다: 다섯 줄 안에 드는 온전한 문장들을 한 쪽으로. 한 문장이 다섯 줄을 넘으면 56으로 줄이고, 그래도 넘으면 줄 끝에서
   function paginate(small) {
@@ -3212,7 +3212,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const A = curArticle(); if (!A) return;
     const n = news.articles.length, art = $('ppArt'), box = $('ppPhoto'), key = news.no + ':' + paperIdx, tag = i => (news.articles[i] && news.articles[i].tag) || '';
     paperEl.dataset.t = npTone();
-    $('ppTag').textContent = A.tag || ''; $('ppFolio').textContent = newsDate(); $('ppNo').textContent = `${paperIdx + 1}면`;
+    $('ppTag').textContent = [A.tag || '', `${paperIdx + 1}면`].filter(Boolean).join(' · '); $('ppFolio').textContent = newsDate(); $('ppNo').textContent = ''; if (paperSound) setTimeout(readArticle, 300); // v136: 소리가 켜져 있으면 넘긴 면부터 읽어 준다
     $('ppHed').textContent = A.title; $('ppLede').innerHTML = npWords(A.lede || ''); $('ppLede').hidden = !A.lede;
     $('ppBody').innerHTML = npParas(A.body || '', true); $('ppSrc').textContent = A.source ? '출처 ' + A.source : '';
     const W = A.word || {}; $('ppWord').hidden = !W.w; $('ppW').textContent = W.w || ''; $('ppM').textContent = W.mean || '';
@@ -3258,7 +3258,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   $('ppPrev').addEventListener('click', paperPrev);
   $('ppHome').addEventListener('click', paperHome);
   $('ppAsk').addEventListener('click', () => { try { $('micBtn').click(); } catch (e) {} }); // 기사를 읽다가 물어보기 (듣는 동안은 기사가 가려진다)
-  $('ppListen').addEventListener('click', readArticle);
+  // v136: 신문의 소리 단추도 '켬/끔' 하나의 뜻 — 켜면 이 면부터 읽어 주고, 끄면 멈춘다(기본 끔, 기억함)
+  var paperSound = LS.get('gk-paper-sound', 'off') === 'on';
+  const renderPaperSound = () => $('ppListen').setAttribute('aria-pressed', String(paperSound)); renderPaperSound();
+  $('ppListen').addEventListener('click', () => { paperSound = !paperSound; LS.set('gk-paper-sound', paperSound ? 'on' : 'off'); renderPaperSound(); if (paperSound) readArticle(); else hush(); });
   $('backPaper').addEventListener('click', () => { if (news) openPaper(paperIdx); });
   setInterval(() => loadNews(), 30 * 60e3);
   loadNews(true).then(() => { if (!saverEl.hidden) renderSaver(); });
@@ -6009,20 +6012,38 @@ body.log-open .ds-name{display:none}
 .rn-name{font:600 30px/1 "Pretendard",sans-serif !important;letter-spacing:-.02em !important;color:var(--nk);white-space:nowrap}
 .rn-nsub{font:500 26px/1 "Pretendard",sans-serif;letter-spacing:-.01em;color:var(--nk2);white-space:nowrap}
 .rn-mast{position:relative;padding-top:8px !important;height:auto !important;min-height:0 !important}
-.rn-mhead{height:64px;display:flex;align-items:center;gap:16px;margin:0 0 12px 56px}
+.rn-mhead{height:64px;display:flex;align-items:center;gap:16px;margin:0 0 12px 88px}
 /* 신문 기사 머리줄: 홈 · 제호(앱 이름 자리) · 갈래 │ 면 · 묻기 · 듣기 · 시계 */
 .rn-phead{display:flex !important;align-items:center;gap:16px;height:80px !important}
-.rn-phead .rn-pright{margin-right:-32px}
-.rn-ear.ds-clock{right:-32px !important}
-.rn-phead .rn-home{position:absolute !important;left:-32px !important;top:8px !important}
-.rn-phead .rn-pmid{order:1;margin-left:56px;gap:0}
+.rn-phead .rn-home{position:absolute !important;left:0 !important;top:8px !important}
+.rn-phead .rn-pmid{order:1;margin-left:88px;gap:0}
 .rn-phead .rn-pmid #ppFolio{display:none}
 .rn-phead .rn-sec{order:2;padding-left:0 !important;font:500 26px/1 "Pretendard",sans-serif !important;letter-spacing:-.01em !important;color:var(--nk2)}
 .rn-phead .rn-pright{order:3;margin-left:auto;gap:20px !important}
 .rn-phead #ppNo{font:500 26px/1 "Pretendard",sans-serif !important;letter-spacing:-.01em !important;color:var(--nk2)}
 .rn-phead .ds-clock{color:var(--nk);margin-left:4px}
+/* ===== 자리 규격(v136, 디자이너 검토): 누르는 것은 맨 아랫줄 — 왼쪽 = 쪽 넘김·이어 묻기 칩, 오른쪽 끝 = 마이크(고정). 소리는 머리줄 시계 앞 ===== */
+#app:not([data-home]) .chips{position:fixed !important;left:160px !important;right:auto !important;top:auto !important;bottom:40px !important;max-width:1124px !important;display:flex !important;flex-wrap:wrap-reverse !important;align-content:flex-start;gap:14px !important;padding:0 !important;margin:0 !important;height:auto !important;min-height:0 !important;overflow:visible !important;transform:none !important;align-self:auto !important}
+#app:not([data-home]):has(#ansPg:not([hidden])) .chips{left:374px !important;max-width:910px !important}
+#app:not([data-home]) #ansPg{position:fixed !important;left:160px !important;right:auto !important;top:auto !important;bottom:40px !important;display:block;gap:0}
+#app:not([data-home]) #ansPg[hidden]{display:none !important}
+#app:not([data-home]) #ansPg button{width:200px !important;height:64px !important;border-radius:32px !important;display:inline-flex !important;align-items:center;justify-content:center;gap:10px;font:600 28px/1 "Pretendard",sans-serif !important;letter-spacing:-.02em;padding:0 !important}
+#app:not([data-home]) #ansPg .pn{font:500 24px/1 "Pretendard",sans-serif !important;opacity:.6;letter-spacing:0 !important}
+#app:not([data-home]):not([data-state=listen]):not([data-state=think]) #form{position:fixed !important;left:auto !important;top:auto !important;right:48px !important;bottom:40px !important;width:236px !important;margin:0 !important;transform:none !important}
+/* 달력·할 일의 '말하기' 칩도 같은 자리 */
+#saver.pgx .zbar{position:fixed !important;right:48px !important;bottom:40px !important;width:236px !important;box-sizing:border-box;margin:0 !important}
+#saver.pgx .td-foot{position:fixed;left:112px;bottom:40px;padding:0 !important}
+/* 신문 기사: 마이크 = 글자 붙은 알약, 소리 = 동그라미, 사이 40 */
+html body .ds-pillbtn{height:64px;padding:0 26px 0 20px;border:0;border-radius:32px;display:inline-flex;align-items:center;gap:10px;cursor:pointer;background:var(--pill);color:var(--pill-ink);box-shadow:var(--pill-edge),var(--pill-shadow);font:600 28px/1 "Pretendard",sans-serif;letter-spacing:-.02em;white-space:nowrap}
+.rn-phead .rn-pright{gap:40px !important}
+/* 소리 단추: 켬 = 물결, 끔 = 빗금(모양으로 보인다) */
+.ds-ic .slash{display:none}
+[aria-pressed=false] > .ds-ic .waves{display:none !important}
+[aria-pressed=false] > .ds-ic .slash{display:inline !important}
+/* 시계 폭을 고정해 소리 단추가 흔들리지 않게 */
+#app .tb-clock, .rn-phead .ds-clock{min-width:132px;text-align:right;display:inline-block}
 /* 신문도 상자(틀·그림자) 없이 종이가 화면 전체 — 다른 앱처럼 바탕 위에 바로. 지면 안 자리는 그대로 */
-.rn-sheet{left:0 !important;right:0 !important;top:0 !important;bottom:0 !important;border-radius:0 !important;box-shadow:none !important;padding:32px 80px 0 !important}
+.rn-sheet{left:0 !important;right:0 !important;top:0 !important;bottom:0 !important;border-radius:0 !important;box-shadow:none !important;padding:32px 48px 0 !important} /* 지면 좌우 끝 = 다른 앱의 머리줄 끝(48) — 시계·괘선이 같은 선에서 끝난다 */
 .rn-front .rn-sheet > .rn-home{left:48px !important;top:40px !important}
 .gk-home[hidden], .rn-home[hidden]{display:none !important}
 .gk-home span, .rn-home span{font:inherit !important;color:inherit !important}

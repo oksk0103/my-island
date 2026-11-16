@@ -82,7 +82,7 @@ async function newsTests(b) {
   ok('표지의 신문 → 신문 1면', s.saver.includes('rnp') && !s.paper, s.saver);
   ok('1면에 대기화면 머리줄(시각)이 없음', await p.evaluate(() => getComputedStyle(document.querySelector('#saver .sv-inner')).display === 'none' && !document.getElementById('rnFront').hidden));
   ok('1면에 표어·지역이 없음', await p.evaluate(() => !/읽기 좋게|영등포/.test(document.getElementById('rnFront').textContent)));
-  ok('1면 오른쪽 귀에 날씨', await p.evaluate(() => /7°/.test((document.querySelector('#rnFront .rn-ear') || {}).textContent || '')));
+  ok('1면: 날씨는 날짜 줄에, 오른쪽 끝에는 시계 (v136)', await p.evaluate(() => /7°/.test((document.querySelector('#rnFront .rn-date') || {}).textContent || '') && /\d:\d\d/.test((document.querySelector('#rnFront .rn-ear') || {}).textContent || '')));
   await p.tap('#rnFront .rn-home'); s = await p.st(); ok('1면의 홈 단추 → 홈(위젯 면)', s.saver === 'face' && !s.paper, s);
   ok('홈으로 가도 읽음 처리되지 않음(1면만 봄)', await p.evaluate(() => !JSON.parse(localStorage.getItem('gk-news-read2') || '""')));
   await p.tap('#svFace [data-tile="news"]'); await p.adv(2000); await p.tap('#rnFront [data-rn="art"][data-i="0"]'); s = await p.st(); ok('1면의 머리기사 → 기사 화면', !s.saver && s.paper, s);
