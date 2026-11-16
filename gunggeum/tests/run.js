@@ -415,6 +415,19 @@ async function newsTests(b) {
     ok('쉬는 시간: 일정 말하기는 막고 조용한 한 줄', /\bcal\b/.test(s.saver) && /^지금은 쉬는 시간이야/.test(q), [s.saver, q]); await p.context().close();
   }
 
+  { // 13. 좁은 화면(전화 390×780, v123): 먹색이 남지 않고, 글이 옆으로 넘치지 않는다
+    console.log('13. 좁은 화면(전화)');
+    const light = () => p.evaluate(() => { const m = getComputedStyle(document.getElementById('saver')).backgroundColor.match(/\d+/g).map(Number); return m[0] + m[1] + m[2] > 600; });
+    const wide = () => p.evaluate(() => [...document.querySelectorAll('body *')].filter(e => { if (!e.offsetParent && getComputedStyle(e).position !== 'fixed') return false; const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && (r.right > innerWidth + 1 || r.left < -1) && !e.closest('.pr-nav, .sv-face, .pg, #rnFront, #log[hidden]'); }).map(e => (e.id || e.className || e.tagName).toString().slice(0, 20)).slice(0, 5));
+    let p = await open(b, { time: newsDate + 'T12:19', read: newsDate, w: 390, h: 780 }); let x = await wide(); ok('전화 궁금칸: 옆으로 넘치는 것 없음', !x.length, x);
+    await p.say('달은 왜 빛나?', 2500); x = await wide(); ok('전화 답: 옆으로 넘치는 것 없음, 쪽 나누기 없음', !x.length && await p.evaluate(() => document.getElementById('ansPg').hidden), x);
+    ok('전화 답: "더 물어 봐"가 화면 아래 안쪽', await p.evaluate(() => { const r = document.getElementById('form').getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth && r.bottom <= innerHeight; }));
+    await p.saver(); ok('전화 대기화면(다 읽은 날): 밝은 바탕', await light()); x = await wide(); ok('전화 대기화면: 옆으로 넘치는 것 없음', !x.length, x); await p.context().close();
+    p = await open(b, { time: newsDate + 'T07:40', w: 390, h: 780 }); await p.saver(); ok('전화 대기화면(신문 1면): 밝은 바탕', await light());
+    ok('전화 1면: "신문 펴기" 단추가 화면 안', await p.evaluate(() => { const r = document.getElementById('svpOpen').getBoundingClientRect(); return r.width > 0 && r.bottom <= innerHeight && r.right <= innerWidth; })); await p.context().close();
+    p = await open(b, { time: '2026-11-14T23:10', read: '2026-11-14', w: 390, h: 780 }); await p.saver(); ok('전화 밤(밤 화면 설정 끔): 밝은 바탕', await light()); await p.context().close();
+  }
+
   await newsTests(b);
   ok('페이지 오류 없음', errs.length === 0, errs.slice(0, 3));
   await b.close(); server.close();

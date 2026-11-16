@@ -1500,13 +1500,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v122</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v123</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v122</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v123</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2430,7 +2430,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (night) return true;
     if (wide && saverEl.classList.contains('paper-hero')) { saverEl.classList.add('rnp'); $('rnFront').hidden = false; renderNpFront(); return true; } // 넓은 화면의 1면: 신문 한 장
     const [a, ...rest] = news.articles;
-    $('svpMeta').innerHTML = `제${escN(news.no)}호<span class="mdate"> · ${escN(newsDate())}</span>${news.theme ? '<br><span class="msep"> · </span>오늘의 주제 · ' + escN(news.theme) : ''}`;
+    $('svpMeta').innerHTML = `제${escN(news.no)}호<span class="mdate"> · ${escN(newsDate())}</span>${news.theme ? '<br><span class="mth"><span class="msep"> · </span>오늘의 주제 · ' + escN(news.theme) + '</span>' : ''}`;
     $('svpTag').textContent = a.tag ? a.tag + ' · 1면' : '1면';
     $('svpHed').textContent = a.title; $('svpLede').textContent = a.lede || '';
     $('svpMore').innerHTML = rest.slice(0, 2).map((x, i) => `<div><span class="svp-tag">${escN(x.tag)} · ${i + 2}면</span><h3 class="svp-hed">${escN(x.title)}</h3></div>`).join('');
@@ -2943,6 +2943,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function ansLen(n) {
     sheet.classList.remove('ov', 'pgd', 'f56'); sheet.querySelectorAll('.pgbrk').forEach(e => e.remove()); sheet.style.setProperty('--padb', '0px'); ansPg.hidden = true; ansPages = 1; ansPage = 0;
     if (app.dataset.home || sheet.classList.contains('plain')) { $('mainInner').style.paddingTop = ''; return n <= 30 ? 's' : n <= 90 ? 'm' : 'l'; }
+    if (innerWidth < 900) { $('mainInner').style.paddingTop = ''; return n <= 30 ? 's' : n <= 90 ? 'm' : 'l'; } // v123: 좁은 화면은 쪽 나누기 없이 아래로 읽는다
     if (0) return n <= 30 ? 's' : n <= 90 ? 'm' : 'l';
     const mid = h => { $('mainInner').style.paddingTop = Math.max(8, 380 - (h + 108) / 2 - 128) + 'px'; }; // 덩이(글 + 칩 줄) 세로 중심 y≈380, 질문 글과는 56px 이상
     LPP = innerHeight < 780 ? 4 : 5; PGH = LPP * 90; sheet.style.setProperty('--pgh', PGH + 'px');
@@ -2952,7 +2953,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   // 답 화면의 '더 물어 봐' 줄: 이어 묻기 칩 줄 끝에 붙인다(덩이 하나)
   function placeAsk() { const f = $('form'), st = f.style, bs = [...chipsEl.querySelectorAll('button')].filter(b => b.offsetParent), last = bs[bs.length - 1];
-    if (app.dataset.home || !last) { st.left = st.top = st.right = st.bottom = ''; return; }
+    if (app.dataset.home || !last || innerWidth < 900) { st.left = st.top = st.right = st.bottom = ''; return; }
     const r = last.getBoundingClientRect(), fr = bs[0].getBoundingClientRect(), wrap = r.right + 14 + 236 > innerWidth - 56;
     st.left = (wrap ? fr.left : r.right + 14) + 'px'; st.top = (wrap ? r.bottom + 14 : r.top) + 'px'; st.right = 'auto'; st.bottom = 'auto'; }
   setTimeout(() => { new MutationObserver(placeAsk).observe(chipsEl, { childList: true }); new MutationObserver(placeAsk).observe(app, { attributes: true }); new MutationObserver(placeAsk).observe(sheet, { attributes: true, childList: true });
@@ -3706,7 +3707,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v122';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v123';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -5405,6 +5406,161 @@ body[data-scr=sky] .gk-home{background:rgb(255 255 255 / .14);color:#fff;box-sha
 /* 밤하늘: 홈 캡슐이 날짜·시각을 가리지 않게 — 날짜 줄은 캡슐 오른쪽으로, 캡슐은 12px 위로 */
 .saver.sky .sv-top{padding-left:112px}
 body[data-scr=sky] .gk-home{top:28px}
+
+/* v123: 좁은 화면(전화)도 밝은 지면 — 모니터와 같은 톤. 넓은 화면(900 이상)은 그대로 */
+@media (max-width:899px){
+body{--X:20px;--T:20px}
+.gk-home{width:104px;height:52px;border-radius:26px;gap:8px;font-size:22px;padding:0 4px 0 0}
+.gk-home svg{width:24px;height:24px}
+.rb, #app .iconbtn#soundBtn, #app #replayBtn{width:52px;height:52px}
+/* 대기화면: 밝은 지면 위 시계 · 날씨 한마디 · 신문 한 장 */
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night){background:var(--paperbg) !important;color:var(--zk);--ink:#16181D;--sv-text:#16181D;--muted:#5F6673;--line:rgba(10,30,90,.12);--accent:#0D3EAC;--accent-ink:#fff;padding:0 20px !important;overflow-y:auto;display:block}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-inner{display:flex !important;flex-direction:column;align-items:stretch !important;justify-content:center;min-height:100%;box-sizing:border-box;padding:48px 0 52px;max-width:none !important;width:auto;text-align:left !important;gap:0}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-date{display:flex !important;flex-direction:column;align-items:flex-start !important}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-top{font:500 22px/1.2 "Pretendard",sans-serif !important;letter-spacing:-.01em;color:var(--zk2);padding:0 !important;align-self:auto !important}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-top span{color:var(--zk2);font:inherit}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-top .sv-dow{color:var(--zac)}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-time{font:400 96px/1 "Pretendard",sans-serif !important;letter-spacing:-.045em;color:var(--zk);margin:12px 0 0 -4px !important;font-variant-numeric:tabular-nums;white-space:nowrap}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-time small{position:static !important;display:inline-block;margin:0 10px 0 4px;font:500 22px/1 "Pretendard",sans-serif !important;letter-spacing:0;color:var(--zk2);transform:none;writing-mode:horizontal-tb}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-wx{display:block !important;margin:20px 0 0 !important;color:var(--zk)}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-wx .wx-now{font:500 30px/1.25 "Pretendard",sans-serif !important;letter-spacing:-.02em;color:var(--zk) !important;white-space:normal}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-wx .wx-now b{color:var(--zk);font-weight:500}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-wx .wx-sub{font:500 18px/1.45 "Pretendard",sans-serif !important;color:var(--zk2) !important;margin-top:6px !important}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-tip{display:block;font:600 22px/1.35 "Pretendard",sans-serif !important;letter-spacing:-.02em;color:var(--zac) !important;margin:14px 0 0 !important;position:static !important;text-align:left;writing-mode:horizontal-tb;align-self:auto !important}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-rule, #saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-sky, #saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-night{display:none !important}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-text{display:block !important;margin-top:36px}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-line{font:500 20px/1.55 "Pretendard",sans-serif !important;letter-spacing:-.015em;color:var(--zk);text-align:left !important;word-break:keep-all;max-width:none}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-line b{color:var(--zac);font-weight:600}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-paper:not([hidden]){display:block !important;background:var(--strip);box-shadow:var(--strips);border-radius:24px;padding:18px 20px 20px}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-mast{display:flex !important;align-items:center;justify-content:space-between;gap:12px;padding:0 0 12px;border:0;border-bottom:1px solid var(--line)}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-name{font-size:30px !important;align-self:auto !important;justify-self:auto !important}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-name img{top:0}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-meta{font:500 15px/1.35 "Pretendard",sans-serif !important;color:var(--zk2);text-align:right;padding:0 !important}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-meta br, #saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-meta .msep{display:none}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-meta .mdate{display:inline !important}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-lead{display:block !important;padding:14px 0 0 !important;border:0}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-tag{font:600 15px/1.2 "Pretendard",sans-serif !important;color:var(--zac)}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-lead .svp-hed{font-size:24px !important;line-height:1.38;margin-top:6px;color:var(--zk)}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-more{display:block !important;padding-top:2px !important}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-more > div{padding-top:14px}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-more .svp-hed{font-size:19px !important;line-height:1.38;margin-top:4px;color:var(--zk)}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-foot{display:flex !important;align-items:center;justify-content:space-between;gap:12px;margin-top:18px !important}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-unread{font:500 15px/1.35 "Pretendard",sans-serif !important;color:var(--zk2) !important}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-unread i{background:var(--zac)}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-open{flex:none;min-height:52px !important;padding:0 20px 0 24px !important;border:0 !important;border-radius:26px;background:var(--zac) !important;color:#fff !important;font:600 18px/1 "Pretendard",sans-serif !important}
+#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .sv-paper:not([hidden]){background:none;box-shadow:none;padding:0}
+#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-done{display:flex !important;align-items:center;gap:8px;width:100%;box-sizing:border-box;margin:0 !important;padding:10px 10px 10px 22px !important;border:0 !important;border-radius:24px;background:var(--strip);box-shadow:var(--strips);text-align:left}
+#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-done b{font:500 18px/1.3 "Pretendard",sans-serif;color:var(--zk)}
+#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-done small{font:500 15px/1.3 "Pretendard",sans-serif;color:var(--zk2)}
+#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-done .again{margin-left:auto;flex:none;display:inline-flex;align-items:center;height:48px;padding:0 18px;border-radius:24px;background:rgba(13,62,172,.08);font:600 18px/1 "Pretendard",sans-serif !important;color:var(--zac) !important}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-dots i{background:var(--zk)}
+/* 궁금칸 */
+#app[data-home]{padding:0 20px 24px !important;justify-content:center}
+#app[data-home] .sheet.plain{font-size:44px !important;line-height:56px !important}
+#app[data-home] .qbar{width:100% !important;margin-top:28px}
+#app[data-home] .qbox{height:76px;min-height:76px;border-radius:24px;padding:0 8px 0 6px}
+#app[data-home] .mic{width:56px;height:56px}
+#app[data-home] .mic svg{width:32px;height:32px}
+#app[data-home] #q{font-size:20px}
+#app[data-home] .kbbtn{width:52px;height:52px}
+#app[data-home] .kbbtn svg{width:30px;height:30px}
+.z-under{width:100% !important;margin-top:18px !important}
+.zu-prev, .zu-prev small{font-size:18px}
+.zu-prev{gap:10px;min-height:52px}
+.zu-prev small::after{margin-left:10px}
+.zu-pc{font-size:20px;line-height:30px}
+.zu-pc::before{font-size:16px;line-height:24px}
+.zu-chip{height:56px;padding:0 20px;font-size:18px;border-radius:20px;white-space:normal;text-align:left}
+/* 답 */
+#app:not([data-home]) .main{position:fixed !important;left:20px;right:20px;top:84px;bottom:92px;height:auto !important;min-height:0 !important}
+#app:not([data-home]) #mainInner{display:flex !important;flex-direction:column;justify-content:safe center;height:100% !important;padding:8px 0 !important;box-sizing:border-box;overflow-y:auto;scrollbar-width:none}
+#app:not([data-home]) #mainInner::-webkit-scrollbar{display:none}
+#app:not([data-home]) .chips{height:auto !important;max-height:none !important;overflow:visible !important}
+#app:not([data-home]) #textcol{max-width:none;max-height:none;overflow:visible !important;padding-right:0}
+#app:not([data-home]) .sheet{max-width:none}
+#app:not([data-home]) .sheet[data-len=s]{font-size:36px !important;line-height:1.35 !important}
+#app:not([data-home]) .sheet[data-len=m]{font-size:30px !important;line-height:1.45 !important}
+#app:not([data-home]) .sheet[data-len=l], #app:not([data-home]) .sheet[data-len=xl]{font-size:26px !important;line-height:1.55 !important}
+#app:not([data-home]) .chips{padding-top:28px !important;gap:10px;flex-wrap:wrap;max-width:none;min-height:0}
+#app .chips button, #app .chips button.lead{height:auto;min-height:52px;padding:12px 18px;border-radius:18px !important;font-size:18px;line-height:1.3;white-space:normal;text-align:left}
+#app:not([data-home]) .qbar{left:20px !important;right:20px !important;top:auto !important;bottom:20px !important;width:auto !important}
+#app:not([data-home]) .qbox{height:64px;min-height:64px;border-radius:22px}
+#app:not([data-home]) #q{font-size:20px}
+#ansPg{display:none !important}
+/* 듣는 중 · 생각하는 중 */
+#app[data-state=listen] .listen-ov, #app[data-state=think] .listen-ov{padding:0 20px 200px}
+#app .lo-cap{font-size:18px;line-height:26px}
+#app .lo-text{font-size:34px;min-height:48px}
+#app[data-state=listen] .qbar, #app[data-state=think] .qbar{left:20px !important;right:20px !important;width:auto !important}
+#app[data-state=listen] .qbox, #app[data-state=think] .qbox{height:76px;min-height:76px;border-radius:24px}
+#app[data-home] .sheet.plain{left:20px !important;right:20px;top:40vh !important;font-size:44px !important;line-height:56px !important;max-width:none}
+#app[data-home] .qbar, #app[data-state=listen] .qbar, #app[data-state=think] .qbar{left:20px !important;right:20px !important;top:calc(40vh + 28px) !important;width:auto !important}
+#app[data-home] .qbox, #app[data-state=listen] .qbox, #app[data-state=think] .qbox{height:76px;min-height:76px;border-radius:24px;padding:0 8px 0 6px}
+#app[data-home] .z-under{margin-top:18px;min-height:52px}
+.zu-prev{height:52px;min-height:52px;padding:0 18px;border-radius:18px;font-size:18px;gap:10px}
+.zu-prev small{font-size:16px}
+.zu-pc{font-size:20px;line-height:30px}
+.zu-pc::before{font-size:16px;line-height:24px}
+.zu-chip{height:auto;min-height:52px;padding:12px 18px;border-radius:18px;font-size:18px;line-height:1.3}
+#app[data-state=listen] .listen-ov, #app[data-state=think] .listen-ov{inset:84px 0 auto 0 !important;height:calc(40vh - 84px);padding:0 20px 10px !important;justify-content:flex-end}
+#app .lo-text{font-size:34px;line-height:44px;min-height:44px}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-name img{filter:brightness(0);opacity:.88;clip-path:inset(0 7.5% 0 0);margin-right:-12px;height:1em}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-meta .mth{display:none}
+#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-mast, #saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-lead, #saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-more, #saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-foot{display:none !important}
+#saver.saver.paper-hero .sv-inner{justify-content:flex-start;padding-top:40px}
+#saver.saver.paper-hero .sv-time{font-size:76px !important}
+#saver.saver.paper-hero .sv-wx{margin-top:14px !important}
+#saver.saver.paper-hero .sv-wx .wx-now{font-size:26px !important}
+#saver.saver.paper-hero .sv-text{margin-top:24px}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-date > *, #saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-wx > *{justify-self:auto !important;align-self:auto !important;text-align:left !important;margin-left:0}
+
+#app .qbar{background:none !important;box-shadow:none !important;border:0 !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .sv-time{font-size:72px !important;margin-top:8px !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .sv-tip{margin-top:10px !important;font-size:20px !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .sv-wx .wx-sub{font-size:16px !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .sv-text{margin-top:20px}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .sv-paper:not([hidden]){padding:14px 18px 16px}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .svp-lead .svp-hed{font-size:22px !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .svp-more > div{padding-top:10px}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .svp-more .svp-hed{font-size:18px !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .svp-unread{display:none !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .svp-foot{justify-content:flex-end;margin-top:14px !important}
+#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-dots{bottom:10px}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .svp-open{border-radius:26px !important}
+/* 부모님 화면: 위에 제목 줄, 그 아래 구역 단추 한 줄(옆으로 밀기), 내용은 한 단 */
+.log .log-head{left:16px;right:16px;top:16px;height:52px;gap:14px}
+.log .log-head h2{font-size:26px;line-height:52px;white-space:nowrap}
+.log .log-head h2 small{font-size:16px !important;margin-left:6px}
+.log #logClose{width:96px;height:52px;border-radius:26px;font-size:20px;gap:6px}
+.log #logClose svg{width:20px;height:20px}
+.log #saved{right:16px;top:30px;font-size:16px;line-height:22px}
+.pr-nav{left:0 !important;right:0;top:80px !important;width:auto;flex-direction:row;gap:6px !important;padding:0 16px;overflow-x:auto;scrollbar-width:none}
+.pr-nav::-webkit-scrollbar{display:none}
+.pr-nav button{flex:none;height:48px !important;padding:0 18px;border-radius:16px;font-size:18px}
+.pr-main{left:0 !important;right:0 !important;top:140px !important;padding:2px 16px 40px !important}
+.pr-sec{gap:10px !important;max-width:none}
+.pr-sec h3, .log .pr-sec h3{font-size:16px;line-height:22px;margin:12px 0 0 4px}
+.pr-row{min-height:60px !important;padding:10px 12px 10px 18px !important;border-radius:18px;gap:10px;flex-wrap:wrap}
+.pr-row.col{padding:14px 18px 16px !important;gap:10px}
+.pr-l, .log .pr-main .pr-l{font-size:18px !important;line-height:26px;white-space:normal}
+.pr-c{gap:8px;margin-left:auto}
+.log .pr-main .empty, .log .pr-main span, .log .pr-main p, .log .pr-main label{font-size:16px !important;line-height:24px !important}
+.log .seg{border-radius:14px;padding:3px}
+.log .seg button{height:44px;min-width:0;padding:0 14px;border-radius:11px;font-size:17px}
+.log select, .log input{height:48px;border-radius:12px;font-size:18px !important;padding:0 12px !important}
+.log input, .log #wxName, .log #ttsRegion{width:100% !important;max-width:260px}
+.log .chip{height:48px;padding:0 16px;border-radius:14px;font-size:17px}
+.log .summary{font-size:18px !important;line-height:28px !important}
+.log .day{padding:14px 18px 16px;border-radius:18px}
+.log .day h4, .log .day > *:first-child{font-size:18px;line-height:26px}
+.log .day li, .log .day .qq{font-size:17px;line-height:26px}
+.log .day .t{font-size:15px !important}
+.log #diagLog{font-size:14px !important;line-height:20px !important}
+#app[data-state=listen] .listen-ov, #app[data-state=think] .listen-ov{inset:0 !important;height:auto;padding:0 20px calc(60vh + 10px) !important}
+
+#app:not([data-home]) .chips{margin-bottom:24px !important}
+#app:not([data-home]) #textcol, #app:not([data-home]) .sheet{margin-left:0 !important;padding-left:0 !important}
+}
 </style>
 </body>
 </html>
