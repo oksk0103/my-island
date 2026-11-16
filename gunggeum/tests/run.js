@@ -534,6 +534,9 @@ async function newsTests(b) {
     q = await p.evaluate(() => { const m = document.getElementById('fcMsg'), r = m.getBoundingClientRect(), a = document.querySelector('.fc-app[data-tile="ask"]').getBoundingClientRect(); return { t: m.textContent, hid: m.hidden, hit: r.right > a.left && r.left < a.right && r.bottom > a.top && r.top < a.bottom }; });
     ok('쉬는 시간 안내: "내일 아침 7시"를 말하고 타일을 안 가림', /내일 아침 7시/.test(q.t) && !q.hid && !q.hit, q);
     await p.adv(6000); q = await p.evaluate(() => !document.getElementById('fcMsg').hidden); ok('안내는 6초 뒤에도 보임(8초)', q); await p.context().close();
+    // 한자어 풀이: 글자에서 뜻이 나온 까닭 + 실제 쓰는 모양 예문(추호도 ~없다) — 지시문에 들어 있는지
+    p = await open(b, { time: newsDate + 'T12:19' }); await p.say('추호가 뭐야', 6000); q = JSON.stringify(p.lastBody && p.lastBody.system || '');
+    ok('지시문: 한자어는 글자 뜻에서 풀고, 추호도는 "없다"와 함께', /털갈이/.test(q) && /추호도 거짓이 없어/.test(q), q.length); await p.context().close();
     // 밤 12시대 표기
     p = await open(b, { time: newsDate + 'T00:20' }); q = await p.evaluate(() => document.getElementById('tbClock').textContent); ok('0시 20분 시계: "밤 12:20"', /^밤\s*12:20$/.test(q.trim()), q); await p.context().close();
   }
