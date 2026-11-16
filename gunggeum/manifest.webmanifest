@@ -1,28 +1,28 @@
 {
-  "name": "궁금칸",
-  "short_name": "궁금칸",
+  "name": "루아",
+  "short_name": "루아",
   "start_url": "./",
   "scope": "./",
   "display": "fullscreen",
   "orientation": "any",
-  "background_color": "#17130F",
-  "theme_color": "#17130F",
+  "background_color": "#1E5AD8",
+  "theme_color": "#1E5AD8",
   "lang": "ko",
   "icons": [
     {
-      "src": "./icon2-192.png",
+      "src": "./icon3-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icon2-512.png",
+      "src": "./icon3-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icon2-512-maskable.png",
+      "src": "./icon3-512-maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -33,5 +33,5 @@
     "fullscreen",
     "standalone"
   ],
-  "description": "루아의 AI 질문판 · 루아 신문 · 오늘 밤하늘"
+  "description": "루아의 하루 · 루아 신문 · 날씨 · 달력 · 밤하늘 · 말로 묻기"
 }

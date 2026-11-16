@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#17130F">
+<meta name="theme-color" content="#1E5AD8">
 <!-- 그림은 같은 출처(그리고 기기 안에서 만든 data:/blob:)만. 바깥 그림은 브라우저가 막는다 -->
 <meta http-equiv="Content-Security-Policy" content="img-src 'self' data: blob:">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="./icon2-32.png" sizes="32x32"><link rel="icon" href="./icon2-192.png" sizes="192x192">
-<link rel="apple-touch-icon" href="./icon2-180.png">
-<title>궁금칸</title>
+<link rel="icon" href="./icon3-32.png" sizes="32x32"><link rel="icon" href="./icon3-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="./icon3-180.png">
+<title>루아</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap">
 <style>
@@ -1352,7 +1352,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 <div class="app" id="app" data-state="idle">
   <div id="chgWarn" hidden>🔌 충전 확인</div>
   <header class="topbar"><div class="inner">
-    <button class="wordmark" id="title" type="button" title="2초 동안 누르면 부모님 화면이 열려요">궁금칸</button>
+    <button class="wordmark" id="title" type="button" title="2초 동안 누르면 부모님 화면이 열려요">루아</button>
     <div class="status" role="status" aria-live="polite">
       <span id="stateLabel">쉬는 중</span>
     </div>
@@ -1500,18 +1500,18 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v131</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v132</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v131</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v132</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
       <h3>앱으로 설치</h3>
-      <div class="row"><button class="chip" id="installBtn" type="button">홈 화면에 궁금칸 앱 만들기</button></div>
+      <div class="row"><button class="chip" id="installBtn" type="button">홈 화면에 루아 앱 만들기</button></div>
       <p class="empty" id="installNote"></p>
     </div>
     <div class="card">
@@ -1634,9 +1634,9 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   }
   function rules() {
     const [base, deep] = LEN[settings.len] || LEN.normal;
-    return `너는 한 집에 있는 질문 화면 "궁금칸"이야. ${LEVEL[settings.level] || LEVEL.m1}
+    return `너는 아이 방에 있는 질문 화면 "루아"야(아이 이름도 루아다. 너를 소개할 때 "나는 루아야"라고 하지 말고 그냥 답한다). ${LEVEL[settings.level] || LEVEL.m1}
 질문 맨 앞 괄호 안에 오늘 날짜와 지금 시각을 적어 줄게. 날짜·요일·시간·계절이나 "○○까지 며칠 남았어?"를 물으면 이걸 기준으로 계산해서 답해(날짜를 지어내지 마).
-궁금칸에는 "할 일" 목록이 있어. 아이가 할 일이나 숙제를 적어 달라고 하는데 네가 답하게 됐다면, 못 한다고 하지 말고 "할 일에 ○○ 추가해 줘"라고 다시 말해 보라고 짧게 알려 줘(네가 직접 적을 수는 없어).
+이 화면에는 "할 일" 목록이 있어. 아이가 할 일이나 숙제를 적어 달라고 하는데 네가 답하게 됐다면, 못 한다고 하지 말고 "할 일에 ○○ 추가해 줘"라고 다시 말해 보라고 짧게 알려 줘(네가 직접 적을 수는 없어).
 규칙:
 - 왜 그런지 원리나 이유를 꼭 넣어. 결과만 말하지 마.
 - 가능하면 구체적인 숫자나 비교를 하나 넣어(예: "빛은 1초에 지구를 7바퀴 반 돌아").
@@ -1838,7 +1838,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   }
   if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
   $('voice').addEventListener('change', e => { saveSettings({ voice: e.target.value }); pickVoice(); });
-  $('voiceTest').addEventListener('click', async () => { const vs = koVoices(); hush(); await deviceSpeak('안녕! 나는 궁금칸이야. 뭐든 물어봐.'); $('saved').textContent = `한국어 음성 ${vs.length}개 · 사용: ${voiceKo ? voiceKo.name : '기본'}${lastSpeakErr ? ' · 오류: ' + lastSpeakErr : ' · 재생됨'}`; });
+  $('voiceTest').addEventListener('click', async () => { const vs = koVoices(); hush(); await deviceSpeak('안녕! 뭐든 물어봐.'); $('saved').textContent = `한국어 음성 ${vs.length}개 · 사용: ${voiceKo ? voiceKo.name : '기본'}${lastSpeakErr ? ' · 오류: ' + lastSpeakErr : ' · 재생됨'}`; });
   let lastSpeakErr = '', lastTts = '';
   const player = new Audio(); player.preload = 'auto';
   const audioCache = new Map();
@@ -1933,7 +1933,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   $('ttsVoice').addEventListener('change', e => saveSettings({ ttsVoice: e.target.value }));
   // 서비스 바꾸면 그 서비스의 기본 목소리로
   document.querySelector('.seg[data-k="ttsProvider"]').addEventListener('click', () => saveSettings({ ttsVoice: '' }));
-  $('ttsTest').addEventListener('click', async () => { if (!settings.ttsKey) { $('ttsNote').textContent = 'AI 목소리 키를 먼저 저장하세요'; return; } $('ttsNote').textContent = 'AI 음성 받는 중…'; await speak('안녕! 나는 궁금칸이야. 뭐든 물어봐.', true); $('ttsNote').textContent = 'AI 테스트 결과: ' + lastTts; });
+  $('ttsTest').addEventListener('click', async () => { if (!settings.ttsKey) { $('ttsNote').textContent = 'AI 목소리 키를 먼저 저장하세요'; return; } $('ttsNote').textContent = 'AI 음성 받는 중…'; await speak('안녕! 뭐든 물어봐.', true); $('ttsNote').textContent = 'AI 테스트 결과: ' + lastTts; });
   function renderSound() { soundBtn.setAttribute('aria-pressed', String(sound)); soundBtn.title = sound ? '소리 켜짐' : '소리 꺼짐'; }
   soundBtn.addEventListener('click', () => { sound = !sound; renderSound(); LS.set('gk-sound', sound ? 'on' : 'off'); if (!sound) hush(); });
   renderSound();
@@ -2315,7 +2315,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (d.cv) { const ft = $('fcFeat'), cur = ['news', 'word', 'piece', 'moon'].find(c => ft.classList.contains(c));
       if (d.cv !== cur) { svTaps = []; window.__gkCover = { k: d.cv, at: Date.now() }; renderSaver(); return; }
       d.tile = ft.dataset.tile; d.cv = ''; diag('saver', '켜진 탭을 한 번 더 → 그 장 열기'); } // v126: 이미 켜진 탭(예: '신문')을 누르면 그 장의 내용으로 간다
-    if (d.tile === 'study') { svTaps = []; try { studyOn() ? localStorage.removeItem('gk-study') : localStorage.setItem('gk-study', String(Date.now())); } catch (e) {} window.__gkSaverAt = Date.now(); delete window.__gkCover; renderSaver(); diag('saver', '공부 모드 ' + (studyOn() ? '켬' : '끔')); return; }
+    if (d.tile === 'study') { svTaps = []; try { studyOn() ? localStorage.removeItem('gk-study') : localStorage.setItem('gk-study', String(Date.now())); } catch (e) {} window.__gkSaverAt = Date.now(); delete window.__gkCover; renderSaver(); diag('saver', '공부 모드 ' + (studyOn() ? '켬' : '끔')); { const h = new Date().getHours(); if (!studyOn() && (h >= 21 || h < 6)) svSay('공부 모드는 아침 6시부터 밤 9시까지 켤 수 있어.'); } return; } // v132: 밤 9시 뒤에 눌러도 아무 반응이 없던 것 → 안내
     { const r = $('fcWx').getBoundingClientRect(); if (d.tile === 'cal' && saverEl.classList.contains('face') && d.x >= r.left && d.x <= r.right && d.y >= r.top - 6 && d.y <= r.bottom) d.tile = 'wx'; } // 시계 타일 안의 날씨 줄은 날씨 화면으로
     if (d.tile === 'wx' && svWide()) { svTaps = []; window.__gkForce = { s: 'wx', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날씨 줄 → 날씨 화면'); return; }
     if (d.tile === 'cal') { svTaps = []; window.__gkForce = { s: 'cal', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날짜 → 달력'); return; }
@@ -2991,7 +2991,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     s = sec('voice', '목소리');
     s.append(h3('읽어 주는 목소리'), row('서비스', P['AI 목소리 서비스']), row('서비스 키', P['AI 목소리 키']), row('목소리', P['AI 목소리']), row('말 빠르기', P['말 빠르기']), row('목소리 높이', P['목소리 높이']), h3('키가 없거나 안 될 때'), row('폰 목소리', P['폰 목소리']));
     s = sec('scr', '화면');
-    const go = mk('div', 'row'); [['face', '홈'], ['piece', '조각 장'], ['home', '궁금칸'], ['cal', '달력'], ['wx', '날씨'], ['hero', '신문 1면'], ['paper', '신문 기사'], ['sky', '밤하늘'], ['night', '밤 화면']].forEach(([k, t]) => { let b = L.querySelector(`[data-go="${k}"]`); if (!b) { b = mk('button', 'chip', t); b.type = 'button'; b.dataset.go = k; b.addEventListener('click', () => { previewSaver('face'); window.__gkForce = { s: 'wx', at: Date.now() }; renderSaver(); }); } b.textContent = t; go.append(b); });
+    const go = mk('div', 'row'); [['face', '홈'], ['piece', '조각 장'], ['home', '묻기'], ['cal', '달력'], ['wx', '날씨'], ['hero', '신문 1면'], ['paper', '신문 기사'], ['sky', '밤하늘'], ['night', '밤 화면']].forEach(([k, t]) => { let b = L.querySelector(`[data-go="${k}"]`); if (!b) { b = mk('button', 'chip', t); b.type = 'button'; b.dataset.go = k; b.addEventListener('click', () => { previewSaver('face'); window.__gkForce = { s: 'wx', at: Date.now() }; renderSaver(); }); } b.textContent = t; go.append(b); });
     s.append(h3('날씨'), row('날씨 지역', P['날씨 지역']), row('날씨 하늘', P['날씨 하늘']), h3('밤'), row('밤 10시 화면', P['밤 10시 화면']), h3('사진'), row('위키백과 사진', P['위키백과 사진']), h3('화면 바로가기'), row('열어 보기', [go, note('열어 본 화면은 홈 단추로 돌아와요. 그대로 두면 10분 뒤 홈으로 가요.')], true), h3('기기'), row('전체 화면', $('fsBtn')));
     const inst = $('installCard'); if (inst) { const r = row('앱으로 설치', [$('installBtn'), $('installNote')]); s.append(r); new MutationObserver(() => { r.hidden = inst.hidden; }).observe(inst, { attributes: true }); r.hidden = inst.hidden; }
     s = sec('news', '신문');
@@ -3256,7 +3256,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       startListening();
     }
   });
-  document.addEventListener('wheel', () => { if (!logEl.hidden) keyTest.textContent = '받은 신호: 화면 스크롤 (궁금칸에서 안 씀)'; }, { passive: true });
+  document.addEventListener('wheel', () => { if (!logEl.hidden) keyTest.textContent = '받은 신호: 화면 스크롤 (이 앱에서 안 씀)'; }, { passive: true });
   form.addEventListener('submit', e => { e.preventDefault(); if (listening) { const v = input.value; heard = ''; stopListening(); if (v.trim()) ask(v); return; } if (!input.value.trim()) { startListening(); return; } ask(input.value); });
 
   // ---------- Claude API ----------
@@ -3630,7 +3630,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       log(f(e) + (ev === 'pointerup' || ev === 'pointercancel' ? ` · ${Date.now() - t0}ms` : ''));
       if (ev === 'pointerup') { pad.style.background = 'color-mix(in srgb, var(--accent) 25%, transparent)'; setTimeout(() => pad.style.background = '', 250); }
     }));
-    pad.addEventListener('click', e => log(`click · ${e.isTrusted ? '브라우저' : '궁금칸 보정'} ✔`));
+    pad.addEventListener('click', e => log(`click · ${e.isTrusted ? '브라우저' : '앱 보정'} ✔`));
     ['touchstart', 'touchend', 'touchcancel'].forEach(ev => pad.addEventListener(ev, e => log(`${ev} · 손가락 ${e.touches.length}`), { passive: true }));
     pad.addEventListener('contextmenu', e => e.preventDefault());
   })();
@@ -3724,7 +3724,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v131';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v132';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -3768,7 +3768,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   else setTimeout(() => diag('bat', '이 브라우저는 배터리 정보를 안 알려줌'), 0);
   function renderDevStat() {
     const lines = [
-      `궁금칸 ${APP_V} · 화면 ${innerWidth}×${innerHeight} (배율 ${Math.round(devicePixelRatio * 100) / 100}) · ${navigator.onLine ? '온라인' : '오프라인'}`,
+      `루아 ${APP_V} · 화면 ${innerWidth}×${innerHeight} (배율 ${Math.round(devicePixelRatio * 100) / 100}) · ${navigator.onLine ? '온라인' : '오프라인'}`,
       `배터리 ${bat ? Math.round(bat.level * 100) + '% · ' + (bat.charging ? '충전 중' : '충전 안 됨') : '알 수 없음'} · 화면 켜짐 유지 ${wakeLock ? 'ON' : 'OFF'}`,
       `브라우저 ${(navigator.userAgent.match(/SamsungBrowser\/[\d.]+|Chrome\/[\d]+|Firefox\/[\d]+/) || ['?'])[0]} · 켜진 지 ${Math.round(performance.now() / 60000)}분`
     ];
@@ -3803,16 +3803,16 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   const isApp = () => matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches || navigator.standalone === true;
   function installRender(msg) {
     $('installBtn').hidden = isApp();
-    $('installNote').textContent = msg || (isApp() ? '지금 앱으로 열려 있어요. 홈 화면의 궁금칸 아이콘으로 열면 돼요.'
-      : installEvt ? '누르면 홈 화면에 궁금칸 아이콘이 생기고, 주소창 없이 전체 화면으로 열려요.'
+    $('installNote').textContent = msg || (isApp() ? '지금 앱으로 열려 있어요. 홈 화면의 루아 아이콘으로 열면 돼요.'
+      : installEvt ? '누르면 홈 화면에 루아 아이콘이 생기고, 주소창 없이 전체 화면으로 열려요.'
       : '버튼이 안 되면: Chrome은 오른쪽 위 ⋮ → "홈 화면에 추가" → "설치". 삼성 인터넷은 아래 ≡ → "현재 페이지 추가" → "홈 화면".');
   }
   addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; installRender(); });
-  addEventListener('appinstalled', () => { installEvt = null; diag('app', '앱으로 설치됨'); installRender('설치했어요. 홈 화면의 궁금칸 아이콘으로 열어 주세요.'); });
+  addEventListener('appinstalled', () => { installEvt = null; diag('app', '앱으로 설치됨'); installRender('설치했어요. 홈 화면의 루아 아이콘으로 열어 주세요.'); });
   $('installBtn').addEventListener('click', async () => {
     if (!installEvt) { installRender('이 브라우저는 버튼으로 설치가 안 돼요. Chrome은 오른쪽 위 ⋮ → "홈 화면에 추가" → "설치", 삼성 인터넷은 아래 ≡ → "현재 페이지 추가" → "홈 화면"을 눌러 주세요.'); return; }
     const ev = installEvt; installEvt = null; ev.prompt();
-    try { const r = await ev.userChoice; installRender(r.outcome === 'accepted' ? '설치했어요. 홈 화면의 궁금칸 아이콘으로 열어 주세요.' : '설치를 취소했어요. 다시 하려면 이 화면을 닫았다 열어 주세요.'); } catch (e) { installRender(); }
+    try { const r = await ev.userChoice; installRender(r.outcome === 'accepted' ? '설치했어요. 홈 화면의 루아 아이콘으로 열어 주세요.' : '설치를 취소했어요. 다시 하려면 이 화면을 닫았다 열어 주세요.'); } catch (e) { installRender(); }
   });
   installRender();
   function previewSaver(st) { logEl.hidden = true; window.__gkSaverAt = Date.now(); window.__gkForce = { s: st, at: Date.now() }; enterSaver(); renderSaver(); }
@@ -3829,12 +3829,12 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
     renderDevStat();
     const a = LS.get(DIAG_KEY, []).slice(-200).map(r => `${stamp(new Date(r[0]))} [${r[1]}] ${r[2]}`);
     const b = LS.get(BAT_KEY, []).slice(-150).map(r => `${stamp(new Date(r[0]))} ${r[1]}%${r[2] ? '+' : ''}`);
-    const txt = `[궁금칸 진단]\n${$('devStat').textContent}\n\n[기록]\n${a.join('\n')}\n\n[배터리 (+는 충전 중)]\n${b.join('  ')}`;
+    const txt = `[루아 진단]\n${$('devStat').textContent}\n\n[기록]\n${a.join('\n')}\n\n[배터리 (+는 충전 중)]\n${b.join('  ')}`;
     try { await navigator.clipboard.writeText(txt); $('diagNote').textContent = '복사됨 — 채팅에 붙여 넣어 주세요'; }
     catch (e) { const r = document.createRange(); r.selectNodeContents($('diagLog')); getSelection().removeAllRanges(); getSelection().addRange(r); $('diagNote').textContent = '복사가 막혀서 기록을 선택해 뒀어요. 길게 눌러 복사하세요'; }
   });
   new MutationObserver(() => { if (!logEl.hidden) { renderDevStat(); renderBat(); renderDiag(); } }).observe(logEl, { attributes: true, attributeFilter: ['hidden'] });
-  diag('app', `궁금칸 ${APP_V} 시작 · ${innerWidth}×${innerHeight}`);
+  diag('app', `루아 ${APP_V} 시작 · ${innerWidth}×${innerHeight}`);
 
   // v71: 새 버전 자동 적용 — 켜 둔 채로 있어도 10분마다 새 버전이 있는지 보고, 쉬고 있을 때 스스로 새로고침
   async function checkUpdate() {

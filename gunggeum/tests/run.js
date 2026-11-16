@@ -452,6 +452,18 @@ async function newsTests(b) {
     await p.context().close(); p = await open(b, { time: newsDate + 'T12:19', w: 390, h: 780 }); await p.saver(); await tapAt(p, '#fcFeat .cc-tabs [data-cv="word"]'); s = await p.st(); ok('전화: 다른 탭("낱말")을 누르면 표지만 바뀐다', /\bface\b/.test(s.saver) && await p.evaluate(() => document.getElementById('fcFeat').classList.contains('word')), s.saver); await p.context().close();
   }
 
+  { // 15. 공부 모드: 밤 9시 뒤에 누르면 안내가 보인다 (v132)
+    console.log('15. 공부 모드 시간 안내');
+    const p = await open(b, { time: newsDate + 'T21:42' }); await p.saver();
+    const bx = await p.locator('.fc-app[data-tile="study"]').boundingBox(); await p.mouse.click(bx.x + 30, bx.y + 30); await p.adv(1200);
+    ok('밤 9시 42분에 공부 모드를 누르면 "밤 9시까지" 안내가 화면 안에 보인다', await p.evaluate(() => { const m = document.getElementById('fcMsg'), r = m.getBoundingClientRect(); return !m.hidden && /밤 9시까지/.test(m.textContent) && r.bottom <= innerHeight && r.top >= 0; }));
+    await p.context().close();
+    const q = await open(b, { time: newsDate + 'T16:10' }); await q.saver();
+    const by = await q.locator('.fc-app[data-tile="study"]').boundingBox(); await q.mouse.click(by.x + 30, by.y + 30); await q.adv(1200);
+    ok('낮(16시)에 공부 모드를 누르면 공부 모드가 켜진다', await q.evaluate(() => document.getElementById('fcFeat').classList.contains('study')));
+    await q.context().close();
+  }
+
   await newsTests(b);
   ok('페이지 오류 없음', errs.length === 0, errs.slice(0, 3));
   await b.close(); server.close();
