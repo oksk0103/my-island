@@ -427,7 +427,7 @@ async function newsTests(b) {
   { // 14. 전화 홈(v124): 모니터와 같은 표지 · 날씨 · 달력을 쓴다
     console.log('14. 전화 홈');
     const tapAt = async (p, sel) => { const bx = await p.locator(sel).first().boundingBox(); await p.mouse.click(bx.x + Math.min(40, bx.width / 2), bx.y + Math.min(30, bx.height / 2)); await p.adv(2500); };
-    const side = () => p.evaluate(() => [...document.querySelectorAll('#saver *')].filter(e => { const r = e.getBoundingClientRect(), c = getComputedStyle(e); return r.width > 0 && r.height > 0 && c.visibility !== 'hidden' && (r.right > innerWidth + 6 || r.left < -6) && !e.closest('canvas.big, .cc-moon, .wx-sky, [hidden]'); }).map(e => (e.id || e.className || e.tagName).toString().slice(0, 24)).slice(0, 5));
+    const side = () => p.evaluate(() => [...document.querySelectorAll('#saver *')].filter(e => { const r = e.getBoundingClientRect(), c = getComputedStyle(e); return r.width > 0 && r.height > 0 && c.visibility !== 'hidden' && (r.right > innerWidth + 6 || r.left < -6) && !e.closest('canvas.big, .cc-moon, .wx-sky, [hidden], svg'); }).map(e => (e.id || e.className || e.tagName).toString().slice(0, 24)).slice(0, 5));
     let p = await open(b, { time: newsDate + 'T12:19', w: 390, h: 780 }); await p.saver();
     let s = await p.st(); ok('전화 대기화면 = 표지(위젯 면)', /\bface\b/.test(s.saver), s.saver);
     let x = await side(); ok('전화 표지: 옆으로 넘치는 것 없음', !x.length, x);
@@ -437,6 +437,9 @@ async function newsTests(b) {
     x = await side(); ok('전화 날씨 화면: 옆으로 넘치는 것 없음', !x.length, x);
     await tapAt(p, '#gkHome'); await tapAt(p, '.fc-clock'); ok('전화: 시계 → 달력', await p.evaluate(() => document.getElementById('saver').dataset.pg === 'cal'));
     x = await side(); ok('전화 달력: 옆으로 넘치는 것 없음', !x.length, x);
+    await tapAt(p, '#gkHome'); await p.evaluate(() => { document.getElementById('saver').scrollTop = 600; }); await p.go('sky'); await p.adv(2500);
+    ok('전화 밤하늘: 새 배치(맨 위부터, 제목·하늘 그림·달이 위에서 아래로)', await p.evaluate(() => { const sv = document.getElementById('saver'), y = q => document.querySelector(q).getBoundingClientRect().top; return sv.classList.contains('sky') && sv.scrollTop === 0 && y('.sky-name') > 60 && y('.sky-name') < y('#skyChart svg') && y('#skyChart svg') < y('#skyMoon') && getComputedStyle(document.querySelector('.sky-name')).writingMode === 'horizontal-tb'; }));
+    x = await side(); ok('전화 밤하늘: 옆으로 넘치는 것 없음', !x.length, x);
     await tapAt(p, '#gkHome'); await tapAt(p, '#fcFeat .cc-h'); s = await p.st(); ok('전화: 표지의 신문 → 기사 화면 바로(1면을 거치지 않음)', s.paper && !s.saver, s); await p.context().close();
   }
 
