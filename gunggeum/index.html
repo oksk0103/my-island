@@ -6073,6 +6073,9 @@ svg.ds-ic .ds-dot{fill:var(--ds-dot) !important;stroke:none !important}
 #app[data-from=ans][data-state=think] .mic::before{width:10px !important;height:10px !important;margin-left:4px;box-shadow:20px 0 0 var(--zk2), 40px 0 0 var(--zk2) !important}
 #app[data-from=ans]:is([data-state=listen],[data-state=think]) .qbox::after{content:"듣는 중";font:600 28px/1 "Pretendard",sans-serif;letter-spacing:-.02em;color:var(--pill-ink);white-space:nowrap}
 #app[data-from=ans][data-state=think] .qbox::after{content:"생각 중"}
+/* v136: 달력의 일정 줄도 할 일처럼 상자 없이 바탕 위에 바로(부모 규칙: 앱 내용은 상자 없이) */
+html body #saver[data-pg=cal] .ag-row, html body #saver[data-pg=cal] .ag-row.new, html body #saver[data-pg=cal] .ag-row.own{background:none !important;box-shadow:none !important;border-radius:0 !important;padding:0 !important;margin:0 !important}
+html body #saver[data-pg=cal] .ag-list{gap:0 !important;row-gap:0 !important} html body #saver[data-pg=cal] .ag-row:not(.more){height:80px !important;min-height:80px !important}
 /* v136: 밤 달력의 오늘 동그라미는 밝은 크림색 — 글자는 남색(흰 글자가 안 보이던 버그) */
 body[data-theme=night] .cq-grid span.t b{color:#0A1130 !important}
 /* v136: 홈 위젯의 마이크·책도 앱과 같은 선 아이콘 한 벌(채움 없음) */
