@@ -576,6 +576,11 @@ async function newsTests(b) {
     ok('답 화면에서 마이크 → 듣는 중이 같은 자리(오른쪽 아래)', st[0] === 'listen' && st[1] === 'ans' && f0 === f1 && f0 === '1316,716,1552,780', [st, f0, f1]);
     await p.evaluate(() => window.__rec.onresult({ resultIndex: 0, results: [Object.assign([{ transcript: '보름달은 언제 떠' }], { isFinal: true })] })); await p.adv(2500);
     q = await p.evaluate(() => document.getElementById('app').dataset.state); ok('말이 끝나면 생각 중 → 답', q === 'answer' || q === 'think', q); await p.context().close();
+    // 알약 가운데(입력칸)를 눌러도 — 초점이 먼저 가 '입력 중'을 거쳐도 — 듣는 중은 제자리
+    p = await open(b, { time: D + 'T16:20', read: D, pre: fake }); await p.say('달은 왜 모양이 바뀌어?', 9000);
+    await p.click('#q'); await p.adv(600);
+    q = await p.evaluate(() => [document.getElementById('app').dataset.state, document.getElementById('app').dataset.from]); const fq2 = await R(p, '#form .qbox');
+    ok('답 화면 알약 가운데를 눌러도 듣는 중이 오른쪽 아래', q[1] === 'ans' && fq2 === '1316,716,1552,780', [q, fq2]); await p.context().close();
     // 첫 화면에서 글자로 물어도 생각 중은 가운데 묻기 줄 그대로(구석으로 튀지 않음)
     p = await open(b, { time: D + 'T16:20', read: D }); await p.unroute(/api\.anthropic\.com/); await p.route(/api\.anthropic\.com/, () => {});
     await p.evaluate(() => { const q = document.getElementById('q'); q.readOnly = false; q.focus(); q.value = '하늘은 왜 파래'; }); await p.press('#q', 'Enter'); await p.adv(800);
