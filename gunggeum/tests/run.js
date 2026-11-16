@@ -557,6 +557,30 @@ async function newsTests(b) {
     p = await open(b, { time: newsDate + 'T00:20' }); q = await p.evaluate(() => document.getElementById('tbClock').textContent); ok('0시 20분 시계: "밤 12:20"', /^밤\s*12:20$/.test(q.trim()), q); await p.context().close();
   }
 
+  { // 19. v136 부품 통일 — 자리 규격과 밤 색
+    console.log('19. 부품 통일 (v136)');
+    const D = newsDate; let p, q;
+    const fake = async pg => pg.addInitScript(() => { window.SpeechRecognition = window.webkitSpeechRecognition = class { start() { window.__rec = this; setTimeout(() => this.onstart && this.onstart(), 0); } stop() { setTimeout(() => this.onend && this.onend(), 0); } abort() { this.stop(); } }; });
+    const R = (pg, sel) => pg.evaluate(sel => { const e = document.querySelector(sel); if (!e) return null; const r = e.getBoundingClientRect(); return [r.left, r.top, r.right, r.bottom].map(Math.round).join(','); }, sel);
+    // 앱 머리줄: 홈 단추는 어느 앱에서나 (48,40) — 자국 방지 이동으로 달력·날씨에서만 4px 어긋나던 것
+    for (const [g, t] of [['cal', 'T16:20'], ['wx', 'T16:20']]) { p = await open(b, { time: D + t, read: D }); await p.go(g); await p.adv(2500); q = await R(p, '#gkHome'); ok(`${g} 홈 단추 자리 48,40`, q === '48,40,112,104', q); await p.context().close(); }
+    // 밤 달력: 오늘 동그라미 글자가 보임(크림 바탕 + 흰 글자 금지)
+    p = await open(b, { time: D + 'T22:30', read: D }); await p.go('cal'); await p.adv(2500);
+    q = await p.evaluate(() => { const e = [...document.querySelectorAll('.cq-grid span.t b')][0]; const cs = getComputedStyle(e); return [cs.color, cs.backgroundColor]; });
+    ok('밤 달력 오늘 숫자가 바탕과 다른 색', q[0] !== 'rgb(255, 255, 255)' || !/23\d, 2[23]\d, 21\d/.test(q[1]), q); await p.context().close();
+    // 답 화면에서 다시 묻기: 듣는 중·생각 중이 오른쪽 아래 마이크 자리에서 바뀐다
+    p = await open(b, { time: D + 'T16:20', read: D, pre: fake }); await p.say('달은 왜 모양이 바뀌어?', 9000);
+    const f0 = await R(p, '#form .qbox'); await p.click('#micBtn'); await p.adv(600);
+    const st = await p.evaluate(() => [document.getElementById('app').dataset.state, document.getElementById('app').dataset.from]); const f1 = await R(p, '#form .qbox');
+    ok('답 화면에서 마이크 → 듣는 중이 같은 자리(오른쪽 아래)', st[0] === 'listen' && st[1] === 'ans' && f0 === f1 && f0 === '1316,716,1552,780', [st, f0, f1]);
+    await p.evaluate(() => window.__rec.onresult({ resultIndex: 0, results: [Object.assign([{ transcript: '보름달은 언제 떠' }], { isFinal: true })] })); await p.adv(2500);
+    q = await p.evaluate(() => document.getElementById('app').dataset.state); ok('말이 끝나면 생각 중 → 답', q === 'answer' || q === 'think', q); await p.context().close();
+    // 신문 기사: 면 표시는 왼쪽 곁말, 소리 단추는 기본 끔(빗금)
+    p = await open(b, { time: D + 'T07:40' }); await p.go('hero'); await p.adv(2500); await p.go('paper'); await p.adv(2500);
+    q = await p.evaluate(() => [document.getElementById('ppTag').textContent, document.getElementById('ppListen').getAttribute('aria-pressed'), getComputedStyle(document.querySelector('#ppListen .slash')).display]);
+    ok('신문 기사: "분야 · 1면", 소리 기본 끔(빗금 보임)', /· 1면$/.test(q[0]) && q[1] === 'false' && q[2] !== 'none', q); await p.context().close();
+  }
+
   await newsTests(b);
   ok('페이지 오류 없음', errs.length === 0, errs.slice(0, 3));
   await b.close(); server.close();

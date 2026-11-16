@@ -1448,8 +1448,8 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <section class="fc-t fc-todo" data-tile="todo"><div class="fc-n"><b id="fcTodoN"></b><span id="fcTodoS"></span></div><div class="fc-list" id="fcTodoL"></div></section>
       <section class="fc-t fc-app" data-tile="news"><svg viewBox="0 0 24 24"><path class="f" fill-rule="evenodd" d="M3.500 6A2.500 2.500 0 0 1 6 3.500h8.500A2.500 2.500 0 0 1 17 6v2h1.500A2.500 2.500 0 0 1 21 10.500V17a3.500 3.500 0 0 1-3.500 3.500H7A3.500 3.500 0 0 1 3.500 17zM6.500 6.800v3.400h7.500V6.800zM6.500 12.600v1.600h7.500v-1.600zM6.500 16v1.600h5V16zM17 10v7a.75.75 0 0 0 1.500 0v-7z"/></svg><div class="fc-lab">신문</div><div class="fc-sub" id="fcNewsS"></div></section>
       <section class="fc-t fc-app" data-tile="sky"><svg viewBox="0 0 24 24"><path class="f" d="M14.800 15.200A7 7 0 0 1 8.600 4.300a8.300 8.300 0 1 0 11.100 11.100 7 7 0 0 1-4.900-.2z"/><path class="f" d="M17.300 2.800l.9 2.300 2.300.9-2.300.9-.9 2.300-.9-2.300-2.300-.9 2.300-.9z"/></svg><div class="fc-lab">밤하늘</div><div class="fc-sub" id="fcSkyS"></div></section>
-      <section class="fc-t fc-app" data-tile="ask"><div class="mic"><svg viewBox="0 0 24 24"><rect class="f" x="8.5" y="2.5" width="7" height="12.5" rx="3.5"/><path d="M5.2 11.5a6.8 6.8 0 0 0 13.600 0M12 18.500v3"/></svg></div><div class="tx2"><div class="fc-lab">궁금한 걸 물어 봐</div><div class="fc-sub">눌러서 말해</div></div></section>
-      <section class="fc-t fc-app" data-tile="study"><svg viewBox="0 0 24 24"><path class="f" d="M11.100 6.400C9.200 5.300 7 4.800 4.600 4.900a.6.6 0 0 0-.6.6v11.600a.6.6 0 0 0 .6.6c2.300-.100 4.500.400 6.500 1.500z"/><path class="f" d="M12.900 6.400c1.900-1.100 4.100-1.600 6.500-1.500a.6.6 0 0 1 .6.6v11.600a.6.6 0 0 1-.6.6c-2.300-.100-4.500.400-6.500 1.500z"/></svg><div class="fc-lab" id="fcStudyL">공부 모드</div><div class="fc-sub">화면을 조용하게</div></section>
+      <section class="fc-t fc-app" data-tile="ask"><div class="mic"><svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><rect x="10.2" y="3.2" width="7.6" height="12" rx="3.8"/><path d="M7 12.6a7 7 0 0 0 14 0"/><circle class="ds-dot" cx="14" cy="23.6" r="1.9"/></svg></div><div class="tx2"><div class="fc-lab">궁금한 걸 물어 봐</div><div class="fc-sub">눌러서 말해</div></div></section>
+      <section class="fc-t fc-app" data-tile="study"><svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><path d="M14 8.4C11.6 6.6 8.5 5.8 4.6 6v14.2c3.9-.2 7 .6 9.4 2.4 2.4-1.8 5.5-2.6 9.4-2.4V6c-3.9-.2-7 .6-9.4 2.4z"/><path d="M14 8.4v14.2"/></svg><div class="fc-lab" id="fcStudyL">공부 모드</div><div class="fc-sub">화면을 조용하게</div></section>
       <section class="fc-t fc-app" data-tile="word"><div class="big ko" id="fcWordN"></div><div class="fc-lab">오늘의 낱말</div><div class="fc-sub" id="fcWordS"></div></section>
       <section class="fc-t fc-app" data-tile="cal"><div class="big" id="fcCalN"></div><div class="fc-lab">달력</div><div class="fc-sub" id="fcCalS"></div></section>
     </div><div class="fc-msg" id="fcMsg" hidden></div></div>
@@ -3214,7 +3214,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const A = curArticle(); if (!A) return;
     const n = news.articles.length, art = $('ppArt'), box = $('ppPhoto'), key = news.no + ':' + paperIdx, tag = i => (news.articles[i] && news.articles[i].tag) || '';
     paperEl.dataset.t = npTone();
-    $('ppTag').textContent = [A.tag || '', `${paperIdx + 1}면`].filter(Boolean).join(' · '); $('ppFolio').textContent = newsDate(); $('ppNo').textContent = ''; if (paperSound) setTimeout(readArticle, 300); // v136: 소리가 켜져 있으면 넘긴 면부터 읽어 준다
+    $('ppTag').textContent = [A.tag || '', `${paperIdx + 1}면`].filter(Boolean).join(' · '); $('ppFolio').textContent = newsDate(); $('ppNo').textContent = ''; if (paperSound) setTimeout(() => { if (paperEl && !paperEl.hidden) readArticle(); }, 300); // v136: 소리가 켜져 있으면 넘긴 면부터 읽어 준다
     $('ppHed').textContent = A.title; $('ppLede').innerHTML = npWords(A.lede || ''); $('ppLede').hidden = !A.lede;
     $('ppBody').innerHTML = npParas(A.body || '', true); $('ppSrc').textContent = A.source ? '출처 ' + A.source : '';
     const W = A.word || {}; $('ppWord').hidden = !W.w; $('ppW').textContent = W.w || ''; $('ppM').textContent = W.mean || '';
@@ -3249,7 +3249,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     { const done = LS.get(NEWS_DONE, []); if (!done.includes(news.date)) { done.push(news.date); while (done.length > 400) done.shift(); LS.set(NEWS_DONE, done); } }
     diag('app', `신문 펼침: ${paperIdx + 1}면`);
   }
-  function hidePaper() { if (!paperEl) return; paperEl.hidden = true; delete app.dataset.paper; homeSync(); }
+  function hidePaper() { if (!paperEl) return; if (!paperEl.hidden && paperSound) hush(); paperEl.hidden = true; delete app.dataset.paper; homeSync(); }
   function closePaper(toSaver) { hush(); hidePaper(); if (toSaver) { window.__gkSaverAt = Date.now(); enterSaver(); } else showPiece(false); }
   function paperNext() { hush(); if (paperIdx < news.articles.length - 1) { paperIdx++; renderPaper(); return; }
     hidePaper(); window.__gkSaverAt = Date.now(); if (innerWidth >= 900 && newsFresh()) window.__gkForce = { s: 'front', at: Date.now() }; enterSaver(); renderSaver(); } // 마지막 기사 → 첫 면(1면)으로. 좁은 화면은 예전처럼 대기화면
@@ -6073,6 +6073,13 @@ svg.ds-ic .ds-dot{fill:var(--ds-dot) !important;stroke:none !important}
 #app[data-from=ans][data-state=think] .mic::before{width:10px !important;height:10px !important;margin-left:4px;box-shadow:20px 0 0 var(--zk2), 40px 0 0 var(--zk2) !important}
 #app[data-from=ans]:is([data-state=listen],[data-state=think]) .qbox::after{content:"듣는 중";font:600 28px/1 "Pretendard",sans-serif;letter-spacing:-.02em;color:var(--pill-ink);white-space:nowrap}
 #app[data-from=ans][data-state=think] .qbox::after{content:"생각 중"}
+/* v136: 밤 달력의 오늘 동그라미는 밝은 크림색 — 글자는 남색(흰 글자가 안 보이던 버그) */
+body[data-theme=night] .cq-grid span.t b{color:#0A1130 !important}
+/* v136: 홈 위젯의 마이크·책도 앱과 같은 선 아이콘 한 벌(채움 없음) */
+#saver.saver.face .fc-app svg.ds-ic{width:40px !important;height:40px !important;stroke:currentColor !important;stroke-width:2.2 !important;fill:none !important;opacity:1 !important;margin:0 !important}
+#saver.saver.face .fc-app svg.ds-ic .ds-dot{fill:var(--ds-dot) !important;stroke:none !important}
+#saver.saver.face .fc-app[data-tile=ask] .mic{width:40px !important;height:40px !important}
+#saver.saver.face .fc-app[data-tile=ask] .mic svg.ds-ic, #saver.saver.face .fc-app[data-tile=study] svg.ds-ic{stroke:#fff !important;color:#fff}
 /* 답 화면의 '더 물어 봐': 입력칸이 아니라 같은 알약 */
 #app:not([data-home]):not([data-state=listen]):not([data-state=think]) .qbox{height:64px !important;min-height:64px !important;border-radius:32px !important;background:var(--pill) !important;box-shadow:var(--pill-edge),var(--pill-shadow) !important;border:0 !important}
 #app:not([data-home]):not([data-state=listen]):not([data-state=think]) #q, #app:not([data-home]):not([data-state=listen]):not([data-state=think]) #q::placeholder{color:var(--pill-ink) !important;font:600 28px/1 "Pretendard",sans-serif !important;opacity:1 !important}
