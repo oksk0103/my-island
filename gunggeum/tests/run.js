@@ -306,7 +306,7 @@ async function newsTests(b) {
     await box('#fcFeat .cc-h'); s = await p.st(); ok('조각 장 본문 → 궁금칸(조각과 이어 묻기 딸려 옴)', s.home && !s.saver && s.sheet === '뭐가 궁금해?' && await p.evaluate(() => !!document.querySelector('#zUnder .zu-pc') && !!document.querySelector('#zUnder .zu-chip')), s);
     const R = () => p.evaluate(() => { const r = document.querySelector('.qbox').getBoundingClientRect(); return [r.left, r.top, r.right, r.bottom].map(Math.round).join(','); });
     const r0 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'listen'; }); await p.adv(400); const r1 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'think'; }); await p.adv(400); const r2 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'idle'; });
-    ok('묻기 줄이 궁금칸·듣는 중·생각하는 중에서 같은 자리', r0 === r1 && r1 === r2 && r0 === '160,407,1040,511', [r0, r1, r2]);
+    ok('묻기 줄이 궁금칸·듣는 중·생각하는 중에서 같은 자리', r0 === r1 && r1 === r2 && r0 === '136,407,1016,511', [r0, r1, r2]);
     const a0 = p.api; await p.click('#zUnder .zu-chip'); await p.adv(9000); s = await p.st(); ok('궁금칸의 이어 묻기 → 답', p.api === a0 + 1 && !s.home && /햇빛/.test(s.sheet), s);
     ok('답 화면에 소리 글리프(60px 이상)', await p.evaluate(() => { const r = document.getElementById('soundBtn').getBoundingClientRect(); return r.width >= 60 && r.height >= 60 && getComputedStyle(document.getElementById('soundBtn')).display !== 'none'; }));
     const cnt = (await p.st()).count; await p.click('#gkHome'); await p.adv(1500); s = await p.st(); ok('답의 홈 단추 → 위젯 면', /^face/.test(s.saver), s.saver);
@@ -585,12 +585,12 @@ async function newsTests(b) {
     p = await open(b, { time: D + 'T16:20', read: D }); await p.unroute(/api\.anthropic\.com/); await p.route(/api\.anthropic\.com/, () => {});
     await p.evaluate(() => { const q = document.getElementById('q'); q.readOnly = false; q.focus(); q.value = '하늘은 왜 파래'; }); await p.press('#q', 'Enter'); await p.adv(800);
     q = await p.evaluate(() => [document.getElementById('app').dataset.state, document.getElementById('app').dataset.from]); const fq = await R(p, '#form .qbox');
-    ok('첫 화면 글자 묻기 → 생각 중이 가운데 줄(160,407)', q[0] === 'think' && q[1] === 'home' && /^160,407,/.test(fq), [q, fq]); await p.context().close();
+    ok('첫 화면 글자 묻기 → 생각 중이 가운데 줄(136,407)', q[0] === 'think' && q[1] === 'home' && /^136,407,/.test(fq), [q, fq]); await p.context().close();
     // 신문에서 물어보기 → 답 → 맨 아랫줄 '신문으로' 알약 → 그 면으로
     p = await open(b, { time: D + 'T07:40', pre: fake }); await p.go('hero'); await p.adv(2500); await p.go('paper'); await p.adv(2500); await p.click('#ppNext'); await p.adv(1200);
     await p.click('#ppAsk'); await p.adv(600); q = await p.evaluate(() => !document.getElementById('gkHome').hidden); ok('신문에서 듣는 중에도 홈 단추가 보임', q, q);
     await p.evaluate(() => window.__rec.onresult({ resultIndex: 0, results: [Object.assign([{ transcript: '무인기는 뭐야' }], { isFinal: true })] })); await p.adv(9000);
-    q = await R(p, '#backPaper'); ok("신문에서 물은 답: 맨 아랫줄 맨 앞 '신문으로' 알약(160,716)", q === '160,716,360,780', q);
+    q = await R(p, '#backPaper'); ok("신문에서 물은 답: 맨 아랫줄 맨 앞 '신문으로' 알약(136,716)", q === '136,716,336,780', q);
     await p.click('#backPaper'); await p.adv(1500); q = await p.evaluate(() => document.getElementById('ppTag').textContent); ok('신문으로 → 물었던 2면', /2면/.test(q), q);
     await p.click('#ppAsk'); await p.adv(600); await p.click('#micBtn').catch(() => {}); await p.adv(2500); q = await p.evaluate(() => [!document.getElementById('paper').hidden, document.getElementById('ppTag').textContent]);
     ok('신문에서 물어보기를 눌렀다가 말없이 끝나면 그 면으로 돌아옴', q[0] && /2면/.test(q[1]), q); await p.context().close();
