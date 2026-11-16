@@ -417,7 +417,7 @@ async function newsTests(b) {
 
   { // 13. 좁은 화면(전화 390×780, v123): 먹색이 남지 않고, 글이 옆으로 넘치지 않는다
     console.log('13. 좁은 화면(전화)');
-    const light = () => p.evaluate(() => { const m = getComputedStyle(document.getElementById('saver')).backgroundColor.match(/\d+/g).map(Number); return m[0] + m[1] + m[2] > 600; });
+    const light = () => p.evaluate(() => { const c = getComputedStyle(document.getElementById('saver')); return c.backgroundImage.includes('rgb(248, 247, 244)') && !/^rgb\((1[0-9]|2[0-9]|[0-9]),/.test(c.backgroundColor) || c.backgroundColor === 'rgba(0, 0, 0, 0)' && c.backgroundImage.includes('rgb(248, 247, 244)'); }); // 밝은 지면(바탕 기울기 #F8F7F4)
     const wide = () => p.evaluate(() => [...document.querySelectorAll('body *')].filter(e => { if (!e.offsetParent && getComputedStyle(e).position !== 'fixed') return false; const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && (r.right > innerWidth + 1 || r.left < -1) && !e.closest('.pr-nav, .sv-face, .pg, #rnFront, #log[hidden]'); }).map(e => (e.id || e.className || e.tagName).toString().slice(0, 20)).slice(0, 5));
     let p = await open(b, { time: newsDate + 'T12:19', read: newsDate, w: 390, h: 780 }); let x = await wide(); ok('전화 궁금칸: 옆으로 넘치는 것 없음', !x.length, x);
     await p.say('달은 왜 빛나?', 2500); x = await wide(); ok('전화 답: 옆으로 넘치는 것 없음, 쪽 나누기 없음', !x.length && await p.evaluate(() => document.getElementById('ansPg').hidden), x);
