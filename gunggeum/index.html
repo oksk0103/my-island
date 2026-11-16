@@ -1500,13 +1500,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v132</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v133</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v132</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v133</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -3724,7 +3724,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v132';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v133';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -5424,6 +5424,39 @@ body[data-scr=sky] .gk-home{background:rgb(255 255 255 / .14);color:#fff;box-sha
 .saver.sky .sv-top{padding-left:112px}
 body[data-scr=sky] .gk-home{top:28px}
 
+/* v133: 답 화면의 낱말 카드·연표 카드 — 밝은 지면에 맞춘 흰 카드, 오른쪽 칸에 고정. 글과 칩은 카드 왼쪽 칸에서만 흐른다 */
+#app .fig-box:has(.vcard), #app .fig-box:has(.era), #app .fig-box:has(.emo){background:var(--strip) !important;box-shadow:var(--strips);border:0 !important;border-radius:28px !important;aspect-ratio:auto}
+#app .vcard, #app .era{padding:36px 40px 40px;gap:14px}
+#app .vc-word{font:700 64px/1.05 "Pretendard",sans-serif;letter-spacing:-.02em;color:var(--zhl)}
+#app .vc-mean{font:500 30px/1.35 "Pretendard",sans-serif;color:var(--zk)}
+#app .vc-rule{background:rgba(20,30,60,.12)}
+#app .vc-g{color:var(--zk)}
+#app .vcard.lat .vc-g{font:600 56px/1.1 "Pretendard",sans-serif;letter-spacing:0;color:var(--zk);white-space:nowrap}
+#app .vc-g em{color:var(--zhl);text-decoration:none;font-weight:800}
+#app .vc-g i{color:var(--zk2)}
+#app .vc-l{font:500 30px/1.35 "Pretendard",sans-serif;color:var(--zk2);word-break:keep-all}
+#app .vcard.lat .vc-item{gap:12px}
+#app .era-name{font:700 30px/1.3 "Pretendard",sans-serif;color:var(--zk)}
+#app .era-ago, #app .era-ago.long{font:800 56px/1.05 "Pretendard",sans-serif;color:var(--zhl)}
+#app .era-year{font:500 26px/1.3 "Pretendard",sans-serif;color:var(--zk2)}
+#app .fig figcaption:empty{display:none}
+@media (min-width:900px){
+#app:not([data-home]) #mainInner.has-fig .fig{position:fixed;right:calc(var(--X) + 16px);top:calc(var(--T) + var(--HH) + 32px);width:380px;max-height:calc(100vh - var(--T) - var(--HH) - 220px);margin:0;z-index:2}
+#app:not([data-home]) #mainInner.has-fig #ansPg{position:fixed;left:auto;right:calc(var(--X) + 16px + 190px - 36px);bottom:40px}
+#app:not([data-home]) #mainInner.has-fig .fig-box{width:100%}
+#app:not([data-home]) #mainInner.has-fig #textcol, #app:not([data-home]) #mainInner.has-fig .sheet, #app:not([data-home]) #mainInner.has-fig .sheet[data-len]{max-width:calc(100vw - 2 * var(--X) - 112px - 380px - 64px) !important}
+#app:not([data-home]) #mainInner.has-fig .chips, #app:not([data-home]) #mainInner.has-fig .chips:has(button:not(.lead)){align-self:flex-start !important;max-width:calc(100vw - 2 * var(--X) - 112px - 380px - 64px) !important;flex-wrap:wrap}
+}
+@media (max-width:899px){
+#app:not([data-home]) #mainInner.has-fig .fig{position:static;margin:24px 0 0 !important;width:auto;max-width:none;align-self:stretch;transform:none}
+#app:not([data-home]) #mainInner.has-fig .fig-box{width:100% !important;margin:0 !important}
+#app .vcard, #app .era{padding:22px 24px 24px;gap:10px}
+#app .vc-word{font-size:40px}
+#app .vcard.lat .vc-g, #app .era-ago, #app .era-ago.long{font-size:40px}
+#app .vc-g{font-size:48px}
+#app .vc-mean, #app .vc-l, #app .era-name{font-size:22px}
+#app .era-year{font-size:20px}
+}
 /* v123: 좁은 화면(전화)도 밝은 지면 — 모니터와 같은 톤. 넓은 화면(900 이상)은 그대로 */
 @media (max-width:899px){
 body{--X:20px;--T:20px}

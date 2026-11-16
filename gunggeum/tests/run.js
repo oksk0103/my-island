@@ -462,6 +462,27 @@ async function newsTests(b) {
     await p.context().close();
   }
 
+  { // 16. 답 화면의 낱말 카드: 밝은 흰 카드, 글·칩과 겹치지 않음 (v133)
+    console.log('16. 낱말 카드');
+    const WA = '"뷰티풀"은 영어 《beautiful》 말하는 거지? 영어로는 beautiful이라고 쓰고, "아름다운, 예쁜"이라는 뜻이야. 사람, 풍경, 노래처럼 보기 좋거나 듣기 좋은 것에 두루 쓰고, beautiful day처럼 "멋진 하루"라고 말할 때도 써.\n@@  | | beautiful 반대말은 뭐야?; beautiful을 넣은 문장 만들어 줘; 영어로 handsome은 어떤 뜻이야?; pretty는 뭐야? | BEAU·ti·ful:형용사 · 아름다운';
+    for (const [w, h] of [[1600, 820], [1920, 1000]]) {
+      const p = await open(b, { time: newsDate + 'T12:19', w, h });
+      await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: WA }], stop_reason: 'end_turn' } }); });
+      await p.say('뷰티풀을 어떻게 써 영어로?', 30000);
+      const g = await p.evaluate(() => {
+        const R = e => e.getBoundingClientRect(), fb = document.getElementById('figBox'), f = R(fb), cs = getComputedStyle(fb);
+        const lum = c => { const m = c.match(/[\d.]+/g).map(Number); return (m[0] * 299 + m[1] * 587 + m[2] * 114) / 1000; };
+        const hit = (a, b) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+        const word = fb.querySelector('.vc-g'), chips = [...document.querySelectorAll('#chips button')].filter(x => x.offsetParent).map(R);
+        return { shown: f.width > 0, bg: lum(cs.backgroundColor), ink: word ? lum(getComputedStyle(word).color) : 999, inView: f.left >= 0 && f.right <= innerWidth + 1,
+          chipHit: chips.some(c => hit(c, f)), sheetHit: innerWidth >= 900 && hit(R(document.getElementById('sheet')), f), chipsOut: chips.some(c => c.right > innerWidth + 1) };
+      });
+      ok(`낱말 카드 ${w}: 밝은 바탕에 진한 글자, 화면 안`, g.shown && g.bg > 200 && g.ink < 120 && g.inView, g);
+      ok(`낱말 카드 ${w}: 글·칩과 겹치지 않고 칩이 화면 밖으로 안 나감`, !g.chipHit && !g.sheetHit && !g.chipsOut, g);
+      await p.context().close();
+    }
+  }
+
   await newsTests(b);
   ok('페이지 오류 없음', errs.length === 0, errs.slice(0, 3));
   await b.close(); server.close();
