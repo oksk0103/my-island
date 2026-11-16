@@ -96,7 +96,7 @@ async function newsTests(b) {
   await p.context().close();
 
   p = await openNews(b); await p.front(); await p.tap('#rnFront [data-rn="art"][data-i="0"]');
-  const nav = () => p.evaluate(() => [document.getElementById('ppNo').textContent, document.getElementById('ppDots').textContent, document.getElementById('ppNext').textContent.replace(/\s+/g, ' ').trim(), document.getElementById('ppPrev').hidden]);
+  const nav = () => p.evaluate(() => [(document.getElementById('ppTag').textContent.match(/\d+면/) || [''])[0], document.getElementById('ppDots').textContent, document.getElementById('ppNext').textContent.replace(/\s+/g, ' ').trim(), document.getElementById('ppPrev').hidden]);
   let v = await nav(); ok('기사 1: 1 / 3, 앞 단추 없음', v[1] === '1 / 3' && v[3] && /2면/.test(v[2]), v);
   await p.click('#ppNext'); await p.adv(1200); v = await nav(); ok('다음 → 기사 2', v[0] === '2면' && v[1] === '2 / 3' && !v[3], v);
   await p.click('#ppPrev'); await p.adv(1200); v = await nav(); ok('앞 → 기사 1', v[0] === '1면', v);
