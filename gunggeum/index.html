@@ -2308,7 +2308,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (d.todo) { todoToggle(d.todo); return; }
     if (saverEl.classList.contains('rnp')) { svTaps = []; // 신문 1면: 홈 단추와 기사만 눌린다 (빈 곳은 아무 일도 없다)
       if (d.np === 'home') { delete window.__gkForce; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '1면 → 홈'); }
-      else if (d.np === 'art') { exitSaver(); if (saverEl.hidden) openPaper(d.npi); }
+      else if (d.np === 'art') { exitSaver(true); if (saverEl.hidden) openPaper(d.npi); } // 신문은 쉬는 시간에도 읽는다
       return; }
     if (saverEl.classList.contains('pgx')) { svTaps = []; pgTap(d.el); return; }
     if (d.cv) { const ft = $('fcFeat'), cur = ['news', 'word', 'piece', 'moon'].find(c => ft.classList.contains(c));
@@ -2321,7 +2321,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (d.tile === 'sky' && window.GKSky) { svTaps = []; window.__gkForce = { s: 'sky', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '타일 → 밤하늘'); return; }
     const hadNews = !!(news && newsFresh());
     if (d.tile === 'news' && hadNews && innerWidth >= 900) { svTaps = []; window.__gkForce = { s: 'front', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '표지 → 신문 1면'); return; }
-    exitSaver();
+    exitSaver(!!(d.paper || (d.tile === 'news' && hadNews))); // v128: 신문은 쉬는 시간·질문 상한과 상관없이 읽는다(부모 요청). 묻기는 그대로 막힌다
     if ((d.paper || (d.tile === 'news' && hadNews)) && saverEl.hidden) openPaper(0);
     else if (d.tile === 'piece' && saverEl.hidden) { if (d.el && d.el.closest && d.el.closest('.cc-foot')) { diag('saver', '조각 칩 → 바로 답'); ask(piece().q); } else { fromPiece = true; showPiece(false); diag('saver', '조각 → 궁금칸'); } }
     else if (d.tile === 'ask' && saverEl.hidden) { try { $('micBtn') && $('micBtn').click(); } catch (e) {} }
