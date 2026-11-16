@@ -5898,6 +5898,44 @@ body{--X:20px;--T:20px}
 }
 
 /* 숨긴 대기화면은 무엇이 덮어써도 숨는다(v124~v130: display:block !important 가 hidden 을 이겨서, 신문이 열려도 표지가 그 위를 덮었다) */
+/* v135: 밤하늘 앱(모니터) — 다른 앱과 같은 틀: 머리줄(홈 · 이름 · 시계), Pretendard, 남색 밤 바탕, 둥근 카드 두 개(하늘 그림 / 오늘의 달·찾아볼 것) */
+@media (min-width:900px){
+#saver.saver.sky:not([hidden]){padding:0 !important;background:radial-gradient(90% 70% at 30% 0,#22336E 0,transparent 65%),linear-gradient(180deg,#121C45,#0B1232 60%,#070C22) !important;color:#E9EEFB}
+#saver.saver.sky .sv-inner{display:block !important;position:absolute !important;inset:0 !important;max-width:none !important;width:auto !important;height:auto !important;padding:0 !important}
+#saver.saver.sky .sv-top, #saver.saver.sky .sv-wx, #saver.saver.sky .sv-tip, #saver.saver.sky .sv-night, #saver.saver.sky .sv-rule{display:none !important}
+#saver.saver.sky .sv-time{position:absolute !important;right:60px;top:40px;height:64px;margin:0 !important;display:flex;align-items:center;gap:8px;font:600 28px/1 "Pretendard",sans-serif !important;letter-spacing:-.01em;color:#E9EEFB !important}
+#saver.saver.sky .sv-time small{font:500 24px/1 "Pretendard",sans-serif !important;color:rgba(233,238,251,.72) !important;margin:0 !important}
+#saver.saver.sky .sky-name{position:absolute !important;left:200px;top:40px;height:64px;display:flex !important;align-items:center;margin:0 !important;font:700 30px/1 "Pretendard",sans-serif !important;letter-spacing:-.02em !important;color:#fff !important;writing-mode:horizontal-tb !important;transform:none !important}
+#saver.saver.sky .sky-meta{position:absolute !important;left:372px;top:40px;height:64px;display:flex !important;align-items:center;margin:0 !important;padding:0 !important;font:500 22px/1 "Pretendard",sans-serif !important;color:rgba(233,238,251,.68) !important;text-align:left !important}
+#saver.saver.sky .sky-body{position:absolute !important;left:48px;right:48px;top:128px;bottom:44px;display:grid !important;grid-template-columns:minmax(0,1fr) 440px;column-gap:24px;padding:0 !important;margin:0 !important;width:auto !important;height:auto !important}
+#saver.saver.sky .sky-chart{position:relative !important;border-radius:32px;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 24px 44px -20px rgba(0,0,0,.55);width:auto !important;height:auto !important;margin:0 !important}
+#saver.saver.sky .sky-chart svg{position:absolute !important;inset:0 !important;width:100% !important;height:100% !important}
+#saver.saver.sky .sky-col{display:flex !important;flex-direction:column;padding:32px 36px !important;margin:0 !important;border-radius:32px;background:rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 24px 44px -20px rgba(0,0,0,.55);min-height:0;overflow:hidden;text-align:left !important}
+#saver.saver.sky .svp-tag{font:600 22px/1.2 "Pretendard",sans-serif !important;letter-spacing:-.01em !important;color:#F3C46B !important;text-transform:none !important}
+#saver.saver.sky .sky-moon{display:flex !important;flex-direction:row !important;align-items:center !important;gap:24px !important;margin:18px 0 0 !important}
+#saver.saver.sky #skyMoon{width:150px !important;height:150px !important;flex:none;margin:0 !important}
+#saver.saver.sky .sky-mtxt{display:flex !important;flex-direction:column !important;gap:6px !important;min-width:0}
+#saver.saver.sky .sky-mname, #saver.saver.sky .sky-mname.long{font:700 44px/1.1 "Pretendard",sans-serif !important;letter-spacing:-.03em !important;color:#fff !important;white-space:nowrap}
+#saver.saver.sky .sky-msub{font:500 20px/1.35 "Pretendard",sans-serif !important;color:rgba(233,238,251,.72) !important}
+#saver.saver.sky .sky-mset{margin:10px 0 0 !important;padding:10px 0 0 !important;border-top:1px solid rgba(255,255,255,.14) !important;font:600 24px/1.3 "Pretendard",sans-serif !important;color:#fff !important}
+#saver.saver.sky .sky-mset small{display:block;font:500 20px/1.35 "Pretendard",sans-serif !important;color:rgba(233,238,251,.72) !important}
+#saver.saver.sky .sky-mnext{margin:8px 0 0 !important;font:500 20px/1.45 "Pretendard",sans-serif !important;color:rgba(233,238,251,.72) !important}
+#saver.saver.sky .sky-mnext span{display:block}
+#saver.saver.sky .sky-mnext b{color:#fff;font-weight:600}
+#saver.saver.sky .sky-one{margin:auto 0 0 !important;padding:22px 0 0 !important;border-top:1px solid rgba(255,255,255,.14) !important}
+#saver.saver.sky .sky-one .svp-hed, #saver.saver.sky #skyOneH{font:700 30px/1.3 "Pretendard",sans-serif !important;letter-spacing:-.02em;color:#fff !important;margin:10px 0 0 !important}
+#saver.saver.sky .sky-one .svp-hed b{color:#F3C46B !important}
+#saver.saver.sky .sky-one p{font:500 20px/1.45 "Pretendard",sans-serif !important;color:rgba(233,238,251,.78) !important;margin:8px 0 0 !important}
+#saver.saver.sky #skyChart #gkSky stop:nth-child(1){stop-color:#1E2F68 !important}
+#saver.saver.sky #skyChart #gkSky stop:nth-child(2){stop-color:#14214F !important}
+#saver.saver.sky #skyChart #gkSky stop:nth-child(3), #saver.saver.sky #skyChart #gkGr stop:nth-child(2), #saver.saver.sky #skyChart #gkFl stop, #saver.saver.sky #skyChart #gkFr stop, #saver.saver.sky #skyChart #gkFt stop{stop-color:#0E1840 !important}
+#saver.saver.sky #skyChart #gkGr stop:nth-child(1){stop-color:#0A1236 !important}
+#saver.saver.sky #skyChart #gkHz stop{stop-color:#7C95E8 !important}
+#saver.saver.sky .sky-svg .lb{font-family:"Pretendard",sans-serif !important;font-weight:600;fill:#E9EEFB;stroke:#0E1840}
+#saver.saver.sky .sky-svg .lb.pl, #saver.saver.sky .sky-svg .lb.hi, #saver.saver.sky .sky-svg .lb.hi2{fill:#F3C46B;font-weight:700}
+#saver.saver.sky .sky-svg .dir{font-family:"Pretendard",sans-serif !important;font-weight:600;fill:rgba(233,238,251,.6)}
+#saver.saver.sky .sky-svg .dir.s{fill:#E9EEFB}
+}
 #saver[hidden]{display:none !important}
 </style>
 </body>
