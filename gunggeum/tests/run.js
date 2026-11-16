@@ -421,11 +421,23 @@ async function newsTests(b) {
     const wide = () => p.evaluate(() => [...document.querySelectorAll('body *')].filter(e => { if (!e.offsetParent && getComputedStyle(e).position !== 'fixed') return false; const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && (r.right > innerWidth + 1 || r.left < -1) && !e.closest('.pr-nav, .sv-face, .pg, #rnFront, #log[hidden]'); }).map(e => (e.id || e.className || e.tagName).toString().slice(0, 20)).slice(0, 5));
     let p = await open(b, { time: newsDate + 'T12:19', read: newsDate, w: 390, h: 780 }); let x = await wide(); ok('전화 궁금칸: 옆으로 넘치는 것 없음', !x.length, x);
     await p.say('달은 왜 빛나?', 2500); x = await wide(); ok('전화 답: 옆으로 넘치는 것 없음, 쪽 나누기 없음', !x.length && await p.evaluate(() => document.getElementById('ansPg').hidden), x);
-    ok('전화 답: "더 물어 봐"가 화면 아래 안쪽', await p.evaluate(() => { const r = document.getElementById('form').getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth && r.bottom <= innerHeight; }));
-    await p.saver(); ok('전화 대기화면(다 읽은 날): 밝은 바탕', await light()); x = await wide(); ok('전화 대기화면: 옆으로 넘치는 것 없음', !x.length, x); await p.context().close();
-    p = await open(b, { time: newsDate + 'T07:40', w: 390, h: 780 }); await p.saver(); ok('전화 대기화면(신문 1면): 밝은 바탕', await light());
-    ok('전화 1면: "신문 펴기" 단추가 화면 안', await p.evaluate(() => { const r = document.getElementById('svpOpen').getBoundingClientRect(); return r.width > 0 && r.bottom <= innerHeight && r.right <= innerWidth; })); await p.context().close();
-    p = await open(b, { time: '2026-11-14T23:10', read: '2026-11-14', w: 390, h: 780 }); await p.saver(); ok('전화 밤(밤 화면 설정 끔): 밝은 바탕', await light()); await p.context().close();
+    ok('전화 답: "더 물어 봐"가 화면 아래 안쪽', await p.evaluate(() => { const r = document.getElementById('form').getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth && r.bottom <= innerHeight; })); await p.context().close();
+  }
+
+  { // 14. 전화 홈(v124): 모니터와 같은 표지 · 날씨 · 달력을 쓴다
+    console.log('14. 전화 홈');
+    const tapAt = async (p, sel) => { const bx = await p.locator(sel).first().boundingBox(); await p.mouse.click(bx.x + Math.min(40, bx.width / 2), bx.y + Math.min(30, bx.height / 2)); await p.adv(2500); };
+    const side = () => p.evaluate(() => [...document.querySelectorAll('#saver *')].filter(e => { const r = e.getBoundingClientRect(), c = getComputedStyle(e); return r.width > 0 && r.height > 0 && c.visibility !== 'hidden' && (r.right > innerWidth + 6 || r.left < -6) && !e.closest('canvas.big, .cc-moon, .wx-sky, [hidden]'); }).map(e => (e.id || e.className || e.tagName).toString().slice(0, 24)).slice(0, 5));
+    let p = await open(b, { time: newsDate + 'T12:19', w: 390, h: 780 }); await p.saver();
+    let s = await p.st(); ok('전화 대기화면 = 표지(위젯 면)', /\bface\b/.test(s.saver), s.saver);
+    let x = await side(); ok('전화 표지: 옆으로 넘치는 것 없음', !x.length, x);
+    ok('전화 표지: 시계·표지·묻기·할 일이 위에서 아래로', await p.evaluate(() => { const y = s => document.querySelector(s).getBoundingClientRect().top; return y('.fc-clock') < y('.fc-feat') && y('.fc-feat') < y('.fc-app[data-tile="ask"]') && y('.fc-app[data-tile="ask"]') < y('.fc-todo'); }));
+    ok('전화 표지는 위아래로 밀 수 있다(touch-action pan-y)', await p.evaluate(() => getComputedStyle(document.getElementById('saver')).touchAction === 'pan-y' && document.getElementById('saver').scrollHeight > innerHeight));
+    await tapAt(p, '#fcWx'); s = await p.st(); ok('전화: 날씨 줄 → 날씨 화면', /pgx/.test(s.saver) && await p.evaluate(() => document.getElementById('saver').dataset.pg === 'wx'), s.saver);
+    x = await side(); ok('전화 날씨 화면: 옆으로 넘치는 것 없음', !x.length, x);
+    await tapAt(p, '#gkHome'); await tapAt(p, '.fc-clock'); ok('전화: 시계 → 달력', await p.evaluate(() => document.getElementById('saver').dataset.pg === 'cal'));
+    x = await side(); ok('전화 달력: 옆으로 넘치는 것 없음', !x.length, x);
+    await tapAt(p, '#gkHome'); await tapAt(p, '#fcFeat .cc-h'); s = await p.st(); ok('전화: 표지의 신문 → 기사 화면 바로(1면을 거치지 않음)', s.paper && !s.saver, s); await p.context().close();
   }
 
   await newsTests(b);
