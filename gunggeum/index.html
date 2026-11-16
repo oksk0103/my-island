@@ -1500,13 +1500,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v126</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v127</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v126</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v127</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2281,12 +2281,15 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     diag('saver', '대기화면 넘김 → ' + nx);
   }
   let svDown = null; var svTouchAt = Date.now();
+  function svHit(t, x, y) { const e = { target: t, clientX: x, clientY: y }; const row = t.closest && t.closest('[data-todo]');
+    const cvt = !row && t.closest && t.closest('[data-cv]'); const tile = !row && !cvt && t.closest && t.closest('[data-tile]'); const npa = t.closest && t.closest('[data-rn]');
+    return { np: npa && saverEl.classList.contains('rnp') ? npa.dataset.rn : '', npi: npa ? +npa.dataset.i || 0 : 0, el: e.target, x: e.clientX, y: e.clientY, todo: row ? row.dataset.todo : '', tile: tile ? tile.dataset.tile : '', cv: cvt ? cvt.dataset.cv : '', paper: !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper') }; }
   saverEl.addEventListener('pointerdown', e => {
     e.preventDefault(); e.stopPropagation(); svTouchAt = Date.now(); saverEl.classList.remove('rest');
     const now = Date.now(), row = e.target.closest && e.target.closest('[data-todo]'); svTaps = svTaps.filter(t => now - t < 3000); if (!row) svTaps.push(now);
     const cvt = !row && e.target.closest && e.target.closest('[data-cv]'); const tile = !row && !cvt && e.target.closest && e.target.closest('[data-tile]');
     const npa = e.target.closest && e.target.closest('[data-rn]');
-    svDown = { np: npa && saverEl.classList.contains('rnp') ? npa.dataset.rn : '', npi: npa ? +npa.dataset.i || 0 : 0, el: e.target, x: e.clientX, y: e.clientY, todo: row ? row.dataset.todo : '', tile: tile ? tile.dataset.tile : '', cv: cvt ? cvt.dataset.cv : '', paper: !!(e.target.closest && e.target.closest('#svPaper')) && saverEl.classList.contains('has-paper') };
+    svDown = svHit(e.target, e.clientX, e.clientY);
     clearTimeout(svHold); svHold = setTimeout(() => { svTaps = []; svDown = null; openLog(); }, 2000);
     if (svTaps.length >= 5) { svTaps = []; svDown = null; clearTimeout(svHold); openLog(); }
   }, true);
@@ -2295,10 +2298,13 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function studyOn(){ let t = 0; try { t = +localStorage.getItem('gk-study') || 0; } catch (e) {} const h = new Date().getHours(), ok = t && Date.now() - t < 90 * 60e3 && Date.now() >= t && h >= 6 && h < 21; if (t && !ok) { try { localStorage.removeItem('gk-study'); } catch (e) {} } return !!ok; }
   window.__gkStudyOn = studyOn;
   saverEl.addEventListener('pointerup', e => {
-    clearTimeout(svHold); const d = svDown; svDown = null; if (!d || saverEl.hidden || !logEl.hidden) return;
+    clearTimeout(svHold); const d = svDown; svDown = null; if (d) svUpAt = Date.now(); if (!d || saverEl.hidden || !logEl.hidden) return;
     const dx = e.clientX - d.x, dy = e.clientY - d.y;
     if (Math.abs(dx) > 70 && Math.abs(dx) > 1.5 * Math.abs(dy)) { svTaps = []; svPage(dx < 0 ? 1 : -1); return; }
     if (Math.abs(dx) > 24 || Math.abs(dy) > 24) return; // 어중간하게 끌다 만 것은 무시
+    svAct(d);
+  }, true);
+  function svAct(d) {
     if (d.todo) { todoToggle(d.todo); return; }
     if (saverEl.classList.contains('rnp')) { svTaps = []; // 신문 1면: 홈 단추와 기사만 눌린다 (빈 곳은 아무 일도 없다)
       if (d.np === 'home') { delete window.__gkForce; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '1면 → 홈'); }
@@ -2319,7 +2325,12 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if ((d.paper || (d.tile === 'news' && hadNews)) && saverEl.hidden) openPaper(0);
     else if (d.tile === 'piece' && saverEl.hidden) { if (d.el && d.el.closest && d.el.closest('.cc-foot')) { diag('saver', '조각 칩 → 바로 답'); ask(piece().q); } else { fromPiece = true; showPiece(false); diag('saver', '조각 → 궁금칸'); } }
     else if (d.tile === 'ask' && saverEl.hidden) { try { $('micBtn') && $('micBtn').click(); } catch (e) {} }
-  }, true);
+  }
+  // v127: 어떤 전화에서는 톡 누른 손가락이 pointerup 대신 pointercancel 로 끝난다(눌러도 반응이 없고, 계속 누르면 부모님 화면이 열림).
+  // 그럴 때 브라우저가 보내는 click 으로 같은 일을 한다. pointerup 이 처리했으면 click 은 건너뛴다.
+  let svUpAt = 0;
+  saverEl.addEventListener('click', e => { if (Date.now() - svUpAt < 700 || saverEl.hidden || !logEl.hidden) return; const d = svHit(e.target, e.clientX, e.clientY); svTaps = []; clearTimeout(svHold); diag('saver', '톡 누름을 click 으로 받음'); svAct(d); }, true);
+  saverEl.addEventListener('pointercancel', e => { if (svDown) diag('saver', 'pointercancel ' + e.pointerType + ' ' + Math.round(Math.abs(e.clientY - svDown.y)) + 'px'); }, true);
   ['pointercancel', 'pointerleave'].forEach(ev => saverEl.addEventListener(ev, e => { if (ev === 'pointerleave' && e.target !== saverEl) return; clearTimeout(svHold); svDown = null; }, true));
   document.addEventListener('keydown', e => { if (!saverEl.hidden && logEl.hidden) { e.preventDefault(); if (e.repeat) return; if (e.key === 'PageDown' || e.key === 'ArrowDown') { svPage(1); return; } if (e.key === 'PageUp' || e.key === 'ArrowUp' || e.key === 'ArrowLeft') { svPage(-1); return; } if (Date.now() - (window.__gkSaverAt || 0) < 1500) return; exitSaver(); } }, true);
 
@@ -3712,7 +3723,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v126';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v127';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
