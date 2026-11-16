@@ -441,6 +441,8 @@ async function newsTests(b) {
     ok('전화 밤하늘: 새 배치(맨 위부터, 제목·하늘 그림·달이 위에서 아래로)', await p.evaluate(() => { const sv = document.getElementById('saver'), y = q => document.querySelector(q).getBoundingClientRect().top; return sv.classList.contains('sky') && sv.scrollTop === 0 && y('.sky-name') > 60 && y('.sky-name') < y('#skyChart svg') && y('#skyChart svg') < y('#skyMoon') && getComputedStyle(document.querySelector('.sky-name')).writingMode === 'horizontal-tb'; }));
     x = await side(); ok('전화 밤하늘: 옆으로 넘치는 것 없음', !x.length, x);
     await tapAt(p, '#gkHome'); await tapAt(p, '#fcFeat .cc-h'); s = await p.st(); ok('전화: 표지의 신문 → 기사 화면 바로(1면을 거치지 않음)', s.paper && !s.saver, s); await p.context().close();
+    p = await open(b, { time: newsDate + 'T12:19', w: 390, h: 780 }); await p.saver(); await tapAt(p, '#fcFeat .cc-tabs [data-cv="news"]'); s = await p.st(); ok('전화: 켜진 "신문" 탭을 누르면 기사 화면으로', s.paper && !s.saver, s);
+    await p.context().close(); p = await open(b, { time: newsDate + 'T12:19', w: 390, h: 780 }); await p.saver(); await tapAt(p, '#fcFeat .cc-tabs [data-cv="word"]'); s = await p.st(); ok('전화: 다른 탭("낱말")을 누르면 표지만 바뀐다', /\bface\b/.test(s.saver) && await p.evaluate(() => document.getElementById('fcFeat').classList.contains('word')), s.saver); await p.context().close();
   }
 
   await newsTests(b);

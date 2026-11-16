@@ -1500,13 +1500,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v125</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v126</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v125</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v126</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2305,7 +2305,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       else if (d.np === 'art') { exitSaver(); if (saverEl.hidden) openPaper(d.npi); }
       return; }
     if (saverEl.classList.contains('pgx')) { svTaps = []; pgTap(d.el); return; }
-    if (d.cv) { svTaps = []; window.__gkCover = { k: d.cv, at: Date.now() }; renderSaver(); return; }
+    if (d.cv) { const ft = $('fcFeat'), cur = ['news', 'word', 'piece', 'moon'].find(c => ft.classList.contains(c));
+      if (d.cv !== cur) { svTaps = []; window.__gkCover = { k: d.cv, at: Date.now() }; renderSaver(); return; }
+      d.tile = ft.dataset.tile; d.cv = ''; diag('saver', '켜진 탭을 한 번 더 → 그 장 열기'); } // v126: 이미 켜진 탭(예: '신문')을 누르면 그 장의 내용으로 간다
     if (d.tile === 'study') { svTaps = []; try { studyOn() ? localStorage.removeItem('gk-study') : localStorage.setItem('gk-study', String(Date.now())); } catch (e) {} window.__gkSaverAt = Date.now(); delete window.__gkCover; renderSaver(); diag('saver', '공부 모드 ' + (studyOn() ? '켬' : '끔')); return; }
     { const r = $('fcWx').getBoundingClientRect(); if (d.tile === 'cal' && saverEl.classList.contains('face') && d.x >= r.left && d.x <= r.right && d.y >= r.top - 6 && d.y <= r.bottom) d.tile = 'wx'; } // 시계 타일 안의 날씨 줄은 날씨 화면으로
     if (d.tile === 'wx' && svWide()) { svTaps = []; window.__gkForce = { s: 'wx', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날씨 줄 → 날씨 화면'); return; }
@@ -3710,7 +3712,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v125';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v126';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -5706,6 +5708,8 @@ body{--X:20px;--T:20px}
 #saver.saver.sky #skyChart #gkSky stop:nth-child(3), #saver.saver.sky #skyChart #gkGr stop:nth-child(2), #saver.saver.sky #skyChart #gkFl stop, #saver.saver.sky #skyChart #gkFr stop, #saver.saver.sky #skyChart #gkFt stop{stop-color:#0A1432 !important}
 #saver.saver.sky #skyChart #gkGr stop:nth-child(1){stop-color:#081029 !important}
 #saver.saver.sky .sky-name{width:100% !important;transform:none !important;left:auto !important;right:auto !important}
+#saver.saver.face .fc-feat:active, #saver.saver.face .fc-clock:active, #saver.saver.face .fc-app:active{transform:scale(.985);transition:transform .08s}
+#saver.saver.face .cc-foot:active, #saver.saver.face .cc-tabs span:active{opacity:.75}
 }
 
 /* v124: 폭 600~899(가로 전화 · DeX의 좁은 창): 표지는 왼쪽, 시계·할 일·묻기는 오른쪽 */
