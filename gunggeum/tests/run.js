@@ -457,8 +457,9 @@ async function newsTests(b) {
     const p = await open(b, { time: newsDate + 'T21:42' }); await p.saver();
     const tapS = async () => { const bx = await p.locator('.fc-app[data-tile="study"]').boundingBox(); await p.mouse.click(bx.x + 30, bx.y + 30); await p.adv(1200); };
     await tapS(); ok('밤 9시 42분에 공부 모드를 누르면 켜진다', await p.evaluate(() => document.getElementById('fcFeat').classList.contains('study')));
-    await p.adv(3 * 3600e3); ok('3시간이 지나도 켜져 있다', await p.evaluate(() => document.getElementById('fcFeat').classList.contains('study')));
-    await tapS(); ok('다시 누르면 꺼진다', await p.evaluate(() => !document.getElementById('fcFeat').classList.contains('study')));
+    await p.adv(2 * 3600e3); ok('2시간이 지나도(밤 11시 42분) 켜져 있다', await p.evaluate(() => document.getElementById('fcFeat').classList.contains('study')));
+    await p.adv(3600e3); ok('밤 12시가 지나면 저절로 꺼진다 (v135)', await p.evaluate(() => !document.getElementById('fcFeat').classList.contains('study') && !localStorage.getItem('gk-study')));
+    await tapS(); await tapS(); ok('켰다가 다시 누르면 꺼진다', await p.evaluate(() => !document.getElementById('fcFeat').classList.contains('study')));
     await p.context().close();
   }
 

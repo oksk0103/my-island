@@ -8,7 +8,7 @@
   var NUM = ['', '한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉'];
   function clock(d) { // 저녁 8:59
     var h = d.getHours(), m = pad(d.getMinutes());
-    var part = h < 5 ? '새벽' : h < 12 ? '오전' : h < 18 ? '오후' : h < 21 ? '저녁' : '밤';
+    var part = h === 0 ? '밤' : h < 5 ? '새벽' : h < 12 ? '오전' : h < 18 ? '오후' : h < 21 ? '저녁' : '밤'; // 0시대는 '새벽 12:01'이 아니라 '밤 12:01'(v135)
     return part + ' ' + (h % 12 || 12) + ':' + m;
   }
   function fists(alt) { // 팔을 쭉 뻗은 주먹 하나 ≈ 10°
@@ -128,11 +128,12 @@
     var nm = moonName(ph), mLines = [];
     if (nm[0] === '숨은 달') mLines = ['달빛이 없어', '별이 더 잘 보여'];
     else if (moonUp) {
-      var ms = A.SearchRiseSet(A.Body.Moon, obs, -1, date, 1), morning = new Date(date); morning.setHours(30, 0, 0, 0);
+      var nb = new Date(date); if (date.getHours() < 6) nb.setDate(nb.getDate() - 1); // 자정~새벽은 '어젯밤'에 이어지는 밤으로 본다(v135)
+      var ms = A.SearchRiseSet(A.Body.Moon, obs, -1, date, 1), morning = new Date(nb); morning.setHours(30, 0, 0, 0);
       if (ms && ms.date < morning) { var hz = A.Horizon(ms.date, obs, A.Equator(A.Body.Moon, ms.date, obs, true, true).ra, A.Equator(A.Body.Moon, ms.date, obs, true, true).dec, 'normal'); mLines = [clock(ms.date), dir8(hz.azimuth) + '쪽으로 져']; }
       else mLines = ['밤새', '하늘에 떠 있어'];
     } else {
-      var mr = A.SearchRiseSet(A.Body.Moon, obs, +1, new Date(date.getTime() - 40 * 60e3), 1), lim = new Date(date); lim.setHours(29, 0, 0, 0);
+      var mr = A.SearchRiseSet(A.Body.Moon, obs, +1, new Date(date.getTime() - 40 * 60e3), 1), lim = new Date(date); if (date.getHours() < 6) lim.setDate(lim.getDate() - 1); lim.setHours(29, 0, 0, 0); // 한밤중에 '오후 1:09 떠'를 내지 않게(v135)
       if (mr && mr.date < lim) { var eq2 = A.Equator(A.Body.Moon, mr.date, obs, true, true), hz2 = A.Horizon(mr.date, obs, eq2.ra, eq2.dec, 'normal'); mLines = mr.date <= date ? ['지금 막', dir8(hz2.azimuth) + '쪽에서 떠올라'] : [clock(mr.date), dir8(hz2.azimuth) + '쪽에서 떠']; }
       else mLines = ['오늘 밤엔', ph < 180 ? '벌써 졌어' : '안 떠'];
     }
@@ -140,7 +141,8 @@
     var next = [], mq = A.SearchMoonQuarter(date), today = new Date(now), seen = {}; today.setHours(0, 0, 0, 0);
     for (var qi = 0; qi < 8 && next.length < 2; qi++) { // 다음 반달 하나, 다음 보름달 하나 (가까운 순서로)
       var kind = mq.quarter === 2 ? '보름달' : mq.quarter === 0 ? '' : '반달';
-      if (kind && !seen[kind] && kind !== nm[0]) { seen[kind] = 1; var qd = mq.time.date, dd = Math.round((new Date(qd.getFullYear(), qd.getMonth(), qd.getDate()) - today) / 864e5);
+      var same = kind === nm[0] && (kind !== '반달' || (mq.quarter === 1) === (ph < 180)); // 오늘과 같은 모양(차는 반달/기우는 반달까지 같을 때)만 건너뜀
+      if (kind && !seen[kind] && !same) { seen[kind] = 1; var qd = mq.time.date, dd = Math.round((new Date(qd.getFullYear(), qd.getMonth(), qd.getDate()) - today) / 864e5);
         next.push([dd === 0 ? '오늘' : dd === 1 ? '내일' : (qd.getMonth() !== today.getMonth() ? (qd.getMonth() + 1) + '월 ' : '') + qd.getDate() + '일', kind]); }
       mq = A.NextMoonQuarter(mq);
     }

@@ -1626,8 +1626,8 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 - 유치하게 말하거나 "~란다", "참 잘했어" 같은 달래는 말은 쓰지 마. 쉽지만 정확하게.`
   };
   function nowLine() { // 오늘 날짜·요일·시각 (AI는 스스로 날짜를 모르니까 매번 알려 줌)
-    const d = new Date(), h = d.getHours(), ampm = h < 12 ? '오전' : '오후', h12 = h % 12 || 12;
-    return `오늘은 ${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일이고, 지금은 ${ampm} ${h12}시 ${d.getMinutes()}분이야.`;
+    const d = new Date(), h = d.getHours(), ap = ampm(h), h12 = h % 12 || 12;
+    return `오늘은 ${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일이고, 지금은 ${ap} ${h12}시 ${d.getMinutes()}분이야.`;
   }
   function rules() {
     const [base, deep] = LEN[settings.len] || LEN.normal;
@@ -1728,6 +1728,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     if (label) stateLabel.textContent = label;
     if (msg !== undefined) statusEl.textContent = msg;
   }
+  function ampm(h) { return h === 0 ? '밤' : h < 12 ? '오전' : '오후'; } // v135: 밤 12시대는 '오전 12시' 대신 '밤 12시'
   const ASKY = /(뭐|왜|어떻게|어디|언제|누구|무슨|몇|얼마|어느|어때|뜻|무엇)|(니|까|냐|나요|가요|래|대|게)$/; // 묻는 말인지: 물음 낱말이 있거나 묻는 끝말일 때만 ?를 붙인다
   function setEyebrow(kind, text) {
     eyebrow.innerHTML = '';
@@ -2212,7 +2213,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const line = (LS.get(LINES_KEY, {})[k]) || fallbackLine(d.getHours(), d.getMinutes());
     const [bodyTxt, attr] = line.split(/\s+—\s+(?=[^—]+$)/);
     $('svLine').innerHTML = bodyTxt.replace(/</g, '&lt;').replace(/《([^》]+)》/g, '<b>$1</b>') + (attr ? `<span class="sv-attr">— ${attr.replace(/</g, '&lt;')}</span>` : '');
-    $('svDow').textContent = DAYS[d.getDay()] + '요일'; $('svMon').textContent = (d.getMonth() + 1) + '월'; $('svDay').textContent = d.getDate() + '일'; $('svTime').innerHTML = `<small>${d.getHours() < 12 ? '오전' : '오후'}</small>${d.getHours() % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')}`;
+    $('svDow').textContent = DAYS[d.getDay()] + '요일'; $('svMon').textContent = (d.getMonth() + 1) + '월'; $('svDay').textContent = d.getDate() + '일'; $('svTime').innerHTML = `<small>${ampm(d.getHours())}</small>${d.getHours() % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')}`;
     if ((!wxCache || Date.now() - wxAt > 20 * 60e3) && Date.now() - wxTryAt > 3 * 60e3) { // 대기화면에 있는 동안에도 날씨를 계속 새로 받음 (실패하면 3분 뒤 다시)
       wxTryAt = Date.now(); fetchWeather().then(() => { if (!saverEl.hidden) renderSaver(); }).catch(e => diag('err', '대기화면 날씨 못 받음: ' + (e.message || e)));
     }
@@ -2293,7 +2294,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }, true);
   saverEl.addEventListener('pointermove', e => { if (svDown && Math.abs(e.clientX - svDown.x) > 14) clearTimeout(svHold); }, true);
   // 공부 모드: 표지를 조용하게. 아이가 다시 누를 때까지 켜져 있다(v132부터 시간 제한 없음)
-  function studyOn(){ let t = 0; try { t = +localStorage.getItem('gk-study') || 0; } catch (e) {} return !!t; } // v132: 시간 제한 없음(부모 요청) — 아이가 다시 누를 때까지 켜져 있다
+  function studyOn(){ let t = 0; try { t = +localStorage.getItem('gk-study') || 0; } catch (e) {} if (t && new Date(t).toDateString() !== new Date().toDateString()) { try { localStorage.removeItem('gk-study'); } catch (e) {} t = 0; } return !!t; } // 하루 안에서는 시간 제한 없음, 밤 12시가 지나면 저절로 꺼진다(v135, 부모 요청)
   window.__gkStudyOn = studyOn;
   saverEl.addEventListener('pointerup', e => {
     clearTimeout(svHold); const d = svDown; svDown = null; if (d) svUpAt = Date.now(); if (!d || saverEl.hidden || !logEl.hidden) return;
@@ -2479,7 +2480,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   window.__tmMock = (rem, total) => { // 시안용: 남은 초, 전체 초
     saverEl.classList.add('tm'); const el = $('fcTm'), b = el.getBoundingClientRect(), W = 764 - 24, H = 239 - 24, d = new Date(), f = rem / total;
     const R = `x="3" y="3" width="${W - 6}" height="${H - 6}" rx="34" fill="none" pathLength="120"`;
-    el.innerHTML = `<svg class="tk" viewBox="0 0 ${W} ${H}"><mask id="tmM"><rect ${R} stroke="#fff" stroke-width="16" stroke-dasharray="${(f * 120).toFixed(2)} 120" stroke-linecap="butt"/></mask><rect ${R} stroke="rgba(255,255,255,.14)" stroke-width="7" stroke-dasharray=".28 1.72"/><rect ${R} stroke="#FFB648" stroke-width="7" stroke-dasharray=".28 1.72" mask="url(#tmM)"/></svg><div class="tl"><b>남은 시간</b><span>지금 ${d.getHours() < 12 ? '오전' : '오후'} ${d.getHours() % 12 || 12}:${pad(d.getMinutes())}</span></div><div class="tr">${Math.floor(rem / 60)}:${pad(rem % 60)}</div>`;
+    el.innerHTML = `<svg class="tk" viewBox="0 0 ${W} ${H}"><mask id="tmM"><rect ${R} stroke="#fff" stroke-width="16" stroke-dasharray="${(f * 120).toFixed(2)} 120" stroke-linecap="butt"/></mask><rect ${R} stroke="rgba(255,255,255,.14)" stroke-width="7" stroke-dasharray=".28 1.72"/><rect ${R} stroke="#FFB648" stroke-width="7" stroke-dasharray=".28 1.72" mask="url(#tmM)"/></svg><div class="tl"><b>남은 시간</b><span>지금 ${ampm(d.getHours())} ${d.getHours() % 12 || 12}:${pad(d.getMinutes())}</span></div><div class="tr">${Math.floor(rem / 60)}:${pad(rem % 60)}</div>`;
   };
   const setH = (el, html) => { if (el.innerHTML !== html) el.innerHTML = html; };
   function renderFace(on, read, hr) {
@@ -2603,7 +2604,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       .replace(/\s*내야\s*(돼|해|되|됨|한대|된대)/g, ' 내기').replace(/\s*써야\s*(돼|해|되|됨|한대|된대)/g, ' 쓰기').replace(/\s*풀어야\s*(돼|해|되|됨|한대|된대)/g, ' 풀기')
       .replace(/\s*읽어야\s*(돼|해|되|됨|한대|된대)/g, ' 읽기').replace(/\s*외워야\s*(돼|해|되|됨|한대|된대)/g, ' 외우기').replace(/\s*챙겨야\s*(돼|해|되|됨|한대|된대)/g, ' 챙기기')
       .replace(/\s*사야\s*(돼|해|되|됨|한대|된대)/g, ' 사기').replace(/\s*빨아야\s*(돼|해|되|됨|한대|된대)/g, ' 빨기').replace(/\s*해야\s*(돼|해|되|됨|한대|된대)/g, ' ');
-    t = t.replace(/\s*(까지야|이야|있어|있대)\s*$/g, ' ').replace(/(이|가|을|를)\s*$/g, ' ');
+    { const had = /\s*(까지야|이야|있어|있대)\s*$/.test(t); t = t.replace(/\s*(까지야|이야|있어|있대)\s*$/g, ' ').replace(/(을|를)\s*$/g, ' '); const lw = t.trim().split(/\s+/).pop() || ''; if (had && !(TD_DICT.test(lw) && !TD_DICT.test(lw.slice(0, -1)))) t = t.replace(/(이|가)\s*$/g, ' '); } // v135: '이·가'는 '있어' 앞에서만 뗀다(색종이 → 색종 방지)
     t = t.replace(/\s+/g, ' ').trim().slice(0, 40);
     // 할 일은 "~기"로 끝나게 다듬는다: "밥 맛있게 먹게" → "밥 맛있게 먹기", "양치하자" → "양치하기" (가게·무게 같은 이름씨는 그대로)
     if (!/(^|\s)(가게|무게|집게|지게|꽃게|대게|빨래집게)$/.test(t)) t = t.replace(/([가-힣])(게|도록)$/, '$1기');
@@ -2902,7 +2903,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     homeSync();
   }
   const MIC = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect class="f" x="8.5" y="2.5" width="7" height="12.5" rx="3.5"/><path d="M5.2 11.5a6.8 6.8 0 0 0 13.6 0M12 18.5v3"/></svg>';
-  const zClock = () => { const d = new Date(); return `<small>${d.getHours() < 12 ? '오전' : '오후'}</small>${d.getHours() % 12 || 12}:${pad(d.getMinutes())}`; };
+  const zClock = () => { const d = new Date(); return `<small>${ampm(d.getHours())}</small>${d.getHours() % 12 || 12}:${pad(d.getMinutes())}`; };
   function renderCal(hr) { // 달력(Z): 판 없이 옅은 바탕 전체. 왼쪽 60% 달(여섯 줄 고정, 앞뒤 달은 회색) + 오른쪽 40% 하루 보기(고른 날 · 일정 줄 · 말로 넣기)
     const now = new Date(), tk = dayKey(now); saverEl.dataset.tone = hr < 12 ? 'morn' : hr < 18 ? 'day' : 'eve'; saverEl.classList.remove('rest', 'late');
     const v = new Date(now.getFullYear(), now.getMonth() + calOff, 1), y = v.getFullYear(), m = v.getMonth(), first = v.getDay(), n = new Date(y, m + 1, 0).getDate(), ym = `${y}-${pad(m + 1)}`, prevN = new Date(y, m, 0).getDate();
@@ -2968,7 +2969,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   // 답 화면의 '더 물어 봐' 줄: 이어 묻기 칩 줄 끝에 붙인다(덩이 하나)
   function placeAsk() { const f = $('form'), st = f.style, bs = [...chipsEl.querySelectorAll('button')].filter(b => b.offsetParent), last = bs[bs.length - 1];
-    if (app.dataset.home || !last || innerWidth < 900) { st.left = st.top = st.right = st.bottom = ''; return; }
+    if (app.dataset.home || innerWidth < 900) { st.left = st.top = st.right = st.bottom = ''; return; }
+    if (!last) { // v135: 칩이 없는 답(오류·할 일 확인)에서는 글 바로 아래 왼쪽에 둔다 — 구석으로 튀지 않게
+      const sr = sheet.getBoundingClientRect(); if (!sr.width || app.dataset.state === 'listen' || app.dataset.state === 'think') { st.left = st.top = st.right = st.bottom = ''; return; }
+      st.left = sr.left + 'px'; st.top = Math.min(sr.bottom + 36, innerHeight - 64 - 40) + 'px'; st.right = 'auto'; st.bottom = 'auto'; return; }
     const r = last.getBoundingClientRect(), fr = bs[0].getBoundingClientRect(), wrap = r.right + 14 + 236 > innerWidth - 56;
     st.left = (wrap ? fr.left : r.right + 14) + 'px'; st.top = (wrap ? r.bottom + 14 : r.top) + 'px'; st.right = 'auto'; st.bottom = 'auto'; }
   setTimeout(() => { new MutationObserver(placeAsk).observe(chipsEl, { childList: true }); new MutationObserver(placeAsk).observe(app, { attributes: true }); new MutationObserver(placeAsk).observe(sheet, { attributes: true, childList: true });
@@ -3015,7 +3019,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const sun = LS.get('gk-sun', null), rise = sun && sun.rise ? new Date(sun.rise).getHours() + new Date(sun.rise).getMinutes() / 60 : 7, set = sun && sun.set ? new Date(sun.set).getHours() + new Date(sun.set).getMinutes() / 60 : 18, dark = hr + d.getMinutes() / 60 >= set + .5 || hr + d.getMinutes() / 60 < rise - .5;
     const c = w.code, wet = [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99].includes(c), snow = [71, 73, 75, 77, 85, 86].includes(c);
     delete saverEl.dataset.wx;
-    const ic = (code, dk) => `<span class="ic${!dk && code <= 1 ? ' sun' : ''}">${wxIcon(code, dk)}</span>`, hm = t => { const x = new Date(t); return `${x.getHours() < 12 ? '오전' : '오후'} ${x.getHours() % 12 || 12}:${pad(x.getMinutes())}`; };
+    const ic = (code, dk) => `<span class="ic${!dk && code <= 1 ? ' sun' : ''}">${wxIcon(code, dk)}</span>`, hm = t => { const x = new Date(t); return `${ampm(x.getHours())} ${x.getHours() % 12 || 12}:${pad(x.getMinutes())}`; };
     setH($('pgTtl'), '');
     { // 하늘: 바탕(시간대 × 구름 정도) + 겹(흐르는 구름 · 비 · 눈 · 안개 · 번쩍임 · 별 · 먼지). 모든 날씨 코드가 제 하늘을 갖는다
       const nowH = hr + d.getMinutes() / 60, near = (a, b) => Math.abs(a - b) <= 40 / 60, tod = near(nowH, set) || near(nowH, rise) ? 'dusk' : nowH > set || nowH < rise ? 'night' : 'day';
@@ -3036,7 +3040,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const sl = v => String(v).replace(' / ', '<i class="sl"> / </i>'), TT = String(w.t), neg = TT[0] === '-';
     const cells = [['최고 · 최저', `${escN(w.hi)}° / ${escN(w.lo)}°`], w.feel != null ? ['체감', escN(w.feel) + '°'] : null, w.pop != null ? ['비 올 확률', w.pop + '%'] : null, dust ? ['미세먼지', dust] : null, sun && sun.rise ? ['해 뜨는 때', hm(sun.rise)] : null, sun && sun.set ? ['해 지는 때', hm(sun.set)] : null, w.tom ? ['내일', `${w.tom.hi}° / ${w.tom.lo}°`] : null, w.tom && w.tom.pop != null ? ['내일 비 올 확률', w.tom.pop + '%'] : null].filter(Boolean).slice(0, 8);
     setH(host, `<div class="wx-top"><div class="wx-temp n${TT.length}">${neg ? '<span class="mn">−</span>' : ''}${escN(TT.replace('-', ''))}<i>°</i></div><div class="wx-b"><b>${escN((WX[c] || [''])[0])}</b><p>${escN(wxTip(w, dust))}</p></div></div>
-      <div class="wx-hours">${hours.map(x => `<div><small>${x.h < 12 ? '오전' : '오후'} ${x.h % 12 || 12}시</small>${ic(x.code, x.day === 0)}<b>${escN(x.t)}°</b></div>`).join('')}</div>
+      <div class="wx-hours">${hours.map(x => `<div><small>${ampm(x.h)} ${x.h % 12 || 12}시</small>${ic(x.code, x.day === 0)}<b>${escN(x.t)}°</b></div>`).join('')}</div>
       <div class="wx-foot">${cells.map(x => `<div><small>${x[0]}</small><b>${sl(x[1])}</b></div>`).join('')}</div>`);
   }
   let bigKey = '';
@@ -3086,7 +3090,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function quickHandle(said) {
     const s = said.trim(), t = tdNorm(s); if (t.length > 14) return false;
     const d = new Date();
-    if (/^(지금)?몇시(야|니|지|예요|에요|인지알려줘)?$/.test(t)) { const h = d.getHours(); todoShow(s, `지금은 《${h < 12 ? '오전' : '오후'} ${h % 12 || 12}시 ${d.getMinutes() ? d.getMinutes() + '분' : ''}》이야.`.replace(' 》', '》'), []); return true; }
+    if (/^(지금)?몇시(야|니|지|예요|에요|인지알려줘)?$/.test(t)) { const h = d.getHours(); todoShow(s, `지금은 《${ampm(h)} ${h % 12 || 12}시 ${d.getMinutes() ? d.getMinutes() + '분' : ''}》이야.`.replace(' 》', '》'), []); return true; }
     let m;
     if ((m = t.match(/^(오늘|내일)?(은|이)?(무슨요일|며칠|몇월며칠|몇일)(이야|야|이지|지|이에요)?$/))) { if (m[1] === '내일') d.setDate(d.getDate() + 1); todoShow(s, `${m[1] || '오늘'}은 《${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일》이야.`, []); return true; }
     if (/^(루아|오늘)?신문(을|좀)?(보여줘|펴줘|열어줘|읽어줘|볼래|보자|줘|보여|펴)$/.test(t)) { if (news && newsFresh()) { if (!saverEl.hidden) exitSaver(); hush(); openPaper(0); } else todoShow(s, '오늘 신문이 아직 안 왔어.', []); return true; }
@@ -3123,7 +3127,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (dn) { dn.hidden = !allDone; if (allDone) dn.textContent = `오늘 할 일 ${list.length}개 다 했어`; }
   }
   $('tdTodoL').addEventListener('click', e => { const r = e.target.closest('[data-todo]'); if (r) todoToggle(r.dataset.todo); });
-  function tbClock() { const d = new Date(), h = d.getHours(), html = `<small>${h < 12 ? '오전' : '오후'}</small>${h % 12 || 12}:${pad(d.getMinutes())}`; if ($('tbClock').innerHTML !== html) $('tbClock').innerHTML = html; }
+  function tbClock() { const d = new Date(), h = d.getHours(), html = `<small>${ampm(h)}</small>${h % 12 || 12}:${pad(d.getMinutes())}`; if ($('tbClock').innerHTML !== html) $('tbClock').innerHTML = html; }
   tbClock(); setInterval(() => { tbClock(); homeSync(); }, 15e3);
 
   // ---------- 홈의 '오늘' 줄: 신문 · 밤하늘 · 날씨 ----------
@@ -5451,6 +5455,7 @@ body[data-scr=sky] .gk-home{top:28px}
 #app .era-ago, #app .era-ago.long{font:800 56px/1.05 "Pretendard",sans-serif;color:var(--zhl)}
 #app .era-year{font:500 26px/1.3 "Pretendard",sans-serif;color:var(--zk2)}
 #app .fig figcaption:empty{display:none}
+#app .sheet .w.wlink, #app .sheet .key.drawn .w.wlink, #app .sheet .key .w.wlink{box-shadow:inset 0 -.07em 0 var(--zhl)} /* v135: 카드와 이어진 낱말 밑줄은 한 가지(주황)로 */
 @media (min-width:900px){
 #app:not([data-home]) #mainInner.has-fig .fig{position:fixed;right:calc(var(--X) + 16px);top:calc(var(--T) + var(--HH) + 32px);width:380px;max-height:calc(100vh - var(--T) - var(--HH) - 220px);margin:0;z-index:2}
 #app:not([data-home]) #mainInner.has-fig #ansPg{position:fixed;left:auto;right:calc(var(--X) + 16px + 190px - 36px);bottom:40px}
