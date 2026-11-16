@@ -136,11 +136,11 @@
       if (mr && mr.date < lim) { var eq2 = A.Equator(A.Body.Moon, mr.date, obs, true, true), hz2 = A.Horizon(mr.date, obs, eq2.ra, eq2.dec, 'normal'); mLines = mr.date <= date ? ['지금 막', dir8(hz2.azimuth) + '쪽에서 떠올라'] : [clock(mr.date), dir8(hz2.azimuth) + '쪽에서 떠']; }
       else mLines = ['오늘 밤엔', ph < 180 ? '벌써 졌어' : '안 떠'];
     }
-    // 다음 반달·보름달
+    // 다음 반달·보름달 (오늘 이름과 같은 것은 건너뜀 — 오늘 반달인데 "반달은 내일"이라 하지 않게, v133)
     var next = [], mq = A.SearchMoonQuarter(date), today = new Date(now), seen = {}; today.setHours(0, 0, 0, 0);
     for (var qi = 0; qi < 8 && next.length < 2; qi++) { // 다음 반달 하나, 다음 보름달 하나 (가까운 순서로)
       var kind = mq.quarter === 2 ? '보름달' : mq.quarter === 0 ? '' : '반달';
-      if (kind && !seen[kind]) { seen[kind] = 1; var qd = mq.time.date, dd = Math.round((new Date(qd.getFullYear(), qd.getMonth(), qd.getDate()) - today) / 864e5);
+      if (kind && !seen[kind] && kind !== nm[0]) { seen[kind] = 1; var qd = mq.time.date, dd = Math.round((new Date(qd.getFullYear(), qd.getMonth(), qd.getDate()) - today) / 864e5);
         next.push([dd === 0 ? '오늘' : dd === 1 ? '내일' : (qd.getMonth() !== today.getMonth() ? (qd.getMonth() + 1) + '월 ' : '') + qd.getDate() + '일', kind]); }
       mq = A.NextMoonQuarter(mq);
     }

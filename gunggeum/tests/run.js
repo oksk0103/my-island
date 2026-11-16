@@ -483,6 +483,15 @@ async function newsTests(b) {
     }
   }
 
+  { // 17. 달 카드: 오늘 이름과 같은 "다음 달"을 내지 않음 (오늘 반달인데 "반달은 내일" 금지)
+    console.log('17. 달 카드 다음 모양');
+    const p = await open(b, { time: newsDate + 'T19:30', read: newsDate }); await p.saver();
+    const m = await p.evaluate(() => { const sk = window.Sky && window.Sky.compute ? null : null; const big = [...document.querySelectorAll('#fcFeat .cc-big')].map(x => x.textContent.trim()); const all = document.getElementById('fcFeat').innerText; return { big, all }; });
+    const nm = m.big.find(x => /달/.test(x)) || '';
+    ok('달 카드: "' + nm + '" 아래에 "' + nm + '은 …"이 없다', !!nm && !new RegExp(nm + '은 ').test(m.all), m);
+    await p.context().close();
+  }
+
   await newsTests(b);
   ok('페이지 오류 없음', errs.length === 0, errs.slice(0, 3));
   await b.close(); server.close();
