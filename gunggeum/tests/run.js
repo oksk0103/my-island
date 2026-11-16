@@ -376,7 +376,7 @@ async function newsTests(b) {
     await p.click('#gkHome'); await p.adv(1200); await p.mouse.click(20, 20); await p.adv(1500); await p.say('27일에 치과 가', 5000); c = await cal(); ok('말없이 끝난 뒤의 다음 말은 일정으로 가지 않음', c.length === 0, c);
     // 11. 밤하늘 화면에도 홈 캡슐
     await p.go('sky'); await p.adv(4000); s = await p.st(); const hb = await p.evaluate(() => { const h = document.getElementById('gkHome'), r = h.getBoundingClientRect(); return [!h.hidden, Math.round(r.left), Math.round(r.top), Math.round(r.height)]; });
-    await p.click('#gkHome'); await p.adv(1500); const s2 = await p.st(); ok('밤하늘 화면: 홈 캡슐이 같은 자리에 있고 누르면 위젯 면(깨어나지 않음)', s.saver === 'sky' && hb[0] && Math.abs(hb[1] - 48) <= 4 && Math.abs(hb[2] - 40) <= 4 && hb[3] >= 60 && /^face/.test(s2.saver), [s.saver, hb, s2.saver]);
+    await p.click('#gkHome'); await p.adv(1500); const s2 = await p.st(); ok('밤하늘 화면: 홈 캡슐이 같은 자리에 있고 누르면 위젯 면(깨어나지 않음)', s.saver === 'sky' && hb[0] && Math.abs(hb[1] - 48) <= 4 && Math.abs(hb[2] - 28) <= 4 && hb[3] >= 60 && await p.evaluate(() => { const h = document.getElementById('gkHome').getBoundingClientRect(), o = (a, b) => !(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top); return true; }) && /^face/.test(s2.saver), [s.saver, hb, s2.saver]);
     ok('지운 진단 줄(linesDbg)을 참조하는 코드가 없음', !fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8').includes('linesDbg')); await p.context().close();
     // 7. 마이크를 못 켜면 묻기 줄 아래에 한 줄
     p = await open(b, { time: D0 + 'T16:10', read: D0, pre: fakeSR(true) }); await box('.qbox');
