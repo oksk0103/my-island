@@ -324,6 +324,7 @@ async function newsTests(b) {
     await box('#agFoot [data-act="evundo"]'); c = await cal(); ok('지울래 → 되돌림', c.length === 0, c);
     await box('[data-act="evadd"]'); await p.say('치과 가', 3000); c = await cal(); s = await p.st(); ok('날짜를 못 알아들으면 저장하지 않고 되물음', c.length === 0 && /며칠/.test(s.sheet), [c, s.sheet]);
     await p.evaluate(() => { const t = new Date(), ym = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}`; localStorage.setItem('gk-cal', JSON.stringify({ v: 1, last: null, items: [17, 18, 19, 20, 21, 22, 23].map((d, i) => ({ id: 'x' + i, date: `${ym}-${d}`, text: '일정 ' + i, raw: '', at: i })) })); });
+    await p.click('#gkHome'); await p.adv(1200); // 되묻기(며칠이야?)가 떠 있던 것을 홈 단추로 닫는다
     await p.go('cal'); await p.adv(2500); ok('일정이 많을 때: "그리고 N개 더", 넘침 없음', await p.evaluate(() => /그리고 \d+개 더/.test(document.getElementById('agList').textContent) && document.getElementById('agFoot').getBoundingClientRect().bottom <= innerHeight));
     await box('.cq-nav [data-d="1"]'); { const m = await p.evaluate(() => [document.getElementById('cqMon').textContent, document.getElementById('cqNow').hidden, document.querySelectorAll('#cqGrid > span').length]); ok('달 넘기기 → 12월, "이번 달" 단추, 칸 수는 7의 배수', m[0] === '12월' && !m[1] && m[2] % 7 === 0, m); }
     await p.context().close();
