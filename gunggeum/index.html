@@ -1346,7 +1346,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 </style>
 </head>
 <body>
-<button id="gkHome" class="gk-home" type="button" hidden aria-label="홈으로"><svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><path d="M4.4 12.9 14 4.8l9.6 8.1"/><path d="M7 11v10.4c0 1 .8 1.8 1.8 1.8h10.4c1 0 1.8-.8 1.8-1.8V11"/><path d="M14 23.2v-5"/></svg><span>홈</span></button>
+<button id="gkHome" class="gk-home" type="button" hidden aria-label="홈으로"><svg class="ds-lg" viewBox="96 92 320 344" aria-hidden="true"><path d="M116 112H206V169H116V226H206"/><circle cx="348" cy="169" r="46"/><path d="M128 296C186 366 320 372 386 288"/><circle class="ds-dot" cx="258" cy="412" r="24"/></svg></button>
 <div class="app" id="app" data-state="idle">
   <header class="topbar"><div class="inner">
     <button class="wordmark" id="title" type="button" title="2초 동안 누르면 부모님 화면이 열려요">루아</button>
@@ -1393,7 +1393,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   </div>
   <div class="paper" id="paper" hidden><div class="rn-sheet">
     <header class="rn-phead">
-      <button class="rn-home" id="ppHome" type="button" aria-label="홈으로"><svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><path d="M4.4 12.9 14 4.8l9.6 8.1"/><path d="M7 11v10.4c0 1 .8 1.8 1.8 1.8h10.4c1 0 1.8-.8 1.8-1.8V11"/><path d="M14 23.2v-5"/></svg><span>홈</span></button>
+      <button class="rn-home" id="ppHome" type="button" aria-label="홈으로"><svg class="ds-lg" viewBox="96 92 320 344" aria-hidden="true"><path d="M116 112H206V169H116V226H206"/><circle cx="348" cy="169" r="46"/><path d="M128 296C186 366 320 372 386 288"/><circle class="ds-dot" cx="258" cy="412" r="24"/></svg></button>
       <b class="rn-sec" id="ppTag"></b>
       <span class="rn-pmid"><img src="./rua-masthead.svg" alt="루아 신문"><span id="ppFolio"></span></span>
       <span class="rn-pright"><span id="ppNo"></span><button class="rn-rb" id="ppAsk" type="button" aria-label="물어보기"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="2.5" width="7" height="12.5" rx="3.5"></rect><path d="M5.2 11.5a6.8 6.8 0 0 0 13.6 0M12 18.5v3"></path></svg></button><button class="rn-rb" id="ppListen" type="button" aria-label="들려줘"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path d="M16 8.2a5.2 5.2 0 0 1 0 7.6"></path></svg></button></span>
@@ -2421,7 +2421,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     host.dataset.t = npTone();
     const pic = npPic0 || null, num = a.num && a.num.n ? a.num : null, word = npWordBox(a.word);
     const key = [pk, pic ? 1 : 0, innerWidth, innerHeight, w ? w.t + '|' + w.code + '|' + w.hi + '|' + w.lo : '', JSON.stringify(A).length].join('|'); if (host.dataset.k === key) return; host.dataset.k = key;
-    host.innerHTML = `<div class="rn-sheet"><span class="rn-home" data-rn="home" role="button" aria-label="홈으로"><svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><path d="M4.4 12.9 14 4.8l9.6 8.1"/><path d="M7 11v10.4c0 1 .8 1.8 1.8 1.8h10.4c1 0 1.8-.8 1.8-1.8V11"/><path d="M14 23.2v-5"/></svg><span>홈</span></span>
+    host.innerHTML = `<div class="rn-sheet"><span class="rn-home" data-rn="home" role="button" aria-label="홈으로"><svg class="ds-lg" viewBox="96 92 320 344" aria-hidden="true"><path d="M116 112H206V169H116V226H206"/><circle cx="348" cy="169" r="46"/><path d="M128 296C186 366 320 372 386 288"/><circle class="ds-dot" cx="258" cy="412" r="24"/></svg></span>
       <header class="rn-mast"><img class="rn-logo" src="./rua-masthead.svg" alt="루아 신문">${w ? `<div class="rn-ear"><b>${escN(w.t)}°</b><span>${escN((WX[w.code] || [''])[0])} · ${escN(w.hi)}° / ${escN(w.lo)}°</span></div>` : ''}<div class="rn-rule2"></div>
         <div class="rn-date"><span>제${escN(news.no)}호 · ${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일</span><span>${A.slice(1, 3).map((x, i) => `${i + 2}면 ${escN(x.tag || '')}`).join(' · ')}</span><span>1면</span></div></header>
       <div class="rn-body"><article class="rn-lead${pic ? '' : ' nopic'}" data-rn="art" data-i="0"><span class="rn-lab">${escN(a.tag || '오늘')}</span><h2>${escN(a.title)}</h2>
@@ -5979,6 +5979,16 @@ html body .gk-home, html body .rn-home{height:64px !important;min-height:64px !i
   background:var(--pill) !important;color:var(--pill-ink) !important;box-shadow:var(--pill-edge),var(--pill-shadow) !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;
   font:600 28px/1 "Pretendard",sans-serif !important;letter-spacing:-.02em !important}
 html body .gk-home{left:48px !important;top:40px !important}
+/* 홈 단추 = 루아 로고(v136): 64 동그라미, 로고 높이 56%(36px), 눈·입이 가운데로 보이게 2.5px 내림. 선은 화면 글자색, 주황 점만 고정 */
+html body .gk-home, html body .rn-home{width:64px !important;min-width:64px !important;padding:0 !important;gap:0 !important;justify-content:center !important;border-radius:50% !important}
+svg.ds-lg{width:33.5px !important;height:36px !important;flex:none;display:block;margin:0 !important;transform:translateY(2.5px);fill:none !important;stroke:currentColor !important;stroke-width:23 !important;stroke-linecap:round;stroke-linejoin:round}
+svg.ds-lg .ds-dot{fill:var(--ds-dot) !important;stroke:none !important}
+/* 단추가 작아진 만큼 앱 이름을 당긴다 */
+.pg-top{left:136px !important}
+#saver.saver.sky .sky-name{left:136px !important}
+#saver.saver.sky .sky-meta{left:308px !important}
+#saver[data-pg=wx] .pg-ttl{margin-left:0 !important}
+#saver[data-pg=cal] .cq-head{left:92px !important}
 .gk-home[hidden], .rn-home[hidden]{display:none !important}
 .gk-home span, .rn-home span{font:inherit !important;color:inherit !important}
 svg.ds-ic{width:28px !important;height:28px !important;flex:none;fill:none !important;stroke:currentColor !important;stroke-width:2.2 !important;stroke-linecap:round;stroke-linejoin:round}
@@ -6001,6 +6011,7 @@ svg.ds-ic .ds-dot{fill:var(--ds-dot) !important;stroke:none !important}
 #saver.saver.face .cc-k{height:auto !important;padding:0 !important;background:none !important;border-radius:0 !important;box-shadow:none !important}
 #saver.saver.face .cc-foot:not(.rd){height:auto !important;padding:0 !important;background:none !important;border-radius:0 !important;box-shadow:none !important}
 }
+@media (max-width:899px){ #saver[data-pg=wx] .pg-ttl .ap-n{display:none} }
 /* 밤(22~6시) 묻기·답 화면: 숯색 대신 밤 남색 + 크림 글 + 앰버 강조 — 밤하늘 앱과 같은 밤 */
 body[data-night] #app{--paperbg:linear-gradient(180deg,#0A1130,#111B47);--zbg:#0D1538;--zk:#ECE6D8;--zk2:rgba(236,230,216,.64);--zrow:rgba(255,255,255,.08);--zhl:#F0B25E;--zhlbg:rgba(240,178,94,.16);--zac:#ECE6D8;
   --strip:rgba(255,255,255,.10);--strips:inset 0 1.5px 0 rgba(255,255,255,.20),inset 0 0 0 1.5px rgba(255,255,255,.13);--ink:#ECE6D8;--muted:rgba(236,230,216,.64);--skyink:#ECE6D8;color:#ECE6D8}
