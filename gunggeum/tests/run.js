@@ -202,7 +202,7 @@ async function newsTests(b) {
   await tile('news'); s = await p.st(); ok('신문 표지 → 신문 1면', s.saver.includes('rnp') && !s.paper, s);
   { const bx = await p.locator('#rnFront [data-rn="art"][data-i="0"]').boundingBox(); await p.mouse.click(bx.x + 80, bx.y + 60); await p.adv(1500); } s = await p.st(); ok('1면의 머리기사 → 기사 열림', !s.saver && s.paper, s);
   ok('깨어나면 갈래 강제가 지워짐', await p.evaluate(() => window.__gkCover === undefined));
-  await p.saver(); await tile('todo'); s = await p.st(); ok('할 일 빈 곳 → 깨어남', !s.saver && !s.paper, s);
+  await p.saver(); await tile('todo'); s = await p.st(); ok('할 일 빈 곳 → 할 일 화면 (v135)', s.saver === 'pgx' && await p.evaluate(() => document.getElementById('saver').dataset.pg === 'todo'), s); await p.click('#gkHome'); await p.adv(1500);
   ok('타일이 화면 밖으로 넘치지 않음', await p.evaluate(() => { document.getElementById('saver').hidden = false; const r = [...document.querySelectorAll('#svFace .fc-t')].every(t => { const b = t.getBoundingClientRect(); return b.left >= 0 && b.top >= 0 && b.right <= innerWidth && b.bottom <= innerHeight && (t.classList.contains('fc-feat') || t.scrollHeight <= t.clientHeight + 1); }); document.getElementById('saver').hidden = true; return r; }));
   await p.saver(); await tile('study'); s = await p.st(); ok('공부 모드 → 표지가 조용해짐 (깨어나지 않음)', s.saver.startsWith('face') && await feat() === 'study' && await p.evaluate(() => document.getElementById('fcStudyL').textContent === '공부 끝'), [s.saver, await feat()]);
   await tile('study'); ok('한 번 더 누르면 공부 모드 끝', await feat() !== 'study' && await p.evaluate(() => document.getElementById('fcStudyL').textContent === '공부 모드' && !localStorage.getItem('gk-study')), await feat());
