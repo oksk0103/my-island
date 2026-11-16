@@ -2956,15 +2956,22 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     setH($('agFoot'), (fl ? `<span class="pc" data-act="evdate">다시 말할래</span><span class="pc" data-act="evundo">지울래</span>` : '') + `<span class="zbar" data-act="evadd" role="button">${MIC}${calSel ? evDay(calSel).getDate() + '일에 ' : ''}일정 말하기</span>`);
   }
   // ---------- 할 일 화면(v135, 아내 요청): 대기화면의 할 일 타일을 누르면 달력처럼 따로 크게. 한 번에 일곱 줄, 줄을 누르면 했다/안 했다 ----------
-  let tdPage = 0;
-  function renderTodoPg() {
-    const d = todoLoad(), list = todoSorted(d), left = todoOpen(d).length, SL = 7, now = new Date();
-    setH($('pgTtl'), `루아의 할 일${list.length ? `<span class="td-n">${left ? left + '개 남았어' : '다 했어'}</span>` : ''}`); setH($('pgSub'), zClock());
-    const pages = Math.max(1, Math.ceil(list.length / SL)); if (tdPage >= pages) tdPage = 0;
-    const shown = list.slice(tdPage * SL, tdPage * SL + SL), more = list.length - (tdPage + 1) * SL;
-    let h = shown.map(it => `<div class="td-row${it.done ? ' done' : ''}" data-todo="${it.id}"><span class="bx"></span><span class="tx">${escN(it.text)}</span><span class="du">${it.done ? '했어' : escN(dueWord(it.due))}</span></div>`).join('');
-    if (!list.length) h = '<div class="td-none">적어 둔 할 일이 없어.<small>"내일 수학 숙제 있어"처럼 말하면 여기 적혀.</small></div>';
-    const foot = (list.length > SL ? `<span class="pc" data-act="tdmore">${more > 0 ? `그리고 ${more}개 더` : '처음으로'}</span>` : '') + `<span class="zbar" data-act="tdadd" role="button">${MIC}할 일 말하기</span>`;
+  let tdPage = 0, tdShowDone = false;
+  function renderTodoPg() { // 할 일 앱: 못 한 것 · 오늘 · 내일 · 다음에 칸으로 나누고, 다 한 것은 한 줄로 접는다(인기 할 일 앱들의 '오늘' 보기를 따름)
+    const d = todoLoad(), all = todoSorted(d), open = all.filter(x => !x.done), done = all.filter(x => x.done), left = open.length;
+    setH($('pgTtl'), `루아의 할 일${all.length ? `<span class="td-n">${left ? left + '개 남았어' : '다 했어'}</span>` : ''}`); setH($('pgSub'), zClock());
+    const t0 = new Date(); t0.setHours(0, 0, 0, 0); const dd = it => it.due ? Math.round((new Date(it.due + 'T00:00:00') - t0) / 864e5) : 0;
+    const G = [['못 한 것', open.filter(x => dd(x) < 0)], ['오늘', open.filter(x => dd(x) === 0)], ['내일', open.filter(x => dd(x) === 1)], ['다음에', open.filter(x => dd(x) >= 2)]];
+    const row = (it, du) => ({ h: 72, html: `<div class="td-row${it.done ? ' done' : ''}" data-todo="${it.id}"><span class="bx"></span><span class="tx">${escN(it.text)}</span><span class="du">${du}</span></div>` });
+    const E = []; // 칸 머리와 줄을 차례로 늘어놓고, 높이에 맞춰 쪽을 나눈다
+    for (const [name, list] of G) if (list.length) { E.push({ h: 52, html: `<div class="td-h">${name}</div>` }); list.forEach(it => E.push(row(it, name === '다음에' ? escN(dueWord(it.due)) : ''))); }
+    if (done.length) { E.push({ h: 64, html: `<div class="td-doneline" data-act="tddone">다 한 것 ${done.length}개<i>${tdShowDone ? '접기' : '보기'}</i></div>` }); if (tdShowDone) done.forEach(it => E.push(row(it, '했어'))); }
+    const BUD = innerHeight >= 780 ? 560 : 520, pages = [[]]; let used = 0;
+    for (const e of E) { if (used + e.h > BUD && pages[pages.length - 1].length) { pages.push([]); used = 0; } pages[pages.length - 1].push(e); used += e.h; }
+    if (tdPage >= pages.length) tdPage = 0;
+    let h = pages[tdPage].map(e => e.html).join('');
+    if (!all.length) h = '<div class="td-none">적어 둔 할 일이 없어.<small>"내일 수학 숙제 있어"처럼 말하면 여기 적혀.</small></div>';
+    const foot = (pages.length > 1 ? `<span class="pc" data-act="tdmore">${tdPage + 1 < pages.length ? '다음 쪽' : '처음으로'} <small>${tdPage + 1} / ${pages.length}</small></span>` : '') + `<span class="zbar" data-act="tdadd" role="button">${MIC}할 일 말하기</span>`;
     setH($('pgTodo'), `<div class="td-list">${h}</div><div class="td-foot">${foot}</div>`);
   }
   // ---------- 날씨 화면(Z): 화면 전체가 지금 날씨의 하늘. 앱이 이미 받는 값만 쓴다 ----------
@@ -3107,6 +3114,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     else if (act === 'more') { agPage++; renderSaver(); }
     else if (act === 'wxmore') { wxMore = !wxMore; renderSaver(); }
     else if (act === 'tdmore') { tdPage++; renderSaver(); }
+    else if (act === 'tddone') { tdShowDone = !tdShowDone; renderSaver(); }
     else if (act === 'tdadd') { exitSaver(); if (saverEl.hidden) { try { $('micBtn') && $('micBtn').click(); } catch (e) {} } }
     else if (act === 'monnow') { calOff = 0; calSel = ''; agPage = 0; renderSaver(); }
     else if (act === 'evundo') { evUndo('', true); renderSaver(); }
@@ -5525,14 +5533,22 @@ body[data-night][data-scr=ask] .gk-home svg{stroke:#E6E1D6 !important}
 #saver.saver.face .fc-time{font-size:104px;line-height:90px}
 }
 /* v135: 할 일 화면 — 달력 장과 같은 옅은 바탕, 큰 줄 일곱 개 */
+body[data-scr=todo]{--bg:var(--zbg); --S:60 66 80; --k1:var(--zk); --k2:var(--zk2); --ctl:var(--strip); --ctlk:var(--zk); --ctltop:#fff; --skyink:var(--zk); --pc:var(--strip); --pck:var(--zk); --pcr:20px; --pcs:var(--strips); --ac:var(--zac); --on:#fff; --caps:0 0 #0000}
+body[data-scr=todo] .gk-home{background:var(--strip) !important;color:var(--zk) !important;box-shadow:var(--strips) !important}
+body[data-scr=todo] .gk-home svg{stroke:var(--zk) !important}
+.pg-todo .td-h{flex:none;height:52px;display:flex;align-items:flex-end;padding:0 8px 8px;box-sizing:border-box;font:600 24px/1 "Pretendard",sans-serif;color:var(--zk2);letter-spacing:-.01em}
+.pg-todo .td-doneline{flex:none;height:64px;display:flex;align-items:center;gap:14px;padding:0 8px;margin-top:6px;box-shadow:inset 0 1px 0 rgba(20,30,60,.10);font:600 26px/1 "Pretendard",sans-serif;color:var(--zk2);cursor:pointer}
+.pg-todo .td-doneline i{font-style:normal;font-weight:500;font-size:22px;color:var(--zac)}
+.pg-todo .td-foot .pc small{font-size:.8em;color:var(--zk2);margin-left:6px}
 #saver.pgx[data-pg=todo]{background:var(--paperbg) !important;color:var(--zk)}
 #saver[data-pg=todo] .pg-ttl, #saver[data-pg=todo] .pg-sub{color:var(--zk)}
 #saver[data-pg=todo] .pg-sub small{color:var(--zk2)}
 #saver[data-pg=todo] .pg-ttl .td-n{margin-left:18px;font:500 28px/1 "Pretendard",sans-serif;color:var(--zk2)}
 #saver[data-pg=todo] .pg-todo{display:flex !important;flex-direction:column;position:absolute;left:160px;right:160px;top:128px;bottom:40px}
 .pg-todo .td-list{flex:1 1 auto;display:flex;flex-direction:column;justify-content:flex-start;min-height:0}
-.pg-todo .td-row{display:grid;grid-template-columns:56px minmax(0,1fr) auto;align-items:center;column-gap:20px;height:80px;flex:none;box-sizing:border-box;padding:0 8px;cursor:pointer}
+.pg-todo .td-row{display:grid;grid-template-columns:56px minmax(0,1fr) auto;align-items:center;column-gap:20px;height:72px;flex:none;box-sizing:border-box;padding:0 8px;cursor:pointer}
 .pg-todo .td-row + .td-row{box-shadow:inset 0 1px 0 rgba(20,30,60,.10)}
+.pg-todo .td-h + .td-row{box-shadow:none}
 .pg-todo .td-row .bx{width:40px;height:40px;border-radius:50%;box-shadow:inset 0 0 0 3px var(--zk);justify-self:center}
 .pg-todo .td-row .tx{font:600 40px/1.2 "Pretendard",sans-serif;letter-spacing:-.02em;color:var(--zk);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pg-todo .td-row .du{font:500 30px/1 "Pretendard",sans-serif;color:var(--zk2)}
