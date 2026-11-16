@@ -235,6 +235,7 @@ async function newsTests(b) {
   const n0 = p.api; await p.click('#chips button'); await p.adv(9000); ok('칩을 누르면 다시 물음', p.api > n0);
   { const lastQ = () => p.lastBody.messages.at(-1).content.split('\n').at(-1);
     await p.say('보름달', 9000); ok('칩 낱말만 말하면 그 칩으로 물음 ("보름달" → 보름달은 왜 둥글어?)', /보름달은 왜 둥글어/.test(lastQ()), lastQ());
+    await p.say('누구야', 9000); ok('"누구야"만 말하면 칩으로 바꾸지 않음', !/둥글어|떨어져|바다|뛰면/.test(lastQ()), lastQ());
     await p.say('달에서 뛰면', 9000); await p.say('보름달은 언제 떠', 9000); ok('낱말 하나 겹친 새 질문은 칩으로 바꾸지 않음 (v136 버그)', /보름달은 언제 떠/.test(lastQ()) && !/둥글어/.test(lastQ()), lastQ()); }
   await p.context().close();
 
@@ -575,6 +576,19 @@ async function newsTests(b) {
     ok('답 화면에서 마이크 → 듣는 중이 같은 자리(오른쪽 아래)', st[0] === 'listen' && st[1] === 'ans' && f0 === f1 && f0 === '1316,716,1552,780', [st, f0, f1]);
     await p.evaluate(() => window.__rec.onresult({ resultIndex: 0, results: [Object.assign([{ transcript: '보름달은 언제 떠' }], { isFinal: true })] })); await p.adv(2500);
     q = await p.evaluate(() => document.getElementById('app').dataset.state); ok('말이 끝나면 생각 중 → 답', q === 'answer' || q === 'think', q); await p.context().close();
+    // 첫 화면에서 글자로 물어도 생각 중은 가운데 묻기 줄 그대로(구석으로 튀지 않음)
+    p = await open(b, { time: D + 'T16:20', read: D }); await p.unroute(/api\.anthropic\.com/); await p.route(/api\.anthropic\.com/, () => {});
+    await p.evaluate(() => { const q = document.getElementById('q'); q.readOnly = false; q.focus(); q.value = '하늘은 왜 파래'; }); await p.press('#q', 'Enter'); await p.adv(800);
+    q = await p.evaluate(() => [document.getElementById('app').dataset.state, document.getElementById('app').dataset.from]); const fq = await R(p, '#form .qbox');
+    ok('첫 화면 글자 묻기 → 생각 중이 가운데 줄(160,407)', q[0] === 'think' && q[1] === 'home' && /^160,407,/.test(fq), [q, fq]); await p.context().close();
+    // 신문에서 물어보기 → 답 → 맨 아랫줄 '신문으로' 알약 → 그 면으로
+    p = await open(b, { time: D + 'T07:40', pre: fake }); await p.go('hero'); await p.adv(2500); await p.go('paper'); await p.adv(2500); await p.click('#ppNext'); await p.adv(1200);
+    await p.click('#ppAsk'); await p.adv(600); q = await p.evaluate(() => !document.getElementById('gkHome').hidden); ok('신문에서 듣는 중에도 홈 단추가 보임', q, q);
+    await p.evaluate(() => window.__rec.onresult({ resultIndex: 0, results: [Object.assign([{ transcript: '무인기는 뭐야' }], { isFinal: true })] })); await p.adv(9000);
+    q = await R(p, '#backPaper'); ok("신문에서 물은 답: 맨 아랫줄 맨 앞 '신문으로' 알약(160,716)", q === '160,716,360,780', q);
+    await p.click('#backPaper'); await p.adv(1500); q = await p.evaluate(() => document.getElementById('ppTag').textContent); ok('신문으로 → 물었던 2면', /2면/.test(q), q);
+    await p.click('#ppAsk'); await p.adv(600); await p.click('#micBtn').catch(() => {}); await p.adv(2500); q = await p.evaluate(() => [!document.getElementById('paper').hidden, document.getElementById('ppTag').textContent]);
+    ok('신문에서 물어보기를 눌렀다가 말없이 끝나면 그 면으로 돌아옴', q[0] && /2면/.test(q[1]), q); await p.context().close();
     // 신문 기사: 면 표시는 왼쪽 곁말, 소리 단추는 기본 끔(빗금)
     p = await open(b, { time: D + 'T07:40' }); await p.go('hero'); await p.adv(2500); await p.go('paper'); await p.adv(2500);
     q = await p.evaluate(() => [document.getElementById('ppTag').textContent, document.getElementById('ppListen').getAttribute('aria-pressed'), getComputedStyle(document.querySelector('#ppListen .slash')).display]);

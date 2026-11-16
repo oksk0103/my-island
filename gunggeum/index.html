@@ -1732,7 +1732,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   // ---------- state ----------
   function setState(s, label, msg) {
     // v136: 답 화면에서 다시 묻기 시작하면 듣는 중·생각 중이 마이크 자리(오른쪽 아래 알약)에서 바뀐다. 첫 화면에서 시작하면 가운데 묻기 줄 그대로.
-    if (s === 'listen' || s === 'think') { if (!app.dataset.from) app.dataset.from = app.dataset.home || app.dataset.state === 'idle' ? 'home' : 'ans'; } else delete app.dataset.from;
+    if (s === 'listen' || s === 'think') { if (!app.dataset.from) app.dataset.from = app.dataset.home || app.dataset.state === 'idle' || app.dataset.state === 'type' ? 'home' : 'ans'; } else delete app.dataset.from;
     app.dataset.state = s;
     if (label) stateLabel.textContent = label;
     if (msg !== undefined) statusEl.textContent = msg;
@@ -1983,6 +1983,8 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     if (!SR) { statusEl.textContent = '이 브라우저는 음성 인식이 안 돼요. Chrome에서 열어 주세요.'; micNote('여기서는 말로 못 물어봐. 글자로 물어봐 줘.'); enterTyping(); return; }
     const blocked = gate(); if (blocked && restNow()) { showBlocked(blocked); return; }
     hush();
+    if (!paperEl.hidden) { paperCtx = curArticle(); hidePaper(); app.dataset.fromPaper = '1'; app.dataset.ppListen = '1'; } // v136: 신문에서 물어보기 — 듣는 동안 머리줄은 질문 앱(홈 단추 보임)
+    else delete app.dataset.ppListen;
     keepAwake();
     rec = new SR(); rec.lang = 'ko-KR'; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
     heard = ''; input.value = ''; listening = true; $('loText').textContent = ''; chime(true);
@@ -2004,7 +2006,8 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     rec.onend = () => { chime(false);
       listening = false; clearTimeout(silenceTimer);
       const q = (heard || input.value).trim();
-      if (q) ask(q); else if (evListenEnd()) { setState('idle', '쉬는 중', ''); } else if (app.dataset.state === 'listen') { setState('idle', '쉬는 중', ''); draw('아무 말도 못 들었어. 다시 눌러서 말해 봐.', false, 'msg'); }
+      const ppBack = app.dataset.ppListen && app.dataset.fromPaper && news && saverEl.hidden; delete app.dataset.ppListen;
+      if (q) ask(q); else if (ppBack && (app.dataset.state === 'listen' || app.dataset.state === 'idle')) { openPaper(paperIdx); } else if (evListenEnd()) { setState('idle', '쉬는 중', ''); } else if (app.dataset.state === 'listen') { setState('idle', '쉬는 중', ''); draw('아무 말도 못 들었어. 다시 눌러서 말해 봐.', false, 'msg'); }
     };
     try { rec.start(); } catch (e) { listening = false; setState('idle', '잠깐', '마이크를 켜지 못했어. 다시 눌러 봐.'); micNote('마이크를 켜지 못했어. 다시 눌러 봐.'); evListenEnd(); }
   }
@@ -3265,6 +3268,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const renderPaperSound = () => $('ppListen').setAttribute('aria-pressed', String(paperSound)); renderPaperSound();
   $('ppListen').addEventListener('click', () => { paperSound = !paperSound; LS.set('gk-paper-sound', paperSound ? 'on' : 'off'); renderPaperSound(); if (paperSound) readArticle(); else hush(); });
   $('backPaper').addEventListener('click', () => { if (news) openPaper(paperIdx); });
+  app.appendChild($('backPaper')); // v136: 숨은 머리줄(.meta) 밖으로 — 신문에서 물은 답 화면의 맨 아랫줄 맨 앞 알약
   setInterval(() => loadNews(), 30 * 60e3);
   loadNews(true).then(() => { if (!saverEl.hidden) renderSaver(); });
 
@@ -3430,14 +3434,14 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       if (new RegExp('^' + w + '(번째|째)' + tail).test(t) || new RegExp('^' + w + '번' + tail).test(t) || new RegExp('^(하나|둘|셋|넷)' + tail).test(t) && new RegExp('^' + w).test(t)) return list[i] || '';
     }
     if (FOLLOW_RE.test(said)) return list[0];
-    if (t.length >= 3) { const hit = list.find(x => x.replace(/[.?!\s]/g, '').includes(t)); if (hit) return hit; }
+    if (t.length >= 4) { const hs = list.filter(x => x.replace(/[.?!\s]/g, '').includes(t)); if (hs.length === 1) return hs[0]; } // v136: 여러 칩에 걸치거나 '누구야'처럼 짧은 말은 칩으로 바꾸지 않음
     // 칩의 핵심 낱말만 말해도 됨: '거북선', '일본 궁금해', '이순신 장군' → 그 낱말이 들어간 칩 (한 칩에만 있을 때)
     if ([...t].length <= 10) {
-      const STOP = /^(뭐야|뭐|왜|어떻게|정말|진짜|얼마나|어디|언제|누가|무엇|무슨|있어|돼|해|했어|됐어|만들어|만들었어|이야|일까|할까)$/;
+      const STOP = /^(누구야|누구|언제야|어디야|어때|어떻게|뭐야|뭐|왜|정말|진짜|얼마나|어디|언제|누가|무엇|무슨|있어|돼|해|했어|됐어|만들어|만들었어|이야|일까|할까)$/;
       const keys = list.map(x => x.replace(/[?.!]/g, '').split(/\s+/).map(w => w.replace(/(은|는|이|가|을|를|의|에|에서|도|로|으로|와|과|랑|이랑|한테|까지|보다|처럼|만)$/, '')).filter(w => [...w].length >= 2 && !STOP.test(w)));
       const hits = list.filter((x, i) => keys[i].some(k => t.includes(k)));
       // v136: 칩 낱말만(또는 '궁금해·알려줘'만 붙여) 말했을 때만 그 칩으로. '보름달은 언제 떠'처럼 낱말 하나 겹친 새 질문을 칩('보름달은 왜 둥글어?')으로 바꿔 묻지 않는다
-      if (hits.length === 1) { const ks = keys[list.indexOf(hits[0])]; let rest = t; ks.forEach(k => { rest = rest.split(k).join(''); }); if (/^(은|는|이|가|을|를|도|이랑|랑)?(궁금해|궁금해요|알려줘|알려줘요|이야기|얘기|얘기해줘|이야기해줘|말해줘|뭐야|더)?$/.test(rest)) return hits[0]; }
+      if (hits.length === 1) { const ks = keys[list.indexOf(hits[0])]; let rest = t; ks.forEach(k => { rest = rest.split(k).join(''); }); if (/^(은|는|이|가|을|를|도|이랑|랑)?(궁금해|궁금해요|알려줘|알려줘요|이야기|얘기|얘기해줘|이야기해줘|말해줘|더)?$/.test(rest)) return hits[0]; }
     }
     return '';
   }
@@ -3591,6 +3595,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     keepAwake();
     busy = true; askBtn.disabled = true;
     input.value = ''; input.blur();
+    if (!app.dataset.from) app.dataset.from = app.dataset.home ? 'home' : 'ans'; // v136: setEyebrow 가 data-home 을 지우기 전에 '어디서 물었나'를 잡는다(첫 화면 글자 묻기가 구석으로 튀던 것)
     lastQ = q; setEyebrow('q', q); $('loText').textContent = q; exitTyping();
     quiz = false; // v135: 퀴즈 모드 없앰(부모 규칙: 퀴즈 금지)
     if (!paperEl.hidden) { paperCtx = curArticle(); hidePaper(); app.dataset.fromPaper = '1'; }
@@ -6073,6 +6078,13 @@ svg.ds-ic .ds-dot{fill:var(--ds-dot) !important;stroke:none !important}
 #app[data-from=ans][data-state=think] .mic::before{width:10px !important;height:10px !important;margin-left:4px;box-shadow:20px 0 0 var(--zk2), 40px 0 0 var(--zk2) !important}
 #app[data-from=ans]:is([data-state=listen],[data-state=think]) .qbox::after{content:"듣는 중";font:600 28px/1 "Pretendard",sans-serif;letter-spacing:-.02em;color:var(--pill-ink);white-space:nowrap}
 #app[data-from=ans][data-state=think] .qbox::after{content:"생각 중"}
+/* v136: 신문에서 물은 답 → '신문으로' 알약이 맨 아랫줄 맨 앞, 쪽 넘김·칩은 그 뒤로 */
+#app #backPaper{display:none !important}
+#app[data-from-paper]:not([data-home]):not([data-state=listen]):not([data-state=think]) #backPaper{display:inline-flex !important;position:fixed;left:160px;bottom:40px;z-index:30;height:64px;width:200px;box-sizing:border-box;padding:0 22px 0 16px;gap:8px;align-items:center;justify-content:center;border:0;border-radius:32px;background:var(--pill);color:var(--pill-ink);box-shadow:var(--pill-edge),var(--pill-shadow);font:600 28px/1 "Pretendard",sans-serif;letter-spacing:-.02em;white-space:nowrap;cursor:pointer}
+#app[data-from-paper] #backPaper svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#app[data-from-paper]:not([data-home]) #ansPg{left:374px !important}
+#app[data-from-paper]:not([data-home]) .chips{left:374px !important;max-width:910px !important}
+#app[data-from-paper]:not([data-home]):has(#ansPg:not([hidden])) .chips{left:588px !important;max-width:696px !important}
 /* v136: 달력의 일정 줄도 할 일처럼 상자 없이 바탕 위에 바로(부모 규칙: 앱 내용은 상자 없이) */
 html body #saver[data-pg=cal] .ag-row, html body #saver[data-pg=cal] .ag-row.new, html body #saver[data-pg=cal] .ag-row.own{background:none !important;box-shadow:none !important;border-radius:0 !important;padding:0 !important;margin:0 !important}
 html body #saver[data-pg=cal] .ag-list{gap:0 !important;row-gap:0 !important} html body #saver[data-pg=cal] .ag-row:not(.more){height:80px !important;min-height:80px !important}
@@ -6092,7 +6104,7 @@ body[data-theme=night] .cq-grid span.t b{color:#0A1130 !important}
 #saver.saver.face .cc-k{height:auto !important;padding:0 !important;background:none !important;border-radius:0 !important;box-shadow:none !important}
 #saver.saver.face .cc-foot:not(.rd){height:auto !important;padding:0 !important;background:none !important;border-radius:0 !important;box-shadow:none !important}
 }
-@media (max-width:899px){ #saver[data-pg=wx] .pg-ttl .ap-n{display:none} }
+@media (max-width:899px){ #saver[data-pg=wx] .pg-ttl .ap-n{display:none} #askName{display:none !important} }
 /* 밤(22~6시) 묻기·답 화면: 숯색 대신 밤 남색 + 크림 글 + 앰버 강조 — 밤하늘 앱과 같은 밤 */
 body[data-night] #app{--paperbg:linear-gradient(180deg,#0A1130,#111B47);--zbg:#0D1538;--zk:#ECE6D8;--zk2:rgba(236,230,216,.64);--zrow:rgba(255,255,255,.08);--zhl:#F0B25E;--zhlbg:rgba(240,178,94,.16);--zac:#ECE6D8;
   --strip:rgba(255,255,255,.10);--strips:inset 0 1.5px 0 rgba(255,255,255,.20),inset 0 0 0 1.5px rgba(255,255,255,.13);--ink:#ECE6D8;--muted:rgba(236,230,216,.64);--skyink:#ECE6D8;color:#ECE6D8}
