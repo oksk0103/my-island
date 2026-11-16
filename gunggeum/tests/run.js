@@ -537,6 +537,18 @@ async function newsTests(b) {
     // 한자어 풀이: 글자에서 뜻이 나온 까닭 + 실제 쓰는 모양 예문(추호도 ~없다) — 지시문에 들어 있는지
     p = await open(b, { time: newsDate + 'T12:19' }); await p.say('추호가 뭐야', 6000); q = JSON.stringify(p.lastBody && p.lastBody.system || '');
     ok('지시문: 한자어는 글자 뜻에서 풀고, 추호도는 "없다"와 함께', /털갈이/.test(q) && /추호도 거짓이 없어/.test(q), q.length); await p.context().close();
+    // 할 일(아내 요청): 대기화면 타일에 다섯 줄, 타일을 누르면 할 일 화면, 줄을 누르면 했다 표시
+    p = await open(b, { time: newsDate + 'T19:40', read: newsDate });
+    await p.evaluate(nd => { const T = ['미니 수학 두 장', '학습지 하나', '받아쓰기 연습', '일기 쓰기', '리코더 연습', '독서록 쓰기', '색종이 챙기기']; const now = Date.now(); localStorage.setItem('gk-todo', JSON.stringify({ items: T.map((t, i) => ({ id: 't' + i, text: t, due: nd, at: now - (10 - i) * 1000, done: 0 })), last: null })); }, newsDate);
+    await p.saver(); q = await p.evaluate(() => { const t = document.querySelector('.fc-todo'), r = t.getBoundingClientRect(); const rows = [...t.querySelectorAll('.fc-row')].filter(x => { const q = x.getBoundingClientRect(); return q.bottom <= r.bottom && q.height > 30; }); return { n: rows.length, more: (t.querySelector('.fc-more') || {}).textContent }; });
+    ok('대기화면 할 일 타일: 다섯 줄이 다 보이고 "그리고 2개 더"', q.n === 5 && q.more === '그리고 2개 더', q);
+    { const bx = await p.locator('.fc-todo').boundingBox(); await p.mouse.click(bx.x + bx.width - 24, bx.y + bx.height - 16); await p.adv(1500); }
+    q = await p.evaluate(() => ({ pg: document.getElementById('saver').dataset.pg, rows: document.querySelectorAll('#pgTodo .td-row').length, t: document.getElementById('pgTtl').textContent }));
+    ok('할 일 타일을 누르면 할 일 화면(일곱 줄)', q.pg === 'todo' && q.rows === 7 && /7개 남았어/.test(q.t), q);
+    { const r = await p.locator('#pgTodo .td-row').nth(2).boundingBox(); await p.mouse.click(r.x + 200, r.y + r.height / 2); await p.adv(1200); }
+    q = await p.evaluate(() => ({ done: JSON.parse(localStorage.getItem('gk-todo')).items.filter(x => x.done).length, t: document.getElementById('pgTtl').textContent }));
+    ok('할 일 화면에서 줄을 누르면 했다로 바뀜', q.done === 1 && /6개 남았어/.test(q.t), q);
+    await p.click('#gkHome'); await p.adv(1500); q = await p.evaluate(() => document.getElementById('saver').className); ok('할 일 화면 → 홈 단추 → 위젯 면', /\bface\b/.test(q), q); await p.context().close();
     // 밤 12시대 표기
     p = await open(b, { time: newsDate + 'T00:20' }); q = await p.evaluate(() => document.getElementById('tbClock').textContent); ok('0시 20분 시계: "밤 12:20"', /^밤\s*12:20$/.test(q.trim()), q); await p.context().close();
   }

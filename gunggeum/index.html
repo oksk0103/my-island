@@ -1438,6 +1438,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
         <div class="pn ag"><div class="ag-head"><b id="agTtl"></b></div><div class="ag-list" id="agList"></div><div class="ag-ask" id="agAsk" hidden></div><div class="ag-foot" id="agFoot"></div></div>
       </section>
       <section class="pg-s pg-wx" id="pgWx"></section>
+      <section class="pg-s pg-todo" id="pgTodo"></section>
     </div>
     <div class="sv-face" id="svFace"><div class="fc-grid" id="fcGrid">
       <section class="fc-t fc-clock" data-tile="cal"><div class="cl-l"><div class="fc-date" id="fcDate"></div><div class="fc-tip" id="fcTip"></div></div><div class="fc-time" id="fcTime"></div><div class="fc-tm" id="fcTm"></div></section>
@@ -2333,6 +2334,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (d.tile === 'study') { svTaps = []; try { studyOn() ? localStorage.removeItem('gk-study') : localStorage.setItem('gk-study', String(Date.now())); } catch (e) {} window.__gkSaverAt = Date.now(); delete window.__gkCover; renderSaver(); diag('saver', '공부 모드 ' + (studyOn() ? '켬' : '끔')); return; }
     { const r = $('fcWx').getBoundingClientRect(); if (d.tile === 'cal' && saverEl.classList.contains('face') && d.x >= r.left && d.x <= r.right && d.y >= r.top - 6 && d.y <= r.bottom) d.tile = 'wx'; } // 시계 타일 안의 날씨 줄은 날씨 화면으로
     if (d.tile === 'wx' && svWide()) { svTaps = []; window.__gkForce = { s: 'wx', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날씨 줄 → 날씨 화면'); return; }
+    if (d.tile === 'todo' && svWide()) { svTaps = []; window.__gkForce = { s: 'todo', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '할 일 타일 → 할 일 화면'); return; }
     if (d.tile === 'cal') { svTaps = []; window.__gkForce = { s: 'cal', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날짜 → 달력'); return; }
     if (d.tile === 'sky' && window.GKSky) { svTaps = []; window.__gkForce = { s: 'sky', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '타일 → 밤하늘'); return; }
     const hadNews = !!(news && newsFresh());
@@ -2448,6 +2450,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const cal = wide && !night && fz === 'cal';
     saverEl.classList.toggle('sky', sky); saverEl.classList.toggle('face', face); saverEl.classList.toggle('cal', cal); if (!face) saverEl.classList.remove('rest', 'late');
     saverEl.classList.remove('rnp'); $('rnFront').hidden = true;
+    if (wide && fz === 'todo') { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain', 'face', 'sky', 'cal'].forEach(c => saverEl.classList.remove(c)); pgPre('todo'); renderTodoPg(); return true; } // v135: 할 일 화면(달력처럼 따로)
     if (wide && fz === 'wx') { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain', 'face', 'sky', 'cal'].forEach(c => saverEl.classList.remove(c)); pgPre('wx'); renderWx(); return true; } // 날씨 화면
     pgPre(cal ? 'cal' : '');
     if (cal) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain'].forEach(c => saverEl.classList.remove(c)); renderCal(hr); return true; }
@@ -2952,6 +2955,18 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     setH($('agAsk'), evMsg && !fl ? `<p>${escN(evMsg)}</p>` + (yn ? `<span class="pc" data-act="evyes">응, 적어 줘</span><span class="pc" data-act="evno">아니</span>` : '') : ''); $('agAsk').hidden = !(evMsg && !fl);
     setH($('agFoot'), (fl ? `<span class="pc" data-act="evdate">다시 말할래</span><span class="pc" data-act="evundo">지울래</span>` : '') + `<span class="zbar" data-act="evadd" role="button">${MIC}${calSel ? evDay(calSel).getDate() + '일에 ' : ''}일정 말하기</span>`);
   }
+  // ---------- 할 일 화면(v135, 아내 요청): 대기화면의 할 일 타일을 누르면 달력처럼 따로 크게. 한 번에 일곱 줄, 줄을 누르면 했다/안 했다 ----------
+  let tdPage = 0;
+  function renderTodoPg() {
+    const d = todoLoad(), list = todoSorted(d), left = todoOpen(d).length, SL = 7, now = new Date();
+    setH($('pgTtl'), `루아의 할 일${list.length ? `<span class="td-n">${left ? left + '개 남았어' : '다 했어'}</span>` : ''}`); setH($('pgSub'), zClock());
+    const pages = Math.max(1, Math.ceil(list.length / SL)); if (tdPage >= pages) tdPage = 0;
+    const shown = list.slice(tdPage * SL, tdPage * SL + SL), more = list.length - (tdPage + 1) * SL;
+    let h = shown.map(it => `<div class="td-row${it.done ? ' done' : ''}" data-todo="${it.id}"><span class="bx"></span><span class="tx">${escN(it.text)}</span><span class="du">${it.done ? '했어' : escN(dueWord(it.due))}</span></div>`).join('');
+    if (!list.length) h = '<div class="td-none">적어 둔 할 일이 없어.<small>"내일 수학 숙제 있어"처럼 말하면 여기 적혀.</small></div>';
+    const foot = (list.length > SL ? `<span class="pc" data-act="tdmore">${more > 0 ? `그리고 ${more}개 더` : '처음으로'}</span>` : '') + `<span class="zbar" data-act="tdadd" role="button">${MIC}할 일 말하기</span>`;
+    setH($('pgTodo'), `<div class="td-list">${h}</div><div class="td-foot">${foot}</div>`);
+  }
   // ---------- 날씨 화면(Z): 화면 전체가 지금 날씨의 하늘. 앱이 이미 받는 값만 쓴다 ----------
   // 답 글자 단: 한두 줄 80 → 서너 줄 72 → 다섯 줄까지 64. 그보다 길면 64 · 다섯 줄씩 쪽을 나눈다(흐림 없음)
   let LPP = 5, PGH = 450, ansPages = 1, ansPage = 0; // 한 쪽 줄 수: 높이 780 미만이면 넷
@@ -3091,6 +3106,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     else if (act === 'mon') { calOff = Math.max(-1, Math.min(11, calOff + +a.dataset.d)); calSel = ''; agPage = 0; renderSaver(); }
     else if (act === 'more') { agPage++; renderSaver(); }
     else if (act === 'wxmore') { wxMore = !wxMore; renderSaver(); }
+    else if (act === 'tdmore') { tdPage++; renderSaver(); }
+    else if (act === 'tdadd') { exitSaver(); if (saverEl.hidden) { try { $('micBtn') && $('micBtn').click(); } catch (e) {} } }
     else if (act === 'monnow') { calOff = 0; calSel = ''; agPage = 0; renderSaver(); }
     else if (act === 'evundo') { evUndo('', true); renderSaver(); }
     else if (act === 'evyes') { const P = evPend; evPend = null; evMsg = ''; if (P) evAdd(P.orig, P.text, P.date, P); renderSaver(); }
@@ -3115,6 +3132,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if ((m = t.match(/^(오늘|내일)?(은|이)?(무슨요일|며칠|몇월며칠|몇일)(이야|야|이지|지|이에요)?$/))) { if (m[1] === '내일') d.setDate(d.getDate() + 1); todoShow(s, `${m[1] || '오늘'}은 《${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일》이야.`, []); return true; }
     if (/^(루아|오늘)?신문(을|좀)?(보여줘|펴줘|열어줘|읽어줘|볼래|보자|줘|보여|펴)$/.test(t)) { if (news && newsFresh()) { if (!saverEl.hidden) exitSaver(); hush(); openPaper(0); } else todoShow(s, '오늘 신문이 아직 안 왔어.', []); return true; }
     if (/^(이번달|이달)?(달력|일정)(을|좀)?(보여줘|열어줘|볼래|보자|보여)$/.test(t)) { previewSaver('cal'); return true; }
+    if (/^(오늘)?(할일|숙제|할일목록)(을|좀)?(보여줘|열어줘|볼래|보자|보여)$/.test(t)) { previewSaver('todo'); return true; }
     if (/^(오늘)?(밤하늘|달)(을|좀)?(보여줘|열어줘|볼래|보자|보여)$/.test(t)) { if (window.GKSky) previewSaver('sky'); else todoShow(s, '밤하늘은 지금 못 보여 줘.', []); return true; }
     return false;
   }
@@ -3137,9 +3155,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const c = saverEl.classList, clockPage = c.contains('plain') || c.contains('paper-done');
     const on = clockPage && left > 0; c.toggle('todo', on); $('svTodo').hidden = !on;
     if (on) { const h2 = todoRows(list, 'svt-row', 4); if ($('svTodoL').innerHTML !== h2) $('svTodoL').innerHTML = h2; $('svTodoN').textContent = left + '개 남았어'; }
+    if (c.contains('pgx') && saverEl.dataset.pg === 'todo') renderTodoPg();
     if (c.contains('face')) {
       $('fcTodoN').textContent = list.length ? left : '0'; $('fcTodoS').textContent = !list.length ? '할 일' : left ? '할 일 남았어' : '다 했어';
-      const hf = list.length ? todoRows(list, 'fc-row', list.length <= 3 ? 3 : 2).replace('svt-more', 'fc-more').replace('tdo-more', 'fc-more') : '<div class="fc-empty">할 일이 생기면 말해 줘.</div>';
+      const hf = list.length ? todoRows(list, 'fc-row', 5).replace('svt-more', 'fc-more').replace('tdo-more', 'fc-more') : '<div class="fc-empty">할 일이 생기면 말해 줘.</div>';
       if ($('fcTodoL').innerHTML !== hf) $('fcTodoL').innerHTML = hf;
     }
     let dn = $('svTodoDone'); const allDone = clockPage && !left && list.length > 0;
@@ -5489,6 +5508,41 @@ body[data-night] #app{--paperbg:linear-gradient(#17181C,#121316);--zbg:#141519;-
   --strip:rgba(255,255,255,.07);--strips:inset 0 1px 0 rgba(255,255,255,.06), 0 10px 24px -14px rgba(0,0,0,.7);--ink:#E6E1D6;--muted:#9C978B;--skyink:#E6E1D6;color:#E6E1D6}
 body[data-night][data-scr=ask] .gk-home{background:#24262C !important;color:#E6E1D6 !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 8px 20px -12px rgba(0,0,0,.7) !important}
 body[data-night][data-scr=ask] .gk-home svg{stroke:#E6E1D6 !important}
+/* v135(아내 요청): 대기화면 할 일 타일에 다섯 줄까지 — 시계 타일을 조금 줄이고 줄 높이를 낮춘다. 더 많으면 '그리고 N개 더', 타일을 누르면 할 일 화면 */
+@media (min-width:900px){
+#saver.saver.face .fc-grid{grid-template-rows:minmax(0,1fr) 292px 150px}
+#saver.saver.face .fc-todo{padding:14px 36px}
+#saver.saver.face .fc-row{min-height:44px;font-size:26px;gap:16px}
+#saver.saver.face .fc-row .bx{width:26px;height:26px}
+#saver.saver.face .fc-row .du{font-size:22px}
+#saver.saver.face .fc-more{min-height:40px;font-size:22px}
+#saver.saver.face .fc-time{font-size:116px;line-height:98px}
+}
+@media (min-width:900px) and (max-height:780px){
+#saver.saver.face .fc-grid{grid-template-rows:minmax(0,1fr) 262px 140px}
+#saver.saver.face .fc-row{min-height:40px;font-size:24px}
+#saver.saver.face .fc-more{min-height:36px}
+#saver.saver.face .fc-time{font-size:104px;line-height:90px}
+}
+/* v135: 할 일 화면 — 달력 장과 같은 옅은 바탕, 큰 줄 일곱 개 */
+#saver.pgx[data-pg=todo]{background:var(--paperbg) !important;color:var(--zk)}
+#saver[data-pg=todo] .pg-ttl, #saver[data-pg=todo] .pg-sub{color:var(--zk)}
+#saver[data-pg=todo] .pg-sub small{color:var(--zk2)}
+#saver[data-pg=todo] .pg-ttl .td-n{margin-left:18px;font:500 28px/1 "Pretendard",sans-serif;color:var(--zk2)}
+#saver[data-pg=todo] .pg-todo{display:flex !important;flex-direction:column;position:absolute;left:160px;right:160px;top:128px;bottom:40px}
+.pg-todo .td-list{flex:1 1 auto;display:flex;flex-direction:column;justify-content:flex-start;min-height:0}
+.pg-todo .td-row{display:grid;grid-template-columns:56px minmax(0,1fr) auto;align-items:center;column-gap:20px;height:80px;flex:none;box-sizing:border-box;padding:0 8px;cursor:pointer}
+.pg-todo .td-row + .td-row{box-shadow:inset 0 1px 0 rgba(20,30,60,.10)}
+.pg-todo .td-row .bx{width:40px;height:40px;border-radius:50%;box-shadow:inset 0 0 0 3px var(--zk);justify-self:center}
+.pg-todo .td-row .tx{font:600 40px/1.2 "Pretendard",sans-serif;letter-spacing:-.02em;color:var(--zk);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pg-todo .td-row .du{font:500 30px/1 "Pretendard",sans-serif;color:var(--zk2)}
+.pg-todo .td-row.done .bx{background:var(--zac);box-shadow:none;position:relative}
+.pg-todo .td-row.done .bx::after{content:"";position:absolute;left:12px;top:9px;width:10px;height:17px;border:solid #fff;border-width:0 4px 4px 0;transform:rotate(45deg)}
+.pg-todo .td-row.done .tx{color:var(--zk2);text-decoration:line-through;text-decoration-thickness:3px}
+.pg-todo .td-none{margin:auto 0;font:600 40px/1.3 "Pretendard",sans-serif;color:var(--zk)}
+.pg-todo .td-none small{display:block;margin-top:14px;font:500 28px/1.4 "Pretendard",sans-serif;color:var(--zk2)}
+.pg-todo .td-foot{flex:none;display:flex;align-items:center;gap:14px;padding-top:20px}
+.pg-todo .td-foot .zbar{margin-left:auto}
 @media (min-width:900px){
 #saver .fc-msg{left:34%;bottom:9vh;max-width:56%;white-space:normal;text-align:center} /* v135: 안내 띠는 왼쪽 큰 카드 안 — 묻기 타일을 가리지 않게 */
 }
