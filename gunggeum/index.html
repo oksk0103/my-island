@@ -2294,8 +2294,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (svTaps.length >= 5) { svTaps = []; svDown = null; clearTimeout(svHold); openLog(); }
   }, true);
   saverEl.addEventListener('pointermove', e => { if (svDown && Math.abs(e.clientX - svDown.x) > 14) clearTimeout(svHold); }, true);
-  // 공부 모드: 표지를 조용하게. 아이가 직접 끄거나, 90분이 지나거나 밤 9시가 되면 말없이 꺼진다
-  function studyOn(){ let t = 0; try { t = +localStorage.getItem('gk-study') || 0; } catch (e) {} const h = new Date().getHours(), ok = t && Date.now() - t < 90 * 60e3 && Date.now() >= t && h >= 6 && h < 21; if (t && !ok) { try { localStorage.removeItem('gk-study'); } catch (e) {} } return !!ok; }
+  // 공부 모드: 표지를 조용하게. 아이가 다시 누를 때까지 켜져 있다(v132부터 시간 제한 없음)
+  function studyOn(){ let t = 0; try { t = +localStorage.getItem('gk-study') || 0; } catch (e) {} return !!t; } // v132: 시간 제한 없음(부모 요청) — 아이가 다시 누를 때까지 켜져 있다
   window.__gkStudyOn = studyOn;
   saverEl.addEventListener('pointerup', e => {
     clearTimeout(svHold); const d = svDown; svDown = null; if (d) svUpAt = Date.now(); if (!d || saverEl.hidden || !logEl.hidden) return;
@@ -2315,7 +2315,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (d.cv) { const ft = $('fcFeat'), cur = ['news', 'word', 'piece', 'moon'].find(c => ft.classList.contains(c));
       if (d.cv !== cur) { svTaps = []; window.__gkCover = { k: d.cv, at: Date.now() }; renderSaver(); return; }
       d.tile = ft.dataset.tile; d.cv = ''; diag('saver', '켜진 탭을 한 번 더 → 그 장 열기'); } // v126: 이미 켜진 탭(예: '신문')을 누르면 그 장의 내용으로 간다
-    if (d.tile === 'study') { svTaps = []; try { studyOn() ? localStorage.removeItem('gk-study') : localStorage.setItem('gk-study', String(Date.now())); } catch (e) {} window.__gkSaverAt = Date.now(); delete window.__gkCover; renderSaver(); diag('saver', '공부 모드 ' + (studyOn() ? '켬' : '끔')); { const h = new Date().getHours(); if (!studyOn() && (h >= 21 || h < 6)) svSay('공부 모드는 아침 6시부터 밤 9시까지 켤 수 있어.'); } return; } // v132: 밤 9시 뒤에 눌러도 아무 반응이 없던 것 → 안내
+    if (d.tile === 'study') { svTaps = []; try { studyOn() ? localStorage.removeItem('gk-study') : localStorage.setItem('gk-study', String(Date.now())); } catch (e) {} window.__gkSaverAt = Date.now(); delete window.__gkCover; renderSaver(); diag('saver', '공부 모드 ' + (studyOn() ? '켬' : '끔')); return; }
     { const r = $('fcWx').getBoundingClientRect(); if (d.tile === 'cal' && saverEl.classList.contains('face') && d.x >= r.left && d.x <= r.right && d.y >= r.top - 6 && d.y <= r.bottom) d.tile = 'wx'; } // 시계 타일 안의 날씨 줄은 날씨 화면으로
     if (d.tile === 'wx' && svWide()) { svTaps = []; window.__gkForce = { s: 'wx', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날씨 줄 → 날씨 화면'); return; }
     if (d.tile === 'cal') { svTaps = []; window.__gkForce = { s: 'cal', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날짜 → 달력'); return; }
