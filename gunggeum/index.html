@@ -3062,7 +3062,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const c = w.code, wet = [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99].includes(c), snow = [71, 73, 75, 77, 85, 86].includes(c);
     delete saverEl.dataset.wx;
     const ic = (code, dk) => `<span class="ic${!dk && code <= 1 ? ' sun' : ''}">${wxIcon(code, dk)}</span>`, hm = t => { const x = new Date(t); return `${ampm(x.getHours())} ${x.getHours() % 12 || 12}:${pad(x.getMinutes())}`; };
-    setH($('pgTtl'), '');
+    setH($('pgTtl'), `날씨${settings.wxName ? `<em class="ap-n">${escN(settings.wxName)}</em>` : ''}`); // v135: 다른 앱처럼 머리줄에 앱 이름
     { // 하늘: 바탕(시간대 × 구름 정도) + 겹(흐르는 구름 · 비 · 눈 · 안개 · 번쩍임 · 별 · 먼지). 모든 날씨 코드가 제 하늘을 갖는다
       const nowH = hr + d.getMinutes() / 60, near = (a, b) => Math.abs(a - b) <= 40 / 60, tod = near(nowH, set) || near(nowH, rise) ? 'dusk' : nowH > set || nowH < rise ? 'night' : 'day';
       const fog = c === 45 || c === 48, driz = [51, 53, 55, 56, 57].includes(c), heavy = [65, 81, 82, 95, 96, 99].includes(c), thun = [95, 96, 99].includes(c), snow2 = [75, 86].includes(c);
@@ -5543,6 +5543,8 @@ body[data-scr=todo] .gk-home svg{stroke:var(--zk) !important}
 #saver.pgx[data-pg=todo]{background:var(--paperbg) !important;color:var(--zk)}
 #saver[data-pg=todo] .pg-ttl, #saver[data-pg=todo] .pg-sub{color:var(--zk)}
 #saver[data-pg=todo] .pg-sub small{color:var(--zk2)}
+#saver[data-pg=wx] .pg-ttl{font:600 30px/1 "Pretendard",sans-serif !important;letter-spacing:-.02em;color:#fff;margin-left:20px !important}
+#saver[data-pg=wx] .pg-ttl .ap-n{font-style:normal;margin-left:18px;font:500 28px/1 "Pretendard",sans-serif;color:rgba(255,255,255,.82)}
 #saver[data-pg=todo] .pg-ttl .td-n{margin-left:18px;font:500 28px/1 "Pretendard",sans-serif;color:var(--zk2)}
 #saver[data-pg=todo] .pg-todo{display:flex !important;flex-direction:column;position:absolute;left:160px;right:160px;top:128px;bottom:40px}
 .pg-todo .td-list{flex:1 1 auto;display:flex;flex-direction:column;justify-content:flex-start;min-height:0}
