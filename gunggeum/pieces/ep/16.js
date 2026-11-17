@@ -21,7 +21,7 @@ EPX[16]={day:'과학 2',topic:'눈송이',cat:'날씨',field:'과학',frame:'v2'
    const F=flake(S,cx,cy,R,{w:14,wb:9,core:WO});
    // 이름표 선
    const [tx1,ty1]=tipXY(cx,cy,R,1);el('path',{d:`M${tx1+14},${ty1}H1460V230`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,1460,212,'갈래 6개','v28','end');
-   el('path',{d:`M${cx-30},${cy+30}L${cx-260},${cy+260}H760`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,760,cy+246,'가운데 육각형','v22');
+   el('path',{d:`M${cx-30},${cy+30}L${cx-260},${cy+260}H650`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,650,cy+246,'가운데 육각형','v22');
    wl(S,648,680,1504,680,W0m);tx(S,648,718,'관측 · 크게 키운 눈송이','v22m');
    let on=false;
    return ()=>{if(on||calm())return;on=true;loop(S,t=>{const c=t%6;const e=c<2.2?EO(c/2.2):1;F.grow(c<4.6?Math.min(1,e*1.4):1-EO((c-4.6)/1.4)*.8,c<4.6?cl(e*1.4-.4):0);});};}},
