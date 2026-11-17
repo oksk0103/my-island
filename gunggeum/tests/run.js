@@ -510,6 +510,7 @@ async function newsTests(b) {
   { // 17. 달 카드: 오늘 이름과 같은 "다음 달"을 내지 않음 (오늘 반달인데 "반달은 내일" 금지)
     console.log('17. 달 카드 다음 모양');
     const p = await open(b, { time: newsDate + 'T19:30', read: newsDate }); await p.saver();
+    await p.evaluate(() => { window.__gkCover = { k: 'moon', at: Date.now() }; }); await p.saver(); // v147부터 달 카드는 보름·초승 무렵에만 저절로 — 여기서는 달 갈래를 직접 고른다
     const m = await p.evaluate(() => { const sk = window.Sky && window.Sky.compute ? null : null; const big = [...document.querySelectorAll('#fcFeat .cc-big')].map(x => x.textContent.trim()); const all = document.getElementById('fcFeat').innerText; return { big, all }; });
     const nm = m.big.find(x => /달/.test(x)) || '';
     ok('달 카드: "' + nm + '" 아래에 "' + nm + '은 …"이 없다', !!nm && !new RegExp(nm + '은 ').test(m.all), m);
@@ -667,11 +668,11 @@ async function newsTests(b) {
     q = await p.evaluate(() => [document.querySelector('#fcFeat .cc-h').textContent, document.querySelector('#fcFeat .cc-foot').textContent.trim()]); ok('조각 갈래: 음력 조각 장 표지(보기 →)', q[0] === '설날은 왜 해마다 날짜가 바뀔까?' && /^보기/.test(q[1]), q);
     { const bx = await p.locator('#fcFeat .cc-h').boundingBox(); await p.mouse.click(bx.x + 40, bx.y + 20); await p.adv(2500); }
     q = await p.evaluate(() => { const f = document.getElementById('pcFrame'); return f && f.contentDocument ? [f.contentDocument.querySelector('#cover h2').textContent, !document.getElementById('saver').hidden] : null; });
-    ok('조각 표지를 누르면 조각 장이 화면 전체로 열림(대기화면은 뒤에 그대로)', q && /설날은 왜 해마다/.test(q[0]) && q[1], q);
+    ok('조각 표지를 누르면 조각 장이 화면 전체로 열림(대기화면은 뒤에 그대로)', q && /설날은\s*왜\s*해마다/.test(q[0]) && q[1], q); // v155 새 틀은 제목을 줄바꿈으로 나눔
     const fr = p.frameLocator('#pcFrame'); for (let i = 0; i < 40; i++) { if (await p.evaluate(() => document.getElementById('pcFrame').contentDocument.getElementById('next').textContent.trim()) === '다 봤어') break; await fr.locator('#next').click(); await p.adv(900); }
     q = await p.evaluate(() => document.getElementById('pcFrame').contentDocument.getElementById('next').textContent.trim()); ok('마지막 장의 단추는 "다 봤어"', q === '다 봤어', q);
     await fr.locator('#next').click(); await p.adv(1500); q = await p.evaluate(() => [!!document.getElementById('pcFrame'), !document.getElementById('saver').hidden]); ok('"다 봤어" → 조각 장 닫히고 홈', !q[0] && q[1], q);
-    { const bx = await p.locator('#fcFeat .cc-h').boundingBox(); await p.mouse.click(bx.x + 40, bx.y + 20); await p.adv(2500); } await fr.locator('#logo').click(); await p.adv(1500);
+    { const bx = await p.locator('#fcFeat .cc-h').boundingBox(); await p.mouse.click(bx.x + 40, bx.y + 20); await p.adv(2500); } await fr.locator('#ttl').click(); await p.adv(1500); // v155 새 틀: 로고 원 대신 머리글을 누르면 홈
     ok('조각 장의 홈 단추 → 닫힘', await p.evaluate(() => !document.getElementById('pcFrame')));
     { const bx = await p.locator('#fcFeat .cc-h').boundingBox(); await p.mouse.click(bx.x + 40, bx.y + 20); await p.adv(2500); } await p.jump(11 * 60e3);
     ok('조각 장도 10분 손대지 않으면 닫힘', await p.evaluate(() => !document.getElementById('pcFrame')));
