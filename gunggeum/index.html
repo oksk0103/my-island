@@ -1435,9 +1435,9 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     <article class="rn-art nopic" id="ppArt">
       <h2 class="rn-hed" id="ppHed"></h2>
       <p class="rn-deck" id="ppLede"></p>
-      <figure class="rn-fig" id="ppPhoto"></figure>
+      <div class="rn-aside"><figure class="rn-fig" id="ppPhoto"></figure>
       <div class="rn-cap" id="ppCap"></div>
-      <div class="rn-box rn-word" id="ppWord"><span class="rn-lab">오늘의 낱말</span><div class="rn-w"><b id="ppW"></b><span id="ppHj" style="display:contents"></span></div><p id="ppM"></p></div>
+      <div class="rn-box rn-word" id="ppWord"><span class="rn-lab">오늘의 낱말</span><div class="rn-w"><b id="ppW"></b><span id="ppHj" style="display:contents"></span></div><p id="ppM"></p></div></div>
       <div class="rn-text" id="ppBody"></div>
       <div class="rn-src" id="ppSrc"></div>
     </article>
@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v153</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v154</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v153</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v154</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2533,17 +2533,17 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const key = [pk, pic ? 1 : 0, innerWidth, innerHeight, w ? w.t + '|' + w.code + '|' + w.hi + '|' + w.lo : '', JSON.stringify(A).length].join('|'); if (host.dataset.k === key) return; host.dataset.k = key;
     setTimeout(tbClock, 0); host.innerHTML = `<div class="rn-sheet"><span class="rn-home" data-rn="home" role="button" aria-label="홈으로"><svg class="ds-lg" viewBox="96 92 320 344" aria-hidden="true"><path d="M116 112H206V169H116V226H206"/><circle cx="348" cy="169" r="46"/><path d="M128 296C186 366 320 372 386 288"/><circle class="ds-dot" cx="258" cy="412" r="24"/></svg></span>
       <header class="rn-mast"><div class="rn-mhead"><b class="rn-name">루아 신문</b><span class="rn-nsub">제${escN(news.no)}호</span></div><div class="rn-ear ds-clock"></div><div class="rn-rule2"></div>
-        <div class="rn-date"><span>${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일${w ? ` · ${escN(w.t)}° ${escN((WX[w.code] || [''])[0])}` : ''}</span><span>${A.slice(1, 3).map((x, i) => `${i + 2}면 ${escN(x.tag || '')}`).join(' · ')}</span><span>1면</span></div></header>
+        <div class="rn-date"><span>${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일${w ? ` · ${escN(w.t)}° ${escN((WX[w.code] || [''])[0])}` : ''}</span><span>1면</span></div></header>
       <div class="rn-body"><article class="rn-lead${pic ? '' : ' nopic'}" data-rn="art" data-i="0"><span class="rn-lab">${escN(a.tag || '오늘')}</span><h2>${escN(a.title)}</h2>
-        <div class="rn-cols"><div class="rn-left">${pic ? `<figure class="rn-fig"><img src="${pic.src}" alt=""></figure><div class="rn-cap">${escN(pic.title)}</div>${num ? word : ''}` : ''}</div>
-        <div class="rn-right"><div class="rn-text" id="rnText">${a.lede ? '<p class="ld">' + npWords(a.lede) + '</p>' : ''}${npParas(a.body, false)}</div><span class="rn-more">이어 읽기 ▸</span>${!pic && num ? word : ''}</div></div></article>
+        <div class="rn-cols"><div class="rn-left">${pic ? `<figure class="rn-fig"><img src="${pic.src}" alt=""></figure><div class="rn-cap">${escN(pic.title)}</div>` : (a.lede ? '<p class="rn-ldA">' + npWords(a.lede) + '</p>' : '')}${num ? word : ''}</div>
+        <div class="rn-right"><div class="rn-text" id="rnText">${pic && a.lede ? '<p class="ld">' + npWords(a.lede) + '</p>' : ''}${npParas(a.body, false)}</div><span class="rn-more">이어 읽기 ▸</span></div></div></article>
       <aside class="rn-side">${A.slice(1, 3).map((x, i) => `<div class="rn-it" data-rn="art" data-i="${i + 1}"><span class="rn-lab">${escN(x.tag || '')}<i>${i + 2}면</i></span><h3>${escN(x.title)}</h3><p>${npWords(x.lede || '')}</p></div>`).join('')}
         ${num ? `<div class="rn-box rn-num"><span class="rn-lab">오늘의 숫자</span><b>${escN(npGlue(num.n))}</b><p>${npWords(num.t || '')}</p></div>` : word}</aside></div></div>`;
     npFit(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(npFit);
   }
   function npFit() { // 1면 본문이 넘치면 뒤에서부터 문장 단위로 덜어 낸다 (나머지는 기사 화면에서 이어진다)
     const box = $('rnText'); if (!box) return; const lead = box.closest('.rn-lead'), cols = lead.querySelector('.rn-cols'), nopic = lead.classList.contains('nopic');
-    const over = () => nopic ? cols.scrollWidth > cols.clientWidth + 2 || cols.scrollHeight > cols.clientHeight + 2 : box.scrollHeight > box.clientHeight + 2;
+    const over = () => box.scrollHeight > box.clientHeight + 2 || (nopic && cols.scrollHeight > cols.clientHeight + 2);
     let guard = 40; while (over() && guard-- > 0) { const ps = box.querySelectorAll('p:not(.ld)'), last = ps[ps.length - 1]; if (!last) break; const ws = [...last.querySelectorAll('.w')]; let cut = -1; for (let i = ws.length - 2; i >= 0; i--) if (/[.!?]["'”’)]*$/.test(ws[i].textContent)) { cut = i; break; }
       if (cut < 0) last.remove(); else { while (last.lastChild && last.lastChild !== ws[cut]) last.lastChild.remove(); } }
   }
@@ -3426,12 +3426,13 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function fitPaper() {
     const body = $('ppBody'), art = $('ppArt'); if (!body || paperEl.hidden) return;
     if (innerWidth < 900) { art.classList.toggle('nopic', !art.dataset.hasimg); art.classList.remove('scroll', 'tight'); art.style.removeProperty('--pf'); return; }
-    const big = innerWidth >= 1800 && innerHeight >= 940 ? 4 : 0, over = () => body.scrollHeight > body.clientHeight + 2 || body.scrollWidth > body.clientWidth + 2;
-    const tryFit = (from) => { for (let f = from; f >= 24; f--) { art.style.setProperty('--pf', f + 'px'); if (!over()) return true; } return false; };
+    // v154 지면 다듬기: 본문은 26px(큰 화면 30) 아래로 줄이지 않는다 — 넘치면 그림을 접어 넓은 두 단으로, 그래도 넘치면 낱말 줄을 접고, 마지막에만 24까지
+    const base = innerWidth >= 1800 && innerHeight >= 940 ? 30 : 26, over = () => body.scrollHeight > body.clientHeight + 2 || body.scrollWidth > body.clientWidth + 2;
+    const tryFit = (from, to) => { for (let f = from; f >= to; f--) { art.style.setProperty('--pf', f + 'px'); if (!over()) return true; } return false; };
     art.classList.remove('scroll', 'tight'); art.classList.toggle('nopic', !art.dataset.hasimg);
-    let ok = tryFit((art.dataset.hasimg ? 28 : 32) + big);
-    if (!ok && art.dataset.hasimg) { art.classList.add('nopic'); ok = tryFit(30 + big); }
-    if (!ok) { art.classList.add('tight'); ok = tryFit(28 + big); } // 낱말 상자를 접는다(낱말은 본문에 굵게 남는다)
+    let ok = tryFit(base, base);
+    if (!ok && art.dataset.hasimg) { art.classList.add('nopic'); ok = tryFit(base, base); }
+    if (!ok) { art.classList.add('tight'); ok = tryFit(base, 24); } // 낱말 줄을 접는다(낱말은 본문에 굵게 남는다)
     if (!ok) art.classList.add('scroll');
     art.style.setProperty('--ruleTop', (body.offsetTop + 2) + 'px');
   }
@@ -3997,7 +3998,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v153';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v154';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6445,6 +6446,89 @@ body[data-night] #app{--paperbg:linear-gradient(180deg,#0A1130,#111B47);--zbg:#0
   .st-none{left:20px}
   .st-none{position:static;font-size:32px;line-height:42px}
 }
+</style>
+<style id="np-v154">
+/* ===== 루아 신문 지면 다듬기(v154) — 넓은 화면(≥900)만 =====
+   판면 1504(48~1552)을 A·B·C 세 단으로: 단 사이 40(가운데 1px 괘선), A = 그림(1.6:1)·낱말 단(352), 본문 단 536~560 → 26px 본문 한 줄 평균 22~24자. 그림 없는 기사는 712 두 단(30자 안팎).
+   글자 단계는 넷: 56(머리기사·숫자) · 34(옆 기사 제목·낱말·요약) · 26(본문·부제·옆 기사 요약) · 22(꼬리표·캡션·날짜·넘김). 행간 1.65. 간격은 8의 배수.
+   상자(테두리) 대신 신문처럼 위 괘선 2px + 꼬리표. 머리줄(앱 이름·시계)은 앱 공통 규격 그대로. */
+@media (min-width:900px){
+.rn-front, .paper{--g:40px; --cA:calc((100vw - 176px) * .2472); --cB:calc((100vw - 176px) * .3933);
+  --f1:56px; --l1:68px; --f2:34px; --l2:44px; --f3:26px; --l3:43px; --f4:22px; --l4:32px}
+.rn-lab{font:700 var(--f4)/28px var(--sans);letter-spacing:.08em}
+.rn-cap{font:500 var(--f4)/var(--l4) var(--sans);letter-spacing:.02em;margin-top:8px}
+/* 낱말·숫자: 테두리 상자 → 위 괘선 */
+.rn-box{border:0;border-top:2px solid var(--nk);padding:8px 0 0;margin-top:24px}
+.rn-box > .rn-lab{position:static;display:block;background:none;padding:0;margin:0 0 4px}
+.rn-w{flex-wrap:wrap;align-items:flex-start;white-space:normal;overflow:visible;gap:0 16px}
+.rn-w > b, .rn-w b{font:900 var(--f2)/var(--l2) var(--serif)}
+.rn-w span{white-space:nowrap;flex-direction:column;align-items:center;gap:0} /* 한자 아래에 훈·음(작은 글자) — 낱말과 한 줄에 */
+.rn-w i{font:700 var(--f2)/var(--l2) var(--serif)}
+.rn-w small{font:500 var(--f4)/24px var(--sans);letter-spacing:-.02em}
+.rn-box p{font:400 var(--f3)/36px var(--serif);letter-spacing:-.01em;text-wrap:pretty}
+.rn-num{grid-template-columns:auto minmax(0,1fr);column-gap:24px;align-items:center;padding-bottom:16px} /* 큰 숫자 글자 몸통(줄 높이보다 큼)이 단 밖으로 새지 않게 */
+.rn-num > .rn-lab{grid-column:1 / -1}
+.rn-num b{font:900 var(--f1)/64px var(--serif)}
+.rn-num p{font:400 var(--f3)/36px var(--serif);text-wrap:balance}
+/* 본문 */
+.rn-text p{font:500 var(--f3)/var(--l3) var(--serif);letter-spacing:-.01em;text-indent:1em}
+.rn-text p.ld{font-weight:700;text-indent:0;margin-bottom:8px}
+/* --- 1면 --- */
+.rn-date{grid-template-columns:1fr auto;height:40px}
+.rn-body{grid-template-columns:calc(var(--cA) + var(--cB) + var(--g)) minmax(0,1fr);column-gap:var(--g);padding:16px 0}
+.rn-body::before{left:calc(var(--cA) + var(--cB) + var(--g) * 1.5);top:16px;bottom:16px}
+.rn-lead h2{margin:0 0 16px;font:900 var(--f1)/var(--l1) var(--serif);letter-spacing:-.035em}
+.rn-cols{grid-template-columns:var(--cA) var(--cB);column-gap:var(--g)}
+.rn-cols::before{left:calc(var(--cA) + var(--g) / 2)}
+.rn-more{font:700 var(--f4)/1 var(--sans);height:32px;padding-top:8px}
+.rn-ldA{font:700 var(--f2)/46px var(--serif);letter-spacing:-.03em;text-wrap:pretty}
+.rn-lead.nopic .rn-cols{display:grid;columns:auto;column-gap:var(--g);overflow:visible}
+.rn-lead.nopic .rn-left{display:flex}
+.rn-lead.nopic .rn-right{display:flex}
+.rn-lead.nopic .rn-text{display:block}
+.rn-lead.nopic .rn-more{display:flex;height:32px;margin:auto 0 0;padding-top:8px;text-align:right}
+.rn-lead.nopic .rn-box{margin-top:32px}
+.rn-it{padding-bottom:16px;margin-bottom:16px}
+.rn-it h3{margin:0 0 8px;font:700 var(--f2)/var(--l2) var(--serif);letter-spacing:-.03em}
+.rn-it p{font:400 var(--f3)/40px var(--serif);letter-spacing:-.01em;-webkit-line-clamp:3}
+.rn-side .rn-box{margin-top:auto}
+/* --- 기사 --- */
+.rn-art{grid-template-columns:var(--cA) minmax(0,1fr) minmax(0,1fr);column-gap:var(--g);padding:16px 0 8px}
+.rn-hed{font:900 var(--f1)/var(--l1) var(--serif);letter-spacing:-.035em}
+.rn-deck{margin:8px 0 24px !important;font:700 var(--f3)/40px var(--serif);letter-spacing:-.015em}
+.rn-art .rn-text{column-gap:var(--g)}
+.rn-art .rn-text p{font-size:var(--pf,26px);line-height:1.65}
+.rn-art::before{left:calc(var(--cA) + var(--g) / 2)}
+.rn-aside{grid-column:1;grid-row:3 / 6;min-height:0;display:flex;flex-direction:column}
+.rn-art .rn-aside .rn-fig, .rn-left .rn-fig{flex:0 1 auto;width:100%;aspect-ratio:1.6;min-height:0} /* 그림은 1.6:1 그대로(잘라 내지 않음), 자리가 모자랄 때만 낮아진다 */
+.rn-aside .rn-word, .rn-left .rn-word{margin-top:auto;padding-top:8px} .rn-aside .rn-cap, .rn-left .rn-cap{margin-bottom:16px}
+.rn-art.nopic .rn-aside{grid-column:1 / -1;grid-row:5}
+.rn-art.nopic .rn-text{grid-column:1 / -1;grid-row:3 / 5;columns:2;column-gap:calc(var(--g) * 2)} /* 두 단 712: 한 줄 30자 안팎 */
+.rn-art.nopic .rn-word{display:flex;align-items:baseline;gap:0 32px;margin-top:16px}
+
+.rn-art.nopic .rn-word > .rn-lab{margin:0}
+.rn-art.nopic .rn-word[hidden], .rn-art.tight .rn-word{display:none}
+.rn-art.tight .rn-text{grid-row:3 / 6}
+.rn-src{font:500 var(--f4)/var(--l4) var(--sans);padding-top:8px}
+.rn-pnav button{font:700 var(--f4)/1 var(--sans)}
+#ppDots{font:600 var(--f4)/1 var(--sans)}
+}
+@media (min-width:900px) and (max-height:780px){
+  .rn-lead h2{font-size:var(--f1);line-height:64px}
+  .rn-it h3{font-size:var(--f2);line-height:42px} .rn-it{padding-bottom:8px;margin-bottom:8px}
+  .rn-it p{-webkit-line-clamp:2}
+  .rn-num b{font-size:var(--f1);line-height:60px}
+  .rn-hed{font-size:var(--f1);line-height:64px} .rn-deck{margin:0 0 16px !important}
+}
+@media (min-width:1800px) and (min-height:940px){
+  .rn-front, .paper{--g:48px; --cA:calc((100vw - 192px) * .2472); --cB:calc((100vw - 192px) * .3933);
+    --f1:64px; --l1:78px; --f2:40px; --l2:52px; --f3:30px; --l3:50px; --f4:24px; --l4:34px}
+  .rn-text p{font-size:var(--f3);line-height:var(--l3)} .rn-art .rn-text p{font-size:var(--pf,30px)}
+  .rn-lead h2, .rn-hed{font-size:var(--f1);line-height:var(--l1)} .rn-it h3{font-size:var(--f2);line-height:var(--l2)} .rn-it p{font-size:var(--f3);line-height:46px}
+  .rn-deck{font-size:var(--f3);line-height:46px} .rn-ldA{line-height:54px} .rn-box p, .rn-num p{line-height:42px} .rn-num b{line-height:74px}
+}
+/* 홈 신문 표지: 표지 판 안의 둥근 안쪽 판(상자 속 상자)을 걷고 가는 괘선만 */
+@media (min-width:900px){ #saver.saver.face .cc-r:not(.cc-hz){padding:0;border-radius:0;background:none;box-shadow:none} }
 </style>
 </body>
 </html>
