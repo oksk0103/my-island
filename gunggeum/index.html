@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v152</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v153</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v152</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v153</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2050,6 +2050,9 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   // fresh: '일정 말하기'를 누른 바로 그 듣기에만 푼다(말을 받은 뒤 늦게 끝나는 옛 듣기가 새 되묻기를 지우지 않게)
   function evListenEnd() { if (!evPend || evPend.from !== 'cal' || !evPend.fresh) return false; evPend = null; evMsg = ''; previewSaver('cal'); return true; }
   function todoListenEnd() { if (!todoPend || todoPend.from !== 'todo' || !todoPend.fresh) return false; todoPend = null; previewSaver('todo'); return true; } // v140: '할 일 말하기'로 듣다가 말없이 끝나면 할 일 화면으로
+  // v153: 말 끝을 기다리는 시간. 아이는 말하다 '음…' 하고 쉬므로 넉넉히. 말이 덜 끝난 꼴(조사·이음말로 끝남)이면 더 기다린다
+  const LISTEN_MORE = /((^|\s)(그리고|근데|그런데|그래서|그러니까|그러면|있잖아요?|음+|어+|저기|왜냐하면|그게|뭐냐면)|[은는이가을를에의도랑와과며면데]|니까|에서|한테|까지|부터|처럼|보다|하고|하는데)$/;
+  function listenWait(t) { t = String(t || '').trim().replace(/[.,!?~…]+$/, ''); return !t ? 3000 : LISTEN_MORE.test(t) ? 4200 : 2600; }
   function stopListening() { if (rec) { try { rec.stop(); } catch (e) {} } }
   function startListening() {
     if (busy || listening) return;
@@ -2060,17 +2063,19 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     if (!paperEl.hidden) { paperCtx = curArticle(); hidePaper(); app.dataset.fromPaper = '1'; app.dataset.ppListen = '1'; } // v136: 신문에서 물어보기 — 듣는 동안 머리줄은 질문 앱(홈 단추 보임)
     else delete app.dataset.ppListen;
     keepAwake();
-    rec = new SR(); rec.lang = 'ko-KR'; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
+    rec = new SR(); rec.lang = 'ko-KR'; rec.interimResults = true; rec.continuous = true; rec.maxAlternatives = 1; // v153: 아이가 말하다 잠깐 쉬어도 끊지 않게 — 끝은 우리가 정한다(아래 listenWait)
+    const recAt = Date.now(); clearTimeout(silenceTimer); silenceTimer = setTimeout(stopListening, 25000);
     heard = ''; input.value = ''; listening = true; $('loText').textContent = ''; chime(true);
     setState('listen', '듣는 중', '말해 봐. 다 말하면 잠깐 기다려.');
     draw('듣고 있어.', false, 'soft'); setChips([]); hidePic(); setEyebrow('piece'); eyebrow.textContent = ''; delete app.dataset.home;
     rec.onresult = e => {
-      let interim = '', final = '';
-      for (let i = e.resultIndex; i < e.results.length; i++) { const t = e.results[i][0].transcript; if (e.results[i].isFinal) final += t; else interim += t; }
-      if (final) heard = (heard + ' ' + final).trim();
-      input.value = (heard + ' ' + interim).trim(); $('loText').textContent = input.value;
+      let interim = '', fin = '';
+      for (let i = 0; i < e.results.length; i++) { const t = e.results[i][0].transcript.trim(); if (!t) continue;
+        if (e.results[i].isFinal) { if (fin && t.startsWith(fin)) fin = t; else if (!fin.endsWith(t)) fin = (fin + ' ' + t).trim(); } // 안드로이드 Chrome은 앞 말을 되풀이해 붙여 보내기도 함
+        else interim += ' ' + t; }
+      heard = fin; input.value = (heard + ' ' + interim).replace(/\s+/g, ' ').trim(); $('loText').textContent = input.value;
       if (input.value) draw(input.value, false, 'soft');
-      clearTimeout(silenceTimer); silenceTimer = setTimeout(stopListening, 1800);
+      clearTimeout(silenceTimer); const w = listenWait(input.value); silenceTimer = setTimeout(() => { diag('mic', `말 끝 (${w / 1000}초 조용)`); stopListening(); }, Math.min(w, Math.max(400, 25000 - (Date.now() - recAt))));
     };
     rec.onerror = e => {
       listening = false; clearTimeout(silenceTimer);
@@ -3992,7 +3997,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v152';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v153';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
