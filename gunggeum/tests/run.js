@@ -301,7 +301,7 @@ async function newsTests(b) {
     let p = await open(b, { time: newsDate + 'T16:10', read: newsDate }), s;
     ok('캐릭터(궁금이) 요소 없음', await p.evaluate(() => !document.querySelector('svg.gk, #loBuddy, .lo-buddy, .lo-glow, .wordmark .eye')));
     // 조각 장 → 궁금칸 → 답 → 아까 물은 것
-    await p.saver(); await p.evaluate(() => { window.__gkCover = { k: 'piece', at: Date.now() }; }); await p.adv(16000); ok('표지 갈래 셋(조각 갈래 뺌, v138): 신문·낱말·조각·달', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent).join('') === '신문낱말달' && document.getElementById('fcFeat').classList.contains('piece')));
+    await p.evaluate(() => { window.__gkPieceNoPage = true; }); await p.saver(); await box('#svFace [data-cv="piece"]'); ok('표지 갈래 넷: 신문·낱말·조각·달 (v139 다시 넣음): 신문·낱말·조각·달', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent).join('') === '신문낱말조각달' && document.getElementById('fcFeat').classList.contains('piece')));
     await box('#fcFeat .cc-h'); s = await p.st(); ok('조각 장 본문 → 궁금칸(조각과 이어 묻기 딸려 옴)', s.home && !s.saver && s.sheet === '뭐가 궁금해?' && await p.evaluate(() => !!document.querySelector('#zUnder .zu-pc') && !!document.querySelector('#zUnder .zu-chip')), s);
     const R = () => p.evaluate(() => { const r = document.querySelector('.qbox').getBoundingClientRect(); return [r.left, r.top, r.right, r.bottom].map(Math.round).join(','); });
     const r0 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'listen'; }); await p.adv(400); const r1 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'think'; }); await p.adv(400); const r2 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'idle'; });
@@ -311,7 +311,7 @@ async function newsTests(b) {
     const cnt = (await p.st()).count; await p.click('#gkHome'); await p.adv(1500); s = await p.st(); ok('답의 홈 단추 → 위젯 면', /^face/.test(s.saver), s.saver);
     await p.mouse.click(20, 20); await p.adv(1500); ok('궁금칸에 아까 물은 것 한 줄', await p.evaluate(() => !!document.querySelector('#zUnder .zu-prev')));
     await p.click('#zUnder .zu-prev'); await p.adv(1500); s = await p.st(); ok('아까 물은 것 → 그 답을 다시 엶 (다시 묻지 않음, 질문 수 그대로)', p.api === a0 + 1 && !s.home && /햇빛/.test(s.sheet) && s.count === cnt, [p.api, s.count, cnt]);
-    await p.click('#gkHome'); await p.adv(1500); await p.evaluate(() => { window.__gkCover = { k: 'piece', at: Date.now() }; }); await p.adv(16000); await box('#fcFeat .cc-foot'); await p.adv(8000); s = await p.st(); ok('조각 장의 이어 묻기 칩 → 궁금칸을 거치지 않고 바로 답', p.api > a0 + 1 && !s.home && !s.saver && s.count === cnt + 1, [p.api - a0, s.count, cnt]);
+    await p.click('#gkHome'); await p.adv(1500); await box('#svFace [data-cv="piece"]'); await box('#fcFeat .cc-foot'); await p.adv(8000); s = await p.st(); ok('조각 장의 이어 묻기 칩 → 궁금칸을 거치지 않고 바로 답', p.api > a0 + 1 && !s.home && !s.saver && s.count === cnt + 1, [p.api - a0, s.count, cnt]);
     // 긴 답: 문장 끝에서만 쪽 나눔
     await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); p.api++; r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: LONG }], stop_reason: 'end_turn' } }); });
     await p.say('달은 왜 모양이 바뀌어?', 12000);
@@ -628,6 +628,26 @@ async function newsTests(b) {
     q = await p.evaluate(() => [!!document.querySelector('.st-big'), document.querySelector('.st-hero') ? !/NaN/.test(document.querySelector('.st-hero').innerText) : false]); ok('저장값이 일부 깨져도 공부칸이 그려짐', q[0] && q[1], q);
     await p.adv(11 * 60e3); q = (await p.st()).saver; ok('공부칸도 10분 손대지 않으면 위젯 면으로', /^face/.test(q), q);
     await p.context().close();
+  }
+
+  { // 21. v139 넘겨 보는 조각 장(음력)
+    console.log('21. 조각 장 (v139)');
+    const p = await open(b, { time: '2026-11-18T16:20' }); let q;
+    await p.saver(); { const bx = await p.locator('#svFace [data-cv="piece"]').boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); }
+    q = await p.evaluate(() => [document.querySelector('#fcFeat .cc-h').textContent, document.querySelector('#fcFeat .cc-foot').textContent.trim()]); ok('조각 갈래: 음력 조각 장 표지(보기 →)', q[0] === '설날은 왜 해마다 날짜가 바뀔까?' && /^보기/.test(q[1]), q);
+    { const bx = await p.locator('#fcFeat .cc-h').boundingBox(); await p.mouse.click(bx.x + 40, bx.y + 20); await p.adv(2500); }
+    q = await p.evaluate(() => { const f = document.getElementById('pcFrame'); return f && f.contentDocument ? [f.contentDocument.querySelector('#cover h2').textContent, !document.getElementById('saver').hidden] : null; });
+    ok('조각 표지를 누르면 조각 장이 화면 전체로 열림(대기화면은 뒤에 그대로)', q && /설날은 왜 해마다/.test(q[0]) && q[1], q);
+    const fr = p.frameLocator('#pcFrame'); for (let i = 0; i < 5; i++) { await fr.locator('#next').click(); await p.adv(600); }
+    q = await p.evaluate(() => document.getElementById('pcFrame').contentDocument.getElementById('next').textContent.trim()); ok('마지막 장의 단추는 "다 봤어"', q === '다 봤어', q);
+    await fr.locator('#next').click(); await p.adv(1500); q = await p.evaluate(() => [!!document.getElementById('pcFrame'), !document.getElementById('saver').hidden]); ok('"다 봤어" → 조각 장 닫히고 홈', !q[0] && q[1], q);
+    { const bx = await p.locator('#fcFeat .cc-h').boundingBox(); await p.mouse.click(bx.x + 40, bx.y + 20); await p.adv(2500); } await fr.locator('#logo').click(); await p.adv(1500);
+    ok('조각 장의 홈 단추 → 닫힘', await p.evaluate(() => !document.getElementById('pcFrame')));
+    { const bx = await p.locator('#fcFeat .cc-h').boundingBox(); await p.mouse.click(bx.x + 40, bx.y + 20); await p.adv(2500); } await p.jump(11 * 60e3);
+    ok('조각 장도 10분 손대지 않으면 닫힘', await p.evaluate(() => !document.getElementById('pcFrame')));
+    await p.context().close();
+    const p2 = await open(b, { time: '2026-11-25T16:20' }); await p2.saver(); { const bx = await p2.locator('#svFace [data-cv="piece"]').boundingBox(); await p2.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p2.adv(1500); }
+    q = await p2.evaluate(() => document.querySelector('#fcFeat .cc-h').textContent); ok('7일이 지나면 평소 조각으로 돌아감', !/설날/.test(q), q); await p2.context().close();
   }
 
   await newsTests(b);
