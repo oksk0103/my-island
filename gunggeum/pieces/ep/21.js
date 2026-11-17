@@ -11,7 +11,7 @@ EPX[21]={day:'과학 7',topic:'겨울 해',cat:'하늘',field:'과학',frame:'v2
    const GY=540,X=hourRuler(S,680,1480,GY+40,5,20,true);wl(S,660,GY,1500,GY,W0);
    const a0=X(7+43/60),a1=X(17+18/60);el('path',{d:arcD(a0,a1,GY,330),fill:'none',stroke:W0m,'stroke-width':2,'stroke-dasharray':'3 9'},S);
    tx(S,680,220,'17:18','v96');tx(S,684,266,'12월 22일 서울, 해 지는 시각','v22m');
-   wdot(S,a1,GY,9,WO);tx(S,a1,GY-24,'해 지는 곳','v22','middle');
+   wdot(S,a1,GY,9,WO);tx(S,a1+34,GY-16,'해 지는 곳','v22');
    const sun=wdot(S,0,0,24,W0);const set=t=>{const [x,y]=arcPt(a0,a1,GY,330,t);sun.setAttribute('cx',x.toFixed(1));sun.setAttribute('cy',y.toFixed(1));};set(.62);
    let on=false;return ()=>{if(on||calm())return;on=true;loop(S,t=>{const c=(t%6)/5;set(Math.min(1,.05+c*.95));sun.setAttribute('opacity',t%6<5.2?1:0);});};}},
  scenes:[

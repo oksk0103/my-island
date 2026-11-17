@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v159</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v160</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v159</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v160</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -3467,7 +3467,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function fitPaper() {
     const body = $('ppBody'), art = $('ppArt'); if (!body || paperEl.hidden) return;
     if (innerWidth < 900) { art.classList.toggle('nopic', !art.dataset.hasimg); art.classList.remove('scroll', 'tight'); art.style.removeProperty('--pf'); return; }
-    // v159 지면 다듬기: 본문은 26px(큰 화면 30) 아래로 줄이지 않는다 — 넘치면 그림을 접어 넓은 두 단으로, 그래도 넘치면 낱말 줄을 접고, 마지막에만 24까지
+    // v160 지면 다듬기: 본문은 26px(큰 화면 30) 아래로 줄이지 않는다 — 넘치면 그림을 접어 넓은 두 단으로, 그래도 넘치면 낱말 줄을 접고, 마지막에만 24까지
     const base = innerWidth >= 1800 && innerHeight >= 940 ? 30 : 26, over = () => body.scrollHeight > body.clientHeight + 2 || body.scrollWidth > body.clientWidth + 2;
     const tryFit = (from, to) => { for (let f = from; f >= to; f--) { art.style.setProperty('--pf', f + 'px'); if (!over()) return true; } return false; };
     art.classList.remove('scroll', 'tight'); art.classList.toggle('nopic', !art.dataset.hasimg);
@@ -4039,7 +4039,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v159';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v160';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6488,8 +6488,8 @@ body[data-night] #app{--paperbg:linear-gradient(180deg,#0A1130,#111B47);--zbg:#0
   .st-none{position:static;font-size:32px;line-height:42px}
 }
 </style>
-<style id="np-v159">
-/* ===== 루아 신문 지면 다듬기(v159) — 넓은 화면(≥900)만 =====
+<style id="np-v160">
+/* ===== 루아 신문 지면 다듬기(v160) — 넓은 화면(≥900)만 =====
    판면 1504(48~1552)을 A·B·C 세 단으로: 단 사이 40(가운데 1px 괘선), A = 그림(1.6:1)·낱말 단(352), 본문 단 536~560 → 26px 본문 한 줄 평균 22~24자. 그림 없는 기사는 712 두 단(30자 안팎).
    글자 단계는 넷: 56(머리기사·숫자) · 34(옆 기사 제목·낱말·요약) · 26(본문·부제·옆 기사 요약) · 22(꼬리표·캡션·날짜·넘김). 행간 1.65. 간격은 8의 배수.
    상자(테두리) 대신 신문처럼 위 괘선 2px + 꼬리표. 머리줄(앱 이름·시계)은 앱 공통 규격 그대로. */

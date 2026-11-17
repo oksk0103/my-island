@@ -1,9 +1,15 @@
 (()=>{ /* 62. 화산 — v2. 무섭지 않게: 폭발 그림 없이 단면 도식. 마그마·용암 = 산호(화면당 한 곳). */
 const GY=330,CX=1080;                                        // 땅 높이, 화산 가운데
 const MT=`M640,${GY}H840L1030,156Q1040,148 1050,156L1062,176H1098L1110,156Q1120,148 1130,156L1320,${GY}H1504`;
+// 땅속 켜 점선은 글자 둘레(6px)에서 끊는다 — 글자를 다 그린 뒤 글자 자리를 가림막으로 뺀다
+let GM=0;function gapGrid(S,g){const id='g62m'+(GM++),m=el('mask',{id,maskUnits:'userSpaceOnUse',x:0,y:0,width:1600,height:820},S);el('rect',{x:0,y:0,width:1600,height:820,fill:'#fff'},m);g.setAttribute('mask',`url(#${id})`);
+ const cut=()=>{[...m.querySelectorAll('.cut')].forEach(r=>r.remove());const I=S.getScreenCTM();if(!I)return;const inv=I.inverse();
+  S.querySelectorAll('text').forEach(t=>{if(!t.textContent.trim())return;const r=t.getBoundingClientRect();if(!r.width)return;const a=new DOMPoint(r.left,r.top).matrixTransform(inv),b=new DOMPoint(r.right,r.bottom).matrixTransform(inv);
+   el('rect',{class:'cut',x:a.x-6,y:a.y-2,width:b.x-a.x+12,height:b.y-a.y+4,fill:'#000'},m);});};
+ requestAnimationFrame(cut);if(document.fonts)document.fonts.ready.then(cut);return g;}
 function ground(S,o={}){el('path',{d:MT,fill:'none',stroke:W0,'stroke-width':2,'stroke-linejoin':'round'},S);
  // 땅속 켜(보조색 점선)
- [400,470,540,610,680].forEach((y,i)=>el('path',{d:`M640,${y}Q900,${y-14+i*3} 1080,${y}T1504,${y}`,fill:'none',stroke:WA,'stroke-width':2,'stroke-dasharray':'2 10','stroke-linecap':'round'},S));
+ const sg=gapGrid(S,el('g',{},S));[400,470,540,610,680].forEach((y,i)=>el('path',{d:`M640,${y}Q900,${y-14+i*3} 1080,${y}T1504,${y}`,fill:'none',stroke:WA,'stroke-width':2,'stroke-dasharray':'2 10','stroke-linecap':'round'},sg));
  if(o.ruler!==false){const X=1504;wl(S,X,GY,X,690,W0m);for(let y=GY,i=0;y<=690;y+=30,i++)wl(S,X,y,X-(i%4===0?16:9),y,i%4===0?W0:W0m);}}
 const blob=(cx,cy,rx,ry,q=rnd(3))=>{const P=[];for(let i=0;i<24;i++){const a=i/24*Math.PI*2,k=.86+q()*.22;P.push([cx+Math.cos(a)*rx*k,cy+Math.sin(a)*ry*k]);}
  return 'M'+P.map((p,i)=>{const n=P[(i+1)%P.length];return `${p[0].toFixed(1)},${p[1].toFixed(1)}Q${p[0].toFixed(1)},${p[1].toFixed(1)} ${((p[0]+n[0])/2).toFixed(1)},${((p[1]+n[1])/2).toFixed(1)}`;}).join('L')+'Z';};
@@ -21,7 +27,7 @@ EPX[62]={day:'12월 17일',topic:'화산',cat:'땅속',field:'과학',frame:'v2'
    let on=false;return ()=>{if(on||calm())return;on=true;loop(S,t=>{D.forEach((d,i)=>{const s=((t/6)+i/9)%1;d.setAttribute('cy',520-s*330);d.setAttribute('cx',CX+Math.sin((t+i)*2)*4);d.setAttribute('opacity',s<.92?1:0);});});};}},
  scenes:[
   {k:'녹은 돌',h:'땅속 깊은 곳에서<br>돌이 녹는다',b:'땅속 아주 깊은 곳은 무척 뜨거워서 어떤 돌은 천천히 녹아. 녹아서 걸쭉하게 흐르는 돌을 <em>마그마</em>라고 해.',steps:['깊이 내려가기'],
-   draw(S){wl(S,640,GY,1440,GY,W0);[400,470,540,610,680].forEach(y=>el('path',{d:`M640,${y}Q900,${y-10} 1080,${y}T1440,${y}`,fill:'none',stroke:WA,'stroke-width':2,'stroke-dasharray':'2 10','stroke-linecap':'round'},S));
+   draw(S){wl(S,640,GY,1440,GY,W0);const sg=gapGrid(S,el('g',{},S));[400,470,540,610,680].forEach(y=>el('path',{d:`M640,${y}Q900,${y-10} 1080,${y}T1440,${y}`,fill:'none',stroke:WA,'stroke-width':2,'stroke-dasharray':'2 10','stroke-linecap':'round'},sg));
     const X=1504;wl(S,X,GY,X,690,W0);for(let y=GY,i=0;y<=690;y+=30,i++)wl(S,X,y,X-(i%4===0?16:9),y,i%4===0?W0:W0m);
     tx(S,X,GY-20,'땅 위','v22m','end');tx(S,640,300,'우리가 사는 땅','v22m');
     // 깊은 곳의 돌덩이(크림 선) → 녹아서 마그마(산호 면)

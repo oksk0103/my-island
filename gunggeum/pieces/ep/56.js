@@ -3,9 +3,15 @@
 function bone(p,cx,cy,L,H,rot=0,col=W0){const g=el('g',{transform:`translate(${cx},${cy}) rotate(${rot})`},p);
  el('rect',{x:-L/2,y:-H*.22,width:L,height:H*.44,fill:col},g);[[-1,-1],[-1,1],[1,-1],[1,1]].forEach(([sx,sy])=>el('circle',{cx:sx*L/2,cy:sy*H*.24,r:H*.3,fill:col},g));return g;}
 // 지층 한 켜: 위 경계선 + 무늬(짧은 줄 / 점) — 보조색
+// 지층 무늬는 글자 둘레(6px)에서 끊는다 — 글자를 다 그린 뒤 글자 자리를 가림막으로 뺀다
+let GM=0;function gapGrid(S,g){const id='g56m'+(GM++),m=el('mask',{id,maskUnits:'userSpaceOnUse',x:0,y:0,width:1600,height:820},S);el('rect',{x:0,y:0,width:1600,height:820,fill:'#fff'},m);g.setAttribute('mask',`url(#${id})`);
+ const cut=()=>{[...m.querySelectorAll('.cut')].forEach(r=>r.remove());const I=S.getScreenCTM();if(!I)return;const inv=I.inverse();
+  S.querySelectorAll('text').forEach(t=>{if(!t.textContent.trim())return;const r=t.getBoundingClientRect();if(!r.width)return;const a=new DOMPoint(r.left,r.top).matrixTransform(inv),b=new DOMPoint(r.right,r.bottom).matrixTransform(inv);
+   el('rect',{class:'cut',x:a.x-6,y:a.y-2,width:b.x-a.x+12,height:b.y-a.y+4,fill:'#000'},m);});};
+ requestAnimationFrame(cut);if(document.fonts)document.fonts.ready.then(cut);}
 function layer(p,x1,x2,y1,y2,kind,seed){const g=el('g',{},p),q=rnd(seed);wl(g,x1,y1,x2,y1,W0m);
  if(kind===0){for(let y=y1+16;y<y2-6;y+=20)for(let x=x1+q()*30;x<x2-14;x+=44+q()*20)wl(g,x,y,x+14,y,WA);}
- else{for(let y=y1+14;y<y2-4;y+=18)for(let x=x1+8+q()*20;x<x2-6;x+=30+q()*16)wdot(g,x,y,2.5,WA);}return g;}
+ else{for(let y=y1+14;y<y2-4;y+=18)for(let x=x1+8+q()*20;x<x2-6;x+=30+q()*16)wdot(g,x,y,2.5,WA);}gapGrid(p.ownerSVGElement||p,g);return g;}
 function strata(S,x1,x2,ys){return ys.slice(0,-1).map((y,i)=>layer(S,x1,x2,y,ys[i+1],i%2,30+i));}
 function vRuler(S,x,y1,y2,step){wl(S,x,y1,x,y2,W0m);for(let y=y1,i=0;y<=y2+1;y+=step,i++)wl(S,x,y,x-(i%4===0?16:9),y,i%4===0?W0:W0m);}
 

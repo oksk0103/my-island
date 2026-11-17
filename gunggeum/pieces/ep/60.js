@@ -69,7 +69,7 @@ EPX[60]={day:'12월 15일',topic:'거미줄',cat:'작은 동물',field:'과학',
   words:[['바퀴살 줄','가운데서 밖으로 뻗은 줄'],['빙글 줄','빙글빙글 감긴 끈끈한 줄'],['먹이','살려고 먹는 것']]},
  end:{q:'거미줄에서 끈끈한 줄은 어느 줄일까?',a:'빙글빙글 도는 줄. 가운데서 뻗은 바퀴살 줄은 안 끈끈해.',h:'거미줄 그림을 보고<br>바퀴살 줄이 몇 개인지<br>세어 봐.',btn:'세어 보기',
   draw(S){const W=web(S,1100,410,280,{spoke:W0,beads:2.2,beadCol:W0m});const N=[];
-   W.ends.forEach(([x,y],k)=>{const a=W.A(k),lx=W.cx+Math.cos(a)*250,ly=W.cy+Math.sin(a)*250;N.push(tx(S,W.cx+Math.cos(a)*215,W.cy+Math.sin(a)*215+8,String(k+1),'v22','middle',{opacity:0}));});
+   W.ends.forEach(([x,y],k)=>{const a=W.A(k),lx=W.cx+Math.cos(a)*250,ly=W.cy+Math.sin(a)*250;N.push(tx(S,W.cx+Math.cos(a)*314,W.cy+Math.sin(a)*314+8,String(k+1),'v22','middle',{opacity:0}));});
    const n=tx(S,1504,690,'?','v60','end');tx(S,640,690,'바퀴살 줄','v22m');
    return ()=>{N.forEach((t,k)=>setTimeout(()=>{t.setAttribute('opacity',1);W.S[k].setAttribute('stroke',WO);n.textContent=(k+1)+'개';},k*110));};}}};
 })();

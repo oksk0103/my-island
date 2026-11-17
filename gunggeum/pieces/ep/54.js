@@ -6,7 +6,13 @@ const LINES=[['bet','bel'],['bet','alk'],['bel','min'],['alk','alm'],['alm','min
 const proj=(ra0,cx,cy,k)=>id=>{const [ra,dec]=ST[id];return [cx-(ra-ra0)*15*k*Math.cos(dec*Math.PI/180),cy-dec*k];};
 const R=m=>[9,7,5,4][m];               // 밝기 → 점 크기
 // 별 지도 바탕: 보조색 십자 격자(관측 노트 모눈)
-function grid(S,x1,y1,x2,y2,st=72){const g=el('g',{stroke:WA,'stroke-width':2,'stroke-linecap':'round'},S);for(let x=x1;x<=x2;x+=st)for(let y=y1;y<=y2;y+=st){el('line',{x1:x-6,y1:y,x2:x+6,y2:y},g);el('line',{x1:x,y1:y-6,x2:x,y2:y+6},g);}return g;}
+// 모눈 십자는 글자 둘레(6px)에서 끊는다 — 글자를 다 그린 뒤 글자 자리를 가림막으로 뺀다
+let GM=0;function gapGrid(S,g){const id='g54m'+(GM++),m=el('mask',{id,maskUnits:'userSpaceOnUse',x:0,y:0,width:1600,height:820},S);el('rect',{x:0,y:0,width:1600,height:820,fill:'#fff'},m);g.setAttribute('mask',`url(#${id})`);
+ const cut=()=>{[...m.querySelectorAll('.cut')].forEach(r=>r.remove());const I=S.getScreenCTM();if(!I)return;const inv=I.inverse();
+  S.querySelectorAll('text').forEach(t=>{if(!t.textContent.trim())return;const r=t.getBoundingClientRect();if(!r.width)return;const a=new DOMPoint(r.left,r.top).matrixTransform(inv),b=new DOMPoint(r.right,r.bottom).matrixTransform(inv);
+   el('rect',{class:'cut',x:a.x-6,y:a.y-2,width:b.x-a.x+12,height:b.y-a.y+4,fill:'#000'},m);});};
+ requestAnimationFrame(cut);if(document.fonts)document.fonts.ready.then(cut);}
+function grid(S,x1,y1,x2,y2,st=72){const g=el('g',{stroke:WA,'stroke-width':2,'stroke-linecap':'round'},S);for(let x=x1;x<=x2;x+=st)for(let y=y1;y<=y2;y+=st){el('line',{x1:x-6,y1:y,x2:x+6,y2:y},g);el('line',{x1:x,y1:y-6,x2:x,y2:y+6},g);}gapGrid(S,g);return g;}
 // 오리온(선+별). 돌려줌: 별 좌표 P, 별 점 C, 선 L
 function orion(S,P,o={}){const g=el('g',{},S),L={},C={};
  LINES.forEach(([a,b])=>{const [x1,y1]=P(a),[x2,y2]=P(b);L[a+b]=wl(g,x1,y1,x2,y2,W0m,o.lineHidden?{opacity:0}:{});});

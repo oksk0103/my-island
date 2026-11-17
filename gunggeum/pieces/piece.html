@@ -905,7 +905,7 @@ r.C.forEach((c,k)=>{const s=Math.max(0,Math.min(1,e*1.6-(k/r.C.length)*.6));c.se
    const star=[...Array(10)].map((_,i)=>{const a=-Math.PI/2+i*Math.PI/5,r=i%2?42:100;return [960+Math.cos(a)*r,500+Math.sin(a)*r];});const sd='M'+star.map(p=>p.map(v=>v.toFixed(1)).join(',')).join('L')+'Z';
    const wipe=el('path',{d:sd,fill:'none',stroke:WBG,'stroke-width':22,'stroke-linejoin':'round',opacity:0},S);const sl=el('path',{d:sd,fill:'none',stroke:WO,'stroke-width':2,'stroke-linejoin':'round'},S);
    const SL=sl.getTotalLength();sl.style.strokeDasharray=SL;sl.style.strokeDashoffset=SL;
-   const lab=grp(S,0);el('path',{d:`M1060,500H1180V420`,fill:'none',stroke:W0m,'stroke-width':2},lab);tx(lab,1180,404,'손가락으로 그린 별','v22','middle');
+   const lab=grp(S,0);el('path',{d:`M1060,500H1205V420`,fill:'none',stroke:W0m,'stroke-width':2},lab);tx(lab,1205,404,'손가락으로 그린 별','v22','middle');
    return ()=>anim(800,x=>{const e=EO(x);FD.forEach(d=>{const s=Math.max(0,Math.min(1,e*1.4-d.t*.4)),k=EO(s);d.c.setAttribute('cx',mx+(d.x-mx)*k);d.c.setAttribute('cy',my+(d.y-my)*k);d.c.setAttribute('r',s>0?3.2:0);});},
      ()=>{wipe.setAttribute('opacity',1);anim(600,x=>{sl.style.strokeDashoffset=SL*(1-EO(x));},()=>show(lab));});}}
 });

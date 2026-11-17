@@ -10,7 +10,7 @@ function ladder(S){wl(S,660,YB+40,660,YT-110,Cm);
  wl(S,690,YT+40,1504,YT+40,Cm);wl(S,690,YB+40,1504,YB+40,Cm);}
 // 아래 낱말이 위로 올라가며 높임말로 바뀜
 function rise(S,x,lo,hi,cls='vs96'){
- const g=el('path',{d:`M${x},${YB-110}V${YT+60}`,fill:'none',stroke:SA,'stroke-width':3,'stroke-dasharray':'2 12','stroke-linecap':'round'},S);
+ const g=el('path',{d:`M${x},${YB-(cls==='vs160'?152:110)}V${YT+60}`,fill:'none',stroke:SA,'stroke-width':3,'stroke-dasharray':'2 12','stroke-linecap':'round'},S);
  tx(S,x,YB,lo,cls,'middle');const slot=tx(S,x,YT,'?',cls,'middle',{style:'fill:'+Cm});
  const m=tx(S,x,YB,lo,cls,'middle');m.setAttribute('opacity',0);
  return {slot,m,run:(end)=>{const fin=()=>{m.setAttribute('opacity',0);slot.textContent=hi;fillC(slot,SO);end&&end();};

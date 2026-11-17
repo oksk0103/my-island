@@ -36,10 +36,10 @@ EPX[12]={day:'12일차',topic:'맞히다와 맞추다',cat:'맞춤법',field:'�
     const Y=[300,390,480],a=[5,8,3],b=[5,8,4];
     Y.forEach((y,k)=>{T(S,cl,y,a[k]+'','v60','middle');T(S,cr,y,b[k]+'','v60','middle');});
     const marks=Y.map((y,k)=>{const g=grp(S,0);T(g,(cl+cr)/2,y,a[k]===b[k]?'=':'≠','v60','middle',a[k]===b[k]?C:A);return g;});
-    const ln=Y.map(y=>wl(S,cl+40,y-20,cl+40,y-20,Cm,{'stroke-dasharray':'2 8'}));
+    const mx=(cl+cr)/2,ln=Y.map(y=>wl(S,cl+40,y-20,cl+40,y-20,Cm,{'stroke-dasharray':'2 8'})),rn=Y.map(y=>wl(S,mx+26,y-20,mx+26,y-20,Cm,{'stroke-dasharray':'2 8'}));
     T(S,1295,560,'내 답과 정답을 맞추어 보다','v28','middle');T(S,1295,600,'= 견주어 보다','v22m','middle');
     return i=>{if(i===0)go(900,e=>set(60*(1-e)));
-     else Y.forEach((y,k)=>setTimeout(()=>go(500,e=>ln[k].setAttribute('x2',(cl+40+(cr-cl-80)*e).toFixed(1)),()=>show(marks[k])),calm()?0:k*420));};}},
+     else Y.forEach((y,k)=>setTimeout(()=>go(500,e=>{ln[k].setAttribute('x2',(cl+40+(mx-26-cl-40)*e).toFixed(1));rn[k].setAttribute('x2',(mx+26+(cr-40-mx-26)*e).toFixed(1));},()=>show(marks[k])),calm()?0:k*420));};}},
   {k:'둘 다',h:'한 문장에<br>둘 다 쓸 수 있다',b:'‘몇 문제나 <em>맞혔는지</em> 내 답과 정답을 <em>맞추어</em> 봤어.’ 둘이 한 문장에 같이 나와.',steps:['맞히다 찾기','맞추다 찾기'],
    draw(S){const l1=R(S,660,230,[['몇 문제나 ','v60'],['맞혔는지','v60']]),l2=R(S,660,420,[['내 답과 정답을 ','v60'],['맞추어','v60'],[' 봤어.','v60']]);
     wl(S,640,600,1504,600,Cm);T(S,640,640,'국립국어원 예문: 내가 몇 문제나 맞혔는지 내 답안과 모범 답안을 맞추어 보았다.','v22m');

@@ -36,7 +36,7 @@ EPX[41]={day:'과학',topic:'무지개',cat:'빛과 색',field:'과학',frame:'v
     const A=[CX-Math.sqrt(R*R-130*130),CY-130],Bp=[CX+R*Math.cos(.18),CY+R*Math.sin(.18)],C=[CX-120,CY+Math.sqrt(R*R-120*120)];
     wl(S,640,A[1],A[0],A[1],W0);tx(S,640,A[1]-20,'햇빛','v28');
     const p1=wl(S,A[0],A[1],A[0],A[1],W0),p2=wl(S,Bp[0],Bp[1],Bp[0],Bp[1],W0);const hd=wdot(S,A[0],A[1],0,W0);
-    const ring=el('circle',{cx:Bp[0],cy:Bp[1],r:20,fill:'none',stroke:WO,'stroke-width':2,opacity:0},S);const rl=grp(S,0);tx(rl,Bp[0]-30,Bp[1]+70,'안쪽 벽에서 튕겨','v22','end');
+    const ring=el('circle',{cx:Bp[0],cy:Bp[1],r:20,fill:'none',stroke:WO,'stroke-width':2,opacity:0},S);const rl=grp(S,0);tx(rl,1504,Bp[1]+122,'안쪽 벽에서 튕겨','v22','end');
     const F=SW.map(([n,c],i)=>({l:wl(S,C[0],C[1],C[0],C[1],c,{'stroke-width':3}),x:700,y:600+i*14,c}));const cap=grp(S,0);tx(cap,640,580,'일곱 색','v28');
     return ()=>play(600,e=>{p1.setAttribute('x2',lerp(A[0],Bp[0],e));p1.setAttribute('y2',lerp(A[1],Bp[1],e));mv(hd,lerp(A[0],Bp[0],e),lerp(A[1],Bp[1],e));hd.setAttribute('r',6);},()=>{ring.setAttribute('opacity',1);show(rl);
       play(600,e=>{p2.setAttribute('x2',lerp(Bp[0],C[0],e));p2.setAttribute('y2',lerp(Bp[1],C[1],e));mv(hd,lerp(Bp[0],C[0],e),lerp(Bp[1],C[1],e));},()=>{hd.remove();

@@ -41,7 +41,7 @@ EPX[26]={day:'12월 5일',topic:'다르다와 틀리다',cat:'헷갈리는 말',
     T(S,1000,200,'나','vs60','middle');T(S,1360,200,'친구','vs60','middle');wl(S,640,230,1504,230,M);
     const Rw=[['좋아하는 색','파랑','노랑',310],['좋아하는 과일','사과','귤',410],['사는 층','3층','5층',510]];
     const N=Rw.map(([k,a,b,y])=>{T(S,660,y,k,'v28');T(S,1000,y+6,a,'v60','middle');T(S,1360,y+6,b,'v60','middle');rule(S,y+36);const ne=T(S,1180,y+6,'≠','v60','middle',A);ne.setAttribute('opacity',0);return ne;});
-    wl(S,1180,170,1180,546,M,{'stroke-dasharray':'2 10'});
+    [[170,268],[324,368],[424,468],[524,546]].forEach(([a,b])=>wl(S,1180,a,1180,b,M,{'stroke-dasharray':'2 10'}));
     rule(S,640);const R=sent(S,660,620,[['좋아하는 색이 서로 '],['달라',{hide:1}],['.']]);const bl=slot(S,R,1);T(S,1504,620,'친구','v22m','end');
     return ()=>{N.forEach((n,i)=>setTimeout(()=>fade(n,0,1,400),calm()?0:i*300));setTimeout(()=>{R.seg[1].ts.setAttribute('fill-opacity',1);bl.setAttribute('opacity',0);},calm()?0:1200);};}},
   {k:'틀리다',h:'셈이나 답이 어긋나면<br>‘틀리다’',b:'셈이나 사실이 맞지 않고 어긋난 건 <em>틀리다</em>야. 3 더하기 4를 8이라고 하면 틀린 거야.',steps:['고쳐 보기'],

@@ -1,7 +1,13 @@
 (()=>{ /* 55. 씨앗은 어떻게 싹틀까 — v2 관측 노트(단면도) */
 // 흙: 보조색 짧은 줄무늬로 면을 채움(단색 선, 망점 아님)
+// 흙 줄무늬는 글자 둘레(6px)에서 끊는다 — 글자를 다 그린 뒤 글자 자리를 가림막으로 뺀다
+let GM=0;function gapGrid(S,g){const id='g55m'+(GM++),m=el('mask',{id,maskUnits:'userSpaceOnUse',x:0,y:0,width:1600,height:820},S);el('rect',{x:0,y:0,width:1600,height:820,fill:'#fff'},m);g.setAttribute('mask',`url(#${id})`);
+ const cut=()=>{[...m.querySelectorAll('.cut')].forEach(r=>r.remove());const I=S.getScreenCTM();if(!I)return;const inv=I.inverse();
+  S.querySelectorAll('text').forEach(t=>{if(!t.textContent.trim())return;const r=t.getBoundingClientRect();if(!r.width)return;const a=new DOMPoint(r.left,r.top).matrixTransform(inv),b=new DOMPoint(r.right,r.bottom).matrixTransform(inv);
+   el('rect',{class:'cut',x:a.x-6,y:a.y-2,width:b.x-a.x+12,height:b.y-a.y+4,fill:'#000'},m);});};
+ requestAnimationFrame(cut);if(document.fonts)document.fonts.ready.then(cut);}
 function soil(S,x1,x2,y1,y2,seed=3){const q=rnd(seed),g=el('g',{stroke:WA,'stroke-width':2,'stroke-linecap':'round'},S);
- for(let y=y1+22;y<y2;y+=26)for(let x=x1+(q()*30);x<x2-20;x+=40+q()*24)el('line',{x1:x,y1:y,x2:x+12,y2:y},g);wl(S,x1,y1,x2,y1,W0);return g;}
+ for(let y=y1+22;y<y2;y+=26)for(let x=x1+(q()*30);x<x2-20;x+=40+q()*24)el('line',{x1:x,y1:y,x2:x+12,y2:y},g);wl(S,x1,y1,x2,y1,W0);gapGrid(S,g);return g;}
 // 씨앗(콩 모양): 바깥 껍질 선 + 씨눈 자국
 function seed(p,cx,cy,rx,ry,o={}){const g=el('g',{transform:`translate(${cx},${cy})`},p),body=el('g',{},g);
  el('ellipse',{cx:0,cy:0,rx,ry,fill:o.fill||'none',stroke:W0,'stroke-width':2},body);

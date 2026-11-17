@@ -29,7 +29,7 @@ EPX[4]={day:'4일차',topic:'햅쌀의 ㅂ',cat:'말의 유래',field:'국어',f
  cover:{h:'햅쌀은 왜<br>‘해쌀’이<br>아닐까?',draw(S){
    tsp(S,700,300,'v96',[['해',null],['  +  ',CM],['쌀',null]]);tx(S,700,560,'햅쌀','v96');wl(S,700,620,1500,620,CM);tx(S,700,660,'해 = 그해에 난','v22m');
    const big=tx(S,1330,470,'ㅂ','vs160','middle',{style:`fill:${SA}`});tx(S,1330,560,'어디서 왔을까?','v28','middle');
-   const lead=el('path',{d:'M1250,420C1050,400 860,440 790,530',fill:'none',stroke:SA,'stroke-width':2,'stroke-dasharray':'2 10','stroke-linecap':'round'},S);
+   const lead=el('path',{d:'M1250,420C1050,400 830,415 766,468',fill:'none',stroke:SA,'stroke-width':2,'stroke-dasharray':'2 10','stroke-linecap':'round'},S);
    return ()=>{hidLine(lead);drawLine(lead,1200);};}},
  scenes:[
   {k:'옛 글자',h:'옛날 ‘쌀’에는<br>ㅂ 소리가 있었다',b:'500년도 더 된 옛 책에는 쌀을 <em>ㅂ과 ㅅ</em>을 나란히 쓴 글자로 적었어. 소리도 ㅂ을 붙여 냈어.',steps:['옛 글자 나누기'],

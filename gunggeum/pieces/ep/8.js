@@ -39,7 +39,7 @@ EPX[8]={day:'8일차',topic:'시치미',cat:'말의 유래',field:'국어',frame
   {k:'지금의 뜻',h:'알면서<br>모르는 척한다',b:'그래서 자기가 하고도 안 한 척하거나 알고도 모르는 척하는 걸 <em>시치미를 뗀다</em>고 해.',steps:['예문 하나','예문 둘'],
    draw(S){T(S,640,250,'시치미를 떼다','v96','start',A);T(S,640,310,'하고도 안 한 척 · 알고도 모르는 척','v28');L(S,640,370,1504,370,C);L(S,1060,400,1060,600,Cm);
     const E=[[640,'하고도 안 한 척','과자를 먹고도','시치미를 뗐다.'],[1084,'알고도 모르는 척','선물을 알고도','시치미를 뗐다.']].map(([x,l,a,b])=>{
-     [470,545].forEach(y=>L(S,x,y+12,x+400,y+12,B,{'stroke-dasharray':'2 10'}));const g=grp(S,0);T(g,x,420,l,'v22m');T(g,x,490,a,'v60');T(g,x,565,b,'v60');g.setAttribute('transform','translate(0,30)');return g;});
+     [470,545].forEach(y=>L(S,x,y+36,x+400,y+36,B,{'stroke-dasharray':'2 10'}));const g=grp(S,0);T(g,x,420,l,'v22m');T(g,x,490,a,'v60');T(g,x,565,b,'v60');g.setAttribute('transform','translate(0,30)');return g;});
     return i=>{const g=E[i];show(g);run(700,e=>g.setAttribute('transform',`translate(0,${(30*(1-e)).toFixed(1)})`));};}}],
  sum:{lines:['시치미는 매 꽁지깃에 단<br>주인 이름표였다.','이름표를 떼면<br>누구 매인지 알 수 없다.','알면서 모르는 척하는 걸<br>시치미를 뗀다고 한다.'],
   words:[['시치미','하고도 안 한 척하는 태도'],['매사냥','매를 날려 꿩·토끼를 잡는 일'],['꽁지깃','새 꽁지에 난 깃털']]},

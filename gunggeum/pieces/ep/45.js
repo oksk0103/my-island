@@ -19,8 +19,8 @@ EPX[45]={day:'과학 14',topic:'얼음',cat:'물의 변신',field:'과학',frame
    const ix=1080;const top0=WY-u;mv(ice,ix,top0);
    wl(S,X0-40,WY,X1+40,WY,WO);tx(S,648,WY-16,'물 높이','v22');
    // 오른쪽 이름표: 위 1칸, 아래 9칸
-   el('path',{d:`M${ix+120},${WY-u/2}H1460`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,1460,WY-u/2-16,'물 위 1','v28','end');
-   el('path',{d:`M${ix+120},${WY+160}H1460`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,1460,WY+144,'물속 9','v28','end');
+   el('path',{d:`M${ix+120},${WY-u/2}H1500`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,1416,WY-u/2-16,'물 위 1','v28');
+   el('path',{d:`M${ix+120},${WY+160}H1500`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,1416,WY+144,'물속 9','v28');
    tx(S,X0,BY+44,'관측 · 물에 띄운 얼음 한 덩이','v22m');
    let on=false;
    return ()=>{if(on||calm())return;on=true;loop(S,t=>{mv(ice,ix,top0+Math.sin(t*1.6)*6);});};}},

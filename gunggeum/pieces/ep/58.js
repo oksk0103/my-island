@@ -6,6 +6,12 @@ function tooth(p,q,w,h,o={}){const g=el('g',{transform:`translate(${q.x.toFixed(
 const ARCH=n=>({up:archPos(n/2,980,300,220,190,true),dn:archPos(n/2,980,500,220,190,false)});
 function jawLabels(S){tx(S,980,250,'위','v22m','middle');tx(S,980,566,'아래','v22m','middle');}
 
+// 잇몸 줄무늬는 글자 둘레(6px)에서 끊는다 — 글자 자리를 가림막으로 뺀다(글자가 움직이면 다시 부른다)
+let GM=0;function gapGrid(S,g){const id='g58m'+(GM++),m=el('mask',{id,maskUnits:'userSpaceOnUse',x:0,y:0,width:1600,height:820},S);el('rect',{x:0,y:0,width:1600,height:820,fill:'#fff'},m);g.setAttribute('mask',`url(#${id})`);
+ const cut=()=>{[...m.querySelectorAll('.cut')].forEach(r=>r.remove());const I=S.getScreenCTM();if(!I)return;const inv=I.inverse();
+  S.querySelectorAll('text').forEach(t=>{if(!t.textContent.trim()||+(t.getAttribute('opacity')??1)===0)return;const r=t.getBoundingClientRect();if(!r.width)return;const a=new DOMPoint(r.left,r.top).matrixTransform(inv),b=new DOMPoint(r.right,r.bottom).matrixTransform(inv);
+   el('rect',{class:'cut',x:a.x-6,y:a.y-2,width:b.x-a.x+12,height:b.y-a.y+4,fill:'#000'},m);});};
+ requestAnimationFrame(cut);if(document.fonts)document.fonts.ready.then(cut);return cut;}
 EPX[58]={day:'12월 13일',topic:'젖니와 간니',cat:'우리 몸',field:'과학',frame:'v2',
  cover:{h:'이는 왜<br>빠지고<br>다시 날까?',draw(S){
    const A=ARCH(20);const T=[...A.up,...A.dn].map(q=>tooth(S,q,40,48,{fill:W0}));jawLabels(S);
@@ -24,7 +30,7 @@ EPX[58]={day:'12월 13일',topic:'젖니와 간니',cat:'우리 몸',field:'과�
     return ()=>ord.forEach((k,j)=>setTimeout(()=>{T[k].r.setAttribute('fill',W0);T[k].r.setAttribute('stroke',W0);T[k].r.setAttribute('stroke-dasharray','none');cnt.textContent=String(j+1);},calm()?0:j*80));}},
   {k:'밑에서 기다리는 이',h:'새 이가 밑에서<br>밀고 올라온다',b:'젖니 아래 잇몸 속에서 새 이가 자라. 새 이가 올라오면 젖니 <em>뿌리</em>가 조금씩 녹아 없어져서 젖니가 흔들리다 빠져.',steps:['새 이 올라오기','젖니 빠지기'],
    draw(S){const GY=300;// 잇몸 선 + 잇몸 속(보조색 줄무늬)
-    wl(S,640,GY,1504,GY,W0);{const g=el('g',{stroke:WA,'stroke-width':2,'stroke-linecap':'round'},S);for(let y=GY+26;y<700;y+=26)for(let x=650+((y/26)%2)*20;x<1490;x+=40)el('line',{x1:x,y1:y,x2:x+12,y2:y},g);}
+    wl(S,640,GY,1504,GY,W0);{const g=el('g',{stroke:WA,'stroke-width':2,'stroke-linecap':'round'},S);for(let y=GY+26;y<700;y+=26)for(let x=650+((y/26)%2)*20;x<1490;x+=40)el('line',{x1:x,y1:y,x2:x+12,y2:y},g);var recut=gapGrid(S,g);}
     tx(S,1504,GY-20,'입안','v22m','end');tx(S,1504,GY+44,'잇몸 속','v22m','end');
     const cx=980;
     // 젖니: 머리(크림 면) + 뿌리(크림 선)
@@ -36,9 +42,9 @@ EPX[58]={day:'12월 13일',topic:'젖니와 간니',cat:'우리 몸',field:'과�
     const arrow=grp(S,0);el('path',{d:`M${cx},${NY-90}V${GY+170}`,fill:'none',stroke:W0m,'stroke-width':2,'stroke-dasharray':'2 10','stroke-linecap':'round'},arrow);el('path',{d:`M${cx-10},${GY+186}l10,-16l10,16`,fill:'none',stroke:W0,'stroke-width':2},arrow);
     const gone=grp(S,0);tx(gone,1337,124,'빠진 젖니','v28','middle');
     let dy=0;
-    return i=>{if(i===0){show(arrow);play(1600,e=>{dy=-130*e;nt.setAttribute('transform',`translate(0,${dy.toFixed(1)})`);const h=150-130*e;root.setAttribute('height',h.toFixed(1));rl.setAttribute('y',GY+Math.min(90,h/2+10));},()=>arrow.setAttribute('opacity',0));}
+    return i=>{if(i===0){show(arrow);play(1600,e=>{dy=-130*e;nt.setAttribute('transform',`translate(0,${dy.toFixed(1)})`);const h=150-130*e;root.setAttribute('height',h.toFixed(1));rl.setAttribute('y',GY+Math.max(34,Math.min(90,h/2+10)));recut();},()=>{arrow.setAttribute('opacity',0);recut();});}
      else play(1700,e=>{const w=e<.4?Math.sin(e/.4*Math.PI*5)*6:0,k=e<.4?0:EO((e-.4)/.6);bt.setAttribute('transform',`translate(${(k*330).toFixed(1)},${(-k*40).toFixed(1)}) rotate(${(w+k*30).toFixed(1)} ${cx} ${GY})`);rl.setAttribute('opacity',1-k);bl.setAttribute('opacity',1-k);
-       nt.setAttribute('transform',`translate(0,${(dy-150*k).toFixed(1)})`);},()=>show(gone));};}},
+       nt.setAttribute('transform',`translate(0,${(dy-150*k).toFixed(1)})`);recut();},()=>{show(gone);recut();});};}},
   {k:'간니 32개',h:'간니는 사랑니까지<br>32개다',b:'만 6~7세쯤부터 젖니가 하나씩 <em>간니</em>로 바뀌어. 간니는 맨 안쪽 <em>사랑니</em>까지 세면 위아래 16개씩, 모두 32개야.',steps:['간니로 바꾸기'],
    draw(S){const B=ARCH(20),P=ARCH(32);jawLabels(S);
     const baby=[...B.up,...B.dn].map(q=>tooth(S,q,32,38,{fill:W0}));

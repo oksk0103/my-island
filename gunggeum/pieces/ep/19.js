@@ -46,7 +46,7 @@ EPX[19]={day:'과학 5',topic:'달의 모양',cat:'하늘',field:'과학',frame:
     tx(S,1350,170,'지구에서 보면','v22m','middle');const V=moonV(S,1350,350,130,0);
     const nm=tx(S,1350,566,'안 보여','v60','middle'),dy=tx(S,1350,612,'0일','v22m','middle');
     const pos=t=>{const a=Math.PI+t*2*Math.PI;return [ex+R*Math.cos(a),ey-R*Math.sin(a)];};
-    const place=t=>{const [x,y]=pos(t);mt.g.setAttribute('transform',`translate(${x.toFixed(1)},${y.toFixed(1)})`);sight.setAttribute('x2',x+(ex-x)*.0);sight.setAttribute('y2',y);V.set(t*SYN);
+    const place=t=>{const [x,y]=pos(t);mt.g.setAttribute('transform',`translate(${x.toFixed(1)},${y.toFixed(1)})`);sight.setAttribute('x2',x+(ex-x)*.0);sight.setAttribute('y2',y);{const L=Math.hypot(x-ex,y-ey)||1,ux=(x-ex)/L,uy=(y-ey)/L;let r=36;for(let k=0;k<L;k++)if(Math.abs(ux*k)<=28&&uy*k>=48&&uy*k<=82)r=Math.max(r,k+1);sight.setAttribute('x1',(ex+ux*r).toFixed(1));sight.setAttribute('y1',(ey+uy*r).toFixed(1));}V.set(t*SYN);
      let d=`M${pos(0).map(v=>v.toFixed(1)).join(',')}`;for(let k=1;k<=40;k++)d+=`L${pos(t*k/40).map(v=>v.toFixed(1)).join(',')}`;trail.setAttribute('d',t>0?d:'');};
     place(0);const N=[['반달','7일쯤'],['보름달','15일쯤'],['반달','22일쯤'],['다시 처음','29.5일쯤']];
     return i=>{nm.textContent='';dy.textContent='';play(1300,e=>place((i+e)/4),()=>{nm.textContent=N[i][0];dy.textContent=N[i][1];});};}},

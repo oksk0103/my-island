@@ -47,8 +47,8 @@ EPX[43]={day:'과학',topic:'그림자',cat:'빛과 그림자',field:'과학',fr
     const SU=[{x:700,y:300,n:'아침',len:'길다'},{x:1218,y:173,n:'한낮',len:'짧다'},{x:1444,y:300,n:'저녁',len:'길다'}];
     SU.forEach(s=>{s.c=el('circle',{cx:s.x,cy:s.y,r:30,fill:'none',stroke:W0,'stroke-width':2},S);tx(S,s.x,s.y-50,s.n,'v28','middle');s.t=tipX(s.x,s.y,BX,TY,GY);
      s.ray=wl(S,s.x,s.y,s.x,s.y,W0m,{'stroke-dasharray':'2 10'});s.sh=el('rect',{x:Math.min(BX,s.t),y:GY-10,width:Math.max(6,Math.abs(s.t-BX)),height:20,fill:WA,stroke:W0,'stroke-width':2,opacity:0},S);
-     s.g=grp(S,0);if(s.n==='한낮'){wl(s.g,(BX+s.t)/2,GY+12,(BX+s.t)/2-30,GY+70,W0m);tx(s.g,(BX+s.t)/2-40,GY+100,s.len,'v28','end');}else tx(s.g,(BX+s.t)/2,GY-24,s.len,'v60','middle');});
-    el('rect',{x:BX-7,y:TY,width:14,height:GY-TY,fill:W0},S);tx(S,BX,TY-16,'막대','v22','middle');
+     s.g=grp(S,0);if(s.n==='한낮'){wl(s.g,(BX+s.t)/2,GY+12,(BX+s.t)/2-30,GY+70,W0m);tx(s.g,(BX+s.t)/2-40,GY+100,s.len,'v28','end');}else tx(s.g,BX+(s.t-BX)*.68,GY-85,s.len,'v60','middle');});
+    el('rect',{x:BX-7,y:TY,width:14,height:GY-TY,fill:W0},S);tx(S,BX-32,TY-38,'막대','v22','middle');
     let cur=null;
     return i=>{const s=SU[i];if(cur){cur.c.setAttribute('fill','none');cur.c.setAttribute('stroke',W0);}s.c.setAttribute('fill',WO);s.c.setAttribute('stroke',WO);cur=s;
      play(900,e=>{s.ray.setAttribute('x2',lerp(s.x,s.t,e));s.ray.setAttribute('y2',lerp(s.y,GY,e));},()=>{s.sh.setAttribute('opacity',1);show(s.g);});};}}],
@@ -65,6 +65,6 @@ EPX[43]={day:'과학',topic:'그림자',cat:'빛과 그림자',field:'과학',fr
    el('polygon',{points:toy.map(([x,y])=>`${TX+x},${TY+y}`).join(' '),fill:W0},S);tx(S,TX,TY+92,'장난감','v28','middle');
    const sh=el('polygon',{points:toy.map(([x,y])=>`${SX+x*K},${SY+y*K}`).join(' '),fill:WA,stroke:W0,'stroke-width':2,opacity:0},S);
    const g=rays(S);const R=[[0,-30],[30,0],[30,46],[-30,46],[-30,0]].map(([x,y])=>el('path',{d:`M${LX},${LY}L${LX},${LY}`},g));
-   const lab=grp(S,0);tx(lab,SX,SY+K*46+56,'커다란 그림자','v28','middle');
+   const lab=grp(S,0);tx(lab,SX,SY+74,'커다란','v28','middle');tx(lab,SX,SY+112,'그림자','v28','middle');
    return ()=>{qm.remove();play(900,e=>R.forEach((r,k)=>{const [x,y]=[[0,-30],[30,0],[30,46],[-30,46],[-30,0]][k];r.setAttribute('d',`M${LX},${LY}L${lerp(LX,SX+x*K,e)},${lerp(LY,SY+y*K,e)}`);}),()=>{sh.setAttribute('opacity',1);show(lab);});};}}};
 })();

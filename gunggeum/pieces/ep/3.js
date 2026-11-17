@@ -45,14 +45,14 @@ EPX[3]={day:'3일차',topic:'정오와 자정',cat:'말의 유래',field:'국어
     wl(S,X0,Y,X1,Y,W0);wl(S,X0,Y+60,X1,Y+60,W0);for(let i=0;i<=12;i++){const x=hx(Math.min(24,Math.max(0,i*2-1)));wl(S,x,Y,x,Y+60,CM);}
     for(let h=0;h<=24;h++)wl(S,hx(h),Y+60,hx(h),Y+60+(h%6===0?16:8),h%6===0?W0:CM);
     [[0,'0시'],[6,'6시'],[12,'12시'],[18,'18시'],[24,'24시']].forEach(([h,s])=>tx(S,hx(h),Y+106,s,'v22m','middle'));
-    ZH.forEach((z,i)=>{const c=i===0?hx(.5):hx(i*2);tx(S,c,Y+44,z,'vs28','middle');});
     const fill=el('rect',{x:hx(11),y:Y+2,width:hx(13)-hx(11),height:56,fill:SA,opacity:0},S);
+    let wu;ZH.forEach((z,i)=>{const c=i===0?hx(.5):hx(i*2);const t=tx(S,c,Y+44,z,'vs28','middle');if(i===6)wu=t;});
     const big=tx(S,hx(12),300,'午','vs160','middle',{style:`fill:${CM}`});const zheng=tx(S,hx(12)-90,300,'正','vs160','end');zheng.setAttribute('opacity',0);
     const cap=tx(S,hx(12),360,'오시 · 오전 11시~오후 1시','v28','middle');cap.setAttribute('opacity',0);
-    const mid=wl(S,hx(12),Y-40,hx(12),Y+60,W0,{'stroke-width':3});hidLine(mid);
+    const mid=wl(S,hx(12),Y-40,hx(12),Y,W0,{'stroke-width':3});hidLine(mid);
     const am=grp(S,0),pm=grp(S,0);tx(am,hx(6),Y-30,'오전 午前','v28','middle');tx(pm,hx(18),Y-30,'오후 午後','v28','middle');
     const aL=wl(am,hx(11),Y-20,hx(1),Y-20,W0),pL=wl(pm,hx(13),Y-20,hx(23),Y-20,W0);
-    return i=>{if(i===0){fill.setAttribute('opacity',1);if(!calm()){fill.setAttribute('width',0);play(800,e=>{fill.setAttribute('x',(hx(12)-e*(hx(13)-hx(11))/2).toFixed(1));fill.setAttribute('width',(e*(hx(13)-hx(11))).toFixed(1));});}
+    return i=>{if(i===0){fill.setAttribute('opacity',1);wu.style.fill='#1B2A55';if(!calm()){fill.setAttribute('width',0);play(800,e=>{fill.setAttribute('x',(hx(12)-e*(hx(13)-hx(11))/2).toFixed(1));fill.setAttribute('width',(e*(hx(13)-hx(11))).toFixed(1));});}
       big.style.fill=W0;big.setAttribute('x',hx(12)+80);zheng.setAttribute('x',hx(12)+0);fadeIn(zheng,700);fadeIn(cap,700);drawLine(mid,700);}
      else{show(am);show(pm);hidLine(aL);hidLine(pL);drawLine(aL,900);drawLine(pL,900);}};}},
   {k:'자정',h:'밤 12시는<br>자시의 한가운데',b:'자시(子時)의 한가운데가 밤 12시야. 그래서 밤 12시를 <em>자정(子正)</em>이라고 불러.',steps:['밤 12시로 돌리기'],

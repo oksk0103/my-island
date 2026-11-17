@@ -23,7 +23,7 @@ EPX[11]={day:'11일차',topic:'이따가와 있다가',cat:'맞춤법',field:'�
    draw(S){R(S,660,230,[['이따가','vs96'],[' 전화할게.','v60']]);
     const eq=grp(S,0),gh=grp(S,1);R(gh,660,350,[['= ','v60',Cm],['…… 전화할게.','v60',Cm]]);R(eq,660,350,[['= ','v60',Cm],['조금 뒤에','v60'],[' 전화할게.','v60']]);
     const y=520,x1=680,x2=1480;ribbon(S,x1,x2,y,20);T(S,x1,y+60,'지금','v28');T(S,x2,y+60,'한참 뒤','v28','end');
-    const tx_=x1+(x2-x1)*7/20,mark=grp(S,0);wl(mark,tx_,y-70,tx_,y,C);T(mark,tx_,y+60,'조금 뒤','v28','middle');
+    const tx_=x1+(x2-x1)*7/20,mark=grp(S,0);wl(mark,tx_,y-22,tx_,y,C);T(mark,tx_,y+60,'조금 뒤','v28','middle');
     const w=T(S,x1,y-30,'이따가','v28','middle');const d=wdot(S,x1,y,10,A);
     wl(S,640,650,1504,650,Cm);T(S,640,690,'이따가 = 조금 지난 뒤에 · 줄이면 ‘이따’','v22m');
     return ()=>go(1100,e=>{const x=x1+(tx_-x1)*e;mv(d,x,y);w.setAttribute('x',x.toFixed(1));},()=>{show(mark);gh.setAttribute('opacity',0);show(eq);});}},

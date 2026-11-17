@@ -57,7 +57,7 @@ EPX[32]={day:'12월 11일',topic:'노랗다·누렇다',cat:'색깔 낱말',fiel
  end:{q:'‘누렇다’의 ㅜ는 어떤 느낌을 줄까?',a:'어둡고 무거운 느낌. 그래서 조금 탁한 노랑이야.',h:'노란 물건 찾아<br>세 낱말로 말해 봐.',btn:'세 낱말 놓기',
   draw(S){const X=[810,1150,1410],W=['노르스름하다','노랗다','누렇다'],D=['조금','밝고 선명하게','탁하고 어둡게'];
    line(S,640,200,1504,200,C);tx(S,640,170,'노란 물건 하나','v22m');
-   const cols=[];X.forEach((x,k)=>{line(S,x,230,x,600,B,{'stroke-dasharray':'2 10'});const g=grp(S,0);tx(g,x,330,W[k],'v60','middle');const q=tx(S,x,330,'?','v60','middle',{opacity:.35});g.q=q;tx(g,x,380,D[k],'v22m','middle');cols.push(g);});
+   const cols=[];X.forEach((x,k)=>{line(S,x,410,x,600,B,{'stroke-dasharray':'2 10'});const g=grp(S,0);tx(g,x,330,W[k],'v60','middle');const q=tx(S,x,330,'?','v60','middle',{opacity:.35});g.q=q;tx(g,x,380,D[k],'v22m','middle');cols.push(g);});
    line(S,640,620,1504,620,C);
    const d=el('circle',{cx:640,cy:620,r:12,fill:A},S);
    return ()=>{if(calm()){cols.forEach(g=>{g.setAttribute('opacity',1);g.q.setAttribute('opacity',0);});d.setAttribute('cx',1440);return;}

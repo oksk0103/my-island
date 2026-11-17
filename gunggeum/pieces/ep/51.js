@@ -1,7 +1,13 @@
 (()=>{ // 51. 겨울 철새는 왜 우리나라에 올까 — 두루미·기러기, v2 관측 노트
 // 북쪽 번식지 ↔ 우리나라를 잇는 도식 지도. 실루엣은 화면당 하나(나는 두루미).
 const N=[960,200],K=[1110,540],ROUTE=`M${N[0]},${N[1]}C1260,260 1280,440 ${K[0]},${K[1]}`;
-function grid(S){const g=el('g',{stroke:W0m,'stroke-width':2,'stroke-dasharray':'2 14','stroke-linecap':'round'},S);for(let y=140;y<=600;y+=66)el('line',{x1:660,y1:y,x2:1440,y2:y},g);
+let GM=0;// 배경 점선 격자는 글자 둘레(6px)에서 끊는다 — 글자를 다 그린 뒤 글자 자리를 가림막으로 뺀다
+function gapGrid(S,g){const id='g51m'+(GM++),m=el('mask',{id,maskUnits:'userSpaceOnUse',x:0,y:0,width:1600,height:820},S);el('rect',{x:0,y:0,width:1600,height:820,fill:'#fff'},m);g.setAttribute('mask',`url(#${id})`);
+ const cut=()=>{[...m.querySelectorAll('.cut')].forEach(r=>r.remove());const I=S.getScreenCTM();if(!I)return;const inv=I.inverse();
+  S.querySelectorAll('text').forEach(t=>{if(!t.textContent.trim())return;const r=t.getBoundingClientRect();if(!r.width)return;const a=new DOMPoint(r.left,r.top).matrixTransform(inv),b=new DOMPoint(r.right,r.bottom).matrixTransform(inv);
+   el('rect',{class:'cut',x:a.x-6,y:a.y-2,width:b.x-a.x+12,height:b.y-a.y+4,fill:'#000'},m);});};
+ requestAnimationFrame(cut);if(document.fonts)document.fonts.ready.then(cut);}
+function grid(S){const g=el('g',{stroke:W0m,'stroke-width':2,'stroke-dasharray':'2 14','stroke-linecap':'round'},S);for(let y=140;y<=600;y+=66)el('line',{x1:660,y1:y,x2:1440,y2:y},g);gapGrid(S,g);
  const X=1480;wl(S,X,130,X,600,W0m);for(let y=130,i=0;y<=600;y+=20,i++)wl(S,X,y,X-(i%5===0?18:10),y,i%5===0?W0:W0m);tx(S,X,112,'북쪽','v22','end');tx(S,X,630,'남쪽','v22m','end');}
 function site(S,[x,y],a,b,big){el('circle',{cx:x,cy:y,r:16,fill:'none',stroke:W0,'stroke-width':2},S);wdot(S,x,y,6,W0);
  tx(S,x-34,y+(big?20:10),a,big?'v60':'v28','end');tx(S,x-34,y+(big?56:44),b,'v22m','end');}

@@ -31,7 +31,7 @@ EPX[9]={day:'9일차',topic:'어린이',cat:'말의 유래',field:'국어',frame
   {k:'젊다',h:'아기도 옛날엔<br>‘젊다’고 했다',b:'15~16세기에는 아기도 젊은이도 모두 <em>젊다</em>고 했어. 16세기 말부터 ‘어리다’가 나이가 적다는 뜻으로도 쓰였어.',steps:['옛날','지금'],
    draw(S){T(S,950,220,'아기','v60','middle');T(S,1310,220,'젊은이','v60','middle');L(S,640,260,1504,260,C);L(S,640,450,1504,450,Cm);L(S,640,640,1504,640,Cm);
     T(S,640,370,'옛날','v28');T(S,640,400,'15~16세기','v22m');T(S,640,560,'지금','v28');
-    [370,560].forEach(y=>{L(S,800,y+18,1100,y+18,B,{'stroke-dasharray':'2 10'});L(S,1160,y+18,1460,y+18,B,{'stroke-dasharray':'2 10'});});
+    [412,592].forEach(y=>{L(S,800,y,1100,y,B,{'stroke-dasharray':'2 10'});L(S,1160,y,1460,y,B,{'stroke-dasharray':'2 10'});});
     const old=grp(S,0),bar=L(old,800,330,800,330,C);L(old,800,318,800,342,C);const end=L(old,1460,318,1460,342,C);op(end,0);
     const ow=grp(old,0);T(ow,1130,400,'젊다','v60','middle');T(ow,1130,436,'옛말 ‘졈다’','v22m','middle');
     const now=grp(S,0);T(now,950,580,'어리다','v60','middle',A);T(now,1310,580,'젊다','v60','middle');now.setAttribute('transform','translate(0,30)');
