@@ -11,7 +11,7 @@ let fails = 0, passes = 0; const errs = [];
 const ok = (name, cond, info) => { if (process.env.V) console.log('   · ' + name); if (cond) passes++; else { fails++; console.log('  ✗ ' + name + (info !== undefined ? '  → ' + JSON.stringify(info) : '')); } };
 const ANSWER = '달은 스스로 빛을 내지 못해. 《햇빛을 반사》해서 밝게 보이는 거야.\n@@ 달 | 🌙 | 왜 달은 안 떨어져?; 달에도 바다가 있어?; 보름달은 왜 둥글어?; 달에서 뛰면 어떻게 돼?';
 
-async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h = 820, pre, sw, wx = {} } = {}) {
+async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h = 820, pre, sw, wx = {}, sr } = {}) {
   const ctx = await b.newContext({ viewport: { width: w, height: h }, timezoneId: 'Asia/Seoul', serviceWorkers: sw || 'allow' }); const p = await ctx.newPage(); p.api = 0;
   p.on('pageerror', e => { errs.push(e.message); if (process.env.V) console.log('ERR', e.message); });
   p.cerr = []; p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource|net::ERR/.test(m.text())) p.cerr.push(m.text().slice(0, 120)); });
@@ -29,6 +29,9 @@ async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h 
   p.jump = async ms => { await p.clock.fastForward(ms); await p.adv(1500); }; // 긴 시간은 건너뛰기 (타이머를 하나하나 돌리지 않음)
   await p.adv(2500); await p.addStyleTag({ content: '.sv-inner{animation:none!important}' });
   p.go = async k => { await p.evaluate(k => { document.getElementById('log').hidden = false; document.querySelector(`[data-go="${k}"]`).click(); }, k); }; // 부모님 화면의 바로가기(구역이 접혀 있어도 누른다)
+  // sr: 가짜 음성 인식(v153 연속 듣기). p.speak = 마이크가 켜진 뒤 아이가 말한 것처럼 최종 결과를 보내고, 말 끝 기다림이 지나 듣기가 끝나게 둔다
+  if (sr) await p.addInitScript(() => { window.SpeechRecognition = window.webkitSpeechRecognition = class { start() { window.__rec = this; setTimeout(() => this.onstart && this.onstart(), 0); } stop() { setTimeout(() => this.onend && this.onend(), 0); } abort() { this.stop(); } }; });
+  p.speak = async (text, wait = 5000) => { await p.evaluate(t => window.__rec.onresult({ resultIndex: 0, results: [Object.assign([{ transcript: t }], { isFinal: true })] }), text); await p.adv(wait); };
   p.say = async (text, wait = 1200) => { await p.evaluate(t => { const q = document.getElementById('q'); q.readOnly = false; q.value = t; }, text); await p.press('#q', 'Enter'); await p.adv(wait); };
   p.st = () => p.evaluate(() => ({ saver: document.getElementById('saver').hidden ? '' : document.getElementById('saver').className.replace('saver', '').trim(), paper: !document.getElementById('paper').hidden, log: !document.getElementById('log').hidden, home: !!document.getElementById('app').dataset.home, sheet: document.getElementById('sheet').textContent, chips: [...document.querySelectorAll('#chips button')].map(b => b.textContent.replace(/^\d/, '')), todo: (JSON.parse(localStorage.getItem('gk-todo') || '{"items":[]}').items || []).map(x => [x.text, x.due, !!x.done]), count: +document.querySelector('#count b').textContent }));
   p.saver = async () => { await p.keyboard.press('F3'); await p.adv(3000); await p.adv(16000); };
@@ -173,7 +176,7 @@ async function newsTests(b) {
   await p.jump(3 * 3600e3); await p.adv(16000); s = await p.st(); ok('새벽 2시에도 위젯 면, 저녁 하늘 (아침 하늘 아님)', s.saver.startsWith('face') && await p.evaluate(() => document.getElementById('saver').dataset.tone === 'eve'), s.saver); await p.context().close();
 
   console.log('4. 대기화면 넘기기·누르기');
-  p = await open(b, { time: newsDate + 'T19:30' }); await p.saver();
+  p = await open(b, { time: newsDate + 'T19:30', sr: 1 }); await p.saver();
   const swipe = async dir => { const x = dir > 0 ? 1100 : 500; await p.mouse.move(x, 400); await p.mouse.down(); await p.mouse.move(x - dir * 150, 405, { steps: 4 }); await p.mouse.move(x - dir * 300, 410, { steps: 4 }); await p.mouse.up(); await p.adv(1500); };
   s = await p.st(); ok('처음: 위젯 면', s.saver === 'face', s.saver);
   await swipe(1); s = await p.st(); ok('밀기 → 달력', /\bcal\b/.test(s.saver), s.saver);
@@ -204,7 +207,7 @@ async function newsTests(b) {
   { const bx = await p.locator('#rnFront [data-rn="art"][data-i="0"]').boundingBox(); await p.mouse.click(bx.x + 80, bx.y + 60); await p.adv(1500); } s = await p.st(); ok('1면의 머리기사 → 기사 열림', !s.saver && s.paper, s);
   ok('깨어나면 갈래 강제가 지워짐', await p.evaluate(() => window.__gkCover === undefined));
   await p.saver(); await tile('todo'); s = await p.st(); ok('할 일 빈 곳 → 할 일 화면 (v135)', s.saver === 'pgx' && await p.evaluate(() => document.getElementById('saver').dataset.pg === 'todo'), s);
-  { const a0 = p.api; await p.click('[data-act="tdadd"]'); await p.adv(800); await p.say('수학 익힘책', 3000); await p.adv(1500); s = await p.st();
+  { const a0 = p.api; await p.click('[data-act="tdadd"]'); await p.adv(800); await p.speak('수학 익힘책', 3000); await p.adv(1500); s = await p.st();
     const td = await p.evaluate(() => (JSON.parse(localStorage.getItem('gk-todo') || '{"items":[]}').items || []).map(x => x.text));
     ok("할 일 말하기 → 그 말은 질문이 아니라 할 일로 적히고 할 일 화면으로 (v140)", td.includes('수학 익힘책') && s.saver === 'pgx' && await p.evaluate(() => document.getElementById('saver').dataset.pg === 'todo') && p.api === a0, [td, s.saver, p.api - a0]);
   }
@@ -333,13 +336,13 @@ async function newsTests(b) {
     await p.click('#ansPg button'); await p.adv(600); ok('쪽 화살 → 2쪽', await p.evaluate(() => /^2 \//.test(document.querySelector('#ansPg .pn').textContent) && document.getElementById('sheet').scrollTop > 0));
     ok('이 흐름에서 바깥 요청 0 · 콘솔 오류 0', p.ext.length === 0 && p.cerr.length === 0, [p.ext.slice(0, 3), p.cerr.slice(0, 3)]); await p.context().close();
     // 달력: 일정 말하기 (기기 규칙 — AI를 부르지 않고, 질문 수에 세지 않는다)
-    p = await open(b, { time: newsDate + 'T16:10', read: newsDate }); const cal = () => p.evaluate(() => (JSON.parse(localStorage.getItem('gk-cal') || '{"items":[]}').items || []).map(x => x.date.slice(8) + ' ' + x.text));
+    p = await open(b, { time: newsDate + 'T16:10', read: newsDate, sr: 1 }); const cal = () => p.evaluate(() => (JSON.parse(localStorage.getItem('gk-cal') || '{"items":[]}').items || []).map(x => x.date.slice(8) + ' ' + x.text));
     await p.say('27일에 치과 가', 5000); let c = await cal(); ok('평소에 한 말은 일정으로 들어가지 않음', c.length === 0, c);
     const a1 = p.api, n1 = (await p.st()).count; await p.go('cal'); await p.adv(2500); ok('일정이 없을 때: 조용한 한 줄', await p.evaluate(() => /일정이 없어/.test(document.getElementById('agList').textContent)));
-    await box('[data-act="evadd"]'); await p.say('27일에 치과 가', 3000); await p.adv(3000); c = await cal(); s = await p.st();
+    await box('[data-act="evadd"]'); await p.speak('27일에 치과 가', 5000); await p.adv(3000); c = await cal(); s = await p.st();
     ok('일정 말하기 → 기기가 바로 저장, 달력으로 돌아와 들은 대로 보여 줌', c.length === 1 && /^27 치과/.test(c[0]) && /\bcal\b/.test(s.saver) && p.api === a1 && s.count === n1 && await p.evaluate(() => !!document.querySelector('#agFoot [data-act="evdate"]') && !!document.querySelector('#agFoot [data-act="evundo"]') && /치과/.test(document.getElementById('agList').textContent)), [c, s.saver, p.api - a1]);
     await box('#agFoot [data-act="evundo"]'); c = await cal(); ok('삭제(방금 적은 것) → 되돌림', c.length === 0, c);
-    await box('[data-act="evadd"]'); await p.say('치과 가', 3000); c = await cal(); s = await p.st(); ok('날짜를 못 알아들으면 저장하지 않고 되물음', c.length === 0 && /며칠/.test(s.sheet), [c, s.sheet]);
+    await box('[data-act="evadd"]'); await p.speak('치과 가', 5000); c = await cal(); s = await p.st(); ok('날짜를 못 알아들으면 저장하지 않고 되물음', c.length === 0 && /며칠/.test(s.sheet), [c, s.sheet]);
     await p.evaluate(() => { const t = new Date(), ym = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}`; localStorage.setItem('gk-cal', JSON.stringify({ v: 1, last: null, items: [17, 18, 19, 20, 21, 22, 23].map((d, i) => ({ id: 'x' + i, date: `${ym}-${d}`, text: '일정 ' + i, raw: '', at: i })) })); });
     await p.click('#gkHome'); await p.adv(1200); // 되묻기(며칠이야?)가 떠 있던 것을 홈 단추로 닫는다
     await p.go('cal'); await p.adv(2500); ok('일정이 많을 때: "그리고 N개 더", 넘침 없음', await p.evaluate(() => /그리고 \d+개 더/.test(document.getElementById('agList').textContent) && document.getElementById('agFoot').getBoundingClientRect().bottom <= innerHeight));
