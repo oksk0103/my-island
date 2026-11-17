@@ -124,7 +124,7 @@ svg text{font-family:"Pretendard","Noto Sans CJK KR",sans-serif}
 
 <header class="top" id="top">
   <button class="logo" id="logo" aria-label="홈으로"><svg viewBox="96 92 320 360"><path d="M116 112H206V169H116V226H206" fill="none" stroke="#1C211E" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="348" cy="169" r="46" fill="none" stroke="#1C211E" stroke-width="28"/><path d="M128 296C186 366 320 372 386 288" fill="none" stroke="#1C211E" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="258" cy="412" r="24" fill="#FF9B3D"/></svg></button>
-  <div class="ttl">오늘의 한 조각<small>국어</small></div>
+  <div class="ttl" id="ttl">오늘의 이야기</div>
   <div class="clock" id="clock"></div>
 </header>
 <nav class="nav" id="nav">
@@ -492,6 +492,228 @@ EP.push({day:'14일차',topic:'며칠',cat:'맞춤법',img:'home-14.png',
   draw:S=>endCard(S,[['11월 15일','t56',220],['몇 월 며칠','t30',280]])}
 });
 
+// ---------- 15. 단풍 (과학 첫 편) ----------
+// 색: 초록 잎 · 숨어 있던 노랑 · 새로 만든 빨강 · 마른 갈색
+const rnd=seed=>{let x=seed;return ()=>(x=(x*16807)%2147483647)/2147483647;};
+const LF={g:'#4E9A57',y:'#F2C14E',r:'#D9472F',b:'#8B5E3C'};
+const mix=(a,b,t)=>{const h=c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16)),A=h(a),B=h(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('');};
+const OVAL=(L,W)=>`M0,${-L}C${W},${-L*.5} ${W},${L*.45} 0,${L}C${-W},${L*.45} ${-W},${-L*.5} 0,${-L}Z`;
+// 우리나라 단풍나무(손바닥 모양, 갈래 7개, 가장자리 톱니). k = 가장 긴 갈래 길이, (0,0) = 잎자루 붙는 곳
+const MAPLE_LOBES=[[-140,.52],[-92,.8],[-45,.95],[0,1],[45,.95],[92,.8],[140,.52]];
+const MAPLE=k=>{const R=d=>d*Math.PI/180,P=[],rs=.36,W=.16;
+ const at=(a,r,o)=>{const u=[Math.sin(R(a)),-Math.cos(R(a))],n=[Math.cos(R(a)),Math.sin(R(a))];return [(u[0]*r+n[0]*o)*k,(u[1]*r+n[1]*o)*k];};
+ MAPLE_LOBES.forEach(([ang,L],li)=>{const N=22,side=sg=>{for(let i=0;i<=N;i++){const t=sg<0?i/N:1-i/N,al=rs+(L-rs)*t,h=W*L*Math.pow(1-t,.8)*(1+.5*t)*(t>.08&&t<.97&&i%2?1.09:1);P.push(at(ang,al,sg*h));}};
+  side(-1);side(1);const nx=MAPLE_LOBES[li+1];if(nx)P.push(at((ang+nx[0])/2,rs*.9,0));else P.push([0,.1*k]);});
+ return 'M'+P.map(([x,y])=>`${x.toFixed(1)},${y.toFixed(1)}`).join('L')+'Z';};
+const GINKGO=k=>{const P=[],N=60;for(let i=0;i<=N;i++){const t=-1+2*i/N,at=Math.abs(t);let y=-(.56+.42*Math.pow(1-t*t,.7))+.007*Math.sin(t*Math.PI*7);if(at<.07)y+=.07*(1-at/.07);P.push([.72*t,y]);}
+ const f=([x,y])=>`${(x*k).toFixed(1)},${(y*k).toFixed(1)}`;const b=Math.max(1.6,k/110);return `M${-b},0C${-b},${-.2*k} ${-.34*k},${-.4*k} ${f(P[0])}L`+P.slice(1).map(f).join('L')+`C${.34*k},${-.4*k} ${b},${-.2*k} ${b},0Z`;};
+function leaf(p,cx,cy,kind,k,col=LF.g,rot=0){const g=el('g',{transform:`translate(${cx},${cy}) rotate(${rot})`},p);
+ const stemY=kind==='maple'?.06*k:kind==='ginkgo'?-.12*k:k*.95,sl=k*(kind==='ginkgo'?.68:kind==='maple'?.5:.38);const sc0=c=>kind==='maple'?mix(c,'#8A2A1E',.45):kind==='ginkgo'?mix(c,'#000000',.1):mix(c,'#000000',.22);const stem=el('path',{d:kind==='ginkgo'?`M0,${stemY}L0,${.04*k}Q0,${.34*k} ${.035*k},${stemY+sl}`:`M0,${stemY}L0,${stemY+sl}`,fill:'none',stroke:sc0(col),'stroke-width':kind==='ginkgo'?Math.max(3.2,k/55)+'':Math.max(3,k/40),'stroke-linecap':'round'},g);
+ const D=kind==='maple'?MAPLE(k):kind==='ginkgo'?GINKGO(k):OVAL(k,k*.72),id='lf'+(leaf.n=(leaf.n||0)+1);el('path',{d:D},el('clipPath',{id},g));const body=el('path',{d:D,fill:col},g);
+ const vein=el('g',{'clip-path':`url(#${id})`,stroke:'rgba(0,0,0,.18)','stroke-width':Math.max(2,k/60),'stroke-linecap':'round',fill:'none'},g);
+ if(kind==='maple')MAPLE_LOBES.forEach(([a,L])=>el('line',{x1:0,y1:0,x2:Math.sin(a*Math.PI/180)*L*k*.92,y2:-Math.cos(a*Math.PI/180)*L*k*.92},vein));
+ else if(kind==='ginkgo'){const gid=id+'v',lg=el('linearGradient',{id:gid,gradientUnits:'userSpaceOnUse',x1:0,y1:-.04*k,x2:0,y2:-.4*k},g);el('stop',{offset:0,'stop-color':'#000','stop-opacity':0},lg);el('stop',{offset:1,'stop-color':'#000','stop-opacity':.1},lg);vein.setAttribute('stroke',`url(#${gid})`);vein.setAttribute('stroke-width',Math.max(1.2,k/150));for(let i=-11;i<=11;i++){const t=i/11;el('line',{x1:t*.01*k,y1:-.02*k,x2:.74*t*k,y2:-(.56+.42*Math.pow(1-t*t,.7))*k},vein);}}
+ else{el('line',{x1:0,y1:-.9*k,x2:0,y2:.95*k},vein);[-.5,-.15,.2,.5].forEach(y=>{el('line',{x1:0,y1:y*k,x2:.48*k,y2:(y-.28)*k},vein);el('line',{x1:0,y1:y*k,x2:-.48*k,y2:(y-.28)*k},vein);});}
+ return {g,body,stem,set:c=>{body.setAttribute('fill',c);stem.setAttribute('stroke',sc0(c));}};}
+const MON=x=>x<.34?'9월':x<.67?'10월':'11월';
+EP.push({day:'과학 1',topic:'단풍',cat:'식물',field:'과학',
+ cover:{h:'나뭇잎은 가을에<br>왜 빨개질까?',draw(S){const L=leaf(S,396,250,'maple',200),m=tx(S,396,500,'9월','t30','middle');
+   return ()=>anim(5200,x=>{L.set(x<.5?mix(LF.g,LF.y,x/.5):mix(LF.y,LF.r,(x-.5)/.5));m.textContent=MON(x);});}},
+ scenes:[
+  {k:'숨은 노랑',h:'노란색은 처음부터<br>잎 속에 있었다',b:'은행잎도 여름엔 초록이야.<br>초록은 <em>엽록소</em>, 햇빛으로 양분을 만드는 색소.<br>노란 색소도 늘 같이 있었는데<br>초록에 가려 안 보였어.',steps:['날씨 추워지기'],
+   draw(S){const cx=280,cy=378,k=260;const y=leaf(S,cx,cy,'ginkgo',k,LF.y);const sc=c=>y.stem.setAttribute('stroke',mix(c,'#000000',.1));sc(LF.g);const gr=el('g',{transform:`translate(${cx},${cy})`,style:'pointer-events:none'},S);
+    const lgv=el('linearGradient',{id:'lc0v',gradientUnits:'userSpaceOnUse',x1:0,y1:-.04*k,x2:0,y2:-.4*k},gr);el('stop',{offset:0,'stop-color':'#000','stop-opacity':0},lgv);el('stop',{offset:1,'stop-color':'#000','stop-opacity':.1},lgv);const cp=el('clipPath',{id:'lc0'},S);el('path',{d:GINKGO(k)},cp);const gl=el('g',{'clip-path':'url(#lc0)'},gr);el('path',{d:GINKGO(k),fill:LF.g},gl);
+    const r=rnd(7),dots=[];for(let i=0;i<80;i++){const a=(r()-.5)*1.25,d=.18+Math.sqrt(r())*.78,px=Math.sin(a)*d*k,py=-Math.cos(a)*d*k;dots.push(el('circle',{cx:px,cy:py,r:5+r()*5,fill:'#2F7A3E'},gl));}
+    for(let i=-11;i<=11;i++){const t=i/11;el('line',{x1:t*.01*k,y1:-.02*k,x2:.74*t*k,y2:-(.56+.42*Math.pow(1-t*t,.7))*k,stroke:'url(#lc0v)','stroke-width':1.8,'clip-path':'url(#lc0)'},gr);}
+    const lg=tx(S,540,150,'초록 = 엽록소','t30'),ly=grp(S,0);tx(ly,540,150,'초록이 빠지자','t24m');tx(ly,540,196,'숨어 있던 노랑','t40');
+    const tk=grp(S,1);tx(tk,540,330,'해가 짧아지고','t24m');tx(tk,540,368,'밤이 추워지면','t24m');tx(tk,540,406,'엽록소가 부서져','t24m');const m=tx(S,540,490,'9월','t40');
+    return ()=>{lg.remove();anim(4200,x=>{gl.setAttribute('opacity',1-x);sc(mix(LF.g,LF.y,x));dots.forEach((d,i)=>d.setAttribute('r',Math.max(0,(5+i%5)*(1-x*1.3))));m.textContent=MON(x);},()=>show(ly));};}},
+  {k:'새로 만든 빨강',h:'빨간색은 가을에<br>새로 만든다',b:'은행나무는 초록만 빠져서 <em>노랗게</em>.<br>단풍나무는 잎에 남은 <em>당분</em>으로<br>빨간 색소를 새로 만들어.<br>그래서 <em>빨갛게</em> 물들어.',steps:['은행잎 물들이기','단풍잎 물들이기'],
+   draw(S){const G=leaf(S,210,300,'ginkgo',210),M=leaf(S,580,262,'maple',165);const gl=tx(S,210,470,'은행잎','t30','middle'),ml=tx(S,580,470,'단풍잎','t30','middle');
+    const sug=grp(S,0),r=rnd(3),sd=[];for(let i=0;i<16;i++){sd.push(el('rect',{x:580-90+r()*180,y:250-110+r()*190,width:12,height:12,rx:3,fill:'#FFF6DA',transform:'rotate(45)',style:`transform-box:fill-box;transform-origin:center`},sug));}
+    const run=[()=>anim(2600,x=>G.set(mix(LF.g,LF.y,x)),()=>{gl.textContent='노랑만 남아';}),
+     ()=>{anim(1800,x=>M.set(mix(LF.g,LF.y,x)),()=>{show(sug);ml.textContent='당분으로 →';setTimeout(()=>anim(2400,x=>{M.set(mix(LF.y,LF.r,x));sd.forEach(d=>d.setAttribute('fill',mix('#FFF6DA',LF.r,x)));sug.setAttribute('opacity',1-x);},()=>{ml.textContent='빨강을 새로 만들어';}),500);});}];
+    return i=>run[i]();}},
+  {k:'떨켜',h:'겨울 전에<br>잎을 스스로 떼어 낸다',b:'잎자루 끝에 <em>떨켜</em>라는 벽이 생겨.<br>물길이 막힌 잎은 갈색으로 마르고<br>바람이 불면 툭 떨어져.<br>겨울엔 물이 얼어 잎을 지킬 수 없거든.',steps:['떨켜 생기기','바람 불기'],
+   draw(S){el('path',{d:'M-10,96C200,110 420,84 802,120',fill:'none',stroke:'#7A5A3E','stroke-width':22,'stroke-linecap':'round'},S);
+    const lw=el('g',{},S),L=leaf(lw,396,250,'oval',110,LF.r);el('line',{x1:396,y1:100,x2:396,y2:146,stroke:'rgba(246,231,188,.55)','stroke-width':5,'stroke-linecap':'round'},lw);
+    const w=el('line',{x1:396,y1:104,x2:396,y2:330,stroke:'#8FBCF0','stroke-width':4,'stroke-dasharray':'8 10','stroke-linecap':'round'},lw);let off=0,flow=true;const fl=()=>{if(!flow)return;off=(off+1.2)%18;w.setAttribute('stroke-dashoffset',off);requestAnimationFrame(fl);};fl();
+    const wl=tx(S,470,230,'물길','t24 bl');const band=grp(S,0);el('rect',{x:382,y:110,width:28,height:12,rx:4,fill:'#FF9B3D'},band);el('path',{d:'M414,116L520,170',stroke:'rgba(255,177,94,.7)','stroke-width':2},band);tx(band,528,182,'떨켜','t30 or');
+    const gnd=grp(S,0);el('line',{x1:60,y1:500,x2:732,y2:500,stroke:'rgba(246,231,188,.25)','stroke-width':2},gnd);
+    return i=>{if(i===0){show(band);flow=false;w.setAttribute('opacity',.15);wl.textContent='물길이 막혀';anim(2600,x=>L.set(mix(LF.r,LF.b,x)));}
+     else{show(gnd);wl.textContent='';anim(3000,x=>{const e=x*x,dy=e*178,dx=Math.sin(x*9)*44*(1-x);lw.setAttribute('transform',`translate(${dx},${dy}) rotate(${Math.sin(x*9)*24*(1-x)+e*90},396,250)`);});}};}}],
+ sum:{lines:['초록은 엽록소의 색.<br>가을이면 엽록소가 부서진다.','노랑은 숨어 있던 색,<br>빨강은 새로 만든 색이다.','떨켜가 생기면 잎은<br>마르고 떨어진다.'],
+  words:[['엽록소','햇빛으로 양분을 만드는<br>초록 색소'],['단풍','가을에 잎이<br>빨갛게, 노랗게 물드는 것'],['떨켜','잎자루 끝에 생겨<br>잎을 떼어 내는 벽']]},
+ end:{q:'은행잎은 왜 빨개지지 않을까?',a:'은행나무는 빨간 색소를 새로 만들지 않아서. 숨어 있던 노랑만 드러나.',h:'오늘 본 잎은<br>숨어 있던 색일까, 새로 만든 색일까?',btn:'답 보기',
+  draw(S){const q=qmark(S),g=grp(S,0);leaf(g,140,250,'ginkgo',110,LF.y);leaf(g,315,225,'maple',85,LF.r);tx(g,140,330,'숨어 있던 색','t24','middle');tx(g,310,330,'새로 만든 색','t24','middle');return ()=>{q.remove();show(g);};}}
+});
+
+// ---------- 16. 눈송이 ----------
+function hexPts(cx,cy,r,rot=0){return [...Array(6)].map((_,i)=>{const a=(i*60+rot)*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];});}
+function flake(p,cx,cy,R,kind='dendrite',col='#F6E7BC'){const g=el('g',{transform:`translate(${cx},${cy})`,stroke:col,'stroke-linecap':'round',fill:'none'},p);const w=Math.max(2.5,R/22);
+ for(let i=0;i<6;i++){const a=i*60,arm=el('g',{transform:`rotate(${a})`},g);
+  if(kind==='plate'){el('path',{d:`M0,0L${R*.5},${-R*.29}L${R},0L${R*.5},${R*.29}Z`,fill:'rgba(246,231,188,.22)','stroke-width':w*.6},arm);}
+  else if(kind==='needle'){el('line',{x1:0,y1:0,x2:R,y2:0,'stroke-width':w*.8},arm);}
+  else{el('line',{x1:0,y1:0,x2:R,y2:0,'stroke-width':w},arm);[.35,.6,.82].forEach((t,j)=>{const l=R*(.32-j*.08);el('line',{x1:R*t,y1:0,x2:R*t+l*.5,y2:-l*.87,'stroke-width':w*.8},arm);el('line',{x1:R*t,y1:0,x2:R*t+l*.5,y2:l*.87,'stroke-width':w*.8},arm);});}}
+ if(kind==='plate')el('polygon',{points:hexPts(0,0,R*.34).map(p=>p.join(',')).join(' '),fill:'rgba(246,231,188,.3)','stroke-width':w*.6},g);
+ return g;}
+EP.push({day:'과학 2',topic:'눈송이',cat:'날씨',field:'과학',
+ cover:{h:'눈송이는 왜<br>다 육각형일까?',draw(S){const g=flake(S,396,250,190);
+   return ()=>anim(4000,x=>{const e=1-Math.pow(1-x,3);g.setAttribute('transform',`translate(396,250) rotate(${e*60}) scale(${.4+e*.6})`);});}},
+ scenes:[
+  {k:'물 분자',h:'물 알갱이가<br>여섯씩 손을 잡는다',b:'물은 아주 작은 <em>물 분자</em>로 되어 있어.<br>물이 얼면 물 분자들이 서로 손을 잡는데<br><em>여섯 개씩</em> 둥글게 모여<br>육각형을 만들어.',steps:['얼리기'],
+   draw(S){const r=rnd(11),H=[[396,270]].flatMap(([cx,cy])=>[...hexPts(cx-75,cy-44,86,30),...hexPts(cx+75,cy+44,86,30)]);const P=H.filter((p,i,a)=>a.findIndex(q=>Math.hypot(q[0]-p[0],q[1]-p[1])<4)===i);
+    const mol=P.map(()=>{const x=80+r()*630,y=80+r()*380,g=el('g',{transform:`translate(${x},${y})`},S);el('circle',{r:17,fill:'#8FBCF0'},g);el('circle',{cx:-15,cy:-12,r:8,fill:'#F6E7BC'},g);el('circle',{cx:15,cy:-12,r:8,fill:'#F6E7BC'},g);return {g,x,y,vx:(r()-.5)*1.6,vy:(r()-.5)*1.6};});
+    const bonds=grp(S,0);for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++){const d=Math.hypot(P[i][0]-P[j][0],P[i][1]-P[j][1]);if(d>80&&d<92)el('line',{x1:P[i][0],y1:P[i][1],x2:P[j][0],y2:P[j][1],stroke:'rgba(246,231,188,.45)','stroke-width':3,'stroke-dasharray':'6 6'},bonds);}
+    S.insertBefore(bonds,S.firstChild);const lab=tx(S,396,510,'물 · 이리저리 움직여','t24m','middle');let live=true;
+    const wig=()=>{if(!live)return;mol.forEach(m=>{m.x+=m.vx;m.y+=m.vy;if(m.x<60||m.x>730)m.vx*=-1;if(m.y<60||m.y>470)m.vy*=-1;m.g.setAttribute('transform',`translate(${m.x},${m.y})`);});requestAnimationFrame(wig);};wig();
+    return ()=>{live=false;const st=mol.map(m=>[m.x,m.y]);anim(2200,x=>{const e=1-Math.pow(1-x,3);mol.forEach((m,i)=>m.g.setAttribute('transform',`translate(${st[i][0]+(P[i][0]-st[i][0])*e},${st[i][1]+(P[i][1]-st[i][1])*e})`));},()=>{show(bonds);lab.textContent='얼음 · 여섯씩 둥글게 손잡기';});};}},
+  {k:'여섯 갈래',h:'모서리에서 먼저 자라<br>여섯 갈래가 된다',b:'작은 육각형 얼음은 <em>여섯 모서리</em>가<br>구름 속 수증기를 먼저 만나.<br>그래서 모서리마다 가지가 뻗어<br>여섯 갈래 눈송이가 돼.',steps:['자라기','더 자라기'],
+   draw(S){const cx=396,cy=270;el('polygon',{points:hexPts(cx,cy,34).map(p=>p.join(',')).join(' '),fill:'rgba(246,231,188,.35)',stroke:'#F6E7BC','stroke-width':3},S);
+    const arms=[...Array(6)].map((_,i)=>{const a=i*60*Math.PI/180;return {a,l:el('line',{x1:cx+34*Math.cos(a),y1:cy+34*Math.sin(a),x2:cx+34*Math.cos(a),y2:cy+34*Math.sin(a),stroke:'#F6E7BC','stroke-width':7,'stroke-linecap':'round'},S)};});
+    const side=grp(S,0);arms.forEach(({a})=>{[.45,.7].forEach(t=>{const R=210*t,bx=cx+R*Math.cos(a),by=cy+R*Math.sin(a),l=60*(1.1-t);[-1,1].forEach(sg=>{const b=a+sg*Math.PI/3;el('line',{x1:bx,y1:by,x2:bx+l*Math.cos(b),y2:by+l*Math.sin(b),stroke:'#F6E7BC','stroke-width':5,'stroke-linecap':'round'},side);});});});
+    const vap=grp(S,1),r=rnd(5);for(let i=0;i<40;i++)el('circle',{cx:40+r()*712,cy:40+r()*460,r:3,fill:'rgba(143,188,240,.5)'},vap);const lb=tx(S,396,520,'파란 점 · 구름 속 수증기','t24m','middle');
+    return i=>{if(i===0)anim(2200,x=>arms.forEach(({a,l})=>{const R=34+176*x;l.setAttribute('x2',cx+R*Math.cos(a));l.setAttribute('y2',cy+R*Math.sin(a));}));else{show(side);vap.setAttribute('opacity',.35);lb.textContent='가지에서 또 가지';}};}},
+  {k:'온도마다 모양',h:'추운 정도에 따라<br>모양이 달라진다',b:'영하 2도쯤엔 <em>얇은 판</em>,<br>영하 5도쯤엔 <em>바늘</em>,<br>영하 15도쯤엔 <em>나뭇가지</em> 모양이 잘 자라.<br>그래도 모두 여섯 갈래야.',steps:['영하 2도','영하 5도','영하 15도'],
+   draw(S){const K=[['plate','영하 2도','얇은 판'],['needle','영하 5도','바늘'],['dendrite','영하 15도','나뭇가지']];
+    const G=K.map(([k,t,n],i)=>{const g=grp(S,0),x=132+i*264;flake(g,x,230,105,k);tx(g,x,410,t,'t30','middle');tx(g,x,452,n,'t24m','middle');return g;});return i=>show(G[i]);}}],
+ sum:{lines:['물이 얼면 물 분자가<br>여섯씩 둥글게 모인다.','육각형 모서리에서 먼저 자라<br>여섯 갈래가 된다.','추운 정도에 따라<br>판, 바늘, 나뭇가지가 된다.'],
+  words:[['물 분자','물을 이루는<br>아주 작은 알갱이'],['결정','알갱이가 규칙대로<br>쌓인 모양'],['수증기','물이 기체가 된 것.<br>눈에 안 보인다']]},
+ end:{q:'눈송이 갈래는 몇 개일까?',a:'여섯 개. 물 분자가 육각형으로 모이니까.',h:'눈이 오면 어두운 옷소매에<br>눈송이를 받아서 세어 봐.',btn:'답 보기',
+  draw(S){const q=qmark(S),g=grp(S,0);flake(g,220,210,120);tx(g,220,390,'여섯 갈래','t40','middle');return ()=>{q.remove();show(g);};}}
+});
+
+// ---------- 17. 입김 ----------
+function puff(p,cx,cy,n,seed){const r=rnd(seed),g=el('g',{},p),D=[];for(let i=0;i<n;i++){const a=r()*6.28,d=Math.sqrt(r());D.push(el('circle',{cx:cx+Math.cos(a)*d*110,cy:cy+Math.sin(a)*d*70,r:4+r()*6,fill:'#F6F3EA',opacity:0},g));}return {g,D};}
+EP.push({day:'과학 3',topic:'입김',cat:'물의 변신',field:'과학',
+ cover:{h:'입김은 왜<br>겨울에만 보일까?',draw(S){const P=puff(S,420,250,120,3);const t=tx(S,396,500,'20도','t30','middle');
+   return ()=>anim(4200,x=>{const c=x<.3?0:Math.min(1,(x-.3)/.5);P.D.forEach((d,i)=>d.setAttribute('opacity',c*(.35+(i%5)*.12)));t.textContent=x<.3?'20도 · 안 보여':'0도 · 하얗게 보여';});}},
+ scenes:[
+  {k:'숨 속의 물',h:'내쉬는 숨에는<br>수증기가 들어 있다',b:'숨을 내쉬면 몸속의 따뜻한 <em>수증기</em>가<br>같이 나와.<br>수증기는 물이 기체가 된 거라<br>눈에 <em>안 보여</em>.',steps:['후 불기'],
+   draw(S){const r=rnd(9),V=[];for(let i=0;i<34;i++){V.push({x:120,y:270+(r()-.5)*40,vx:2.4+r()*2.2,vy:(r()-.5)*1.4,c:el('circle',{cx:120,cy:270,r:7,fill:'none',stroke:'rgba(143,188,240,.75)','stroke-width':2,'stroke-dasharray':'3 3',opacity:0},S)});}
+    el('path',{d:'M40,200Q110,200 110,270Q110,340 40,340',fill:'none',stroke:'rgba(246,231,188,.35)','stroke-width':4,'stroke-dasharray':'8 8'},S);tx(S,60,390,'숨','t24m','middle');
+    const lb=tx(S,470,470,'','t24','middle');
+    return ()=>{lb.textContent='점선 동그라미 · 수증기 (실제로는 안 보여)';anim(3500,x=>V.forEach((v,i)=>{const t=Math.max(0,x*1.4-i*.012);v.c.setAttribute('opacity',t>0?.9:0);v.c.setAttribute('cx',120+v.vx*t*95);v.c.setAttribute('cy',v.y+v.vy*t*90);}));};}},
+  {k:'차가우면 물방울',h:'찬 공기를 만나면<br>작은 물방울이 된다',b:'수증기가 차가워지면 다시<br>아주 작은 <em>물방울</em>로 바뀌어.<br>이 물방울 수천 개가 빛을 흩어서<br><em>하얗게</em> 보이는 거야.',steps:['따뜻한 날 불기','추운 날 불기'],
+   draw(S){box(S,30,40,350,460,'rgba(255,177,94,.08)',24);box(S,412,40,350,460,'rgba(143,188,240,.1)',24);tx(S,205,90,'20도','t40','middle');tx(S,587,90,'0도','t40','middle');
+    const A=puff(S,205,280,70,4),B=puff(S,587,280,110,6);const la=tx(S,205,460,'','t24m','middle'),lb=tx(S,587,460,'','t24','middle');
+    return i=>{if(i===0){la.textContent='수증기 그대로 · 안 보여';A.D.forEach(d=>{d.setAttribute('fill','none');d.setAttribute('stroke','rgba(143,188,240,.75)');d.setAttribute('stroke-width',2);d.setAttribute('stroke-dasharray','3 3');});anim(1500,x=>A.D.forEach(d=>d.setAttribute('opacity',x*.8)));}else{lb.textContent='물방울 · 하얀 김';anim(2400,x=>B.D.forEach((d,j)=>d.setAttribute('opacity',x*(.35+(j%5)*.12))));}};}},
+  {k:'같은 원리',h:'김, 구름, 안개도<br>모두 작은 물방울',b:'라면 끓일 때 나는 <em>김</em>,<br>하늘의 <em>구름</em>, 아침 <em>안개</em>도<br>수증기가 식어서 생긴<br>작은 물방울이야.',steps:['김','구름','안개'],
+   draw(S){const W='rgba(246,243,234,.85)';const G=[
+     g=>{el('path',{d:'M60,330H220L205,420H75Z',fill:'rgba(246,231,188,.25)'},g);el('rect',{x:50,y:318,width:180,height:16,rx:6,fill:'rgba(246,231,188,.45)'},g);[100,140,180].forEach((x,i)=>el('path',{d:`M${x},300C${x-20},260 ${x+20},230 ${x},190`,fill:'none',stroke:W,'stroke-width':10,'stroke-linecap':'round'},g));tx(g,140,480,'김','t40','middle');},
+     g=>{[[396,230,50],[350,250,38],[445,250,40],[396,262,46]].forEach(([x,y,r])=>el('circle',{cx:x,cy:y,r,fill:W},g));tx(g,396,480,'구름','t40','middle');},
+     g=>{[300,330,360,390].forEach((y,i)=>el('line',{x1:560,x2:740,y1:y,y2:y,stroke:W,'stroke-width':14,'stroke-linecap':'round',opacity:.35+i*.15},g));tx(g,650,480,'안개','t40','middle');}].map(f=>{const g=grp(S,0);f(g);return g;});return i=>show(G[i]);}}],
+ sum:{lines:['내쉬는 숨에는 눈에 안 보이는<br>수증기가 들어 있다.','찬 공기를 만나면 수증기가<br>작은 물방울이 된다.','물방울이 빛을 흩어서<br>하얗게 보인다.'],
+  words:[['수증기','물이 기체가 된 것.<br>눈에 안 보인다'],['응결','수증기가 식어<br>물방울이 되는 것'],['입김','입에서 나오는<br>더운 김']]},
+ end:{q:'여름엔 입김이 왜 안 보일까?',a:'공기가 따뜻해서 수증기가 물방울로 바뀌지 않으니까.',h:'내일 아침 차가운 창문에<br>후 불어 봐.',btn:'답 보기',
+  draw(S){const q=qmark(S),g=grp(S,0);box(g,90,80,260,280,'rgba(143,188,240,.12)',16);el('line',{x1:220,x2:220,y1:80,y2:360,stroke:'rgba(246,231,188,.3)','stroke-width':4},g);el('ellipse',{cx:220,cy:220,rx:90,ry:60,fill:'rgba(246,243,234,.55)'},g);tx(g,220,400,'뿌옇게 김이 서려','t24','middle');return ()=>{q.remove();show(g);};}}
+});
+
+// ---------- 18. 겨울잠 ----------
+function bear(p,cx,cy,s,fat=0){const g=el('g',{transform:`translate(${cx},${cy}) scale(${s})`},p),C='#B98B5E';
+ const body=el('ellipse',{cx:0,cy:0,rx:120,ry:72,fill:C},g);[[-70,60],[70,60],[-30,66],[30,66]].forEach(([x,y])=>el('rect',{x:x-16,y:y-20,width:32,height:52,rx:14,fill:C},g));
+ el('circle',{cx:-128,cy:-38,r:46,fill:C},g);el('circle',{cx:-150,cy:-78,r:15,fill:C},g);el('circle',{cx:-112,cy:-82,r:15,fill:C},g);el('ellipse',{cx:-166,cy:-28,rx:20,ry:15,fill:'#D9B48A'},g);el('circle',{cx:-180,cy:-32,r:6,fill:'#3A2A1E'},g);el('circle',{cx:-138,cy:-48,r:5,fill:'#3A2A1E'},g);
+ const set=f=>{body.setAttribute('rx',120+f*28);body.setAttribute('ry',72+f*22);};set(fat);return {g,set};}
+EP.push({day:'과학 4',topic:'겨울잠',cat:'동물',field:'과학',
+ cover:{h:'곰은 겨울잠을<br>어떻게 잘까?',draw(S){el('path',{d:'M90,470C90,170 250,90 396,90C542,90 702,170 702,470Z',fill:'rgba(0,0,0,.25)'},S);const B=bear(S,420,370,1.05,.6);const z=grp(S,0);tx(z,560,250,'z','t40 dim');tx(z,600,200,'z','t56 dim');tx(z,650,140,'Z','t80 dim');
+   return ()=>{z.setAttribute('opacity',0);anim(3200,x=>{z.setAttribute('opacity',Math.min(1,x*2)*(.6+.4*Math.sin(x*12)));});};}},
+ scenes:[
+  {k:'가을에 살찌우기',h:'가을 내내 먹어<br>지방을 쌓아 둔다',b:'겨울엔 먹을 게 거의 없어.<br>그래서 곰은 가을에 도토리와 열매를<br>잔뜩 먹고 몸에 <em>지방</em>을 쌓아.',steps:['가을 보내기'],
+   draw(S){const B=bear(S,430,260,1);tx(S,60,430,'몸속 지방','t24');box(S,60,450,672,30,'rgba(246,231,188,.1)',15);const bar=el('rect',{x:60,y:450,width:60,height:30,rx:15,fill:'#FFB15E'},S);const m=tx(S,732,430,'9월','t30','end');
+    return ()=>anim(3800,x=>{B.set(x);bar.setAttribute('width',60+x*612);m.textContent=x<.33?'9월':x<.66?'10월':'11월';});}},
+  {k:'느린 심장',h:'심장이 아주<br>느리게 뛴다',b:'깨어 있을 땐 1분에 <em>40번</em>쯤.<br>겨울잠을 잘 땐 <em>10번</em>쯤만 뛰어.<br>힘을 아껴서 쌓아 둔 지방으로<br>넉 달쯤 버텨.',steps:['깨어 있을 때','겨울잠 잘 때'],
+   draw(S){const hp=(cx,cy)=>{const g=el('g',{transform:`translate(${cx},${cy})`},S);const h=el('path',{d:'M0,40C-60,0 -70,-40 -40,-60C-20,-72 0,-60 0,-40C0,-60 20,-72 40,-60C70,-40 60,0 0,40Z',fill:'#D9472F',opacity:.35},g);return h;};
+    const H1=hp(200,220),H2=hp(590,220);tx(S,200,340,'깨어 있을 때','t30','middle');tx(S,590,340,'겨울잠','t30','middle');const c1=tx(S,200,410,'','t56','middle'),c2=tx(S,590,410,'','t56','middle');tx(S,200,450,'1분에','t24m','middle');tx(S,590,450,'1분에','t24m','middle');
+    const beat=(h,per,lab,n)=>{let k=0;const go=()=>{if(!h.isConnected)return;h.setAttribute('opacity',1);h.setAttribute('transform','scale(1.12)');setTimeout(()=>{h.setAttribute('opacity',.55);h.setAttribute('transform','scale(1)');},180);setTimeout(go,per);};lab.textContent=n+'번';go();};
+    return i=>i===0?beat(H1,1500,c1,40):beat(H2,6000,c2,10);}},
+  {k:'다람쥐는 달라',h:'다람쥐는 몸이 식고<br>가끔 깨서 먹는다',b:'곰은 겨울잠을 자도 몸이 <em>따뜻한 편</em>이야.<br>다람쥐는 체온이 <em>5도쯤</em>까지 내려가.<br>그 대신 며칠마다 깨어<br>모아 둔 도토리를 먹어.',steps:['곰 체온','다람쥐 체온'],
+   draw(S){const th=(x,lab)=>{tx(S,x,500,lab,'t30','middle');box(S,x-22,70,44,360,'rgba(246,231,188,.1)',22);el('circle',{cx:x,cy:440,r:34,fill:'#D9472F'},S);const f=el('rect',{x:x-12,y:420,width:24,height:0,rx:12,fill:'#D9472F'},S);const v=tx(S,x+44,0,'','t40');return (t)=>{const h=t/40*340;f.setAttribute('y',430-h);f.setAttribute('height',h);v.setAttribute('y',440-h);v.textContent=Math.round(t)+'도';};};
+    [0,10,20,30,40].forEach(t=>{const y=430-t/40*340;el('line',{x1:150,x2:170,y1:y,y2:y,stroke:'rgba(246,231,188,.35)','stroke-width':2},S);tx(S,140,y+8,String(t),'t24m','end');});
+    const A=th(270,'곰'),B=th(560,'다람쥐');A(37);B(37);return i=>i===0?anim(1800,x=>A(37-x*4)):anim(2600,x=>B(37-x*32));}}],
+ sum:{lines:['곰은 가을에 먹어서<br>몸에 지방을 쌓는다.','겨울잠을 자면 심장이<br>아주 느리게 뛴다.','다람쥐는 몸이 차가워지고<br>가끔 깨서 먹는다.'],
+  words:[['겨울잠','겨울 동안 거의 움직이지 않고<br>잠처럼 지내는 것'],['지방','몸에 쌓아 두는<br>힘의 창고'],['체온','몸의 온도.<br>사람은 36.5도쯤']]},
+ end:{q:'곰은 겨울잠 동안 무엇으로 버틸까?',a:'가을에 몸에 쌓아 둔 지방으로. 넉 달쯤 거의 먹지 않아.',h:'겨울에 안 보이는 동물은<br>어디서 지내고 있을까?',btn:'답 보기',
+  draw(S){const q=qmark(S),g=grp(S,0);bear(g,240,250,.8,1);tx(g,220,410,'지방으로 버텨','t30','middle');return ()=>{q.remove();show(g);};}}
+});
+
+// ---------- 19. 달 모양 ----------
+const half=(p,cx,cy,r,dir)=>{const a=Math.atan2(dir[1],dir[0]),n=[-Math.sin(a),Math.cos(a)];el('circle',{cx,cy,r,fill:'#2A3558'},p);return el('path',{d:`M${cx+n[0]*r},${cy+n[1]*r}A${r},${r} 0 0 1 ${cx-n[0]*r},${cy-n[1]*r}Z`,fill:'#F6E7BC'},p);};
+EP.push({day:'과학 5',topic:'달의 모양',cat:'하늘',field:'과학',
+ cover:{h:'달은 왜<br>모양이 바뀔까?',draw(S){const m=moon(S,396,240,170,1),l=tx(S,396,500,'','t30','middle');
+   return ()=>anim(6000,x=>{const d=1+x*14;m.set(d);l.textContent=d>=14.5?'보름달':NAME(Math.round(d)).replace('차는 ','');});}},
+ scenes:[
+  {k:'빌려 온 빛',h:'달은 햇빛을<br>받아서 빛난다',b:'달은 스스로 빛을 내지 못해.<br>해를 바라보는 쪽 <em>절반</em>만<br>늘 밝게 빛나.',steps:['해 켜기'],
+   draw(S){const sun=grp(S,.15);el('circle',{cx:-40,cy:270,r:150,fill:'#FFB15E'},sun);for(let i=0;i<6;i++){const y=150+i*48;el('line',{x1:130,x2:430,y1:y,y2:y,stroke:'rgba(255,177,94,.5)','stroke-width':3,'stroke-dasharray':'10 12'},sun);}tx(sun,60,500,'해','t30','middle');
+    const mg=el('g',{},S);el('circle',{cx:560,cy:270,r:130,fill:'#2A3558'},mg);const lit=el('path',{d:'M560,140A130,130 0 0 0 560,400Z',fill:'#F6E7BC',opacity:0},mg);tx(S,560,470,'달','t30','middle');const lb=tx(S,560,515,'','t24m','middle');
+    return ()=>{anim(1600,x=>{sun.setAttribute('opacity',.15+x*.85);lit.setAttribute('opacity',x);});lb.textContent='해 쪽 절반만 밝아';};}},
+  {k:'도는 달',h:'달이 지구를 돌면<br>보이는 모양이 바뀐다',b:'달은 <em>한 달쯤</em>에 지구를 한 바퀴 돌아.<br>어디에 있느냐에 따라<br>밝은 쪽이 우리에게<br>보이는 만큼이 달라져.',steps:['한 바퀴 돌리기'],
+   draw(S){const ex=290,ey=270,R=170;el('circle',{cx:ex,cy:ey,r:R,fill:'none',stroke:'rgba(246,231,188,.2)','stroke-width':2,'stroke-dasharray':'6 8'},S);
+    for(let i=0;i<5;i++){const y=110+i*80;el('line',{x1:0,x2:60,y1:y,y2:y,stroke:'rgba(255,177,94,.6)','stroke-width':3,'stroke-dasharray':'10 10'},S);}tx(S,30,500,'해 쪽','t24 or','middle');
+    el('circle',{cx:ex,cy:ey,r:44,fill:'#5A9BE6'},S);tx(S,ex,ey+8,'지구','t24','middle',{style:'fill:#fff'});
+    const mg=el('g',{},S);let lit=null;const place=t=>{while(mg.firstChild)mg.removeChild(mg.firstChild);const a=Math.PI+t*2*Math.PI,x=ex+R*Math.cos(a),y=ey-R*Math.sin(a);half(mg,x,y,30,[-1,0]);};place(0);
+    box(S,520,60,250,420,'rgba(246,231,188,.06)',24);tx(S,645,110,'지구에서 보면','t24m','middle');const view=moon(S,645,260,90,1);const nm=tx(S,645,420,'숨은 달','t40','middle');
+    return ()=>anim(9000,x=>{place(x);const d=1+x*29.5;view.set(d);const n=Math.round(d);nm.textContent=n<=1||n>=30?'숨은 달':NAME(n).replace('차는 ','').replace('기우는 ','').replace(/^보름$/,'보름달');});}},
+  {k:'이름',h:'모양마다<br>이름이 있다',b:'<em>초승달</em> → <em>반달</em> → <em>보름달</em><br>→ 반달 → <em>그믐달</em>.<br>그리고 다시 초승달.<br>이렇게 한 바퀴에 29.5일쯤.',steps:['차례로 보기'],
+   draw(S){const K=[[3,'초승달'],[8,'반달'],[15,'보름달'],[22,'반달'],[27,'그믐달']];const G=K.map(([d,n],i)=>{const g=grp(S,0),x=90+i*153;moon(g,x,250,56,d);tx(g,x,360,n,'t30','middle');return g;});
+    return ()=>G.forEach((g,i)=>setTimeout(()=>show(g),i*420));}}],
+ sum:{lines:['달은 햇빛을 받아<br>해 쪽 절반만 빛난다.','달이 지구를 돌면서<br>밝은 쪽이 보이는 만큼이 바뀐다.','초승달, 반달, 보름달, 그믐달로<br>29.5일쯤에 한 바퀴.'],
+  words:[['공전','다른 별 둘레를<br>도는 것'],['보름달','둥글게 다 보이는 달.<br>음력 15일쯤'],['그믐달','새벽에 뜨는<br>가는 달']]},
+ end:{q:'보름달일 때 달은 어디에 있을까?',a:'지구를 사이에 두고 해의 반대쪽에. 그래서 해 쪽 절반이 우리에게 다 보여.',h:'오늘 밤 달은<br>어떤 모양인지 봐.',btn:'답 보기',
+  draw(S){const q=qmark(S),g=grp(S,0);moon(g,220,200,110,15);tx(g,220,380,'해의 반대쪽','t30','middle');return ()=>{q.remove();show(g);};}}
+});
+
+// ---------- 20. 정전기 ----------
+function charges(p,x,y,w,h,plus,minus,seed){const r=rnd(seed),M=[];for(let i=0;i<plus;i++)tx(p,x+26+r()*(w-52),y+44+r()*(h-60),'+','t40 or','middle',{style:'font-weight:800'});for(let i=0;i<minus;i++)M.push(tx(p,x+26+r()*(w-52),y+44+r()*(h-60),'−','t56 bl','middle',{style:'font-weight:800'}));return M;}
+EP.push({day:'과학 6',topic:'정전기',cat:'전기',field:'과학',
+ cover:{h:'겨울엔 왜 문고리가<br>따끔할까?',draw(S){const kn=el('g',{},S);el('rect',{x:470,y:150,width:30,height:240,rx:8,fill:'#9AA3B5'},kn);el('circle',{cx:470,cy:270,r:46,fill:'#C3CAD8'},kn);
+   const sp=el('path',{d:'M420,270L385,240L398,282L345,250L360,296L300,268',fill:'none',stroke:'#FFE27A','stroke-width':8,'stroke-linejoin':'round',opacity:0},S);tx(S,330,200,'찌릿','t40','middle',{style:'fill:#FFE27A'});
+   return ()=>{sp.setAttribute('opacity',0);setTimeout(()=>anim(500,x=>sp.setAttribute('opacity',x<.5?1:x<.7?0:1)),500);};}},
+ scenes:[
+  {k:'전기 알갱이',h:'물건 속에는<br>전기 알갱이가 있다',b:'물건 속에는 <em>+</em>와 <em>−</em> 알갱이가<br>같은 수만큼 있어서 조용해.<br>두 물건을 문지르면<br><em>−</em>가 한쪽으로 옮겨 가.',steps:['문지르기'],
+   draw(S){box(S,60,120,300,260,'rgba(246,231,188,.12)',28);tx(S,210,430,'털옷','t30','middle');const bg=el('g',{},S);el('ellipse',{cx:580,cy:250,rx:130,ry:150,fill:'rgba(143,188,240,.18)'},bg);tx(S,580,450,'풍선','t30','middle');
+    charges(S,60,120,300,260,8,0,2);const M=charges(S,60,120,300,260,0,8,3);charges(S,470,120,220,260,8,0,4);charges(S,470,120,220,260,0,8,5);const lb=tx(S,396,510,'+ 8개, − 8개씩','t24m','middle');
+    return ()=>{const r=rnd(8);const st=M.slice(0,5).map(m=>[+m.getAttribute('x'),+m.getAttribute('y')]),tg=st.map(()=>[500+r()*160,140+r()*220]);
+     anim(400,x=>bg.setAttribute('transform',`translate(${-Math.sin(x*Math.PI)*30},0)`),()=>anim(2200,x=>{M.slice(0,5).forEach((m,i)=>{m.setAttribute('x',st[i][0]+(tg[i][0]-st[i][0])*x);m.setAttribute('y',st[i][1]+(tg[i][1]-st[i][1])*x);});},()=>{lb.textContent='풍선에 −가 남아돌아 · 정전기';}));};}},
+  {k:'찌릿',h:'쌓인 전기가<br>한꺼번에 튄다',b:'−가 잔뜩 쌓인 손이<br><em>쇠 문고리</em>에 가까이 가면<br>쌓인 전기가 한꺼번에 건너가.<br>그게 따끔한 <em>찌릿</em>이야.',steps:['문고리에 다가가기'],
+   draw(S){el('rect',{x:640,y:90,width:34,height:360,rx:8,fill:'#9AA3B5'},S);el('circle',{cx:640,cy:270,r:52,fill:'#C3CAD8'},S);tx(S,640,500,'쇠 문고리','t24','middle');
+    const hd=el('g',{},S);el('rect',{x:40,y:220,width:260,height:100,rx:50,fill:'rgba(246,231,188,.2)'},hd);tx(hd,140,370,'−가 쌓인 손','t24','middle');charges(hd,60,220,230,100,0,7,12);
+    const sp=el('path',{d:'M405,270L440,248L452,282L490,256L500,290L560,266',fill:'none',stroke:'#FFE27A','stroke-width':7,'stroke-linejoin':'round',opacity:0},S);const lb=tx(S,480,200,'','t40','middle',{style:'fill:#FFE27A'});
+    return ()=>anim(1800,x=>hd.setAttribute('transform',`translate(${x*100},0)`),()=>{sp.setAttribute('opacity',1);lb.textContent='찌릿!';setTimeout(()=>sp.setAttribute('opacity',.25),180);setTimeout(()=>sp.setAttribute('opacity',1),300);});}},
+  {k:'겨울에 많은 이유',h:'겨울엔 공기가<br>메말라서 그렇다',b:'여름엔 공기 속 <em>물기</em>가<br>전기를 조금씩 빼내 줘.<br>겨울엔 공기가 메말라서<br>전기가 몸에 그대로 <em>쌓여</em>.',steps:['여름','겨울'],
+   draw(S){box(S,30,40,350,460,'rgba(255,177,94,.08)',24);box(S,412,40,350,460,'rgba(143,188,240,.1)',24);tx(S,205,95,'여름 · 축축한 공기','t24','middle');tx(S,587,95,'겨울 · 마른 공기','t24','middle');
+    const r=rnd(21),dr=g=>{for(let i=0;i<14;i++){const x=60+r()*290,y=140+r()*300;el('path',{d:`M${x},${y-10}Q${x+8},${y+2} ${x},${y+8}Q${x-8},${y+2} ${x},${y-10}Z`,fill:'rgba(143,188,240,.55)'},g);}};const A=grp(S,0),B=grp(S,0);dr(A);
+    const MA=charges(A,80,180,250,240,0,8,30),MB=charges(B,462,180,250,240,0,8,31);const la=tx(S,205,470,'','t30','middle'),lb=tx(S,587,470,'','t30','middle');
+    return i=>{if(i===0){show(A);anim(2600,x=>MA.forEach((m,j)=>m.setAttribute('opacity',j<6?1-x:1)));la.textContent='− 빠져나감';}else{show(B);anim(1600,x=>MB.forEach(m=>m.setAttribute('opacity',x)));lb.textContent='− 그대로 쌓여';}};}}],
+ sum:{lines:['물건 속에는 +와 −<br>전기 알갱이가 있다.','문지르면 −가 옮겨 가<br>한쪽에 쌓인다.','겨울엔 공기가 말라<br>전기가 잘 쌓이고 찌릿 튄다.'],
+  words:[['정전기','한곳에 쌓여서<br>머물러 있는 전기'],['마찰','두 물건을<br>서로 문지르는 것'],['습도','공기 속에<br>물기가 있는 정도']]},
+ end:{q:'찌릿을 피하려면 어떻게 할까?',a:'열쇠나 동전으로 문고리를 먼저 건드려. 찌릿이 손 대신 쇠로 건너가.',h:'오늘 밤 스웨터를 벗을 때<br>타닥 소리가 나는지 들어 봐.',btn:'답 보기',
+  draw(S){const q=qmark(S),g=grp(S,0);el('rect',{x:300,y:90,width:26,height:240,rx:8,fill:'#9AA3B5'},g);el('circle',{cx:300,cy:210,r:40,fill:'#C3CAD8'},g);el('rect',{x:110,y:196,width:120,height:28,rx:10,fill:'#E2C46A'},g);el('circle',{cx:110,cy:210,r:30,fill:'#E2C46A'},g);tx(g,220,400,'열쇠로 먼저','t30','middle');return ()=>{q.remove();show(g);};}}
+});
+
+// ---------- 21. 겨울 해 ----------
+EP.push({day:'과학 7',topic:'겨울 해',cat:'하늘',field:'과학',
+ cover:{h:'겨울엔 왜 해가<br>빨리 질까?',draw(S){el('line',{x1:40,x2:752,y1:440,y2:440,stroke:'rgba(246,231,188,.4)','stroke-width':3},S);const p=el('path',{d:'M120,440Q396,200 672,440',fill:'none',stroke:'rgba(255,177,94,.35)','stroke-width':3,'stroke-dasharray':'8 10'},S);const s=el('circle',{r:30,fill:'#FFB15E'},S);
+   return ()=>anim(4000,x=>{const t=x,X=120+552*t,Y=(1-t)*(1-t)*440+2*(1-t)*t*200+t*t*440;s.setAttribute('cx',X);s.setAttribute('cy',Y);});}},
+ scenes:[
+  {k:'해가 지나는 길',h:'겨울엔 해가<br>낮고 짧게 지나간다',b:'여름 해는 높이 떠서<br><em>긴 길</em>을 지나가.<br>겨울 해는 남쪽 하늘에 낮게 떠서<br><em>짧은 길</em>만 지나가.',steps:['여름 해','겨울 해'],
+   draw(S){el('line',{x1:30,x2:762,y1:430,y2:430,stroke:'rgba(246,231,188,.45)','stroke-width':3},S);[['동',60],['남',396],['서',732]].forEach(([t,x])=>tx(S,x,475,t,'t24m','middle'));
+    const arc=(x0,x1,top,col)=>{const g=grp(S,0);el('path',{d:`M${x0},430Q396,${top} ${x1},430`,fill:'none',stroke:col,'stroke-width':4,'stroke-dasharray':'8 10'},g);const s=el('circle',{r:24,fill:col},g);return {g,run:(lab,lx)=>{show(g);anim(3200,t=>{s.setAttribute('cx',(1-t)*(1-t)*x0+2*(1-t)*t*396+t*t*x1);s.setAttribute('cy',(1-t)*(1-t)*430+2*(1-t)*t*top+t*t*430);});tx(S,lx,(430+top)/2-34,lab,'t30','middle',{style:`fill:${col}`});}};};
+    const A=arc(70,722,-10,'#FFB15E'),B=arc(230,562,250,'#F6E7BC');return i=>i===0?A.run('여름',396):B.run('겨울',396);}},
+  {k:'기울어진 지구',h:'지구가 기울어진 채로<br>해 둘레를 돈다',b:'지구는 <em>23.5도</em> 기울어진 채로<br>해 둘레를 돌아.<br>겨울엔 우리나라가 있는 북쪽이<br>해 <em>반대쪽</em>으로 기울어 있어.',steps:['여름','겨울'],
+   draw(S){el('ellipse',{cx:396,cy:270,rx:300,ry:110,fill:'none',stroke:'rgba(246,231,188,.2)','stroke-width':2,'stroke-dasharray':'6 8'},S);el('circle',{cx:396,cy:270,r:50,fill:'#FFB15E'},S);tx(S,396,278,'해','t24','middle',{style:'fill:#12305E;font-weight:700'});
+    const earth=(x,lab,t)=>{const g=grp(S,0);const e=el('g',{transform:`translate(${x},270) rotate(-23.5)`},g);el('circle',{r:46,fill:'#5A9BE6'},e);el('line',{x1:0,y1:-70,x2:0,y2:70,stroke:'#F6E7BC','stroke-width':4},e);tx(e,0,-80,'북','t24','middle');
+     const lit=x<396?'M0,-46A46,46 0 0 1 0,46Z':'M0,-46A46,46 0 0 0 0,46Z';el('path',{d:lit,fill:'rgba(255,255,255,.28)'},e);tx(g,x,390,lab,'t30','middle');tx(g,x,428,t,'t24m','middle');return g;};
+    const A=earth(682,'여름','북쪽이 해 쪽으로'),B=earth(110,'겨울','북쪽이 해 반대쪽으로');return i=>show(i?B:A);}},
+  {k:'낮의 길이',h:'서울의 겨울 낮은<br>여름보다 5시간 짧다',b:'6월 하지엔 낮이 <em>14시간 47분</em>쯤.<br>12월 동지엔 <em>9시간 34분</em>쯤.<br>그래서 학교 끝나고 놀다 보면<br>금방 어두워져.',steps:['6월','12월'],
+   draw(S){const X=h=>60+h/24*672;[0,6,12,18,24].forEach(h=>{el('line',{x1:X(h),x2:X(h),y1:120,y2:420,stroke:'rgba(246,231,188,.12)','stroke-width':2},S);tx(S,X(h),460,h===12?'낮 12시':h===0||h===24?'밤 12시':h<12?'오전 '+h+'시':'오후 '+(h-12)+'시','t24m','middle');});
+    const bar=(y,a,b,lab,len)=>{const g=grp(S,0);box(g,X(0),y,672,70,'rgba(42,53,88,.9)',14);const r=el('rect',{x:X(a),y,width:0,height:70,rx:14,fill:'#FFB15E'},g);tx(g,X(0),y-14,lab,'t30');const l=tx(g,X(24),y-14,'','t30 or','end');return {g,run:()=>{show(g);anim(1600,t=>r.setAttribute('width',(X(b)-X(a))*t),()=>{l.textContent=len;});}};};
+    const A=bar(170,5+11/60,19+58/60,'6월 21일','14시간 47분'),B=bar(310,7+43/60,17+17/60,'12월 22일','9시간 34분');return i=>(i?B:A).run();}}],
+ sum:{lines:['겨울 해는 남쪽 하늘에<br>낮고 짧게 지나간다.','지구가 23.5도 기울어진 채로<br>해 둘레를 돌기 때문이다.','서울의 동지는 하지보다<br>낮이 5시간쯤 짧다.'],
+  words:[['자전축','지구가 빙글 도는<br>가운데 상상의 줄'],['동지','낮이 가장 짧은 날.<br>12월 22일쯤'],['하지','낮이 가장 긴 날.<br>6월 21일쯤']]},
+ end:{q:'낮이 가장 짧은 날은 언제일까?',a:'12월 22일쯤 동지. 그다음 날부터는 낮이 조금씩 길어져.',h:'오늘 해가 몇 시쯤 지는지<br>창밖을 봐.',btn:'답 보기',
+  draw:S=>endCard(S,[['동지','t80',230],['12월 22일쯤','t30',300]])}
+});
+
 // ===================== 엔진 (루아 앱 안 iframe) =====================
 const closeMe=()=>{try{parent.postMessage({gk:'piece-close'},'*');}catch(e){}};
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>{try{parent.postMessage({gk:'piece-touch'},'*');}catch(e){}},true));
@@ -501,7 +723,7 @@ let E=EP[EI],cur=0;const ORDER=['cover','s0','s1','s2','sum','end'],stepsDone={}
 window.__piece={id:EI+1,topic:E.topic};
 const dots=$('dots');ORDER.forEach(()=>dots.appendChild(document.createElement('i')));
 function clear(x){while(x.firstChild)x.removeChild(x.firstChild);}
-$('cvK').innerHTML=`<b>${E.cat}</b>${E.topic}`;$('cvH').innerHTML=E.cover.h;coverPlay=E.cover.draw($('cvSvg'));document.title='오늘의 한 조각 — '+E.topic;
+$('ttl').textContent=E.field==='과학'?'오늘의 과학':'오늘의 이야기';$('cvK').innerHTML=`<b>${E.cat}</b>${E.topic}`;$('cvH').innerHTML=E.cover.h;coverPlay=E.cover.draw($('cvSvg'));document.title=(E.field==='과학'?'오늘의 과학':'오늘의 이야기')+' — '+E.topic;
 E.scenes.forEach((sc,j)=>{const x=$('s'+j);x.innerHTML=`<div class="L"><div class="k"><b>${j+1}</b>${sc.k}</div><h2>${sc.h}</h2><p class="b">${sc.b}</p></div><div class="tile"><svg viewBox="0 0 792 540"></svg></div>`;runners['s'+j]={steps:sc.steps,run:sc.draw(x.querySelector('svg'))};});
 $('sumList').innerHTML=E.sum.lines.map(l=>`<li>${l}</li>`).join('');$('words').innerHTML=E.sum.words.map(([a,b])=>`<div class="word"><b>${a}</b><span>${b}</span></div>`).join('');
 $('rcQ').textContent=E.end.q;$('rcA').textContent=E.end.a;$('endH').innerHTML=E.end.h;const rev=E.end.draw($('endSvg'));runners.end={steps:['답 보기',E.end.btn],run:i=>i===0?$('rcA').classList.add('show'):rev()};

@@ -18,7 +18,7 @@ async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h 
   p.ext = []; p.on('request', q => { const u = q.url(); if (!/^(http:\/\/localhost|data:|blob:)/.test(u) && !/open-meteo|api\.anthropic\.com|wttr|tts\.speech|fonts\.(googleapis|gstatic)/.test(u)) p.ext.push(u.slice(0, 80)); }); // 날씨·답·목소리·글꼴(전부터 있던 것) 말고 바깥으로 나가는 요청
   const day = (time || '2026-11-14T10:00').slice(0, 10), H = [...Array(48)].map((_, i) => `${day}T${String(i % 24).padStart(2, '0')}:00`);
   await p.route(/open-meteo/, r => offline ? r.abort() : r.request().url().includes('air-quality') ? r.fulfill({ json: { current: { pm10: 28, pm2_5: 12 } }, headers: CORS }) : r.fulfill({ headers: CORS, json: { current: { temperature_2m: wx.t ?? 7.2, apparent_temperature: 4, weather_code: wx.code ?? 0, precipitation: 0 }, hourly: { time: H, temperature_2m: H.map(() => 8), weather_code: H.map(() => 0), precipitation_probability: H.map(() => 0), is_day: H.map(() => 1) }, daily: { temperature_2m_max: [13, 13], temperature_2m_min: [4, 4], precipitation_probability_max: [0, 10], weather_code: [0, 1], sunrise: [day + 'T07:11', 'x'], sunset: [day + 'T17:22', 'x'] } } }));
-  await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); if (offline) return r.abort(); p.api++; p.lastBody = JSON.parse(r.request().postData()); r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: ANSWER }], stop_reason: 'end_turn' } }); });
+  await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); if (offline) return r.abort(); const bd = JSON.parse(r.request().postData()); if (/시계 화면에 쓸 문장/.test(JSON.stringify(bd.messages || ''))) { p.quotes = (p.quotes || 0) + 1; } else { p.api++; p.lastBody = bd; } r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: ANSWER }], stop_reason: 'end_turn' } }); });
   p.wiki = 0; await p.route(/wttr|googleapis|gstatic|wikidata|wikimedia|wikipedia|tts\.speech/, r => { if (/wikidata|wikimedia|wikipedia/.test(r.request().url())) p.wiki++; return r.abort(); });
   if (noSky) await p.route(/vendor\/sky/, r => r.abort());
   await p.addInitScript(([day, st, read]) => { localStorage.setItem('gk-settings', JSON.stringify(Object.assign({ apiKey: 'sk-test', hFrom: 0, hTo: 24, wxName: '영등포구' }, st))); if (read) { localStorage.setItem('gk-news-read2', JSON.stringify(read)); localStorage.setItem('gk-news-done2', JSON.stringify([read])); } }, [day, settings, read]);
@@ -92,7 +92,7 @@ async function newsTests(b) {
   ok('낱말 상자에 한자', await p.evaluate(() => document.querySelectorAll('#ppWord .rn-w span i').length >= 2));
   ok('어절이 쪼개지지 않게 묶임', await p.evaluate(() => [...document.querySelectorAll('#ppBody .w')].some(w => /\(황산화물\)을/.test(w.textContent)) && [...document.querySelectorAll('#ppBody .w')].every(w => getComputedStyle(w).whiteSpace === 'nowrap' && new Set([...w.getClientRects()].map(r => Math.round(r.top))).size === 1)));
   await p.click('#ppHome'); await p.adv(1800); s = await p.st(); ok('기사의 홈 단추 → 홈(위젯 면)', s.saver === 'face' && !s.paper, s);
-  ok('다 읽은 뒤 표지는 낱말', await p.evaluate(() => document.getElementById('fcFeat').classList.contains('word')));
+  ok('다 읽은 뒤 낮 표지는 이야기 (v147)', await p.evaluate(() => { const c = document.getElementById('fcFeat').classList; return c.contains('piece') && !c.contains('sci') && !c.contains('word'); }));
   await p.context().close();
 
   p = await openNews(b); await p.front(); await p.tap('#rnFront [data-rn="art"][data-i="0"]');
@@ -152,7 +152,7 @@ async function newsTests(b) {
 
 (async () => {
   await new Promise(r => server.listen(PORT, r));
-  const b = await chromium.launch(); let p, s;
+  const b = await chromium.launch({ executablePath: '/usr/bin/google-chrome' }); let p, s;
   if (process.env.ONLY === 'news') { await newsTests(b); ok('페이지 오류 없음', errs.length === 0, errs.slice(0, 3)); await b.close(); server.close(); console.log(`\n통과 ${passes} · 실패 ${fails}`); process.exit(fails ? 1 : 0); }
 
   console.log('1. 버전 네 군데');
@@ -161,9 +161,9 @@ async function newsTests(b) {
     ok('APP_V 있음', !!v); ok('머리 표시 버전', html.includes(`<span style="opacity:.6">${v}</span>`)); ok('부모님 화면 버전', html.includes(`font-weight:400">${v}</small>`)); ok('sw.js 캐시 이름', sw.includes(`gk-${v}'`) || sw.includes(`gk-${v}"`), v); }
 
   console.log('2. 대기화면 상태 (시간대별)');
-  for (const [t, read, want] of [[newsDate + 'T07:42', false, 'face morn news'], [newsDate + 'T08:15', true, 'face morn word'], [newsDate + 'T17:59', true, 'face day word'], [newsDate + 'T18:01', true, 'face eve moon'], [newsDate + 'T19:00', false, 'face eve news'], [newsDate + 'T22:01', true, 'face eve moon'], [plus(newsDate, 1) + 'T05:59', true, 'face morn word'], [plus(newsDate, 1) + 'T06:01', true, 'face morn word'], [plus(newsDate, 6) + 'T15:20', false, 'face day moon']]) {
-    p = await open(b, { time: t, read: read ? newsDate : null }); await p.saver(); s = await p.st(); const got = s.saver === 'face' ? await p.evaluate(() => 'face ' + document.getElementById('saver').dataset.tone + ' ' + document.getElementById('fcFeat').className.replace('fc-t fc-feat', '').replace('pic', '').trim()) : s.saver; ok(`${t} ${read ? '읽음' : '안 읽음'} → ${want}`, got === want, got); await p.context().close(); }
-  p = await open(b, { time: newsDate + 'T19:30', read: newsDate, noSky: true }); await p.saver(); s = await p.st(); ok('밤하늘 파일을 못 받으면 기본 화면', s.saver === 'face' && await p.evaluate(() => document.getElementById('fcFeat').classList.contains('word')), s.saver); await p.context().close();
+  for (const [t, read, want] of [[newsDate + 'T07:42', false, 'face morn news'], [newsDate + 'T08:15', true, 'face morn piece'], [newsDate + 'T17:59', true, 'face day piece'], [newsDate + 'T18:01', true, 'face eve SCI'], [newsDate + 'T19:00', false, 'face eve news'], [newsDate + 'T22:01', true, 'face eve SCI'], [plus(newsDate, 1) + 'T05:59', true, 'face morn piece'], [plus(newsDate, 1) + 'T06:01', true, 'face morn piece'], [plus(newsDate, 6) + 'T15:20', false, 'face day piece']]) { // v147: 저녁은 과학(달이 볼 만한 날엔 달)
+    p = await open(b, { time: t, read: read ? newsDate : null }); await p.saver(); s = await p.st(); const got = s.saver === 'face' ? await p.evaluate(() => 'face ' + document.getElementById('saver').dataset.tone + ' ' + document.getElementById('fcFeat').className.replace('fc-t fc-feat', '').replace('pic', '').trim()) : s.saver; ok(`${t} ${read ? '읽음' : '안 읽음'} → ${want}`, want.endsWith('SCI') ? (got === want.replace('SCI', 'piece sci') || got === want.replace('SCI', 'moon')) : got === want, got); await p.context().close(); }
+  p = await open(b, { time: newsDate + 'T19:30', read: newsDate, noSky: true }); await p.saver(); s = await p.st(); ok('밤하늘 파일을 못 받으면 기본 화면(과학 편)', s.saver === 'face' && await p.evaluate(() => document.getElementById('fcFeat').classList.contains('sci')), s.saver); await p.context().close();
 
   console.log('3. 미리 보기는 10분 뒤 풀림 (v102 버그)');
   p = await open(b, { time: newsDate + 'T16:00' });
@@ -191,13 +191,14 @@ async function newsTests(b) {
   await tile('cal'); await p.adv(100e3); s = await p.st(); const calStill = /\bcal\b/.test(s.saver); await p.adv(100e3); s = await p.st(); ok('달력은 마지막으로 만진 뒤 3분이 지나면 위젯 면으로 (v122: 90초 → 3분)', calStill && /^face/.test(s.saver), s.saver);
   await p.adv(3 * 60e3); s = await p.st(); ok('3분 손대지 않으면 쉬는 막', s.saver === 'face rest', s.saver);
   await p.mouse.move(700, 300); await p.mouse.down(); ok('손대면 바로 밝아짐', !(await p.st()).saver.includes('rest')); await p.mouse.move(700, 380); await p.mouse.up(); await p.adv(500);
-  await tile('sky'); s = await p.st(); ok('밤하늘 타일 → 밤하늘 장', s.saver === 'sky', s.saver);
+  await p.evaluate(() => { window.__gkCover = { k: 'moon', at: Date.now() }; }); await p.adv(1500); await tile('sky'); s = await p.st(); ok('달 표지 → 밤하늘 장', s.saver === 'sky', s.saver);
   await p.adv(11 * 60e3); s = await p.st(); ok('밤하늘 장은 10분 뒤 위젯 면으로', s.saver === 'face rest', s.saver);
   const feat = () => p.evaluate(() => document.getElementById('fcFeat').className.replace('fc-t fc-feat', '').replace('pic', '').trim());
-  ok('저녁 기본 표지는 달', await feat() === 'moon', await feat());
-  { const bx = await p.locator('#svFace [data-cv="word"]').boundingBox(); ok('표지 갈래는 60px 이상', bx.height >= 60, bx.height); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); }
-  s = await p.st(); ok('낱말 갈래 → 낱말 표지 (깨어나지 않음)', s.saver.startsWith('face') && await feat() === 'word', [s.saver, await feat()]);
-  await p.adv(150e3); ok('갈래는 2분 뒤 풀림', await feat() === 'moon', await feat());
+  const eve = await feat(); ok('저녁 기본 표지는 과학 (달이 볼 만한 날엔 달) (v147)', eve === 'piece sci' || eve === 'moon', eve);
+  ok('표지 갈래 셋: 신문·이야기·과학 (v147)', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent).join('|') === '신문|이야기|과학'));
+  { const bx = await p.locator('#svFace [data-cv="piece"]').boundingBox(); ok('표지 갈래는 60px 이상', bx.height >= 60, bx.height); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); }
+  s = await p.st(); ok('이야기 갈래 → 이야기 표지 (깨어나지 않음)', s.saver.startsWith('face') && await feat() === 'piece', [s.saver, await feat()]);
+  await p.adv(150e3); ok('갈래는 2분 뒤 풀림', await feat() === eve, await feat());
   { const bx = await p.locator('#svFace [data-cv="news"]').boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); } ok('신문 갈래 → 신문 표지', await feat() === 'news', await feat());
   await tile('news'); s = await p.st(); ok('신문 표지 → 신문 1면', s.saver.includes('rnp') && !s.paper, s);
   { const bx = await p.locator('#rnFront [data-rn="art"][data-i="0"]').boundingBox(); await p.mouse.click(bx.x + 80, bx.y + 60); await p.adv(1500); } s = await p.st(); ok('1면의 머리기사 → 기사 열림', !s.saver && s.paper, s);
@@ -211,6 +212,13 @@ async function newsTests(b) {
   ok('타일이 화면 밖으로 넘치지 않음', await p.evaluate(() => { document.getElementById('saver').hidden = false; const r = [...document.querySelectorAll('#svFace .fc-t')].every(t => { const b = t.getBoundingClientRect(); return b.left >= 0 && b.top >= 0 && b.right <= innerWidth && b.bottom <= innerHeight && (t.classList.contains('fc-feat') || t.scrollHeight <= t.clientHeight + 1); }); document.getElementById('saver').hidden = true; return r; }));
   await p.saver(); await tile('study'); s = await p.st(); ok('공부칸 타일 → 공부칸 앱이 크게 열림 (v138, 깨어나지 않음)', s.saver === 'pgx' && await p.evaluate(() => document.getElementById('saver').dataset.pg === 'study' && document.getElementById('fcStudyL').textContent === '공부칸' && !localStorage.getItem('gk-study')), s);
   await p.click('#gkHome'); await p.adv(1500); ok('공부칸의 홈 단추 → 위젯 면 (공부 중 표지는 없음)', /^face/.test((await p.st()).saver) && await feat() !== 'study', await feat());
+  { await p.mouse.click(20, 20); await p.adv(1000); await p.saver(); await tile('cv-sci');
+    const moonNow = await feat() === 'moon';
+    if (!moonNow) { await tile('sci'); const src = await p.evaluate(() => (document.getElementById('pcFrame') || {}).src || ''); ok('과학 표지를 누르면 그날 과학 편이 열림 (v147)', /pieces\/piece\.html\?ep=(1[5-9]|2[01])/.test(src), src);
+      await p.adv(2500); await p.evaluate(() => { const f = document.getElementById('pcFrame'); const l = f && f.contentDocument && f.contentDocument.getElementById('logo'); if (l) l.click(); }); await p.adv(1500);
+      ok('과학 편을 닫으면 위젯 면으로', !(await p.evaluate(() => !!document.getElementById('pcFrame'))) && (await p.st()).saver.startsWith('face')); }
+    else ok('과학 갈래: 달이 볼 만한 날이라 달 카드 (v147)', true);
+    await p.mouse.click(20, 20); await p.adv(1000); }
   await p.context().close();
   for (const [w, h] of [[1600, 820], [1920, 1000]]) { p = await open(b, { time: newsDate + 'T12:48', w, h }); await p.saver();
     ok(`네 자리 시각이 시계 타일 안에 들어감 ${w}×${h}`, await p.evaluate(() => { const t = document.getElementById('fcTime'), r = document.createRange(); r.selectNodeContents(t); const a = r.getBoundingClientRect(), c = t.parentElement.getBoundingClientRect(); return a.left >= c.left + 8 && a.right <= c.right - 8; })); await p.context().close(); }
@@ -306,7 +314,7 @@ async function newsTests(b) {
     let p = await open(b, { time: newsDate + 'T16:10', read: newsDate }), s;
     ok('캐릭터(궁금이) 요소 없음', await p.evaluate(() => !document.querySelector('svg.gk, #loBuddy, .lo-buddy, .lo-glow, .wordmark .eye')));
     // 조각 장 → 궁금칸 → 답 → 아까 물은 것
-    await p.evaluate(() => { window.__gkPieceNoPage = true; }); await p.saver(); await box('#svFace [data-cv="piece"]'); ok('표지 갈래 넷: 신문·낱말·조각·달 (v139 다시 넣음): 신문·낱말·조각·달', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent).join('') === '신문낱말조각달' && document.getElementById('fcFeat').classList.contains('piece')));
+    await p.evaluate(() => { window.__gkPieceNoPage = true; }); await p.saver(); await box('#svFace [data-cv="sci"]'); await box('#svFace [data-cv="piece"]'); ok('표지 갈래 셋: 신문·이야기·과학 (v147)', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent).join('') === '신문이야기과학' && document.getElementById('fcFeat').classList.contains('piece')));
     await box('#fcFeat .cc-h'); s = await p.st(); ok('조각 장 본문 → 궁금칸(조각과 이어 묻기 딸려 옴)', s.home && !s.saver && s.sheet === '뭐가 궁금해?' && await p.evaluate(() => !!document.querySelector('#zUnder .zu-pc') && !!document.querySelector('#zUnder .zu-chip')), s);
     const R = () => p.evaluate(() => { const r = document.querySelector('.qbox').getBoundingClientRect(); return [r.left, r.top, r.right, r.bottom].map(Math.round).join(','); });
     const r0 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'listen'; }); await p.adv(400); const r1 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'think'; }); await p.adv(400); const r2 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'idle'; });
@@ -316,7 +324,7 @@ async function newsTests(b) {
     const cnt = (await p.st()).count; await p.click('#gkHome'); await p.adv(1500); s = await p.st(); ok('답의 홈 단추 → 위젯 면', /^face/.test(s.saver), s.saver);
     await p.mouse.click(20, 20); await p.adv(1500); ok('궁금칸에 아까 물은 것 한 줄', await p.evaluate(() => !!document.querySelector('#zUnder .zu-prev')));
     await p.click('#zUnder .zu-prev'); await p.adv(1500); s = await p.st(); ok('아까 물은 것 → 그 답을 다시 엶 (다시 묻지 않음, 질문 수 그대로)', p.api === a0 + 1 && !s.home && /햇빛/.test(s.sheet) && s.count === cnt, [p.api, s.count, cnt]);
-    await p.click('#gkHome'); await p.adv(1500); await box('#svFace [data-cv="piece"]'); await box('#fcFeat .cc-foot'); await p.adv(8000); s = await p.st(); ok('조각 장의 이어 묻기 칩 → 궁금칸을 거치지 않고 바로 답', p.api > a0 + 1 && !s.home && !s.saver && s.count === cnt + 1, [p.api - a0, s.count, cnt]);
+    await p.click('#gkHome'); await p.adv(1500); await box('#svFace [data-cv="sci"]'); await box('#svFace [data-cv="piece"]'); await box('#fcFeat .cc-foot'); await p.adv(8000); s = await p.st(); ok('조각 장의 이어 묻기 칩 → 궁금칸을 거치지 않고 바로 답', p.api > a0 + 1 && !s.home && !s.saver && s.count === cnt + 1, [p.api - a0, s.count, cnt]);
     // 긴 답: 문장 끝에서만 쪽 나눔
     await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); p.api++; r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: LONG }], stop_reason: 'end_turn' } }); });
     await p.say('달은 왜 모양이 바뀌어?', 12000);
@@ -458,7 +466,7 @@ async function newsTests(b) {
     await p.evaluate(() => { const el = document.querySelector('#fcFeat .cc-h'), r = el.getBoundingClientRect(), o = { bubbles: true, cancelable: true, clientX: r.x + 20, clientY: r.y + 10, pointerId: 7, pointerType: 'touch', isPrimary: true }; el.dispatchEvent(new PointerEvent('pointerdown', o)); el.dispatchEvent(new PointerEvent('pointercancel', o)); el.dispatchEvent(new MouseEvent('click', o)); }); await p.adv(2500);
     s = await p.st(); ok('전화: 톡 누름이 pointercancel 로 끝나도 click 으로 기사 화면이 열린다', s.paper && !s.saver, s); await p.context().close();
     p = await open(b, { time: newsDate + 'T12:19', w: 390, h: 780 }); await p.saver(); await tapAt(p, '#fcFeat .cc-tabs [data-cv="news"]'); s = await p.st(); ok('전화: 켜진 "신문" 탭을 누르면 기사 화면으로', s.paper && !s.saver, s);
-    await p.context().close(); p = await open(b, { time: newsDate + 'T12:19', w: 390, h: 780 }); await p.saver(); await tapAt(p, '#fcFeat .cc-tabs [data-cv="word"]'); s = await p.st(); ok('전화: 다른 탭("낱말")을 누르면 표지만 바뀐다', /\bface\b/.test(s.saver) && await p.evaluate(() => document.getElementById('fcFeat').classList.contains('word')), s.saver); await p.context().close();
+    await p.context().close(); p = await open(b, { time: newsDate + 'T12:19', w: 390, h: 780 }); await p.saver(); await tapAt(p, '#fcFeat .cc-tabs [data-cv="sci"]'); s = await p.st(); ok('전화: 다른 탭("과학")을 누르면 표지만 바뀐다', /\bface\b/.test(s.saver) && await p.evaluate(() => { const c = document.getElementById('fcFeat').classList; return c.contains('sci') || c.contains('moon'); }), s.saver); await p.context().close();
   }
 
   { // 16. 답 화면의 낱말 카드: 밝은 흰 카드, 글·칩과 겹치지 않음 (v133)
