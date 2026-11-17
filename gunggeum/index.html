@@ -303,7 +303,7 @@ button { cursor: pointer; }
 .sheet .key.drawn { color: var(--hl-ink); background: linear-gradient(transparent 8%, var(--hl) 8% 94%, transparent 0); -webkit-box-decoration-break: clone; box-decoration-break: clone; padding: 0 .08em; }
 .sheet .key.drawn .w { color: var(--hl-ink); }
 /* 낱말 띠 */
-.wstrip { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.6rem; width: fit-content; max-width: 100%; box-sizing: border-box; padding: 1rem 1.6rem; border-left: 3px solid var(--accent); background: color-mix(in srgb, var(--ink) 4%, transparent); animation: rise .4s ease-out both; }
+.wstrip { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.6rem; width: fit-content; max-width: 100%; box-sizing: border-box; padding: 1rem 1.6rem; background: color-mix(in srgb, var(--ink) 4%, transparent); animation: rise .4s ease-out both; }
 .wstrip[hidden] { display: none; }
 .ws-word { font-family: var(--f-display); font-size: 2.2rem; line-height: 1.1; color: var(--accent); }
 .ws-mean { font-size: 1.6rem; color: var(--ink); font-weight: 500; }
@@ -375,7 +375,7 @@ button { cursor: pointer; }
 
 /* v64: 오른쪽 칸을 늘 활용 — 사진 / 세로 낱말 카드 / 큰 이모지 */
 @media (min-width: 761px) { .sheet { max-width: 26em; } .main .inner.has-fig .sheet { max-width: none; } }
-.fig-box:has(.vcard), .fig-box:has(.emo) { aspect-ratio: auto; background: color-mix(in srgb, var(--ink) 4%, transparent); border-left: 3px solid var(--accent); border-radius: 0 20px 20px 0; place-items: start stretch; }
+.fig-box:has(.vcard), .fig-box:has(.emo) { aspect-ratio: auto; background: color-mix(in srgb, var(--ink) 4%, transparent); border-radius: 0 20px 20px 0; place-items: start stretch; }
 .fig-box:has(.emo) { min-height: 16rem; place-items: center; }
 .fig-box .emo { font-size: 9rem; line-height: 1; }
 .vcard { display: flex; flex-direction: column; gap: 1.1rem; padding: 2rem 2.2rem 2.2rem; transition: opacity .5s ease; }
@@ -458,7 +458,7 @@ button { cursor: pointer; }
 .fig figcaption .cap-t b { font-size: 1.2rem; color: var(--ink); font-weight: 700; }
 .fig figcaption .cap-t em { font-style: normal; font-size: 1rem; color: color-mix(in srgb, var(--ink) 72%, transparent); }
 .fig figcaption .cap-s { font-size: .7rem; color: color-mix(in srgb, var(--ink) 40%, transparent); flex: none; }
-.fig-box:has(.era) { aspect-ratio: auto; background: #211B16; border-left: 3px solid var(--accent); border-radius: 0 20px 20px 0; place-items: start stretch; }
+.fig-box:has(.era) { aspect-ratio: auto; background: #211B16; border-radius: 0 20px 20px 0; place-items: start stretch; }
 .era { display: flex; flex-direction: column; gap: .5rem; padding: min(2rem, 3vh) 2.2rem min(2.2rem, 3.2vh); }
 .era-emo { font-size: min(4.4rem, 8vh); line-height: 1.1; }
 .era-name { font-size: min(1.6rem, 3.2vh); font-weight: 700; color: var(--ink); word-break: keep-all; }
@@ -504,7 +504,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .chips button:focus-visible, .chips button:active { border-color: var(--accent); color: #F3DDB5; }
 .chips button.lead { border-color: var(--accent); color: var(--ink); background: #1E1914; }
 /* word card */
-.fig-box:has(.vcard), .fig-box:has(.emo) { background: #251E18; border-left-color: var(--accent); }
+.fig-box:has(.vcard), .fig-box:has(.emo) { background: #251E18; }
 .vc-word { color: var(--accent); }
 .vc-mean { color: var(--ink); }
 .vc-g { color: var(--ink); }
@@ -1440,6 +1440,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       </section>
       <section class="pg-s pg-wx" id="pgWx"></section>
       <section class="pg-s pg-todo" id="pgTodo"></section>
+      <section class="pg-s pg-study" id="pgStudy"></section>
     </div>
     <div class="sv-face" id="svFace"><div class="fc-grid" id="fcGrid">
       <section class="fc-t fc-clock" data-tile="cal"><div class="cl-l"><div class="fc-date" id="fcDate"></div><div class="fc-tip" id="fcTip"></div></div><div class="fc-time" id="fcTime"></div><div class="fc-tm" id="fcTm"></div></section>
@@ -1449,7 +1450,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <section class="fc-t fc-app" data-tile="news"><svg viewBox="0 0 24 24"><path class="f" fill-rule="evenodd" d="M3.500 6A2.500 2.500 0 0 1 6 3.500h8.500A2.500 2.500 0 0 1 17 6v2h1.500A2.500 2.500 0 0 1 21 10.500V17a3.500 3.500 0 0 1-3.500 3.500H7A3.500 3.500 0 0 1 3.500 17zM6.500 6.800v3.400h7.500V6.800zM6.500 12.600v1.600h7.500v-1.600zM6.500 16v1.600h5V16zM17 10v7a.75.75 0 0 0 1.500 0v-7z"/></svg><div class="fc-lab">신문</div><div class="fc-sub" id="fcNewsS"></div></section>
       <section class="fc-t fc-app" data-tile="sky"><svg viewBox="0 0 24 24"><path class="f" d="M14.800 15.200A7 7 0 0 1 8.600 4.300a8.300 8.300 0 1 0 11.100 11.100 7 7 0 0 1-4.900-.2z"/><path class="f" d="M17.300 2.800l.9 2.300 2.300.9-2.300.9-.9 2.300-.9-2.300-2.300-.9 2.300-.9z"/></svg><div class="fc-lab">밤하늘</div><div class="fc-sub" id="fcSkyS"></div></section>
       <section class="fc-t fc-app" data-tile="ask"><div class="mic"><svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><rect x="10.2" y="3.2" width="7.6" height="12" rx="3.8"/><path d="M7 12.6a7 7 0 0 0 14 0"/><circle class="ds-dot" cx="14" cy="23.6" r="1.9"/></svg></div><div class="tx2"><div class="fc-lab">궁금한 걸 물어 봐</div><div class="fc-sub">눌러서 말해</div></div></section>
-      <section class="fc-t fc-app" data-tile="study"><svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><path d="M14 8.4C11.6 6.6 8.5 5.8 4.6 6v14.2c3.9-.2 7 .6 9.4 2.4 2.4-1.8 5.5-2.6 9.4-2.4V6c-3.9-.2-7 .6-9.4 2.4z"/><path d="M14 8.4v14.2"/></svg><div class="fc-lab" id="fcStudyL">공부 모드</div><div class="fc-sub">화면을 조용하게</div></section>
+      <section class="fc-t fc-app" data-tile="study"><svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><path d="M14 8.4C11.6 6.6 8.5 5.8 4.6 6v14.2c3.9-.2 7 .6 9.4 2.4 2.4-1.8 5.5-2.6 9.4-2.4V6c-3.9-.2-7 .6-9.4 2.4z"/><path d="M14 8.4v14.2"/></svg><div class="fc-lab" id="fcStudyL">공부칸</div><div class="fc-sub">모은 말 다시 보기</div></section>
       <section class="fc-t fc-app" data-tile="word"><div class="big ko" id="fcWordN"></div><div class="fc-lab">오늘의 낱말</div><div class="fc-sub" id="fcWordS"></div></section>
       <section class="fc-t fc-app" data-tile="cal"><div class="big" id="fcCalN"></div><div class="fc-lab">달력</div><div class="fc-sub" id="fcCalS"></div></section>
     </div><div class="fc-msg" id="fcMsg" hidden></div></div>
@@ -1499,13 +1500,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v137</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v138</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v137</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v138</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1743,7 +1744,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   function setEyebrow(kind, text) {
     eyebrow.innerHTML = '';
     if (kind === 'piece') app.dataset.home = '1'; else delete app.dataset.home;
-    input.placeholder = kind === 'piece' ? '말하거나 눌러서 물어 봐' : '더 물어 봐';
+    input.placeholder = kind === 'piece' ? '말하거나 눌러서 물어 봐' : '물어보기'; // v138: 다른 앱의 마이크 알약과 같은 말
     if (kind === 'piece') { const d = document.createElement('span'); d.className = 'dash'; eyebrow.append(d, '오늘의 한 조각'); return; }
     if (kind === 'q') { const sp = document.createElement('span'); sp.className = 'askq'; const bare = text.replace(/[?？.]*$/, ''); sp.textContent = bare + (/[?？]$/.test(text) || (!/[.!]$/.test(text) && ASKY.test(bare)) ? '?' : ''); eyebrow.append(sp); return; } // v135: 묻는 말일 때만 ? (음성 인식엔 문장부호가 없다)
   }
@@ -2318,7 +2319,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }, true);
   saverEl.addEventListener('pointermove', e => { if (svDown && Math.abs(e.clientX - svDown.x) > 14) clearTimeout(svHold); }, true);
   // 공부 모드: 표지를 조용하게. 아이가 다시 누를 때까지 켜져 있다(v132부터 시간 제한 없음)
-  function studyOn(){ let t = 0; try { t = +localStorage.getItem('gk-study') || 0; } catch (e) {} if (t && new Date(t).toDateString() !== new Date().toDateString()) { try { localStorage.removeItem('gk-study'); } catch (e) {} t = 0; } return !!t; } // 하루 안에서는 시간 제한 없음, 밤 12시가 지나면 저절로 꺼진다(v135, 부모 요청)
+  function studyOn(){ try { localStorage.removeItem('gk-study'); } catch (e) {} return false; } // v138: '공부 중' 표지는 없앴다 — 공부 단추는 공부칸 앱을 연다
   window.__gkStudyOn = studyOn;
   saverEl.addEventListener('pointerup', e => {
     clearTimeout(svHold); const d = svDown; svDown = null; if (d) svUpAt = Date.now(); if (!d || saverEl.hidden || !logEl.hidden) return;
@@ -2338,7 +2339,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (d.cv) { const ft = $('fcFeat'), cur = ['news', 'word', 'piece', 'moon'].find(c => ft.classList.contains(c));
       if (d.cv !== cur) { svTaps = []; window.__gkCover = { k: d.cv, at: Date.now() }; renderSaver(); return; }
       d.tile = ft.dataset.tile; d.cv = ''; diag('saver', '켜진 탭을 한 번 더 → 그 장 열기'); } // v126: 이미 켜진 탭(예: '신문')을 누르면 그 장의 내용으로 간다
-    if (d.tile === 'study') { svTaps = []; try { studyOn() ? localStorage.removeItem('gk-study') : localStorage.setItem('gk-study', String(Date.now())); } catch (e) {} window.__gkSaverAt = Date.now(); delete window.__gkCover; renderSaver(); diag('saver', '공부 모드 ' + (studyOn() ? '켬' : '끔')); return; }
+    if (d.tile === 'study' || d.tile === 'studyw') { svTaps = []; // v138: 공부칸 앱을 크게 연다(예전 '공부 모드' 켜고 끄기는 없앰). 표지의 '오늘의 낱말'에서 오면 그 낱말을 펴서
+      if (d.tile === 'studyw') { const W = faceWord(); if (W) wordNews(W); } else { const top = wordLoad().items[0]; stSel = top ? top.k : ''; }
+      stView = 'hero'; stPage = 0; window.__gkForce = { s: 'study', at: Date.now() }; window.__gkSaverAt = Date.now(); delete window.__gkCover; renderSaver(); diag('saver', '공부칸 열림'); return; }
     { const r = $('fcWx').getBoundingClientRect(); if (d.tile === 'cal' && saverEl.classList.contains('face') && d.x >= r.left && d.x <= r.right && d.y >= r.top - 6 && d.y <= r.bottom) d.tile = 'wx'; } // 시계 타일 안의 날씨 줄은 날씨 화면으로
     if (d.tile === 'wx' && svWide()) { svTaps = []; window.__gkForce = { s: 'wx', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날씨 줄 → 날씨 화면'); return; }
     if (d.tile === 'todo' && svWide()) { svTaps = []; window.__gkForce = { s: 'todo', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '할 일 타일 → 할 일 화면'); return; }
@@ -2458,6 +2461,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     saverEl.classList.toggle('sky', sky); saverEl.classList.toggle('face', face); saverEl.classList.toggle('cal', cal); if (!face) saverEl.classList.remove('rest', 'late');
     saverEl.classList.remove('rnp'); $('rnFront').hidden = true;
     if (wide && fz === 'todo') { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain', 'face', 'sky', 'cal'].forEach(c => saverEl.classList.remove(c)); pgPre('todo'); renderTodoPg(); return true; } // v135: 할 일 화면(달력처럼 따로)
+    if (wide && fz === 'study') { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain', 'face', 'sky', 'cal'].forEach(c => saverEl.classList.remove(c)); pgPre('study'); renderStudyPg(); return true; } // v138: 공부칸(모은 말)
     if (wide && fz === 'wx') { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain', 'face', 'sky', 'cal'].forEach(c => saverEl.classList.remove(c)); pgPre('wx'); renderWx(); return true; } // 날씨 화면
     pgPre(cal ? 'cal' : '');
     if (cal) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain'].forEach(c => saverEl.classList.remove(c)); renderCal(hr); return true; }
@@ -2526,11 +2530,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     setH($('fcNewsS'), on ? (read ? '다 읽었어' : `<i class="dot"></i>새 소식 ${news.articles.length}개`) : '아직 안 왔어');
     $('fcSkyS').textContent = sk ? sk.moon.name : '오늘의 달';
     // 지금 볼 것: 안 읽은 신문 → 저녁엔 오늘의 달 → 그 밖에는 시각이 들어간 한 문장
-    const WS = on ? news.articles.map(x => x.word).filter(x => x && x.w) : [], W = WS.length ? WS[Math.min(WS.length - 1, hr < 13 ? 0 : hr < 15 ? 1 : 2)] : null; // 낱말은 낮 동안 차례로
+    const W = faceWord(); // 낱말은 낮 동안 차례로
     const cvf = window.__gkCover && Date.now() - window.__gkCover.at < 120e3 ? window.__gkCover.k : ''; // 갈래를 누르면 2분 동안 그 표지
     $('fcWordN').textContent = W ? W.w : '—'; $('fcWordS').textContent = W ? '눌러서 뜻 보기' : '신문이 오면 나와';
     const auto = on && !read ? 'news' : hr >= 18 && sk ? 'moon' : W ? 'word' : sk ? 'moon' : 'line';
-    const st = window.__gkStudyOn && window.__gkStudyOn(); saverEl.classList.toggle('study', !!st); if ($('fcStudyL')) $('fcStudyL').textContent = st ? '공부 끝' : '공부 모드';
+    const st = window.__gkStudyOn && window.__gkStudyOn(); saverEl.classList.toggle('study', !!st); if ($('fcStudyL')) $('fcStudyL').textContent = '공부칸';
     const ft = $('fcFeat'), kind = st ? 'study' : cvf === 'news' && on ? 'news' : cvf === 'word' && W ? 'word' : cvf === 'moon' && sk ? 'moon' : cvf === 'piece' ? 'line' : auto;
     if (kind === 'study') {
       if (fcFeatKey !== 'study') { fcFeatKey = 'study'; ft.className = 'fc-t fc-feat study'; ft.dataset.tile = 'clock'; ft.innerHTML = `<div class="cc"><div class="cc-top"><div class="cc-lab">공부 모드</div></div><div class="cc-mid"><div class="cc-l"><div class="cc-big">공부 중</div><div class="cc-s2">다 하면 공부 끝을 눌러.</div></div></div></div>`; }
@@ -2541,7 +2545,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
 
     } else if (kind === 'word') {
       const key = 'word|' + news.no + '|' + W.w;
-      if (fcFeatKey !== key) { fcFeatKey = key; ft.className = 'fc-t fc-feat word'; ft.dataset.tile = 'clock'; ft.innerHTML = B_word(W, news); }
+      if (fcFeatKey !== key) { fcFeatKey = key; ft.className = 'fc-t fc-feat word'; ft.dataset.tile = 'studyw'; ft.innerHTML = B_word(W, news); } // v138: 누르면 공부칸에서 그 낱말
 
     } else if (kind === 'moon') {
       const key = 'moon|' + sk.moon.name + '|' + sk.moon.lines.join('|');
@@ -2967,6 +2971,70 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     setH($('agAsk'), evMsg && !fl ? `<p>${escN(evMsg)}</p>` + (yn ? `<span class="pc" data-act="evyes">응, 적어 줘</span><span class="pc" data-act="evno">아니</span>` : delRecent ? `<span class="pc" data-act="evundo">되돌리기</span>` : '') : ''); $('agAsk').hidden = !(evMsg && !fl);
     setH($('agFoot'), (evSel ? `<span class="pc" data-act="evdel">삭제</span>` : fl ? `<span class="pc" data-act="evdate">다시 말할래</span><span class="pc" data-act="evundo">삭제</span>` : '') + `<span class="zbar" data-act="evadd" role="button">${MIC}${calSel ? evDay(calSel).getDate() + '일에 ' : ''}일정 말하기</span>`);
   }
+  // ---------- 공부칸(v138): 물어본 낱말과 읽은 신문의 낱말을 이 기기에만 모은다(최대 300개). 퀴즈·개수·점수 없이 '다시 보기'만 ----------
+  const WORDS_KEY = 'gk-words', WORDS_MAX = 300;
+  var stSel = '', stView = 'hero', stTab = 'today', stPage = 0; const stFit = {};
+  function wordLoad() { const d = LS.get(WORDS_KEY, null); if (!d || !Array.isArray(d.items)) return { items: [] }; d.items = d.items.filter(x => x && x.k && x.w).sort((a, b) => (b.last || 0) - (a.last || 0)); return d; }
+  function wordAdd(w) { // w: { k, w, syl, kind(en|hz|ko), mean, hz, q, from(ask|news), src, line }
+    if (!w || !w.k || !w.w) return null;
+    const d = wordLoad(), now = Date.now(); let it = d.items.find(x => x.k === w.k);
+    if (it) { if (w.from === 'ask' && now - it.last > 60e3) { it.n = (it.n || 1) + 1; if (!it.q && w.q) it.q = w.q; } it.last = now; for (const f of ['mean', 'hz', 'syl', 'line', 'src']) if (!it[f] && w[f]) it[f] = w[f]; }
+    else { it = Object.assign({ at: now, last: now, n: 1 }, w); d.items.push(it); }
+    d.items.sort((a, b) => b.last - a.last); if (d.items.length > WORDS_MAX) d.items.length = WORDS_MAX;
+    LS.set(WORDS_KEY, d); stSel = it.k; stView = 'hero'; return it;
+  }
+  function faceWord() { const on = !!(news && newsFresh()), hr = new Date().getHours(), WS = on ? news.articles.map(x => x.word).filter(x => x && x.w) : []; return WS.length ? WS[Math.min(WS.length - 1, hr < 13 ? 0 : hr < 15 ? 1 : 2)] : null; }
+  function wordNews(W, art) { // 신문 낱말: 아이가 그 기사를 펴거나 표지의 낱말을 누를 때 모은다
+    if (!W || !W.w) return null; art = art || (news && news.articles.find(x => x.word && x.word.w === W.w)) || {};
+    const line = String(art.body || '').split(/(?<=[.!?])\s+/).find(s => s.includes('《' + W.w + '》')) || '';
+    return wordAdd({ k: 'hz:' + W.w, w: W.w, kind: W.hanja && W.hanja.length ? 'hz' : 'ko', mean: String(W.mean || '').slice(0, 30), hz: W.hanja && W.hanja.length ? W.hanja.slice(0, 4) : null, from: 'news', src: String(art.short || art.title || '').slice(0, 30), line: line.replace(/[《》]/g, '').slice(0, 90) });
+  }
+  window.__gkWords = { load: wordLoad, add: wordAdd }; // 자동 점검용
+  const stAgo = t => { const a = new Date(); a.setHours(0, 0, 0, 0); const b = new Date(t); b.setHours(0, 0, 0, 0); const n = Math.round((a - b) / 864e5); return n <= 0 ? '오늘' : n === 1 ? '어제' : n < 7 ? n + '일 전' : `${b.getMonth() + 1}월 ${b.getDate()}일`; };
+  const stMet = t => { const a = stAgo(t); return a === '어제' ? '어제 만났어' : a + '에 만났어'; };
+  const stBig = it => it.kind === 'en' && it.syl ? it.syl.replace(/・/g, '·').split('·').map(escN).join('<i>·</i>') : escN(it.w);
+  const stHz = it => (it.hz || []).map(h => `<span><b>${escN(h[0])}</b>${escN(h[1])}</span>`).join('<i>·</i>');
+  const stSrc = it => it.from === 'news' ? `루아 신문${it.src ? ` 《${escN(it.src)}》 기사에서` : '에서'}` : it.q ? `"${escN(it.q)}" 물어봤을 때` : '물어봤을 때';
+  function stMark(line, w) { const e = escN(line), k = escN(w); if (!k) return e; const i = e.toLowerCase().indexOf(k.toLowerCase()); return i < 0 ? e : e.slice(0, i) + '<mark>' + e.slice(i, i + k.length) + '</mark>' + e.slice(i + k.length); }
+  function stSay(it) { if (!it) return; hush();
+    if (it.kind === 'en' && 'speechSynthesis' in window) { try { const u = new SpeechSynthesisUtterance(it.w); u.lang = 'en-US'; u.rate = .8; speechSynthesis.speak(u); } catch (e) {} return; }
+    speak(`${it.w}. ${it.mean || ''}`, true); }
+  const LISTIC = '<svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><path d="M6 9h16M6 14h16M6 19h11"/></svg>';
+  const BACKIC = '<svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><path d="M16.5 7.5L10 14l6.5 6.5"/></svg>';
+  function stFitBig(box, k, render) { // 긴 낱말은 한 줄에 들어가게 글자를 줄인다(한 번 재서 기억)
+    const el = box.querySelector('.st-big'); if (!el || stFit[k]) return; const avail = el.parentElement.clientWidth; let f = parseFloat(getComputedStyle(el).fontSize), w = el.getBoundingClientRect().width;
+    if (!avail || w <= avail) { stFit[k] = 'ok'; return; } stFit[k] = Math.max(64, Math.floor(f * avail / w) - 2); render(); }
+  function renderStudyPg() {
+    const all = wordLoad().items, tk = dayKey(new Date()), box = $('pgStudy'), isT = x => dayKey(new Date(x.last)) === tk;
+    setH($('pgTtl'), '공부칸'); setH($('pgSub'), zClock());
+    const ask = `<span class="zbar" data-act="stask" role="button">${MIC}물어보기</span>`;
+    if (!all.length) { setH(box, `<div class="st-none">아직 모은 말이 없어.<small>모르는 낱말을 물어보면 여기 모여.</small></div><div class="st-foot">${ask}</div>`); return; }
+    if (stView === 'list') { // 모은 말 보기: 갈래 넷, 두 단, 한 쪽에 여섯
+      const list = stTab === 'today' ? all.filter(isT) : all.filter(x => x.kind === stTab), PER = 6, pages = Math.max(1, Math.ceil(list.length / PER)); stPage = Math.max(0, Math.min(stPage, pages - 1));
+      const tabs = [['today', '오늘'], ['en', '영어'], ['hz', '한자'], ['ko', '우리말']].map(t => `<span data-act="sttab" data-t="${t[0]}"${t[0] === stTab ? ' class="on"' : ''}>${t[1]}</span>`).join('');
+      const rows = list.slice(stPage * PER, stPage * PER + PER).map(it => `<div class="st-row" data-act="stpick" data-k="${escN(it.k)}"><div class="st-rw"><b class="k-${it.kind}">${stBig(it)}</b><span>${it.kind === 'hz' && it.hz ? stHz(it) : escN(it.mean || '')}</span></div><small>${isT(it) ? stSrc(it) : stMet(it.last)}</small></div>`).join('');
+      const nav = pages > 1 ? `<span class="rb st-pg${stPage ? '' : ' off'}" data-act="stpg" data-d="-1" aria-label="앞 쪽">${BACKIC}</span><span class="rb st-pg nx${stPage < pages - 1 ? '' : ' off'}" data-act="stpg" data-d="1" aria-label="다음 쪽">${BACKIC}</span>` : '';
+      setH(box, `<div class="st-tabs">${tabs}</div><div class="st-list">${rows || `<div class="st-empty">${stTab === 'today' ? '오늘은 아직 없어.' : '아직 없어.'}</div>`}</div><div class="st-foot"><span class="pc st-lb" data-act="stback">${BACKIC}방금 만난 말</span>${nav}${ask}</div>`);
+      return;
+    }
+    const cur = all.find(x => x.k === stSel) || all[0]; stSel = cur.k;
+    const tag = cur === all[0] && Date.now() - cur.last < 30 * 60e3 ? '방금 만난 말' : isT(cur) ? '오늘 만난 말' : stMet(cur.last).replace('에 만났어', '').replace(' 만났어', '') + ' 만난 말';
+    const hzc = (cur.hz || []).map(h => h[0]), same = cur.kind === 'hz' ? all.filter(x => x !== cur && (x.hz || []).some(h => hzc.includes(h[0]))).slice(0, 2) : [];
+    const today = all.filter(isT), side = today.concat(all.filter(x => !isT(x))).slice(0, 5);
+    const sideH = side.map(it => `<div class="st-srow${it === cur ? ' on' : ''}" data-act="stpick" data-k="${escN(it.k)}"><b class="k-${it.kind}">${escN(it.w)}</b><span>${isT(it) ? (it.kind === 'hz' && it.hz ? escN(it.hz.map(h => h[0]).join('')) : escN(it.mean || '')) : stAgo(it.last)}</span></div>`).join('');
+    const fk = cur.k + '|' + innerWidth, fs = typeof stFit[fk] === 'number' ? ` style="font-size:${stFit[fk]}px"` : '';
+    const html = `<div class="st-hero"><div class="st-main">` +
+      `<div class="st-tag" data-act="stsay">${tag} · 누르면 읽어 줘</div>` +
+      `<div class="st-big k-${cur.kind}" data-act="stsay"${fs}>${stBig(cur)}</div>` +
+      (cur.kind === 'hz' && cur.hz ? `<div class="st-hz">${stHz(cur)}</div>` : '') +
+      (cur.mean ? `<div class="st-mean">${escN(cur.mean)}</div>` : '') +
+      `<div class="st-src">${stSrc(cur)}${(cur.n || 1) > 1 ? ' · <b>또 물어봤어</b>' : ''}${isT(cur) ? '' : ' · ' + stAgo(cur.last)}</div>` +
+      (cur.line ? `<div class="st-lab">처음 만난 문장</div><div class="st-line">${stMark(cur.line, cur.w)}</div>` : '') +
+      (same.length ? `<div class="st-same"><span class="st-lab">같은 글자가 든 말</span>${same.map(x => `<span class="pc" data-act="stpick" data-k="${escN(x.k)}">${escN(x.w)}<small>${escN((x.hz || []).filter(h => hzc.includes(h[0])).map(h => h[0]).join(''))}</small></span>`).join('')}</div>` : '') +
+      `</div><div class="st-side"><div class="st-lab">${today.length ? '오늘 모인 말' : '지난번에 모인 말'}</div>${sideH}${all.length > 5 ? '<div class="st-srow more" data-act="stlist"><b>더 있어 ›</b></div>' : ''}</div></div>` +
+      `<div class="st-foot"><span class="pc st-lb" data-act="stlist">${LISTIC}모은 말 보기</span>${ask}</div>`;
+    setH(box, html); stFitBig(box, fk, renderStudyPg);
+  }
   // ---------- 할 일 화면(v135, 아내 요청): 대기화면의 할 일 타일을 누르면 달력처럼 따로 크게. 한 번에 일곱 줄, 줄을 누르면 했다/안 했다 ----------
   let tdPage = 0, tdShowDone = false;
   function renderTodoPg() { // 할 일 앱: 큼직한 두 단 — 왼쪽 '지난 것·오늘', 오른쪽 '내일·다음에'. 다 한 것은 한 줄로 접는다
@@ -3127,6 +3195,16 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     else if (act === 'more') { agPage++; renderSaver(); }
     else if (act === 'wxmore') { wxMore = !wxMore; renderSaver(); }
     else if (act === 'tdmore') { tdPage++; renderSaver(); }
+    else if (/^st/.test(act)) { if (window.__gkForce && window.__gkForce.s === 'study') window.__gkForce.at = Date.now(); // v138: 공부칸 — 누를 때마다 10분을 새로
+      const W = wordLoad().items, it = W.find(x => x.k === (a.dataset.k || stSel)) || W[0];
+      if (act === 'stsay') { stSay(it); return; }
+      if (act === 'stask') { exitSaver(); if (saverEl.hidden) { try { $('micBtn') && $('micBtn').click(); } catch (e) {} } return; }
+      if (act === 'stpick') { stSel = a.dataset.k; stView = 'hero'; }
+      else if (act === 'stlist') { stView = 'list'; stPage = 0; stTab = W.some(x => dayKey(new Date(x.last)) === dayKey(new Date())) ? 'today' : (it && it.kind) || 'today'; }
+      else if (act === 'sttab') { stTab = a.dataset.t; stPage = 0; }
+      else if (act === 'stpg') { if (a.classList.contains('off')) return; stPage += +a.dataset.d; }
+      else if (act === 'stback') stView = 'hero';
+      renderSaver(); }
     else if (act === 'tddone') { tdShowDone = !tdShowDone; renderSaver(); }
     else if (act === 'tdadd') { exitSaver(); if (saverEl.hidden) { try { $('micBtn') && $('micBtn').click(); } catch (e) {} } }
     else if (act === 'monnow') { calOff = 0; calSel = ''; agPage = 0; renderSaver(); }
@@ -3156,6 +3234,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (/^(루아|오늘)?신문(을|좀)?(보여줘|펴줘|열어줘|읽어줘|볼래|보자|줘|보여|펴)$/.test(t)) { if (news && newsFresh()) { if (!saverEl.hidden) exitSaver(); hush(); openPaper(0); } else todoShow(s, '오늘 신문이 아직 안 왔어.', []); return true; }
     if (/^(이번달|이달)?(달력|일정)(을|좀)?(보여줘|열어줘|볼래|보자|보여)$/.test(t)) { previewSaver('cal'); return true; }
     if (/^(오늘)?(할일|숙제|할일목록)(을|좀)?(보여줘|열어줘|볼래|보자|보여)$/.test(t)) { previewSaver('todo'); return true; }
+    if (/^(공부칸|낱말장|단어장|모은말)(을|좀)?(보여줘|열어줘|볼래|보자|보여)$/.test(t)) { const top = wordLoad().items[0]; stSel = top ? top.k : ''; stView = 'hero'; previewSaver('study'); return true; }
     if (/^(오늘)?(밤하늘|달)(을|좀)?(보여줘|열어줘|볼래|보자|보여)$/.test(t)) { if (window.GKSky) previewSaver('sky'); else todoShow(s, '밤하늘은 지금 못 보여 줘.', []); return true; }
     return false;
   }
@@ -3223,6 +3302,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const A = curArticle(); if (!A) return;
     const n = news.articles.length, art = $('ppArt'), box = $('ppPhoto'), key = news.no + ':' + paperIdx, tag = i => (news.articles[i] && news.articles[i].tag) || '';
     paperEl.dataset.t = npTone();
+    if (A.word && A.word.w && window.__gkWordPP !== news.date + ':' + paperIdx) { window.__gkWordPP = news.date + ':' + paperIdx; try { wordNews(A.word, A); } catch (e) {} } // v138: 편 기사의 오늘의 낱말을 공부칸에
     $('ppTag').textContent = [A.tag || '', `${paperIdx + 1}면`].filter(Boolean).join(' · '); $('ppFolio').textContent = newsDate(); $('ppNo').textContent = ''; if (paperSound) setTimeout(() => { if (paperEl && !paperEl.hidden) readArticle(); }, 300); // v136: 소리가 켜져 있으면 넘긴 면부터 읽어 준다
     $('ppHed').textContent = A.title; $('ppLede').innerHTML = npWords(A.lede || ''); $('ppLede').hidden = !A.lede;
     $('ppBody').innerHTML = npParas(A.body || '', true); $('ppSrc').textContent = A.source ? '출처 ' + A.source : '';
@@ -3475,6 +3555,13 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     });
     fitG(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (seq === picSeq) fitG(); });
     const key = (hanja ? word : word.toLowerCase()).replace(/\s/g, '');
+    try { // v138: 낱말 카드가 나오면 공부칸에 모은다(이 기기에만). 카드 아래 한 줄로 알려 준다
+      const kind = hanja ? 'hz' : lat ? 'en' : 'ko', disp = kind === 'en' ? word.toLowerCase() : kind === 'ko' ? items[0].g.replace(/[·・]/g, '') : word;
+      const mn = hanja ? mean : kind === 'en' ? (items[0].l.split('·').pop() || '').trim() : items[0].l;
+      const ss = String(current || '').split(/(?<=[.!?])\s+/).filter(s => s.toLowerCase().includes(disp.toLowerCase())), line = ss.find(s => !/[?？]$/.test(s.trim())) || ss[0] || ''; // 묻는 문장보다 풀이 문장
+      if (disp && graphemes(disp).length <= 20 && wordAdd({ k: kind + ':' + key, w: disp, syl: kind === 'en' ? items[0].g.toLowerCase() : '', kind, mean: String(mn || '').slice(0, 30), hz: hanja ? items.map(x => [x.g, x.l]).slice(0, 4) : null, q: String((LS.get('gk-lastqa', {}) || {}).q || '').slice(0, 40), from: 'ask', line: line.slice(0, 90) })) {
+        const vc = figBox.querySelector('.vcard'); if (vc && !vc.querySelector('.vc-note')) { const n = document.createElement('div'); n.className = 'vc-note'; n.textContent = '공부칸에 모았어'; vc.append(n); } }
+    } catch (e) { diag('err', '공부칸 모으기 실패: ' + (e.message || e)); }
     // 답을 다 읽고 나서 카드를 또렷하게 하고, 낱말을 소리로 한 번 짚어 줌
     Promise.resolve(answerDone).catch(() => {}).then(() => {
       if (seq !== picSeq) return;
@@ -3802,7 +3889,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v137';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v138';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -4056,13 +4143,13 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
 </style>
 <script>
 (function(){ const e = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const tabs = n => `<div class="cc-tabs">${[['news','신문'],['word','낱말'],['piece','조각'],['moon','달']].map((t, i) => `<span data-cv="${t[0]}"${i === n ? ' class="on"' : ''}>${t[1]}</span>`).join('')}</div>`;
+  const tabs = n => `<div class="cc-tabs">${[['news','신문'],['word','낱말'],['moon','달']].map((t, i) => `<span data-cv="${t[0]}"${i === n ? ' class="on"' : ''}>${t[1]}</span>`).join('')}</div>`;
   const ARW = `<svg viewBox="0 0 36 36"><path d="M7 18h20M19 9.500l8.500 8.500-8.500 8.500"/></svg>`;
   const shell = (lab, n, l, r, foot, go) => `<div class="cc"><div class="cc-top"><div class="cc-lab">${lab}</div>${tabs(n)}</div><div class="cc-mid"><div class="cc-l">${l}${foot ? `<div class="cc-foot${go ? ' rd' : ''}">${foot}</div>` : ''}</div>${r}</div></div>`;
   window.B_news = function(news){ const a = news.articles[0];
     return shell(`<b>루아 신문</b>제${e(news.no)}호`, 0, `<div class="cc-k">${e(a.tag)}</div><h2 class="cc-h">${e(a.title)}</h2><p class="cc-s2">${e(a.lede)}</p>`,
       `<div class="cc-r">${news.articles.slice(0, 3).map((x, i) => `<div class="it${i ? '' : ' on'}"><b>${i + 1}</b><small>${e(x.tag)}</small><span>${e(x.short || x.title)}</span></div>`).join('')}</div>`, `읽기 ${ARW}`, 1); };
-  window.B_piece = function(p){ return shell('오늘의 한 조각', 2, `<h2 class="cc-h pce">${e(p.f)}</h2>`, '', `${e(p.q)} ${ARW}`, 1); };
+  window.B_piece = function(p){ return shell('오늘의 한 조각', -1, `<h2 class="cc-h pce">${e(p.f)}</h2>`, '', `${e(p.q)} ${ARW}`, 1); };
   window.B_word = function(W, news){
     const art = news.articles.find(x => x.word && x.word.w === W.w) || {};
     const m = (art.body || '').split(/(?<=다\.)\s*/).find(s => s.includes('《' + W.w + '》')) || '';
@@ -4074,7 +4161,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   window.B_moon = function(sk){ const r = rnd(20261114); let st = '';
     for (let i = 0; i < 46; i++) { const x = r() * 1000, y = r() * 700, z = r(); st += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${z < .12 ? 1.8 : z < .4 ? 1.2 : .8}" fill="#fff" opacity="${(.2 + r() * .5).toFixed(2)}"/>`; }
     const nx = (sk.next || [])[0];
-    return `<svg class="cc-st" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">${st}</svg>` + shell('오늘의 달', 3, `<div class="cc-big${sk.moon.name.length > 3 ? ' s' : ''}">${e(sk.moon.name)}</div><div class="cc-s1">${e(sk.moon.lines[0] || '')}</div><div class="cc-s2">${e(sk.moon.lines.slice(1).join(' · '))}</div>`,
+    return `<svg class="cc-st" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">${st}</svg>` + shell('오늘의 달', 2, `<div class="cc-big${sk.moon.name.length > 3 ? ' s' : ''}">${e(sk.moon.name)}</div><div class="cc-s1">${e(sk.moon.lines[0] || '')}</div><div class="cc-s2">${e(sk.moon.lines.slice(1).join(' · '))}</div>`,
       `<div class="cc-moon"></div>`, nx ? `${e(nx[1])}은 ${e(nx[0])}` : '') + `<canvas class="big" width="2" height="2"></canvas>`; };
   window.B_moonAfter = function(){};
 })();
@@ -6130,6 +6217,78 @@ body[data-theme=night] .cq-grid span.t b{color:#0A1130 !important}
 /* 밤(22~6시) 묻기·답 화면: 숯색 대신 밤 남색 + 크림 글 + 앰버 강조 — 밤하늘 앱과 같은 밤 */
 body[data-night] #app{--paperbg:linear-gradient(180deg,#0A1130,#111B47);--zbg:#0D1538;--zk:#ECE6D8;--zk2:rgba(236,230,216,.64);--zrow:rgba(255,255,255,.08);--zhl:#F0B25E;--zhlbg:rgba(240,178,94,.16);--zac:#ECE6D8;
   --strip:rgba(255,255,255,.10);--strips:inset 0 1.5px 0 rgba(255,255,255,.20),inset 0 0 0 1.5px rgba(255,255,255,.13);--ink:#ECE6D8;--muted:rgba(236,230,216,.64);--skyink:#ECE6D8;color:#ECE6D8}
+</style>
+<style id="st">
+/* v138 공부칸: 왼쪽 큰 낱말 + 오른쪽 오늘 모인 말 / 모은 말 보기(갈래 넷, 두 단). 상자 없이 바탕 위에 바로 */
+#saver.pgx[data-pg=study]{background:var(--paperbg) !important;color:var(--zk)}
+#saver[data-pg=study] .pg-ttl, #saver[data-pg=study] .pg-sub{color:var(--zk)}
+#saver[data-pg=study] .pg-sub small{color:var(--zk2)}
+#saver[data-pg=study] .pg-study{display:block !important;position:absolute;inset:0}
+#saver[data-pg=study] .pg-study [data-act]{cursor:pointer}
+.st-hero{position:absolute;left:136px;right:48px;top:132px;bottom:124px;display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:80px}
+.st-main{min-width:0;display:flex;flex-direction:column;align-items:flex-start}
+.st-tag{font:600 24px/34px "Pretendard",sans-serif;color:var(--zhl);padding:10px 0;margin-top:-10px}
+.st-big{display:inline-block;white-space:nowrap;font:800 150px/1.04 "Pretendard",sans-serif;letter-spacing:-.045em;color:var(--zk);margin:0 0 6px -6px}
+.st-big.k-en{color:var(--zhl)}
+.st-big i, .st-rw > b i{font-style:normal;font-weight:400;color:var(--zk2);opacity:.45;margin:0 .04em}
+.st-hz{display:flex;align-items:baseline;gap:14px;font:500 28px/40px "Pretendard",sans-serif;color:var(--zk2)}
+.st-hz b{font:700 36px/40px "Pretendard",sans-serif;color:var(--zk);margin-right:8px}
+.st-hz i{font-style:normal;opacity:.5}
+.st-mean{font:700 52px/64px "Pretendard",sans-serif;letter-spacing:-.025em;color:var(--zk);margin-top:16px;word-break:keep-all}
+.st-src{font:500 26px/36px "Pretendard",sans-serif;color:var(--zk2);margin-top:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.st-src b{font-weight:600;color:var(--zhl)}
+.st-lab{font:500 22px/30px "Pretendard",sans-serif;color:var(--zk2);margin-top:22px}
+.st-line{font:500 30px/42px "Pretendard",sans-serif;color:var(--zk);margin-top:2px;word-break:keep-all;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.st-line mark{background:none;color:var(--zhl);font-weight:700}
+.st-same{display:flex;align-items:center;gap:16px;margin-top:18px}
+.st-same .st-lab{margin:0 8px 0 0}
+.st-big.k-hz, .st-big.k-ko{font-size:132px}
+.st-same .pc small{margin-left:10px;font-size:24px;font-weight:500;color:var(--zk2)}
+.st-side{display:flex;flex-direction:column;min-width:0}
+.st-side .st-lab{margin:0 0 6px}
+.st-srow{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
+.st-srow b{font:700 36px/1.1 "Pretendard",sans-serif;letter-spacing:-.02em;color:var(--zk);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.st-srow b.k-en{color:var(--zhl)}
+.st-srow span{flex:none;max-width:48%;font:500 24px/1.2 "Pretendard",sans-serif;color:var(--zk2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
+.st-srow.on::before{content:"";position:absolute;left:-28px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:var(--zhl)}
+.st-srow.more b{font:500 26px/1 "Pretendard",sans-serif;color:var(--zk2)}
+.st-foot{position:fixed;left:136px;bottom:40px;display:flex;align-items:center;gap:16px}
+.st-foot .st-lb{position:static;gap:10px !important;padding-left:20px !important}
+.st-lb svg, .st-pg svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.st-pg{width:64px;height:64px;border-radius:32px;display:inline-flex;align-items:center;justify-content:center;background:var(--pill);color:var(--pill-ink);box-shadow:var(--pill-edge),var(--pill-shadow)}
+.st-pg.nx svg{transform:scaleX(-1)}
+.st-pg.off{opacity:.35;box-shadow:none;cursor:default}
+.st-tabs{position:absolute;top:34px;left:50%;transform:translateX(-50%);display:flex;padding:6px;border-radius:38px;background:var(--zrow)}
+.st-tabs span{height:64px;min-width:132px;padding:0 24px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border-radius:32px;font:600 28px/1 "Pretendard",sans-serif;color:var(--zk2);cursor:pointer}
+.st-tabs span.on{background:var(--pill);color:var(--pill-ink);box-shadow:var(--pill-edge),var(--pill-shadow)}
+.st-list{position:absolute;left:136px;right:48px;top:140px;bottom:124px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));grid-auto-flow:column;column-gap:96px}
+.st-row{display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0;border-bottom:1px solid rgb(21 23 28 / .1)}
+.st-rw{display:flex;align-items:baseline;gap:20px;min-width:0}
+.st-rw > b{flex:none;font:800 56px/1.1 "Pretendard",sans-serif;letter-spacing:-.035em;color:var(--zk);white-space:nowrap}
+.st-rw > b.k-en{color:var(--zhl)}
+.st-rw > span{min-width:0;font:500 28px/1.2 "Pretendard",sans-serif;color:var(--zk2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st-rw > span b{font-weight:700;color:var(--zk);margin-right:4px}
+.st-rw > span i{font-style:normal;opacity:.5;margin:0 6px}
+.st-row small{font:500 22px/30px "Pretendard",sans-serif;color:var(--zk2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st-empty{grid-column:1 / -1;grid-row:1 / -1;align-self:center;justify-self:center;font:500 32px/44px "Pretendard",sans-serif;color:var(--zk2)}
+.st-none{position:absolute;left:136px;top:300px;font:700 52px/66px "Pretendard",sans-serif;color:var(--zk)}
+.st-none small{display:block;margin-top:10px;font:500 28px/40px "Pretendard",sans-serif;color:var(--zk2)}
+.vc-note{margin-top:14px;font:500 20px/28px "Pretendard",sans-serif;color:var(--muted,#6B7280);opacity:.9}
+@media (max-width:899px){
+  #saver[data-pg=study] .pg-study{position:relative;inset:auto;padding:92px 20px 120px}
+  .st-hero, .st-list{position:static;display:flex;flex-direction:column;gap:24px}
+  .st-big{font-size:72px}
+  .st-mean{font-size:32px;line-height:42px}
+  .st-tabs{position:static;transform:none;margin:0 0 12px;overflow-x:auto}
+  .st-tabs span{min-width:0;font-size:20px;height:52px}
+  .st-row{padding:12px 0}
+  .st-rw > b{font-size:36px}
+  .st-foot{position:static;margin-top:28px;flex-wrap:wrap}
+  .st-srow.on::before{left:-14px}
+  .st-same{flex-wrap:wrap}
+  .st-none{left:20px}
+  .st-none{position:static;font-size:32px;line-height:42px}
+}
 </style>
 </body>
 </html>

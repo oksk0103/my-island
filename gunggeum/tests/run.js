@@ -204,9 +204,8 @@ async function newsTests(b) {
   ok('깨어나면 갈래 강제가 지워짐', await p.evaluate(() => window.__gkCover === undefined));
   await p.saver(); await tile('todo'); s = await p.st(); ok('할 일 빈 곳 → 할 일 화면 (v135)', s.saver === 'pgx' && await p.evaluate(() => document.getElementById('saver').dataset.pg === 'todo'), s); await p.click('#gkHome'); await p.adv(1500);
   ok('타일이 화면 밖으로 넘치지 않음', await p.evaluate(() => { document.getElementById('saver').hidden = false; const r = [...document.querySelectorAll('#svFace .fc-t')].every(t => { const b = t.getBoundingClientRect(); return b.left >= 0 && b.top >= 0 && b.right <= innerWidth && b.bottom <= innerHeight && (t.classList.contains('fc-feat') || t.scrollHeight <= t.clientHeight + 1); }); document.getElementById('saver').hidden = true; return r; }));
-  await p.saver(); await tile('study'); s = await p.st(); ok('공부 모드 → 표지가 조용해짐 (깨어나지 않음)', s.saver.startsWith('face') && await feat() === 'study' && await p.evaluate(() => document.getElementById('fcStudyL').textContent === '공부 끝'), [s.saver, await feat()]);
-  await tile('study'); ok('한 번 더 누르면 공부 모드 끝', await feat() !== 'study' && await p.evaluate(() => document.getElementById('fcStudyL').textContent === '공부 모드' && !localStorage.getItem('gk-study')), await feat());
-  await tile('study'); await p.adv(95 * 60e3); ok('공부 모드는 90분이 지나도 켜져 있음 (v132)', await feat() === 'study', await feat()); await tile('study');
+  await p.saver(); await tile('study'); s = await p.st(); ok('공부칸 타일 → 공부칸 앱이 크게 열림 (v138, 깨어나지 않음)', s.saver === 'pgx' && await p.evaluate(() => document.getElementById('saver').dataset.pg === 'study' && document.getElementById('fcStudyL').textContent === '공부칸' && !localStorage.getItem('gk-study')), s);
+  await p.click('#gkHome'); await p.adv(1500); ok('공부칸의 홈 단추 → 위젯 면 (공부 중 표지는 없음)', /^face/.test((await p.st()).saver) && await feat() !== 'study', await feat());
   await p.context().close();
   for (const [w, h] of [[1600, 820], [1920, 1000]]) { p = await open(b, { time: newsDate + 'T12:48', w, h }); await p.saver();
     ok(`네 자리 시각이 시계 타일 안에 들어감 ${w}×${h}`, await p.evaluate(() => { const t = document.getElementById('fcTime'), r = document.createRange(); r.selectNodeContents(t); const a = r.getBoundingClientRect(), c = t.parentElement.getBoundingClientRect(); return a.left >= c.left + 8 && a.right <= c.right - 8; })); await p.context().close(); }
@@ -302,7 +301,7 @@ async function newsTests(b) {
     let p = await open(b, { time: newsDate + 'T16:10', read: newsDate }), s;
     ok('캐릭터(궁금이) 요소 없음', await p.evaluate(() => !document.querySelector('svg.gk, #loBuddy, .lo-buddy, .lo-glow, .wordmark .eye')));
     // 조각 장 → 궁금칸 → 답 → 아까 물은 것
-    await p.saver(); await box('#svFace [data-cv="piece"]'); ok('표지 갈래 넷: 신문·낱말·조각·달', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent).join('') === '신문낱말조각달' && document.getElementById('fcFeat').classList.contains('piece')));
+    await p.saver(); await p.evaluate(() => { window.__gkCover = { k: 'piece', at: Date.now() }; }); await p.adv(16000); ok('표지 갈래 셋(조각 갈래 뺌, v138): 신문·낱말·조각·달', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent).join('') === '신문낱말달' && document.getElementById('fcFeat').classList.contains('piece')));
     await box('#fcFeat .cc-h'); s = await p.st(); ok('조각 장 본문 → 궁금칸(조각과 이어 묻기 딸려 옴)', s.home && !s.saver && s.sheet === '뭐가 궁금해?' && await p.evaluate(() => !!document.querySelector('#zUnder .zu-pc') && !!document.querySelector('#zUnder .zu-chip')), s);
     const R = () => p.evaluate(() => { const r = document.querySelector('.qbox').getBoundingClientRect(); return [r.left, r.top, r.right, r.bottom].map(Math.round).join(','); });
     const r0 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'listen'; }); await p.adv(400); const r1 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'think'; }); await p.adv(400); const r2 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'idle'; });
@@ -312,7 +311,7 @@ async function newsTests(b) {
     const cnt = (await p.st()).count; await p.click('#gkHome'); await p.adv(1500); s = await p.st(); ok('답의 홈 단추 → 위젯 면', /^face/.test(s.saver), s.saver);
     await p.mouse.click(20, 20); await p.adv(1500); ok('궁금칸에 아까 물은 것 한 줄', await p.evaluate(() => !!document.querySelector('#zUnder .zu-prev')));
     await p.click('#zUnder .zu-prev'); await p.adv(1500); s = await p.st(); ok('아까 물은 것 → 그 답을 다시 엶 (다시 묻지 않음, 질문 수 그대로)', p.api === a0 + 1 && !s.home && /햇빛/.test(s.sheet) && s.count === cnt, [p.api, s.count, cnt]);
-    await p.click('#gkHome'); await p.adv(1500); await box('#svFace [data-cv="piece"]'); await box('#fcFeat .cc-foot'); await p.adv(8000); s = await p.st(); ok('조각 장의 이어 묻기 칩 → 궁금칸을 거치지 않고 바로 답', p.api > a0 + 1 && !s.home && !s.saver && s.count === cnt + 1, [p.api - a0, s.count, cnt]);
+    await p.click('#gkHome'); await p.adv(1500); await p.evaluate(() => { window.__gkCover = { k: 'piece', at: Date.now() }; }); await p.adv(16000); await box('#fcFeat .cc-foot'); await p.adv(8000); s = await p.st(); ok('조각 장의 이어 묻기 칩 → 궁금칸을 거치지 않고 바로 답', p.api > a0 + 1 && !s.home && !s.saver && s.count === cnt + 1, [p.api - a0, s.count, cnt]);
     // 긴 답: 문장 끝에서만 쪽 나눔
     await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); p.api++; r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: LONG }], stop_reason: 'end_turn' } }); });
     await p.say('달은 왜 모양이 바뀌어?', 12000);
@@ -457,17 +456,6 @@ async function newsTests(b) {
     await p.context().close(); p = await open(b, { time: newsDate + 'T12:19', w: 390, h: 780 }); await p.saver(); await tapAt(p, '#fcFeat .cc-tabs [data-cv="word"]'); s = await p.st(); ok('전화: 다른 탭("낱말")을 누르면 표지만 바뀐다', /\bface\b/.test(s.saver) && await p.evaluate(() => document.getElementById('fcFeat').classList.contains('word')), s.saver); await p.context().close();
   }
 
-  { // 15. 공부 모드: 시간 제한 없음 (v132)
-    console.log('15. 공부 모드 시간 제한 없음');
-    const p = await open(b, { time: newsDate + 'T21:42' }); await p.saver();
-    const tapS = async () => { const bx = await p.locator('.fc-app[data-tile="study"]').boundingBox(); await p.mouse.click(bx.x + 30, bx.y + 30); await p.adv(1200); };
-    await tapS(); ok('밤 9시 42분에 공부 모드를 누르면 켜진다', await p.evaluate(() => document.getElementById('fcFeat').classList.contains('study')));
-    await p.adv(2 * 3600e3); ok('2시간이 지나도(밤 11시 42분) 켜져 있다', await p.evaluate(() => document.getElementById('fcFeat').classList.contains('study')));
-    await p.adv(3600e3); ok('밤 12시가 지나면 저절로 꺼진다 (v135)', await p.evaluate(() => !document.getElementById('fcFeat').classList.contains('study') && !localStorage.getItem('gk-study')));
-    await tapS(); await tapS(); ok('켰다가 다시 누르면 꺼진다', await p.evaluate(() => !document.getElementById('fcFeat').classList.contains('study')));
-    await p.context().close();
-  }
-
   { // 16. 답 화면의 낱말 카드: 밝은 흰 카드, 글·칩과 겹치지 않음 (v133)
     console.log('16. 낱말 카드');
     const WA = '"뷰티풀"은 영어 《beautiful》 말하는 거지? 영어로는 beautiful이라고 쓰고, "아름다운, 예쁜"이라는 뜻이야. 사람, 풍경, 노래처럼 보기 좋거나 듣기 좋은 것에 두루 쓰고, beautiful day처럼 "멋진 하루"라고 말할 때도 써.\n@@  | | beautiful 반대말은 뭐야?; beautiful을 넣은 문장 만들어 줘; 영어로 handsome은 어떤 뜻이야?; pretty는 뭐야? | BEAU·ti·ful:형용사 · 아름다운';
@@ -607,6 +595,36 @@ async function newsTests(b) {
     p = await open(b, { time: D + 'T07:40' }); await p.go('hero'); await p.adv(2500); await p.go('paper'); await p.adv(2500);
     q = await p.evaluate(() => [document.getElementById('ppTag').textContent, document.getElementById('ppListen').getAttribute('aria-pressed'), getComputedStyle(document.querySelector('#ppListen .slash')).display]);
     ok('신문 기사: "분야 · 1면", 소리 기본 끔(빗금 보임)', /· 1면$/.test(q[0]) && q[1] === 'false' && q[2] !== 'none', q); await p.context().close();
+  }
+
+  { // 20. v138 공부칸: 낱말 카드·신문 낱말이 모이고, 공부칸에서 다시 본다(퀴즈·개수 없이)
+    console.log('20. 공부칸 (v138)');
+    const R = (pg, sel) => pg.evaluate(sel => { const e = document.querySelector(sel); if (!e) return null; const r = e.getBoundingClientRect(); return [r.left, r.top, r.right, r.bottom].map(Math.round).join(','); }, sel);
+    const D = newsDate, WA = '"뷰티풀"은 영어 《beautiful》 말하는 거지? 영어로는 beautiful이라고 쓰고, "아름다운, 예쁜"이라는 뜻이야.\n@@  | | beautiful 반대말은 뭐야?; pretty는 뭐야? | BEAU·ti·ful:형용사 · 아름다운';
+    const p = await open(b, { time: D + 'T16:20', read: D }); let q;
+    await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); p.api++; r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: WA }], stop_reason: 'end_turn' } }); });
+    await p.say('뷰티풀 뜻?', 9000);
+    q = await p.evaluate(() => [window.__gkWords.load().items.map(x => [x.k, x.mean, x.q, x.line].join('|')), (document.querySelector('.vcard .vc-note') || {}).textContent]);
+    ok('낱말 카드가 나오면 공부칸에 모임(뜻·물은 말·풀이 문장) + 카드 아래 "공부칸에 모았어"', q[0].length === 1 && q[0][0] === 'en:beautiful|아름다운|뷰티풀 뜻?|영어로는 beautiful이라고 쓰고, "아름다운, 예쁜"이라는 뜻이야.' && q[1] === '공부칸에 모았어', q);
+    await p.adv(65e3); await p.say('beautiful 뜻 다시', 9000); q = await p.evaluate(() => window.__gkWords.load().items.map(x => x.k + ':' + x.n)); ok('같은 낱말을 또 물으면 한 줄로 합쳐짐', q.join() === 'en:beautiful:2', q);
+    await p.go('hero'); await p.adv(2500); await p.go('paper'); await p.adv(2500);
+    q = await p.evaluate(() => { const W = window.__gkWords.load().items[0]; return [W.k, W.from, W.kind]; }); const nw = JSON.parse(fs.readFileSync(path.join(ROOT, 'news/latest.json'), 'utf8')).articles[0].word;
+    ok('신문 기사를 펴면 그 기사의 오늘의 낱말이 모임', q[0] === 'hz:' + nw.w && q[1] === 'news', q);
+    await p.click('#ppHome'); await p.adv(1500);
+    { const bx = await p.locator('#svFace .fc-app[data-tile="study"]').boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); }
+    q = await p.evaluate(() => [document.getElementById('saver').dataset.pg, document.querySelector('.st-big').textContent, document.querySelectorAll('.st-srow[data-k]').length, document.getElementById('pgTtl').textContent]);
+    ok('공부칸: 가장 최근에 만난 말이 크게, 오른쪽에 오늘 모인 말', q[0] === 'study' && q[1] === nw.w && q[2] === 2 && q[3] === '공부칸', q);
+    await p.click('.st-srow[data-k="en:beautiful"]'); await p.adv(600);
+    q = await p.evaluate(() => [document.querySelector('.st-big').textContent, document.querySelector('.st-src').textContent, document.querySelector('.st-line').textContent]);
+    ok('오른쪽 줄을 누르면 그 낱말: 음절·물은 말·"또 물어봤어"·처음 만난 문장', q[0] === 'beau·ti·ful' && /"뷰티풀 뜻\?" 물어봤을 때 · 또 물어봤어/.test(q[1]) && /영어로는 beautiful/.test(q[2]), q);
+    q = await p.evaluate(() => document.querySelector('.st-hero').innerText); ok('공부칸에 퀴즈·점수·개수 문구 없음', !/퀴즈|정답|점수|[0-9]+개|맞혀/.test(q), q.slice(0, 80));
+    await p.click('[data-act=stlist]'); await p.adv(600);
+    q = await p.evaluate(() => [[...document.querySelectorAll('.st-tabs span')].map(x => x.textContent).join(''), document.querySelectorAll('.st-row').length]);
+    ok('모은 말 보기: 갈래 넷(오늘·영어·한자·우리말), 오늘 모인 말 두 줄', q[0] === '오늘영어한자우리말' && q[1] === 2, q);
+    await p.click('[data-act=sttab][data-t=en]'); await p.adv(500); q = await p.evaluate(() => [...document.querySelectorAll('.st-row')].map(x => x.dataset.k).join()); ok('영어 갈래에는 영어 낱말만', q === 'en:beautiful', q);
+    await p.click('[data-act=stback]'); await p.adv(500); q = await R(p, '.st-foot .st-lb'); ok("공부칸 맨 아랫줄 왼쪽 알약(136,716), 오른쪽 '물어보기'", /^136,716,/.test(q) && await R(p, '#pgStudy .zbar') === '1316,716,1552,780', [q, await R(p, '#pgStudy .zbar')]);
+    await p.adv(11 * 60e3); q = (await p.st()).saver; ok('공부칸도 10분 손대지 않으면 위젯 면으로', /^face/.test(q), q);
+    await p.context().close();
   }
 
   await newsTests(b);
