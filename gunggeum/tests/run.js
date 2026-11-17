@@ -636,14 +636,14 @@ async function newsTests(b) {
   }
 
   { // 21. v139 넘겨 보는 조각 장(음력)
-    console.log('21. 조각 장 (v139)');
-    const p = await open(b, { time: '2026-11-18T16:20' }); let q;
+    console.log('21. 조각 장 (v141: 14편, 하루 한 편)');
+    const p = await open(b, { time: '2026-11-17T16:20' }); let q;
     await p.saver(); { const bx = await p.locator('#svFace [data-cv="piece"]').boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); }
     q = await p.evaluate(() => [document.querySelector('#fcFeat .cc-h').textContent, document.querySelector('#fcFeat .cc-foot').textContent.trim()]); ok('조각 갈래: 음력 조각 장 표지(보기 →)', q[0] === '설날은 왜 해마다 날짜가 바뀔까?' && /^보기/.test(q[1]), q);
     { const bx = await p.locator('#fcFeat .cc-h').boundingBox(); await p.mouse.click(bx.x + 40, bx.y + 20); await p.adv(2500); }
     q = await p.evaluate(() => { const f = document.getElementById('pcFrame'); return f && f.contentDocument ? [f.contentDocument.querySelector('#cover h2').textContent, !document.getElementById('saver').hidden] : null; });
     ok('조각 표지를 누르면 조각 장이 화면 전체로 열림(대기화면은 뒤에 그대로)', q && /설날은 왜 해마다/.test(q[0]) && q[1], q);
-    const fr = p.frameLocator('#pcFrame'); for (let i = 0; i < 5; i++) { await fr.locator('#next').click(); await p.adv(600); }
+    const fr = p.frameLocator('#pcFrame'); for (let i = 0; i < 40; i++) { if (await p.evaluate(() => document.getElementById('pcFrame').contentDocument.getElementById('next').textContent.trim()) === '다 봤어') break; await fr.locator('#next').click(); await p.adv(900); }
     q = await p.evaluate(() => document.getElementById('pcFrame').contentDocument.getElementById('next').textContent.trim()); ok('마지막 장의 단추는 "다 봤어"', q === '다 봤어', q);
     await fr.locator('#next').click(); await p.adv(1500); q = await p.evaluate(() => [!!document.getElementById('pcFrame'), !document.getElementById('saver').hidden]); ok('"다 봤어" → 조각 장 닫히고 홈', !q[0] && q[1], q);
     { const bx = await p.locator('#fcFeat .cc-h').boundingBox(); await p.mouse.click(bx.x + 40, bx.y + 20); await p.adv(2500); } await fr.locator('#logo').click(); await p.adv(1500);
@@ -651,8 +651,12 @@ async function newsTests(b) {
     { const bx = await p.locator('#fcFeat .cc-h').boundingBox(); await p.mouse.click(bx.x + 40, bx.y + 20); await p.adv(2500); } await p.jump(11 * 60e3);
     ok('조각 장도 10분 손대지 않으면 닫힘', await p.evaluate(() => !document.getElementById('pcFrame')));
     await p.context().close();
-    const p2 = await open(b, { time: '2026-11-25T16:20' }); await p2.saver(); { const bx = await p2.locator('#svFace [data-cv="piece"]').boundingBox(); await p2.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p2.adv(1500); }
-    q = await p2.evaluate(() => document.querySelector('#fcFeat .cc-h').textContent); ok('7일이 지나면 평소 조각으로 돌아감', !/설날/.test(q), q); await p2.context().close();
+    { const p3 = await open(b, { time: '2026-11-30T16:20' }); await p3.saver(); { const bx = await p3.locator('#svFace [data-cv="piece"]').boundingBox(); await p3.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p3.adv(1500); }
+      q = await p3.evaluate(() => document.querySelector('#fcFeat .cc-h').textContent); ok('14일째(11/30)는 마지막 편 "며칠"', /며칠/.test(q), q);
+      { const bx = await p3.locator('#fcFeat .cc-h').boundingBox(); await p3.mouse.click(bx.x + 40, bx.y + 20); await p3.adv(2500); }
+      q = await p3.evaluate(() => { const f = document.getElementById('pcFrame'); return f && f.contentWindow.__piece ? f.contentWindow.__piece.id : null; }); ok('그날 편(14편)이 열림', q === 14, q); await p3.context().close(); }
+    const p2 = await open(b, { time: '2026-12-01T16:20' }); await p2.saver(); { const bx = await p2.locator('#svFace [data-cv="piece"]').boundingBox(); await p2.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p2.adv(1500); }
+    q = await p2.evaluate(() => document.querySelector('#fcFeat .cc-h').textContent); ok('14편이 끝나면 평소 조각으로 돌아감', !/며칠|설날/.test(q), q); await p2.context().close();
   }
 
   await newsTests(b);

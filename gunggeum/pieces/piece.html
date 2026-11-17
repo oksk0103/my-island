@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>오늘의 한 조각</title>
+<style>
+@font-face{font-family:"Pretendard";src:url("../fonts/PretendardVariable.woff2") format("woff2");font-weight:100 900;font-display:block}
+/* 크기 5단계: 80 / 56 / 40 / 30 / 24(최소) */
+:root{--ink:#1C211E;--body:#3D423F;--muted:#777970;--blue:#0B5BB0;--moon:#F6E7BC;--orange:#FF9B3D;--line:rgba(28,33,30,.12)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;height:100%;background:#E9E8E4;overflow:hidden;font-family:"Pretendard","Noto Sans CJK KR","Noto Sans KR",sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{position:relative;width:1600px;height:820px;flex:none;transform-origin:center;overflow:hidden;
+ background:radial-gradient(120% 90% at 15% 0,rgba(255,255,255,.7),transparent 60%),linear-gradient(#F8F7F4,#EDECE8)}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;-webkit-user-select:none;user-select:none;padding:0}
+.scr{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .22s ease,visibility 0s .22s}
+.scr.on{opacity:1;visibility:visible;transition:opacity .22s ease}
+/* 편 고르기 (시안용) */
+#pick{padding:80px 136px 0}
+#pick h1{margin:0 0 10px;font-size:56px;font-weight:750;letter-spacing:-.025em}
+#pick .sub{font-size:24px;color:var(--muted);margin-bottom:36px}
+.wk{font-size:24px;font-weight:700;color:var(--muted);margin:6px 0 12px}
+.cards{display:grid;grid-template-columns:repeat(7,1fr);gap:14px;margin-bottom:26px}
+.card{text-align:left;background:rgba(255,255,255,.72);border-radius:24px;padding:20px 20px;min-height:170px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(30,40,60,.06);display:flex;flex-direction:column;gap:10px;transition:transform .15s ease}
+.card:active{transform:scale(.98)}
+.card .d{font-size:24px;font-weight:700;color:var(--blue)}
+.card .q{font-size:30px;font-weight:750;line-height:1.25;letter-spacing:-.02em;word-break:keep-all}
+.card .t{font-size:24px;color:var(--muted);margin-top:auto}
+/* 홈 */
+#home{background:center/1600px 820px no-repeat}
+#homeHit{position:absolute;left:42px;top:150px;width:1000px;height:620px;border-radius:40px}
+.tapme{position:absolute;left:96px;top:582px;width:140px;height:64px;border-radius:32px;animation:ping 2.4s ease-out 1s 3}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(255,255,255,.75)}100%{box-shadow:0 0 0 22px rgba(255,255,255,0)}}
+#toPick{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);height:44px;padding:0 22px;border-radius:22px;background:rgba(0,0,0,.28);color:#fff;font-size:24px;font-weight:600}
+/* 머리줄 */
+.top{position:absolute;left:48px;right:48px;top:40px;height:64px;display:flex;align-items:center;gap:26px;z-index:3}
+.logo{width:62px;height:62px;border-radius:50%;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.03);display:grid;place-items:center}
+.logo svg{width:56%;height:56%}
+.ttl{font-size:27px;font-weight:650;letter-spacing:-.01em}
+.ttl small{font-size:24px;font-weight:450;color:var(--muted);margin-left:12px}
+.clock{margin-left:auto;font-size:30px;font-weight:650;font-variant-numeric:tabular-nums}
+.clock small{font-size:24px;font-weight:450;color:var(--muted);margin-right:8px}
+/* 바닥줄 */
+.nav{position:absolute;left:136px;right:48px;bottom:34px;height:64px;display:flex;align-items:center;gap:20px;z-index:3}
+.pill{height:64px;padding:0 30px;border-radius:32px;font-size:24px;font-weight:650;display:inline-flex;align-items:center;gap:12px;transition:transform .15s ease}
+.pill:active{transform:scale(.97)}
+.pill.dark{background:var(--ink);color:#fff}
+.pill.soft{background:rgba(28,33,30,.07)}
+.pill svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.dots{display:flex;gap:10px;margin:0 auto}
+.dots i{width:10px;height:10px;border-radius:5px;background:rgba(28,33,30,.18);transition:width .2s ease,background-color .2s ease}
+.dots i.on{width:30px;background:var(--ink)}
+.hint{font-size:24px;color:var(--muted)}
+/* 본문 틀 */
+.L{position:absolute;left:136px;top:150px;width:580px}
+.tile{position:absolute;left:760px;top:150px;width:792px;height:540px;border-radius:32px;background:linear-gradient(#143565,#0E2B55);box-shadow:0 10px 30px rgba(18,48,94,.18);overflow:hidden}
+.tile svg{position:absolute;inset:0;width:100%;height:100%}
+.k{font-size:24px;font-weight:600;color:var(--muted);margin:0 0 20px}
+.k b{color:var(--blue);font-weight:700;margin-right:10px}
+h2{margin:0;font-size:56px;line-height:1.25;font-weight:750;letter-spacing:-.025em;word-break:keep-all}
+p.b{margin:28px 0 0;font-size:30px;line-height:1.55;color:var(--body);word-break:keep-all}
+p.b em{font-style:normal;font-weight:700;color:var(--ink)}
+.act{position:absolute;left:136px;top:580px}
+svg text{font-family:"Pretendard","Noto Sans CJK KR",sans-serif}
+.t24{font-size:24px;font-weight:600;fill:var(--moon)}
+.t24m{font-size:24px;font-weight:500;fill:rgba(246,231,188,.6)}
+.t30{font-size:30px;font-weight:600;fill:var(--moon)}
+.t40{font-size:40px;font-weight:750;fill:var(--moon)}
+.t56{font-size:56px;font-weight:750;fill:var(--moon)}
+.t80{font-size:80px;font-weight:750;fill:var(--moon)}
+.or{fill:#FFB15E!important}
+.bl{fill:#8FBCF0!important}
+.dim{fill:rgba(246,231,188,.35)!important}
+#cover h2{font-size:80px;line-height:1.18}
+#cover .guess{margin-top:36px;font-size:30px;color:var(--muted)}
+/* 정리 */
+#sum .L{top:0;bottom:120px;width:640px;display:flex;flex-direction:column;justify-content:center;padding-top:110px}
+.sum{list-style:none;margin:0;padding:0;counter-reset:s}
+.sum li{counter-increment:s;display:grid;grid-template-columns:60px 1fr;font-size:40px;font-weight:650;line-height:1.35;letter-spacing:-.02em;padding:22px 0;border-bottom:1px solid var(--line);word-break:keep-all}
+.sum li:first-child{border-top:1px solid var(--line)}
+.sum li::before{content:counter(s);font-weight:750;color:var(--blue)}
+.words{position:absolute;left:840px;right:48px;top:110px;bottom:120px;display:flex;flex-direction:column;justify-content:center;gap:20px}
+.word{background:rgba(255,255,255,.72);border-radius:28px;padding:24px 36px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(30,40,60,.06);display:grid;grid-template-columns:170px 1fr;align-items:center}
+.word b{font-size:40px;font-weight:750;letter-spacing:-.02em}
+.word span{font-size:30px;line-height:1.4;color:var(--body);word-break:keep-all}
+/* 마무리 */
+#end .top30{position:absolute;left:136px;top:150px;width:900px;font-size:30px;line-height:1.5}
+#end .top30 .q{font-weight:700}
+#end .top30 .a{color:var(--body);opacity:0;transition:opacity .25s ease}
+#end .top30 .a.show{opacity:1}
+#end .main{position:absolute;left:136px;top:330px;width:900px}
+#end .tile{left:1112px;top:230px;width:440px;height:440px}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="stage">
+
+<section class="scr on" id="cover" data-k="cover">
+  <div class="L" style="width:620px;top:170px">
+    <div class="k" id="cvK"></div>
+    <h2 id="cvH"></h2>
+    <div class="guess">네 생각은? 짐작해 보고 넘겨 봐.</div>
+  </div>
+  <div class="tile" id="cvTile"><svg id="cvSvg" viewBox="0 0 792 540"></svg></div>
+</section>
+
+<section class="scr" id="s0" data-k="s0"></section>
+<section class="scr" id="s1" data-k="s1"></section>
+<section class="scr" id="s2" data-k="s2"></section>
+
+<section class="scr" id="sum" data-k="sum">
+  <div class="L"><div class="k"><b>정리</b>세 줄로</div><ol class="sum" id="sumList"></ol></div>
+  <div class="words" id="words"></div>
+</section>
+
+<section class="scr" id="end" data-k="end">
+  <div class="top30"><div class="k" style="margin-bottom:10px"><b>떠올려 보기</b></div>
+    <div class="q" id="rcQ"></div><div class="a" id="rcA"></div></div>
+  <div class="main"><div class="k"><b>오늘</b></div><h2 id="endH"></h2></div>
+  <div class="tile"><svg id="endSvg" viewBox="0 0 440 440"></svg></div>
+</section>
+
+<header class="top" id="top">
+  <button class="logo" id="logo" aria-label="홈으로"><svg viewBox="96 92 320 360"><path d="M116 112H206V169H116V226H206" fill="none" stroke="#1C211E" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="348" cy="169" r="46" fill="none" stroke="#1C211E" stroke-width="28"/><path d="M128 296C186 366 320 372 386 288" fill="none" stroke="#1C211E" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="258" cy="412" r="24" fill="#FF9B3D"/></svg></button>
+  <div class="ttl">오늘의 한 조각<small>국어</small></div>
+  <div class="clock" id="clock"></div>
+</header>
+<nav class="nav" id="nav">
+  <button class="pill soft" id="back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>앞</button>
+  <div class="dots" id="dots"></div>
+  <button class="pill dark" id="next"></button>
+</nav>
+
+</div></div>
+<script>
+const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg',SYN=29.530588853;
+const fit=()=>{$('stage').style.transform=`scale(${Math.min(innerWidth/1600,innerHeight/820)})`;};addEventListener('resize',fit);fit();
+const el=(t,a={},p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+const tx=(p,x,y,s,cls,anc='start',extra={})=>{const e=el('text',Object.assign({x,y,class:cls,'text-anchor':anc},extra),p);e.textContent=s;return e;};
+const grp=(p,o=1,extra={})=>el('g',Object.assign({opacity:o,style:'transition:opacity .3s ease'},extra),p);
+const show=g=>g.setAttribute('opacity',1);
+const anim=(D,fn,end)=>{const t0=performance.now();const f=t=>{const x=Math.min(1,(t-t0)/D);fn(x);if(x<1)requestAnimationFrame(f);else if(end)end();};requestAnimationFrame(f);};
+const pillR=(p,x,y,w,h,fill)=>el('rect',{x,y,width:w,height:h,rx:h/2,fill},p);
+const box=(p,x,y,w,h,fill='rgba(246,231,188,.08)',r=18)=>el('rect',{x,y,width:w,height:h,rx:r,fill},p);
+// 달
+function moonPath(f,r){f=((f%1)+1)%1;const k=Math.cos(2*Math.PI*f),rx=Math.abs(k)*r;
+  return f<=.5?`M0,${-r}A${r},${r} 0 0 1 0,${r}A${rx},${r} 0 0 ${k>0?0:1} 0,${-r}Z`:`M0,${-r}A${r},${r} 0 0 0 0,${r}A${rx},${r} 0 0 ${k<0?0:1} 0,${-r}Z`;}
+function moon(p,cx,cy,r,day){const g=el('g',{transform:`translate(${cx},${cy})`},p);
+  el('circle',{r,fill:'none',stroke:'rgba(246,231,188,.28)','stroke-width':Math.max(1.5,r/50),'stroke-dasharray':r>40?'6 7':'3 4'},g);
+  const lit=el('path',{fill:'#F6E7BC'},g);const set=d=>{lit.setAttribute('d',d<1.5||d>29.5?'':moonPath((d-1+.5)/SYN,r));};set(day);return {g,set};}
+const NAME=d=>d<=1?'초하루':d<=5?'초승달':d<=10?'차는 반달':d<=13?'차는 달':d<=17?'보름':d<=20?'기우는 달':d<=24?'기우는 반달':d<=29?'그믐달':'초하루';
+// 꽃(무궁화를 단순한 도형으로)
+function flower(p,cx,cy,r){const g=el('g',{transform:`translate(${cx},${cy})`},p);const pet=el('g',{},g);
+  for(let i=0;i<5;i++)el('ellipse',{cx:0,cy:-r*.55,rx:r*.42,ry:r*.55,fill:'#F6E7BC',transform:`rotate(${i*72})`},pet);
+  el('circle',{r:r*.28,fill:'#E0703A'},g);const set=s=>{g.setAttribute('transform',`translate(${cx},${cy}) scale(${Math.max(.001,s)})`);};return {g,set};}
+// 낱말 합치기 줄: a + b → c, 덧붙는 자음 배지
+function joinRow(p,y,a,b,c,badge,note){const g=grp(p,0);
+  tx(g,60,y,a,'t56');tx(g,60+a.length*58+14,y,'+','t40 dim');tx(g,60+a.length*58+60,y,b,'t56');
+  tx(g,390,y,'→','t40 dim');tx(g,446,y,c,'t56');
+  if(badge){pillR(g,660,y-44,92,52,'#FF9B3D');tx(g,706,y-8,badge,'t30','middle',{style:'fill:#fff;font-weight:750'});}
+  if(note)tx(g,446,y+40,note,'t24m');return g;}
+
+// ===================== 편 정의 =====================
+const EP=[];
+
+// ---------- 1. 음력 ----------
+EP.push({day:'1일차',topic:'음력과 윤달',cat:'국어 상식',img:'home-1.png',
+ cover:{h:'설날은 왜 해마다<br>날짜가 바뀔까?',draw(S){const m=moon(S,396,240,170,1),l=tx(S,396,500,'초하루 · 음력 1일','t24','middle');
+   return ()=>anim(8000,x=>{const d=1+(1-Math.pow(1-x,2.2))*14;m.set(d);const di=Math.round(d);l.textContent=di>=15?'보름 · 음력 15일쯤':`${NAME(di)} · 음력 ${di}일`;});}},
+ scenes:[
+  {k:'하늘이 달력',h:'옛날엔<br>달 모양이 달력이었다',b:'해는 날마다 똑같아서<br>날짜를 알려 주지 못해.<br>달 모양은 다시 같아지기까지<br><em>29.5일쯤</em> 걸려.',steps:['한 달 돌려 보기','달 이름 펼치기'],
+   draw(S){const big=moon(S,396,140,100,1),bl=tx(S,396,285,'초하루 · 음력 1일 · 안 보여','t24','middle');const SX=36,CW=24,SY=320,cells=[];
+    for(let d=1;d<=30;d++){const x=SX+(d-1)*CW;box(S,x+1,SY,CW-2,28,'rgba(246,231,188,.07)',5);const g=el('g',{opacity:0},S);moon(g,x+CW/2,SY+14,9,d);cells.push(g);if(d===1||d%5===0)tx(S,x+CW/2,SY+62,String(d),'t24m','middle');}
+    tx(S,SX+30*CW+2,SY+62,'일','t24m');
+    const KEY=[[1,'초하루','1일'],[3,'초승달','3일쯤'],[8,'차는 반달','8일쯤'],[15,'보름달','15일쯤'],[22,'기우는 반달','22일쯤'],[27,'그믐달','27일쯤']];const ng=grp(S,0);
+    KEY.forEach(([d,n,dl],i)=>{const cx=SX+(d-1)*CW+CW/2,nx=80+i*126;el('path',{d:`M${cx},${SY+30}L${cx},${SY+72}L${nx},${SY+92}`,fill:'none',stroke:'rgba(246,231,188,.35)','stroke-width':1.5},ng);
+     const b=el('g',{style:'cursor:pointer'},ng);el('rect',{x:nx-60,y:SY+92,width:120,height:122,fill:'transparent'},b);moon(b,nx,SY+124,22,d);tx(b,nx,SY+178,n,'t24','middle');const dt=tx(b,nx,SY+208,'?','t24m','middle');
+     b.addEventListener('click',()=>{dt.textContent=dt.textContent==='?'?dl:'?';big.set(d);bl.textContent=`${n} · 음력 ${dl}`;});});
+    return i=>{if(i===0){cells.forEach(c=>c.setAttribute('opacity',0));anim(8000,x=>{const d=1+x*29;big.set(d);const di=Math.min(30,Math.floor(d));bl.textContent=`${NAME(di)} · 음력 ${di}일`;cells.forEach((c,j)=>{if(j<di)c.setAttribute('opacity',1);});},()=>{big.set(1);bl.textContent='다시 초하루 · 한 바퀴 29.5일쯤';});}
+     else{show(ng);cells.forEach((c,j)=>{if(!KEY.some(([d])=>d===j+1))c.setAttribute('opacity',.3);});bl.textContent='아래 달을 눌러 며칠쯤인지 확인해 봐';}};}},
+  {k:'양력과 음력',h:'달로 한 해를 세면<br>11일이 모자라',b:'계절이 한 바퀴 도는 데 <em>365일</em>.<br>달 모양은 12번 돌아도 <em>354일</em>.<br>그대로 두면 열여섯 해쯤 뒤엔<br>설날이 한여름에 와.',steps:['달 12번 채우기'],
+   draw(S){const BX=48,BW=696,PX=BW/365;tx(S,BX,110,'양력 한 해','t24');tx(S,BX+BW,114,'365일','t40','end');el('rect',{x:BX,y:132,width:BW,height:72,rx:14,fill:'#5A9BE6'},S);
+    [0,31,59,90,120,151,181,212,243,273,304,334].forEach((a,i)=>{if(a)el('line',{x1:BX+a*PX,x2:BX+a*PX,y1:138,y2:198,stroke:'rgba(255,255,255,.35)','stroke-width':2},S);tx(S,BX+(a+15)*PX,178,String(i+1),'t24','middle',{style:'fill:#fff'});});
+    tx(S,BX,300,'음력 한 해','t24');const tot=tx(S,BX+BW,304,'0일','t40','end');box(S,BX,322,BW,72,'rgba(246,231,188,.07)',14);
+    const segs=[];for(let i=0;i<12;i++){const g=grp(S,0);const x=BX+i*29.5*PX;el('rect',{x:x+2,y:322,width:29.5*PX-4,height:72,rx:10,fill:'#F6E7BC'},g);tx(g,x+29.5*PX/2,368,String(i+1),'t24','middle',{style:'fill:#12305E;font-weight:700'});segs.push(g);}
+    const gap=grp(S,0),gx=BX+354*PX;el('rect',{x:gx+3,y:322,width:11*PX-5,height:72,rx:8,fill:'none',stroke:'#FF9B3D','stroke-width':3,'stroke-dasharray':'6 5'},gap);tx(gap,BX+BW,446,'11일 모자라','t24 or','end');tx(S,BX,446,'달 모양 12번','t24m');
+    return ()=>{let i=0;const n=()=>{if(i<12){show(segs[i]);i++;tot.textContent=(i===12?354:Math.round(i*29.5))+'일';setTimeout(n,380);}else show(gap);};n();};}},
+  {k:'윤달',h:'모자란 날이 쌓이면<br>한 달을 끼워 넣어',b:'설날은 해마다 <em>11일쯤 빨라져</em>.<br>윤달이 낀 다음 해엔<br><em>19일쯤 늦어지고</em>.',steps:['한 해씩 보기','다음 해','다음 해','다음 해','다음 해','다음 해'],
+   draw(S){const SEOL=[[2020,25,'1월 25일'],[2021,43,'2월 12일'],[2022,32,'2월 1일'],[2023,22,'1월 22일'],[2024,41,'2월 10일'],[2025,29,'1월 29일'],[2026,48,'2월 17일']],LEAP={2020:1,2023:1,2025:1};
+    const RX0=140,RX1=470,dx=d=>RX0+(d-20)*(RX1-RX0)/31,RY=i=>132+i*52;el('line',{x1:RX0,x2:RX1,y1:84,y2:84,stroke:'rgba(246,231,188,.5)','stroke-width':2},S);
+    for(let d=20;d<=51;d++){const bg=d===20||d===32||d===51;el('line',{x1:dx(d),x2:dx(d),y1:bg?72:79,y2:89,stroke:bg?'rgba(246,231,188,.9)':'rgba(246,231,188,.35)','stroke-width':bg?3:1.5},S);}
+    tx(S,dx(20),58,'1월 20일','t24m','middle');tx(S,dx(32),58,'2월 1일','t24','middle');tx(S,dx(51),58,'2월 20일','t24m','middle');
+    tx(S,396,516,'← 일찍          늦게 →','t24m','middle',{style:'white-space:pre'});el('line',{x1:dx(32),x2:dx(32),y1:100,y2:500,stroke:'rgba(246,231,188,.12)','stroke-width':2,'stroke-dasharray':'4 6'},S);
+    const rows=SEOL.map(([y,d,lb],i)=>{const g=grp(S,i?0:1),cy=RY(i);tx(g,40,cy+8,String(y),'t24m');
+     if(i){const pd=SEOL[i-1][1],px=dx(pd),x=dx(d),late=d>pd,col=late?'#FFB15E':'#8FBCF0';el('circle',{cx:px,cy,r:9,fill:'none',stroke:'rgba(246,231,188,.35)','stroke-width':2,'stroke-dasharray':'3 3'},g);
+      const ex=x+(late?-14:14);el('line',{x1:px+(late?10:-10),x2:ex,y1:cy,y2:cy,stroke:col,'stroke-width':3,'stroke-linecap':'round'},g);
+      el('path',{d:late?`M${ex-8},${cy-7}L${ex+2},${cy}L${ex-8},${cy+7}`:`M${ex+8},${cy-7}L${ex-2},${cy}L${ex+8},${cy+7}`,fill:'none',stroke:col,'stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'},g);
+      tx(g,580,cy+8,late?`${d-pd}일 늦게`:`${pd-d}일 빨리`,'t24 '+(late?'or':'bl'),'start',{style:'font-weight:700'});
+      if(late&&LEAP[SEOL[i-1][0]]){pillR(g,690,cy-17,80,34,'#FF9B3D');tx(g,730,cy+8,'윤달','t24','middle',{style:'fill:#fff;font-weight:700'});}}
+     el('circle',{cx:dx(d),cy,r:10,fill:'#F6E7BC'},g);tx(g,dx(d)+16,cy-14,lb,'t24');return g;});
+    return i=>show(rows[i+1]);}}],
+ sum:{lines:['양력은 해, 음력은 달을<br>기준으로 날을 센다.','음력 한 해는 11일 짧아서<br>두세 해에 한 번 윤달을 넣는다.','그래서 설날 날짜가<br>해마다 달라진다.'],
+  words:[['윤달','날짜를 계절에 맞추려고<br>끼워 넣는 한 달'],['초하루','음력으로 그달의 첫날.<br>달이 안 보인다'],['보름','음력 15일쯤.<br>달이 가장 둥글다']]},
+ end:{q:'음력 한 달은 며칠쯤일까?',a:'29일이나 30일. 달 모양이 돌아오는 데 29.5일쯤 걸리니까.',h:'오늘 밤 달을 보고,<br>음력으로 며칠쯤인지 맞혀 봐.',btn:'오늘 밤 달 보기',
+  draw(S){const DEMO=Date.UTC(2026,10,15,11,0),age=((DEMO-Date.UTC(2000,0,6,18,14))/864e5)%SYN,today=Math.floor(age)+1;const m=moon(S,220,190,130,today);m.g.style.opacity=0;m.g.style.transition='opacity .4s';
+   const q=tx(S,220,215,'?','t80','middle',{style:'fill:rgba(246,231,188,.5)'});const l=tx(S,220,384,'','t40','middle');return ()=>{q.remove();m.g.style.opacity=1;l.textContent=today>=20?'오늘 저녁엔 달이 늦게 떠':`음력 ${today}일쯤`;};}}
+});
+
+// ---------- 2. 이에요 / 예요 ----------
+EP.push({day:'2일차',topic:'이에요와 예요',cat:'맞춤법',img:'home-2.png',
+ cover:{h:'이에요와 예요,<br>뭐가 다를까?',draw(S){const a=tx(S,396,230,'연필이에요','t80','middle'),b=tx(S,396,370,'지우개예요','t80','middle');
+   const u1=el('rect',{x:396,y:250,width:0,height:8,rx:4,fill:'#FF9B3D'},S),u2=el('rect',{x:396,y:390,width:0,height:8,rx:4,fill:'#FF9B3D'},S);
+   return ()=>{u1.setAttribute('width',0);u2.setAttribute('width',0);anim(1800,x=>{const e=1-Math.pow(1-x,3);u1.setAttribute('x',396+20);u1.setAttribute('width',e*200);u2.setAttribute('x',396+50);u2.setAttribute('width',e*130);});};}},
+ scenes:[
+  {k:'받침',h:'받침이 있으면 이에요,<br>없으면 예요',b:'끝 글자에 받침이 있는지 먼저 봐.<br><em>연필</em>은 끝 글자 ‘필’에 받침 ㄹ.<br><em>지우개</em>는 끝 글자 ‘개’에 받침이 없어.',steps:['연필 보기','지우개 보기'],
+   draw(S){const row=(y,word,last,parts,ending,hasB)=>{const g=grp(S,1);const sx=60;[...word].forEach((ch,i)=>{const isL=i===word.length-1;box(g,sx+i*104,y-70,92,92,isL?'rgba(255,177,94,.18)':'rgba(246,231,188,.08)');tx(g,sx+i*104+46,y,ch,'t56','middle');});
+     const r=grp(g,0);tx(r,sx,y+70,parts,'t30');if(hasB)tx(r,sx,y+110,'받침 있음','t24 or');else tx(r,sx,y+110,'받침 없음','t24 bl');
+     tx(r,420,y,'→','t40 dim');tx(r,480,y,word,'t56');tx(r,480+word.length*58,y,ending,'t56 or');return r;};
+    const r1=row(150,'연필','필','필 = ㅍ + ㅣ + ㄹ','이에요',true),r2=row(380,'지우개','개','개 = ㄱ + ㅐ','예요',false);return i=>show(i?r2:r1);}},
+  {k:'골라 보기',h:'이 말 뒤에는<br>뭐가 올까?',b:'받침이 있는지 보고<br>이에요, 예요 중에 골라 봐.<br>말 칸을 눌러도 답이 나와.',steps:['첫 번째 말 보기','다음 말 보기','다음 말 보기','다음 말 보기','다음 말 보기','다음 말 보기'],
+   draw(S){const W=[['사과','예요'],['수박','이에요'],['루아','예요'],['책','이에요'],['나무','예요'],['선생님','이에요']];const cells=W.map(([w,e],i)=>{const x=40+(i%2)*360,y=40+Math.floor(i/2)*160;
+     const g=el('g',{style:'cursor:pointer'},S);box(g,x,y,340,140,'rgba(246,231,188,.08)',24);const F='font-size:46px';tx(g,x+26,y+86,w,'t56','start',{style:F});const q=tx(g,x+26+w.length*48+10,y+86,'?','t56 dim','start',{style:F});
+     const done=()=>{q.textContent=e;q.setAttribute('class','t56 or');};g.addEventListener('click',done);return done;});return i=>cells[i]();}},
+  {k:'아니에요',h:'‘아니예요’가 아니라<br>늘 ‘아니에요’',b:'‘아니에요’는 ‘아니다’에<br>‘에요’가 붙은 말이야.<br>‘이’가 들어갈 자리가 없어서<br>늘 <em>아니에요</em>라고 써.',steps:['바른 말 보기'],
+   draw(S){box(S,60,80,672,150,'rgba(246,231,188,.06)',24);tx(S,120,180,'아니예요','t80 dim');const x=el('path',{d:'M110,130L480,200',stroke:'#8FBCF0','stroke-width':6,'stroke-linecap':'round',opacity:0,style:'transition:opacity .3s'},S);
+    const g=grp(S,0);box(g,60,290,672,150,'rgba(255,177,94,.16)',24);tx(g,120,390,'아니에요','t80');tx(g,690,390,'맞아','t30 bl','end',{style:'font-weight:750'});tx(g,120,480,'아니다 + 에요 = 아니에요','t30');
+    return ()=>{x.setAttribute('opacity',1);show(g);};}}],
+ sum:{lines:['받침이 있으면 이에요.<br>연필이에요, 책이에요.','받침이 없으면 예요.<br>지우개예요, 루아예요.','‘아니다’는 늘<br>아니에요라고 쓴다.'],
+  words:[['받침','글자 아래에 받치는<br>자음. ‘필’의 ㄹ'],['예요','‘이에요’가 줄어든 말.<br>받침 없는 말 뒤에'],['아니에요','‘아니예요’는<br>틀린 말']]},
+ end:{q:'‘선생님’ 뒤에는 이에요? 예요?',a:'선생님이에요. 끝 글자 ‘님’에 받침 ㅁ이 있으니까.',h:'내 이름 뒤에는<br>뭐가 올지 말해 봐.',btn:'답 보기',
+  draw(S){const q=tx(S,220,250,'?','t80','middle',{style:'fill:rgba(246,231,188,.5)'});const g=grp(S,0);tx(g,220,200,'루아예요','t56','middle');tx(g,220,260,'‘아’에 받침이 없으니까','t24m','middle');
+   return ()=>{q.remove();show(g);};}}
+});
+
+// ---------- 3. 정오·자정 ----------
+const ZODIAC=[['자','子','쥐'],['축','丑','소'],['인','寅','범'],['묘','卯','토끼'],['진','辰','용'],['사','巳','뱀'],['오','午','말'],['미','未','양'],['신','申','원숭이'],['유','酉','닭'],['술','戌','개'],['해','亥','돼지']];
+function dial(S,cx=396,cy=270,R=232){const a=h=>(h/24*360-90)*Math.PI/180,pt=(h,r)=>[cx+r*Math.cos(a(h)),cy+r*Math.sin(a(h))];
+ el('circle',{cx,cy,r:R,fill:'rgba(246,231,188,.05)',stroke:'rgba(246,231,188,.25)','stroke-width':2},S);
+ const hi=el('path',{fill:'rgba(255,177,94,.28)',opacity:0,style:'transition:opacity .3s'},S);
+ const sect=(i)=>{const h0=i*2-1,h1=i*2+1,[x0,y0]=pt(h0,R),[x1,y1]=pt(h1,R);return `M${cx},${cy}L${x0},${y0}A${R},${R} 0 0 1 ${x1},${y1}Z`;};
+ for(let i=0;i<12;i++){const [x,y]=pt(i*2-1,R),[x2,y2]=pt(i*2-1,R*.42);el('line',{x1:x2,y1:y2,x2:x,y2:y,stroke:'rgba(246,231,188,.18)','stroke-width':1.5},S);
+  const [lx,ly]=pt(i*2,R*.86),[hx,hy]=pt(i*2,R*.6);tx(S,lx,ly+9,ZODIAC[i][2],'t24','middle');tx(S,hx,hy+10,ZODIAC[i][1],'t30','middle',{style:'fill:rgba(246,231,188,.75)'});}
+ const hand=el('line',{x1:cx,y1:cy,x2:cx,y2:cy-R*.92,stroke:'#FFB15E','stroke-width':5,'stroke-linecap':'round'},S);
+ el('circle',{cx,cy,r:R*.42,fill:'#11305C',stroke:'rgba(246,231,188,.2)','stroke-width':1.5},S);
+ const c1=tx(S,cx,cy-6,'','t30','middle'),c2=tx(S,cx,cy+32,'','t24m','middle');
+ const setH=h=>{const [x,y]=pt(h,R*.92);hand.setAttribute('x2',x);hand.setAttribute('y2',y);};
+ const setHi=i=>{if(i<0){hi.setAttribute('opacity',0);return;}hi.setAttribute('d',sect(i));hi.setAttribute('opacity',1);};
+ const idx=h=>Math.floor(((h+1)%24)/2);
+ return {setH,setHi,idx,c1,c2,pt,cx,cy,R};}
+const hm=h=>{const H=Math.floor(h)%24,M=Math.floor((h%1)*60);if(H===0&&!M)return '밤 12시';if(H===12&&!M)return '낮 12시';const ap=H<12?'오전':'오후',h12=H%12===0?12:H%12;return `${ap} ${h12}시${M?` ${M}분`:''}`;};
+EP.push({day:'3일차',topic:'정오와 자정',cat:'말의 유래',img:'home-3.png',
+ cover:{h:'점심 12시를<br>왜 ‘정오’라고 할까?',draw(S){const d=dial(S);d.setH(7.7);return ()=>{anim(3000,x=>{const h=7.7+x*4.3;d.setH(h);d.setHi(d.idx(h));});};}},
+ scenes:[
+  {k:'열두 동물 시계',h:'옛날엔 하루를<br>열두 동물로 나눴다',b:'하루 24시간을 <em>두 시간씩</em><br>열두 칸으로 나누고<br>칸마다 동물 이름을 붙였어.',steps:['하루 돌려 보기'],
+   draw(S){const d=dial(S);d.setH(0);d.c1.textContent='밤 12시';d.c2.textContent='쥐의 시간';
+    return ()=>anim(9000,x=>{const h=x*24;d.setH(h);const i=d.idx(h);d.setHi(i);d.c1.textContent=hm(Math.floor(h));d.c2.textContent=`${ZODIAC[i][2]}의 시간 · ${ZODIAC[i][0]}시`;});}},
+  {k:'정오',h:'낮 12시는<br>말의 시간, 오시',b:'오시(午時)는 낮 11시부터 1시까지.<br>그 한가운데인 낮 12시가<br><em>정오(正午)</em>야.<br>오시 앞은 <em>오전</em>, 뒤는 <em>오후</em>.',steps:['오시 보기','오전·오후 나누기'],
+   draw(S){const d=dial(S);d.setH(12);const half=grp(S,0);const {cx,cy,R}=d;
+    el('path',{d:`M${cx},${cy-R-8}A${R+8},${R+8} 0 0 1 ${cx},${cy+R+8}`,fill:'none',stroke:'#8FBCF0','stroke-width':6},half);el('path',{d:`M${cx},${cy+R+8}A${R+8},${R+8} 0 0 1 ${cx},${cy-R-8}`,fill:'none',stroke:'#FFB15E','stroke-width':6},half);
+    tx(half,740,90,'오전 午前','t30 bl','end');tx(half,52,90,'오후 午後','t30 or');tx(half,740,126,'오시 앞','t24m','end');tx(half,52,126,'오시 뒤','t24m');
+    return i=>{if(i===0){d.setHi(6);d.c1.textContent='정오';d.c2.textContent='낮 12시 · 正午';}else show(half);};}},
+  {k:'자정',h:'밤 12시는<br>쥐의 시간, 자정',b:'자시(子時)는 밤 11시부터 1시까지.<br>그 한가운데인 밤 12시가<br><em>자정(子正)</em>이야.',steps:['자시 보기'],
+   draw(S){const d=dial(S);d.setH(12);return ()=>anim(1600,x=>{d.setH(12+x*12);},()=>{d.setHi(0);d.c1.textContent='자정';d.c2.textContent='밤 12시 · 子正';});}}],
+ sum:{lines:['옛날엔 하루를 열두 동물의<br>시간으로 나눴다.','낮 12시는 말의 시간이라 정오,<br>밤 12시는 쥐의 시간이라 자정.','오전은 오시 앞,<br>오후는 오시 뒤.'],
+  words:[['정오','낮 12시.<br>오시의 한가운데'],['자정','밤 12시.<br>자시의 한가운데'],['오전 오후','오시(午時)의<br>앞과 뒤']]},
+ end:{q:'오전의 ‘오’는 무슨 동물일까?',a:'말. 午는 말의 시간을 나타내는 글자야.',h:'지금은 무슨 동물의<br>시간일까?',btn:'답 보기',
+  draw(S){const q=tx(S,220,250,'?','t80','middle',{style:'fill:rgba(246,231,188,.5)'});const g=grp(S,0);tx(g,220,190,'용의 시간','t56','middle');tx(g,220,250,'진시(辰時) · 7시~9시','t24m','middle');tx(g,220,290,'지금 오전 7시 42분','t24m','middle');
+   return ()=>{q.remove();show(g);};}}
+});
+
+// ---------- 4. 햅쌀 ----------
+EP.push({day:'4일차',topic:'햅쌀의 ㅂ',cat:'말의 유래',img:'home-4.png',
+ cover:{h:'햅쌀은 왜<br>‘해쌀’이 아닐까?',draw(S){tx(S,150,240,'해','t80');tx(S,270,240,'+','t56 dim');tx(S,340,240,'쌀','t80');const g=grp(S,0);tx(g,150,410,'햅쌀','t80');pillR(g,360,348,150,62,'#FF9B3D');tx(g,435,391,'ㅂ 등장','t30','middle',{style:'fill:#fff;font-weight:750'});
+   return ()=>{g.setAttribute('opacity',0);setTimeout(()=>show(g),600);};}},
+ scenes:[
+  {k:'옛날 글자',h:'옛날 ‘쌀’에는<br>ㅂ 소리가 있었다',b:'580년쯤 전 책에는 쌀이<br>ㅂ과 ㅅ을 나란히 쓴 글자로<br>적혀 있어.<br>‘ㅂ살’처럼 소리 냈지.',steps:['옛날 글자 보기','혼자 쓸 때'],
+   draw(S){const a=grp(S,0);tx(a,396,240,'ᄡᆞᆯ','t80','middle',{style:'font-size:150px;font-family:\'Noto Sans CJK KR\',sans-serif'});tx(a,396,320,'1447년 책 『석보상절』의 쌀','t24m','middle');
+    const b=grp(S,0);tx(b,396,420,'혼자 쓸 땐 ㅂ 소리가 사라져서 → 쌀','t30','middle');return i=>show(i?b:a);}},
+  {k:'숨은 ㅂ',h:'다른 말 뒤에 붙으면<br>숨은 ㅂ이 나타나',b:'쌀이 다른 말 뒤에 붙으면<br>숨어 있던 <em>ㅂ</em>이<br>앞 글자의 받침이 돼.',steps:['해 + 쌀','메 + 쌀','조 + 쌀','찰 + 쌀'],
+   draw(S){const rows=[joinRow(S,110,'해','쌀','햅쌀','ㅂ'),joinRow(S,230,'메','쌀','멥쌀','ㅂ'),joinRow(S,350,'조','쌀','좁쌀','ㅂ'),joinRow(S,470,'찰','쌀','찹쌀','ㅂ','ㄹ은 빠지고 ㅂ이 들어가')];return i=>show(rows[i]);}},
+  {k:'볍씨',h:'씨에도<br>ㅂ이 숨어 있었다',b:'씨도 옛날엔 ㅂ이 붙은<br>글자였어.<br>그래서 벼의 씨는<br><em>볍씨</em>라고 해.',steps:['벼 + 씨'],
+   draw(S){const a=tx(S,396,200,'ᄡᅵ','t80','middle',{style:'font-size:120px;font-family:\'Noto Sans CJK KR\',sans-serif'});tx(S,396,260,'옛날 글자의 씨','t24m','middle');const r=joinRow(S,420,'벼','씨','볍씨','ㅂ');return ()=>show(r);}}],
+ sum:{lines:['옛날 ‘쌀’에는<br>ㅂ 소리가 붙어 있었다.','혼자 쓸 땐 사라졌지만<br>다른 말 뒤에선 나타난다.','그래서 햅쌀, 찹쌀,<br>좁쌀, 볍씨.'],
+  words:[['햅쌀','그해에 새로 난 쌀'],['찹쌀','찰기가 있어<br>끈끈한 쌀'],['볍씨','벼의 씨']]},
+ end:{q:'‘좁쌀’은 무엇과 무엇이 합쳐진 말일까?',a:'조 + 쌀. 숨어 있던 ㅂ이 ‘조’의 받침으로 들어갔어.',h:'우리 집 밥은<br>멥쌀일까, 찹쌀일까?',btn:'답 보기',
+  draw(S){const q=tx(S,220,250,'?','t80','middle',{style:'fill:rgba(246,231,188,.5)'});const g=grp(S,0);tx(g,220,180,'보통 밥은','t30','middle');tx(g,220,240,'멥쌀','t56','middle');tx(g,220,300,'찰떡은 찹쌀로 만들어','t24m','middle');
+   return ()=>{q.remove();show(g);};}}
+});
+
+// ---------- 5. 숟가락·젓가락 ----------
+EP.push({day:'5일차',topic:'숟가락과 젓가락',cat:'맞춤법',img:'home-5.png',
+ cover:{h:'숟가락은 ㄷ,<br>젓가락은 ㅅ. 왜?',draw(S){tx(S,120,210,'숟가락','t80');tx(S,120,380,'젓가락','t80');const a=grp(S,0),b=grp(S,0);pillR(a,480,150,110,70,'#FF9B3D');tx(a,535,200,'ㄷ','t40','middle',{style:'fill:#fff'});pillR(b,480,320,110,70,'#8FBCF0');tx(b,535,370,'ㅅ','t40','middle',{style:'fill:#12305E'});
+   return ()=>{a.setAttribute('opacity',0);b.setAttribute('opacity',0);setTimeout(()=>show(a),400);setTimeout(()=>show(b),900);};}},
+ scenes:[
+  {k:'숟가락',h:'숟가락은<br>‘술’에서 왔다',b:'밥 한 술, 두 술 할 때의 ‘술’이야.<br>‘술’과 ‘가락’이 만나면<br><em>ㄹ이 ㄷ으로</em> 바뀌어서<br>숟가락.',steps:['술 + 가락'],
+   draw(S){box(S,60,60,672,150,'rgba(246,231,188,.06)',24);tx(S,100,155,'밥 한 술 = 숟가락으로 한 번 뜬 양','t30');const r=grp(S,0);tx(r,80,360,'술','t80');tx(r,190,360,'+','t56 dim');tx(r,250,360,'가락','t80');tx(r,470,360,'→','t56 dim');
+    tx(r,80,470,'숟가락','t80');pillR(r,420,412,170,62,'#FF9B3D');tx(r,505,455,'ㄹ → ㄷ','t30','middle',{style:'fill:#fff;font-weight:750'});return ()=>show(r);}},
+  {k:'ㄹ이 ㄷ으로',h:'ㄹ이 ㄷ으로 바뀐<br>친구들',b:'끝소리 ㄹ이 다른 말과 만나<br>ㄷ 소리가 나면<br>ㄷ으로 적어.',steps:['이틀 + 날','사흘 + 날','설 + 달'],
+   draw(S){const rows=[joinRow(S,140,'이틀','날','이튿날','ㄷ'),joinRow(S,290,'사흘','날','사흗날','ㄷ'),joinRow(S,440,'설','달','섣달','ㄷ','음력 12월')];return i=>show(rows[i]);}},
+  {k:'젓가락',h:'젓가락은<br>‘저’에서 왔다',b:'‘저’는 젓가락을 뜻하는<br>한자 <em>箸(저)</em>야.<br>‘저’와 ‘가락’ 사이에<br>ㅅ이 끼어들어 젓가락.',steps:['저 + 가락'],
+   draw(S){box(S,60,60,672,150,'rgba(246,231,188,.06)',24);tx(S,100,160,'箸','t80');tx(S,230,155,'젓가락 저','t30');const r=grp(S,0);tx(r,80,360,'저','t80');tx(r,180,360,'+','t56 dim');tx(r,240,360,'ㅅ','t80 bl');tx(r,330,360,'+','t56 dim');tx(r,390,360,'가락','t80');
+    tx(r,80,470,'젓가락','t80');pillR(r,420,412,150,62,'#8FBCF0');tx(r,495,455,'ㅅ 끼움','t30','middle',{style:'fill:#12305E;font-weight:750'});return ()=>show(r);}}],
+ sum:{lines:['숟가락은 술 + 가락,<br>ㄹ이 ㄷ으로 바뀌었다.','젓가락은 저 + ㅅ + 가락,<br>사이에 ㅅ이 들어갔다.','그래서 둘의 받침이<br>서로 다르다.'],
+  words:[['술','숟가락으로<br>한 번 뜬 양'],['섣달','음력 12월'],['이튿날','어떤 날의<br>다음 날']]},
+ end:{q:'‘설 + 달’은 어떻게 쓸까?',a:'섣달. ㄹ이 ㄷ으로 바뀌어.',h:'저녁 먹을 때 가족에게<br>숟가락 받침을 물어봐.',btn:'답 보기',
+  draw(S){const q=tx(S,220,250,'?','t80','middle',{style:'fill:rgba(246,231,188,.5)'});const g=grp(S,0);tx(g,220,170,'숟가락','t56','middle');tx(g,220,220,'술 + 가락, ㄹ이 ㄷ으로','t24','middle');tx(g,220,300,'젓가락','t56','middle');tx(g,220,350,'저 + ㅅ + 가락','t24','middle');
+   return ()=>{q.remove();show(g);};}}
+});
+
+// ---------- 6. 무궁화 ----------
+EP.push({day:'6일차',topic:'무궁화',cat:'말의 뜻',img:'home-6.png',
+ cover:{h:'무궁화는 왜<br>‘끝없는 꽃’일까?',draw(S){const f=flower(S,396,250,150);f.set(.15);return ()=>anim(2500,x=>f.set(.15+.85*(1-Math.pow(1-x,3))));}},
+ scenes:[
+  {k:'이름의 뜻',h:'無 없을 무,<br>窮 다할 궁',b:'‘무궁’은 <em>다함이 없다</em>,<br>끝이 없다는 뜻이야.<br>무궁화는 끝없이 피는 꽃.',steps:['無','窮','花'],
+   draw(S){const H=[['無','없을 무'],['窮','다할 궁'],['花','꽃 화']].map(([h,m],i)=>{const g=grp(S,0),x=140+i*256;box(g,x-100,110,200,260,'rgba(246,231,188,.08)',28);tx(g,x,260,h,'t80','middle',{style:'font-size:120px'});tx(g,x,330,m,'t30','middle');return g;});
+    const l=tx(S,396,460,'','t30','middle');return i=>{show(H[i]);if(i===2)l.textContent='끝없이 피는 꽃';};}},
+  {k:'하루',h:'그런데 한 송이는<br>하루만 핀다',b:'무궁화 꽃 한 송이는<br><em>새벽에 피었다가</em><br><em>저녁이면 시들어.</em>',steps:['하루 돌려 보기'],
+   draw(S){el('path',{d:'M80,300 Q396,20 712,300',fill:'none',stroke:'rgba(246,231,188,.25)','stroke-width':2,'stroke-dasharray':'6 8'},S);const sun=el('circle',{cx:80,cy:300,r:26,fill:'#FFB15E'},S);
+    const f=flower(S,396,400,90);f.set(.12);tx(S,80,350,'새벽','t24m','middle');tx(S,396,110,'낮','t24m','middle');tx(S,712,350,'저녁','t24m','middle');const l=tx(S,396,520,'','t24','middle');
+    return ()=>anim(7000,x=>{const t=x,px=80+632*t,py=300-280*4*t*(1-t)*.98;sun.setAttribute('cx',px);sun.setAttribute('cy',py);const s=t<.2?t/.2:t>.8?(1-t)/.2:1;f.set(.12+.88*s);l.textContent=t<.2?'피는 중':t>.8?'시드는 중':'활짝';},()=>{l.textContent='한 송이는 하루로 끝';});}},
+  {k:'100일',h:'날마다 새 꽃이<br>100일 동안 핀다',b:'한 송이가 지면<br>다음 날 다른 송이가 피어.<br>그래서 여름 내내<br>끝없이 피는 것처럼 보여.',steps:['100일 돌려 보기'],
+   draw(S){const cs=[];for(let i=0;i<100;i++){const x=126+(i%10)*60,y=46+Math.floor(i/10)*44;cs.push(el('circle',{cx:x,cy:y,r:14,fill:'rgba(246,231,188,.1)'},S));}
+    const l=tx(S,396,510,'','t30','middle');return ()=>{cs.forEach(c=>c.setAttribute('fill','rgba(246,231,188,.1)'));anim(8000,x=>{const n=Math.min(100,Math.floor(x*100)+1);cs.forEach((c,i)=>{c.setAttribute('fill',i===n-1?'#F6E7BC':i<n-1?'rgba(224,112,58,.55)':'rgba(246,231,188,.1)');});l.textContent=`${n}일째 · 오늘 핀 꽃 한 송이`;},()=>{l.textContent='100일 동안 날마다 새 꽃';});};}}],
+ sum:{lines:['‘무궁’은<br>끝이 없다는 뜻이다.','꽃 한 송이는<br>하루만 피고 진다.','날마다 새 꽃이 100일쯤<br>피어서 무궁화다.'],
+  words:[['무궁','끝이 없음'],['송이','꽃 한 개를<br>세는 말'],['나라꽃','그 나라를<br>대표하는 꽃']]},
+ end:{q:'무궁화 꽃 한 송이는 며칠 필까?',a:'하루. 새벽에 피었다가 저녁에 져.',h:'무궁화는<br>어느 계절에 필까?',btn:'답 보기',
+  draw(S){const q=tx(S,220,250,'?','t80','middle',{style:'fill:rgba(246,231,188,.5)'});const g=grp(S,0);tx(g,220,200,'여름','t56','middle');tx(g,220,260,'여름부터 가을 초까지','t24m','middle');tx(g,220,300,'100일쯤','t24m','middle');
+   return ()=>{q.remove();show(g);};}}
+});
+
+// ---------- 7. 건강하세요 ----------
+EP.push({day:'7일차',topic:'건강하세요',cat:'바른 말',img:'home-7.png',
+ cover:{h:'‘건강하세요’는<br>틀린 말일까?',draw(S){box(S,90,140,612,180,'rgba(246,231,188,.1)',90);el('path',{d:'M200,318 L170,380 L260,320Z',fill:'rgba(246,231,188,.1)'},S);tx(S,396,255,'건강하세요!','t80','middle');
+   const q=grp(S,0);tx(q,396,470,'?','t80 or','middle');return ()=>{q.setAttribute('opacity',0);setTimeout(()=>show(q),500);};}},
+ scenes:[
+  {k:'두 가지 말',h:'움직이는 말,<br>상태를 나타내는 말',b:'‘먹다, 달리다, 읽다’는<br>움직이는 말이고<br>‘예쁘다, 크다, 건강하다’는<br>상태를 나타내는 말이야.',steps:['나눠 보기'],
+   draw(S){box(S,30,40,350,460,'rgba(143,188,240,.1)',26);box(S,412,40,350,460,'rgba(255,177,94,.1)',26);tx(S,205,95,'움직이는 말','t30 bl','middle');tx(S,587,95,'상태를 나타내는 말','t30 or','middle');
+    const W=[['먹다',0],['예쁘다',1],['달리다',0],['크다',1],['읽다',0],['건강하다',1]];const ch=W.map(([w,s],i)=>{const t=tx(S,396,180+i*52,w,'t40','middle');t.dataset.s=s;t.dataset.i=i;return t;});
+    return ()=>{let a=0,b=0;ch.forEach((t,i)=>{const s=+t.dataset.s;const y=s?200+b++*90:200+a++*90;const x0=396,y0=180+i*52,x1=s?587:205;anim(700,x=>{const e=1-Math.pow(1-x,3);t.setAttribute('x',x0+(x1-x0)*e);t.setAttribute('y',y0+(y-y0)*e);});});};}},
+  {k:'시켜 보기',h:'‘~하자’를 붙여 보면<br>알 수 있어',b:'움직이는 말은<br>‘~하자’, ‘~해라’로 시킬 수 있어.<br>상태를 나타내는 말은 어색해.',steps:['먹다','읽다','예쁘다','건강하다'],
+   draw(S){const R=[['먹다','먹자',1],['읽다','읽자',1],['예쁘다','예쁘자',0],['건강하다','건강하자',0]].map(([a,b,ok],i)=>{const g=grp(S,0),y=110+i*115;tx(g,60,y,a,'t40');tx(g,300,y,'→','t40 dim');tx(g,370,y,b,'t56'+(ok?'':' dim'));tx(g,730,y,ok?'맞아':'어색해','t30 '+(ok?'bl':'or'),'end',{style:'font-weight:750'});return g;});return i=>show(R[i]);}},
+  {k:'인사말',h:'원칙은<br>‘건강하게 지내세요’',b:'규칙대로라면<br><em>건강하게 지내세요</em>가 맞아.<br>다만 국립국어원은<br>‘건강하세요’도 인사말로<br>쓸 수 있다고 봤어.',steps:['고쳐 보기','요즘은?'],
+   draw(S){tx(S,60,130,'건강하세요','t56 dim');const a=grp(S,0);tx(a,60,230,'→','t40 dim');tx(a,120,232,'건강하게 지내세요','t56');tx(a,120,280,'움직이는 말 ‘지내다’를 붙여서','t24m');
+    const b=grp(S,0);box(b,60,340,672,150,'rgba(246,231,188,.08)',24);tx(b,100,405,'인사말로 굳은 ‘건강하세요’도','t30');tx(b,100,450,'쓸 수 있다고 봐 (국립국어원)','t30');return i=>show(i?b:a);}}],
+ sum:{lines:['움직이는 말과 상태를<br>나타내는 말이 있다.','상태를 나타내는 말로는<br>시키는 말을 만들기 어렵다.','원칙은 ‘건강하게 지내세요’,<br>인사로는 ‘건강하세요’도 쓴다.'],
+  words:[['동사','움직임을<br>나타내는 말'],['형용사','모습이나 상태를<br>나타내는 말'],['인사말','만나거나 헤어질 때<br>하는 말']]},
+ end:{q:'‘행복하세요’를 원칙대로 고치면?',a:'행복하게 지내세요.',h:'할머니께 인사할 때<br>원칙대로 말해 봐.',btn:'답 보기',
+  draw(S){const q=tx(S,220,250,'?','t80','middle',{style:'fill:rgba(246,231,188,.5)'});const g=grp(S,0);tx(g,220,200,'건강하게','t56','middle');tx(g,220,270,'지내세요','t56','middle');
+   return ()=>{q.remove();show(g);};}}
+});
+
+// ===================== 2주차 =====================
+// 공용: 칸 여러 개(누르면 답), 줄 여러 개(차례로 나타남)
+function cardGrid(S,items,{cols=2,w=340,h=118,gap=16,fs=40,x0=40,y0=40}={}){return items.map(([a,b],i)=>{const x=x0+(i%cols)*(w+gap),y=y0+Math.floor(i/cols)*(h+gap);
+  const g=el('g',{style:'cursor:pointer'},S);box(g,x,y,w,h,'rgba(246,231,188,.08)',22);tx(g,x+24,y+h/2+fs*.36,a,'t40','start',{style:`font-size:${fs}px`});
+  const q=tx(g,x+w-24,y+h/2+fs*.36,'?','t40 dim','end',{style:`font-size:${fs*.8}px`});const done=()=>{q.textContent=b;q.setAttribute('class','t40 or');};g.addEventListener('click',done);return done;});}
+function rowsList(S,rows,{y0=100,dy=120,fs=40}={}){return rows.map((r,i)=>{const g=grp(S,0),y=y0+i*dy;r(g,y,fs);return g;});}
+const mark=(g,x,y,ok)=>tx(g,x,y,ok?'맞아':'어색해','t30 '+(ok?'bl':'or'),'end',{style:'font-weight:750'});
+const sentence=(g,x,y,parts,fs=40)=>{let cx=x;parts.forEach(([t,c])=>{const e=tx(g,cx,y,t,c||'t40','start',{style:`font-size:${fs}px`});cx+=e.getComputedTextLength()+2;});};
+const qmark=S=>tx(S,220,250,'?','t80','middle',{style:'fill:rgba(246,231,188,.5)'});
+function endCard(S,lines){const q=qmark(S),g=grp(S,0);lines.forEach(([t,c,y])=>tx(g,220,y,t,c,'middle'));return ()=>{q.remove();show(g);};}
+
+// 깃털과 이름표 (시치미)
+function feathers(S,cx,cy,n=5){const g=el('g',{},S);for(let i=0;i<n;i++){const a=-30+i*(60/(n-1));const f=el('g',{transform:`translate(${cx},${cy}) rotate(${a})`},g);
+  el('ellipse',{cx:0,cy:-120,rx:26,ry:120,fill:'rgba(246,231,188,.85)'},f);el('line',{x1:0,y1:0,x2:0,y2:-236,stroke:'rgba(18,48,94,.55)','stroke-width':3},f);}return g;}
+function nameTag(S,x,y,lines){const g=grp(S,0,{transform:`translate(${x},${y})`});el('line',{x1:0,y1:-46,x2:0,y2:0,stroke:'#FFB15E','stroke-width':3},g);
+  el('rect',{x:-90,y:0,width:180,height:120,rx:16,fill:'#FFB15E'},g);lines.forEach((t,i)=>tx(g,0,46+i*40,t,'t24','middle',{style:'fill:#12305E;font-weight:700'}));return g;}
+
+EP.push({day:'8일차',topic:'시치미',cat:'말의 유래',img:'home-8.png',
+ cover:{h:'‘시치미 뗀다’의<br>시치미는 뭘까?',draw(S){feathers(S,396,470);const t=nameTag(S,396,250,['시치미','주인 이름표']);show(t);
+   return ()=>{t.style.transition='transform .9s ease, opacity .9s ease';t.setAttribute('transform','translate(396,250)');t.style.opacity=1;setTimeout(()=>{t.setAttribute('transform','translate(470,520) rotate(25)');t.style.opacity=0;},700);setTimeout(()=>{t.style.transition='none';t.setAttribute('transform','translate(396,250)');t.style.opacity=1;},2600);};}},
+ scenes:[
+  {k:'매의 이름표',h:'시치미는<br>매의 이름표였다',b:'옛날엔 매를 길들여 사냥을 했어.<br>매 꽁지깃에 주인 이름과<br>사는 곳을 적은 작은 표를 달았는데<br>그게 <em>시치미</em>야.',steps:['이름표 달기'],
+   draw(S){feathers(S,396,500);tx(S,396,60,'매의 꽁지깃','t24m','middle');const t=nameTag(S,396,270,['주인: 김○○','사는 곳: ○○']);return ()=>show(t);}},
+  {k:'시치미를 떼면',h:'이름표를 떼면<br>누구 매인지 몰라',b:'남의 매를 잡은 사람이<br>시치미를 떼어 버리고<br>자기 매인 척하기도 했대.',steps:['시치미 떼기'],
+   draw(S){feathers(S,396,500);const t=nameTag(S,396,270,['주인: 김○○','사는 곳: ○○']);show(t);const q=grp(S,0);tx(q,396,110,'누구 매지?','t40','middle');
+    return ()=>{t.style.transition='transform .8s ease, opacity .8s ease';t.setAttribute('transform','translate(560,560) rotate(30)');t.style.opacity=0;setTimeout(()=>show(q),600);};}},
+  {k:'지금의 뜻',h:'알면서<br>모르는 척하는 것',b:'그래서 자기가 해 놓고<br>안 한 척하거나<br>알면서 모르는 척하는 걸<br><em>시치미를 뗀다</em>고 해.',steps:['예문 보기','하나 더'],
+   draw(S){const R=rowsList(S,[(g,y)=>{box(g,40,y-80,712,190,'rgba(246,231,188,.08)',24);tx(g,80,y-10,'동생이 과자를 먹고','t40');tx(g,80,y+48,'안 먹은 척 시치미를 뗐다.','t40');},
+     (g,y)=>{box(g,40,y-80,712,190,'rgba(246,231,188,.08)',24);tx(g,80,y-10,'깜짝 선물을 알면서도','t40');tx(g,80,y+48,'생일까지 시치미를 뗐다.','t40');}],{y0:150,dy:250});return i=>show(R[i]);}}],
+ sum:{lines:['시치미는 매 꽁지에 단<br>주인 이름표였다.','시치미를 떼면<br>누구 매인지 알 수 없었다.','그래서 알면서 모르는 척하는 걸<br>시치미를 뗀다고 한다.'],
+  words:[['시치미','매의 주인을<br>적은 이름표'],['매사냥','길들인 매로<br>하는 사냥'],['꽁지깃','새 꽁지에<br>난 깃털']]},
+ end:{q:'‘시치미를 떼다’를 줄여서 말하면?',a:'시침을 떼다. ‘시침’은 ‘시치미’를 줄인 말이야.',h:'오늘 누가 시치미를<br>뗐는지 떠올려 봐.',btn:'답 보기',
+  draw:S=>endCard(S,[['시치미','t56',200],['매의 이름표','t30',260]])}
+});
+
+EP.push({day:'9일차',topic:'어린이',cat:'말의 유래',img:'home-9.png',
+ cover:{h:'‘어리다’는 원래<br>무슨 뜻이었을까?',draw(S){tx(S,396,250,'어리다','t80','middle',{style:'font-size:120px'});const q=grp(S,0);tx(q,396,400,'= ?','t80 or','middle');return ()=>{q.setAttribute('opacity',0);setTimeout(()=>show(q),500);};}},
+ scenes:[
+  {k:'옛날 뜻',h:'옛날 ‘어리다’는<br>어리석다는 뜻',b:'500년쯤 전에는<br>‘어리다’가 <em>어리석다</em>는<br>뜻으로 쓰였어.',steps:['옛날 뜻 보기'],
+   draw(S){box(S,40,60,712,170,'rgba(246,231,188,.06)',24);tx(S,80,130,'지금','t24m');tx(S,80,195,'어리다 = 나이가 적다','t40');
+    const g=grp(S,0);box(g,40,290,712,170,'rgba(255,177,94,.16)',24);tx(g,80,360,'500년쯤 전','t24 or');tx(g,80,425,'어리다 = 어리석다','t40');return ()=>show(g);}},
+  {k:'젊다',h:'아기도 옛날엔<br>‘젊다’고 했다',b:'그때는 아기도 젊은이도<br>모두 ‘젊다’고 했어.<br>나중에 ‘어리다’가<br>나이가 적다는 뜻으로 바뀌었지.',steps:['옛날','지금'],
+   draw(S){const R=rowsList(S,[(g,y)=>{tx(g,40,y,'옛날','t24 or');tx(g,160,y,'아기도 젊다','t40');tx(g,160,y+56,'젊은이도 젊다','t40');},
+     (g,y)=>{tx(g,40,y,'지금','t24 bl');tx(g,160,y,'아기는 어리다','t40');tx(g,160,y+56,'젊은이는 젊다','t40');}],{y0:130,dy:220});return i=>show(R[i]);}},
+  {k:'어린이',h:'그래서 생긴<br>어린이·젊은이·늙은이',b:'‘어린이’라는 말은<br>17세기 책에도 나와.<br>방정환 선생님이 어린이날을<br>만들며 이 말을 널리 썼어.',steps:['나이 순서로'],
+   draw(S){const W=['어린이','젊은이','늙은이'];const g=W.map((w,i)=>{const gg=grp(S,0),x=40+i*244;box(gg,x,150,220,220,'rgba(246,231,188,.08)',28);tx(gg,x+110,280,w,'t40','middle');if(i<2){const ar=grp(gg,1);tx(ar,x+232,272,'→','t30 dim','middle');}return gg;});
+    return ()=>g.forEach((x,i)=>setTimeout(()=>show(x),i*400));}}],
+ sum:{lines:['‘어리다’는 옛날엔<br>어리석다는 뜻이었다.','그때는 아기도<br>‘젊다’고 했다.','지금은 어린이, 젊은이,<br>늙은이로 나눠 부른다.'],
+  words:[['어리석다','슬기롭지 못하고<br>둔하다'],['어린이','어린아이를<br>높여 이르는 말'],['방정환','어린이날을<br>만든 사람']]},
+ end:{q:'500년쯤 전엔 아기를 보고 뭐라고 했을까?',a:'젊다. 그때는 아기도 ‘젊다’고 했어.',h:'어린이날은<br>몇 월 며칠일까?',btn:'답 보기',
+  draw:S=>endCard(S,[['5월 5일','t56',230],['어린이날','t30',290]])}
+});
+
+EP.push({day:'10일차',topic:'날짐승과 길짐승',cat:'말의 뜻',img:'home-10.png',
+ cover:{h:'날짐승과 길짐승,<br>뭐가 다를까?',draw(S){tx(S,396,230,'날짐승','t80','middle');tx(S,396,380,'길짐승','t80','middle');const a=grp(S,0),b=grp(S,0);tx(a,600,215,'↑','t56 bl');tx(b,600,365,'→','t56 or');
+   return ()=>{[a,b].forEach(x=>x.setAttribute('opacity',0));setTimeout(()=>show(a),400);setTimeout(()=>show(b),900);};}},
+ scenes:[
+  {k:'날짐승',h:'날아다니면<br>날짐승',b:'‘날다’와 ‘짐승’이 만나<br><em>날짐승</em>.<br>새처럼 날아다니는 짐승이야.',steps:['날다 + 짐승'],
+   draw(S){const r=joinRow(S,280,'날다','짐승','날짐승');return ()=>show(r);}},
+  {k:'길짐승',h:'땅에서 기면<br>길짐승',b:'‘기다’와 ‘짐승’이 만나<br><em>길짐승</em>.<br>땅 위를 기어 다니는 짐승이야.',steps:['기다 + 짐승'],
+   draw(S){const r=joinRow(S,280,'기다','짐승','길짐승');return ()=>show(r);}},
+  {k:'나눠 보기',h:'어느 쪽<br>짐승일까?',b:'하늘을 날면 날짐승,<br>땅을 기면 길짐승.<br>동물 이름을 눌러도 답이 나와.',steps:['첫 번째 동물','다음 동물','다음 동물','다음 동물','다음 동물','다음 동물'],
+   draw(S){const C=cardGrid(S,[['참새','날짐승'],['호랑이','길짐승'],['독수리','날짐승'],['다람쥐','길짐승'],['까치','날짐승'],['토끼','길짐승']],{h:140,fs:40});return i=>C[i]();}}],
+ sum:{lines:['날아다니는 짐승은<br>날짐승.','땅을 기어 다니는 짐승은<br>길짐승.','사는 곳에 따라 산짐승,<br>들짐승, 물짐승도 있다.'],
+  words:[['짐승','사람이 아닌 동물'],['들짐승','들에 사는 짐승'],['물짐승','물에 사는 짐승']]},
+ end:{q:'산에 사는 짐승은 뭐라고 할까?',a:'산짐승.',h:'우리 동네에서 본<br>날짐승을 말해 봐.',btn:'답 보기',
+  draw:S=>endCard(S,[['참새','t56',190],['비둘기','t56',260],['까치','t56',330]])}
+});
+
+EP.push({day:'11일차',topic:'이따가와 있다가',cat:'맞춤법',img:'home-11.png',
+ cover:{h:'이따가 만나?<br>있다가 만나?',draw(S){tx(S,396,230,'이따가','t80','middle');tx(S,396,380,'있다가','t80','middle');const q=grp(S,0);tx(q,640,310,'?','t80 or','middle');return ()=>{q.setAttribute('opacity',0);setTimeout(()=>show(q),500);};}},
+ scenes:[
+  {k:'이따가',h:'이따가는<br>‘조금 뒤에’',b:'<em>이따가</em>는<br>시간이 조금 지난 뒤를 말해.',steps:['바꿔 보기'],
+   draw(S){box(S,40,80,712,150,'rgba(246,231,188,.08)',24);sentence(S,80,175,[['이따가','t40 or'],[' 놀이터에서 만나.']]);const g=grp(S,0);tx(g,396,300,'↓','t40 dim','middle');
+    box(g,40,340,712,150,'rgba(143,188,240,.14)',24);sentence(g,80,435,[['조금 뒤에','t40 bl'],[' 놀이터에서 만나.']]);mark(g,730,435,true);return ()=>show(g);}},
+  {k:'있다가',h:'있다가는<br>‘머물다가’',b:'<em>있다가</em>는<br>어디에 머물다가라는 뜻이야.',steps:['바꿔 보기'],
+   draw(S){box(S,40,80,712,150,'rgba(246,231,188,.08)',24);sentence(S,80,175,[['집에 '],['있다가','t40 or'],[' 나갈게.']]);const g=grp(S,0);tx(g,396,300,'↓','t40 dim','middle');
+    box(g,40,340,712,150,'rgba(143,188,240,.14)',24);sentence(g,80,435,[['집에 '],['머물다가','t40 bl'],[' 나갈게.']]);mark(g,730,435,true);return ()=>show(g);}},
+  {k:'골라 보기',h:'어느 쪽이<br>맞을까?',b:'‘조금 뒤에’로 바꿔 말이 되면 이따가,<br>‘머물다가’로 바꿔 말이 되면<br>있다가.',steps:['첫 번째 문장','다음 문장','다음 문장','다음 문장'],
+   draw(S){const Q=[['숙제는 ',' 할게.','이따가'],['도서관에 ',' 왔어.','있다가'],['','  전화할게.','이따가'],['누워만 ',' 일어났어.','있다가']];
+    const R=Q.map(([a,b,c],i)=>{const y=100+i*118,g=el('g',{},S);box(g,40,y-62,712,96,'rgba(246,231,188,.06)',20);const t=grp(g,1);const blank=a+'＿＿＿'+b;const s=tx(t,70,y,blank,'t40');
+     const ans=grp(g,0);sentence(ans,70,y,[[a],[c,'t40 or'],[b]]);return ()=>{t.setAttribute('opacity',0);show(ans);};});return i=>R[i]();}}],
+ sum:{lines:['이따가는<br>조금 지난 뒤에.','있다가는<br>어디에 머물다가.','헷갈리면 ‘조금 뒤에’로<br>바꿔 말해 본다.'],
+  words:[['이따','‘이따가’를<br>줄인 말'],['머물다','한곳에<br>그대로 있다'],['조금','시간이 짧게']]},
+ end:{q:'‘조금 이따 봐’는 맞는 말일까?',a:'맞아. ‘이따’는 ‘이따가’를 줄인 말이야.',h:'오늘 ‘이따가’를<br>몇 번 말하는지 세어 봐.',btn:'답 보기',
+  draw:S=>endCard(S,[['이따가','t56',200],['= 조금 뒤에','t30',260]])}
+});
+
+EP.push({day:'12일차',topic:'맞히다와 맞추다',cat:'맞춤법',img:'home-12.png',
+ cover:{h:'정답을 맞혔다?<br>맞췄다?',draw(S){tx(S,396,230,'맞혔다','t80','middle');tx(S,396,380,'맞췄다','t80','middle');const q=grp(S,0);tx(q,640,310,'?','t80 or','middle');return ()=>{q.setAttribute('opacity',0);setTimeout(()=>show(q),500);};}},
+ scenes:[
+  {k:'맞히다',h:'답을 알아내면<br>맞히다',b:'문제의 답을 알아내거나<br>과녁에 맞게 하는 건<br><em>맞히다</em>야.',steps:['보기'],
+   draw(S){const R=rowsList(S,[(g,y)=>{sentence(g,60,y,[['정답을 '],['맞히다','t40 or']]);mark(g,730,y,true);},(g,y)=>{sentence(g,60,y,[['수수께끼를 '],['맞히다','t40 or']]);mark(g,730,y,true);},(g,y)=>{sentence(g,60,y,[['과녁을 '],['맞히다','t40 or']]);mark(g,730,y,true);}],{y0:140,dy:140});
+    return ()=>R.forEach((g,i)=>setTimeout(()=>show(g),i*350));}},
+  {k:'맞추다',h:'붙이거나 비교하면<br>맞추다',b:'떨어진 것을 제자리에 붙이거나<br>둘을 대어 보며 비교하는 건<br><em>맞추다</em>야.',steps:['보기'],
+   draw(S){const R=rowsList(S,[(g,y)=>{sentence(g,60,y,[['퍼즐을 '],['맞추다','t40 bl']]);mark(g,730,y,true);},(g,y)=>{sentence(g,60,y,[['줄을 '],['맞추다','t40 bl']]);mark(g,730,y,true);},(g,y)=>{sentence(g,60,y,[['친구와 답을 '],['맞추어 보다','t40 bl']]);mark(g,730,y,true);}],{y0:140,dy:140});
+    return ()=>R.forEach((g,i)=>setTimeout(()=>show(g),i*350));}},
+  {k:'둘 다',h:'한 문장에<br>둘 다 쓸 수 있어',b:'정답을 몇 개 알아냈는지는 <em>맞혔다</em>,<br>정답지와 견주어 보는 건<br><em>맞춰 봤다</em>.',steps:['맞히다 찾기','맞추다 찾기'],
+   draw(S){box(S,40,120,712,260,'rgba(246,231,188,.08)',28);const a1=grp(S,1),a2=grp(S,0),b1=grp(S,1),b2=grp(S,0);
+    sentence(a1,80,220,[['몇 문제 맞혔는지']],56);sentence(a2,80,220,[['몇 문제 '],['맞혔는지','t40 or']],56);
+    sentence(b1,80,300,[['정답지와 맞춰 봤어.']],56);sentence(b2,80,300,[['정답지와 '],['맞춰','t40 bl'],[' 봤어.']],56);
+    return i=>{if(i===0){a1.setAttribute('opacity',0);show(a2);}else{b1.setAttribute('opacity',0);show(b2);}};}}],
+ sum:{lines:['답을 알아내면<br>맞히다.','붙이거나 비교하면<br>맞추다.','‘정답을 맞추다’는<br>틀린 말이다.'],
+  words:[['과녁','활을 쏠 때<br>겨누는 판'],['수수께끼','뜻을 알아맞히는<br>말놀이'],['비교','둘을 견주어<br>보는 것']]},
+ end:{q:'퍼즐 조각을 제자리에 끼우는 건?',a:'맞추다. 제자리에 붙이니까.',h:'오늘 받아쓰기<br>몇 개 맞혔어?',btn:'답 보기',
+  draw:S=>endCard(S,[['맞혔어','t56',200],['답을 알아냈으니까','t24',255]])}
+});
+
+EP.push({day:'13일차',topic:'네가와 내가',cat:'맞춤법',img:'home-13.png',
+ cover:{h:'니가? 네가?<br>어떻게 쓸까?',draw(S){box(S,90,120,612,170,'rgba(246,231,188,.1)',85);el('path',{d:'M200,288 L170,350 L260,290Z',fill:'rgba(246,231,188,.1)'},S);tx(S,396,230,'니가 했어?','t80','middle');
+   const q=grp(S,0);tx(q,396,450,'쓸 땐 어떻게?','t40 or','middle');return ()=>{q.setAttribute('opacity',0);setTimeout(()=>show(q),500);};}},
+ scenes:[
+  {k:'내가',h:'나 + 가<br>= 내가',b:'‘나’ 뒤에 ‘가’가 붙으면<br><em>내가</em>로 바뀌어.',steps:['합쳐 보기'],draw(S){const r=joinRow(S,280,'나','가','내가');return ()=>show(r);}},
+  {k:'네가',h:'너 + 가<br>= 네가',b:'‘너’ 뒤에 ‘가’가 붙으면<br><em>네가</em>로 바뀌어.<br>‘너가’라고 쓰지 않아.',steps:['합쳐 보기'],draw(S){const r=joinRow(S,280,'너','가','네가');return ()=>show(r);}},
+  {k:'니가',h:'소리가 비슷해서<br>‘니가’라고 말해',b:'‘내가’와 ‘네가’는 소리가 거의 같아.<br>그래서 말할 땐 ‘니가’라고도 하지만<br>글로 쓸 땐 <em>네가</em>.',steps:['말할 때','쓸 때'],
+   draw(S){const a=grp(S,0);box(a,40,70,712,170,'rgba(246,231,188,.08)',85);tx(a,396,180,'(말) 니가 했어?','t56','middle');
+    const b=grp(S,0);box(b,40,300,712,170,'rgba(255,177,94,.16)',24);tx(b,90,410,'(글) 네가 했어?','t56');mark(b,720,410,true);return i=>show(i?b:a);}}],
+ sum:{lines:['나 + 가 = 내가.','너 + 가 = 네가.','말할 땐 ‘니가’라고도 하지만<br>쓸 땐 ‘네가’.'],
+  words:[['ㅐ와 ㅔ','소리가 비슷해서<br>헷갈리는 모음'],['표준어','모두 함께 쓰기로<br>정한 말'],['구어','입으로 하는 말']]},
+ end:{q:'‘너’ 뒤에 ‘가’를 붙여 쓰면?',a:'네가.',h:'일기에 ‘네가’를<br>바르게 써 봐.',btn:'답 보기',
+  draw:S=>endCard(S,[['네가','t56',210],['너 + 가','t30',270]])}
+});
+
+EP.push({day:'14일차',topic:'며칠',cat:'맞춤법',img:'home-14.png',
+ cover:{h:'왜 ‘몇일’이 아니라<br>‘며칠’일까?',draw(S){tx(S,396,230,'몇일','t80 dim','middle');const s=el('line',{x1:290,y1:210,x2:500,y2:210,stroke:'#8FBCF0','stroke-width':7,'stroke-linecap':'round',opacity:0,style:'transition:opacity .3s'},S);
+   const g=grp(S,0);tx(g,396,400,'며칠','t80','middle');return ()=>{s.setAttribute('opacity',0);g.setAttribute('opacity',0);setTimeout(()=>s.setAttribute('opacity',1),400);setTimeout(()=>show(g),900);};}},
+ scenes:[
+  {k:'며칠',h:'날짜를 물을 땐<br>며칠',b:'‘오늘이 몇 월 며칠이야?’<br>날을 물을 때는 <em>며칠</em>이라고 써.<br>‘몇일’은 틀린 말이야.',steps:['고쳐 보기'],
+   draw(S){box(S,40,80,712,150,'rgba(246,231,188,.06)',24);tx(S,80,180,'오늘이 몇 월 몇일이야?','t40 dim');const g=grp(S,0);box(g,40,300,712,150,'rgba(255,177,94,.16)',24);sentence(g,80,400,[['오늘이 몇 월 '],['며칠','t40 or'],['이야?']]);mark(g,730,400,true);return ()=>show(g);}},
+  {k:'소리',h:'‘몇 일’이었다면<br>[며딜]이었을 거야',b:'‘몇 월’은 [며둴], ‘몇 억’은 [며덕]으로<br>소리 나.<br>‘몇 일’이었다면 [며딜]이어야 하는데<br>우리는 [며칠]이라고 말해.',steps:['몇 월','몇 억','며칠은?'],
+   draw(S){const R=rowsList(S,[(g,y)=>{tx(g,60,y,'몇 월','t56');tx(g,330,y,'→','t40 dim');tx(g,400,y,'[며둴]','t56 bl');},(g,y)=>{tx(g,60,y,'몇 억','t56');tx(g,330,y,'→','t40 dim');tx(g,400,y,'[며덕]','t56 bl');},
+     (g,y)=>{tx(g,60,y,'며칠','t56');tx(g,330,y,'→','t40 dim');tx(g,400,y,'[며칠]','t56 or');tx(g,400,y+46,'[며딜]이 아니야','t24m');}],{y0:130,dy:140});return i=>show(R[i]);}},
+  {k:'규칙',h:'그래서 소리 나는 대로<br>며칠',b:'맞춤법은 뿌리를 분명히<br>알 수 없는 말을<br>소리 나는 대로 적게 했어.<br>그래서 <em>며칠</em>.',steps:['같은 규칙의 말'],
+   draw(S){const W=['며칠','골탕','부리나케'];const g=W.map((w,i)=>{const gg=grp(S,0),x=40+i*244;box(gg,x,170,220,200,'rgba(246,231,188,.08)',28);tx(gg,x+110,285,w,'t40','middle');return gg;});tx(S,396,460,'한글 맞춤법 제27항','t24m','middle');
+    return ()=>g.forEach((x,i)=>setTimeout(()=>show(x),i*350));}}],
+ sum:{lines:['날을 물을 땐<br>며칠이라고 쓴다.','‘몇 일’이었다면<br>[며딜]로 소리 나야 한다.','그래서 소리 나는 대로<br>며칠로 적는다.'],
+  words:[['며칠','그달의<br>몇째 날'],['며칠째','몇 날이 지났는지<br>셀 때'],['맞춤법','글을 바르게<br>쓰는 규칙']]},
+ end:{q:'‘몇 월 며칠’에서 소리 나는 대로 적는 말은?',a:'며칠. ‘몇 월’은 ‘몇’과 ‘월’로 나눠 써.',h:'오늘이 몇 월<br>며칠인지 말해 봐.',btn:'답 보기',
+  draw:S=>endCard(S,[['11월 15일','t56',220],['몇 월 며칠','t30',280]])}
+});
+
+// ===================== 엔진 (루아 앱 안 iframe) =====================
+const closeMe=()=>{try{parent.postMessage({gk:'piece-close'},'*');}catch(e){}};
+['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>{try{parent.postMessage({gk:'piece-touch'},'*');}catch(e){}},true));
+const tick=()=>{const d=new Date(),h=d.getHours();$('clock').innerHTML=`<small>${h===0?'밤':h<12?'오전':'오후'}</small>${h%12||12}:${String(d.getMinutes()).padStart(2,'0')}`;};tick();setInterval(tick,15e3);
+const P=new URLSearchParams(location.search),EI=Math.max(1,Math.min(EP.length,+P.get('ep')||1))-1;
+let E=EP[EI],cur=0;const ORDER=['cover','s0','s1','s2','sum','end'],stepsDone={},runners={};let coverPlay=null;
+window.__piece={id:EI+1,topic:E.topic};
+const dots=$('dots');ORDER.forEach(()=>dots.appendChild(document.createElement('i')));
+function clear(x){while(x.firstChild)x.removeChild(x.firstChild);}
+$('cvK').innerHTML=`<b>${E.cat}</b>${E.topic}`;$('cvH').innerHTML=E.cover.h;coverPlay=E.cover.draw($('cvSvg'));document.title='오늘의 한 조각 — '+E.topic;
+E.scenes.forEach((sc,j)=>{const x=$('s'+j);x.innerHTML=`<div class="L"><div class="k"><b>${j+1}</b>${sc.k}</div><h2>${sc.h}</h2><p class="b">${sc.b}</p></div><div class="tile"><svg viewBox="0 0 792 540"></svg></div>`;runners['s'+j]={steps:sc.steps,run:sc.draw(x.querySelector('svg'))};});
+$('sumList').innerHTML=E.sum.lines.map(l=>`<li>${l}</li>`).join('');$('words').innerHTML=E.sum.words.map(([a,b])=>`<div class="word"><b>${a}</b><span>${b}</span></div>`).join('');
+$('rcQ').textContent=E.end.q;$('rcA').textContent=E.end.a;$('endH').innerHTML=E.end.h;const rev=E.end.draw($('endSvg'));runners.end={steps:['답 보기',E.end.btn],run:i=>i===0?$('rcA').classList.add('show'):rev()};
+const ARW='<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>';
+const nextStep=k=>{const r=runners[k];return r?r.steps[stepsDone[k]||0]||null:null;};
+function refresh(){const k=ORDER[cur],s=nextStep(k);$('next').innerHTML=(s||(k==='end'?'다 봤어':'다음'))+ARW;}
+function go(i){i=Math.max(0,Math.min(ORDER.length-1,i));cur=i;const k=ORDER[i];document.querySelectorAll('.scr').forEach(x=>x.classList.toggle('on',x.dataset.k===k));
+  [...dots.children].forEach((d,j)=>d.classList.toggle('on',j===i));$('back').style.visibility=k==='cover'?'hidden':'visible';if(k==='cover'&&coverPlay)coverPlay();refresh();}
+function doStep(){const k=ORDER[cur],s=nextStep(k);if(!s)return false;const n=stepsDone[k]||0;stepsDone[k]=n+1;runners[k].run(n);refresh();return true;}
+function primary(){if(doStep())return;if(ORDER[cur]==='end')return closeMe();go(cur+1);}
+$('logo').onclick=closeMe;$('next').onclick=primary;$('back').onclick=()=>go(cur-1);$('cvTile').onclick=()=>coverPlay&&coverPlay();
+addEventListener('keydown',e=>{if(e.repeat)return;
+  if(['ArrowRight','PageDown',' ','Enter','ArrowDown'].includes(e.key)){e.preventDefault();primary();}
+  else if(['ArrowLeft','PageUp','ArrowUp','Backspace'].includes(e.key)){e.preventDefault();if(cur>0)go(cur-1);}
+  else if(['Escape','Home','F3'].includes(e.key)){e.preventDefault();closeMe();}});
+go(0);
+</script>
+</body>
+</html>
