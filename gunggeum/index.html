@@ -1513,13 +1513,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v147</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v148</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v147</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v148</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2319,7 +2319,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     homeSync();
   }
   let lockMsgTimer = null;
-  function svSay(t) { const again = !$('svMsg').hidden && $('svMsg').textContent === t; if (!again) { try { speak(t, true); } catch (e) {} } // v147: 글을 못 읽는 아이도 왜 막혔는지 듣게(같은 안내가 떠 있는 동안 다시 누르면 되풀이하지 않음)
+  function svSay(t) { const again = !$('svMsg').hidden && $('svMsg').textContent === t; if (!again) { try { speak(t, true); } catch (e) {} } // v146: 글을 못 읽는 아이도 왜 막혔는지 듣게(같은 안내가 떠 있는 동안 다시 누르면 되풀이하지 않음)
     for (const id of ['svMsg', 'fcMsg']) { const m = $(id); m.textContent = t; m.hidden = false; } clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { $('svMsg').hidden = $('fcMsg').hidden = true; }, 8000); } // v135: 2학년이 다 읽게 8초
   function exitSaver(force) { // force: 달력의 일정 말하기(질문 상한과 상관없이 깨어난다 — 쉬는 시간은 부르는 쪽에서 막는다)
     if (saverEl.hidden) return;
@@ -2341,7 +2341,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   // v122: 밤 10시~새벽 6시의 검은 밤 화면을 끈다(부모 요청). 밤에도 위젯 면이 그대로 보인다. 다시 켜려면 true.
   function svWide() { return true; } // v124: 전화도 모니터와 같은 홈(표지·날씨·달력·신문 1면)을 쓴다. 배치는 CSS(max-width:899px)가 맡는다
-  function restDarkNow() { return settings.restDark !== 'off' && restNow(); } // v147: 쓸 수 있는 시간 밖이면 화면도 어두운 시계만(부모 설정, 기본 켬)
+  function restDarkNow() { return settings.restDark !== 'off' && restNow(); } // v146: 쓸 수 있는 시간 밖이면 화면도 어두운 시계만(부모 설정, 기본 켬)
   function nightScreen() { return settings.night10 === 'on'; } // 부모님 화면 › 화면 › 밤 10시 화면 (기본 끔)
   const svCur = () => { const c = saverEl.classList; return c.contains('cal') ? 'cal' : c.contains('face') ? 'face' : c.contains('sky') ? 'sky' : c.contains('paper-hero') ? 'front' : c.contains('night') ? 'night' : c.contains('paper-done') ? 'done' : 'plain'; };
   function svDots() {
@@ -3965,7 +3965,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v147';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v148';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
