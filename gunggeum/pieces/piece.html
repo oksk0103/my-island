@@ -149,6 +149,10 @@ body.v2 #end .top30 .a{color:rgba(243,233,210,.7)}
 body.v2 #end .main{left:96px;top:390px;width:520px;z-index:2}
 body.v2 #end .tile{left:0;top:0;width:1600px;height:820px}
 /* v2 이야기: 남청 바탕, 강조 앰버, 제목 명조 */
+/* 화면 비율이 1600×820과 다를 때 위아래(또는 좌우) 남는 띠를 바탕색과 같게 */
+html:has(body.v2),body.v2{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),linear-gradient(#241F5C,#120F33) fixed}
+html:has(body.v2.story),body.v2.story{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),linear-gradient(#1A2C55,#0C1630) fixed}
+body.v2 #stage,body.v2.story #stage{background:none!important}
 body.v2.story #stage{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),linear-gradient(#1A2C55,#0C1630)}
 body.v2.story .k,body.v2.story .k b{color:#E9B872}
 body.v2.story h2{font-family:"Noto Serif KR","Noto Serif CJK KR",serif;font-weight:700;letter-spacing:-.02em}
