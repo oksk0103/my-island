@@ -202,7 +202,12 @@ async function newsTests(b) {
   await tile('news'); s = await p.st(); ok('신문 표지 → 신문 1면', s.saver.includes('rnp') && !s.paper, s);
   { const bx = await p.locator('#rnFront [data-rn="art"][data-i="0"]').boundingBox(); await p.mouse.click(bx.x + 80, bx.y + 60); await p.adv(1500); } s = await p.st(); ok('1면의 머리기사 → 기사 열림', !s.saver && s.paper, s);
   ok('깨어나면 갈래 강제가 지워짐', await p.evaluate(() => window.__gkCover === undefined));
-  await p.saver(); await tile('todo'); s = await p.st(); ok('할 일 빈 곳 → 할 일 화면 (v135)', s.saver === 'pgx' && await p.evaluate(() => document.getElementById('saver').dataset.pg === 'todo'), s); await p.click('#gkHome'); await p.adv(1500);
+  await p.saver(); await tile('todo'); s = await p.st(); ok('할 일 빈 곳 → 할 일 화면 (v135)', s.saver === 'pgx' && await p.evaluate(() => document.getElementById('saver').dataset.pg === 'todo'), s);
+  { const a0 = p.api; await p.click('[data-act="tdadd"]'); await p.adv(800); await p.say('수학 익힘책', 3000); await p.adv(1500); s = await p.st();
+    const td = await p.evaluate(() => (JSON.parse(localStorage.getItem('gk-todo') || '{"items":[]}').items || []).map(x => x.text));
+    ok("할 일 말하기 → 그 말은 질문이 아니라 할 일로 적히고 할 일 화면으로 (v140)", td.includes('수학 익힘책') && s.saver === 'pgx' && await p.evaluate(() => document.getElementById('saver').dataset.pg === 'todo') && p.api === a0, [td, s.saver, p.api - a0]);
+  }
+  await p.click('#gkHome'); await p.adv(1500);
   ok('타일이 화면 밖으로 넘치지 않음', await p.evaluate(() => { document.getElementById('saver').hidden = false; const r = [...document.querySelectorAll('#svFace .fc-t')].every(t => { const b = t.getBoundingClientRect(); return b.left >= 0 && b.top >= 0 && b.right <= innerWidth && b.bottom <= innerHeight && (t.classList.contains('fc-feat') || t.scrollHeight <= t.clientHeight + 1); }); document.getElementById('saver').hidden = true; return r; }));
   await p.saver(); await tile('study'); s = await p.st(); ok('공부칸 타일 → 공부칸 앱이 크게 열림 (v138, 깨어나지 않음)', s.saver === 'pgx' && await p.evaluate(() => document.getElementById('saver').dataset.pg === 'study' && document.getElementById('fcStudyL').textContent === '공부칸' && !localStorage.getItem('gk-study')), s);
   await p.click('#gkHome'); await p.adv(1500); ok('공부칸의 홈 단추 → 위젯 면 (공부 중 표지는 없음)', /^face/.test((await p.st()).saver) && await feat() !== 'study', await feat());
