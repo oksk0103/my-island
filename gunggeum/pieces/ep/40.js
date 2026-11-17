@@ -1,6 +1,7 @@
 (()=>{ // 40. 노을은 왜 빨갈까 — 새 틀(v2) 관측 노트
 // 잉크: 크림 W0 · 산호 WO(화면당 한 곳) · 보조 WA. 색 자체가 내용인 곳(햇빛 속 색, 노을 띠)만 단색 면 허용(그라데이션 없음).
-const SW=[['빨강','#E2614F'],['주황','#EE9A4D'],['노랑','#EBD27A'],['초록','#7DBB8C'],['파랑','#5B8FD6'],['남색','#5F6CC8'],['보라','#9A76C8']];
+// 잉크 3색 규칙: 노을 띠는 빨강=강조(산호), 주황=흐린 크림, 노랑=크림. 나머지 색은 이름만 쓴다.
+const SW=[['빨강',WO],['주황',W0m],['노랑',W0],['초록',W0m],['파랑',W0m],['남색',W0m],['보라',W0m]];
 const sun=(p,cx,cy,r,fill=W0,rays=true)=>{const g=el('g',{},p);el('circle',{cx,cy,r,fill},g);if(rays)for(let i=0;i<8;i++){const a=i*Math.PI/4;wl(g,cx+Math.cos(a)*(r+12),cy+Math.sin(a)*(r+12),cx+Math.cos(a)*(r+26),cy+Math.sin(a)*(r+26),W0);}return g;};
 const mv=(c,x,y)=>{c.setAttribute('cx',x.toFixed(1));c.setAttribute('cy',y.toFixed(1));};
 const tri=(p,x,y,c)=>el('path',{d:`M${x},${y-30}L${x+18},${y}H${x-18}Z`,fill:c},p);
@@ -52,7 +53,7 @@ EPX[40]={day:'과학',topic:'노을',cat:'빛과 색',field:'과학',frame:'v2',
     for(let y=160;y<=440;y+=40)wl(S,780,y,1504,y,W0m);
     tx(S,640,200,'저녁 하늘','v28');
     const B=[[0,560,600],[1,500,560],[2,440,500]].map(([k,y0,y1])=>{const r=el('rect',{x:SX,y:y0,width:0,height:y1-y0,fill:SW[k][1]},S);const t=tx(S,640,(y0+y1)/2+10,SW[k][0],'v28');t.setAttribute('opacity',0);return {r,t};});
-    const sc=el('circle',{cx:SX,cy:SY,r:44,fill:'#1E1A4F',stroke:W0,'stroke-width':2},S);
+    const sc=el('circle',{cx:SX,cy:SY,r:44,fill:WBG,stroke:W0,'stroke-width':2},S);
     wl(S,640,GY,1504,GY,W0);tx(S,1504,GY+44,'땅','v22m','end');
     const cap=grp(S,0);tx(cap,1504,120,'노을','v60','end');
     return ()=>play(1400,e=>{B.forEach((b,k)=>{const s=Math.max(0,Math.min(1,e*1.4-k*.2));const L=Math.max(SX-780,1504-SX)*s;b.r.setAttribute('x',Math.max(780,SX-L));b.r.setAttribute('width',Math.min(1504,SX+L)-Math.max(780,SX-L));b.t.setAttribute('opacity',s>.3?1:0);});
@@ -64,8 +65,8 @@ EPX[40]={day:'과학',topic:'노을',cat:'빛과 색',field:'과학',frame:'v2',
    el('rect',{x:X0-14,y:Y0-14,width:X1-X0+28,height:Y1-Y0+28,fill:'none',stroke:W0m,'stroke-width':2},S);
    const B=[[2,350,390],[1,390,430],[0,430,470]].map(([k,y0,y1])=>({k,r:el('rect',{x:X0,y:y0,width:X1-X0,height:y1-y0,fill:SW[k][1],opacity:0},S),y:(y0+y1)/2}));
    el('circle',{cx:1240,cy:HY-30,r:26,fill:WO},S);
-   el('rect',{x:X0,y:HY,width:X1-X0,height:Y1-HY,fill:'#1E1A4F'},S);
-   for(let x=X0+30;x<X1;x+=70){const h=40+((x*37)%5)*22;el('rect',{x,y:HY+30-h,width:44,height:Y1-HY-30+h,fill:'#1E1A4F',stroke:W0m,'stroke-width':2},S);}
+   el('rect',{x:X0,y:HY,width:X1-X0,height:Y1-HY,fill:WBG},S);
+   for(let x=X0+30;x<X1;x+=70){const h=40+((x*37)%5)*22;el('rect',{x,y:HY+30-h,width:44,height:Y1-HY-30+h,fill:WBG,stroke:W0m,'stroke-width':2},S);}
    el('rect',{x:X0,y:Y0,width:X1-X0,height:Y1-Y0,fill:'none',stroke:W0,'stroke-width':2},S);wl(S,MX,Y0,MX,Y1);wl(S,X0,(Y0+Y1)/2-60,X1,(Y0+Y1)/2-60);wl(S,X0-40,Y1+30,X1+40,Y1+30,W0);
    tx(S,X0-40,Y1+74,'방 안 · 창가','v22m');
    const N=B.map((b,i)=>{const g=grp(S,0);wl(g,X0-60,b.y,X0-14,b.y,W0m);tx(g,X0-72,b.y+10,(i+1)+' '+SW[b.k][0],'v28','end');return g;});

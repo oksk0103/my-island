@@ -1,6 +1,7 @@
 (()=>{ // 41. 무지개는 어떻게 생길까 — 새 틀(v2) 관측 노트
 // 잉크: 크림 W0 · 산호 WO(화면당 한 곳) · 보조 WA. 무지개 일곱 색은 색 자체가 내용 → 단색 띠 허용(그라데이션 없음).
-const SW=[['빨강','#E2614F'],['주황','#EE9A4D'],['노랑','#EBD27A'],['초록','#7DBB8C'],['파랑','#5B8FD6'],['남색','#5F6CC8'],['보라','#9A76C8']];
+// 무지개는 색 자체가 내용이라 일곱 띠만 단색으로 칠한다(바탕 보라남에 맞춰 채도를 낮춘 색, 그라데이션 없음). 나머지는 잉크 3색.
+const SW=[['빨강','#E8806C'],['주황','#EFA766'],['노랑','#EAD37C'],['초록','#8DBF8A'],['파랑','#71A7DB'],['남색','#5E70C4'],['보라','#9E82CC']];
 const sun=(p,cx,cy,r)=>{const g=el('g',{},p);el('circle',{cx,cy,r,fill:W0},g);for(let i=0;i<8;i++){const a=i*Math.PI/4;wl(g,cx+Math.cos(a)*(r+12),cy+Math.sin(a)*(r+12),cx+Math.cos(a)*(r+26),cy+Math.sin(a)*(r+26));}return g;};
 const mv=(c,x,y)=>{c.setAttribute('cx',x.toFixed(1));c.setAttribute('cy',y.toFixed(1));};
 const tri=(p,x,y,c)=>el('path',{d:`M${x},${y-30}L${x+18},${y}H${x-18}Z`,fill:c},p);

@@ -1,7 +1,8 @@
 (()=>{ /* 54. 겨울 별자리 오리온 — v2 관측 노트(별 지도) */
+// 사람 형체로 읽히지 않게: 머리(메이사)·다리 끝 없이 모래시계 윤곽만 잇는다.
 // 별 위치(적경 h, 적위 °) — 실제 하늘 배치. 동쪽이 왼쪽(하늘을 올려다본 모습).
 const ST={bet:[5.92,7.4,1],bel:[5.42,6.35,2],mei:[5.59,9.93,3],alk:[5.68,-1.94,2],alm:[5.60,-1.20,2],min:[5.53,-0.30,2],sai:[5.80,-9.67,2],rig:[5.24,-8.20,1],sir:[6.75,-16.7,0],pro:[7.66,5.2,1]};
-const LINES=[['bet','bel'],['bet','alk'],['bel','min'],['alk','alm'],['alm','min'],['alk','sai'],['min','rig'],['bet','mei'],['bel','mei']];
+const LINES=[['bet','bel'],['bet','alk'],['bel','min'],['alk','alm'],['alm','min'],['alk','sai'],['min','rig'],['sai','rig']];
 const proj=(ra0,cx,cy,k)=>id=>{const [ra,dec]=ST[id];return [cx-(ra-ra0)*15*k*Math.cos(dec*Math.PI/180),cy-dec*k];};
 const R=m=>[9,7,5,4][m];               // 밝기 → 점 크기
 // 별 지도 바탕: 보조색 십자 격자(관측 노트 모눈)
@@ -9,7 +10,7 @@ function grid(S,x1,y1,x2,y2,st=72){const g=el('g',{stroke:WA,'stroke-width':2,'s
 // 오리온(선+별). 돌려줌: 별 좌표 P, 별 점 C, 선 L
 function orion(S,P,o={}){const g=el('g',{},S),L={},C={};
  LINES.forEach(([a,b])=>{const [x1,y1]=P(a),[x2,y2]=P(b);L[a+b]=wl(g,x1,y1,x2,y2,W0m,o.lineHidden?{opacity:0}:{});});
- ['bet','bel','mei','alk','alm','min','sai','rig'].forEach(id=>{const [x,y]=P(id);C[id]=wdot(g,x,y,R(ST[id][2]),o.dim&&!['alk','alm','min'].includes(id)?W0m:W0);});
+ ['bet','bel','alk','alm','min','sai','rig'].forEach(id=>{const [x,y]=P(id);C[id]=wdot(g,x,y,R(ST[id][2]),o.dim&&!['alk','alm','min'].includes(id)?W0m:W0);});
  return {g,L,C};}
 const drawLine=(p,x1,y1,x2,y2,col,ms,end)=>{const l=wl(p,x1,y1,x1,y1,col);play(ms,e=>{l.setAttribute('x2',x1+(x2-x1)*e);l.setAttribute('y2',y1+(y2-y1)*e);},end);return l;};
 
@@ -36,7 +37,7 @@ EPX[54]={day:'12월 9일',topic:'오리온자리',cat:'겨울 별자리',field:'
     const names=grp(S,0);[['bet','베텔게우스',-1],['rig','리겔',1]].forEach(([id,n,s])=>{const [x,y]=P(id);tx(names,x+s*24,y+(s<0?-24:44),n,'v22',s<0?'end':'start');});
     hRuler(S,700,1504,660,46,'','');tx(S,700,704,'관측 · 12월 맑은 저녁','v22m');
     return i=>{if(i===0){const dx=cx-ax,dy=cy-ay;drawLine(S,ax-dx*.35,ay-dy*.35,cx+dx*.35,cy+dy*.35,WO,900,()=>show(cap));}
-     else{['bet','bel','mei','sai','rig'].forEach(id=>O.C[id].setAttribute('fill',W0));
+     else{['bet','bel','sai','rig'].forEach(id=>O.C[id].setAttribute('fill',W0));
       const Ls=Object.values(O.L);play(1200,e=>Ls.forEach((l,k)=>l.setAttribute('opacity',Math.max(0,Math.min(1,e*2-k/Ls.length)))),()=>show(names));}};}},
   {k:'별의 빛깔',h:'별마다<br>빛깔이 다르다',b:'어깨의 <em>베텔게우스</em>는 붉은빛, 발의 리겔은 푸른빛이야. 푸른빛 별이 붉은빛 별보다 훨씬 더 뜨거워.',steps:['베텔게우스 재기','리겔 재기'],
    draw(S){grid(S,676,128,1180,600);const P=proj(5.58,880,360,26);const O=orion(S,P);

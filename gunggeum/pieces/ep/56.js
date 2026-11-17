@@ -67,12 +67,13 @@ EPX[56]={day:'12월 11일',topic:'공룡 화석',cat:'땅과 화석',field:'과�
   draw(S){// 바위 면 위의 세 발가락 발자국 줄
    layer(S,640,1504,600,680,0,9);wl(S,640,600,1504,600,W0);
    const steps=[[770,520,-1],[930,430,1],[1090,520,-1],[1250,430,1],[1410,520,-1]];
-   // 세 발가락 발자국: 둥근 뒤꿈치 + 끝이 둥근 통통한 발가락 셋(걸어간 방향 = 오른쪽)
+   // 세 발가락 발자국(관측 노트 선화): 뒤꿈치 윤곽 + 끝이 뾰족한 가는 발가락 셋 — 통통한 손 모양으로 읽히지 않게
    const foot=(p,x,y,s,col)=>{const g=el('g',{transform:`translate(${x},${y}) rotate(${s*5})`},p);
-    [[-30,58],[0,70],[30,58]].forEach(([a,L])=>{const r=a*Math.PI/180;el('path',{d:`M10,0L${(Math.cos(r)*L).toFixed(1)},${(Math.sin(r)*L).toFixed(1)}`,stroke:col,'stroke-width':24,'stroke-linecap':'round',fill:'none'},g);});
-    el('ellipse',{cx:0,cy:0,rx:28,ry:24,fill:col},g);return g;};
+    [[-40,70],[0,84],[40,70]].forEach(([a,L])=>{const r=a*Math.PI/180,c=Math.cos(r),n=Math.sin(r),w=14;
+     el('path',{d:`M${(14*c-w*n).toFixed(1)},${(14*n+w*c).toFixed(1)}L${(L*c).toFixed(1)},${(L*n).toFixed(1)}L${(14*c+w*n).toFixed(1)},${(14*n-w*c).toFixed(1)}`,stroke:col,'stroke-width':2,'stroke-linejoin':'round',fill:'none'},g);});
+    el('path',{d:'M16,-22C-12,-30 -34,-16 -34,0C-34,16 -12,30 16,22',stroke:col,'stroke-width':2,fill:'none'},g);return g;};
    const F=steps.map(([x,y,s])=>{const g=foot(S,x,y,s,W0);g.setAttribute('opacity',.35);return g;});
    hRuler(S,700,1460,250,48,'','');tx(S,700,214,'걸어간 방향','v22m');el('path',{d:'M1460,236l20,14l-20,14',fill:'none',stroke:W0,'stroke-width':2},S);
    const lab=grp(S,0);tx(lab,700,360,'흔적 화석','v60');tx(lab,704,400,'발자국','v22m');
-   return ()=>{F.forEach((g,k)=>setTimeout(()=>{g.setAttribute('opacity',1);g.querySelectorAll('path,ellipse').forEach(n=>{n.setAttribute(n.tagName==='ellipse'?'fill':'stroke',k===F.length-1?WO:W0);});},k*220));setTimeout(()=>show(lab),F.length*220);};}}};
+   return ()=>{F.forEach((g,k)=>setTimeout(()=>{g.setAttribute('opacity',1);g.querySelectorAll('path').forEach(n=>n.setAttribute('stroke',k===F.length-1?WO:W0));},k*220));setTimeout(()=>show(lab),F.length*220);};}}};
 })();

@@ -1,6 +1,7 @@
 (()=>{ // 32. 색깔 낱말 노랗다·노르스름하다·누렇다 — 이야기 v2: 낱말 분해·눈금 도식
 const C='#F3E9D2',A='#E9B872',B='#2C4A80',Cm='rgba(243,233,210,.45)';
-const YL={'노르스름하다':'#E8D48E','노랗다':'#F2C230','누렇다':'#B08E2E'};
+// 잉크 3색 규칙: 노랗다=강조(앰버), 노르스름하다=크림(옅게), 누렇다=흐린 크림(탁하게). 새 노랑 물감을 만들지 않는다.
+const YL={'노르스름하다':C,'노랗다':A,'누렇다':Cm};
 const sw=(p,x,y,w,h,k)=>el('rect',{x,y,width:w,height:h,fill:YL[k]},p);
 const line=(p,x1,y1,x2,y2,c=C,o={})=>el('line',Object.assign({x1,y1,x2,y2,stroke:c,'stroke-width':2,'stroke-linecap':'round'},o),p);
 const path=(p,d,c=C,o={})=>el('path',Object.assign({d,fill:'none',stroke:c,'stroke-width':2,'stroke-linecap':'round','stroke-linejoin':'round'},o),p);

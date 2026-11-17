@@ -1,7 +1,8 @@
 (()=>{ // 39. 하늘은 왜 파랄까 — 새 틀(v2) 관측 노트
 // 잉크: 크림 W0 · 산호 WO(화면당 한 곳) · 보조 WA. 색 자체가 내용인 곳(햇빛 속 일곱 색, 튕긴 파란빛)만 단색 면 허용.
 const SW=[['빨강','#E2614F'],['주황','#EE9A4D'],['노랑','#EBD27A'],['초록','#7DBB8C'],['파랑','#5B8FD6'],['남색','#5F6CC8'],['보라','#9A76C8']];
-const BLUE=SW[4][1],RED=SW[0][1];
+// 잉크 3색 규칙: 색 이름은 글자로, 칸은 크림 한 색으로 채운다(알록달록 금지).
+const BLUE=WA,RED=WO;
 const sun=(p,cx,cy,r,fill=W0)=>{const g=el('g',{},p);el('circle',{cx,cy,r,fill},g);for(let i=0;i<8;i++){const a=i*Math.PI/4;wl(g,cx+Math.cos(a)*(r+12),cy+Math.sin(a)*(r+12),cx+Math.cos(a)*(r+26),cy+Math.sin(a)*(r+26),fill===W0?W0:fill);}return g;};
 const mv=(c,x,y)=>{c.setAttribute('cx',x.toFixed(1));c.setAttribute('cy',y.toFixed(1));};
 const tri=(p,x,y,c)=>el('path',{d:`M${x},${y-30}L${x+18},${y}H${x-18}Z`,fill:c},p);
@@ -25,9 +26,9 @@ EPX[39]={day:'과학',topic:'파란 하늘',cat:'빛과 색',field:'과학',fram
     const FX=980,FY=400;wl(S,776,400,FX,400,W0);
     const R=[];SW.forEach(([n,c],i)=>{const y=172+i*76;const g=el('g',{},S);
      el('rect',{x:1300,y:y-26,width:64,height:52,fill:'none',stroke:W0m,'stroke-width':2},g);tx(S,1388,y+10,n,'v28');
-     const ln=wl(S,FX,FY,FX,FY,W0m,{'stroke-dasharray':'2 10'});const sw=el('rect',{x:1300,y:y-26,width:64,height:52,fill:c,opacity:0},S);R.push({ln,sw,y});});
+     const ln=wl(S,FX,FY,FX,FY,W0m,{'stroke-dasharray':'2 10'});const sw=el('rect',{x:1300,y:y-26,width:64,height:52,fill:i===4?WO:W0,opacity:0},S);R.push({ln,sw,y});});
     wdot(S,FX,FY,7,W0);tx(S,FX,FY+56,'풀어 보면','v22m','middle');
-    wl(S,640,600,1240,600,W0m);tx(S,980,700,'7','v96','end').setAttribute('fill',WO);tx(S,996,700,'가지 색','v28');
+    wl(S,640,600,1240,600,W0m);tx(S,980,700,'7','v96','end');tx(S,996,700,'가지 색','v28');
     tx(S,1300,120,'일곱 색','v22m');
     return ()=>play(1100,e=>R.forEach((r,i)=>{const s=Math.max(0,Math.min(1,e*1.5-i*.07));r.ln.setAttribute('x2',FX+(1290-FX)*s);r.ln.setAttribute('y2',FY+(r.y-FY)*s);r.sw.setAttribute('opacity',s>=1?1:0);}),()=>R.forEach(r=>r.sw.setAttribute('opacity',1)));}},
   {k:'잘 튕기는 파랑',h:'파란빛은<br>공기에 잘 튕긴다',b:'빛은 공기 속을 지나며 공기에 부딪혀. 그중 <em>파란빛</em>이 제일 잘 튕겨서 사방으로 퍼져.',steps:['빨간빛 보내기','파란빛 보내기'],
