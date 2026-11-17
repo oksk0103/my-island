@@ -526,7 +526,7 @@ async function newsTests(b) {
     ok('밤 답 화면: 어두운 바탕에 밝은 글씨', q.night && q.ink > 180 && /rgb\(10, 17, 48\)/.test(q.app), q); await p.context().close();
     p = await open(b, { time: newsDate + 'T21:50' }); await p.say('달은 왜 빛나', 9000); q = await p.evaluate(() => document.body.hasAttribute('data-night')); ok('밤 9시 50분 답 화면은 아직 밝음', !q); await p.context().close();
     // 쉬는 시간: 언제 다시 되는지 아이 말로, 묻기 타일도 알려 줌
-    p = await open(b, { time: newsDate + 'T21:30', settings: { hFrom: 7, hTo: 21 } }); await p.saver();
+    p = await open(b, { time: newsDate + 'T21:30', settings: { hFrom: 7, hTo: 21, restDark: 'off' } }); await p.saver();
     q = await p.evaluate(() => document.querySelector('.fc-app[data-tile="ask"] .fc-lab').textContent); ok('쉬는 시간 묻기 타일: "내일 아침 7시에 만나"', q === '내일 아침 7시에 만나', q);
     const bx = await p.locator('.fc-app[data-tile="ask"]').boundingBox(); await p.mouse.click(bx.x + 60, bx.y + 60); await p.adv(1200);
     q = await p.evaluate(() => { const m = document.getElementById('fcMsg'), r = m.getBoundingClientRect(), a = document.querySelector('.fc-app[data-tile="ask"]').getBoundingClientRect(); return { t: m.textContent, hid: m.hidden, hit: r.right > a.left && r.left < a.right && r.bottom > a.top && r.top < a.bottom }; });
