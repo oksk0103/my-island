@@ -1384,7 +1384,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="meta">
         <span id="status"></span>
         <button class="textbtn" id="replayBtn" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.2v5.6h3.7l4.6 3.7v-13L7.7 9.2H4Z"></path><path d="M16 8.2a5.2 5.2 0 0 1 0 7.6"></path></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"></path><path d="M4.5 4.2v4h4"></path></svg>
           다시 듣기
         </button>
         <button class="textbtn" id="backPaper" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>신문으로</button>
@@ -1513,13 +1513,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v144</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v145</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v144</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v145</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1566,7 +1566,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
         <label>답 길이</label>
         <div class="seg" data-k="len"><button type="button" data-v="short">짧게</button><button type="button" data-v="normal">보통</button><button type="button" data-v="long">길게</button></div>
         <label>수준</label>
-        <div class="seg" data-k="level"><button type="button" data-v="e2">초등 2학년</button><button type="button" data-v="m1">중학생</button></div>
+        <div class="seg" data-k="level"><button type="button" data-v="e2">초등 2학년</button><button type="button" data-v="e3">초등 3학년</button><button type="button" data-v="m1">중학생</button></div>
         <label>쓸 수 있는 시간</label>
         <div class="row"><select id="hFrom"></select><span>부터</span><select id="hTo"></select><span>까지</span></div>
         <label>API 키</label>
@@ -1630,13 +1630,17 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'm1', hFrom: 0, hTo: 24, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on', scaryNight: 'on', night10: 'off', wxStill: 'off' };
+  const DEFAULTS = { len: 'normal', level: 'e3', hFrom: 0, hTo: 24, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on', scaryNight: 'on', night10: 'off', wxStill: 'off' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
+  if (!LS.get('gk-mig-e3', 0)) { LS.set('gk-mig-e3', 1); if (settings.level === 'm1') { settings.level = 'e3'; LS.set('gk-settings', settings); } } // v145: 부모 결정 — 기본 수준을 초등 3학년으로(한 번만 옮김, 그 뒤 부모가 바꾸면 그대로)
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
   const LEVEL = {
     m1: `묻는 사람은 초등학생이지만 이해력과 호기심이 중학생 수준이야. 중학생을 대하듯 답해.
 - 어린아이 말투, 의성어, "~란다", "참 잘했어" 같은 칭찬이나 달래는 말은 쓰지 마. 담백하고 정확하게, 반말로.
 - 개념을 정확한 용어로 설명해(예: 광합성, 중력, 원자, 증발, 비율). 처음 나오는 어려운 용어만 괄호 없이 한 구절로 짧게 풀어.`,
+    e3: `묻는 사람은 초등학교 3학년이야. 3학년이 혼자 읽을 수 있는 말과 짧은 문장으로, 반말로 답해.
+- 정확한 용어(예: 광합성, 중력, 증발)는 써도 되지만, 처음 나오면 바로 뒤에 쉬운 말로 한 구절 풀어.
+- 유치하게 말하거나 "~란다", "참 잘했어" 같은 달래는 말은 쓰지 마. 쉽지만 정확하게.`,
     e2: `묻는 사람은 초등학교 2학년이야. 2학년이 혼자 읽을 수 있는 쉬운 말과 짧은 문장으로, 반말로 답해.
 - 어려운 용어는 되도록 피하고, 꼭 써야 하면 바로 뒤에 쉬운 말로 풀어.
 - 유치하게 말하거나 "~란다", "참 잘했어" 같은 달래는 말은 쓰지 마. 쉽지만 정확하게.`
@@ -2001,6 +2005,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     document.addEventListener('click', e => { if (e.isTrusted && Date.now() < synthUntil) { synthUntil = 0; e.stopImmediatePropagation(); e.preventDefault(); } }, true);
   })();
   $('replayBtn').addEventListener('click', () => { speak(current, true); });
+  try { $('soundBtn').before($('replayBtn')); $('replayBtn').setAttribute('aria-label', '다시 듣기'); } catch (e) {} // v145: 다시 듣기를 소리 단추 옆으로(숨은 .meta에서 꺼냄)
 
   // ---------- speech in (Web Speech API) ----------
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -2674,7 +2679,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function todoClean(said) {
     let t = ' ' + said.replace(/[.,!?~]/g, ' ') + ' ', when = '';
     t = t.replace(/((오전|오후|아침|저녁|밤)\s*)?([0-9]{1,2}|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열|열한|열두)\s*시(\s*반)?(에|까지)?(?=\s)/, m => { when = m.replace(/(에|까지)$/, '').trim(); return ' '; }); // "네 시에"는 뒤에 따로 붙임
-    t = t.replace(/(할\s*일|숙제|준비물)?(에|로|으로|을|를)?\s*(추가|적어|넣어|써)\s*(해\s*)?(줘|줄래|놔|둬|주세요)/g, ' ');
+    t = t.replace(/((?<=^\s*)(?:숙제|준비물)|할\s*일)?(에|로|으로|을|를)?\s*(추가|적어|넣어|써)\s*(해\s*)?(줘|줄래|놔|둬|주세요)/g, ' '); // v145: '수학 숙제 추가해 줘'의 숙제는 남긴다(맨 앞의 '숙제 추가해 줘'만 지움)
     if (TD_INTO.test(said.replace(/[.,!?~]/g, ' ').trim())) t = t.replace(/(할\s*일|숙제|준비물)\s*(목록)?\s*(에다가|에다|에|으로|로)\s/, ' ').replace(/\s*(을|를)?\s*(추가|적어|넣어|기록|써)\s*(해|하자|할래|할게)?\s*$/, ' ');
     t = t.replace(/(다음\s*주\s*)?[월화수목금토일]요일(까지|에|날)?|오늘(까지|은)?|내일(까지|은)?|모레(까지)?/g, ' ');
     t = t.replace(/\s(나|나는|난|저|음|어|그|저기|근데|그리고|엄마가|선생님이)\s/g, ' ');
@@ -3791,7 +3796,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       setState(quiz ? 'quiz' : 'answer', quiz ? '퀴즈 중' : '답', quiz ? '답을 말해 봐. 모르겠으면 힌트를 눌러.' : '모르는 낱말은 눌러 봐.');
       const drawn = new Promise(r => setTimeout(r, graphemes(a).length * 28 + 400));
       answerDone = Promise.all([speak(current).catch(() => {}), drawn]);
-      { const mySeq = askSeq, fq = followUp; Promise.resolve(answerDone).catch(() => {}).then(() => new Promise(r => setTimeout(r, 60))).then(() => cardLine).catch(() => {}).then(() => new Promise(r => setTimeout(r, 500))).then(() => { if (mySeq === askSeq && fq && !busy && !listening && saverEl.hidden && app.dataset.state === 'answer') { const k = 'gk-hint-' + dayKey(new Date()), n = LS.get(k, 0); if (n < 2) { LS.set(k, n + 1); speak('더 궁금한 게 있으면 버튼 누르고 번호를 말해 줘.'); } } }); }
+      { const mySeq = askSeq, fq = followUp; Promise.resolve(answerDone).catch(() => {}).then(() => new Promise(r => setTimeout(r, 60))).then(() => cardLine).catch(() => {}).then(() => new Promise(r => setTimeout(r, 500))).then(() => { if (mySeq === askSeq && fq && !busy && !listening && saverEl.hidden && app.dataset.state === 'answer') { const k = 'gk-hint-' + dayKey(new Date()), n = LS.get(k, 0); if (n < 2) { LS.set(k, n + 1); speak('더 궁금한 게 있으면 아래 단추를 눌러 봐.'); } } }); }
       if (card && card.length) { picSeq++; showCard(card); picDbg('낱말 카드 ' + card.map(x => x.g + ' ' + x.l).join(', ')); }
       else if (noPhoto) { picDbg('낱말 질문인데 카드가 안 와서 따로 요청'); fetchCard(q, current, ctl.signal); }
       else if (!term && !emoji && !era && !/@@/.test(raw)) picDbg('답에 그림 줄(@@)이 안 왔음 — 모델이 규칙을 빼먹음'); else showPic(settings.picOn === 'off' ? '' : term, emoji, ctl.signal, era, look);
@@ -3937,7 +3942,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v144';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v145';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6267,6 +6272,15 @@ body[data-night] #app{--paperbg:linear-gradient(180deg,#0A1130,#111B47);--zbg:#0
   --strip:rgba(255,255,255,.10);--strips:inset 0 1.5px 0 rgba(255,255,255,.20),inset 0 0 0 1.5px rgba(255,255,255,.13);--ink:#ECE6D8;--muted:rgba(236,230,216,.64);--skyink:#ECE6D8;color:#ECE6D8}
 </style>
 <style id="st">
+/* v145: 답 화면 '다시 듣기' — 소리 단추 왼쪽에 같은 64 동그라미(전엔 .meta가 숨겨져 키보드로만 됐다) */
+#app:not([data-state=answer]) #replayBtn{display:none !important}
+#app[data-state=answer] #replayBtn{display:flex !important;align-items:center !important;justify-content:center !important;line-height:0;order:-10;width:64px !important;height:64px !important}
+#app #replayBtn svg{display:block;margin:0 !important;width:28px;height:28px}
+#app #replayBtn{font-size:0 !important;color:var(--pill-ink, #15171C);background:var(--pill, #fff);box-shadow:var(--pill-edge),var(--pill-shadow)}
+#app .app:has(.sheet.msg) #replayBtn, .app:has(.sheet.msg) #replayBtn{display:none}
+/* 신문 1면 '이어 읽기': 글자는 그대로, 누르는 자리만 60px 넘게 */
+.rn-more{position:relative}
+.rn-more::after{content:"";position:absolute;inset:-18px -14px}
 /* v138 공부칸: 왼쪽 큰 낱말 + 오른쪽 오늘 모인 말 / 모은 말 보기(갈래 넷, 두 단). 상자 없이 바탕 위에 바로 */
 #saver.pgx[data-pg=study]{background:var(--paperbg) !important;color:var(--zk)}
 #saver[data-pg=study] .pg-ttl, #saver[data-pg=study] .pg-sub{color:var(--zk)}

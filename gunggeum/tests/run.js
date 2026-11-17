@@ -659,6 +659,20 @@ async function newsTests(b) {
     q = await p2.evaluate(() => document.querySelector('#fcFeat .cc-h').textContent); ok('14편이 끝나면 평소 조각으로 돌아감', !/며칠|설날/.test(q), q); await p2.context().close();
   }
 
+  { // 22. v145 모의 체험 반영
+    console.log('22. 모의 체험 반영 (v145)');
+    const p = await open(b, { time: newsDate + 'T16:20', read: newsDate }); let q;
+    q = await p.evaluate(() => JSON.parse(localStorage.getItem('gk-settings') || '{}').level || 'e3'); ok('기본 수준은 초등 3학년', q === 'e3', q);
+    await p.say('할 일에 수학 숙제 추가해 줘', 2000); q = await p.evaluate(() => (JSON.parse(localStorage.getItem('gk-todo') || '{"items":[]}').items || []).map(x => x.text)); ok("'할 일에 수학 숙제 추가해 줘' → '수학 숙제'", q.includes('수학 숙제'), q);
+    await p.say('숙제 추가해 줘, 국어 받아쓰기', 2000); q = await p.evaluate(() => (JSON.parse(localStorage.getItem('gk-todo') || '{"items":[]}').items || []).map(x => x.text)); ok("'숙제 추가해 줘, 국어 받아쓰기' → '국어 받아쓰기'", q.includes('국어 받아쓰기'), q);
+    await p.say('달은 왜 빛나', 9000); q = await p.evaluate(() => { const r = document.getElementById('replayBtn').getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; }); ok('답 화면에 다시 듣기 단추(64)', q[0] >= 60 && q[1] >= 60, q);
+    await p.context().close();
+    const p2 = await open(b, { time: newsDate + 'T16:20' }); await p2.evaluate(() => { localStorage.setItem('gk-settings', JSON.stringify({ level: 'm1' })); localStorage.removeItem('gk-mig-e3'); }); await p2.reload(); await p2.adv(1500);
+    q = await p2.evaluate(() => JSON.parse(localStorage.getItem('gk-settings')).level); ok('예전 기기의 중학생 수준은 한 번만 3학년으로 옮김', q === 'e3', q);
+    await p2.evaluate(() => { const s = JSON.parse(localStorage.getItem('gk-settings')); s.level = 'm1'; localStorage.setItem('gk-settings', JSON.stringify(s)); }); await p2.reload(); await p2.adv(1500);
+    q = await p2.evaluate(() => JSON.parse(localStorage.getItem('gk-settings')).level); ok('그 뒤 부모가 중학생으로 바꾸면 그대로', q === 'm1', q); await p2.context().close();
+  }
+
   await newsTests(b);
   ok('페이지 오류 없음', errs.length === 0, errs.slice(0, 3));
   await b.close(); server.close();
