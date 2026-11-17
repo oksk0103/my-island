@@ -23,6 +23,7 @@ async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h 
   if (noSky) await p.route(/vendor\/sky/, r => r.abort());
   await p.addInitScript(([day, st, read]) => { localStorage.setItem('gk-settings', JSON.stringify(Object.assign({ apiKey: 'sk-test', hFrom: 0, hTo: 24, wxName: '영등포구', nightScr: 'off' }, st))); if (read) { localStorage.setItem('gk-news-read2', JSON.stringify(read)); localStorage.setItem('gk-news-done2', JSON.stringify([read])); } }, [day, settings, read]);
   if (pre) await pre(p);
+  if (sr) await p.addInitScript(() => { window.SpeechRecognition = window.webkitSpeechRecognition = class { start() { window.__rec = this; setTimeout(() => this.onstart && this.onstart(), 0); } stop() { setTimeout(() => this.onend && this.onend(), 0); } abort() { this.stop(); } }; });
   if (time) await p.clock.install({ time: new Date(time + ':00+09:00') });
   await p.goto(URL);
   p.adv = async (ms = 2000) => { if (time) await p.clock.runFor(ms); await p.waitForTimeout(time ? 350 : Math.min(ms, 1500)); };
@@ -30,7 +31,6 @@ async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h 
   await p.adv(2500); await p.addStyleTag({ content: '.sv-inner{animation:none!important}' });
   p.go = async k => { await p.evaluate(k => { document.getElementById('log').hidden = false; document.querySelector(`[data-go="${k}"]`).click(); }, k); }; // 부모님 화면의 바로가기(구역이 접혀 있어도 누른다)
   // sr: 가짜 음성 인식(v153 연속 듣기). p.speak = 마이크가 켜진 뒤 아이가 말한 것처럼 최종 결과를 보내고, 말 끝 기다림이 지나 듣기가 끝나게 둔다
-  if (sr) await p.addInitScript(() => { window.SpeechRecognition = window.webkitSpeechRecognition = class { start() { window.__rec = this; setTimeout(() => this.onstart && this.onstart(), 0); } stop() { setTimeout(() => this.onend && this.onend(), 0); } abort() { this.stop(); } }; });
   p.speak = async (text, wait = 5000) => { await p.evaluate(t => window.__rec.onresult({ resultIndex: 0, results: [Object.assign([{ transcript: t }], { isFinal: true })] }), text); await p.adv(wait); };
   p.say = async (text, wait = 1200) => { await p.evaluate(t => { const q = document.getElementById('q'); q.readOnly = false; q.value = t; }, text); await p.press('#q', 'Enter'); await p.adv(wait); };
   p.st = () => p.evaluate(() => ({ saver: document.getElementById('saver').hidden ? '' : document.getElementById('saver').className.replace('saver', '').trim(), paper: !document.getElementById('paper').hidden, log: !document.getElementById('log').hidden, home: !!document.getElementById('app').dataset.home, sheet: document.getElementById('sheet').textContent, chips: [...document.querySelectorAll('#chips button')].map(b => b.textContent.replace(/^\d/, '')), todo: (JSON.parse(localStorage.getItem('gk-todo') || '{"items":[]}').items || []).map(x => [x.text, x.due, !!x.done]), count: +document.querySelector('#count b').textContent }));
