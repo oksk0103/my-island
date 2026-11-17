@@ -10,7 +10,7 @@
   function fit() {
     var sw = Math.min(screen.width, screen.height), land = (screen.orientation && /landscape/.test(screen.orientation.type)) || (window.orientation === 90 || window.orientation === -90) || innerWidth > innerHeight;
     var want = PH;
-    if (land && sw < 600) { var asp = innerWidth / innerHeight || (Math.max(screen.width, screen.height) / sw); want = 'width=' + Math.ceil(Math.max(1600, 820 * asp)) + ', user-scalable=no, viewport-fit=cover'; }
+    if (land && sw < 600) { var lw = Math.max(screen.width, screen.height), W = Math.ceil(Math.max(1600, 820 * lw / sw)), sc = Math.floor(lw / W * 1000) / 1000; want = 'width=' + W + ', initial-scale=' + sc + ', minimum-scale=' + sc + ', maximum-scale=' + sc + ', user-scalable=no, viewport-fit=cover'; } // 배율을 못 박아야 크롬이 예전 배율(1)을 붙들고 오른쪽을 자르지 않는다
     if (m.getAttribute('content') !== want) m.setAttribute('content', want);
   }
   fit(); addEventListener('orientationchange', function () { setTimeout(fit, 250); }); addEventListener('resize', function () { clearTimeout(fit.t); fit.t = setTimeout(fit, 200); });
@@ -1513,13 +1513,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v140</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v141</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v140</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v141</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -3921,7 +3921,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v140';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v141';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6308,6 +6308,12 @@ body[data-night] #app{--paperbg:linear-gradient(180deg,#0A1130,#111B47);--zbg:#0
 .st-none small{display:block;margin-top:10px;font:500 28px/40px "Pretendard",sans-serif;color:var(--zk2)}
 .vc-note{margin-top:14px;font:500 20px/28px "Pretendard",sans-serif;color:var(--muted,#6B7280);opacity:.9}
 @media (max-width:899px){
+  /* v140: 휴대폰 세로의 홈 단추도 데스크톱처럼 루아 로고 동그라미(56) — 예전 넓은 알약·가는 선을 버림 */
+  html body #gkHome.gk-home, html body .rn-home{width:56px !important;min-width:56px !important;height:56px !important;padding:0 !important;gap:0 !important;justify-content:center !important;align-items:center !important;display:inline-flex;border-radius:50% !important;background:var(--pill) !important;color:var(--pill-ink) !important;box-shadow:var(--pill-edge),var(--pill-shadow) !important}
+  html body #gkHome.gk-home[hidden], html body .rn-home[hidden]{display:none !important}
+  svg.ds-lg{width:29px !important;height:31px !important;flex:none;display:block;margin:0 !important;transform:translateY(2px);fill:none !important;stroke:currentColor !important;stroke-width:23 !important;stroke-linecap:round;stroke-linejoin:round}
+  svg.ds-lg .ds-dot{fill:var(--ds-dot, #FF9B3D) !important;stroke:none !important}
+  .zu-prev small{white-space:nowrap}
   #saver[data-pg=study] .pg-study{position:relative;inset:auto;padding:92px 20px 120px}
   .st-hero, .st-list{position:static;display:flex;flex-direction:column;gap:24px}
   .st-big{font-size:72px}
