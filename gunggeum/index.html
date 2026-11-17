@@ -3,6 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<script>
+/* v140: 휴대폰을 가로로 들면 조각 장처럼 1600×820 화면을 통째로 줄여 보여 준다(잘림 없이). 세로·태블릿·모니터는 그대로 */
+(function () {
+  var m = document.querySelector('meta[name=viewport]'), PH = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover';
+  function fit() {
+    var sw = Math.min(screen.width, screen.height), land = (screen.orientation && /landscape/.test(screen.orientation.type)) || (window.orientation === 90 || window.orientation === -90) || innerWidth > innerHeight;
+    var want = PH;
+    if (land && sw < 600) { var asp = innerWidth / innerHeight || (Math.max(screen.width, screen.height) / sw); want = 'width=' + Math.ceil(Math.max(1600, 820 * asp)) + ', user-scalable=no, viewport-fit=cover'; }
+    if (m.getAttribute('content') !== want) m.setAttribute('content', want);
+  }
+  fit(); addEventListener('orientationchange', function () { setTimeout(fit, 250); }); addEventListener('resize', function () { clearTimeout(fit.t); fit.t = setTimeout(fit, 200); });
+})();
+</script>
 <meta name="theme-color" content="#1E5AD8">
 <!-- 그림은 같은 출처(그리고 기기 안에서 만든 data:/blob:)만. 바깥 그림은 브라우저가 막는다 -->
 <meta http-equiv="Content-Security-Policy" content="img-src 'self' data: blob:">
