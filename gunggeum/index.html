@@ -2297,7 +2297,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   function svPage(dir) {
     const pg = svPages(); if (pg.length < 2) return;
-    if (saverEl.dataset.pg === 'front' || saverEl.dataset.pg === 'sky' || saverEl.dataset.pg === 'wx') return; // 들어가는 화면에서는 넘기지 않는다 (홈 단추로 나감)
+    if (['front', 'sky', 'wx', 'study', 'todo'].includes(saverEl.dataset.pg)) return; // 들어가는 화면에서는 넘기지 않는다 (홈 단추로 나감)
     const cur = svCur(); let i = pg.indexOf(cur); if (i < 0) i = pg.findIndex(x => x !== 'front' && x !== 'sky');
     const nx = pg[(i + dir + pg.length) % pg.length];
     window.__gkForce = { s: nx, at: Date.now() }; window.__gkSaverAt = Date.now();
@@ -2319,7 +2319,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }, true);
   saverEl.addEventListener('pointermove', e => { if (svDown && Math.abs(e.clientX - svDown.x) > 14) clearTimeout(svHold); }, true);
   // 공부 모드: 표지를 조용하게. 아이가 다시 누를 때까지 켜져 있다(v132부터 시간 제한 없음)
-  function studyOn(){ try { localStorage.removeItem('gk-study'); } catch (e) {} return false; } // v138: '공부 중' 표지는 없앴다 — 공부 단추는 공부칸 앱을 연다
+  function studyOn(){ return false; } try { localStorage.removeItem('gk-study'); } catch (e) {} // v138: '공부 중' 표지는 없앴다 — 공부 단추는 공부칸 앱을 연다
   window.__gkStudyOn = studyOn;
   saverEl.addEventListener('pointerup', e => {
     clearTimeout(svHold); const d = svDown; svDown = null; if (d) svUpAt = Date.now(); if (!d || saverEl.hidden || !logEl.hidden) return;
@@ -2974,7 +2974,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   // ---------- 공부칸(v138): 물어본 낱말과 읽은 신문의 낱말을 이 기기에만 모은다(최대 300개). 퀴즈·개수·점수 없이 '다시 보기'만 ----------
   const WORDS_KEY = 'gk-words', WORDS_MAX = 300;
   var stSel = '', stView = 'hero', stTab = 'today', stPage = 0; const stFit = {};
-  function wordLoad() { const d = LS.get(WORDS_KEY, null); if (!d || !Array.isArray(d.items)) return { items: [] }; d.items = d.items.filter(x => x && x.k && x.w).sort((a, b) => (b.last || 0) - (a.last || 0)); return d; }
+  function wordLoad() { const d = LS.get(WORDS_KEY, null); if (!d || !Array.isArray(d.items)) return { items: [] }; d.items = d.items.filter(x => x && typeof x.k === 'string' && typeof x.w === 'string' && ['en', 'hz', 'ko'].includes(x.kind)).map(x => Object.assign(x, { last: +x.last || +x.at || Date.now(), syl: typeof x.syl === 'string' ? x.syl : '', mean: typeof x.mean === 'string' ? x.mean : '', hz: Array.isArray(x.hz) ? x.hz.filter(h => Array.isArray(h) && h.length === 2).map(h => [String(h[0]), String(h[1])]) : null, q: typeof x.q === 'string' ? x.q : '', line: typeof x.line === 'string' ? x.line : '', src: typeof x.src === 'string' ? x.src : '' })).sort((a, b) => (b.last || 0) - (a.last || 0)); return d; }
   function wordAdd(w) { // w: { k, w, syl, kind(en|hz|ko), mean, hz, q, from(ask|news), src, line }
     if (!w || !w.k || !w.w) return null;
     const d = wordLoad(), now = Date.now(); let it = d.items.find(x => x.k === w.k);
@@ -2987,7 +2987,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function wordNews(W, art) { // 신문 낱말: 아이가 그 기사를 펴거나 표지의 낱말을 누를 때 모은다
     if (!W || !W.w) return null; art = art || (news && news.articles.find(x => x.word && x.word.w === W.w)) || {};
     const line = String(art.body || '').split(/(?<=[.!?])\s+/).find(s => s.includes('《' + W.w + '》')) || '';
-    return wordAdd({ k: 'hz:' + W.w, w: W.w, kind: W.hanja && W.hanja.length ? 'hz' : 'ko', mean: String(W.mean || '').slice(0, 30), hz: W.hanja && W.hanja.length ? W.hanja.slice(0, 4) : null, from: 'news', src: String(art.short || art.title || '').slice(0, 30), line: line.replace(/[《》]/g, '').slice(0, 90) });
+    const kd = W.hanja && W.hanja.length ? 'hz' : 'ko'; return wordAdd({ k: kd + ':' + W.w, w: W.w, kind: kd, mean: String(W.mean || '').slice(0, 30), hz: W.hanja && W.hanja.length ? W.hanja.slice(0, 4) : null, from: 'news', src: String(art.short || art.title || '').slice(0, 30), line: line.replace(/[《》]/g, '').slice(0, 90) });
   }
   window.__gkWords = { load: wordLoad, add: wordAdd }; // 자동 점검용
   const stAgo = t => { const a = new Date(); a.setHours(0, 0, 0, 0); const b = new Date(t); b.setHours(0, 0, 0, 0); const n = Math.round((a - b) / 864e5); return n <= 0 ? '오늘' : n === 1 ? '어제' : n < 7 ? n + '일 전' : `${b.getMonth() + 1}월 ${b.getDate()}일`; };
@@ -3003,18 +3003,20 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const BACKIC = '<svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><path d="M16.5 7.5L10 14l6.5 6.5"/></svg>';
   function stFitBig(box, k, render) { // 긴 낱말은 한 줄에 들어가게 글자를 줄인다(한 번 재서 기억)
     const el = box.querySelector('.st-big'); if (!el || stFit[k]) return; const avail = el.parentElement.clientWidth; let f = parseFloat(getComputedStyle(el).fontSize), w = el.getBoundingClientRect().width;
-    if (!avail || w <= avail) { stFit[k] = 'ok'; return; } stFit[k] = Math.max(64, Math.floor(f * avail / w) - 2); render(); }
+    if (!avail || w <= avail) { if (!document.fonts || document.fonts.status === 'loaded') stFit[k] = 'ok'; else document.fonts.ready.then(() => { if (!saverEl.hidden && saverEl.dataset.pg === 'study') renderStudyPg(); }); return; } stFit[k] = Math.max(64, Math.floor(f * avail / w) - 2); render(); }
+  let stLast = '', stMsg = '', stMsgAt = 0;
+  function stPut(box, html) { if (stMsg && Date.now() - stMsgAt > 8000) stMsg = ''; html += stMsg ? `<div class="st-msg" role="status">${escN(stMsg)}</div>` : ''; if (html !== stLast || !box.firstChild) { stLast = html; box.innerHTML = html; } } // 아이콘 svg 직렬화가 달라 innerHTML 비교가 늘 어긋나므로, 마지막에 넣은 글로 비교
   function renderStudyPg() {
     const all = wordLoad().items, tk = dayKey(new Date()), box = $('pgStudy'), isT = x => dayKey(new Date(x.last)) === tk;
     setH($('pgTtl'), '공부칸'); setH($('pgSub'), zClock());
     const ask = `<span class="zbar" data-act="stask" role="button">${MIC}물어보기</span>`;
-    if (!all.length) { setH(box, `<div class="st-none">아직 모은 말이 없어.<small>모르는 낱말을 물어보면 여기 모여.</small></div><div class="st-foot">${ask}</div>`); return; }
+    if (!all.length) { stPut(box, `<div class="st-none">아직 모은 말이 없어.<small>모르는 낱말을 물어보면 여기 모여.</small></div><div class="st-foot">${ask}</div>`); return; }
     if (stView === 'list') { // 모은 말 보기: 갈래 넷, 두 단, 한 쪽에 여섯
       const list = stTab === 'today' ? all.filter(isT) : all.filter(x => x.kind === stTab), PER = 6, pages = Math.max(1, Math.ceil(list.length / PER)); stPage = Math.max(0, Math.min(stPage, pages - 1));
       const tabs = [['today', '오늘'], ['en', '영어'], ['hz', '한자'], ['ko', '우리말']].map(t => `<span data-act="sttab" data-t="${t[0]}"${t[0] === stTab ? ' class="on"' : ''}>${t[1]}</span>`).join('');
       const rows = list.slice(stPage * PER, stPage * PER + PER).map(it => `<div class="st-row" data-act="stpick" data-k="${escN(it.k)}"><div class="st-rw"><b class="k-${it.kind}">${stBig(it)}</b><span>${it.kind === 'hz' && it.hz ? stHz(it) : escN(it.mean || '')}</span></div><small>${isT(it) ? stSrc(it) : stMet(it.last)}</small></div>`).join('');
       const nav = pages > 1 ? `<span class="rb st-pg${stPage ? '' : ' off'}" data-act="stpg" data-d="-1" aria-label="앞 쪽">${BACKIC}</span><span class="rb st-pg nx${stPage < pages - 1 ? '' : ' off'}" data-act="stpg" data-d="1" aria-label="다음 쪽">${BACKIC}</span>` : '';
-      setH(box, `<div class="st-tabs">${tabs}</div><div class="st-list">${rows || `<div class="st-empty">${stTab === 'today' ? '오늘은 아직 없어.' : '아직 없어.'}</div>`}</div><div class="st-foot"><span class="pc st-lb" data-act="stback">${BACKIC}방금 만난 말</span>${nav}${ask}</div>`);
+      stPut(box, `<div class="st-tabs">${tabs}</div><div class="st-list">${rows || `<div class="st-empty">${stTab === 'today' ? '오늘은 아직 없어.' : '아직 없어.'}</div>`}</div><div class="st-foot"><span class="pc st-lb" data-act="stback">${BACKIC}방금 만난 말</span>${nav}${ask}</div>`);
       return;
     }
     const cur = all.find(x => x.k === stSel) || all[0]; stSel = cur.k;
@@ -3033,7 +3035,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       (same.length ? `<div class="st-same"><span class="st-lab">같은 글자가 든 말</span>${same.map(x => `<span class="pc" data-act="stpick" data-k="${escN(x.k)}">${escN(x.w)}<small>${escN((x.hz || []).filter(h => hzc.includes(h[0])).map(h => h[0]).join(''))}</small></span>`).join('')}</div>` : '') +
       `</div><div class="st-side"><div class="st-lab">${today.length ? '오늘 모인 말' : '지난번에 모인 말'}</div>${sideH}${all.length > 5 ? '<div class="st-srow more" data-act="stlist"><b>더 있어 ›</b></div>' : ''}</div></div>` +
       `<div class="st-foot"><span class="pc st-lb" data-act="stlist">${LISTIC}모은 말 보기</span>${ask}</div>`;
-    setH(box, html); stFitBig(box, fk, renderStudyPg);
+    stPut(box, html); stFitBig(box, fk, renderStudyPg);
   }
   // ---------- 할 일 화면(v135, 아내 요청): 대기화면의 할 일 타일을 누르면 달력처럼 따로 크게. 한 번에 일곱 줄, 줄을 누르면 했다/안 했다 ----------
   let tdPage = 0, tdShowDone = false;
@@ -3198,7 +3200,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     else if (/^st/.test(act)) { if (window.__gkForce && window.__gkForce.s === 'study') window.__gkForce.at = Date.now(); // v138: 공부칸 — 누를 때마다 10분을 새로
       const W = wordLoad().items, it = W.find(x => x.k === (a.dataset.k || stSel)) || W[0];
       if (act === 'stsay') { stSay(it); return; }
-      if (act === 'stask') { exitSaver(); if (saverEl.hidden) { try { $('micBtn') && $('micBtn').click(); } catch (e) {} } return; }
+      if (act === 'stask') { const g = gate(); if (g) { stMsg = g; stMsgAt = Date.now(); renderSaver(); setTimeout(() => { if (!saverEl.hidden && saverEl.dataset.pg === 'study') renderSaver(); }, 8200); return; } exitSaver(); if (saverEl.hidden) { try { $('micBtn') && $('micBtn').click(); } catch (e) {} } return; } // 쉬는 시간·질문 상한: 공부칸 안에 한 줄로 알려 준다
       if (act === 'stpick') { stSel = a.dataset.k; stView = 'hero'; }
       else if (act === 'stlist') { stView = 'list'; stPage = 0; stTab = W.some(x => dayKey(new Date(x.last)) === dayKey(new Date())) ? 'today' : (it && it.kind) || 'today'; }
       else if (act === 'sttab') { stTab = a.dataset.t; stPage = 0; }
@@ -3559,7 +3561,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       const kind = hanja ? 'hz' : lat ? 'en' : 'ko', disp = kind === 'en' ? word.toLowerCase() : kind === 'ko' ? items[0].g.replace(/[·・]/g, '') : word;
       const mn = hanja ? mean : kind === 'en' ? (items[0].l.split('·').pop() || '').trim() : items[0].l;
       const ss = String(current || '').split(/(?<=[.!?])\s+/).filter(s => s.toLowerCase().includes(disp.toLowerCase())), line = ss.find(s => !/[?？]$/.test(s.trim())) || ss[0] || ''; // 묻는 문장보다 풀이 문장
-      if (disp && graphemes(disp).length <= 20 && wordAdd({ k: kind + ':' + key, w: disp, syl: kind === 'en' ? items[0].g.toLowerCase() : '', kind, mean: String(mn || '').slice(0, 30), hz: hanja ? items.map(x => [x.g, x.l]).slice(0, 4) : null, q: String((LS.get('gk-lastqa', {}) || {}).q || '').slice(0, 40), from: 'ask', line: line.slice(0, 90) })) {
+      if (disp && !quiz && !(kind === 'ko' && /[一-鿿㐀-䶿]/.test(disp + mn)) && graphemes(disp).length <= 20 && wordAdd({ k: kind + ':' + key, w: disp, syl: kind === 'en' ? items[0].g.toLowerCase() : '', kind, mean: String(mn || '').slice(0, 30), hz: hanja ? items.map(x => [x.g, x.l]).slice(0, 4) : null, q: String((LS.get('gk-lastqa', {}) || {}).q || '').slice(0, 40), from: 'ask', line: line.slice(0, 90) })) {
         const vc = figBox.querySelector('.vcard'); if (vc && !vc.querySelector('.vc-note')) { const n = document.createElement('div'); n.className = 'vc-note'; n.textContent = '공부칸에 모았어'; vc.append(n); } }
     } catch (e) { diag('err', '공부칸 모으기 실패: ' + (e.message || e)); }
     // 답을 다 읽고 나서 카드를 또렷하게 하고, 낱말을 소리로 한 번 짚어 줌
@@ -6227,7 +6229,8 @@ body[data-night] #app{--paperbg:linear-gradient(180deg,#0A1130,#111B47);--zbg:#0
 #saver[data-pg=study] .pg-study [data-act]{cursor:pointer}
 .st-hero{position:absolute;left:136px;right:48px;top:132px;bottom:124px;display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:80px}
 .st-main{min-width:0;display:flex;flex-direction:column;align-items:flex-start}
-.st-tag{font:600 24px/34px "Pretendard",sans-serif;color:var(--zhl);padding:10px 0;margin-top:-10px}
+.st-tag{font:600 24px/34px "Pretendard",sans-serif;color:var(--zhl);padding:13px 0;margin-top:-13px;margin-bottom:-3px}
+.st-msg{position:fixed;left:136px;right:400px;bottom:124px;font:600 28px/40px "Pretendard",sans-serif;color:var(--zk)}
 .st-big{display:inline-block;white-space:nowrap;font:800 150px/1.04 "Pretendard",sans-serif;letter-spacing:-.045em;color:var(--zk);margin:0 0 6px -6px}
 .st-big.k-en{color:var(--zhl)}
 .st-big i, .st-rw > b i{font-style:normal;font-weight:400;color:var(--zk2);opacity:.45;margin:0 .04em}
