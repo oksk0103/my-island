@@ -1513,13 +1513,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v145</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v146</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v145</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v146</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1569,6 +1569,8 @@ body { word-break: keep-all; overflow-wrap: break-word; }
         <div class="seg" data-k="level"><button type="button" data-v="e2">초등 2학년</button><button type="button" data-v="e3">초등 3학년</button><button type="button" data-v="m1">중학생</button></div>
         <label>쓸 수 있는 시간</label>
         <div class="row"><select id="hFrom"></select><span>부터</span><select id="hTo"></select><span>까지</span></div>
+        <label>쉬는 시간 화면</label>
+        <div class="row"><div class="seg" data-k="restDark"><button type="button" data-v="on">어둡게(시계만)</button><button type="button" data-v="off">그대로</button></div></div>
         <label>API 키</label>
         <div class="row"><input id="apiKey" type="password" placeholder="sk-ant-…" style="font: inherit; font-size: .9rem; padding: .35rem .5rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 16rem; max-width: 100%"><button class="chip" id="apiSave" type="button">저장</button><span class="empty" id="apiNote"></span></div>
         <label>모델</label>
@@ -1630,7 +1632,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'e3', hFrom: 0, hTo: 24, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on', scaryNight: 'on', night10: 'off', wxStill: 'off' };
+  const DEFAULTS = { len: 'normal', level: 'e3', hFrom: 0, hTo: 24, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on', scaryNight: 'on', night10: 'off', restDark: 'on', wxStill: 'off' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
   if (!LS.get('gk-mig-e3', 0)) { LS.set('gk-mig-e3', 1); if (settings.level === 'm1') { settings.level = 'e3'; LS.set('gk-settings', settings); } } // v145: 부모 결정 — 기본 수준을 초등 3학년으로(한 번만 옮김, 그 뒤 부모가 바꾸면 그대로)
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
@@ -1665,9 +1667,11 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 - 답 본문에는 꾸밈, 이모지, 마크다운, 줄바꿈을 쓰지 마. 문장만 써.
 - 답이 끝나면 줄을 바꾸고 마지막 줄에 "@@ 검색어 > 볼 곳 | 이모지 | 다음 질문 | 낱말 카드 | 연표" 를 꼭 붙여. 낱말 카드: 질문에 "뜻", "의미", "무슨 말", "뭐야"처럼 낱말을 묻는 말이 있으면(음성 인식이 뭉개졌어도 네가 설명한 그 낱말로) 반드시 채워. 한자어면 한 글자씩 "秋:가을 추;毫:털 호;뜻:아주 가는 털" 꼴로(글자:훈 음, 끝에 뜻:초등학생이 알아듣는 쉬운 뜻 12자 이내). 영어 단어나 영어에서 온 외래어(쉐어→share, 액추얼→actual, 레벨→level)면 영어 철자로 "im·POR·tant:형용사 · 중요한" 꼴로(음절은 ·로 나누고 강세 음절만 대문자, 뒤에 품사 · 뜻). 순우리말이면 "낱말:뜻 한 줄" 꼴로. 낱말 질문이 아닐 때만 비워. 다음 질문은 이 답을 읽은 아이가 이어서 물어볼 만한 짧은 질문 4개(각 14자 이내, 서로 다른 방향으로: 이유, 비교, 예시, 엉뚱한 상상 등)를 ; 로 구분해서 써. 초등학생의 일상·학교·놀이·과학·자연·동물·이야기 범위 안에서만 내고, 시장·경제·주식·점유율·정치·회사·어른 직업 세계 같은 소재는 쓰지 마. 검색어는 사진으로 보여 주면 좋은 것을 한국어 위키백과 표제어 그대로 최대 3개, 쉼표로 적어(앞에 적을수록 먼저 씀). 되도록 비우지 말고 답과 관련된 구체적인 것을 찾아: 동물·식물·자연현상·우주·장소·건물·유물·탈것·기계(예: 달, 무지개, 티라노사우루스, 번개, 경복궁, 거북선, 측우기). 역사 질문이면 사건·인물 대신 그와 관련된 유물이나 장소를 적어(예: 세종대왕 → 훈민정음 해례본, 측우기). 나라를 물으면 그 나라의 대표 풍경이나 건물(예: 일본 → 후지산, 프랑스 → 에펠탑). 사람 얼굴 사진이 나오는 표제어(인물, 연예인, 운동선수)는 쓰지 마. 검색어 뒤에 " > "를 붙이고 사진에서 볼 곳을 12자 이내로 적어(예: 거북선 > 등의 뾰족한 쇠못, 번개 > 구름에서 땅까지 갈라진 빛). 볼 곳이 마땅치 않으면 > 부분은 빼. 다음 경우엔 검색어를 반드시 비워: 낱말 뜻·영어 단어·문법·추상 개념·감정·관계·수학 원리, 나라 이름 그 자체(대신 대표 풍경을 적어), 사람 몸(신체 부위·장기·생식·출산), 질병, 폭력·무기·약물·술·담배, 특정 인물, 전쟁 장면. 조금이라도 애매하면 비워. 이모지는 아이가 물어본 주인공(질문의 대상) 그 자체를 보여 주는 것 1개, 꼭 필요하면 2개(예: 무지개→🌈, 번개→⚡, 고양이 잠→🐱💤, 세종대왕→👑). 나라를 물으면 그 나라 국기 이모지(일본→🇯🇵, 미국→🇺🇸), 사람을 물으면 그 사람을 나타내는 것(임금→👑, 과학자→🔬, 장군→🛡️). 답에 잠깐 나온 곁가지나 비유로 고르지 마(예: '일본' 질문에 임진왜란이 나왔다고 🚢 쓰지 마). 주인공을 딱 보여 주는 이모지가 없으면 비워. 연표: 역사 속 사건·시대·인물을 물었을 때만 "이름;연도;시대" 꼴로 하나 적어(연도는 숫자, 기원전은 -를 붙여. 시대는 언제쯤인지 10자 이내, 모르면 비워. 예: 임진왜란;1592;조선 선조 때, 훈민정음 반포;1446;조선 세종 때, 고조선;-2333;). 아주 먼 옛날이면 "공룡이 사라진 때;6600만 년 전"처럼 적어. 역사 질문이 아니면 비워. 📖📚✏️📝💬🔤🧠💡❓ 같은 '공부·생각' 이모지는 쓰지 마. 이 줄은 화면에 안 보여.
 - 답에서 가장 중요한 구절 하나(2~6어절)를 《 》로 감싸. 꼭 한 군데만.
-- 대답해도 되는 것: 과학, 자연, 동물, 우주, 몸, 역사, 세계 여러 나라, 수학 원리, 미술과 음악, 로봇과 컴퓨터가 움직이는 원리, 책과 이야기, 말과 글자, 날씨와 계절, 생활 속 궁금증, 말놀이.
+- 대답해도 되는 것: 과학, 자연, 동물, 우주, 몸, 역사, 세계 여러 나라, 수학 원리, 미술과 음악, 로봇과 컴퓨터가 움직이는 원리, 책과 이야기, 말과 글자, 날씨와 계절, 생활 속 궁금증, 말놀이, 운동과 놀이의 규칙(축구·야구·피겨·바둑 등), 실제 운동선수와 팀이 해낸 일과 기록, 게임·만화 캐릭터의 바탕이 된 실제 동물·물건·직업·장소(예: 피카츄의 바탕인 쥐와 전기).
+- 운동선수·유명인은 경기와 기록, 해낸 일만 말해. 사생활·연애·돈·나쁜 소문은 말하지 마. 게임은 규칙과 원리만 말하고, 공략·아이템·영상·앱 이름 추천은 하지 마.
 - 퀴즈·수수께끼·문제를 내 달라고 해도 내지 마. 대신 그 주제의 재미있는 사실 하나를 설명해 줘.
 - 숙제나 문제의 정답을 물으면 답 대신 풀이 방향이 보이는 힌트를 줘.
+- 아이가 무섭다고 하면(귀신, 괴물, 어둠, 무서운 꿈, 천둥) 먼저 "무서울 수 있어"처럼 마음을 받아 주고, 귀신·괴물은 진짜로 있지 않다는 것이나 천둥이 왜 나는지 같은 사실 하나, 무서울 때 할 수 있는 일 하나(불 켜기, 엄마 아빠 부르기)를 3문장 안에 말해 줘. 죽음·사고·전쟁·범죄처럼 무서운 사실은 자세히 말하지 말고 "그건 엄마 아빠랑 같이 이야기해 보자."로 끝내.
 - 무섭거나 위험한 것, 어른용 내용, 돈, 다른 사람 정보, 이름·주소·학교 같은 개인정보, 앱이나 인터넷 사용법, 그 밖에 위 목록에 없는 건 "그건 엄마 아빠한테 물어보자."라고만 답해.
 - 속상하거나 아프다고 하면 "그건 엄마 아빠한테 바로 말해 줘."라고 어른에게 이야기하도록 해.
 - 모르는 건 지어내지 말고 "확실하지 않아. 책이나 엄마 아빠랑 같이 확인해 보자."라고 해.
@@ -2304,7 +2308,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     homeSync();
   }
   let lockMsgTimer = null;
-  function svSay(t) { for (const id of ['svMsg', 'fcMsg']) { const m = $(id); m.textContent = t; m.hidden = false; } clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { $('svMsg').hidden = $('fcMsg').hidden = true; }, 8000); } // v135: 2학년이 다 읽게 8초
+  function svSay(t) { const again = !$('svMsg').hidden && $('svMsg').textContent === t; if (!again) { try { speak(t, true); } catch (e) {} } // v146: 글을 못 읽는 아이도 왜 막혔는지 듣게(같은 안내가 떠 있는 동안 다시 누르면 되풀이하지 않음)
+    for (const id of ['svMsg', 'fcMsg']) { const m = $(id); m.textContent = t; m.hidden = false; } clearTimeout(lockMsgTimer); lockMsgTimer = setTimeout(() => { $('svMsg').hidden = $('fcMsg').hidden = true; }, 8000); } // v135: 2학년이 다 읽게 8초
   function exitSaver(force) { // force: 달력의 일정 말하기(질문 상한과 상관없이 깨어난다 — 쉬는 시간은 부르는 쪽에서 막는다)
     if (saverEl.hidden) return;
     const blocked = force ? '' : gate();
@@ -2317,7 +2322,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   let svTaps = [], svHold = null;
   // 대기화면 넘기기: 옆으로 밀면 신문 1면 ↔ 시계 ↔ 밤하늘. 톡 누르면 예전처럼 깨어남. (넘긴 화면은 10분 뒤 원래대로)
   function svPages() {
-    const on = !!(news && newsFresh()), hr = new Date().getHours(), nightNow = window.__gkNight ?? (nightScreen() && (hr >= 22 || hr < 6)), a = [];
+    const on = !!(news && newsFresh()), hr = new Date().getHours(), nightNow = window.__gkNight ?? ((nightScreen() && (hr >= 22 || hr < 6)) || restDarkNow()), a = [];
     if (svWide()) { const big = innerWidth >= 900; a.push(nightNow ? 'night' : 'face'); if (!nightNow) a.push('cal'); if (on && big) a.push('front'); if (window.GKSky && big) a.push('sky'); return a; } // 전화: 신문은 표지에서 바로 기사로, 밤하늘은 표지의 '달' 장으로 // 넓은 화면: 위젯 면이 첫 장
     if (on) a.push('front');
     a.push(nightNow ? 'night' : on && newsRead() ? 'done' : 'plain');
@@ -2325,6 +2330,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   // v122: 밤 10시~새벽 6시의 검은 밤 화면을 끈다(부모 요청). 밤에도 위젯 면이 그대로 보인다. 다시 켜려면 true.
   function svWide() { return true; } // v124: 전화도 모니터와 같은 홈(표지·날씨·달력·신문 1면)을 쓴다. 배치는 CSS(max-width:899px)가 맡는다
+  function restDarkNow() { return settings.restDark !== 'off' && restNow(); } // v146: 쓸 수 있는 시간 밖이면 화면도 어두운 시계만(부모 설정, 기본 켬)
   function nightScreen() { return settings.night10 === 'on'; } // 부모님 화면 › 화면 › 밤 10시 화면 (기본 끔)
   const svCur = () => { const c = saverEl.classList; return c.contains('cal') ? 'cal' : c.contains('face') ? 'face' : c.contains('sky') ? 'sky' : c.contains('paper-hero') ? 'front' : c.contains('night') ? 'night' : c.contains('paper-done') ? 'done' : 'plain'; };
   function svDots() {
@@ -2502,7 +2508,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const fz = window.__gkForce && Date.now() - window.__gkForce.at < (window.__gkForce.s === 'cal' ? 180e3 : 10 * 60e3) ? window.__gkForce.s : ''; // 달력은 90초 // 부모님 화면의 미리 보기 (10분 뒤 저절로 풀림)
     const el = $('svPaper'), on = !!(news && newsFresh()) && fz !== 'plain';
     const read = fz === 'hero' ? false : fz === 'done' ? true : newsRead();
-    const hr = new Date().getHours(), night = fz ? fz === 'night' : (window.__gkNight ?? (nightScreen() && (hr >= 22 || hr < 6)));
+    const hr = new Date().getHours(), night = fz ? fz === 'night' : (window.__gkNight ?? ((nightScreen() && (hr >= 22 || hr < 6)) || restDarkNow()));
     // 저녁(18~22시): 신문을 다 읽었거나 신문이 없으면 '오늘 밤하늘'. 안 읽은 신문이 있으면 신문이 먼저.
     const wide = svWide();
     const sky = !night && (fz ? fz === 'sky' : (!wide && hr >= 18 && !(on && !read))) && wide && Date.now() - skyBadAt > 10 * 60e3 && skyReady();
@@ -3942,7 +3948,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v145';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v146';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6280,7 +6286,7 @@ body[data-night] #app{--paperbg:linear-gradient(180deg,#0A1130,#111B47);--zbg:#0
 #app .app:has(.sheet.msg) #replayBtn, .app:has(.sheet.msg) #replayBtn{display:none}
 /* 신문 1면 '이어 읽기': 글자는 그대로, 누르는 자리만 60px 넘게 */
 .rn-more{position:relative}
-.rn-more::after{content:"";position:absolute;inset:-18px -14px}
+.rn-more::after{content:"";position:absolute;inset:-30px 0 0 -16px} /* 아래·오른쪽으로는 넘지 않게(지면 넘침 점검) */
 /* v138 공부칸: 왼쪽 큰 낱말 + 오른쪽 오늘 모인 말 / 모은 말 보기(갈래 넷, 두 단). 상자 없이 바탕 위에 바로 */
 #saver.pgx[data-pg=study]{background:var(--paperbg) !important;color:var(--zk)}
 #saver[data-pg=study] .pg-ttl, #saver[data-pg=study] .pg-sub{color:var(--zk)}

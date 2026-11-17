@@ -667,10 +667,22 @@ async function newsTests(b) {
     await p.say('숙제 추가해 줘, 국어 받아쓰기', 2000); q = await p.evaluate(() => (JSON.parse(localStorage.getItem('gk-todo') || '{"items":[]}').items || []).map(x => x.text)); ok("'숙제 추가해 줘, 국어 받아쓰기' → '국어 받아쓰기'", q.includes('국어 받아쓰기'), q);
     await p.say('달은 왜 빛나', 9000); q = await p.evaluate(() => { const r = document.getElementById('replayBtn').getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; }); ok('답 화면에 다시 듣기 단추(64)', q[0] >= 60 && q[1] >= 60, q);
     await p.context().close();
-    const p2 = await open(b, { time: newsDate + 'T16:20' }); await p2.evaluate(() => { localStorage.setItem('gk-settings', JSON.stringify({ level: 'm1' })); localStorage.removeItem('gk-mig-e3'); }); await p2.reload(); await p2.adv(1500);
-    q = await p2.evaluate(() => JSON.parse(localStorage.getItem('gk-settings')).level); ok('예전 기기의 중학생 수준은 한 번만 3학년으로 옮김', q === 'e3', q);
-    await p2.evaluate(() => { const s = JSON.parse(localStorage.getItem('gk-settings')); s.level = 'm1'; localStorage.setItem('gk-settings', JSON.stringify(s)); }); await p2.reload(); await p2.adv(1500);
-    q = await p2.evaluate(() => JSON.parse(localStorage.getItem('gk-settings')).level); ok('그 뒤 부모가 중학생으로 바꾸면 그대로', q === 'm1', q); await p2.context().close();
+    const p2 = await open(b, { time: newsDate + 'T16:20', settings: { level: 'm1' } }); await p2.adv(1500);
+    q = await p2.evaluate(() => [JSON.parse(localStorage.getItem('gk-settings')).level, localStorage.getItem('gk-mig-e3')]); ok('예전 기기의 중학생 수준은 한 번만 3학년으로 옮김', q[0] === 'e3' && q[1] === '1', q);
+    await p2.reload(); await p2.adv(1500); q = await p2.evaluate(() => JSON.parse(localStorage.getItem('gk-settings')).level); ok('그 뒤 부모가 중학생으로 바꾸면 그대로', q === 'm1', q); await p2.context().close();
+  }
+
+  { // 23. v146 쉬는 시간엔 화면도 어둡게 · 막힘 안내를 소리로
+    console.log('23. 쉬는 시간 화면 (v146)');
+    let p = await open(b, { time: newsDate + 'T21:30', read: newsDate, settings: { hFrom: 7, hTo: 21 } }); await p.saver(); let s = await p.st();
+    ok('쓸 수 있는 시간 밖(21:30): 홈이 어두운 밤 화면', /night/.test(s.saver), s.saver);
+    await p.evaluate(() => { window.__said = []; const o = window.speechSynthesis; if (o) o.speak = u => window.__said.push(u.text); });
+    await p.mouse.click(800, 400); await p.adv(1200); s = await p.st();
+    const q = await p.evaluate(() => [!document.getElementById('saver').hidden, document.getElementById('svMsg').textContent, (window.__said || []).join('|')]);
+    ok('누르면 깨어나지 않고 "내일 아침 7시" 안내가 보임', q[0] && /내일 아침 7시/.test(q[1]), q);
+    await p.context().close();
+    p = await open(b, { time: newsDate + 'T21:30', read: newsDate, settings: { hFrom: 7, hTo: 21, restDark: 'off' } }); await p.saver(); s = await p.st();
+    ok("'그대로'로 두면 쉬는 시간에도 밝은 홈", !/night/.test(s.saver), s.saver); await p.context().close();
   }
 
   await newsTests(b);
