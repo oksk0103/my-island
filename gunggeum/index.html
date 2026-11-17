@@ -1357,6 +1357,26 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .fc-wx { background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
 .np-hed { line-height: 64px; margin-top: 6px; } .np-lede { margin-top: 10px; line-height: 40px; } .np-body { padding-top: 20px; }
 </style>
+<style id="night-v152">
+/* v152 밤 화면(23:30~07:00): 거의 검정 남색, 흐린 청회색 큰 시계, 아래 한 줄. 6:30부터 새벽빛으로 밝아짐 */
+#saver.saver.night { background: #03050B; --dawn: 0; }
+#saver.saver.night.dawn { background: linear-gradient(180deg, var(--dw0) 0%, var(--dw1) 55%, var(--dw2) 85%, var(--dw3) 100%); }
+#saver.saver.night .sv-inner { position: absolute; inset: 0; margin: 0; padding: 0 0 4vh; width: auto; max-width: none; display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; }
+#saver.saver.night .sv-date { display: flex; flex-direction: column; align-items: center; margin: 0; padding: 0; }
+#saver.saver.night .sv-time { font-family: "Pretendard", sans-serif; font-weight: 200; font-size: min(17.5vw, 34vh); letter-spacing: -.02em; line-height: .82; color: #3C4A6E; font-variant-numeric: tabular-nums; display: flex; align-items: baseline; }
+#saver.saver.night .sv-time small { position: static; font-family: "Pretendard", sans-serif; font-size: max(24px, min(2.5vw, 4.9vh)); font-weight: 400; letter-spacing: 0; margin-right: 1.8vw; color: #2A3554; }
+#saver.saver.night .sv-night { margin-top: 5.4vh; font-family: "Pretendard", sans-serif; font-size: max(24px, min(1.9vw, 3.7vh)); font-weight: 500; color: #2E3A5A; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 3.4vw; white-space: nowrap; }
+#saver.saver.night .sv-night b { font-weight: 650; }
+#saver.saver.night .nt-sep { width: 1px; height: 1.1em; background: #1A2238; }
+#saver.saver.night .nt-moon svg { width: 1.3em; height: 1.3em; vertical-align: -.28em; margin-right: .45em; fill: currentColor; }
+#saver.saver.night .nt-dawn { flex-basis: 100%; text-align: center; margin-top: 7vh; font-weight: 650; color: #F2D9C2; opacity: var(--dawn); }
+#saver.saver.night.dawn .sv-time { color: var(--dwT); }
+#saver.saver.night.dawn .sv-time small { color: var(--dwS); }
+#saver.saver.night.dawn .sv-night { color: var(--dwL); }
+#saver.saver.night.dawn .nt-sep { background: var(--dwP); }
+#saver.saver.night .sv-dots i { background: #3C4A6E; opacity: .3; }
+#saver.saver.night .sv-dots i.on { opacity: .7; }
+</style>
 </head>
 <body>
 <span class="ds-name" id="askName" hidden>질문</span>
@@ -1513,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v151</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v152</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v151</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v152</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1601,8 +1621,8 @@ body { word-break: keep-all; overflow-wrap: break-word; }
         <div class="row"><div class="seg" data-k="picOn"><button type="button" data-v="on">켬</button><button type="button" data-v="off">끔</button></div></div>
         <label>날씨 하늘</label>
         <div class="row"><div class="seg" data-k="wxStill"><button type="button" data-v="off">움직임</button><button type="button" data-v="on">멈춤</button></div></div>
-        <label>밤 10시 화면</label>
-        <div class="row"><div class="seg" data-k="night10"><button type="button" data-v="off">끔</button><button type="button" data-v="on">밤 10시~아침 6시 어둡게</button></div></div>
+        <label>밤 화면</label>
+        <div class="row"><div class="seg" data-k="nightScr"><button type="button" data-v="off">끔</button><button type="button" data-v="on">밤 11시 반~아침 7시</button></div></div>
         <label>하루 질문 상한</label>
         <select id="cap"><option value="0">제한 없음</option><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option><option value="50">50개</option></select>
       </div>
@@ -1632,7 +1652,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
-  const DEFAULTS = { len: 'normal', level: 'e3', hFrom: 0, hTo: 24, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on', scaryNight: 'on', night10: 'off', restDark: 'on', wxStill: 'off' };
+  const DEFAULTS = { len: 'normal', level: 'e3', hFrom: 0, hTo: 24, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on', scaryNight: 'on', night10: 'off', nightScr: 'on', restDark: 'on', wxStill: 'off' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
   if (!LS.get('gk-mig-e3', 0)) { LS.set('gk-mig-e3', 1); if (settings.level === 'm1') { settings.level = 'e3'; LS.set('gk-settings', settings); } } // v145: 부모 결정 — 기본 수준을 초등 3학년으로(한 번만 옮김, 그 뒤 부모가 바꾸면 그대로)
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
@@ -1679,7 +1699,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 - 도저히 뜻을 모르겠을 때만 "잘 못 들었어. 조금 더 가까이에서 천천히 다시 말해 줄래?"라고 해.`;
   }
   function applySettingsUI() {
-    { const nb = document.querySelector('#log [data-go="night"]'); if (nb) nb.hidden = settings.night10 !== 'on'; } // 밤 화면 바로가기는 밤 10시 화면을 켰을 때만
+    { const nb = document.querySelector('#log [data-go="night"]'); if (nb) nb.hidden = settings.nightScr === 'off'; } // 밤 화면 바로가기는 밤 10시 화면을 켰을 때만
     document.querySelectorAll('.seg').forEach(seg => seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === String(settings[seg.dataset.k]))));
     $('hFrom').value = settings.hFrom; $('hTo').value = settings.hTo; $('cap').value = settings.cap; $('model').value = settings.model;
     $('apiKey').value = settings.apiKey || '';
@@ -2290,7 +2310,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const line = (LS.get(LINES_KEY, {})[k]) || fallbackLine(d.getHours(), d.getMinutes());
     const [bodyTxt, attr] = line.split(/\s+—\s+(?=[^—]+$)/);
     $('svLine').innerHTML = bodyTxt.replace(/</g, '&lt;').replace(/《([^》]+)》/g, '<b>$1</b>') + (attr ? `<span class="sv-attr">— ${attr.replace(/</g, '&lt;')}</span>` : '');
-    $('svDow').textContent = DAYS[d.getDay()] + '요일'; $('svMon').textContent = (d.getMonth() + 1) + '월'; $('svDay').textContent = d.getDate() + '일'; $('svTime').innerHTML = `<small>${ampm(d.getHours())}</small>${d.getHours() % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')}`;
+    $('svDow').textContent = DAYS[d.getDay()] + '요일'; $('svMon').textContent = (d.getMonth() + 1) + '월'; $('svDay').textContent = d.getDate() + '일'; $('svTime').innerHTML = `<small>${saverEl.classList.contains('night') ? (d.getHours() >= 23 || d.getHours() < 4 ? '밤' : d.getHours() < 6 ? '새벽' : '아침') : ampm(d.getHours())}</small>${d.getHours() % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')}`;
     if ((!wxCache || Date.now() - wxAt > 20 * 60e3) && Date.now() - wxTryAt > 3 * 60e3) { // 대기화면에 있는 동안에도 날씨를 계속 새로 받음 (실패하면 3분 뒤 다시)
       wxTryAt = Date.now(); fetchWeather().then(() => { if (!saverEl.hidden) renderSaver(); }).catch(e => diag('err', '대기화면 날씨 못 받음: ' + (e.message || e)));
     }
@@ -2299,7 +2319,12 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     { const dg = w ? dustGrade(w.pm10, w.pm25) : null, nm = (settings.wxName || '').replace(/</g, '&lt;');
       $('svWx').innerHTML = w ? `<span class="wx-now"><b>${w.t}°</b> ${txt}</span><span class="wx-sub">${[`최고 ${w.hi}° 최저 ${w.lo}°`, w.pop != null ? '비 ' + w.pop + '%' : '', dg ? '먼지 ' + dg : ''].filter(Boolean).map(x => `<span class="wseg">${x}</span>`).join(' · ')}</span>` : ''; }
     $('svTip').textContent = w ? wxTip(w, dustGrade(w.pm10, w.pm25)) : '';
-    { const t = w && w.tom; $('svNight').textContent = t ? `내일 아침 ${t.lo}°${t.pop != null && t.pop >= 50 ? ' · 우산!' : t.lo <= 5 ? ' · 겉옷!' : ''}` : '';
+    { const t = w && w.tom, dn = dawnNow(), hrN = d.getHours(), mornNow = hrN >= 4 && hrN < 12, nTd = (() => { try { return todoLoad().items.filter(x => !x.done).length; } catch (e) { return 0; } })();
+      const segs = [dn > 0 || (mornNow && hrN >= 6) ? '' : '<span class="nt-moon"><svg viewBox="0 0 24 24"><path d="M15.5 15A7 7 0 0 1 9 5.2a7.8 7.8 0 1 0 10 10.3 7 7 0 0 1-3.5-.5z"/></svg>잘 자</span>', t ? `${mornNow ? '오늘' : '내일 아침'} <b>${mornNow && w ? w.t : t.lo}°</b>${t.pop != null && t.pop >= 50 ? ' 우산!' : ''}` : '', nTd ? `할 일 ${nTd}개` : ''].filter(Boolean);
+      $('svNight').innerHTML = segs.map(x => `<span class="nt-seg">${x}</span>`).join('<i class="nt-sep"></i>') + (dn > 0 ? '<div class="nt-dawn">좋은 아침, 7시에 일어나</div>' : '');
+      saverEl.style.setProperty('--dawn', dn.toFixed(3)); saverEl.classList.toggle('dawn', dn > 0);
+      { const mx = (a, b2) => '#' + [1, 3, 5].map(i => Math.round(parseInt(b2.slice(i, i + 2), 16) + (parseInt(a.slice(i, i + 2), 16) - parseInt(b2.slice(i, i + 2), 16)) * dn).toString(16).padStart(2, '0')).join(''); // 새벽빛 섞기 (dn=0 밤, 1 아침)
+        [['--dw0', '#0B1530', '#03050B'], ['--dw1', '#25305A', '#03050B'], ['--dw2', '#7A5A6E', '#03050B'], ['--dw3', '#C98A6A', '#03050B'], ['--dwT', '#C8CCE0', '#3C4A6E'], ['--dwS', '#8E95B5', '#2A3554'], ['--dwL', '#B8BCD4', '#2E3A5A'], ['--dwP', '#5A6288', '#1A2238']].forEach(([k, a2, b2]) => saverEl.style.setProperty(k, mx(a2, b2))); }
       const o = [[0, 0], [4, 2], [-3, 4], [2, -4], [-4, -2], [3, 3]][Math.floor(Date.now() / 300e3) % 6]; saverEl.querySelector('.sv-inner').style.translate = $('fcGrid').style.translate = `${o[0]}px ${o[1]}px`; } // 화면 자국 방지: 5분마다 몇 px씩
     const hasPaper = renderFront(); pgSync(); svDots(); todoRender();
     { const mk = ['face', 'sky', 'pgx', 'night', 'paper-hero', 'paper-done', 'plain'].filter(c => saverEl.classList.contains(c)).join(' ') + '|' + (saverEl.dataset.pg || ''); if (mk !== svModeKey) { svModeKey = mk; saverEl.scrollTop = 0; if ($('pg')) $('pg').scrollTop = 0; } } // 화면이 바뀌면 맨 위부터 (전화에서 밀어 내린 채 다른 화면이 열리지 않게)
@@ -2333,7 +2358,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   let svTaps = [], svHold = null;
   // 대기화면 넘기기: 옆으로 밀면 신문 1면 ↔ 시계 ↔ 밤하늘. 톡 누르면 예전처럼 깨어남. (넘긴 화면은 10분 뒤 원래대로)
   function svPages() {
-    const on = !!(news && newsFresh()), hr = new Date().getHours(), nightNow = window.__gkNight ?? ((nightScreen() && (hr >= 22 || hr < 6)) || restDarkNow()), a = [];
+    const on = !!(news && newsFresh()), hr = new Date().getHours(), nightNow = window.__gkNight ?? ((nightScreen() && nightHours()) || restDarkNow()), a = [];
     if (svWide()) { const big = innerWidth >= 900; a.push(nightNow ? 'night' : 'face'); if (!nightNow) a.push('cal'); if (on && big) a.push('front'); if (window.GKSky && big) a.push('sky'); return a; } // 전화: 신문은 표지에서 바로 기사로, 밤하늘은 표지의 '달' 장으로 // 넓은 화면: 위젯 면이 첫 장
     if (on) a.push('front');
     a.push(nightNow ? 'night' : on && newsRead() ? 'done' : 'plain');
@@ -2342,7 +2367,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   // v122: 밤 10시~새벽 6시의 검은 밤 화면을 끈다(부모 요청). 밤에도 위젯 면이 그대로 보인다. 다시 켜려면 true.
   function svWide() { return true; } // v124: 전화도 모니터와 같은 홈(표지·날씨·달력·신문 1면)을 쓴다. 배치는 CSS(max-width:899px)가 맡는다
   function restDarkNow() { return settings.restDark !== 'off' && restNow(); } // v146: 쓸 수 있는 시간 밖이면 화면도 어두운 시계만(부모 설정, 기본 켬)
-  function nightScreen() { return settings.night10 === 'on'; } // 부모님 화면 › 화면 › 밤 10시 화면 (기본 끔)
+  function nightScreen() { return settings.nightScr !== 'off'; } // v152: 부모님 화면 › 화면 › 밤 화면 (기본 켬, 밤 11시 반~아침 7시)
+  function nightHours() { const d = new Date(), m = d.getHours() * 60 + d.getMinutes(); return m >= 23 * 60 + 30 || m < 7 * 60; }
+  function dawnNow() { const d = new Date(), m = d.getHours() * 60 + d.getMinutes(); return m >= 6 * 60 + 30 && m < 7 * 60 ? (m - 390) / 30 : 0; } // 6:30~7:00 서서히 밝아짐 0→1
   const svCur = () => { const c = saverEl.classList; return c.contains('cal') ? 'cal' : c.contains('face') ? 'face' : c.contains('sky') ? 'sky' : c.contains('paper-hero') ? 'front' : c.contains('night') ? 'night' : c.contains('paper-done') ? 'done' : 'plain'; };
   function svDots() {
     const pg = svPages(), cur = svCur(), el = $('svDots'); el.hidden = pg.length < 2;
@@ -2520,7 +2547,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const fz = window.__gkForce && Date.now() - window.__gkForce.at < (window.__gkForce.s === 'cal' ? 180e3 : 10 * 60e3) ? window.__gkForce.s : ''; // 달력은 90초 // 부모님 화면의 미리 보기 (10분 뒤 저절로 풀림)
     const el = $('svPaper'), on = !!(news && newsFresh()) && fz !== 'plain';
     const read = fz === 'hero' ? false : fz === 'done' ? true : newsRead();
-    const hr = new Date().getHours(), night = fz ? fz === 'night' : (window.__gkNight ?? ((nightScreen() && (hr >= 22 || hr < 6)) || restDarkNow()));
+    const hr = new Date().getHours(), night = fz ? fz === 'night' : (window.__gkNight ?? ((nightScreen() && nightHours()) || restDarkNow()));
     // 저녁(18~22시): 신문을 다 읽었거나 신문이 없으면 '오늘 밤하늘'. 안 읽은 신문이 있으면 신문이 먼저.
     const wide = svWide();
     const sky = !night && (fz ? fz === 'sky' : (!wide && hr >= 18 && !(on && !read))) && wide && Date.now() - skyBadAt > 10 * 60e3 && skyReady();
@@ -3965,7 +3992,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v151';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v152';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {

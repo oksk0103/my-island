@@ -21,7 +21,7 @@ async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h 
   await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); if (offline) return r.abort(); const bd = JSON.parse(r.request().postData()); if (/시계 화면에 쓸 문장/.test(JSON.stringify(bd.messages || ''))) { p.quotes = (p.quotes || 0) + 1; } else { p.api++; p.lastBody = bd; } r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: ANSWER }], stop_reason: 'end_turn' } }); });
   p.wiki = 0; await p.route(/wttr|googleapis|gstatic|wikidata|wikimedia|wikipedia|tts\.speech/, r => { if (/wikidata|wikimedia|wikipedia/.test(r.request().url())) p.wiki++; return r.abort(); });
   if (noSky) await p.route(/vendor\/sky/, r => r.abort());
-  await p.addInitScript(([day, st, read]) => { localStorage.setItem('gk-settings', JSON.stringify(Object.assign({ apiKey: 'sk-test', hFrom: 0, hTo: 24, wxName: '영등포구' }, st))); if (read) { localStorage.setItem('gk-news-read2', JSON.stringify(read)); localStorage.setItem('gk-news-done2', JSON.stringify([read])); } }, [day, settings, read]);
+  await p.addInitScript(([day, st, read]) => { localStorage.setItem('gk-settings', JSON.stringify(Object.assign({ apiKey: 'sk-test', hFrom: 0, hTo: 24, wxName: '영등포구', nightScr: 'off' }, st))); if (read) { localStorage.setItem('gk-news-read2', JSON.stringify(read)); localStorage.setItem('gk-news-done2', JSON.stringify([read])); } }, [day, settings, read]);
   if (pre) await pre(p);
   if (time) await p.clock.install({ time: new Date(time + ':00+09:00') });
   await p.goto(URL);
@@ -362,16 +362,29 @@ async function newsTests(b) {
       await p.click('#gkHome'); await p.adv(1200); await p.mouse.click(20, 20); await p.adv(1500); const o3 = await p.evaluate(() => { const r = document.querySelector('.qbox').getBoundingClientRect(); return r.right <= innerWidth && r.bottom <= innerHeight && document.documentElement.scrollWidth <= innerWidth; });
       ok(`${w}×${h}: 날씨(−12°)·달력·궁금칸 넘침 없음`, o1 && o2 && o3, [o1, o2, o3]); await p.context().close(); }
     // 부모님 화면: 삭제한 것 · 새 설정 · 옛 저장값
-    p = await open(b, { time: newsDate + 'T23:30', read: newsDate, settings: { scaryNight: 'off', oldKey: 1 } }); await p.saver(); s = await p.st(); ok('밤 10시 화면 설정 기본 끔 → 밤 11시 반에도 위젯 면', /^face/.test(s.saver), s.saver);
+    p = await open(b, { time: newsDate + 'T23:30', read: newsDate, settings: { scaryNight: 'off', oldKey: 1 } }); await p.saver(); s = await p.st(); ok('밤 화면 끔 → 밤 11시 반에도 위젯 면', /^face/.test(s.saver), s.saver);
     await p.mouse.move(30, 30); await p.mouse.down(); await p.adv(2400); await p.mouse.up(); await p.adv(500);
     ok('밤 화면이 꺼져 있으면 바로가기 "밤 화면"은 감춤', await p.evaluate(() => !document.getElementById('log').hidden && document.querySelector('#log [data-go="night"]').hidden));
-    ok('부모님 화면: 삭제한 항목 없음, 새 설정 둘, 옛 저장값으로도 오류 없음', await p.evaluate(() => !document.querySelector('[data-k="scaryNight"]') && !document.getElementById('linesDbg') && !!document.querySelector('.seg[data-k="night10"]') && !!document.querySelector('.seg[data-k="wxStill"]') && !!document.querySelector('.pr-nav')) && p.cerr.length === 0 && errs.length === 0, [p.cerr, errs]);
+    ok('부모님 화면: 삭제한 항목 없음, 새 설정 둘, 옛 저장값으로도 오류 없음', await p.evaluate(() => !document.querySelector('[data-k="scaryNight"]') && !document.getElementById('linesDbg') && !!document.querySelector('.seg[data-k="nightScr"]') && !!document.querySelector('.seg[data-k="wxStill"]') && !!document.querySelector('.pr-nav')) && p.cerr.length === 0 && errs.length === 0, [p.cerr, errs]);
     ok('부모님 화면: 글자 24px 이상 · 누르는 곳 56px 이상', await p.evaluate(() => { const bad = []; document.querySelectorAll('.pr-nav button').forEach(nb => { nb.click(); document.querySelectorAll('.pr-sec.on *').forEach(e => { if (!e.getClientRects().length) return; const cs = getComputedStyle(e); if ([...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) && parseFloat(cs.fontSize) < 24) bad.push(e.textContent.trim().slice(0, 8) + cs.fontSize); if (/^(BUTTON|SELECT|INPUT)$/.test(e.tagName) && e.getBoundingClientRect().height < 56) bad.push((e.textContent || e.id).trim().slice(0, 8) + Math.round(e.getBoundingClientRect().height)); }); }); return bad; }).then(x => x.length === 0 || (console.log('   ', x.slice(0, 6)), false)));
     await p.context().close();
-    p = await open(b, { time: newsDate + 'T23:30', read: newsDate, settings: { night10: 'on' } }); await p.saver(); s = await p.st(); ok('밤 10시 화면 켬 → 밤 화면', /night/.test(s.saver), s.saver);
+    p = await open(b, { time: newsDate + 'T23:30', read: newsDate, settings: { nightScr: 'on' } }); await p.saver(); s = await p.st(); ok('밤 화면 켬 → 밤 화면', /night/.test(s.saver), s.saver);
     await p.mouse.move(30, 30); await p.mouse.down(); await p.adv(2400); await p.mouse.up(); await p.adv(500); ok('밤 화면을 켰을 때는 바로가기 "밤 화면"이 보임 (2초 누르기로 부모님 화면)', await p.evaluate(() => !document.getElementById('log').hidden && !document.querySelector('#log [data-go="night"]').hidden)); await p.context().close();
   }
 
+  { // v152 밤 화면: 기본 켬, 밤 11시 반~아침 7시. 6시 반부터 새벽빛. 경계 앞뒤로 본다
+    console.log('v152. 밤 화면 (23:30~07:00, 새벽빛)');
+    ok('밤 화면은 기본으로 켬', /DEFAULTS = \{[^}]*nightScr: 'on'/.test(fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8')));
+    for (const [t, want] of [['T23:29', 'face'], ['T23:31', 'night'], ['T06:29', 'night'], ['T06:59', 'night dawn'], ['T07:01', 'face']]) {
+      const day = t < 'T12' ? plus(newsDate, 1) : newsDate;
+      const p = await open(b, { time: day + t, read: day, settings: { nightScr: 'on' } }); await p.saver(); const s = await p.st();
+      const dawn = await p.evaluate(() => document.getElementById('saver').classList.contains('dawn'));
+      const got = /night/.test(s.saver) ? 'night' + (dawn ? ' dawn' : '') : /^face/.test(s.saver) ? 'face' : s.saver;
+      ok(`밤 화면: ${t.slice(1)} → ${want}`, got === want, got);
+      if (want === 'night') ok(`밤 화면 ${t.slice(1)}: 흰 글자 없음, 한 줄에 할 일·날씨 자리`, await p.evaluate(() => { const c = getComputedStyle(document.getElementById('svTime')).color.match(/\d+/g).map(Number); return Math.max(...c) < 120 && !!document.querySelector('#svNight .nt-seg'); }));
+      await p.context().close();
+    }
+  }
   // ---------- v122 검토에서 나온 결함의 되풀이 점검 ----------
   console.log('v122-검토. 누른 뒤 최종 상태 · 달력 되묻기 · 없는 날짜 · 쉬는 시간');
   { const D0 = '2026-11-16'; // 월요일
