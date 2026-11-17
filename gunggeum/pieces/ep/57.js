@@ -9,8 +9,8 @@ const mv=(t,x,y)=>{t.n.setAttribute('x1',x);t.n.setAttribute('x2',x);t.n.setAttr
 EPX[57]={day:'12월 12일',topic:'우리 몸의 뼈',cat:'우리 몸',field:'과학',frame:'v2',
  cover:{h:'우리 몸의<br>뼈는<br>몇 개일까?',draw(S){
    const T=tally(S,206,680,140,20,30,42,W0m);
-   tx(S,1504,250,'206','v96','end');tx(S,1500,292,'어른 뼈','v22m','end');
-   wl(S,680,640,1504,640,W0m);tx(S,680,678,'눈금 하나 = 뼈 하나','v22m');
+   tx(S,1504,250,'206','v96','end');tx(S,1500,300,'어른 뼈','v28','end');
+   wl(S,680,640,1504,640,W0m);tx(S,680,684,'눈금 하나 = 뼈 하나','v28');
    const cur=wdot(S,680,600,0,WO);
    let on=false;return ()=>{if(calm()){T.forEach(t=>t.n.setAttribute('stroke',W0));return;}if(on)return;on=true;
     loop(S,t=>{const c=t%7,k=Math.min(206,Math.floor(c/5*206));T.forEach((q,i)=>q.n.setAttribute('stroke',i<k?W0:W0m));if(k>0&&k<206){const q=T[k-1];cur.setAttribute('r',6);cur.setAttribute('cx',q.x);cur.setAttribute('cy',q.y+30);}else cur.setAttribute('r',0);});};}},
@@ -21,8 +21,7 @@ EPX[57]={day:'12월 12일',topic:'우리 몸의 뼈',cat:'우리 몸',field:'과
      const bar=el('rect',{x:X0,y:y-12,width:0,height:24,fill:W0},S);const num=tx(S,X0+12,y+10,'','v28');return {bar,num,v,y};});
     // 눈금(10개마다)
     const AY=Y0+PARTS.length*DY-20;wl(S,X0,AY,X0+60*U,AY,W0m);for(let k=0;k<=60;k+=5)wl(S,X0+k*U,AY,X0+k*U,AY+(k%10===0?16:9),k%10===0?W0:W0m);
-    [0,10,20,30,40,50,60].forEach(k=>tx(S,X0+k*U,AY+44,String(k),'v22m','middle'));
-    tx(S,1504,150,'모두','v22m','end');const tot=tx(S,1504,230,'0','v96','end');tot.setAttribute('style','fill:'+WO);
+    tx(S,1504,140,'모두','v28','end');const tot=tx(S,1504,230,'0','v96','end');tot.setAttribute('style','fill:'+WO);
     return ()=>play(1600,e=>{let s=0;B.forEach(b=>{const v=Math.round(b.v*e);s+=v;b.bar.setAttribute('width',(b.v*U*e).toFixed(1));b.num.setAttribute('x',X0+b.v*U*e+14);b.num.textContent=e>0.05?String(v):'';});tot.textContent=String(s);});}},
   {k:'손과 발',h:'뼈의 절반이<br>손과 발에 있다',b:'두 손에 <em>54개</em>, 두 발에 <em>52개</em>가 있어. 합치면 106개로, 206개의 절반보다 많아.',steps:['손발 모으기'],
    draw(S){// 위: 두 손 54, 두 발 52 눈금 묶음
@@ -32,8 +31,8 @@ EPX[57]={day:'12월 12일',topic:'우리 몸의 뼈',cat:'우리 몸',field:'과
     // 아래: 206칸 막대, 가운데 = 절반(103)
     const BX=680,BW=820,BY=520,u=BW/206;el('rect',{x:BX,y:BY,width:BW,height:40,fill:'none',stroke:W0,'stroke-width':2},S);
     for(let k=0;k<=206;k+=10)wl(S,BX+k*u,BY+40,BX+k*u,BY+(k%50===0?58:50),k%50===0?W0:W0m);
-    tx(S,BX,BY+92,'0','v22m','middle');tx(S,BX+BW,BY+92,'206','v22m','middle');
-    const hx=BX+103*u;wl(S,hx,BY-70,hx,BY+40,W0,{'stroke-dasharray':'6 8'});tx(S,hx,BY-84,'절반 103','v22','middle');
+    tx(S,BX,BY+96,'0','v28','middle');tx(S,BX+BW,BY+96,'206','v28','end');
+    const hx=BX+103*u;wl(S,hx,BY-70,hx,BY+40,W0,{'stroke-dasharray':'6 8'});tx(S,hx,BY-84,'절반 103','v28','middle');
     const fill=el('rect',{x:BX,y:BY,width:0,height:40,fill:WO},S);
     const lab=grp(S,0);tx(lab,BX+106*u+16,BY-20,'손 + 발 = 106','v28');
     const all=[...H,...F];
@@ -42,10 +41,10 @@ EPX[57]={day:'12월 12일',topic:'우리 몸의 뼈',cat:'우리 몸',field:'과
   {k:'아기는 더 많다',h:'아기는 뼈 조각이<br>더 많다',b:'갓 태어난 아기의 뼈대는 <em>300개가 넘는</em> 조각이야. 자라면서 몇몇 조각이 서로 붙어 더 큰 뼈가 돼.',steps:['자라기'],
    draw(S){const per=20,dx=28,dy=34,x0=680,y0=150;
     const T=tally(S,300,x0,y0,per,dx,dy,W0);
-    tx(S,1504,250,'300+','v96','end');const who=tx(S,1500,292,'갓 태어난 아기','v22m','end');
-    const big=grp(S,0);tx(big,1504,560,'206','v96','end');tx(big,1500,602,'다 자란 어른','v22m','end');
+    tx(S,1504,250,'300+','v96','end');const who=tx(S,1500,300,'갓 태어난 아기','v28','end');
+    const big=grp(S,0);tx(big,1504,560,'206','v96','end');tx(big,1500,610,'다 자란 어른','v28','end');
     el('path',{d:'M1440,320V470',fill:'none',stroke:W0m,'stroke-width':2},S);el('path',{d:'M1430,458l10,14l10,-14',fill:'none',stroke:W0m,'stroke-width':2},S);
-    wl(S,680,680,1504,680,W0m);tx(S,680,718,'눈금 하나 = 뼈 조각 하나','v22m');
+    wl(S,680,680,1504,680,W0m);tx(S,680,722,'눈금 하나 = 뼈 조각 하나','v28');
     // 94개가 옆 조각에 붙음: 300 → 206
     const q=rnd(57),idx=[...Array(300).keys()].filter(i=>i%per!==0);for(let i=idx.length-1;i>0;i--){const j=Math.floor(q()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}
     const M=idx.slice(0,94);

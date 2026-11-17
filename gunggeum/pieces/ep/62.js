@@ -64,10 +64,11 @@ EPX[62]={day:'12월 17일',topic:'화산',cat:'땅속',field:'과학',frame:'v2'
   draw(S){const B=600,HX=1080;
    // 한라산: 완만한 비탈 + 꼭대기 분화구
    const hp=`M660,${B}C860,${B-60} 940,250 1010,226L1030,250H1130L1150,226C1220,250 1300,${B-60} 1500,${B}`;
-   const H=el('path',{d:hp,fill:'none',stroke:W0,'stroke-width':2,'stroke-linejoin':'round',opacity:.3},S);wl(S,640,B,1504,B,W0);
+   const H=el('path',{d:hp,fill:'none',stroke:W0,'stroke-width':2,'stroke-linejoin':'round',opacity:.45},S);wl(S,640,B,1504,B,W0);
+   {const RX=690,hy=m=>B-(B-226)*m/1947;wl(S,RX,B,RX,hy(2000),W0m);for(let m=0;m<=2000;m+=250)wl(S,RX,hy(m),RX+(m%1000===0?24:12),hy(m),m%1000===0?W0:W0m);[1000,2000].forEach(m=>tx(S,RX+36,hy(m)+10,m+'m','v28'));tx(S,RX,hy(2000)-30,'높이','v28','middle');}
    const lake=el('path',{d:`M1036,250H1124L1116,262Q1080,272 1044,262Z`,fill:WO,opacity:0},S);
    const g=grp(S,0);tx(g,1504,180,'1,947m','v96','end');tx(g,1504,226,'남한에서 가장 높은 산','v22m','end');lead(g,[[1080,262],[1080,360],[1100,360]],'백록담','v28');tx(g,1110,396,'분화구 안의 호수','v22m');
-   tx(S,660,B+44,'한라산 · 제주도','v22m');
+   tx(S,660,B+48,'한라산 · 제주도','v28');
    const q=tx(S,1080,440,'?','v96','middle');q.style.fill='rgba(243,233,210,.4)';
-   return ()=>{q.remove();play(900,e=>{H.setAttribute('opacity',.3+.7*e);lake.setAttribute('opacity',e);},()=>show(g));};}}};
+   return ()=>{q.remove();play(900,e=>{H.setAttribute('opacity',.45+.55*e);lake.setAttribute('opacity',e);},()=>show(g));};}}};
 })();

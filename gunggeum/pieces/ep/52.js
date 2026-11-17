@@ -39,9 +39,11 @@ EPX[52]={day:'12월 7일',topic:'자전',cat:'지구와 해',field:'과학',fram
   draw(S){const BX=1240,BY=390,BR=170;
    // 손전등(왼쪽): 몸통 + 머리
    const LX=700;el('rect',{x:LX,y:BY-28,width:150,height:56,fill:W0},S);el('path',{d:`M${LX+150},${BY-28}L${LX+200},${BY-56}V${BY+56}L${LX+150},${BY+28}Z`,fill:W0},S);tx(S,LX,BY+100,'손전등','v28');
-   el('circle',{cx:BX,cy:BY,r:BR,fill:'none',stroke:W0,'stroke-width':2},S);tx(S,BX,BY+BR+60,'공','v28','middle');
-   const lit=el('path',{d:`M${BX},${BY-BR}A${BR},${BR} 0 0 0 ${BX},${BY+BR}Z`,fill:W0,opacity:0},S);
+   {const gl=el('g',{fill:'none',stroke:W0m,'stroke-width':2,opacity:.55},S);[60,120].forEach(rx=>el('ellipse',{cx:BX,cy:BY,rx,ry:BR},gl));el('line',{x1:BX,y1:BY-BR,x2:BX,y2:BY+BR},gl);el('ellipse',{cx:BX,cy:BY,rx:BR,ry:46},gl);for(let i=0;i<24;i++){const a=i*Math.PI/12,r1=BR+14,r2=BR+(i%6===0?34:24);wl(S,BX+Math.cos(a)*r1,BY+Math.sin(a)*r1,BX+Math.cos(a)*r2,BY+Math.sin(a)*r2,i%6===0?W0:W0m);}}
+   el('circle',{cx:BX,cy:BY,r:BR,fill:'none',stroke:W0,'stroke-width':2},S);tx(S,BX,BY+BR+76,'공','v28','middle');
+   const pre=el('g',{fill:'none',stroke:W0m,'stroke-width':2,'stroke-dasharray':'2 12','stroke-linecap':'round',opacity:.6},S);[-90,-45,0,45,90].forEach(o=>el('line',{x1:LX+214,y1:BY+o*.5,x2:BX-BR-40,y2:BY+o*1.4},pre));
+   const lit=el('path',{d:`M${BX},${BY-BR}A${BR},${BR} 0 0 0 ${BX},${BY+BR}Z`,fill:W0,opacity:0},S);const qm=tx(S,BX,BY+34,'','v96','middle');qm.style.fill='rgba(243,233,210,.4)';
    const beam=grp(S,0);[-90,-45,0,45,90].forEach(o=>wl(beam,LX+214,BY+o*.5,BX-BR-20,BY+o*1.4,W0m));
    const st=wdot(S,BX+BR,BY,11,WO);const lab=tx(S,1504,170,'스티커 쪽 · 밤','v28','end');
-   return ()=>{show(beam);lit.setAttribute('opacity',1);play(1800,e=>{const a=e*Math.PI;st.setAttribute('cx',(BX+BR*Math.cos(a)).toFixed(1));st.setAttribute('cy',(BY-BR*Math.sin(a)).toFixed(1));},()=>lab.textContent='스티커 쪽 · 낮');};}}};
+   return ()=>{qm.remove();pre.remove();show(beam);lit.setAttribute('opacity',1);play(1800,e=>{const a=e*Math.PI;st.setAttribute('cx',(BX+BR*Math.cos(a)).toFixed(1));st.setAttribute('cy',(BY-BR*Math.sin(a)).toFixed(1));},()=>lab.textContent='스티커 쪽 · 낮');};}}};
 })();

@@ -55,14 +55,16 @@ EPX[43]={day:'과학',topic:'그림자',cat:'빛과 그림자',field:'과학',fr
  sum:{lines:['빛은 곧게 나아간다.','빛이 막힌 뒤쪽에<br>그림자가 생긴다.','해가 낮으면 그림자가 길고,<br>높으면 짧다.'],
   words:[['그림자','물건이 빛을 가려서 생긴 어두운 자리'],['한낮','낮의 한가운데'],['손전등','손에 들고 다니는 작은 전등']]},
  end:{q:'해가 내 등 뒤에 있으면 내 그림자는 어느 쪽에 생길까?',a:'내 앞쪽에 생겨. 내가 빛을 막아서 해 반대쪽에 그림자가 생기니까.',h:'어두운 방에서<br>손전등으로 장난감<br>그림자를 만들어 봐.',btn:'손전등 켜기',
-  draw(S){const X0=980,X1=1480,Y0=140,Y1=600;el('rect',{x:X0,y:Y0,width:X1-X0,height:Y1-Y0,fill:'none',stroke:W0,'stroke-width':2},S);tx(S,X1,Y0-24,'벽','v22m','end');
-   wl(S,640,Y1+40,1504,Y1+40,W0m);tx(S,640,Y1+84,'어두운 방','v22m');
-   const LX=680,LY=470;el('circle',{cx:LX,cy:LY,r:24,fill:WO},S);tx(S,LX-36,LY+64,'손전등','v22');
+  draw(S){const X0=980,X1=1480,Y0=140,Y1=600;el('rect',{x:X0,y:Y0,width:X1-X0,height:Y1-Y0,fill:'none',stroke:W0,'stroke-width':2},S);tx(S,X1,Y0-24,'벽','v28','end');
+   {const gg=el('g',{opacity:.45},S);for(let x=X0+50;x<X1;x+=50)wl(gg,x,Y0,x,Y1,W0m);for(let y=Y0+46;y<Y1;y+=46)wl(gg,X0,y,X1,y,W0m);}
+   const qm=tx(S,(X0+X1)/2,(Y0+Y1)/2+34,'','v96','middle');qm.style.fill='rgba(243,233,210,.4)';
+   wl(S,640,Y1+40,1504,Y1+40,W0m);tx(S,640,Y1+88,'어두운 방','v28');
+   const LX=680,LY=470;el('circle',{cx:LX,cy:LY,r:24,fill:WO},S);tx(S,LX,LY+70,'손전등','v28','middle');
    // 장난감 블록(집 모양) — 작게, 손전등 가까이
    const toy=[[-30,0],[0,-30],[30,0],[30,46],[-30,46]],TX=860,TY=440,K=3.056,SX=1230,SY=378;
-   el('polygon',{points:toy.map(([x,y])=>`${TX+x},${TY+y}`).join(' '),fill:W0},S);tx(S,TX,TY+86,'장난감','v22','middle');
+   el('polygon',{points:toy.map(([x,y])=>`${TX+x},${TY+y}`).join(' '),fill:W0},S);tx(S,TX,TY+92,'장난감','v28','middle');
    const sh=el('polygon',{points:toy.map(([x,y])=>`${SX+x*K},${SY+y*K}`).join(' '),fill:WA,stroke:W0,'stroke-width':2,opacity:0},S);
    const g=rays(S);const R=[[0,-30],[30,0],[30,46],[-30,46],[-30,0]].map(([x,y])=>el('path',{d:`M${LX},${LY}L${LX},${LY}`},g));
    const lab=grp(S,0);tx(lab,SX,SY+K*46+56,'커다란 그림자','v28','middle');
-   return ()=>play(900,e=>R.forEach((r,k)=>{const [x,y]=[[0,-30],[30,0],[30,46],[-30,46],[-30,0]][k];r.setAttribute('d',`M${LX},${LY}L${lerp(LX,SX+x*K,e)},${lerp(LY,SY+y*K,e)}`);}),()=>{sh.setAttribute('opacity',1);show(lab);});}}};
+   return ()=>{qm.remove();play(900,e=>R.forEach((r,k)=>{const [x,y]=[[0,-30],[30,0],[30,46],[-30,46],[-30,0]][k];r.setAttribute('d',`M${LX},${LY}L${lerp(LX,SX+x*K,e)},${lerp(LY,SY+y*K,e)}`);}),()=>{sh.setAttribute('opacity',1);show(lab);});};}}};
 })();
