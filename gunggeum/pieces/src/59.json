@@ -1,0 +1,37 @@
+{
+ "ep": 59,
+ "date": "2026-12-14",
+ "topic": "눈 깜빡임",
+ "home": {
+  "f": "눈은 왜 깜빡일까?",
+  "q": "눈을 오래 안 깜빡이면 어떻게 될까?",
+  "tag": "우리 몸 · 눈 깜빡임"
+ },
+ "src": [
+  {
+   "claim": "어른은 보통 1분에 15번쯤 깜빡인다, 한 시간이면 900번",
+   "url": "https://healthcare.utah.edu/healthfeed/2026/06/staring-screens-all-day-you-may-not-be-blinking-enough",
+   "note": "University of Utah Health: 'The average adult blinks about 15 times a minute, or 900 times an hour.'"
+  },
+  {
+   "claim": "깜빡이면 눈물이 눈을 덮어 촉촉하게 한다",
+   "url": "https://healthcare.utah.edu/healthfeed/2026/06/staring-screens-all-day-you-may-not-be-blinking-enough",
+   "note": "'Blinking lubricates the eyes.' / 'When we blink, teardrops cover the eye, and oil from special glands keeps the moisture from evaporating too quickly.'"
+  },
+  {
+   "claim": "깜빡임이 눈에 들어온 먼지를 쓸어 낸다",
+   "url": "https://healthcare.utah.edu/healthfeed/2026/06/staring-screens-all-day-you-may-not-be-blinking-enough",
+   "note": "Blinking 'removes debris or irritants (like lashes or dust).'"
+  },
+  {
+   "claim": "덜 깜빡이면 눈이 마르고 따갑고 뻑뻑해진다",
+   "url": "https://healthcare.utah.edu/healthfeed/2026/06/staring-screens-all-day-you-may-not-be-blinking-enough",
+   "note": "덜 깜빡일 때의 마른 눈 증상: 'Burning or stinging of the eyes', 'A gritty or sand stuck in the eye feeling'."
+  },
+  {
+   "claim": "눈꺼풀이 다 닫혀야 눈물 막이 각막 전체에 새로 펴진다",
+   "url": "https://aoa.org/news/clinical-eye-care/the-benefits-of-blinking",
+   "note": "미국검안협회(AOA): 불완전한 깜빡임에선 'a new film of tears is not spread over the entire cornea.'"
+  }
+ ]
+}

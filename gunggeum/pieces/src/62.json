@@ -1,0 +1,37 @@
+{
+ "ep": 62,
+ "date": "2026-12-17",
+ "topic": "화산",
+ "home": {
+  "f": "화산은 왜 터질까?",
+  "q": "우리나라에도 화산이 있을까?",
+  "tag": "땅 · 화산"
+ },
+ "src": [
+  {
+   "claim": "땅속 깊은 곳은 무척 뜨거워 어떤 돌은 천천히 녹고, 걸쭉하게 흐르는 그것을 마그마라고 한다",
+   "url": "https://www.usgs.gov/faqs/how-do-volcanoes-erupt?page=1",
+   "note": "USGS: 'Deep within the Earth it is so hot that some rocks slowly melt and become a thick flowing substance called magma.'"
+  },
+  {
+   "claim": "마그마는 둘레의 단단한 돌보다 가벼워 위로 올라와 마그마 방에 모인다",
+   "url": "https://www.usgs.gov/faqs/how-do-volcanoes-erupt?page=1",
+   "note": "'Since it is lighter than the solid rock around it, magma rises and collects in magma chambers.'"
+  },
+  {
+   "claim": "밖으로 나온 마그마는 용암이다",
+   "url": "https://www.usgs.gov/faqs/how-do-volcanoes-erupt?page=1",
+   "note": "'some of the magma pushes through vents and fissures to the Earth's surface.' / 'Magma that has erupted is called lava.'"
+  },
+  {
+   "claim": "마그마 속엔 가스가 녹아 있고, 위로 올라와 눌림이 줄면 사이다처럼 거품이 생겨 분화를 일으킨다",
+   "url": "https://www.nps.gov/subjects/volcanoes/volcanic-eruptions.htm",
+   "note": "미국 국립공원관리청: 'Magmas typically contain small amounts of dissolved gas', 덮은 돌의 압력이 줄면 거품이 생김, 탄산음료에서 이산화탄소가 빠져나오는 것에 비유"
+  },
+  {
+   "claim": "한라산은 화산이고 꼭대기 분화구 안에 백록담이 있다, 높이 1,947m로 남한에서 가장 높다",
+   "url": "https://theme.archives.go.kr/next/koreaOfRecord/Mt-Hanlla.do",
+   "note": "국가기록원: '경사가 완만한 화산', '높이 1,947.269m로 남한 최고봉', '정상에는 지름이 약 500m… 화구가 있으며, 화구 안에는 백록담 호수가 있다'"
+  }
+ ]
+}

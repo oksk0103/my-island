@@ -1,0 +1,102 @@
+{
+ "ep": 15,
+ "date": "2026-11-17",
+ "topic": "단풍",
+ "home": {
+  "f": "나뭇잎은 가을에 왜 빨개질까?",
+  "q": "단풍은 왜 들어?",
+  "tag": "식물 · 단풍"
+ },
+ "src": [
+  {
+   "claim": "가을엔 낮이 짧아지고 추워져서 잎이 초록 물감(엽록소)을 더 만들지 않는다",
+   "url": "https://extension.umaine.edu/publications/?p=3338",
+   "note": "In the fall, because of decreasing daylength and temperature, the leaves stop producing chlorophyll."
+  },
+  {
+   "claim": "노랑은 여름에도 잎 속에 있었는데 더 많은 초록에 가려져 안 보였다",
+   "url": "https://fs.usda.gov/Internet/FSE_DOCUMENTS/stelprd3817419.pdf",
+   "note": "For most of the year these yellowish colors are masked by the greater amount of green coloring."
+  },
+  {
+   "claim": "노랑은 초록에 가려져 있던 색이다(두 번째 근거)",
+   "url": "https://hgic.clemson.edu/factsheet/color-changes-in-autumn-leaves/",
+   "note": "others are already there, only masked by the green chlorophyll in the leaves"
+  },
+  {
+   "claim": "빨강은 잎에 갇힌 단물(당)로 가을에 새로 만든다",
+   "url": "https://fs.usda.gov/Internet/FSE_DOCUMENTS/stelprd3817419.pdf",
+   "note": "From the sugars trapped in the leaves the red pigment called anthocyanin is formed."
+  },
+  {
+   "claim": "빨강(안토시아닌)은 잎에 쌓여 갇힌 당으로 만든다(두 번째 근거)",
+   "url": "https://hgic.clemson.edu/factsheet/color-changes-in-autumn-leaves/",
+   "note": "These pigments are produced from glucose that has built up and is trapped in the leaves."
+  },
+  {
+   "claim": "단풍나무(붉은 단풍)는 빨갛게 물든다",
+   "url": "https://fs.usda.gov/Internet/FSE_DOCUMENTS/stelprd3817419.pdf",
+   "note": "trees with red or scarlet leaves in the autumn are red maple, silver maple, ... sweetgum"
+  },
+  {
+   "claim": "잎자루가 가지에 붙는 곳에 떨켜가 생겨 잎을 떼어 낸다",
+   "url": "https://extension.umaine.edu/publications/?p=3338",
+   "note": "A layer of special cells forms where the leaf stalk meets the twig ... This layer of special cells is called the abscission layer."
+  },
+  {
+   "claim": "떨켜가 잎으로 가는 물길을 막는다",
+   "url": "https://hgic.clemson.edu/factsheet/color-changes-in-autumn-leaves/",
+   "note": "the cells in a leaf abscission layer begin to seal off the flow of water to the leaf"
+  },
+  {
+   "claim": "은행나무 잎은 부채꼴이다",
+   "url": "https://encykorea.aks.ac.kr/Article/E0042931",
+   "note": "한국민족문화대백과 '은행나무': 잎은 부채꼴로 중간 부위가 갈라진다."
+  },
+  {
+   "claim": "은행나무는 노랗게 물드는 나무다",
+   "url": "https://m.korea.kr/news/policyNewsView.do?newsId=148658121",
+   "note": "산림청(국립산림과학원 자료) 정책브리핑 2008.10.17: '노란색은 은행나무를 비롯해 아까시나무, 피나무 … 자작나무, 물푸레나무 등이 좋으며'"
+  },
+  {
+   "claim": "노랑은 초록보다 늦게 부서지는 색이라, 초록이 사라지면 드러난다(숨어 있던 노랑)",
+   "url": "https://m.korea.kr/news/policyNewsView.do?newsId=148658121",
+   "note": "산림청: '엽록소보다 상대적으로 분해속도가 느린 카로틴(Carotene), 크산토필(Xanthophyll)과 같은 색소가 나타나 나뭇잎이 노랗게 보이게 되거나'"
+  },
+  {
+   "claim": "빨강은 가을에 새로 생기는 색이다",
+   "url": "https://m.korea.kr/news/policyNewsView.do?newsId=148658121",
+   "note": "산림청: '혹은 안토시아닌(Anthocyanin)이라는 색소가 생성되어 나뭇잎의 색이 붉게 보이는 것이다.'"
+  },
+  {
+   "claim": "은행잎이 노래질 때 초록은 빠르게 줄고 노랑은 거의 그대로다(그림의 막대: 초록 줄고 노랑 그대로)",
+   "url": "https://banglajol.info/index.php/BJB/article/view/86580",
+   "note": "Bangladesh J. Botany 'Changes in physiological characteristics of ginkgo leaves during natural yellowing': 'the content of total chlorophyll decreased rapidly while the content of carotenoids changed little'"
+  },
+  {
+   "claim": "은행잎이 물들 때 엽록소는 줄고 카로티노이드는 남아 있다(두 번째 근거)",
+   "url": "https://sciopen.com/article/10.1016/j.hpj.2020.11.002",
+   "note": "Horticultural Plant Journal 2020 'Physiological and Transcriptomic Changes During Autumn Coloration and Senescence in Ginkgo biloba Leaves': 'the content of chlorophyll decreased during leaf senescence, while carotenoid components increased until late October' (노랑이 조금 늘기도 해서 원고는 '새로 만들지 않는다'는 말은 쓰지 않음)"
+  },
+  {
+   "claim": "낮이 짧아지면 엽록소가 파괴되고 가려져 있던 색이 드러난다(국내 공공기관 해설)",
+   "url": "https://www.sciencetimes.co.kr/news/늦가을-단풍-속-과학으로-즐기기/",
+   "note": "사이언스타임즈(한국과학창의재단): '낮의 길이가 점차 짧아지고 일조량이 줄어들면 식물들은 광합성을 멈추게 되는데 이때 엽록소가 파괴되고…'; 카로티노이드·크산토필(노랑)·안토시아닌(빨강)이 대표 색소"
+  },
+  {
+   "claim": "은행잎의 노랑은 카로티노이드(숨어 있던 노랑)로 나타난다",
+   "url": "https://www.etoday.co.kr/news/view/816862",
+   "note": "안영희 중앙대 교수 칼럼: 은행나무와 같이 노란 단풍은 주로 카로티노이드에 의해 나타난다. (보조 근거 — 위 산림청·논문 근거가 주 근거)"
+  },
+  {
+   "claim": "추워지고 해가 짧아지면 초록(엽록소)이 부서져 사라진다",
+   "url": "https://www.etoday.co.kr/news/view/816862",
+   "note": "엽록소 색소는 기온이 뚝 떨어지고 해의 길이가 짧아지면 효소에 의해 파괴되어 버린다. (보조 근거 — 위 산림청·논문 근거가 주 근거)"
+  },
+  {
+   "claim": "빨간 단풍은 안토시아닌 색소로 나타난다",
+   "url": "https://www.etoday.co.kr/news/view/816862",
+   "note": "붉은색 단풍은 ... 특별히 안토시아닌 색소에 의해 나타나며 (보조 근거 — 위 산림청·논문 근거가 주 근거)"
+  }
+ ]
+}

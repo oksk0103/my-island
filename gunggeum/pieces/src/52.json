@@ -1,0 +1,37 @@
+{
+ "ep": 52,
+ "date": "2026-12-07",
+ "topic": "낮과 밤은 왜 생길까 — 자전",
+ "home": {
+  "f": "낮과 밤은 왜 생길까?",
+  "q": "해는 왜 동쪽에서 뜰까?",
+  "tag": "하늘 · 낮과 밤"
+ },
+ "src": [
+  {
+   "claim": "지구는 제자리에서 돌며(자전), 한 바퀴 도는 데 24시간이 걸린다",
+   "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question31.html",
+   "note": "NASA StarChild: the Sun appears to move because the Earth rotates on its axis; Earth makes one complete spin in 24 hours"
+  },
+  {
+   "claim": "우리가 있는 곳이 해를 보면 낮, 지구가 돌아 해를 등지면 밤이다",
+   "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question31.html",
+   "note": "when your location faces the Sun it is day; 'the Earth rotates you away from the Sun, and it is night'"
+  },
+  {
+   "claim": "북극 위에서 보면 지구는 시계 반대 방향으로 돈다",
+   "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question31.html",
+   "note": "지구본 시연: viewed from the North Pole, Earth spins counterclockwise"
+  },
+  {
+   "claim": "지구는 동쪽으로 돌고, 그래서 해가 동쪽에서 떠서 서쪽으로 지는 것처럼 보인다",
+   "url": "https://spaceweather.ssl.berkeley.edu/monday/daily-motion",
+   "note": "UC 버클리 우주과학연구소: 'The cause of the Sun's daily motion is the spinning of the Earth.' Earth spins eastward; Sun rises in the East and sets in the West"
+  },
+  {
+   "claim": "해가 아침에 동쪽에서 떠서 한낮에 남쪽 하늘 높이, 저녁에 서쪽으로 간다(남쪽을 보고 선 하늘)",
+   "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question31.html",
+   "note": "the Sun appears to move starting in the east in the morning, toward the south at noon and the west as the day ends"
+  }
+ ]
+}

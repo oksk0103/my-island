@@ -1,0 +1,52 @@
+{
+ "ep": 42,
+ "date": "2026-11-27",
+ "topic": "소리는 어떻게 들릴까 — 떨림",
+ "home": {
+  "f": "소리는 어떻게 들릴까?",
+  "q": "공기가 없는 우주에서도 소리가 들릴까?",
+  "tag": "소리 · 떨림"
+ },
+ "src": [
+  {
+   "claim": "소리는 물건이 떨릴 때 생긴다(북을 치거나 줄을 튕기면 떨림)",
+   "url": "https://www.sciencelearn.org.nz/resources/571-hearing-sound",
+   "note": "Science Learning Hub(NZ): Sound is made up of pressure waves that are generated when something vibrates."
+  },
+  {
+   "claim": "말할 때 목 안(성대)이 떨린다 — 목에 손을 대면 떨림이 느껴짐",
+   "url": "https://www.sciencelearn.org.nz/resources/571-hearing-sound",
+   "note": "Science Learning Hub: our vocal cords vibrate, which makes air particles vibrate and produces a sound wave."
+  },
+  {
+   "claim": "떨림은 옆 공기를 밀고, 그 공기가 또 옆을 밀며 차례로 전해진다",
+   "url": "https://www.sciencelearn.org.nz/resources/571-hearing-sound",
+   "note": "Science Learning Hub: vibrations make particles move back and forth and bump into each other."
+  },
+  {
+   "claim": "소리(떨림)는 귓구멍을 지나 고막에 닿는다",
+   "url": "https://www.nidcd.nih.gov/health/how-do-we-hear",
+   "note": "NIDCD(미국 국립보건원): Sound waves enter the outer ear and travel through a narrow passageway called the ear canal, which leads to the eardrum."
+  },
+  {
+   "claim": "고막이 떨리고, 그 떨림이 안쪽으로 전해진다",
+   "url": "https://www.nidcd.nih.gov/health/how-do-we-hear",
+   "note": "NIDCD: The eardrum vibrates from the incoming sound waves and sends these vibrations to three tiny bones in the middle ear."
+  },
+  {
+   "claim": "떨림이 신호가 되어 뇌에 전해지면 소리로 들린다",
+   "url": "https://www.nidcd.nih.gov/health/how-do-we-hear",
+   "note": "NIDCD: The auditory nerve carries this electrical signal to the brain."
+  },
+  {
+   "claim": "공기가 없는 우주에서는 소리가 전해지지 않는다(마무리 답)",
+   "url": "https://howthingsfly.si.edu/ask-an-explainer/what-speed-sound-vacuum-it-faster-or-slower-its-speed-air-0",
+   "note": "Smithsonian 국립항공우주박물관: sound cannot travel in a vacuum; it spreads through the vibration of particles in a medium."
+  },
+  {
+   "claim": "소리는 떨림을 옮겨 줄 것이 없는 빈 곳(진공)에서는 못 간다",
+   "url": "https://www.sciencelearn.org.nz/resources/571-hearing-sound",
+   "note": "Science Learning Hub: Sound cannot travel in a vacuum, unlike light, because there are no particles to do the bumping."
+  }
+ ]
+}

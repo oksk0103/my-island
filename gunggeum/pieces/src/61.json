@@ -1,0 +1,37 @@
+{
+ "ep": 61,
+ "date": "2026-12-16",
+ "topic": "종이비행기",
+ "home": {
+  "f": "종이비행기는 어떻게 날까?",
+  "q": "종이비행기를 더 빨리 날리려면 어떻게 할까?",
+  "tag": "힘 · 종이비행기"
+ },
+ "src": [
+  {
+   "claim": "종이비행기는 앞으로 나가는 힘을 던지는 사람에게서 받고, 세게 던지면 그 힘이 커진다",
+   "url": "https://howthingsfly.si.edu/ask-an-explainer/how-do-increase-thrust-paper-airplane",
+   "note": "스미스소니언 항공우주박물관: 'A paper airplane gets its thrust from the person throwing it.' / 'to increase thrust, you'll just need to throw it harder!'"
+  },
+  {
+   "claim": "종이비행기는 엔진이 없는 글라이더다(받쳐 주는 힘·막는 힘·무게)",
+   "url": "https://www.grc.nasa.gov/WWW/K-12/VirtualAero/BottleRocket/airplane/glider.html",
+   "note": "NASA Glenn: 'a glider has only three main forces acting on it: lift, drag, and weight', 'Paper airplanes are the most obvious example', 'no engine to generate thrust'"
+  },
+  {
+   "claim": "계속 밀어 줄 엔진이 없어 공기에 막혀 느려지고 조금씩 내려온다",
+   "url": "https://www.grc.nasa.gov/WWW/K-12/VirtualAero/BottleRocket/airplane/glider.html",
+   "note": "'the glider quickly slows down until it can no longer generate enough lift to oppose the weight' / 'Gliders are always descending relative to the air'"
+  },
+  {
+   "claim": "날개가 공기 흐름을 한쪽(아래)으로 꺾으면 반대쪽(위)으로 받쳐 주는 힘이 생긴다",
+   "url": "https://www.nasa.gov/wp-content/uploads/2020/04/four_forces_of_flight.pdf",
+   "note": "NASA Four Forces of Flight: 'The flow is turned in one direction, and the lift is generated in the opposite direction.'"
+  },
+  {
+   "claim": "무게는 땅 쪽으로 끌어당기는 힘, 공기는 앞으로 가는 것을 막는다",
+   "url": "https://www.nasa.gov/wp-content/uploads/2020/04/four_forces_of_flight.pdf",
+   "note": "'Weight is a force that is always directed toward the center of Earth due to gravity.' / 'Drag is produced any time a solid object tries to pass through a liquid or gas.'"
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+{
+ "ep": 55,
+ "date": "2026-12-10",
+ "topic": "씨앗은 어떻게 싹틀까",
+ "home": {
+  "f": "씨앗은 어떻게 싹틀까?",
+  "q": "뿌리와 싹 중 무엇이 먼저 나올까?",
+  "tag": "식물 · 씨앗"
+ },
+ "src": [
+  {
+   "claim": "씨앗이 싹트려면 물, 공기(산소), 알맞은 온도가 필요하다",
+   "url": "https://www.britannica.com/science/germination",
+   "note": "브리태니커 germination: 싹트기에는 suitable temperature and access to water and oxygen 같은 조건이 필요"
+  },
+  {
+   "claim": "물을 먹은 씨앗은 부풀고 잠에서 깨어나듯 다시 활동한다",
+   "url": "https://www.britannica.com/science/germination",
+   "note": "브리태니커: 씨앗이 물을 흡수해 세포가 다시 물을 머금고 커지며, 호흡이 늘고 멈춰 있던 활동이 다시 시작됨"
+  },
+  {
+   "claim": "뿌리가 먼저 나오고 싹(줄기)은 그다음에 나온다",
+   "url": "https://www.britannica.com/science/germination",
+   "note": "브리태니커: 싹트기는 usually begins with the emergence of the primary root, known as the radicle (코코넛 같은 예외는 원고에서 '먼저'라고만 쓰고 다루지 않음)"
+  },
+  {
+   "claim": "잎이 스스로 양분을 만들기 전까지 싹은 씨앗에 모아 둔 양분으로 자란다",
+   "url": "https://www.britannica.com/science/germination",
+   "note": "브리태니커: the seedling depends upon reserves provided by the parent sporophyte"
+  },
+  {
+   "claim": "떡잎에 양분을 담은 씨앗도 있고, 떡잎은 나중에 빛을 받아 처음으로 양분을 만드는 잎이 된다",
+   "url": "https://www.britannica.com/science/germination",
+   "note": "브리태니커: 일부 씨앗은 떡잎(cotyledons)에 양분을 저장하고, 떡잎이 빛을 받아 펼쳐져 처음 광합성하는 기관이 됨"
+  },
+  {
+   "claim": "뿌리가 먼저 나오는 것이 보통이다(예외가 있어 본문에 '대개'로 씀)",
+   "url": "https://www.britannica.com/science/germination",
+   "note": "브리태니커: 'usually begins with the emergence of the primary root, known as the radicle … In some species, such as the coconut, the shoot emerges first'"
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+{
+ "ep": 36,
+ "date": "2026-12-15",
+ "topic": "대설과 동지",
+ "home": {
+  "f": "절기 이름엔 무슨 뜻이 있을까?",
+  "q": "동지는 무슨 날이야?",
+  "tag": "절기 · 대설과 동지"
+ },
+ "src": [
+  {
+   "claim": "2026년 대설은 12월 7일, 동지는 12월 22일(소설은 11월 22일)",
+   "url": "https://astro.kasi.re.kr/kor/life/post/calendarData?search_year=2026",
+   "note": "한국천문연구원 천문우주지식정보 2026년 절기: 소설 11/22 16:23, 대설 12/7 11:53, 동지 12/22 05:50"
+  },
+  {
+   "claim": "절기는 해의 움직임에 따라 한 해를 15일쯤 간격으로 24칸으로 나눈 것",
+   "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=2",
+   "note": "문화체육관광부 어린이 문화이야기: 태양의 움직임(위치)에 따라 1년을 15일 간격으로 24등분"
+  },
+  {
+   "claim": "소설은 첫눈이 내리는 때, 대설은 눈이 많이 내리는 때",
+   "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=2",
+   "note": "소설: 첫눈이 내리는 시기 / 대설: 눈이 많이 내리는 시기"
+  },
+  {
+   "claim": "대설(大雪)은 눈이 많이 내린다는 뜻의 이름이며 소설과 동지 사이에 든다",
+   "url": "https://encykorea.aks.ac.kr/Article/E0014495",
+   "note": "한국민족문화대백과사전 '대설': \"이 시기에 눈이 많이 내린다는 뜻에서 대설(大雪)이라는 이름을 붙였는데\", \"소설(小雪)과 동지(冬至) 사이에 들며 … 양력 12월 7, 8일경\""
+  },
+  {
+   "claim": "동지(冬至)는 겨울에 이르렀다는 뜻이며 한 해 중 밤이 가장 긴 날",
+   "url": "https://mediahub.seoul.go.kr/archives/140724",
+   "note": "서울시 미디어허브: 동지는 글자 그대로 겨울에 이르렀다는 뜻, 밤의 길이가 일 년 중 가장 긴 날"
+  },
+  {
+   "claim": "동지를 작은설이라고도 했고 설 다음 큰 명절로 여겼으며 팥죽을 쑤어 먹는다",
+   "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=2",
+   "note": "동지는 '작은설'이라고도 하며 설 다음 큰 명절로 인식. 서울시 미디어허브에도 '동짓날에는 팥죽을 쑤어 먹는다'"
+  }
+ ]
+}

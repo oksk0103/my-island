@@ -1,0 +1,37 @@
+{
+ "ep": 7,
+ "date": "2026-11-23",
+ "topic": "건강하세요",
+ "home": {
+  "f": "‘건강하세요’는 틀린 말일까?",
+  "q": "건강하세요는 왜 어색하다고 해?",
+  "tag": "바른 말 · 건강하세요"
+ },
+ "src": [
+  {
+   "claim": "'건강하다'는 형용사이고, 형용사는 명령문으로 쓰이지 않는다는 문법적 제약이 있다",
+   "url": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=321680&searchCondition=&searchKeyword=",
+   "note": "국립국어원 온라인가나다(2025.10.2.): \"'건강하다'는 형용사인데, 형용사는 명령문으로 쓰이지 않는다는 문법적 제약이 있습니다\""
+  },
+  {
+   "claim": "시키는 말끝(명령형 어미 '-아라/어라')은 원칙적으로 동사(움직임을 나타내는 말)에만 붙는다",
+   "url": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=97&pageIndex=1&qna_seq=334647&searchCondition=&searchKeyword=",
+   "note": "국립국어원 온라인가나다 '건강하세요 조용하세요 행복하세요'(2026.8.10. 답변): <표준국어대사전>은 명령형 어미 '-아라/어라, -(으)십시오'가 동사 어간에만 결합한다고 설명하므로 보통 형용사와 결합하지 않는다고 볼 수 있음"
+  },
+  {
+   "claim": "'건강하세요'는 널리 쓰여서 틀렸다고 보기 어렵다는 의견도 있고, 보는 관점에 따라 판단이 갈린다",
+   "url": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=97&pageIndex=1&qna_seq=334647&searchCondition=&searchKeyword=",
+   "note": "같은 답변: 관점에 따라 처리가 달라 단정적인 답변이 어렵고, 엄격한 규칙을 중시하면 적절하지 않다고 보지만 '현실적으로 널리 사용되는 만큼 잘못되었다고 보기 어렵다는 견해도 있음'"
+  },
+  {
+   "claim": "'행복하세요'도 형용사에 명령형 어미가 붙은 같은 경우다",
+   "url": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=97&pageIndex=1&qna_seq=334647&searchCondition=&searchKeyword=",
+   "note": "질문이 '건강하세요', '행복하세요'를 형용사+명령형 어미 사례로 함께 다룸"
+  },
+  {
+   "claim": "'지내다'는 동사(움직임을 나타내는 말)라서 '건강하게 지내세요'는 시키는 말끝 규칙에 맞는다",
+   "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=17173&nation=eng&nationCode=6",
+   "note": "국립국어원 한국어기초사전 '지내다': 품사 동사, 뜻풀이 '어떠한 정도나 상태로 생활하거나 살아가다.' (위 온라인가나다의 '명령형 어미는 동사 어간에 결합' 설명과 합쳐 판단)"
+  }
+ ]
+}

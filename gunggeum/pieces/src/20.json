@@ -1,0 +1,11 @@
+{"ep":20,"date":"2026-11-22","topic":"정전기",
+ "home":{"f":"겨울엔 왜 문고리가 따끔할까?","q":"정전기는 왜 생겨?","tag":"전기 · 정전기"},
+ "src":[
+  {"claim":"풍선을 옷(천)에 문지르면 풍선에 전기가 모인다","url":"https://fi.edu/en/science-recipes/fun-static","note":"프랭클린 과학관: \"Use a balloon to create some static electricity by rubbing it with a cloth (or on your hair!)\""},
+  {"claim":"전기가 모인 풍선은 가벼운 종이 조각을 끌어당긴다","url":"https://fi.edu/en/science-recipes/fun-static","note":"전기를 띤 물체에 'Confetti or small pieces of paper' 같은 가벼운 것을 대 보는 활동, 반대 전기끼리 끌어당긴다고 설명"},
+  {"claim":"서로 다른 두 물건이 맞닿았다 떨어지면 전기가 한쪽에 남는다(문지르면 전기가 모인다)","url":"https://www.pa.uky.edu/sciworks/THE/heat/static.htm","note":"켄터키대: \"Whenever two dissimilar materials are placed in contact, a few electrons will move...\" 떨어지면 전하가 남는다"},
+  {"claim":"몸에 전기가 모인 채 쇠 문고리에 손을 가까이 대면 전기가 한꺼번에 건너가 찌릿하다","url":"https://coe.northeastern.edu/?p=49036","note":"노스이스턴대 공대: 전기가 통하는 물체에 다가가면 \"electrons jump rapidly between us and the conductor, causing the zap\""},
+  {"claim":"공기 속 물기는 모인 전기를 데려가는데, 겨울엔 공기가 메말라 전기가 그대로 모인다","url":"https://coe.northeastern.edu/?p=49036","note":"\"In winter or dry climates, however, the air contains less moisture\" — 물기가 적어 전하가 흩어지지 못하고 쌓인다"},
+  {"claim":"겨울엔 바깥 공기에 물기가 적어 방 안 공기도 메마르다","url":"https://www.pa.uky.edu/sciworks/THE/heat/static.htm","note":"\"In the winter, the air outside has very little water in it\", 습도가 낮으면 정전기 충격이 생긴다"},
+  {"claim":"열쇠 같은 쇠붙이로 문고리를 먼저 건드리면 찌릿을 덜 한다","url":"https://coe.northeastern.edu/?p=49036","note":"\"Discharge yourself often by touching metal objects\", 동전이나 열쇠로 쇠붙이를 건드리라는 요령"}
+ ]}

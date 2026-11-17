@@ -1,0 +1,62 @@
+{
+ "ep": 1,
+ "date": "2026-11-17",
+ "topic": "음력과 윤달",
+ "home": {
+  "f": "설날은 왜 해마다 날짜가 바뀔까?",
+  "q": "음력은 왜 쓸까?",
+  "tag": "국어 상식 · 음력과 윤달"
+ },
+ "src": [
+  {
+   "claim": "달 모양이 다시 같아지기까지 29.5일쯤, 12번이면 354일",
+   "url": "https://weekly.khan.co.kr/article/201709251741211",
+   "note": "주간경향: '달이 차고 이지러지는 주기는 약 29.5일인데 이렇게 열두 달이 지나면 약 354일이 된다.'"
+  },
+  {
+   "claim": "양력 한 해 365일, 음력과 11일쯤 차이",
+   "url": "https://weekly.khan.co.kr/article/201709251741211",
+   "note": "'한 해의 길이인 약 365.25일과는 11일 정도의 차이가 난다.'"
+  },
+  {
+   "claim": "윤달을 두세 해에 한 번(19년에 7번) 넣어 계절과 맞춘다",
+   "url": "https://weekly.khan.co.kr/article/201709251741211",
+   "note": "'윤달(19년에 7번)을 적절히 넣어 한 해의 길이를 맞추고'"
+  },
+  {
+   "claim": "윤달을 두세 해에 한 번(19년에 7번) 넣는다, 평균 한 달 29.53일",
+   "url": "https://encykorea.aks.ac.kr/Article/E0042332",
+   "note": "한국민족문화대백과 '윤법': '평균 삭망월의 길이가 29.53일', '3태양년에 1개월 … 19태양년에 7개월 등을 두어야 한다'"
+  },
+  {
+   "claim": "2024년 설날 2월 10일",
+   "url": "https://astro.kasi.re.kr/kor/life/post/calendarData?year=2024",
+   "note": "한국천문연구원 달력자료: 2024년 음력 1월 1일 = 양력 2월 10일, 윤달 없음"
+  },
+  {
+   "claim": "2025년 설날 1월 29일, 윤6월 있음",
+   "url": "https://astro.kasi.re.kr/kor/life/post/calendarData?year=2025",
+   "note": "한국천문연구원 달력자료: 음력 1월 1일 = 양력 1월 29일, 윤6월(양력 7월 25일 시작)"
+  },
+  {
+   "claim": "2026년 설날 2월 17일",
+   "url": "https://astro.kasi.re.kr/life/post/calendarData?year=2026",
+   "note": "한국천문연구원 달력자료: 2026년 음력 1월 1일 = 양력 2월 17일 (11/18 감수 재확인, 윤달 없음)"
+  },
+  {
+   "claim": "2027년 설날 2월 7일",
+   "url": "https://astro.kasi.re.kr/kor/life/post/calendarData?year=2027",
+   "note": "한국천문연구원 달력자료: 2027년 음력 1월 1일 = 양력 2월 7일, 윤달 없음"
+  },
+  {
+   "claim": "설은 음력으로 해가 바뀌는 첫날",
+   "url": "https://astro.kasi.re.kr/kor/life/post/calendarData?year=2024",
+   "note": "한국경제 생글생글: '설은 음력으로 해가 바뀌는 첫날을 가리킨다.'"
+  },
+  {
+   "claim": "마무리 '오늘 달'은 평균 주기로 어림한 모양만 보여 주고 음력 날짜는 표시하지 않음(감수 결정)",
+   "url": "https://astro.kasi.re.kr/kor/life/post/calendarData?year=2025",
+   "note": "천문연 달력자료로 2024~2027 설날·2025 윤6월(7월 25일 시작) 재확인"
+  }
+ ]
+}

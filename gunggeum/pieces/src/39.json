@@ -1,0 +1,42 @@
+{
+ "ep": 39,
+ "date": "2026-11-24",
+ "topic": "하늘은 왜 파랄까",
+ "home": {
+  "f": "하늘은 왜 파랄까?",
+  "q": "그럼 해 질 녘 하늘은 왜 빨개질까?",
+  "tag": "빛 · 하늘색"
+ },
+ "src": [
+  {
+   "claim": "하얗게 보이는 햇빛에는 무지개 색(빨강~보라)이 다 섞여 있다",
+   "url": "https://scijinks.gov/about/k-12-education/atmosphere/why-the-sky-blue",
+   "note": "NOAA SciJinks: The white light coming from the Sun is really made up of all the colors of the rainbow."
+  },
+  {
+   "claim": "빛이 공기 속을 지나며 공기에 부딪히고, 파란빛이 다른 색보다 더 잘 흩어진다(튕긴다)",
+   "url": "https://scijinks.gov/about/k-12-education/atmosphere/why-the-sky-blue",
+   "note": "NOAA SciJinks: Blue light is scattered more than other colors ... bounce off gas molecules in the atmosphere, spread across the sky."
+  },
+  {
+   "claim": "공기는 파란빛을 더 강하게 흩뜨린다(빨간빛은 덜 흩어짐)",
+   "url": "https://metoffice.gov.uk/learning/optics/why-is-the-sunset-red",
+   "note": "Met Office: blue light is scattered more strongly by the atmosphere; relatively more yellow and red light left."
+  },
+  {
+   "claim": "사방으로 흩어진 파란빛 때문에 하늘이 파랗게 보인다",
+   "url": "https://scijinks.gov/about/k-12-education/atmosphere/why-the-sky-blue",
+   "note": "NOAA SciJinks: blue light spreads across the sky, so the sky looks blue."
+  },
+  {
+   "claim": "햇빛을 일곱 색 이름(빨주노초파남보)으로 나눠 부른다",
+   "url": "https://www.britannica.com/science/color",
+   "note": "Britannica: Newton used the seven colour names red, orange, yellow, green, blue, indigo, and violet."
+  },
+  {
+   "claim": "빗방울이 햇빛을 색깔별로 나눠 무지개가 생긴다(마무리 답)",
+   "url": "https://scijinks.gov/about/k-12-education/atmosphere/why-the-sky-blue",
+   "note": "NOAA SciJinks: Raindrops and prisms separate white light into its colors."
+  }
+ ]
+}

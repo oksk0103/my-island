@@ -181,3 +181,9 @@
 - 진짜 원인: 음성 인식을 `continuous = false`로 열어, Chrome이 1초쯤 조용하면 스스로 듣기를 끝냈다. 그 위에 우리 무음 타이머도 1.8초였다. 아이는 "고래는… 음… 왜" 처럼 중간에 쉰다.
 - 다음에는: `continuous = true`로 열고 끝은 `listenWait()`로 정한다(보통 2.6초, 조사·이음말·'음'으로 끝나면 4.2초, 최대 25초). 안드로이드 Chrome이 앞 말을 되풀이해 붙여 보내는 것은 결과를 처음부터 다시 모아 겹침을 지운다. 끝난 까닭은 진단 기록(mic)에 남는다.
 - 관련: v153, `startListening()`, `listenWait()`. 실제 기기에서만 확인 가능.
+
+## v155 이야기·과학 한 달치 (11/17~12/17)
+- 편마다 파일 하나: `pieces/ep/NN.js` (즉시 실행 함수로 감싸 `EPX[NN]={...}`). 화면은 `pieces/piece.html?ep=NN&v=2`. 17편(입김)만 piece.html 안에 v2로 들어 있음. 예전 그림판 편(piece.html 안 EP.push)은 `v=2` 없이 열면 그대로 나옴.
+- 새 틀(v2): `frame:'v2'`면 body.v2. 과학 = 보라남 바탕·산호 강조, 이야기 = 남청 바탕·앰버 강조·명조 제목. 공용 도구는 piece.html의 17편 위(W0·wl·wdot·hRuler·wLens 등).
+- 날짜표: index.html `PIECE_PAGES`(이야기)·`SCI_PAGES`(과학) 모두 `from` 날짜로 고름. 과학은 그날 편이 없으면 지난 편을 차례로 돈다.
+- 근거: `pieces/src/NN.json`(편마다 사실·출처·확인 메모), 모아 본 목록 `pieces/SOURCES.md`.

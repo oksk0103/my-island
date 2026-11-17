@@ -1,0 +1,42 @@
+{
+ "ep": 45,
+ "date": "2026-11-30",
+ "topic": "얼음",
+ "home": {
+  "f": "얼음은 왜 물에 뜰까?",
+  "q": "얼음은 물속에 얼마나 잠겨?",
+  "tag": "물의 변신 · 얼음"
+ },
+ "src": [
+  {
+   "claim": "물은 얼면 몸집(부피)이 커진다 — 10칸이 11칸쯤(약 9~10%)",
+   "url": "https://www.usgs.gov/water-science-school/science/water-density",
+   "note": "USGS: Upon freezing, the density of ice decreases by about 9 percent (같은 무게가 더 큰 자리를 차지)"
+  },
+  {
+   "claim": "얼음 속에는 알갱이들이 줄을 맞춰 서서 사이가 벌어진다(빈틈)",
+   "url": "https://www.usgs.gov/water-science-school/science/water-density",
+   "note": "USGS: 얼 때 물 알갱이들이 격자(lattice)처럼 정돈되어 서고, The lattice arrangement allows water molecules to be more spread out than in a liquid"
+  },
+  {
+   "claim": "같은 크기면 얼음이 물보다 가벼워서 뜬다",
+   "url": "https://www.usgs.gov/water-science-school/science/water-density",
+   "note": "USGS: 얼음은 물보다 밀도가 낮아(물의 약 90%) 물에 뜬다"
+  },
+  {
+   "claim": "얼음은 10칸 중 9칸쯤이 물속에 잠긴다",
+   "url": "https://usgs.gov/media/images/ninety-percent-iceberg-below-waterline",
+   "note": "USGS 사진 설명: Ninety percent of an iceberg is below the waterline."
+  },
+  {
+   "claim": "얼음이 위에 떠서 호수는 위에서부터 언다(아니면 바닥부터 꽁꽁 얼었을 것)",
+   "url": "https://www1.maine.gov/dep/water/lakes/lessons/seasonalmagic.pdf",
+   "note": "메인주 환경보호국: when water freezes to ice, it floats. 이 성질이 없으면 lakes would freeze solid from the bottom up"
+  },
+  {
+   "claim": "물고기는 얼음 아래 물에서 겨울을 난다",
+   "url": "https://www1.maine.gov/dep/water/lakes/lessons/seasonalmagic.pdf",
+   "note": "In winter most fish spend their time near bottom, where the food and warmest (39.2°F) water lies."
+  }
+ ]
+}

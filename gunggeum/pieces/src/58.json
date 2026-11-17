@@ -1,0 +1,52 @@
+{
+ "ep": 58,
+ "date": "2026-12-13",
+ "topic": "이는 왜 빠지고 다시 날까",
+ "home": {
+  "f": "이는 왜 빠지고 다시 날까?",
+  "q": "젖니 밑에는 무엇이 기다리고 있을까?",
+  "tag": "우리 몸 · 이"
+ },
+ "src": [
+  {
+   "claim": "젖니(유치)는 20개, 간니(영구치)는 32개",
+   "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148891050",
+   "note": "대한민국 정책브리핑(건강보험심사평가원): '사람은 일생 동안 유치 20개와 영구치 32개를 가지게 되는데요'"
+  },
+  {
+   "claim": "젖니는 태어나서 6~8개월쯤부터 나기 시작한다",
+   "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148891050",
+   "note": "건강보험심사평가원: '유치는 생후 약 6~8개월부터 나기 시작하여'"
+  },
+  {
+   "claim": "만 6~7세쯤부터 젖니가 간니로 바뀐다",
+   "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148891050",
+   "note": "건강보험심사평가원: '만 6~7세에 영구치가 나오면서 자연스럽게 치아의 교체가 이루어집니다'"
+  },
+  {
+   "claim": "젖니 20개, 간니 32개, 6살쯤부터 빠지기 시작, 맨 안쪽 큰어금니가 사랑니",
+   "url": "https://kidshealth.org/CookChildrens/en/kids/teeth.html",
+   "note": "KidsHealth(Nemours): 20 deciduous teeth → 32 permanent teeth, begin to fall out around 6 years old, third molars are the wisdom teeth"
+  },
+  {
+   "claim": "아래에서 올라오는 새 이(간니)가 젖니 뿌리가 녹아 없어지게(흡수) 하고, 그래서 젖니가 빠진다",
+   "url": "https://www.jstage.jst.go.jp/article/josnusd/49/1/49_1_1/_article",
+   "note": "Journal of Oral Science 49(1) 2007: 젖니 뿌리 흡수는 정상 과정이며 아래 영구치의 치낭이 시작·조절함"
+  },
+  {
+   "claim": "젖니는 위아래 10개씩(한쪽에 앞니 2·송곳니 1·어금니 2)",
+   "url": "https://www.michigan.gov/documents/mdhhs/Primary_Tooth_Eruption_647707_7.pdf",
+   "note": "미국 미시간주 보건복지부 젖니 나는 시기 표: 위·아래 각각 central incisor, lateral incisor, cuspid, first molar, second molar(양쪽이라 턱마다 10개, 합 20개)"
+  },
+  {
+   "claim": "간니는 위아래 16개씩(턱마다 앞니 4·송곳니 2·작은어금니 4·큰어금니 6), 맨 안쪽 셋째 큰어금니가 사랑니",
+   "url": "https://kidshealth.org/CookChildrens/en/kids/teeth.html",
+   "note": "KidsHealth: incisors 'four on the bottom and four on the top', premolars 'four … in each jaw', 12 molars 'three sets in each jaw', 'The third molars are the wisdom teeth' → 32개 중 송곳니 4개를 위아래 2개씩 두면 턱마다 16개"
+  },
+  {
+   "claim": "사랑니(셋째 큰어금니) 포함 32개이며, 사랑니가 없는 사람도 있다(그래서 제목을 '어른 이는 32개'가 아니라 '간니는 사랑니까지 32개'로 씀)",
+   "url": "https://my.clevelandclinic.org/health/articles/24655-teeth",
+   "note": "클리블랜드 클리닉: 'Most adults have 32 permanent teeth, including eight incisors, four canines, eight premolars and 12 molars', 'wisdom teeth (third molars)', 태어날 때부터 없으면 어금니 8개"
+  }
+ ]
+}

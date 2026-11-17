@@ -1,0 +1,47 @@
+{
+ "ep": 31,
+ "date": "2026-12-10",
+ "topic": "동음이의어 '배'",
+ "home": {
+  "f": "‘배’는 뜻이 몇 가지일까?",
+  "q": "배를 타고 배를 먹으면 배가 부를까?",
+  "tag": "말의 뜻 · 소리가 같은 말"
+ },
+ "src": [
+  {
+   "claim": "몸의 배: 가슴 아래, 다리 위 부분",
+   "url": "https://krdict.korean.go.kr/eng/dicMarinerSearch/search?nation=eng&mainSearchWord=%EB%B0%B0",
+   "note": "한국어기초사전 '배1': 사람이나 동물의 몸에서, 가슴 아래에서 다리 위까지의 부분"
+  },
+  {
+   "claim": "물 위를 다니는 배(배2)",
+   "url": "https://krdict.korean.go.kr/eng/dicMarinerSearch/search?nation=eng&mainSearchWord=%EB%B0%B0",
+   "note": "'배2': 사람이나 물건을 싣고 물 위를 다니는 교통수단"
+  },
+  {
+   "claim": "가을에 나는 둥근 과일 배(배3)",
+   "url": "https://krdict.korean.go.kr/eng/dicMarinerSearch/search?nation=eng&mainSearchWord=%EB%B0%B0",
+   "note": "'배3': 껍질은 누렇고 속은 희며 수분이 많고 단맛이 나는, 가을에 나는 둥근 과일"
+  },
+  {
+   "claim": "사전은 배1, 배2, 배3처럼 번호를 붙여 따로 싣는다",
+   "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?nation=eng&ParaWordNo=20211",
+   "note": "표제어가 '배1'(명사)로 번호를 달고 실려 있음"
+  },
+  {
+   "claim": "동음이의어 = 소리는 같고 뜻이 다른 말",
+   "url": "https://www.korean.go.kr/nkview/nknews/200308/61_4.html",
+   "note": "국립국어원 새국어소식: 형태는 같으나 의미가 달라서 사전에 독립된 표제어로 등재한 단어를 동음이의어라고 한다 (감수 때 직접 열어 문장 확인)"
+  },
+  {
+   "claim": "동음이의어 정의(보조)",
+   "url": "https://aiopen.etri.re.kr/guide/Homonym",
+   "note": "한국전자통신연구원: 동음이의어는 소리는 같으나 뜻이 다른 단어"
+  },
+  {
+   "claim": "‘배’에는 몸·배(탈것)·과일 말고도 뜻이 더 있다(그래서 '뜻이 여럿', 화면은 '그중 셋')",
+   "url": "https://krdict.korean.go.kr/eng/dicMarinerSearch/search?nation=eng&mainSearchWord=%EB%B0%B0",
+   "note": "한국어기초사전 검색 결과: 배1(몸)·배2(교통수단)·배3(과일) 외에 배4(倍, 두 번 합한 만큼)·배5(杯, 잔을 세는 단위)도 따로 실려 있음 — 감수 때 직접 확인"
+  }
+ ]
+}

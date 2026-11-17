@@ -1,0 +1,37 @@
+{
+ "ep": 50,
+ "date": "2026-12-05",
+ "topic": "펭귄은 왜 발이 안 얼까",
+ "home": {
+  "f": "펭귄은 왜 발이 안 얼까?",
+  "q": "펭귄 발로 가는 피는 어떻게 식을까?",
+  "tag": "동물 · 펭귄의 발"
+ },
+ "src": [
+  {
+   "claim": "새의 다리와 발에는 깃털이 없고 추위를 막는 기름살도 많지 않다",
+   "url": "https://www.niehs.nih.gov/health/kids/topics/natural-world/wildlife/animals/feet",
+   "note": "\"The feet and legs of birds don't have much insulating fat, no feathers, and few nerves.\" (미국 국립환경보건과학연구소 어린이 페이지)"
+  },
+  {
+   "claim": "펭귄 몸은 두꺼운 기름층과 물이 스며들지 않는 깃털이 덮는다",
+   "url": "https://www.discoverwildlife.com/animal-facts/birds/penguins-feet-freeze",
+   "note": "펭귄은 'a well-defined fat layer'와 'a waterproof coat of specialised feathers'를 가짐 (BBC Wildlife)"
+  },
+  {
+   "claim": "발로 가는 따뜻한 피가 돌아오는 찬 피 옆을 지나며 열을 건네, 내려가는 피는 식고 올라오는 피는 데워진다",
+   "url": "https://www.discoverwildlife.com/animal-facts/birds/penguins-feet-freeze",
+   "note": "counter current heat-exchange: 동맥이 정맥 가까이 붙어 있어 나가는 피는 발에 닿기 전 식고, 돌아오는 피는 몸에 닿기 전 데워짐"
+  },
+  {
+   "claim": "동맥 피가 정맥 피를 데우며 식고, 발은 얼기 직전까지 식지만 얼지 않는다",
+   "url": "https://www.niehs.nih.gov/health/kids/topics/natural-world/wildlife/animals/feet",
+   "note": "\"The arterial blood warms up the venous blood, dropping in temperature as it does so.\" / \"the feet approach freezing but never reach it.\""
+  },
+  {
+   "claim": "펭귄 발은 적어도 얼기 직전보다 조금 따뜻하게 유지된다 / 발꿈치와 꼬리로 몸을 젖혀 발가락을 얼음에서 들어 발이 차가워지는 것을 막는다",
+   "url": "https://www.howitworksdaily.com/?p=4211",
+   "note": "counter-current heat exchangers keep the feet 'at least just above freezing'; avoid cold feet 'by rocking back onto their heels and tail to lift their feet off the ice' (2026-11-18 재확인)"
+  }
+ ]
+}

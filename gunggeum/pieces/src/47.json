@@ -1,0 +1,47 @@
+{
+ "ep": 47,
+ "date": "2026-12-02",
+ "topic": "겨울눈",
+ "home": {
+  "f": "나무는 겨울을 어떻게 날까?",
+  "q": "겨울눈 속에는 뭐가 있어?",
+  "tag": "나무의 겨울 · 겨울눈"
+ },
+ "src": [
+  {
+   "claim": "나무는 겨울에 잎을 떨궈 몸속 물이 빠져나가는 것을 줄인다",
+   "url": "https://purduelandscapereport.org/article/what-do-trees-do-in-the-winter/",
+   "note": "퍼듀대 조경 리포트: Broadleaf, deciduous trees lose their leaves in the winter to reduce water loss inside the trunk and branches."
+  },
+  {
+   "claim": "겨울눈은 지난여름에 미리 만들어 둔 것이다",
+   "url": "https://northernwoodlands.org/pdf/TOS_Winter_Buds.pdf",
+   "note": "Northern Woodlands(비영리 숲 교육센터): These buds formed last summer and are designed to withstand snow, ice, and subzero temperatures."
+  },
+  {
+   "claim": "겨울눈 속에는 작은 잎과 꽃이 접혀 있다",
+   "url": "https://northernwoodlands.org/pdf/TOS_Winter_Buds.pdf",
+   "note": "slice open a bud ... you can see tiny green leaves and flowers folded up inside"
+  },
+  {
+   "claim": "가지 끝에 끝눈이 있고, 겨울눈 아래에는 잎이 붙었던 자리(잎자국)가 있다",
+   "url": "https://northernwoodlands.org/pdf/TOS_Winter_Buds.pdf",
+   "note": "대부분의 나무는 가지 끝마다 끝눈(terminal bud)이 있고, 잎자국은 located below the winter bud — 가을에 잎이 떨어진 자리"
+  },
+  {
+   "claim": "많은 겨울눈은 비늘 조각이 겹겹이 덮어 안을 지킨다",
+   "url": "https://northernwoodlands.org/pdf/TOS_Winter_Buds.pdf",
+   "note": "Most deciduous tree buds have overlapping scales to protect the delicate leaves and flowers inside."
+  },
+  {
+   "claim": "어떤 나무의 겨울눈은 보송한 털로 덮여 있다",
+   "url": "https://northernwoodlands.org/pdf/TOS_Winter_Buds.pdf",
+   "note": "The butternut tree... sports a large, fuzzy, cream-colored terminal bud. (버터넛 나무의 털이 보송한 끝눈)"
+  },
+  {
+   "claim": "봄이 되면 겨울눈이 열려 잎과 꽃이 나온다",
+   "url": "https://northernwoodlands.org/pdf/TOS_Winter_Buds.pdf",
+   "note": "잎눈과 꽃눈이 따로 있어 can open at different times, 나무는 봄에 눈으로 물을 보내 to awaken them in spring"
+  }
+ ]
+}

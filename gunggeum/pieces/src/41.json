@@ -1,0 +1,52 @@
+{
+ "ep": 41,
+ "date": "2026-11-26",
+ "topic": "무지개는 어떻게 생길까",
+ "home": {
+  "f": "무지개는 어떻게 생길까?",
+  "q": "무지개 색은 왜 늘 같은 차례일까?",
+  "tag": "빛 · 무지개"
+ },
+ "src": [
+  {
+   "claim": "무지개를 보려면 해가 내 뒤에 있어야 한다",
+   "url": "https://scijinks.gov/about/k-12-education/optical-phenomena/what-causes-rainbow",
+   "note": "NOAA SciJinks: The Sun must be behind you and the clouds cleared away from the Sun for the rainbow to appear."
+  },
+  {
+   "claim": "해는 내 뒤, 빗방울(물방울)은 내 앞에 있어야 한다",
+   "url": "https://metoffice.gov.uk/learning/optics/rainbows/how-are-rainbows-formed",
+   "note": "Met Office: The sun needs to be behind the viewer; rain, fog or some other source of water droplets must be in front of the viewer."
+  },
+  {
+   "claim": "해가 너무 높이 뜨면(한낮) 무지개가 잘 안 보이고, 해가 낮을 때 잘 보인다",
+   "url": "https://metoffice.gov.uk/learning/optics/rainbows/how-are-rainbows-formed",
+   "note": "Met Office: the sun should be low, below about 42° above the horizon."
+  },
+  {
+   "claim": "햇빛이 빗방울에 들어가며 꺾이고, 안쪽 벽에 튕겨 나오며 색깔별로 갈라진다",
+   "url": "https://scijinks.gov/about/k-12-education/optical-phenomena/what-causes-rainbow",
+   "note": "NOAA SciJinks: Light enters a water droplet, slowing down and bending ... reflects off the droplet's inner surface and splits into its component colors as it exits."
+  },
+  {
+   "claim": "색마다 꺾이는 정도가 달라서 갈라진다",
+   "url": "https://metoffice.gov.uk/learning/optics/rainbows/how-are-rainbows-formed",
+   "note": "Met Office: blue and violet bend slightly more than red as they pass into and out of a droplet."
+  },
+  {
+   "claim": "무지개는 바깥(위)이 빨강, 안쪽(아래)이 보라",
+   "url": "https://scijinks.gov/about/k-12-education/optical-phenomena/what-causes-rainbow",
+   "note": "NOAA SciJinks: Violet will be on the bottom and red on the top (primary bow)."
+  },
+  {
+   "claim": "무지개 색을 흔히 일곱 색(빨주노초파남보)으로 나눠 부른다",
+   "url": "https://metoffice.gov.uk/learning/optics/rainbows/how-are-rainbows-formed",
+   "note": "Met Office: red, orange, yellow, green, blue, indigo and violet (ROYGBIV); colours blur together."
+  },
+  {
+   "claim": "일곱 색 이름은 뉴턴이 붙인 것이고 실제 색은 이어져 있다(그래서 '흔히'라고 씀)",
+   "url": "https://www.britannica.com/science/color",
+   "note": "Britannica: Newton used the seven colour names ... acknowledged the spectrum is continuous."
+  }
+ ]
+}

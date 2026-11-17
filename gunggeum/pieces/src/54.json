@@ -1,0 +1,52 @@
+{
+ "ep": 54,
+ "date": "2026-12-09",
+ "topic": "겨울 별자리 오리온",
+ "home": {
+  "f": "겨울 밤하늘의 오리온은 어디 있을까?",
+  "q": "별마다 빛깔은 왜 다를까?",
+  "tag": "하늘 · 오리온"
+ },
+ "src": [
+  {
+   "claim": "오리온자리는 겨울철 별자리다",
+   "url": "https://astro.kasi.re.kr/learning/pageView/5355",
+   "note": "한국천문연구원 천문우주지식정보 페이지 제목 '오리온자리-겨울철 별자리'"
+  },
+  {
+   "claim": "오리온자리 가운데 밝기가 비슷한 세 별이 거의 한 줄로 있다",
+   "url": "https://science.nasa.gov/universe/discovering-the-universe-through-the-constellation-orion",
+   "note": "NASA: 허리띠는 'three bright stars close together in an almost-straight line'"
+  },
+  {
+   "claim": "가운데 세 별(삼태성)은 비슷한 밝기의 2등성",
+   "url": "https://astro.kasi.re.kr/learning/pageView/5355",
+   "note": "한국천문연구원: '중앙의 세 별은 … 비슷한 밝기의 2등성', '오리온의 삼태성 중 제타별'이라는 표현 사용"
+  },
+  {
+   "claim": "베텔게우스는 어깨의 붉은 별, 리겔은 발의 푸른빛 별",
+   "url": "https://science.nasa.gov/universe/discovering-the-universe-through-the-constellation-orion",
+   "note": "NASA: red supergiant Betelgeuse (Orion's right shoulder), blue supergiant Rigel (Orion's left foot)"
+  },
+  {
+   "claim": "베텔게우스는 빨간 별, 리겔은 푸른 별",
+   "url": "https://astro.kasi.re.kr/learning/pageView/5355",
+   "note": "한국천문연구원: 베텔게우스 '빨간 1등성', 리겔 '푸른 1등성 … 고온도의 초거성'"
+  },
+  {
+   "claim": "푸른빛 리겔이 붉은빛 베텔게우스보다 훨씬 뜨겁다",
+   "url": "https://science.nasa.gov/universe/discovering-the-universe-through-the-constellation-orion",
+   "note": "NASA: Rigel의 표면이 Betelgeuse보다 훨씬 뜨거워 붉은색이 아닌 청백색으로 빛남"
+  },
+  {
+   "claim": "베텔게우스·시리우스(큰개자리)·프로키온(작은개자리)을 이으면 겨울의 대삼각형, 겨울 별자리를 찾는 길잡이",
+   "url": "https://astro.kasi.re.kr/kor/post/northernConstellation/71352",
+   "note": "한국천문연구원 '겨울철 별자리': 세 별이 거대한 삼각형을 이루어 겨울의 대삼각형으로 불리며 겨울철 별자리를 찾는 길잡이 역할"
+  },
+  {
+   "claim": "겨울은 하늘이 맑아 별자리 보기 좋은 계절(관측 · 12월 맑은 저녁)",
+   "url": "https://astro.kasi.re.kr/kor/post/northernConstellation/71352",
+   "note": "한국천문연구원: '춥다는 사실만 제외하면 밤하늘도 맑아 별자리를 관측하기에는 가장 좋은 계절'"
+  }
+ ]
+}

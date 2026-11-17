@@ -93,6 +93,69 @@ svg text{font-family:"Pretendard","Noto Sans CJK KR",sans-serif}
 #end .main{position:absolute;left:136px;top:330px;width:900px}
 #end .tile{left:1112px;top:230px;width:440px;height:440px}
 </style>
+<style>
+/* ===== 새 틀 v2 (편 정의에 frame:'v2' 가 있을 때만: body.v2) ===== */
+body.v2 #stage{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),linear-gradient(#241F5C,#120F33);color:#F3E9D2}
+body.v2 .scr{transition:opacity .3s ease,visibility 0s .3s}
+body.v2 .scr.on{transition:opacity .3s ease}
+body.v2 .scr .L{transform:translateY(8px);transition:transform .3s cubic-bezier(.16,1,.3,1)}
+body.v2 .scr.on .L{transform:none}
+body.v2 .L{left:96px;top:160px;width:500px;z-index:2}
+body.v2 #cover .L{width:520px!important;top:150px!important}
+body.v2 .tile{left:0;top:0;width:1600px;height:820px;border-radius:0;background:none;box-shadow:none;overflow:visible;z-index:1;pointer-events:none}
+body.v2 .k{font-size:22px;font-weight:600;letter-spacing:.04em;color:#F4A58A;margin:0 0 20px}
+body.v2 .k b{color:#F4A58A;font-weight:700;margin-right:12px}
+body.v2 h2{font-size:60px;line-height:1.2;font-weight:700;letter-spacing:-.025em;color:#F3E9D2}
+body.v2 #cover h2{font-size:96px;line-height:1.12;letter-spacing:-.03em}
+body.v2 #cover .guess{margin-top:32px;font-size:28px;color:rgba(243,233,210,.78)}
+body.v2 p.b{margin-top:32px;font-size:28px;line-height:1.6;color:rgba(243,233,210,.78)}
+body.v2 p.b em{color:#F3E9D2}
+/* 머리글: 로고 원·시계 숨김, 머리글을 누르면 홈 */
+body.v2 .top{left:96px;right:96px;top:36px;height:40px}
+body.v2 .logo,body.v2 .clock{display:none}
+body.v2 .ttl{font-size:22px;font-weight:500;letter-spacing:.02em;color:rgba(243,233,210,.6);cursor:pointer}
+/* 단추: 앞(유리 원) · 행동(크림) · 다음(유리) · 진행 막대(오른쪽 아래) */
+body.v2 .nav{left:96px;right:96px;bottom:52px;justify-content:flex-start;gap:16px}
+body.v2 #back{order:0;width:64px;padding:0;justify-content:center;font-size:0;gap:0;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);color:#F3E9D2}
+body.v2 #back[style*="hidden"]{display:none}
+body.v2 #next{order:1;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);color:#F3E9D2;font-size:24px;font-weight:600}
+body.v2 #next.doit{background:#F3E9D2;color:#1B1747;box-shadow:none}
+body.v2 .dots{order:2;margin:0 0 0 auto;gap:6px}
+body.v2 .dots i{width:32px;height:3px;border-radius:0;background:rgba(243,233,210,.25)}
+body.v2 .dots i.on{width:32px;background:#F3E9D2}
+/* 그림 글자(4단계 + 정리용) */
+.v22{font-size:22px;font-weight:500;fill:#F3E9D2;font-variant-numeric:tabular-nums}
+.v22m{font-size:22px;font-weight:500;fill:rgba(243,233,210,.6);font-variant-numeric:tabular-nums}
+.v28{font-size:28px;font-weight:600;fill:#F3E9D2}
+.v60{font-size:60px;font-weight:700;letter-spacing:-.02em;fill:#F3E9D2}
+.vs28{font-family:"Noto Serif KR","Noto Serif CJK KR",serif;font-size:28px;font-weight:600;fill:#F3E9D2}
+.vs60{font-family:"Noto Serif KR","Noto Serif CJK KR",serif;font-size:60px;font-weight:700;fill:#F3E9D2}
+.vs96{font-family:"Noto Serif KR","Noto Serif CJK KR",serif;font-size:96px;font-weight:700;fill:#F3E9D2}
+.vs160{font-family:"Noto Serif KR","Noto Serif CJK KR",serif;font-size:160px;font-weight:700;fill:#F3E9D2}
+.v96{font-size:96px;font-weight:700;letter-spacing:-.03em;fill:#F3E9D2}
+/* 정리: 사전처럼 — 박스·그림자 없이 머리카락선만 */
+body.v2 #sum .L{top:150px;bottom:auto;width:780px;display:block;padding-top:0}
+body.v2 .sum li{grid-template-columns:72px 1fr;font-size:36px;font-weight:600;line-height:1.36;color:#F3E9D2;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+body.v2 .sum li:first-child{border-top:1px solid rgba(255,255,255,.12)}
+body.v2 .sum li::before{font-family:"Noto Serif KR","Noto Serif CJK KR",serif;font-size:44px;font-weight:600;line-height:1.1;color:#F4A58A}
+body.v2 .words{left:976px;right:96px;top:196px;bottom:auto;display:block}
+body.v2 .word{background:none;box-shadow:none;border-radius:0;padding:28px 0;border-bottom:1px solid rgba(255,255,255,.12);grid-template-columns:150px 1fr;align-items:baseline}
+body.v2 .word:first-child{border-top:1px solid rgba(255,255,255,.12)}
+body.v2 .word b{font-family:"Noto Serif KR","Noto Serif CJK KR",serif;font-size:32px;font-weight:600;color:#F3E9D2}
+body.v2 .word span{font-size:22px;line-height:1.5;color:rgba(243,233,210,.7)}
+/* 마무리 */
+body.v2 #end .top30{left:96px;top:150px;width:520px;font-size:28px;line-height:1.5;color:#F3E9D2;z-index:2}
+body.v2 #end .top30 .a{color:rgba(243,233,210,.7)}
+body.v2 #end .main{left:96px;top:390px;width:520px;z-index:2}
+body.v2 #end .tile{left:0;top:0;width:1600px;height:820px}
+/* v2 이야기: 남청 바탕, 강조 앰버, 제목 명조 */
+body.v2.story #stage{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),linear-gradient(#1A2C55,#0C1630)}
+body.v2.story .k,body.v2.story .k b{color:#E9B872}
+body.v2.story h2{font-family:"Noto Serif KR","Noto Serif CJK KR",serif;font-weight:700;letter-spacing:-.02em}
+body.v2.story .sum li::before{color:#E9B872}
+body.v2.story #next.doit{color:#0C1630}
+@media (prefers-reduced-motion: reduce){body.v2 .scr .L{transform:none;transition:none}}
+</style>
 </head>
 <body>
 <div id="wrap"><div id="stage">
@@ -164,6 +227,9 @@ function joinRow(p,y,a,b,c,badge,note){const g=grp(p,0);
 
 // ===================== 편 정의 =====================
 const EP=[];
+const EPX={};
+// 움직임 중간값이 잠깐 음수가 되어도 콘솔 오류가 나지 않게(svg 크기 속성은 0 아래로 내리지 않음)
+(()=>{const sa=Element.prototype.setAttribute;Element.prototype.setAttribute=function(k,v){if(this instanceof SVGElement&&(k==='width'||k==='height'||k==='r'||k==='rx'||k==='ry')&&+v<0)v=0;return sa.call(this,k,v);};})(); // v2 한 달치: 편마다 pieces/ep/NN.js 가 EPX[NN]={...} 로 넣는다(?ep=NN&v=2 일 때 읽음)
 
 // ---------- 1. 음력 ----------
 EP.push({day:'1일차',topic:'음력과 윤달',cat:'국어 상식',img:'home-1.png',
@@ -720,39 +786,124 @@ function potG(p,cx,gy,s=1){const g=el('g',{transform:`translate(${cx},${gy}) sca
 function pineG(p,x,gy,h,c=C3,c2=C2){const g=el('g',{},p);el('rect',{x:x-6,y:gy-h*.25,width:12,height:h*.25,fill:c},g);
  [[0,.62],[.28,.5],[.52,.36]].forEach(([t,w])=>{const y=gy-h*.18-t*h;el('path',{d:`M${x-h*w/2},${y}L${x},${y-h*.42}L${x+h*w/2},${y}Z`,fill:c},g);el('path',{d:`M${x},${y-h*.42}L${x+h*w/2},${y}L${x},${y}Z`,fill:c2},g);});return g;}
 
-EP.push({day:'과학 3',topic:'입김',cat:'물의 변신',field:'과학',
- cover:{h:'입김은 왜<br>겨울에만 보일까?',draw(S){ground(S);const K=dogBust(S,40,92,1);const H=halftone(S,puffBlobs(K.mx+8,K.my-6,1.02),{from:[K.mx,K.my],step:10,soft:110});H.set(0);const c=capLine(S,'');
-   return ()=>{H.set(0);c.textContent='';ezAnim(2600,e=>H.set(e),()=>{c.textContent='후— 불면 하얀 김이 나와';});};}},
+// ---------- 17. 입김 — 새 틀(v2): 관측 노트 ----------
+// 잉크 셋: 크림 W0(글·선·보이는 물방울), 산호 WO(화면당 한 곳), 보조 WA(안 보이는 물기·안내선). 바탕 = 홈 과학 보라남.
+// 좌표는 화면 전체(1600×820). 그림 마당 x 640~1504. 동물·사람 없음 — '후—' 글자가 숨의 출발점.
+const W0='#F3E9D2',WO='#F4A58A',WA='#3A3482',WBG='#1B1745';
+const W0m='rgba(243,233,210,.45)';
+const EO=x=>x>=1?1:1-Math.pow(2,-10*x);                 // cubic-bezier(.16,1,.3,1) 근사
+const play=(D,fn,end)=>anim(D,x=>fn(EO(x),x),end);
+const calm=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+const wl=(p,x1,y1,x2,y2,c=W0,o={})=>el('line',Object.assign({x1,y1,x2,y2,stroke:c,'stroke-width':2,'stroke-linecap':'round'},o),p);
+const wdot=(p,x,y,r,c)=>el('circle',{cx:x.toFixed(1),cy:y.toFixed(1),r,fill:c},p);
+// 숨 흐름 안내선(보조색 점선) — 입(mx,my)에서 오른쪽으로 부채꼴
+function breathGuides(p,mx,my,x2,spread=[-60,-30,0,30,60],lift=60){const g=el('g',{fill:'none',stroke:WA,'stroke-width':2,'stroke-dasharray':'2 10','stroke-linecap':'round'},p);
+ const L=x2-mx;spread.forEach(o=>el('path',{d:`M${mx+12},${my}C${mx+L*.18},${my+o*.3} ${mx+L*.4},${my+o*1.1} ${x2},${my+o*2.2-lift}`},g));return g;}
+// 부채꼴 안의 점 자리
+function fanPts(seed,n,mx,my,x2,half=60,lift=60){const r=rnd(seed),P=[];for(let i=0;i<n;i++){const t=.06+r()*.94,o=(r()-.5)*2*half;P.push([mx+20+t*(x2-mx-20),my+o*(.3+t*1.9)-t*lift,t]);}return P;}
+// 점들이 입에서 나와 제자리로 흘러감 (거리 순으로 차례로)
+function flowOut(p,mx,my,P,col,r=4.5){const D=P.map(([x,y,t])=>({c:wdot(p,mx,my,0,col),x,y,t}));
+ const set=e=>D.forEach(d=>{const s=Math.max(0,Math.min(1,(e*1.35-d.t*.35)));const k=EO(s);d.c.setAttribute('cx',(mx+(d.x-mx)*k).toFixed(1));d.c.setAttribute('cy',(my+(d.y-my)*k).toFixed(1));d.c.setAttribute('r',s>0?r:0);});
+ return {D,set,run:(ms=900,end)=>anim(ms,set,end)};}
+// 거리 눈금(가로)
+function hRuler(p,x1,x2,y,step,labL,labR){wl(p,x1,y,x2,y,W0m);for(let x=x1,i=0;x<=x2+1;x+=step,i++)wl(p,x,y,x,y+(i%4===0?16:9),i%4===0?W0:W0m);
+ if(labL)tx(p,x1,y+44,labL,'v22m');if(labR)tx(p,x2,y+44,labR,'v22m','end');}
+// 돋보기(원은 화면 안에 온전히)
+function wLens(p,cx,cy,R){const g=el('g',{},p);el('circle',{cx,cy,r:R+12,fill:'none',stroke:W0m,'stroke-width':2},g);el('circle',{cx,cy,r:R,fill:'none',stroke:W0,'stroke-width':2},g);return g;}
+// 공기 속 안 보이는 물기 점들
+function vapor(p,seed,n,x1,y1,x2,y2,col=WA,r=4.5){const q=rnd(seed),D=[];for(let i=0;i<n;i++){const x=x1+q()*(x2-x1),y=y1+q()*(y2-y1);D.push({c:wdot(p,x,y,r,col),x,y});}return D;}
+// 덩어리 모양 안에 점 고르게(망점이 아니라 같은 크기 점)
+function blobPts(seed,n,blobs){const q=rnd(seed),P=[];const bx0=Math.min(...blobs.map(b=>b[0]-b[2])),bx1=Math.max(...blobs.map(b=>b[0]+b[2])),by0=Math.min(...blobs.map(b=>b[1]-b[3])),by1=Math.max(...blobs.map(b=>b[1]+b[3]));
+ let guard=0;while(P.length<n&&guard++<n*40){const x=bx0+q()*(bx1-bx0),y=by0+q()*(by1-by0);if(blobs.some(([cx,cy,rx,ry])=>((x-cx)/rx)**2+((y-cy)/ry)**2<1))P.push([x,y]);}return P;}
+
+EP.push({day:'과학 3',topic:'입김',cat:'물의 변신',field:'과학',frame:'v2',
+ cover:{h:'입김은 왜<br>겨울에만<br>보일까?',draw(S){
+   const hx=648,hy=500;tx(S,hx,hy,'후—','v96');const mx=hx+186,my=hy-30;
+   // 온도 눈금: 따뜻한 방 → 추운 바깥(산호 = 지금 여기)
+   const y0=140;wl(S,880,y0,1504,y0,W0m);for(let i=0;i<=12;i++){const x=880+i*52;wl(S,x,y0,x,y0+(i%4===0?18:10),i%4===0?W0:W0m);}
+   tx(S,880,y0-22,'따뜻한 방','v22m');tx(S,1504,y0-22,'추운 바깥','v22m','end');wdot(S,1504,y0,9,WO);
+   // 하얀 김: 크림 점, 멀어질수록 넓게 퍼짐
+   const q=rnd(7),D=[];for(let i=0;i<640;i++){const t=Math.pow(q(),.8),x=mx+18+t*640,sp=14+t*190,y=my-t*110+(q()-.5)*2*sp*Math.sqrt(q());if(x>1500||y<190||(x>1418&&y>208&&y<272))continue;D.push({c:wdot(S,x,y,3.2,W0),t});}
+   el('path',{d:`M1330,${my-120}V262H1504`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,1504,248,'하얀 김','v22','end');
+   wl(S,648,640,1504,640,W0m);tx(S,648,678,'관측 · 겨울 아침, 바깥','v22m');
+   // 숨 한 번이 되풀이됨(표지에서만): 0.9초 퍼짐 → 3.4초 머묾 → 0.7초 사라짐
+   const setT=e=>D.forEach(d=>d.c.setAttribute('opacity',e>=d.t?1:0));let on=false;
+   return ()=>{if(on||calm())return;on=true;loop(S,t=>{const c=t%5;setT(c<.9?EO(c/.9)*1.02:c<4.3?1.02:Math.max(0,1.02-(c-4.3)/.7*1.02)*(c<5?1:0));});};}},
  scenes:[
-  {k:'숨 속의 물기',h:'내쉬는 숨에는<br>안 보이는 물기가 있다',b:'숨을 내쉬면 몸속의 따뜻한<br><em>물기(수증기)</em>가 같이 나와.<br>이 물기는 너무 작아서<br>눈에 <em>안 보여</em>.',steps:['후 불기'],
-   draw(S){ground(S);const K=dogBust(S,30,92,1),r=rnd(12),P=[];for(let i=0;i<22;i++){const t=i/21;P.push([K.mx+36+t*400+(r()-.5)*40,K.my-10+(r()-.5)*(60+t*170),8+r()*9+t*6]);}
-    const V=rings(S,P);V.R.forEach(o=>o.c.setAttribute('opacity',0));const cap=capLine(S,'후— 하고 숨을 내쉬면');
-    return ()=>ezAnim(2600,e=>V.R.forEach(o=>{const d=(o.x-K.mx)/480,s=Math.max(0,Math.min(1,(e*1.25-d)/.25));o.c.setAttribute('opacity',s);o.c.setAttribute('transform',`translate(${(1-s)*(K.mx-o.x)*.5},${(1-s)*(K.my-o.y)*.5})`);}),
-     ()=>{cap.textContent='안 보이는 물기가 같이 나가';flashOr(V.g);});}},
-  {k:'차가우면 물방울',h:'찬 공기를 만나면<br>작은 물방울이 된다',b:'물기가 차가워지면<br>아주 작은 <em>물방울</em>로 바뀌어.<br>물방울이 아주 많이 모이면<br><em>하얗게</em> 보여.',steps:['따뜻한 방에서','추운 밖에서'],
-   draw(S){el('rect',{x:396,y:0,width:396,height:540,fill:NAVY,opacity:.55},S);
-    iconHouse(S,198,96,1.9);iconSnow(S,594,82,2.6);
-    ground(S);const A=dogBust(S,0,180,.74),B=dogBust(S,396,180,.74);
-    const mk=(K,seed)=>{const r=rnd(seed),P=[];for(let i=0;i<12;i++){const t=i/11;P.push([K.mx+22+t*170+(r()-.5)*24,K.my-6+(r()-.5)*(40+t*120),7+r()*6]);}const V=rings(S,P,{w:2.2});V.g.setAttribute('opacity',0);return V;};
-    const VA=mk(A,31),VB=mk(B,32);const H=halftone(S,puffBlobs(B.mx-4,B.my-8,.5),{from:[B.mx,B.my],step:8,soft:70});H.set(0);
-    const Z=zoomLens(S,700,384,58,[B.mx+96,B.my-4,13]);dropsIn(Z.inn,700,384,58);const L=Z.g;L.setAttribute('opacity',0);const cap=capLine(S,'');
-    const flow=(V,K,D,end)=>ezAnim(D,e=>{V.g.setAttribute('opacity',1);V.R.forEach(o=>{const d=(o.x-K.mx)/200,s=Math.max(0,Math.min(1,(e*1.3-d)/.3));o.c.setAttribute('opacity',s);});},end);
-    return i=>{if(i===0)flow(VA,A,1800,()=>{cap.textContent='따뜻하면 그대로, 안 보여';flashOr(VA.g);});
-     else{cap.textContent='';flow(VB,B,1200,()=>ezAnim(1800,e=>{VB.g.setAttribute('opacity',1-e);H.set(e);},()=>{ezAnim(500,e=>L.setAttribute('opacity',e));cap.textContent='추우면 작은 물방울이 돼서 보여';flashOr(H.g);}));}};}},
-  {k:'같은 친구들',h:'김, 구름, 안개도<br>모두 작은 물방울',b:'라면 끓일 때 나는 <em>김</em>,<br>하늘의 <em>구름</em>, 아침 <em>안개</em>도<br>물기가 식어서 생긴<br>작은 물방울이야.',steps:['김','구름','안개'],
-   draw(S){const GY=432;ground(S);const X=[140,396,652];
-    potG(S,X[0],GY,1);[[586,96,C3,C2],[700,112,C3,C2],[640,140,C1,C2]].forEach(([x,h,a,b])=>pineG(S,x,GY,h,a,b));
-    // 빈 칸: 구름 자리는 비워 둔다
-    const M=[halftone(S,[[X[0]-20,GY-170,44],[X[0]+14,GY-215,54],[X[0]-8,GY-268,48]],{key:(x,y)=>GY-130-y,step:11,soft:60}),
-     halftone(S,[[X[1]-70,250,56],[X[1]-10,214,76],[X[1]+64,236,62],[X[1]+20,268,56],[X[1]-60,272,40]],{from:[X[1],240],step:11,soft:80,cut:(x,y)=>y>292}),
-     halftone(S,[[560,GY-24,70],[640,GY-34,90],[730,GY-22,80],[800,GY-30,60]],{key:x=>Math.max(0,x-490),step:11,soft:70,cut:(x,y)=>y>GY-2})];M.forEach(m=>m.set(0));
-    const cap=capLine(S,''),CAPS=['라면 김도 작은 물방울','구름도 작은 물방울','안개도 작은 물방울'];
-    return i=>ezAnim(2200,e=>M[i].set(e),()=>{cap.textContent=CAPS[i];flashOr(M[i].g);});}}],
+  {k:'숨 속의 물기',h:'내쉬는 숨에는<br>물기가 숨어 있다',b:'숨을 내쉬면 따뜻한 <em>물기(수증기)</em>가 같이 나와. 너무 작아서 눈에 <em>안 보여</em>.',steps:['후— 불기'],
+   draw(S){const hx=640,hy=470;tx(S,hx,hy,'후—','v60');const mx=hx+124,my=hy-20;
+    breathGuides(S,mx,my,1504,[-50,-25,0,25,50],40);
+    hRuler(S,mx,1504,660,46,'입 앞','멀리');
+    // 돋보기: 숨 한 곳을 크게
+    const cx=1290,cy=270,R=170;wLens(S,cx,cy,R);
+    tx(S,1040,236,'수증기','v60','end');
+    const pre=grp(S,1);tx(pre,cx,cy-14,'눈으로 보면','v22m','middle');tx(pre,cx,cy+50,'안 보여','v60','middle');
+    const post=grp(S,0);tx(post,1040,282,'크게 키워 보면','v22m','end');tx(post,1040,314,'물 알갱이가','v22m','end');tx(post,1040,346,'하나하나 흩어져 있어','v22m','end');
+    const px=1080,py=my-34,zoom=grp(S,0);el('circle',{cx:px,cy:py,r:24,fill:'none',stroke:W0,'stroke-width':2},zoom);
+    {const dx=cx-px,dy=cy-py,L=Math.hypot(dx,dy);wl(zoom,px+dx/L*24,py+dy/L*24,cx-dx/L*(R+12),cy-dy/L*(R+12));}
+    const q=rnd(11),M=[];for(let i=0;i<22;i++){const a=q()*Math.PI*2,rr=Math.sqrt(q())*(R-30);M.push(wdot(S,cx+Math.cos(a)*rr,cy+Math.sin(a)*rr,0,WO));}
+    const F=flowOut(S,mx,my,fanPts(5,70,mx,my,1500,50,40),WA);
+    return ()=>{pre.setAttribute('opacity',0);F.run(900,()=>{show(zoom);show(post);play(600,e=>M.forEach(c=>c.setAttribute('r',(7*e).toFixed(2))));});};}},
+  {k:'차가우면 물방울',h:'찬 공기를 만나면<br>물방울이 된다',b:'따뜻한 방에선 물기가 그대로라 안 보여. 추운 밖에선 작은 <em>물방울</em>로 뭉쳐서 <em>하얗게</em> 보여.',steps:['따뜻한 방에서','추운 밖에서'],
+   draw(S){wl(S,1072,110,1072,600,W0m);
+    tx(S,640,180,'따뜻한 방','v60');tx(S,1100,180,'추운 밖','v60');
+    hRuler(S,640,1504,660,54,'따뜻함','차가움');
+    const cols=[[640,1040],[1100,1504]],out=[];
+    cols.forEach(([x0,x1],j)=>{const hy=470;tx(S,x0,hy,'후—','v60');const mx=x0+124,my=hy-20;breathGuides(S,mx,my,x1,[-36,-18,0,18,36],20);
+     // 작은 돋보기: 숨 속을 크게
+     const lx=x0+250,ly=320,LR=62;wLens(S,lx,ly,LR);const q=rnd(40+j),P=[];for(let i=0;i<9;i++){const a=q()*Math.PI*2,rr=Math.sqrt(q())*(LR-16);P.push(wdot(S,lx+Math.cos(a)*rr,ly+Math.sin(a)*rr,5,WA));}
+     const cap=grp(S,0);const F=flowOut(S,mx,my,fanPts(20+j,34,mx,my,x1-10,36,20),WA);out.push({mx,my,lx,ly,P,cap,F,x0});});
+    tx(out[0].cap,640,566,'물기 그대로 — 안 보여','v22m');tx(out[1].cap,1100,566,'뭉쳐서 하얀 김','v22');
+    const H=blobPts(9,150,[[1300,440,110,48],[1400,418,96,56],[1230,456,60,30]]);
+    return i=>{const o=out[i];
+     if(i===0){o.F.run(900,()=>{show(o.cap);play(500,e=>o.P.forEach(c=>c.setAttribute('opacity',(1-.6*e).toFixed(2))));});}
+     else{o.F.run(800,()=>{
+       // 안 보이던 점이 크림으로 뭉침 + 돋보기 안 알갱이가 한데 모임(산호)
+       const C=H.map(([x,y])=>wdot(S,x,y,0,W0));const tgt=o.P.map((c,k)=>[o.lx-14+(k%3)*14,o.ly-14+Math.floor(k/3)*14]);const st=o.P.map(c=>[+c.getAttribute('cx'),+c.getAttribute('cy')]);
+       o.P.forEach(c=>c.setAttribute('fill',WO));
+       play(700,e=>{o.F.D.forEach(d=>d.c.setAttribute('fill',e>.4?W0:WA));C.forEach(c=>c.setAttribute('r',(3.2*e).toFixed(2)));o.P.forEach((c,k)=>{c.setAttribute('cx',st[k][0]+(tgt[k][0]-st[k][0])*e);c.setAttribute('cy',st[k][1]+(tgt[k][1]-st[k][1])*e);c.setAttribute('r',5+2*e);});},()=>show(o.cap));});}};}},
+  {k:'같은 친구들',h:'김, 구름, 안개도<br>모두 작은 물방울',b:'라면 끓일 때 나는 <em>김</em>, 하늘의 <em>구름</em>, 아침 <em>안개</em>도 물기가 식어서 생긴 물방울이야.',steps:['김','구름','안개'],
+   draw(S){const GY=640;wl(S,640,GY,1504,GY,W0);
+    // 높이 눈금(왼쪽)
+    wl(S,660,GY,660,120,W0m);for(let y=GY,i=0;y>=120;y-=40,i++)wl(S,660,y,660+(i%4===0?16:9),y,i%4===0?W0:W0m);tx(S,660,100,'높이','v22m');tx(S,690,GY-14,'땅','v22m');
+    // 냄비(크림 면) + 불(산호, 한 곳)
+    const pg=el('g',{transform:'translate(800,616)'},S);el('path',{d:'M-66,-92H66L58,-8Q56,0 48,0H-48Q-56,0 -58,-8Z',fill:W0},pg);el('rect',{x:-78,y:-106,width:156,height:14,rx:7,fill:W0},pg);
+    wl(pg,-90,-78,-66,-78,W0,{'stroke-width':6});wl(pg,66,-78,90,-78,W0,{'stroke-width':6});
+    [-30,0,30].forEach(x=>el('path',{d:`M${800+x-8},${GY}Q${800+x},${GY-26} ${800+x+8},${GY}Z`,fill:WO},S));
+    // 공기 속 안 보이는 물기(보조색) — 단계마다 일부가 모여 크림 물방울이 됨
+    const AIR=vapor(S,3,120,700,130,1490,620);AIR.forEach(d=>{if(Math.abs(d.x-800)<100&&d.y>500)d.c.remove();});
+    const R=[{blobs:[[790,450,44,40],[812,380,54,42],[790,310,46,36]],n:110,lab:['김','냄비 위'],lx:880,ly:330},
+             {blobs:[[1120,220,90,46],[1210,190,110,62],[1310,214,90,48],[1220,246,140,36]],n:230,lab:['구름','하늘 높이'],lx:1012,ly:200,a:'end'},
+             {blobs:[[1080,612,140,24],[1250,606,170,30],[1420,612,90,24]],n:200,lab:['안개','땅 가까이'],lx:1000,ly:516}];
+    // 이름표 자리에 걸치는 공기 점은 미리 치움(글자 겹침 방지)
+    R.forEach(r=>{const e=r.a==='end',bx0=e?r.lx-120:r.lx-10,bx1=e?r.lx+10:r.lx+120;AIR.forEach(d=>{if(d.x>bx0&&d.x<bx1&&d.y>r.ly-34&&d.y<r.ly+44)d.c.remove();});});
+    R.forEach((r,j)=>{r.P=blobPts(60+j,r.n,r.blobs);r.C=r.P.map(([x,y])=>wdot(S,x,y,0,W0));r.cap=grp(S,0);tx(r.cap,r.lx,r.ly,r.lab[0],'v28',r.a);tx(r.cap,r.lx,r.ly+30,r.lab[1],'v22m',r.a);
+     const cx=r.blobs.reduce((a,b)=>a+b[0],0)/r.blobs.length,cy=r.blobs.reduce((a,b)=>a+b[1],0)/r.blobs.length;r.cx=cx;r.cy=cy;
+     r.near=AIR.filter(d=>d.c.isConnected).sort((a,b)=>Math.hypot(a.x-cx,a.y-cy)-Math.hypot(b.x-cx,b.y-cy)).slice(0,14);});
+    return i=>{const r=R[i];const st=r.near.map(d=>[d.x,d.y]);
+     play(800,e=>{r.near.forEach((d,k)=>{d.c.setAttribute('cx',st[k][0]+(r.cx-st[k][0])*e);d.c.setAttribute('cy',st[k][1]+(r.cy-st[k][1])*e);d.c.setAttribute('opacity',1-e);});
+r.C.forEach((c,k)=>{const s=Math.max(0,Math.min(1,e*1.6-(k/r.C.length)*.6));c.setAttribute('r',(3.2*s).toFixed(2));});},()=>show(r.cap));};}}],
  sum:{lines:['내쉬는 숨에는 눈에 안 보이는<br>물기가 들어 있다.','찬 공기를 만나면 물기가<br>작은 물방울이 된다.','물방울이 많이 모이면<br>하얗게 보인다.'],
-  words:[['수증기','물이 날아올라<br>눈에 안 보이게 된 것'],['입김','입에서 나오는<br>하얀 김'],['안개','땅 가까이 낀<br>작은 물방울']]},
- end:{q:'여름엔 입김이 왜 안 보일까?',a:'공기가 따뜻해서 물기가 물방울로 바뀌지 않으니까.',h:'내일 아침 차가운 창문에<br>후 불고 그림을 그려 봐.',btn:'답 보기',
-  draw(S){el('rect',{x:0,y:352,width:440,height:88,fill:NAVY},S);const sh=dogBust(S,14,66,.84,true).g,g=grp(S,0);const K=dogBust(g,14,66,.84);const H=halftone(g,puffBlobs(K.mx-2,K.my-6,.46),{from:[K.mx,K.my],step:8});H.set(1);
-   return ()=>{sh.remove();show(g);};}}
+  words:[['수증기','물이 날아올라 눈에 안 보이게 된 것'],['입김','입에서 나오는 하얀 김'],['안개','땅 가까이 낀 작은 물방울']]},
+ end:{q:'여름엔 입김이 왜 안 보일까?',a:'공기가 따뜻해서 물기가 물방울로 안 바뀌니까.',h:'내일 아침 차가운<br>창문에 후 불고<br>그림을 그려 봐.',btn:'창문에 후—',
+  draw(S){const X0=780,X1=1440,Y0=110,Y1=630,MX=(X0+X1)/2,MY=(Y0+Y1)/2;
+   // 창문(크림 선) + 유리 반사선(흐린 크림)
+   el('rect',{x:X0,y:Y0,width:X1-X0,height:Y1-Y0,fill:'none',stroke:W0,'stroke-width':2},S);el('rect',{x:X0-14,y:Y0-14,width:X1-X0+28,height:Y1-Y0+28,fill:'none',stroke:W0m,'stroke-width':2},S);
+   wl(S,MX,Y0,MX,Y1);wl(S,X0,MY,X1,MY);wl(S,X0-40,Y1+30,X1+40,Y1+30,W0);
+   [[X0+40,Y0+120,X0+130,Y0+30],[X0+40,Y0+190,X0+200,Y0+30],[MX+200,Y0+150,MX+290,Y0+60]].forEach(([a,b,c,d])=>wl(S,a,b,c,d,W0m));
+   tx(S,X1,Y0-34,'창밖 · 추움','v22m','end');
+   tx(S,640,Y1+30+44,'방 안 · 따뜻함','v22m');
+   const hx=640,hy=560;tx(S,hx,hy,'후—','v60');const mx=hx+124,my=hy-20;
+   // 김 서림: 아래 왼쪽 유리에 크림 점
+   const FOG=blobPts(5,420,[[930,470,170,130],[1060,520,150,100],[880,560,110,60]]).filter(([x,y])=>x>X0+6&&x<X1-6&&y>Y0+6&&y<Y1-6&&Math.abs(x-MX)>5&&Math.abs(y-MY)>5);
+   const fg=el('g',{},S),FD=FOG.map(([x,y])=>({c:wdot(fg,mx,my,0,W0),x,y,t:Math.hypot(x-mx,y-my)/520}));
+   // 손가락으로 그린 별: 김을 닦아 낸 자리(바탕색) + 산호 선
+   const star=[...Array(10)].map((_,i)=>{const a=-Math.PI/2+i*Math.PI/5,r=i%2?42:100;return [960+Math.cos(a)*r,500+Math.sin(a)*r];});const sd='M'+star.map(p=>p.map(v=>v.toFixed(1)).join(',')).join('L')+'Z';
+   const wipe=el('path',{d:sd,fill:'none',stroke:WBG,'stroke-width':22,'stroke-linejoin':'round',opacity:0},S);const sl=el('path',{d:sd,fill:'none',stroke:WO,'stroke-width':2,'stroke-linejoin':'round'},S);
+   const SL=sl.getTotalLength();sl.style.strokeDasharray=SL;sl.style.strokeDashoffset=SL;
+   const lab=grp(S,0);el('path',{d:`M1060,500H1180V420`,fill:'none',stroke:W0m,'stroke-width':2},lab);tx(lab,1180,404,'손가락으로 그린 별','v22','middle');
+   return ()=>anim(800,x=>{const e=EO(x);FD.forEach(d=>{const s=Math.max(0,Math.min(1,e*1.4-d.t*.4)),k=EO(s);d.c.setAttribute('cx',mx+(d.x-mx)*k);d.c.setAttribute('cy',my+(d.y-my)*k);d.c.setAttribute('r',s>0?3.2:0);});},
+     ()=>{wipe.setAttribute('opacity',1);anim(600,x=>{sl.style.strokeDashoffset=SL*(1-EO(x));},()=>show(lab));});}}
 });
 
 // ---------- 18. 겨울잠 ----------
@@ -1004,18 +1155,21 @@ EP.push({day:'과학 7',topic:'겨울 해',cat:'하늘',field:'과학',
 const closeMe=()=>{try{parent.postMessage({gk:'piece-close'},'*');}catch(e){}};
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>{try{parent.postMessage({gk:'piece-touch'},'*');}catch(e){}},true));
 const tick=()=>{const d=new Date(),h=d.getHours();$('clock').innerHTML=`<small>${h===0?'밤':h<12?'오전':'오후'}</small>${h%12||12}:${String(d.getMinutes()).padStart(2,'0')}`;};tick();setInterval(tick,15e3);
-const P=new URLSearchParams(location.search),EI=Math.max(1,Math.min(EP.length,+P.get('ep')||1))-1;
-let E=EP[EI],cur=0;const ORDER=['cover','s0','s1','s2','sum','end'],stepsDone={},runners={};let coverPlay=null;
-window.__piece={id:EI+1,topic:E.topic};
+</script>
+<script>(()=>{const q=new URLSearchParams(location.search),n=+q.get('ep')||0;if(q.get('v')==='2'&&n>0)document.write('<script src="ep/'+n+'.js?'+(q.get('t')||'')+'"><\/script>');})();</script>
+<script>
+const P=new URLSearchParams(location.search),EN=+P.get('ep')||1,EI=Math.max(1,Math.min(EP.length,EN))-1;
+let E=EPX[EN]||EP[EI],cur=0;const V2=E.frame==='v2',VB=V2?'0 0 1600 820':'0 0 792 540';if(V2)document.body.classList.add('v2');const ORDER=['cover','s0','s1','s2','sum','end'],stepsDone={},runners={};let coverPlay=null;
+window.__piece={id:EN,topic:E.topic};if(V2&&E.field!=='과학')document.body.classList.add('story');
 const dots=$('dots');ORDER.forEach(()=>dots.appendChild(document.createElement('i')));
 function clear(x){while(x.firstChild)x.removeChild(x.firstChild);}
-$('ttl').textContent=E.field==='과학'?'오늘의 과학':'오늘의 이야기';$('cvK').innerHTML=`<b>${E.cat}</b>${E.topic}`;$('cvH').innerHTML=E.cover.h;coverPlay=E.cover.draw($('cvSvg'));document.title=(E.field==='과학'?'오늘의 과학':'오늘의 이야기')+' — '+E.topic;
-E.scenes.forEach((sc,j)=>{const x=$('s'+j);x.innerHTML=`<div class="L"><div class="k"><b>${j+1}</b>${sc.k}</div><h2>${sc.h}</h2><p class="b">${sc.b}</p></div><div class="tile"><svg viewBox="0 0 792 540"></svg></div>`;runners['s'+j]={steps:sc.steps,run:sc.draw(x.querySelector('svg'))};});
+$('ttl').textContent=E.field==='과학'?'오늘의 과학':'오늘의 이야기';$('cvK').innerHTML=`<b>${E.cat}</b>${E.topic}`;$('cvH').innerHTML=E.cover.h;if(V2){$('cvSvg').setAttribute('viewBox',VB);$('endSvg').setAttribute('viewBox',VB);const d=new Date();$('ttl').textContent=`${E.field==='과학'?'오늘의 과학':'오늘의 이야기'} · ${d.getMonth()+1}월 ${d.getDate()}일`;$('ttl').onclick=closeMe;}coverPlay=E.cover.draw($('cvSvg'));document.title=(E.field==='과학'?'오늘의 과학':'오늘의 이야기')+' — '+E.topic;
+E.scenes.forEach((sc,j)=>{const x=$('s'+j);x.innerHTML=`<div class="L"><div class="k"><b>${j+1}</b>${sc.k}</div><h2>${sc.h}</h2><p class="b">${sc.b}</p></div><div class="tile"><svg viewBox="${VB}"></svg></div>`;runners['s'+j]={steps:sc.steps,run:sc.draw(x.querySelector('svg'))};});
 $('sumList').innerHTML=E.sum.lines.map(l=>`<li>${l}</li>`).join('');$('words').innerHTML=E.sum.words.map(([a,b])=>`<div class="word"><b>${a}</b><span>${b}</span></div>`).join('');
 $('rcQ').textContent=E.end.q;$('rcA').textContent=E.end.a;$('endH').innerHTML=E.end.h;const rev=E.end.draw($('endSvg'));runners.end={steps:['답 보기',E.end.btn],run:i=>i===0?$('rcA').classList.add('show'):rev()};
 const ARW='<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>';
 const nextStep=k=>{const r=runners[k];return r?r.steps[stepsDone[k]||0]||null:null;};
-function refresh(){const k=ORDER[cur],s=nextStep(k);$('next').innerHTML=(s||(k==='end'?'다 봤어':'다음'))+ARW;}
+function refresh(){const k=ORDER[cur],s=nextStep(k);$('next').innerHTML=(s||(k==='end'?'다 봤어':'다음'))+ARW;$('next').classList.toggle('doit',!!s);}
 function go(i){i=Math.max(0,Math.min(ORDER.length-1,i));cur=i;const k=ORDER[i];document.querySelectorAll('.scr').forEach(x=>x.classList.toggle('on',x.dataset.k===k));
   [...dots.children].forEach((d,j)=>d.classList.toggle('on',j===i));$('back').style.visibility=k==='cover'?'hidden':'visible';if(k==='cover'&&coverPlay)coverPlay();refresh();}
 function doStep(){const k=ORDER[cur],s=nextStep(k);if(!s)return false;const n=stepsDone[k]||0;stepsDone[k]=n+1;runners[k].run(n);refresh();return true;}

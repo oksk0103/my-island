@@ -1,0 +1,52 @@
+{
+ "ep": 34,
+ "date": "2026-12-13",
+ "topic": "속담 '세 살 버릇 여든까지 간다'",
+ "home": {
+  "f": "세 살 버릇이 왜 여든까지 갈까?",
+  "q": "‘여든’은 몇 살일까?",
+  "tag": "속담 · 세 살 버릇"
+ },
+ "src": [
+  {
+   "claim": "여든 = 열의 여덟 배가 되는 수(80)",
+   "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=93503&nation=eng",
+   "note": "한국어기초사전 '여든1': 열의 여덟 배가 되는 수"
+  },
+  {
+   "claim": "속담 뜻: 어릴 적 몸에 밴 버릇을 노인이 되어서도 갖고 있다",
+   "url": "https://www.kidshankook.kr/news/articleView.html?idxno=7034",
+   "note": "소년한국일보 「초등학생을 위한 속담사전」(교과서 속담 사전 자료): 어릴 적 몸에 밴 습관을 시간이 흘러 노인이 되어서도 갖고 있다는 뜻 (보조. 주 근거는 한국어기초사전 '어릴 적 버릇은 늙어서까지 간다')"
+  },
+  {
+   "claim": "어릴 때 몸에 밴 버릇은 고치기 어렵고 평생 되풀이된다",
+   "url": "https://www.kbmaeil.com/article/200810031222267",
+   "note": "경북매일 칼럼: 어릴 때 몸에 밴 버릇, 평생 지속 반복되는 반응양식 (지역 신문 칼럼 — 보조. 주 근거는 한국어기초사전·한국민족문화대백과)"
+  },
+  {
+   "claim": "말버릇 = 몸에 배어 굳어 버린 말투(버릇은 몸에 배어 굳는 것)",
+   "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=52150&nation=eng&nationCode=6",
+   "note": "한국어기초사전 '말버릇': 몸에 배어 굳어 버린 말투"
+  },
+  {
+   "claim": "속담 뜻: 어릴 때 몸에 밴 버릇은 늙어서도 고치기 힘들다(늙어서도 남는다)",
+   "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?nation=eng&ParaWordNo=74176",
+   "note": "한국어기초사전(국립국어원) '어리다' 속담: '어릴 적 버릇은 늙어서까지 간다' — 어릴 때 한번 몸에 익숙해진 버릇은 평생 고치기 힘들다 — 감수 때 직접 확인"
+  },
+  {
+   "claim": "그래서 어릴 때 좋은 버릇이 중요하다(이 속담은 어린 시절 교육이 중요하다는 뜻으로 쓰여 옴)",
+   "url": "https://encykorea.aks.ac.kr/Article/E0041634",
+   "note": "한국민족문화대백과 '유아교육': 특히 성격교육에 관심을 많이 가져, '세 살 버릇 여든까지 간다'는 속담에서 볼 수 있듯이 유아기 교육의 중요성을 전통적으로 인식하여 왔다 — 감수 때 직접 확인"
+  },
+  {
+   "claim": "버릇 = 여러 번 되풀이해서 몸에 밴 행동",
+   "url": "https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=310878&searchCondition=&searchKeyword=",
+   "note": "국립국어원 온라인가나다 '버릇과 습관의 차이': 버릇과 습관은 '오랫동안 자꾸 반복하여 몸에 익어 버린 행동'이라는 뜻에서 비슷한말 — 감수 때 직접 확인"
+  },
+  {
+   "claim": "‘세 살 버릇 여든까지 간다’는 국립국어원도 다루는 속담 문장",
+   "url": "https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=309509&pageIndex=1",
+   "note": "국립국어원 온라인가나다: '세 살 버릇 여든까지 간다.'에서 '여든까지'의 문장 성분 문의(속담 표기 확인용) — 감수 때 직접 확인"
+  }
+ ]
+}

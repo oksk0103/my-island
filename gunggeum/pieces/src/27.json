@@ -1,0 +1,37 @@
+{
+ "ep": 27,
+ "date": "2026-12-06",
+ "topic": "잊어버리다와 잃어버리다",
+ "home": {
+  "f": "숙제를 잊었을까, 잃었을까?",
+  "q": "받침 하나로 뜻이 어떻게 갈릴까?",
+  "tag": "헷갈리는 말 · 잊다와 잃다"
+ },
+ "src": [
+  {
+   "claim": "잊어버리다: 한번 알았던 것을 기억하지 못하다, 발음 [이저버리다], '숙제를 잊어버리다'처럼 깜빡한 것에도 씀",
+   "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?nation=eng&ParaWordNo=89801",
+   "note": "한국어기초사전 '잊어버리다' 뜻풀이 1·2, 발음 [이저버리다], 용례 비밀번호·약속·숙제를 잊어버리다"
+  },
+  {
+   "claim": "잃어버리다: 가졌던 물건을 흘리거나 놓쳐서 더 이상 갖지 않게 되다, 발음 [이러버리다], 우산 예",
+   "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?nation=eng&ParaWordNo=68753",
+   "note": "한국어기초사전 '잃어버리다' 뜻풀이 1, 발음 [이러버리다], 예문 '좋아하던 우산을 잃어버려서'"
+  },
+  {
+   "claim": "잊다 「001」 한번 알았던 것을 기억하지 못하거나 기억해 내지 못하다",
+   "url": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=318452&pageIndex=1",
+   "note": "국립국어원 온라인가나다 답변에 잊다·잃다 표준국어대사전 뜻풀이 인용"
+  },
+  {
+   "claim": "잊다 받침 ㅈ (발음 [읻따])",
+   "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?nation=eng&ParaWordNo=70067",
+   "note": "한국어기초사전 '잊다' 발음 [읻따], 뜻 '한번 알았던 것을 기억하지 못하다'"
+  },
+  {
+   "claim": "잃어버리다는 합성어로 굳어져 늘 붙여 쓴다",
+   "url": "https://www.korean.go.kr/nkview/nknews/200302/55_4.html",
+   "note": "새국어소식 2003.2 '보조 용언의 띄어쓰기': 도와주다·잃어버리다 등은 항상 붙여 써야 한다"
+  }
+ ]
+}

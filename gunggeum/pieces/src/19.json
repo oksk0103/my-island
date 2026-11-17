@@ -1,0 +1,11 @@
+{"ep":19,"date":"2026-11-21","topic":"달의 모양",
+ "home":{"f":"달은 왜 모양이 바뀔까?","q":"달은 왜 모양이 바뀌어?","tag":"하늘 · 달의 모양"},
+ "src":[
+  {"claim":"달은 스스로 빛을 내지 못하고 햇빛을 받아 빛난다","url":"https://science.nasa.gov/moon/moon-phases/","note":"\"The Moon does not make its own light\" — 달빛은 반사된 햇빛이라고 설명"},
+  {"claim":"해를 바라보는 쪽 절반만 늘 밝다","url":"https://science.nasa.gov/moon/moon-phases/","note":"\"The Moon is always half-lit by the Sun\""},
+  {"claim":"달은 지구 둘레를 돈다","url":"https://science.nasa.gov/moon/moon-phases/","note":"달은 27.322일마다 지구를 한 바퀴 돈다(It travels around our planet once every 27.322 days)"},
+  {"claim":"달이 어디에 있느냐에 따라 밝은 쪽이 보이는 만큼이 달라진다(모양 차례: 안 보임→초승달→반달→보름달→반달→그믐달)","url":"https://science.nasa.gov/moon/moon-phases/","note":"new Moon, waxing crescent, first quarter, waxing gibbous, full Moon, waning gibbous, third quarter, waning crescent 여덟 단계"},
+  {"claim":"다시 같은 모양이 되기까지 29.5일쯤(그림 속 7일쯤·15일쯤·22일쯤은 29.5일을 넷으로 나눈 어림)","url":"https://science.nasa.gov/moon/moon-phases/","note":"\"The cycle repeats about once a month (every 29.5 days)\", 삭에서 삭까지 29.5일"},
+  {"claim":"보름달일 때 달은 지구에서 볼 때 해의 반대쪽에 있어 밝은 쪽이 다 보인다","url":"https://science.nasa.gov/moon/moon-phases/","note":"full Moon: \"The Moon is opposite the Sun, as viewed from Earth, revealing the Moon's dayside\""},
+  {"claim":"보름달 = 밝은 쪽이 다 보이는 달, 반달 = 절반만 밝은 달, 초승달·그믐달 = 밝은 쪽이 절반보다 적은 달","url":"https://astro4edu.org/ko/resources/glossary/term/247/","note":"국제천문연맹 천문교육국(OAE) 용어집 '위상': 보이는 면 전체가 밝으면 보름달, 절반이면 반달(상현달·하현달), 절반보다 적으면 초승달·그믐달"}
+ ]}

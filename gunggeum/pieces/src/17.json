@@ -1,0 +1,57 @@
+{
+ "ep": 17,
+ "date": "2026-11-19",
+ "topic": "입김",
+ "home": {
+  "f": "입김은 왜 겨울에만 보일까?",
+  "q": "입김은 왜 하얘?",
+  "tag": "물의 변신 · 입김"
+ },
+ "src": [
+  {
+   "claim": "내쉬는 숨에는 눈에 안 보이는 수증기가 들어 있다",
+   "url": "https://www.mentalfloss.com/science/weather/why-you-can-see-your-breath",
+   "note": "숨을 쉴 때 이산화탄소뿐 아니라 수증기도 함께 내쉰다고 설명"
+  },
+  {
+   "claim": "차가운 공기가 숨 속 따뜻한 물기를 작은 물방울로 바꿔 하얗게 보인다",
+   "url": "https://blogs.loc.gov/families/2021/12/everyday-winter-mysteries-fun-science-facts-from-the-library/",
+   "note": "미국 의회도서관: 찬 공기가 숨 속 따뜻한 물기를 아주 작은 물방울로 응결시켜 작은 구름처럼 보인다"
+  },
+  {
+   "claim": "따뜻한 날엔 숨이 잘 식지 않아 입김이 잘 안 보인다(정리 질문 답)",
+   "url": "https://spectrumlocalnews.com/us/snplus/weather/2023/10/11/why-you-can-see-your-breath-when-it-s-cold-outside",
+   "note": "따뜻한 공기는 찬 공기보다 물기를 더 많이 품고, 찬 바깥 공기가 숨(약 37도)을 빠르게 식혀 물기가 맺힌다고 설명 — 따뜻한 날엔 식는 정도가 작다는 추론의 근거"
+  },
+  {
+   "claim": "안개와 구름도 공기 속 아주 작은 물방울이다",
+   "url": "https://www.sciencetimes.co.kr/news/%EB%95%85%EC%9C%BC%EB%A1%9C-%EB%8B%A4%EA%B0%80%EC%98%A8-%EA%B5%AC%EB%A6%84-%EC%95%88%EA%B0%9C",
+   "note": "안개는 매우 작은 물방울이 대기 중에 떠다니는 현상, 구름도 작은 물방울이나 얼음 알갱이가 떠다니는 현상"
+  },
+  {
+   "claim": "입김이 생기는 과정은 구름·안개가 생기는 과정과 같다",
+   "url": "https://www.vaia.com/en-us/textbooks/physics/an-introduction-to-physical-science-13-edition/chapter-5/problem-11-when-you-exhale-outdoors-on-a-cold-day-you-can-se",
+   "note": "숨 속 수증기가 식어 작은 물방울이 되는 것은 안개·구름 생성과 비슷하다고 설명"
+  },
+  {
+   "claim": "수증기는 눈에 안 보이고, 숨 속 물기가 찬 공기에서 작은 물방울로 바뀌어 보인다. 냄비에서 피어오르는 김도 수증기가 식어 생긴 작은 물방울이며, 구름은 높이 떠 있는 안개다",
+   "url": "https://www.nsta.org/science-and-children/science-and-children-january-2020/q-why-can-i-see-my-breath-cold-days",
+   "note": "미국과학교사협회(NSTA) Science and Children: 'water vapor is invisible', 숨 속 물기가 찬 공기에서 기체→액체 물방울로 바뀜, 끓는 냄비 위 수증기가 tiny water droplets로 응결, 'A cloud is essentially a whole lot of fog way up high'"
+  },
+  {
+   "claim": "숨을 내쉬면 이산화탄소와 함께 수증기도 나온다",
+   "url": "https://secondary.climate.ksu.edu/news/stories/2017/10/ww_oct_18",
+   "note": "캔자스주립대 기후 센터: 'When we exhale, in addition to the carbon dioxide and other gases, we also release water vapor.' 주변 공기가 이슬점에 가까우면 숨 속 수증기로 작은 응결 구름이 생긴다"
+  },
+  {
+   "claim": "추운 날 내쉰 숨 속 물기가 맺혀 작은 구름처럼 보인다",
+   "url": "https://fi.edu/node/3486",
+   "note": "프랭클린 과학관: 추운 날 숨 속 물이 공기 중 아주 작은 알갱이(cloud seeds)에 맺혀 'tiny little cloud formations'로 보인다"
+  },
+  {
+   "claim": "보이는 김(끓는 물 위)은 수증기가 아니라 아주 작은 물방울이다",
+   "url": "https://energyeducation.ca/encyclopedia/Water_vapour",
+   "note": "캘거리대 Energy Education: 수증기는 기체라 보이지 않고, 끓는 물에서 보이는 것은 공기 중에 뜬 아주 작은 물방울. 구름도 눈에 보이는 액체 물방울"
+  }
+ ]
+}

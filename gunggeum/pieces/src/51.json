@@ -1,0 +1,42 @@
+{
+ "ep": 51,
+ "date": "2026-12-06",
+ "topic": "겨울 철새는 왜 우리나라에 올까 — 두루미·기러기",
+ "home": {
+  "f": "겨울 철새는 왜 우리나라에 올까?",
+  "q": "두루미는 우리나라에서 무엇을 먹을까?",
+  "tag": "동물 · 겨울 철새"
+ },
+ "src": [
+  {
+   "claim": "우리나라를 찾는 겨울 물새는 최근 10년 평균 해마다 130만 마리쯤이다(국립생물자원관 겨울철 조류 동시조사)",
+   "url": "https://www.newsis.com/view/NISX20240320_0002667453",
+   "note": "뉴시스 2024.3.20(국립생물자원관 발표 보도): \"지난 10년간 연평균 130만 마리의 겨울철 물새류가 우리나라를 찾은 것으로 나타났다\" — 2015년부터 전국 200곳 습지 겨울철 조류 동시조사, 두루미 124%·쇠기러기 78% 증가 (2026-11-18 재확인)"
+  },
+  {
+   "claim": "우리나라에 오는 두루미는 러시아 남동부와 중국 북부의 아무르강·우수리강 습지에서 번식한다",
+   "url": "https://www.smithsonianmag.com/science-nature/the-dmzs-thriving-resident-the-crane-953694/",
+   "note": "The population that reaches Korea breeds in the wetlands of the Amur and Ussuri rivers ... migrate to coastal Jiangsu or to the Korean peninsula"
+  },
+  {
+   "claim": "두루미는 철원 논에서 떨어진 낟알(벼)을 먹고, 흐르는 물에서 잠을 잔다",
+   "url": "https://www.smithsonianmag.com/science-nature/the-dmzs-thriving-resident-the-crane-953694/",
+   "note": "forage on waste rice in the fields (철원); cranes 'prefer to roost in running water'"
+  },
+  {
+   "claim": "철원의 두루미류는 농경지(추수 끝난 논)를 겨울 서식지로 이용한다",
+   "url": "https://m.korea.kr/briefing/pressReleaseView.do?newsId=156788657",
+   "note": "기후에너지환경부·국립생물자원관 보도자료(2026.11.11) '전국 겨울철새 서식지 100곳…': 핵심보전형 서식지 예로 '철원의 두루미류 등이 이용하는 농경지'"
+  },
+  {
+   "claim": "기러기(큰기러기 무리)는 여름을 먼 북쪽(동시베리아)에서 보내고 한국 등에서 겨울을 나며 논밭의 곡식을 먹는다",
+   "url": "https://animaldiversity.org/accounts/Anser_fabalis",
+   "note": "A. f. serrirostris spends its summer months in eastern Siberia and winters in China, Japan, and Korea; frequents agricultural land, eats rice, corn etc."
+  },
+  {
+   "claim": "새가 철 따라 옮기는 까닭은 먹이와 새끼 키울 곳이며, 겨울이 와 먹이가 줄면 남쪽으로, 봄에는 다시 북쪽으로 간다",
+   "url": "https://allaboutbirds.org/news/the-basics-how-why-and-where-of-bird-migration",
+   "note": "코넬대 조류연구소: two primary resources are food and nesting locations; migrate northward in spring; as winter approaches and food drops, birds move south again"
+  }
+ ]
+}

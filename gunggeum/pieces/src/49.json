@@ -1,0 +1,47 @@
+{
+ "ep": 49,
+ "date": "2026-12-04",
+ "topic": "고드름은 어떻게 자랄까",
+ "home": {
+  "f": "고드름은 어떻게 자랄까?",
+  "q": "고드름 끝은 왜 뾰족할까?",
+  "tag": "물의 변신 · 고드름"
+ },
+ "src": [
+  {
+   "claim": "고드름은 공기가 0도보다 추운데 햇볕이 눈을 녹이는 날 생긴다(지붕 위 눈이 녹아 흐르고 처마 밑 공기는 영하)",
+   "url": "https://wxguys.ssec.wisc.edu/2019/03/11/icicles",
+   "note": "위스콘신대 매디슨 SSEC The Weather Guys: \"Icicles typically form on days when the outdoor air temperature is below freezing but sunshine warms and melts snow or ice.\""
+  },
+  {
+   "claim": "물이 고드름 겉을 얇게 타고 내려가며 얼어, 고드름이 길어지면서 굵어진다(한 겹씩)",
+   "url": "https://wxguys.ssec.wisc.edu/2019/03/11/icicles",
+   "note": "\"The water runs down the sides in a thin film and freezes on the way down.\" / 고드름은 길어지면서 굵어짐(grows thicker as it elongates)"
+  },
+  {
+   "claim": "녹은 물이 계속 흘러야 고드름이 자란다(눈이 안 녹으면 잘 안 자람)",
+   "url": "https://wxguys.ssec.wisc.edu/2019/03/11/icicles",
+   "note": "\"For an icicle to grow, there must be a constant layer of water flowing over it.\""
+  },
+  {
+   "claim": "얇은 물층이 찬 공기에 열을 빼앗기며 일부가 얼어 고드름이 굵어지고 길어진다",
+   "url": "https://www.eurekalert.org/news-releases/742345",
+   "note": "애리조나대 보도자료(Short·Baygents·Goldstein 연구): \"As the rising air removes heat from the liquid layer, some of the water freezes, and the icicle grows thicker and elongates.\""
+  },
+  {
+   "claim": "고드름 끝은 뿌리보다 더 차가워서, 젖은 끝이 얼며 아래로 길어지고 위쪽은 많이 굵어지지 않는다(그래서 뾰족)",
+   "url": "https://www.aip.org/inside-science/icicle-shape-stranger-than-thought",
+   "note": "미국물리학협회(AIP) Inside Science: \"The tip stays colder than the base, keeping the top from growing wider as the wet tip freezes and elongates.\" / 얇은 물막 일부가 찬 공기에 얼고 나머지는 끝에서 떨어짐"
+  },
+  {
+   "claim": "끝 가까이에서 열이 더 쉽게 빠져 끝이 뿌리보다 빨리 자라 뾰족해진다(보조 근거)",
+   "url": "https://www.livescience.com/1074-icicle-formation-mystery-solved.html",
+   "note": "애리조나대 연구 소개 기사: \"the tip grows faster than the base, making the icicle pointy.\""
+  },
+  {
+   "claim": "고드름은 겉을 흐르는 얇은 물막이 영하의 공기로 열을 내주며 얼어 자란다(실험 확인)",
+   "url": "https://arxiv.org/pdf/1008.1922",
+   "note": "토론토대 물리학과 Chen·Morris 실험 논문: ice forms 'via a thin film of water flowing over the ice surface' when heat is transferred 'to the surrounding sub-freezing air'"
+  }
+ ]
+}

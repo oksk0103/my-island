@@ -1,0 +1,42 @@
+{
+ "ep": 24,
+ "date": "2026-12-03",
+ "topic": "낫다·낳다·났다",
+ "home": {
+  "f": "낫다, 낳다, 났다는 어떻게 달라?",
+  "q": "‘감기가 다 나았어’는 왜 ‘났어’가 아닐까?",
+  "tag": "맞춤법 · 낫다·낳다·났다"
+ },
+ "src": [
+  {
+   "claim": "낫다: 병이나 상처가 고쳐져 원래대로 되다, ‘아’ 앞에서 ㅅ이 빠져 ‘나아’가 된다",
+   "url": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=311430&pageIndex=1&searchCondition=&searchKeyword=",
+   "note": "온라인가나다: ‘감기 빨리 나아’가 바름. 표준국어대사전 ‘낫다’ 뜻풀이 ‘병이나 상처 따위가 고쳐져 본래대로 되다’, 활용 나아·나으니"
+  },
+  {
+   "claim": "‘낫다’는 낫고·낫지·나아·나았다로, ‘나다’는 나고·나·났다로 바뀐다(ㅅ 불규칙)",
+   "url": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mn_id=217&mcfaq_seq=5890&pageIndex=1",
+   "note": "상담 사례 ‘나다’와 ‘낫다’의 활용: ‘나다’는 나고·나지·나·났다, ‘낫다’는 낫고·낫지·나아·나았다"
+  },
+  {
+   "claim": "‘났다’는 ‘나다’의 지난 일, ‘낫다’의 지난 일은 ‘나았다’",
+   "url": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=325954&searchCondition=&searchKeyword=",
+   "note": "온라인가나다(2026.1.6.): 나다·낫다·낳다의 과거형은 났습니다·나았습니다·낳았습니다"
+  },
+  {
+   "claim": "낳다: 배 속의 아이, 새끼, 알을 몸 밖으로 내보내다 / 낳아는 [나아]로 소리 남",
+   "url": "https://krdict.korean.go.kr/vie/dicSearch/SearchView?nation=vie&ParaWordNo=64391",
+   "note": "한국어기초사전 ‘낳다’ 뜻풀이 1, 발음 [나ː타], 활용 낳아[나아]"
+  },
+  {
+   "claim": "‘낳다’는 [나타]로 소리 남(ㅎ과 ㄷ이 합쳐져 ㅌ)",
+   "url": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=323850&searchCondition=&searchKeyword=",
+   "note": "온라인가나다: ‘낳다’ 표준 발음 [나ː타], 표준 발음법 제12항 1"
+  },
+  {
+   "claim": "나다: 이·싹이 돋음, 구멍이 생김",
+   "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?nation=eng&ParaWordNo=62210",
+   "note": "한국어기초사전 ‘나다’ 1 피부 표면이나 땅 위로 솟다(새싹이, 이가 났네요), 3 구멍이나 상처 등이 생기다(바닥에 구멍이 났다)"
+  }
+ ]
+}

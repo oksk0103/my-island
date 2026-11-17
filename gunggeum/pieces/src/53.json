@@ -1,0 +1,42 @@
+{
+ "ep": 53,
+ "date": "2026-12-08",
+ "topic": "별은 왜 반짝일까",
+ "home": {
+  "f": "별은 왜 반짝일까?",
+  "q": "낮게 뜬 별이 더 반짝이는 까닭은?",
+  "tag": "하늘 · 별의 반짝임"
+ },
+ "src": [
+  {
+   "claim": "별은 아주 멀어서 작은 점으로 보인다",
+   "url": "https://earthsky.org/astronomy-essentials/why-dont-planets-twinkle-as-stars-do/",
+   "note": "\"Stars appear as pinpoints of light, making them vulnerable to atmospheric disturbance\"; 너무 멀어서 큰 망원경으로도 점으로 보임"
+  },
+  {
+   "claim": "별은 사실상 빛줄기 하나로 우리에게 오고, 공기의 온도 차이가 그 빛을 이리저리 꺾어 눈에서 벗어났다 돌아왔다 하므로 반짝여 보인다",
+   "url": "https://www.hko.gov.hk/en/education/earth-science/optical-phenomena/00356-why-do-stars-twinkle.html",
+   "note": "홍콩 천문대: 'What distorts the light coming from a star is temperature variations in the air'; 한 줄기 빛이 눈에서 벗어나면 잠깐 사라졌다 다시 나타남"
+  },
+  {
+   "claim": "별 자체가 깜빡이는 것이 아니라, 온도·밀도가 다른 공기를 지나며 빛이 흔들려 그렇게 보인다",
+   "url": "https://www.skyatnightmagazine.com/space-science/why-do-stars-twinkle",
+   "note": "BBC Sky at Night: 'stars do not actually twinkle: they just appear to do so from our perspective on Earth' (atmospheric scintillation)"
+  },
+  {
+   "claim": "낮은 하늘의 별(과 행성)은 공기를 더 많이 지나와서 더 잘 반짝인다",
+   "url": "https://earthsky.org/astronomy-essentials/why-dont-planets-twinkle-as-stars-do/",
+   "note": "'You might see planets twinkling if you spot them low in the sky' — low objects are seen through more atmosphere"
+  },
+  {
+   "claim": "행성은 가까워서 점이 아니라 작은 원으로 보여 덜 반짝인다",
+   "url": "https://www.hko.gov.hk/en/education/earth-science/optical-phenomena/00356-why-do-stars-twinkle.html",
+   "note": "Planets look larger than stars (not points), many rays reach us at once, so the image stays steady; earthsky도 'Planets appear as tiny disks'"
+  },
+  {
+   "claim": "별은 아주 멀어 작은 점으로 보여 공기에 쉽게 흔들리고, 지평선 가까운 별일수록 더 많이 반짝이며, 행성은 작은 원(원반)으로 보여 덜 반짝인다",
+   "url": "https://britannica.com/science/Why-Do-Stars-Twinkle",
+   "note": "브리태니커: \"They appear as tiny points of light\" / \"a star closer to the horizon will generally appear with more scintillation\" / planets appear as 'small disks of light' / 높은 곳 공기의 온도·밀도 차이"
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+{"ep":16,"date":"2026-11-18","topic":"눈송이",
+ "home":{"f":"눈송이는 왜 다 육각형일까?","q":"눈송이는 왜 육각형이야?","tag":"날씨 · 눈송이"},
+ "src":[
+  {"claim":"눈은 구름 속에서 물기가 바로 얼음이 되며 생긴다","url":"https://www.its.caltech.edu/~atomic/snowcrystals/primer/primer-old.htm","note":"Snow crystals form when water vapor condenses directly into ice, which happens in the clouds."},
+  {"claim":"눈 결정이 육각형인 까닭은 얼음 자체가 육각 짜임이라서다(처음 얼음이 육각형)","url":"https://www.its.caltech.edu/~atomic/snowcrystals/primer/primer-old.htm","note":"The six-fold symmetry of snow crystals ultimately derives from the six-fold symmetry of the ice crystal lattice."},
+  {"claim":"튀어나온 모서리 여섯 곳이 물기를 더 빨리 만나 가지가 먼저 자란다","url":"https://snowcrystals.com/branching/branching.html","note":"The six corners of a snow crystal grow a bit faster because they stick out farther into the humid air."},
+  {"claim":"영하 2도쯤엔 얇은 판, 영하 5도쯤엔 가는 바늘, 영하 15도쯤엔 별 모양","url":"https://www.its.caltech.edu/~atomic/snowcrystals/primer/primer-old.htm","note":"thin plates and stars grow around -2 C; columns and slender needles around -5 C; plates and stars again around -15 C"},
+  {"claim":"모양은 온도에 따라 달라지고, 물기가 많으면 가지가 많은 모양이 된다(나뭇가지 별)","url":"https://snowcrystals.com/morphology/morphology.html","note":"large thin plates grow near -15 C; more complex, branched forms appear when the humidity is high"}
+ ]}

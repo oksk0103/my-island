@@ -1,0 +1,42 @@
+{
+ "ep": 26,
+ "date": "2026-12-05",
+ "topic": "다르다와 틀리다",
+ "home": {
+  "f": "나랑 너는 ‘달라’? ‘틀려’?",
+  "q": "왜 ‘틀린 그림 찾기’보다 ‘다른 그림 찾기’가 맞을까?",
+  "tag": "헷갈리는 말 · 다르다와 틀리다"
+ },
+ "src": [
+  {
+   "claim": "다르다: 비교가 되는 두 대상이 서로 같지 아니하다 / 틀리다: 셈이나 사실 따위가 그르게 되거나 어긋나다",
+   "url": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=323842&searchCondition=&searchKeyword=",
+   "note": "온라인가나다: 두 대상이 같지 않으면 ‘다르다’(예: 나는 너와 다르다), ‘틀리다’는 셈이나 사실이 그르거나 어긋남(예: 계산이 틀리다)"
+  },
+  {
+   "claim": "‘틀린 그림 찾기’보다 ‘다른 그림 찾기’가 맞다",
+   "url": "https://korean.go.kr/front/mcfaq/mcfaqView.do?mn_id=217&mcfaq_seq=6244&pageIndex=1",
+   "note": "상담 사례: 두 그림을 비교해 다른 부분을 찾는 놀이는 ‘다른 그림 찾기’가 알맞고, ‘다르다’의 뜻으로 쓰는 ‘틀리다’는 표준어가 아님"
+  },
+  {
+   "claim": "3 더하기 4를 8이라고 하면 셈이 어긋나니 ‘틀리다’(3+4=7)",
+   "url": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=323842&searchCondition=&searchKeyword=",
+   "note": "‘틀리다’ 뜻풀이 ‘셈이나 사실 따위가 그르게 되거나 어긋나다’, 예 ‘계산이 틀리다’에 맞춘 셈 예(3+4=7은 산수)"
+  },
+  {
+   "claim": "‘틀리다’는 ‘사실이나 이치, 계산 따위가 맞지 않다’, ‘다르다’는 ‘같지 않다’로 뜻과 품사가 다르다",
+   "url": "https://www.korean.go.kr/nkview/news/91/news6_9.htm",
+   "note": "국립국어원 소식지 글 ‘틀리다’와 ‘다르다’(이종덕): 틀리다(동사) ‘사실이나 이치, 계산 따위가 맞지 않다’, 다르다(형용사) ‘같지 않다, 차이가 있다’, ‘사고방식이 틀리군요’는 잘못 쓴 예"
+  },
+  {
+   "claim": "다른 그림 찾기: 두 그림에서 서로 다른 곳을 찾는 놀이(정리 낱말 풀이)",
+   "url": "https://korean.go.kr/front/mcfaq/mcfaqView.do?mn_id=217&mcfaq_seq=6244&pageIndex=1",
+   "note": "상담 사례 2019.12.6.: 두 그림에서 다른 부분을 찾는 놀이는 ‘다른 그림 찾기’가 바르고, ‘다르다’ 뜻의 ‘틀리다’는 표준어가 아님(감수 때 다시 열어 확인)"
+  },
+  {
+   "claim": "‘나는 너와 다르다’, ‘계산이 틀리다’, ‘답이 틀리다’ 예문",
+   "url": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=323842&searchCondition=&searchKeyword=",
+   "note": "온라인가나다: 다르다 예 ‘나는 너와 다르다’, 틀리다 예 ‘답이 틀리다’, ‘계산이 틀리다’(감수 때 다시 열어 확인)"
+  }
+ ]
+}

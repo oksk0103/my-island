@@ -1,0 +1,47 @@
+{
+ "ep": 57,
+ "date": "2026-12-12",
+ "topic": "우리 몸의 뼈는 몇 개일까",
+ "home": {
+  "f": "우리 몸의 뼈는 몇 개일까?",
+  "q": "아기는 왜 뼈 조각이 더 많을까?",
+  "tag": "우리 몸 · 뼈"
+ },
+ "src": [
+  {
+   "claim": "다 자란 어른의 뼈는 이름 붙은 뼈 206개",
+   "url": "https://www.training.seer.cancer.gov/anatomy/skeletal/divisions/",
+   "note": "미국 국립암연구소 SEER: The adult human skeleton usually consists of 206 named bones (몸통 80 + 팔다리 126)"
+  },
+  {
+   "claim": "머리·목 29 = 머리뼈 22 + 귀속뼈 6 + 목뿔뼈 1, 등뼈 26, 가슴 25(갈비뼈 24 + 복장뼈 1)",
+   "url": "https://www.training.seer.cancer.gov/anatomy/skeletal/divisions/axial.html",
+   "note": "SEER 몸통뼈대: 머리뼈 8+얼굴뼈 14, 귀속뼈 6, 목뿔뼈 1, 척추 26, 갈비뼈 24, 복장뼈 1, 합 80"
+  },
+  {
+   "claim": "두 손 54(한 손 27 = 손목 8 + 손바닥 5 + 손가락 14), 두 발 52(한 발 26)",
+   "url": "https://www.training.seer.cancer.gov/anatomy/skeletal/divisions/appendicular.html",
+   "note": "SEER 팔다리뼈대: 손목뼈 16, 손허리뼈 10, 손가락뼈 28 / 발목뼈 14, 발허리뼈 10, 발가락뼈 28 (양쪽 합)"
+  },
+  {
+   "claim": "팔·어깨 10 = 어깨 4 + 팔 6, 다리·골반 10 = 골반 2 + 다리 8",
+   "url": "https://www.training.seer.cancer.gov/anatomy/skeletal/divisions/appendicular.html",
+   "note": "SEER: 어깨(빗장뼈·어깨뼈) 4, 위팔·아래팔 3개씩, 골반뼈 2, 넓적다리·무릎·정강·종아리 4개씩"
+  },
+  {
+   "claim": "손과 발의 뼈를 합치면 106개로 206개의 절반(103)보다 많다",
+   "url": "https://www.training.seer.cancer.gov/anatomy/skeletal/divisions/appendicular.html",
+   "note": "위 SEER 수치로 계산: 54 + 52 = 106"
+  },
+  {
+   "claim": "갓 태어난 아기의 뼈대는 300개가 넘는 조각이고, 자라면서 몇몇이 붙어 어른은 206개",
+   "url": "https://kids.tpl.ca/wonders/43",
+   "note": "토론토 공공도서관 어린이 과학 질문: skeleton of a newborn baby is made up of more than 300 parts … some of its bones fuse together … just 206 bones"
+  },
+  {
+   "claim": "머리뼈 조각처럼 자라면서 서로 붙는 뼈가 있다",
+   "url": "https://kidshealth.org/CookChildrens/en/kids/bones.html",
+   "note": "KidsHealth(Nemours): 머리뼈 판들이 태어날 때 조금 움직이다가 머리가 다 자라며 서로 붙음"
+  }
+ ]
+}

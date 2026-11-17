@@ -1,0 +1,47 @@
+{
+ "ep": 40,
+ "date": "2026-11-25",
+ "topic": "노을은 왜 빨갈까",
+ "home": {
+  "f": "노을은 왜 빨갈까?",
+  "q": "아침 해가 뜰 때도 하늘이 붉을 수 있을까?",
+  "tag": "빛 · 노을"
+ },
+ "src": [
+  {
+   "claim": "해가 낮을수록(저녁) 햇빛이 공기를 더 길게 지나 우리에게 온다",
+   "url": "https://scijinks.gov/about/k-12-education/atmosphere/why-the-sky-blue",
+   "note": "NOAA SciJinks: As the Sun gets lower in the sky, its light passes through more of the atmosphere to reach you."
+  },
+  {
+   "claim": "해 질 녘 햇빛은 훨씬 두꺼운 공기층을 지나온다",
+   "url": "https://metoffice.gov.uk/learning/optics/why-is-the-sunset-red",
+   "note": "Met Office: the sunlight we see has travelled through a much thicker amount of atmosphere."
+  },
+  {
+   "claim": "파란빛은 공기에 더 잘 흩어져서, 긴 길을 오는 동안 거의 다 흩어진다",
+   "url": "https://metoffice.gov.uk/learning/optics/why-is-the-sunset-red",
+   "note": "Met Office: blue light is scattered more strongly by the atmosphere."
+  },
+  {
+   "claim": "끝까지 온 빛에는 빨강과 노랑이 많아 노을이 붉게 보인다",
+   "url": "https://scijinks.gov/about/k-12-education/atmosphere/why-the-sky-blue",
+   "note": "NOAA SciJinks: more blue light is scattered away, so reds and yellows reach your eyes."
+  },
+  {
+   "claim": "끝까지 온 빛은 빨강·노랑이 상대적으로 많다",
+   "url": "https://metoffice.gov.uk/learning/optics/why-is-the-sunset-red",
+   "note": "Met Office: there is relatively more yellow and red light left for us to see."
+  },
+  {
+   "claim": "해가 뜰 때도 해는 하늘 낮은 곳에 있다(마무리 답의 근거)",
+   "url": "https://metoffice.gov.uk/learning/optics/why-is-the-sunset-red",
+   "note": "Met Office: At sunrise and sunset, the Sun is very low in the sky. (아침에 '붉게 물들 때가 있어'는 같은 원리로 조심스럽게 씀)"
+  },
+  {
+   "claim": "햇빛 속 색 이름(빨주노초파남보)",
+   "url": "https://www.britannica.com/science/color",
+   "note": "Britannica: Newton used the seven colour names red, orange, yellow, green, blue, indigo, and violet."
+  }
+ ]
+}

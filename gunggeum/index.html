@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v154</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v155</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v154</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v155</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1765,32 +1765,73 @@ body { word-break: keep-all; overflow-wrap: break-word; }
   // v139: 넘겨 보는 조각 장(따로 만든 화면). 시작한 날부터 7일 동안 오늘의 조각이 된다
   // v142: 조각 장 14편(pieces/piece.html?ep=N). 하루에 한 편씩 그날의 조각이 된다
   const PIECE_PAGES = [
-    { from: '2026-11-17', f: '설날은 왜 해마다 날짜가 바뀔까?', q: '음력은 왜 쓸까?', page: 'pieces/piece.html?ep=1', tag: '국어 상식 · 음력과 윤달' },
-    { from: '2026-11-18', f: '이에요와 예요, 뭐가 다를까?', q: '이에요랑 예요는 어떻게 골라 써?', page: 'pieces/piece.html?ep=2', tag: '맞춤법 · 이에요와 예요' },
-    { from: '2026-11-19', f: '점심 12시를 왜 ‘정오’라고 할까?', q: '옛날 사람들은 시간을 어떻게 셌어?', page: 'pieces/piece.html?ep=3', tag: '말의 유래 · 정오와 자정' },
-    { from: '2026-11-20', f: '햅쌀은 왜 ‘해쌀’이 아닐까?', q: '햅쌀은 왜 ㅂ이 들어가?', page: 'pieces/piece.html?ep=4', tag: '말의 유래 · 햅쌀의 ㅂ' },
-    { from: '2026-11-21', f: '숟가락은 ㄷ, 젓가락은 ㅅ. 왜?', q: '숟가락은 왜 ㄷ 받침이야?', page: 'pieces/piece.html?ep=5', tag: '맞춤법 · 숟가락과 젓가락' },
-    { from: '2026-11-22', f: '무궁화는 왜 ‘끝없는 꽃’일까?', q: '무궁화는 왜 나라꽃이야?', page: 'pieces/piece.html?ep=6', tag: '말의 뜻 · 무궁화' },
-    { from: '2026-11-23', f: '‘건강하세요’는 틀린 말일까?', q: '건강하세요는 왜 틀린 말이야?', page: 'pieces/piece.html?ep=7', tag: '바른 말 · 건강하세요' },
-    { from: '2026-11-24', f: '‘시치미 뗀다’의 시치미는 뭘까?', q: '시치미 뗀다는 말은 어디서 왔어?', page: 'pieces/piece.html?ep=8', tag: '말의 유래 · 시치미' },
-    { from: '2026-11-25', f: '‘어리다’는 원래 무슨 뜻이었을까?', q: '어린이라는 말은 언제 생겼어?', page: 'pieces/piece.html?ep=9', tag: '말의 유래 · 어린이' },
-    { from: '2026-11-26', f: '날짐승과 길짐승, 뭐가 다를까?', q: '짐승은 어떻게 나눠 불러?', page: 'pieces/piece.html?ep=10', tag: '말의 뜻 · 날짐승과 길짐승' },
-    { from: '2026-11-27', f: '이따가 만나? 있다가 만나?', q: '이따가랑 있다가는 뭐가 달라?', page: 'pieces/piece.html?ep=11', tag: '맞춤법 · 이따가와 있다가' },
-    { from: '2026-11-28', f: '정답을 맞혔다? 맞췄다?', q: '맞히다랑 맞추다는 뭐가 달라?', page: 'pieces/piece.html?ep=12', tag: '맞춤법 · 맞히다와 맞추다' },
-    { from: '2026-11-29', f: '니가? 네가? 어떻게 쓸까?', q: '왜 니가가 아니라 네가라고 써?', page: 'pieces/piece.html?ep=13', tag: '맞춤법 · 네가와 내가' },
-    { from: '2026-11-30', f: '왜 ‘몇일’이 아니라 ‘며칠’일까?', q: '왜 몇일이 아니라 며칠이야?', page: 'pieces/piece.html?ep=14', tag: '맞춤법 · 며칠' }];
+    { from: '2026-11-17', f: '설날은 왜 해마다 날짜가 바뀔까?', q: '음력은 왜 쓸까?', page: 'pieces/piece.html?ep=1&v=2', tag: '국어 상식 · 음력과 윤달' },
+    { from: '2026-11-18', f: '이에요와 예요, 뭐가 다를까?', q: '이에요랑 예요는 어떻게 골라 써?', page: 'pieces/piece.html?ep=2&v=2', tag: '맞춤법 · 이에요와 예요' },
+    { from: '2026-11-19', f: '점심 12시를 왜 ‘정오’라고 할까?', q: '옛날 사람들은 시간을 어떻게 셌어?', page: 'pieces/piece.html?ep=3&v=2', tag: '말의 유래 · 정오와 자정' },
+    { from: '2026-11-20', f: '햅쌀은 왜 ‘해쌀’이 아닐까?', q: '햅쌀은 왜 ㅂ이 들어가?', page: 'pieces/piece.html?ep=4&v=2', tag: '말의 유래 · 햅쌀의 ㅂ' },
+    { from: '2026-11-21', f: '숟가락은 ㄷ, 젓가락은 ㅅ. 왜?', q: '숟가락은 왜 ㄷ 받침이야?', page: 'pieces/piece.html?ep=5&v=2', tag: '맞춤법 · 숟가락과 젓가락' },
+    { from: '2026-11-22', f: '무궁화는 왜 ‘끝없는 꽃’일까?', q: '무궁화 한 송이는 며칠 피어?', page: 'pieces/piece.html?ep=6&v=2', tag: '말의 뜻 · 무궁화' },
+    { from: '2026-11-23', f: '‘건강하세요’는 틀린 말일까?', q: '건강하세요는 왜 어색하다고 해?', page: 'pieces/piece.html?ep=7&v=2', tag: '바른 말 · 건강하세요' },
+    { from: '2026-11-24', f: '‘시치미’는 원래 뭘까?', q: '시치미 뗀다는 말은 어디서 왔어?', page: 'pieces/piece.html?ep=8&v=2', tag: '말의 유래 · 시치미' },
+    { from: '2026-11-25', f: '‘어리다’는 원래 무슨 뜻이었을까?', q: '어린이라는 말은 언제 생겼어?', page: 'pieces/piece.html?ep=9&v=2', tag: '말의 유래 · 어린이' },
+    { from: '2026-11-26', f: '날짐승과 길짐승, 뭐가 다를까?', q: '짐승은 어떻게 나눠 불러?', page: 'pieces/piece.html?ep=10&v=2', tag: '말의 뜻 · 날짐승과 길짐승' },
+    { from: '2026-11-27', f: '이따가 만나? 있다가 만나?', q: '이따가랑 있다가는 뭐가 달라?', page: 'pieces/piece.html?ep=11&v=2', tag: '맞춤법 · 이따가와 있다가' },
+    { from: '2026-11-28', f: '정답을 맞혔다? 맞췄다?', q: '맞히다랑 맞추다는 뭐가 달라?', page: 'pieces/piece.html?ep=12&v=2', tag: '맞춤법 · 맞히다와 맞추다' },
+    { from: '2026-11-29', f: '니가? 네가? 어떻게 쓸까?', q: '왜 니가가 아니라 네가라고 써?', page: 'pieces/piece.html?ep=13&v=2', tag: '맞춤법 · 네가와 내가' },
+    { from: '2026-11-30', f: '왜 ‘몇일’이 아니라 ‘며칠’일까?', q: '왜 몇일이 아니라 며칠이야?', page: 'pieces/piece.html?ep=14&v=2', tag: '맞춤법 · 며칠' },
+    { from: '2026-12-01', f: '‘안’과 ‘않’, 뭐가 다를까?', q: '‘안 먹어’와 ‘먹지 않아’는 왜 글자가 다를까?', page: 'pieces/piece.html?ep=22&v=2', tag: '맞춤법 · 안과 않' },
+    { from: '2026-12-02', f: '‘놀아도 돼?’, 왜 ‘되’가 아닐까?', q: '‘되’와 ‘돼’는 어떻게 가려 쓸까?', page: 'pieces/piece.html?ep=23&v=2', tag: '맞춤법 · 되와 돼' },
+    { from: '2026-12-03', f: '낫다, 낳다, 났다는 어떻게 달라?', q: '‘감기가 다 나았어’는 왜 ‘났어’가 아닐까?', page: 'pieces/piece.html?ep=24&v=2', tag: '맞춤법 · 낫다·낳다·났다' },
+    { from: '2026-12-04', f: '가르치다와 가리키다는 같은 말일까?', q: '시계 바늘은 8시를 ‘가르칠까’, ‘가리킬까’?', page: 'pieces/piece.html?ep=25&v=2', tag: '헷갈리는 말 · 가르치다와 가리키다' },
+    { from: '2026-12-05', f: '나랑 너는 ‘달라’? ‘틀려’?', q: '왜 ‘틀린 그림 찾기’보다 ‘다른 그림 찾기’가 맞을까?', page: 'pieces/piece.html?ep=26&v=2', tag: '헷갈리는 말 · 다르다와 틀리다' },
+    { from: '2026-12-06', f: '숙제를 잊었을까, 잃었을까?', q: '받침 하나로 뜻이 어떻게 갈릴까?', page: 'pieces/piece.html?ep=27&v=2', tag: '헷갈리는 말 · 잊다와 잃다' },
+    { from: '2026-12-07', f: 'ㄱ, ㄴ은 무엇을 보고 만들었을까?', q: 'ㅋ은 어느 글자에서 왔을까?', page: 'pieces/piece.html?ep=28&v=2', tag: '한글 · 자음의 모양' },
+    { from: '2026-12-08', f: '밥의 높임말은 무엇일까?', q: '집과 나이는 어떻게 높여 말할까?', page: 'pieces/piece.html?ep=29&v=2', tag: '바른 말 · 높임말' },
+    { from: '2026-12-09', f: '아버지가 들어간 곳은 어디일까?', q: '띄는 자리 하나로 뜻이 바뀔까?', page: 'pieces/piece.html?ep=30&v=2', tag: '맞춤법 · 띄어쓰기' },
+    { from: '2026-12-10', f: '‘배’는 뜻이 몇 가지일까?', q: '배를 타고 배를 먹으면 배가 부를까?', page: 'pieces/piece.html?ep=31&v=2', tag: '말의 뜻 · 소리가 같은 말' },
+    { from: '2026-12-11', f: '노란색을 말하는 낱말, 몇 개일까?', q: '누렇다는 노랗다와 뭐가 다를까?', page: 'pieces/piece.html?ep=32&v=2', tag: '말의 뜻 · 노란색 낱말' },
+    { from: '2026-12-12', f: '‘설거지’는 어디서 온 말일까?', q: '왜 ‘설겆이’라고 안 쓸까?', page: 'pieces/piece.html?ep=33&v=2', tag: '말의 유래 · 설거지' },
+    { from: '2026-12-13', f: '세 살 버릇이 왜 여든까지 갈까?', q: '‘여든’은 몇 살일까?', page: 'pieces/piece.html?ep=34&v=2', tag: '속담 · 세 살 버릇' },
+    { from: '2026-12-14', f: '김치는 왜 ‘김치’라고 부를까?', q: '김치의 옛 이름은 뭐야?', page: 'pieces/piece.html?ep=35&v=2', tag: '말의 유래 · 김치' },
+    { from: '2026-12-15', f: '절기 이름엔 무슨 뜻이 있을까?', q: '동지는 무슨 날이야?', page: 'pieces/piece.html?ep=36&v=2', tag: '절기 · 대설과 동지' },
+    { from: '2026-12-16', f: '멍멍과 반짝반짝, 뭐가 달라?', q: '반짝반짝은 무슨 말이야?', page: 'pieces/piece.html?ep=37&v=2', tag: '낱말 · 의성어와 의태어' },
+    { from: '2026-12-17', f: '대장장이와 멋쟁이, 왜 다를까?', q: '-장이와 -쟁이는 어떻게 달라?', page: 'pieces/piece.html?ep=38&v=2', tag: '맞춤법 · -장이와 -쟁이' }];
   const piece = () => { const t = dayKey(new Date()), pg = window.__gkPieceNoPage ? null : PIECE_PAGES.filter(x => x.from <= t && (new Date(t) - new Date(x.from)) / 864e5 < (x.days || 1)).pop(); return pg || PIECES[dayOfYear(new Date()) % PIECES.length]; };
   window.__gkPiece = piece;
   // v147: 과학 편 7편(pieces/piece.html?ep=15~21). 11월 17일부터 하루 한 편씩 돌아간다
   const SCI_PAGES = [
-    { f: '나뭇잎은 가을에 왜 빨개질까?', q: '단풍은 왜 들어?', page: 'pieces/piece.html?ep=15', tag: '식물 · 단풍' },
-    { f: '눈송이는 왜 다 육각형일까?', q: '눈송이는 왜 육각형이야?', page: 'pieces/piece.html?ep=16', tag: '날씨 · 눈송이' },
-    { f: '입김은 왜 겨울에만 보일까?', q: '입김은 왜 하얘?', page: 'pieces/piece.html?ep=17', tag: '물의 변신 · 입김' },
-    { f: '곰은 겨울잠을 어떻게 잘까?', q: '곰은 겨울잠 잘 때 배 안 고파?', page: 'pieces/piece.html?ep=18', tag: '동물 · 겨울잠' },
-    { f: '달은 왜 모양이 바뀔까?', q: '달은 왜 모양이 바뀌어?', page: 'pieces/piece.html?ep=19', tag: '하늘 · 달의 모양' },
-    { f: '겨울엔 왜 문고리가 따끔할까?', q: '정전기는 왜 생겨?', page: 'pieces/piece.html?ep=20', tag: '전기 · 정전기' },
-    { f: '겨울엔 왜 해가 빨리 질까?', q: '겨울엔 왜 해가 빨리 져?', page: 'pieces/piece.html?ep=21', tag: '하늘 · 겨울 해' }];
-  const sciPiece = () => { const n = Math.round((new Date(dayKey(new Date()) + 'T12:00') - new Date('2026-11-17T12:00')) / 864e5); return SCI_PAGES[((n % SCI_PAGES.length) + SCI_PAGES.length) % SCI_PAGES.length]; };
+    { from: '2026-11-17', f: '나뭇잎은 가을에 왜 빨개질까?', q: '단풍은 왜 들어?', page: 'pieces/piece.html?ep=15&v=2', tag: '식물 · 단풍' },
+    { from: '2026-11-18', f: '눈송이는 왜 다 육각형일까?', q: '눈송이는 왜 육각형이야?', page: 'pieces/piece.html?ep=16&v=2', tag: '날씨 · 눈송이' },
+    { from: '2026-11-19', f: '입김은 왜 겨울에만 보일까?', q: '입김은 왜 하얘?', page: 'pieces/piece.html?ep=17', tag: '물의 변신 · 입김' },
+    { from: '2026-11-20', f: '곰은 겨울잠을 어떻게 잘까?', q: '곰은 겨울잠 잘 때 배 안 고파?', page: 'pieces/piece.html?ep=18&v=2', tag: '동물 · 겨울잠' },
+    { from: '2026-11-21', f: '달은 왜 모양이 바뀔까?', q: '달은 왜 모양이 바뀌어?', page: 'pieces/piece.html?ep=19&v=2', tag: '하늘 · 달의 모양' },
+    { from: '2026-11-22', f: '겨울엔 왜 문고리가 따끔할까?', q: '정전기는 왜 생겨?', page: 'pieces/piece.html?ep=20&v=2', tag: '전기 · 정전기' },
+    { from: '2026-11-23', f: '겨울엔 왜 해가 빨리 질까?', q: '겨울엔 왜 해가 빨리 져?', page: 'pieces/piece.html?ep=21&v=2', tag: '하늘 · 겨울 해' },
+    { from: '2026-11-24', f: '하늘은 왜 파랄까?', q: '그럼 해 질 녘 하늘은 왜 빨개질까?', page: 'pieces/piece.html?ep=39&v=2', tag: '빛 · 하늘색' },
+    { from: '2026-11-25', f: '노을은 왜 빨갈까?', q: '아침 해가 뜰 때도 하늘이 붉을 수 있을까?', page: 'pieces/piece.html?ep=40&v=2', tag: '빛 · 노을' },
+    { from: '2026-11-26', f: '무지개는 어떻게 생길까?', q: '무지개 색은 왜 늘 같은 차례일까?', page: 'pieces/piece.html?ep=41&v=2', tag: '빛 · 무지개' },
+    { from: '2026-11-27', f: '소리는 어떻게 들릴까?', q: '공기가 없는 우주에서도 소리가 들릴까?', page: 'pieces/piece.html?ep=42&v=2', tag: '소리 · 떨림' },
+    { from: '2026-11-28', f: '그림자는 왜 생길까?', q: '그림자 길이는 왜 아침과 한낮에 다를까?', page: 'pieces/piece.html?ep=43&v=2', tag: '빛 · 그림자' },
+    { from: '2026-11-29', f: '자석은 왜 쇠에 붙을까?', q: '나무에는 왜 안 붙어?', page: 'pieces/piece.html?ep=44&v=2', tag: '끌어당기는 힘 · 자석' },
+    { from: '2026-11-30', f: '얼음은 왜 물에 뜰까?', q: '얼음은 물속에 얼마나 잠겨?', page: 'pieces/piece.html?ep=45&v=2', tag: '물의 변신 · 얼음' },
+    { from: '2026-12-01', f: '소금은 물에 녹으면 어디로 갈까?', q: '녹은 소금을 다시 꺼낼 수 있어?', page: 'pieces/piece.html?ep=46&v=2', tag: '녹는 것 · 소금물' },
+    { from: '2026-12-02', f: '나무는 겨울을 어떻게 날까?', q: '겨울눈 속에는 뭐가 있어?', page: 'pieces/piece.html?ep=47&v=2', tag: '나무의 겨울 · 겨울눈' },
+    { from: '2026-12-03', f: '서리는 어떻게 생길까?', q: '서리랑 이슬은 뭐가 달라?', page: 'pieces/piece.html?ep=48&v=2', tag: '날씨 · 서리' },
+    { from: '2026-12-04', f: '고드름은 어떻게 자랄까?', q: '고드름 끝은 왜 뾰족할까?', page: 'pieces/piece.html?ep=49&v=2', tag: '물의 변신 · 고드름' },
+    { from: '2026-12-05', f: '펭귄은 왜 발이 안 얼까?', q: '펭귄 발로 가는 피는 어떻게 식을까?', page: 'pieces/piece.html?ep=50&v=2', tag: '동물 · 펭귄의 발' },
+    { from: '2026-12-06', f: '겨울 철새는 왜 우리나라에 올까?', q: '두루미는 우리나라에서 무엇을 먹을까?', page: 'pieces/piece.html?ep=51&v=2', tag: '동물 · 겨울 철새' },
+    { from: '2026-12-07', f: '낮과 밤은 왜 생길까?', q: '해는 왜 동쪽에서 뜰까?', page: 'pieces/piece.html?ep=52&v=2', tag: '하늘 · 낮과 밤' },
+    { from: '2026-12-08', f: '별은 왜 반짝일까?', q: '낮게 뜬 별이 더 반짝이는 까닭은?', page: 'pieces/piece.html?ep=53&v=2', tag: '하늘 · 별의 반짝임' },
+    { from: '2026-12-09', f: '겨울 밤하늘의 오리온은 어디 있을까?', q: '별마다 빛깔은 왜 다를까?', page: 'pieces/piece.html?ep=54&v=2', tag: '하늘 · 오리온' },
+    { from: '2026-12-10', f: '씨앗은 어떻게 싹틀까?', q: '뿌리와 싹 중 무엇이 먼저 나올까?', page: 'pieces/piece.html?ep=55&v=2', tag: '식물 · 씨앗' },
+    { from: '2026-12-11', f: '공룡 화석은 어떻게 생겼을까?', q: '뼈는 어떻게 돌이 될까?', page: 'pieces/piece.html?ep=56&v=2', tag: '땅 · 화석' },
+    { from: '2026-12-12', f: '우리 몸의 뼈는 몇 개일까?', q: '아기는 왜 뼈 조각이 더 많을까?', page: 'pieces/piece.html?ep=57&v=2', tag: '우리 몸 · 뼈' },
+    { from: '2026-12-13', f: '이는 왜 빠지고 다시 날까?', q: '젖니 밑에는 무엇이 기다리고 있을까?', page: 'pieces/piece.html?ep=58&v=2', tag: '우리 몸 · 이' },
+    { from: '2026-12-14', f: '눈은 왜 깜빡일까?', q: '눈을 오래 안 깜빡이면 어떻게 될까?', page: 'pieces/piece.html?ep=59&v=2', tag: '우리 몸 · 눈 깜빡임' },
+    { from: '2026-12-15', f: '거미는 왜 자기 줄에 안 걸릴까?', q: '거미줄에서 끈끈한 줄은 어느 줄일까?', page: 'pieces/piece.html?ep=60&v=2', tag: '동물 · 거미줄' },
+    { from: '2026-12-16', f: '종이비행기는 어떻게 날까?', q: '종이비행기를 더 빨리 날리려면 어떻게 할까?', page: 'pieces/piece.html?ep=61&v=2', tag: '힘 · 종이비행기' },
+    { from: '2026-12-17', f: '화산은 왜 터질까?', q: '우리나라에도 화산이 있을까?', page: 'pieces/piece.html?ep=62&v=2', tag: '땅 · 화산' }];
+  const sciPiece = () => { const t = dayKey(new Date()), hit = SCI_PAGES.filter(x => x.from <= t).pop(); if (hit && hit.from === t) return hit; const n = Math.round((new Date(t + 'T12:00') - new Date(SCI_PAGES[0].from + 'T12:00')) / 864e5); return SCI_PAGES[((n % SCI_PAGES.length) + SCI_PAGES.length) % SCI_PAGES.length]; };
   window.__gkSci = sciPiece;
 
   const recent = [];
@@ -3426,7 +3467,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function fitPaper() {
     const body = $('ppBody'), art = $('ppArt'); if (!body || paperEl.hidden) return;
     if (innerWidth < 900) { art.classList.toggle('nopic', !art.dataset.hasimg); art.classList.remove('scroll', 'tight'); art.style.removeProperty('--pf'); return; }
-    // v154 지면 다듬기: 본문은 26px(큰 화면 30) 아래로 줄이지 않는다 — 넘치면 그림을 접어 넓은 두 단으로, 그래도 넘치면 낱말 줄을 접고, 마지막에만 24까지
+    // v155 지면 다듬기: 본문은 26px(큰 화면 30) 아래로 줄이지 않는다 — 넘치면 그림을 접어 넓은 두 단으로, 그래도 넘치면 낱말 줄을 접고, 마지막에만 24까지
     const base = innerWidth >= 1800 && innerHeight >= 940 ? 30 : 26, over = () => body.scrollHeight > body.clientHeight + 2 || body.scrollWidth > body.clientWidth + 2;
     const tryFit = (from, to) => { for (let f = from; f >= to; f--) { art.style.setProperty('--pf', f + 'px'); if (!over()) return true; } return false; };
     art.classList.remove('scroll', 'tight'); art.classList.toggle('nopic', !art.dataset.hasimg);
@@ -3998,7 +4039,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v154';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v155';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6447,8 +6488,8 @@ body[data-night] #app{--paperbg:linear-gradient(180deg,#0A1130,#111B47);--zbg:#0
   .st-none{position:static;font-size:32px;line-height:42px}
 }
 </style>
-<style id="np-v154">
-/* ===== 루아 신문 지면 다듬기(v154) — 넓은 화면(≥900)만 =====
+<style id="np-v155">
+/* ===== 루아 신문 지면 다듬기(v155) — 넓은 화면(≥900)만 =====
    판면 1504(48~1552)을 A·B·C 세 단으로: 단 사이 40(가운데 1px 괘선), A = 그림(1.6:1)·낱말 단(352), 본문 단 536~560 → 26px 본문 한 줄 평균 22~24자. 그림 없는 기사는 712 두 단(30자 안팎).
    글자 단계는 넷: 56(머리기사·숫자) · 34(옆 기사 제목·낱말·요약) · 26(본문·부제·옆 기사 요약) · 22(꼬리표·캡션·날짜·넘김). 행간 1.65. 간격은 8의 배수.
    상자(테두리) 대신 신문처럼 위 괘선 2px + 꼬리표. 머리줄(앱 이름·시계)은 앱 공통 규격 그대로. */

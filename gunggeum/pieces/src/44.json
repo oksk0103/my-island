@@ -1,0 +1,57 @@
+{
+ "ep": 44,
+ "date": "2026-11-29",
+ "topic": "자석",
+ "home": {
+  "f": "자석은 왜 쇠에 붙을까?",
+  "q": "나무에는 왜 안 붙어?",
+  "tag": "끌어당기는 힘 · 자석"
+ },
+ "src": [
+  {
+   "claim": "자석은 쇠(철)로 된 물건을 끌어당긴다",
+   "url": "https://kids.britannica.com/kids/article/Magnet-and-Magnetism/353411",
+   "note": "Magnets strongly attract objects that contain iron, steel, nickel, or cobalt."
+  },
+  {
+   "claim": "나무는 자석에 거의 반응하지 않는다(꼼짝 안 함)",
+   "url": "https://kids.britannica.com/kids/article/Magnet-and-Magnetism/353411",
+   "note": "Most other materials—for example, water, air, and wood—have very weak magnetic properties."
+  },
+  {
+   "claim": "쇠·니켈·코발트가 자석에 붙는 성질(강자성)을 가진다",
+   "url": "https://www.britannica.com/summary/ferromagnetism",
+   "note": "강자성은 iron, cobalt, nickel 및 그 합금과 관련된다고 설명"
+  },
+  {
+   "claim": "쇠 속에는 작은 자석(자기 구역)들이 제멋대로 놓여 있다",
+   "url": "https://www.britannica.com/science/magnetism/Ferromagnetism",
+   "note": "강자성체에는 domains라는 작은 구역이 있고, 자석이 아닌 상태에서는 그 방향이 random으로 흩어져 있다"
+  },
+  {
+   "claim": "자석이 다가오면 작은 자석들이 한 방향으로 돌아선다",
+   "url": "https://www.britannica.com/science/magnetism/Ferromagnetism",
+   "note": "Application of an external field changes the direction of magnetization of part or all of the domains — 바깥 자기장 방향으로 정렬"
+  },
+  {
+   "claim": "자석의 두 끝은 N극과 S극이다",
+   "url": "https://kids.britannica.com/kids/article/Magnet-and-Magnetism/353411",
+   "note": "Every magnet has two opposite poles, or ends: a north pole and a south pole."
+  },
+  {
+   "claim": "다른 극은 당기고 같은 극은 밀어낸다",
+   "url": "https://kids.britannica.com/kids/article/Magnet-and-Magnetism/353411",
+   "note": "North poles attract the south poles of other magnets, but they repel other north poles."
+  },
+  {
+   "claim": "지구는 커다란 자석이고 나침반은 빙글 도는 바늘 자석이다",
+   "url": "https://kids.britannica.com/kids/article/Magnet-and-Magnetism/353411",
+   "note": "The planet Earth is a giant magnet. / A compass is a needle-shaped magnet that is free to turn around."
+  },
+  {
+   "claim": "나침반 바늘의 N극은 북쪽을 가리킨다",
+   "url": "https://www.manoa.hawaii.edu/exploringourfluidearth/physical/ocean-floor/layers-earth/weird-science-earth-s-magnetic-field",
+   "note": "하와이대: 나침반 바늘은 지구의 자극 쪽으로 방향을 잡고, 북극은 나침반 바늘 북극이 가리키는 곳이라 그렇게 부른다"
+  }
+ ]
+}

@@ -1,0 +1,52 @@
+{
+ "ep": 56,
+ "date": "2026-12-11",
+ "topic": "공룡 화석은 어떻게 생겼을까",
+ "home": {
+  "f": "공룡 화석은 어떻게 생겼을까?",
+  "q": "뼈는 어떻게 돌이 될까?",
+  "tag": "땅 · 화석"
+ },
+ "src": [
+  {
+   "claim": "공룡(새를 뺀 공룡)은 6500만 년보다 더 전에 살았다",
+   "url": "https://www.amnh.org/dinosaurs/dinosaur-bones",
+   "note": "미국자연사박물관: 비조류 공룡은 중생대 '251–65.6 million years ago'에 살았음"
+  },
+  {
+   "claim": "죽은 뒤 진흙·모래(퇴적물)에 빨리 덮여야 뼈가 썩지 않고 남는다",
+   "url": "https://www.amnh.org/dinosaurs/dinosaur-bones",
+   "note": "미국자연사박물관: 죽은 직후 퇴적물에 덮이면 뼈가 썩는 것을 막아 줌"
+  },
+  {
+   "claim": "빨리, 깊이 묻혀야 화석이 되기 쉽다",
+   "url": "https://www.nps.gov/zion/learn/nature/fossils-made.htm",
+   "note": "미국 국립공원관리청(자이언): 'buried deeply and rapidly' 해야 세균이 산소를 못 얻어 분해가 막힘"
+  },
+  {
+   "claim": "뼈·이빨 같은 단단한 부분이 남기 쉽다",
+   "url": "https://home.nps.gov/subjects/fossils/body-fossils.htm",
+   "note": "NPS: Bones, teeth, wood, shells … are more resistant to weathering and decay than soft tissues"
+  },
+  {
+   "claim": "땅속 물에 녹은 돌 성분이 뼈 속 작은 구멍으로 스며들어 채운다",
+   "url": "https://www.nps.gov/articles/000/permineralization-and-replacement.htm",
+   "note": "NPS: groundwater containing silica or other ions flow through small (or even microscopic) pores in buried … bone"
+  },
+  {
+   "claim": "조금씩 바뀌어 수백만 년이 지나면 뼈가 돌이 된다",
+   "url": "https://www.amnh.org/dinosaurs/dinosaur-bones",
+   "note": "미국자연사박물관: 광물이 'bit by bit' 바꿔 'a solid rock copy'가 되며 'millions of years'가 걸릴 수 있음"
+  },
+  {
+   "claim": "위쪽 바위가 깎이면 화석이 드러나고, 과학자가 찾아낸다",
+   "url": "https://www.amnh.org/dinosaurs/dinosaur-bones",
+   "note": "미국자연사박물관: 위 지층이 풍화되며 화석 조각이 드러나고, 고생물학자가 식물이 적은 곳에서 찾음"
+  },
+  {
+   "claim": "발자국 같은 흔적도 화석(흔적 화석)이다",
+   "url": "https://home.nps.gov/subjects/fossils/body-fossils.htm",
+   "note": "NPS: Typical trace fossils are footprints or trails"
+  }
+ ]
+}

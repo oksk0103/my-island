@@ -1,0 +1,62 @@
+{
+ "ep": 32,
+ "date": "2026-12-11",
+ "topic": "노랗다·노르스름하다·누렇다",
+ "home": {
+  "f": "노란색을 말하는 낱말, 몇 개일까?",
+  "q": "누렇다는 노랗다와 뭐가 다를까?",
+  "tag": "말의 뜻 · 노란색 낱말"
+ },
+ "src": [
+  {
+   "claim": "노랗다 = 병아리나 개나리꽃처럼 밝고 선명하게 노르다",
+   "url": "http://www.dynews.co.kr/news/articleView.html?idxno=311259",
+   "note": "청주대 국어문화원 제공 '친숙한 우리말'(동양일보 2016): ‘병아리나 개나리꽃과 같이 밝고 선명하게 노르다.’"
+  },
+  {
+   "claim": "누렇다 = 조금 탁하고 어둡게 노랗다",
+   "url": "https://krdict.korean.go.kr/vie/dicSearch/SearchView?ParaWordNo=45598&nationCode=2&nation=vie&viewTypes=on",
+   "note": "한국어기초사전 '누렇다' 뜻1: 조금 탁하고 어둡게 노랗다. 관련어로 노랗다 제시"
+  },
+  {
+   "claim": "ㅗ(양성 모음)는 밝고 가벼운·작은 느낌, ㅜ(음성 모음)는 어둡고 무거운·큰 느낌",
+   "url": "https://encykorea.aks.ac.kr/Article/E0074537",
+   "note": "한국민족문화대백과 '음성상징론': 양성 모음은 밝고 가볍고 맑고 작고…, 음성 모음은 어둡고 무겁고 탁하고 크고… 어감"
+  },
+  {
+   "claim": "방글방글·벙글벙글도 모음이 바뀌어 느낌이 달라진 짝",
+   "url": "https://encykorea.aks.ac.kr/Article/E0074537",
+   "note": "같은 항목: ‘방글방글’과 ‘벙글벙글’ … 모음 대립에 의해 어감 차이"
+  },
+  {
+   "claim": "노랗다·누렇다는 모음이 바뀌어 생긴 비슷한 색깔 말 짝",
+   "url": "https://www.sisunnews.co.kr/news/articleView.html?idxno=247162",
+   "note": "시선뉴스: ‘발갛다-벌겋다’, ‘노랗다-누렇다’처럼 모음이 바뀌면서 …; ㅏ·ㅗ는 밝고 작고 가벼운 느낌, ㅓ·ㅜ는 어둡고 크고 무거운 느낌(국립국어원 표준국어대사전·우리말샘에서 확인 가능하다고 안내)"
+  },
+  {
+   "claim": "‘-스름하다’는 ‘조금’의 뜻: 푸르스름하다=조금 푸른 듯, 불그스름하다=조금 붉다",
+   "url": "https://www.sisunnews.co.kr/news/articleView.html?idxno=247162",
+   "note": "‘푸르스름하다’는 조금 푸른 듯하다는 뜻이고, ‘불그스름하다’는 조금 붉다는 뜻; 누르스름하다 등 다른 색에도 쓰임"
+  },
+  {
+   "claim": "모음 바꾸기 짝(빨갛-:뻘겋-, 가맣-:거멓-)은 양성:음성 모음 대립과 대응",
+   "url": "https://encykorea.aks.ac.kr/Article/E0074538",
+   "note": "한국민족문화대백과 '모음교체': 빨갛-:뻘겋-, 가맣-:거멓- 예; 양성모음:음성모음 대립과 거의 대응"
+  },
+  {
+   "claim": "노르스름하다 = 조금 노르다(조금 노랗다)",
+   "url": "https://opendict.korean.go.kr/dictionary/view?sense_no=490978",
+   "note": "우리말샘(국립국어원) '노릇하다': 「1」 조금 노르다. 비슷한말로 '노르스레하다, 노르스름하다, 노름하다'를 듦 — 감수 때 직접 확인"
+  },
+  {
+   "claim": "‘노르스름하다’의 앞부분 ‘노르’는 ‘노르다’(밝고 선명한 노랑)에서 온 것",
+   "url": "https://opendict.korean.go.kr/dictionary/view?sense_no=343800",
+   "note": "우리말샘 '노르다': 달걀노른자의 빛깔과 같이 밝고 선명하다; 참고 어휘 '누르다' — 감수 때 직접 확인"
+  },
+  {
+   "claim": "노랗다는 노란 빛깔을 나타내는 기본 말(보조)",
+   "url": "https://krdict.korean.go.kr/jpn/dicSearch/SearchView?ParaWordNo=40101&nationCode=7&nation=jpn&captchaNumber=&comment_user_name=&wordComment=&viewTypes=on",
+   "note": "한국어기초사전 '노랗다' 뜻1: 색이 바나나나 레몬과 같다 — 감수 때 직접 확인('병아리·개나리꽃' 풀이는 위 청주대 국어문화원 자료)"
+  }
+ ]
+}

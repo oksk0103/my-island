@@ -1,0 +1,10 @@
+{"ep":21,"date":"2026-11-23","topic":"겨울 해",
+ "home":{"f":"겨울엔 왜 해가 빨리 질까?","q":"겨울엔 왜 해가 빨리 져?","tag":"하늘 · 겨울 해"},
+ "src":[
+  {"claim":"겨울 해는 낮게 떠서 짧은 길만 지나가고, 여름 해는 높이 떠서 긴 길을 지나간다","url":"https://openstax.org/books/astronomy/pages/4-2-the-seasons","note":"OpenStax 천문학 4.2: 12월 21일 해는 정동·정서보다 남쪽에서 뜨고 져 약 9시간 떠 있고, 여름엔 하늘 높이 떠 15시간까지 떠 있다"},
+  {"claim":"손전등을 똑바로 비추면 좁고 밝게, 비스듬히 비추면 넓고 흐리게 비친다","url":"https://www.scientificamerican.com/article/seasonal-science-the-reasons-for-the-seasons/","note":"사이언티픽 아메리칸 손전등 실험: 똑바로는 'a crisp, bright circle', 기울이면 'an oval shape that was much dimmer and larger'"},
+  {"claim":"비스듬한 햇빛은 넓게 퍼져서 약하다(겨울 해가 그렇다)","url":"https://openstax.org/books/astronomy/pages/4-2-the-seasons","note":"겨울엔 햇빛이 비스듬히 와서 'its rays spread out over a much wider area, becoming less effective at heating the ground'"},
+  {"claim":"서울 6월 21일(하지) 해 뜸 05:11, 해 짐 19:57 → 낮 14시간 46분","url":"https://www.kasi.re.kr/file/1764661238731_1.pdf","note":"한국천문연구원 2026 달력(서울시청 좌표 기준): 6월 21일 '일출 05:11 몰 19:57', '17:25 하지'"},
+  {"claim":"서울 12월 22일(동지) 해 뜸 07:43, 해 짐 17:18 → 낮 9시간 35분, 여름보다 5시간 11분(5시간쯤) 짧다","url":"https://www.kasi.re.kr/file/1764661238731_1.pdf","note":"같은 자료 12월 22일 '일출 07:43 몰 17:18', '05:50 동지' (낮 길이·차이는 시각에서 계산)"},
+  {"claim":"동지는 일 년 중 낮이 가장 짧은 날(올해 12월 22일), 하지는 낮이 가장 긴 날(올해 6월 21일)","url":"https://openstax.org/books/astronomy/pages/4-2-the-seasons","note":"12월 동지 무렵을 'the shortest day of the year'로 설명, 여름엔 낮 시간이 늘고 겨울엔 준다. 날짜는 위 한국천문연구원 2026 달력"}
+ ]}

@@ -1,0 +1,42 @@
+{
+ "ep": 43,
+ "date": "2026-11-28",
+ "topic": "그림자는 왜 생길까",
+ "home": {
+  "f": "그림자는 왜 생길까?",
+  "q": "그림자 길이는 왜 아침과 한낮에 다를까?",
+  "tag": "빛 · 그림자"
+ },
+ "src": [
+  {
+   "claim": "빛은 곧은 길로 가고, 무언가에 부딪히기 전까지 쭉 나아간다",
+   "url": "https://www.sciencelearn.org.nz/resources/2771-light-and-shadows",
+   "note": "Science Learning Hub(NZ): All of this light travels in a straight line until it hits something."
+  },
+  {
+   "claim": "빛이 못 지나가는 물건을 만나면 그 뒤에 그림자가 생긴다",
+   "url": "https://www.sciencelearn.org.nz/resources/2771-light-and-shadows",
+   "note": "Science Learning Hub: If the object they hit is opaque, the light cannot pass through, and a shadow forms."
+  },
+  {
+   "claim": "빛 → 물건 → 그림자 차례(물건은 늘 빛과 그림자 사이), 그래서 해가 등 뒤면 그림자는 내 앞",
+   "url": "https://www.sciencelearn.org.nz/resources/2771-light-and-shadows",
+   "note": "Science Learning Hub: An object is always between a light source and the surface on which its shadow forms."
+  },
+  {
+   "claim": "해가 낮으면 그림자가 길고, 높으면 짧다",
+   "url": "https://www.sciencelearn.org.nz/resources/2771-light-and-shadows",
+   "note": "Science Learning Hub: When the Sun is low on the horizon, the shadows are long. When the Sun is high in the sky, the shadows are much shorter."
+  },
+  {
+   "claim": "아침·저녁엔 그림자가 가장 길고, 해가 가장 높은 한낮엔 가장 짧다",
+   "url": "https://journeynorth.org/jnorth/tm/pde/sl/1/TG.html",
+   "note": "Journey North(위스콘신대 매디슨 수목원): Shadows are longest in the early morning and late afternoon/early evening when the sun appears low in the sky ... shortest at noon when the sun appears highest."
+  },
+  {
+   "claim": "전등(빛)의 자리에 따라 그림자의 모양·크기가 바뀐다(손전등 놀이)",
+   "url": "https://www.sciencelearn.org.nz/resources/2771-light-and-shadows",
+   "note": "Science Learning Hub: These changes are caused by the position of the light source."
+  }
+ ]
+}

@@ -1,0 +1,47 @@
+{
+ "ep": 48,
+ "date": "2026-12-03",
+ "topic": "서리",
+ "home": {
+  "f": "서리는 어떻게 생길까?",
+  "q": "서리랑 이슬은 뭐가 달라?",
+  "tag": "날씨 · 서리"
+ },
+ "src": [
+  {
+   "claim": "서리는 맑고 바람 없는 밤 공기 속 수증기가 땅·풀에 닿아 얼어붙은 하얀 얼음 가루다",
+   "url": "https://www.kma.go.kr/kma/flexer/html/press2/2010/10/06/ATC201010061452392_4e56b44c-6cb4-4b05-ba09-6f759718f5f4.hwp.files/Sections1.html",
+   "note": "기상청 보도자료: 맑고 바람이 없는 밤의 기온이 어는점 이하로 떨어질 때 공기중의 수증기가 지표에 접촉해서 얼어붙은 흰 가루모양의 얼음"
+  },
+  {
+   "claim": "구름 없는 맑은 밤엔 땅의 열이 하늘로 많이 빠져나가 땅 가까이가 차가워진다",
+   "url": "https://www.weather.gov/source/zhu/ZHU_Training_Page/fog_stuff/Dew_Frost/Dew_Frost.htm",
+   "note": "미국 기상청: Clear skies allow for the maximum release of longwave radiation to space / 맑고 바람 없는 밤엔 땅 근처 표면이 훨씬 차가워질 수 있다"
+  },
+  {
+   "claim": "아침엔 땅과 풀잎이 공기보다 더 차가워진다",
+   "url": "https://weather.metoffice.gov.uk/learn-about/weather/types-of-weather/frost-and-ice/forecasting-frost",
+   "note": "영국 기상청: 표면(풀·차 등)이 먼저 식고, the surfaces usually get to a lower temperature than the air by the morning"
+  },
+  {
+   "claim": "0도 아래로 차가워진 풀잎에 수증기가 물방울을 거치지 않고 바로 얼음으로 붙는다",
+   "url": "https://www.weather.gov/source/zhu/ZHU_Training_Page/fog_stuff/Dew_Frost/Dew_Frost.htm",
+   "note": "The ground, or any surface, must be at or below 32(℉, 0℃) for frost to form / the water vapor goes directly to the solid state"
+  },
+  {
+   "claim": "0도 위면 이슬이 맺힌다",
+   "url": "https://www.weather.gov/source/zhu/ZHU_Training_Page/fog_stuff/Dew_Frost/Dew_Frost.htm",
+   "note": "Initially, both the dewpoint and temperature are above freezing when dew forms."
+  },
+  {
+   "claim": "구름 낀 밤엔 구름이 이불처럼 덮어 땅이 덜 식어 서리가 잘 안 생긴다",
+   "url": "https://weather.metoffice.gov.uk/learn-about/weather/types-of-weather/frost-and-ice/forecasting-frost",
+   "note": "the cloud acts 'like a blanket' to stop the surfaces losing heat so quickly / cloudy and windy nights are usually mild and frost-free"
+  },
+  {
+   "claim": "구름이 열을 다시 땅으로 돌려보낸다",
+   "url": "https://www.weather.gov/source/zhu/ZHU_Training_Page/fog_stuff/Dew_Frost/Dew_Frost.htm",
+   "note": "Cloudy skies will reflect and absorb while re-emitting longwave radiation back to the surface"
+  }
+ ]
+}

@@ -1,0 +1,37 @@
+{
+ "ep": 10,
+ "date": "2026-11-26",
+ "topic": "날짐승과 길짐승",
+ "home": {
+  "f": "날짐승과 길짐승, 뭐가 다를까?",
+  "q": "짐승은 어떻게 나눠 불러?",
+  "tag": "말의 뜻 · 날짐승과 길짐승"
+ },
+ "src": [
+  {
+   "claim": "'날짐승'의 '날'은 동사 '날다'의 관형사형(날- + -ㄹ)이고, 날짐승은 날아다니는 짐승을 통틀어 이르는 말이다",
+   "url": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mn_id=62&mcfaq_seq=8811&pageIndex=43",
+   "note": "국립국어원 상담 사례 '날짐승의 형태소 분석': '날'은 '날다'의 관형사형, 날아다니는 짐승을 통틀어 이르는 말"
+  },
+  {
+   "claim": "'길짐승'은 '기다'에 '-ㄹ'이 붙은 '길'과 '짐승'이 합쳐진 말로, 기어 다니는 짐승을 통틀어 이른다",
+   "url": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&qna_seq=329832&pageIndex=1",
+   "note": "국립국어원 온라인가나다 '길짐승날짐승': 길짐승은 '기어다니는 짐승을 통틀어 이르는 말', '기다' 어간 + 관형사형 어미 '-ㄹ'(우리말샘 역사 정보 근거) (2026.4.21. 답변, 직접 확인)"
+  },
+  {
+   "claim": "'들짐승', '길짐승'은 합성어로 볼 수 있다",
+   "url": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=308335&pageIndex=1",
+   "note": "국립국어원 온라인가나다(2024.12.30.): '들짐승'과 '길짐승'은 모두 합성어로 볼 수 있다"
+  },
+  {
+   "claim": "산짐승은 산에 사는 짐승이고, 비슷한 말로 들짐승이 있다",
+   "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=61809",
+   "note": "국립국어원 한국어기초사전 '산짐승': '산에 사는 짐승', 관련어 들짐승·집짐승"
+  },
+  {
+   "claim": "들짐승은 들에 사는 짐승이다",
+   "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?divSearch=defViewGlobal&ParaWordNo=49654&nationCode=6&ParaNationCode=6&nation=eng&captchaNumber=&comment_user_name=&commentTitle=&wordComment=&viewTypes=on",
+   "note": "국립국어원 한국어기초사전 '들짐승': '들에 사는 짐승.'"
+  }
+ ]
+}

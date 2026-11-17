@@ -1,0 +1,77 @@
+{
+ "ep": 18,
+ "date": "2026-11-20",
+ "topic": "겨울잠",
+ "home": {
+  "f": "곰은 겨울잠을 어떻게 잘까?",
+  "q": "곰은 겨울잠 잘 때 배 안 고파?",
+  "tag": "동물 · 겨울잠"
+ },
+ "src": [
+  {
+   "claim": "곰은 가을에 잔뜩 먹어 몸에 지방을 쌓는다",
+   "url": "https://www.nps.gov/yell/learn/nature/bear.htm",
+   "note": "NPS 옐로스톤: 겨울잠 전 가을(hyperphagia)에 대부분 시간을 먹는 데 쓰고, 흑곰도 지방을 쌓으려고 먹는다(build up fat reserves)."
+  },
+  {
+   "claim": "어떤 곰은 하루에 1kg 넘게 찌기도 한다",
+   "url": "https://www.nps.gov/yell/learn/nature/bear.htm",
+   "note": "grizzlies may gain more than three pounds per day (3파운드 ≈ 1.36kg) — 옐로스톤 회색곰(Grizzly) 항목 문장이라 원고는 '어떤 곰은'으로 씀"
+  },
+  {
+   "claim": "곰의 심장이 여름 1분에 40~50번에서 겨울잠 때 8~19번으로 느려진다",
+   "url": "https://www.nps.gov/yell/learn/nature/bear.htm",
+   "note": "their heart rate drops from 40–50 beats per minute during the summer to 8–19 beats per minute during hibernation (회색곰 항목의 Hibernation 절)"
+  },
+  {
+   "claim": "곰은 겨울잠 때 몸이 조금만 식는다",
+   "url": "https://www.nps.gov/yell/learn/nature/bear.htm",
+   "note": "The body temperature of a hibernating bear remains within 12°F of their normal body temperature (약 7도 안쪽)."
+  },
+  {
+   "claim": "겨울잠 땐 거의 먹지도 마시지도 않는다(가을 지방으로 버틴다)",
+   "url": "https://www.nps.gov/yell/learn/nature/bear.htm",
+   "note": "they generally do not eat, drink, defecate, or urinate during hibernation"
+  },
+  {
+   "claim": "겨울잠 자는 작은 동물은 몸이 둘레 온도보다 1도쯤 높은 데까지 식는다(그림: 다람쥐 눈금을 0도 근처가 아닌 5도쯤까지만 내림)",
+   "url": "https://www.open.edu/openlearn/nature-environment/natural-history/surviving-the-winter/content-section-1.4.4",
+   "note": "body temperature falls, from around 38°C, to about 1°C above ambient temperature, which is often close to 0°C"
+  },
+  {
+   "claim": "다람쥐(Tamias)는 겨울잠 중 깨어나 모아 둔 먹이를 먹는다",
+   "url": "https://www.open.edu/openlearn/nature-environment/natural-history/surviving-the-winter/content-section-1.4.4",
+   "note": "Some species, such as the chipmunks (genus Tamias) eat from stored food reserves during arousal periods"
+  },
+  {
+   "claim": "우리나라 다람쥐는 겨울잠 중 가끔 깨서 굴에 모아 둔 씨앗을 먹는다",
+   "url": "https://animaldiversity.org/accounts/Tamias_sibiricus/",
+   "note": "Tamias sibiricus: 분포에 Korea 포함, 겨울엔 torpor에 들며 waking every few weeks to eat food stored in their burrow; 먹이는 seeds, grains, and nuts"
+  },
+  {
+   "claim": "곰 일반: 겨울잠 때 심장이 아주 느리게 뛴다(갈색곰 지역 해설, 1분 8~10번)",
+   "url": "https://www.nps.gov/katm/blogs/bear-hibernation.htm",
+   "note": "NPS 카트마이: 'They average only 1 breath per minute with a heart rate of 8-10 beats per minute in hibernation.' / 'Bears do not eat, drink, urinate, or defecate while in the den.'"
+  },
+  {
+   "claim": "곰 일반: 겨울잠 때 몸이 조금만 식는다(갈색곰 해설)",
+   "url": "https://www.nps.gov/katm/blogs/bear-hibernation.htm",
+   "note": "NPS 카트마이: 'a bear's body temperature remains above 88˚F (31°C)'"
+  },
+  {
+   "claim": "곰 일반: 흑곰도 겨울잠 때 체온을 30~36도로 지킨다(몸이 조금만 식음)",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/21330544/",
+   "note": "Science 2011 'Hibernation in black bears': 'They suppress metabolism to 25% of basal rates while regulating body temperature from 30° to 36°C'"
+  },
+  {
+   "claim": "다람쥐는 겨울잠 때 몸이 둘레(굴 속)만큼 차가워지고, 가끔 깨서 모아 둔 먹이를 먹는다",
+   "url": "https://now.fordham.edu/inside-fordham/scientist-charts-effects-of-climate-change-on-hibernating-chipmunks/",
+   "note": "포덤대(다람쥐 연구): 'an animal's body temperature during hibernation drops to nearly the same temperature as its surroundings' / 'waking up occasionally to consume some of the stored food'"
+  },
+  {
+   "claim": "작은 겨울잠 동물은 체온이 4~10도까지 내려가고, 시베리아다람쥐는 며칠마다 깨서 먹이를 먹는다",
+   "url": "https://www.frontiersin.org/articles/10.3389/fnins.2024.1501223/full",
+   "note": "Frontiers in Neuroscience 2024: 'small hibernating mammals can reduce their body temperature to 4–10°C'; T. sibiricus 'wake[s] up every 3–5 days to replenish their food supply' (원고는 '몇 주마다' 대신 '가끔'으로 고침)"
+  }
+ ]
+}

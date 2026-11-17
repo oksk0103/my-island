@@ -1,0 +1,42 @@
+{
+ "ep": 60,
+ "date": "2026-12-15",
+ "topic": "거미줄",
+ "home": {
+  "f": "거미는 왜 자기 줄에 안 걸릴까?",
+  "q": "거미줄에서 끈끈한 줄은 어느 줄일까?",
+  "tag": "동물 · 거미줄"
+ },
+ "src": [
+  {
+   "claim": "가운데서 뻗은 바퀴살 줄은 안 끈끈하고, 빙글빙글 도는 줄이 끈끈하다",
+   "url": "https://www.reconnectwithnature.org/news-events/the-buzz/nature-curiosity-why-is-spider-silk-sticky/",
+   "note": "Forest Preserve District of Will County: 'the spokes of the web are not sticky, while the strands that circle around the spokes are made from sticky silk'"
+  },
+  {
+   "claim": "끈끈한 것은 잡는 줄(빙글 줄)뿐, 바퀴살·틀 줄은 튼튼한 뼈대",
+   "url": "https://www.ento.vt.edu/content/dam/ento_vt_edu/2021-hokie-bugfest/activities/Web%20building%20and%20features.pdf",
+   "note": "Virginia Tech 곤충학과: 'Only the capture threads of the spider's web are sticky!' / 'The radial and frame threads are strong and rigid'"
+  },
+  {
+   "claim": "거미는 다닐 때 안 끈끈한 줄을 밟고 끈끈한 줄은 피한다",
+   "url": "https://www.reconnectwithnature.org/news-events/the-buzz/nature-curiosity-why-is-spider-silk-sticky/",
+   "note": "'as spiders make their way around their web they use the non-sticky strands' / 'They simply don't walk on the sticky silk'"
+  },
+  {
+   "claim": "빙글 줄은 바퀴살 줄 위에 감아 놓은 끈끈한 줄이다",
+   "url": "https://australian.museum/learn/animals/spiders/spider-webs/",
+   "note": "오스트레일리아 박물관: 'the radial lines (the spokes) on which the spiral lines are laid', 'permanent, sticky spiral'"
+  },
+  {
+   "claim": "거미 다리는 가지 친 털과 덜 붙게 하는 막으로 덮여 있고, 막을 벗기면(털은 그대로) 더 잘 달라붙는다",
+   "url": "https://dashboard.si.edu/newsdesk/releases/why-spiders-do-not-stick-their-own-sticky-web-sites",
+   "note": "스미스소니언 열대연구소(2012): 'a covering of branching hairs', 'adhered more tenaciously when the non-stick coating was removed', 풀 방울이 털을 따라 미끄러짐 / 막은 헥세인·물로 씻어 벗김(털을 깎은 게 아님) — 감수 때 다시 열어 확인, '쩍 달라붙어'를 '더 잘 붙어'로 낮춤"
+  },
+  {
+   "claim": "끈끈한 줄에 닿아도 덜 붙게 다리를 조심스럽게 움직인다",
+   "url": "https://www.sciencedaily.com/releases/2012/03/120301103802.htm",
+   "note": "'spiders carefully move their legs in ways that minimize adhesive forces' (거미줄을 칠 때 끈끈한 줄을 수백~수천 번 밀어도)"
+  }
+ ]
+}

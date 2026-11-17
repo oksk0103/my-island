@@ -1,0 +1,42 @@
+{
+ "ep": 46,
+ "date": "2026-12-01",
+ "topic": "소금물",
+ "home": {
+  "f": "소금은 물에 녹으면 어디로 갈까?",
+  "q": "녹은 소금을 다시 꺼낼 수 있어?",
+  "tag": "녹는 것 · 소금물"
+ },
+ "src": [
+  {
+   "claim": "소금이 물에 녹으면 눈에 안 보일 만큼 작게 쪼개져 물 사이사이로 퍼진다",
+   "url": "https://edu.rsc.org/solutions/dissolving-salt-johnstones-triangle-worksheets-11-14-years/4021227.article",
+   "note": "영국 왕립화학회: the particles within the solid break apart and spread out, distributed throughout the water — smaller than we can see"
+  },
+  {
+   "claim": "녹아도 무게는 그대로다(물 100g + 소금 10g = 110g)",
+   "url": "https://inquiryproject.terc.edu/curriculum/curriculum5/1_water/inv_05/index.html",
+   "note": "TERC Inquiry Project: 녹이기 전후 무게가 변하지 않고, the combined weight of salt and water equals the sum of individual weights"
+  },
+  {
+   "claim": "안 보여도 소금은 물속에 그대로 있다",
+   "url": "https://inquiryproject.terc.edu/curriculum/curriculum5/1_water/inv_05/index.html",
+   "note": "The dissolved salt maintains its weight — 녹은 소금은 무게를 그대로 지닌다"
+  },
+  {
+   "claim": "물이 날아가면 소금이 다시 나타난다",
+   "url": "https://inquiryproject.terc.edu/curriculum/curriculum5/1_water/inv_05/index.html",
+   "note": "Salt or other dissolved solids will return to their solid state as water evaporates."
+  },
+  {
+   "claim": "염전은 바닷물을 햇볕과 바람으로 말려 소금을 얻는 곳이다",
+   "url": "https://eng.shinan.go.kr/home/tour/sale/sale_05/sale_05_03/page.wscms",
+   "note": "신안군청: 염전에 바닷물을 끌어들여 자연상태에서 증발시켜 천일염을 만들며, 필요한 것은 태양과 바람과 시간이다"
+  },
+  {
+   "claim": "물 100g에 녹는 소금은 36g쯤까지로 정해져 있다",
+   "url": "https://dornshuld.chemistry.msstate.edu/notes/ch11/solutions/",
+   "note": "미시시피주립대 화학 강의노트: 용해도는 녹일 수 있는 최대량, the solubility of NaCl in water at 25 °C of 36g/100g (같은 표: 10°C 32.7g, 50°C 36.7g — 온도가 바뀌어도 36g 안팎이라 '36g쯤'으로 씀)"
+  }
+ ]
+}

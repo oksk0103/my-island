@@ -1,0 +1,42 @@
+{
+ "ep": 25,
+ "date": "2026-12-04",
+ "topic": "가르치다와 가리키다",
+ "home": {
+  "f": "가르치다와 가리키다는 같은 말일까?",
+  "q": "시계 바늘은 8시를 ‘가르칠까’, ‘가리킬까’?",
+  "tag": "헷갈리는 말 · 가르치다와 가리키다"
+ },
+ "src": [
+  {
+   "claim": "가르치다: 지식이나 기술 등을 설명해서 익히게 하다(선생님이 ~을 가르치다)",
+   "url": "https://krdict.korean.go.kr/vie/dicSearch/wordLinkViewPopup?ParaWordNo=62255&nationCode=2&nation=vie",
+   "note": "한국어기초사전 ‘가르치다’ 1 ‘지식이나 기술 등을 설명해서 익히게 하다’, 예: 선생님은 아이들에게 컴퓨터를 켜는 방법을 가르쳤다"
+  },
+  {
+   "claim": "가리키다: 손가락이나 물건을 어떤 방향이나 대상으로 향하게 하여 알게 하다",
+   "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?nation=eng&ParaWordNo=17882",
+   "note": "한국어기초사전 ‘가리키다’ 1 뜻풀이, 예: 나는 거울을 손으로 가리켰다"
+  },
+  {
+   "claim": "시계 바늘이 시각을 알려 주는 것도 ‘가리키다’",
+   "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?nation=eng&ParaWordNo=17882",
+   "note": "‘가리키다’ 2 ‘시계나 온도계의 바늘이 시각이나 온도 등을 알려 주다’, 예: 저울의 눈금이 오백 그램을 가리키자"
+  },
+  {
+   "claim": "‘선생님이 덧셈을 가르쳐 주셨어’ 예문",
+   "url": "https://krdict.korean.go.kr/vie/dicSearch/wordLinkViewPopup?ParaWordNo=62255&nationCode=2&nation=vie",
+   "note": "한국어기초사전 ‘가르치다’ 1 예문: ‘선생님께서 덧셈을 가르쳐 주셨어요.’"
+  },
+  {
+   "claim": "‘가르치다’와 ‘가리키다’는 자주 헷갈리며, ‘가르키다’는 바르지 않은 말이다",
+   "url": "https://www.korean.go.kr/nkview/news/91/news6_9.htm",
+   "note": "국립국어원 소식지 글 ‘틀리다’와 ‘다르다’(이종덕): 선생님들도 ‘가르치다’ 자리에 ‘가리키다’를 흔히 쓰고, ‘가르키다’는 형태 자체가 바르지 않으므로 쓰지 말아야 함"
+  },
+  {
+   "claim": "‘학생을 가르치다’가 바르고 ‘학생을 가리키다’는 잘못 쓴 말",
+   "url": "https://www.korean.go.kr/nkview/nklife/2003_1/2003_0101.pdf",
+   "note": "새국어생활 2003년 1호 ‘표준 화법’(강신항): 어휘 항목 ‘가리키다와 가르치다의 혼동’에서 ‘학생을 가르치다’(바름)와 ‘학생을 가리키다’(잘못)를 구별"
+  }
+ ]
+}
