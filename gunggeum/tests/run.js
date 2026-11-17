@@ -11,7 +11,7 @@ let fails = 0, passes = 0; const errs = [];
 const ok = (name, cond, info) => { if (process.env.V) console.log('   · ' + name); if (cond) passes++; else { fails++; console.log('  ✗ ' + name + (info !== undefined ? '  → ' + JSON.stringify(info) : '')); } };
 const ANSWER = '달은 스스로 빛을 내지 못해. 《햇빛을 반사》해서 밝게 보이는 거야.\n@@ 달 | 🌙 | 왜 달은 안 떨어져?; 달에도 바다가 있어?; 보름달은 왜 둥글어?; 달에서 뛰면 어떻게 돼?';
 
-async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h = 820, pre, sw, wx = {}, sr } = {}) {
+async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h = 820, pre, sw, wx = {}, sr = !pre } = {}) {
   const ctx = await b.newContext({ viewport: { width: w, height: h }, timezoneId: 'Asia/Seoul', serviceWorkers: sw || 'allow' }); const p = await ctx.newPage(); p.api = 0;
   p.on('pageerror', e => { errs.push(e.message); if (process.env.V) console.log('ERR', e.message); });
   p.cerr = []; p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource|net::ERR/.test(m.text())) p.cerr.push(m.text().slice(0, 120)); });
@@ -30,9 +30,10 @@ async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h 
   p.jump = async ms => { await p.clock.fastForward(ms); await p.adv(1500); }; // 긴 시간은 건너뛰기 (타이머를 하나하나 돌리지 않음)
   await p.adv(2500); await p.addStyleTag({ content: '.sv-inner{animation:none!important}' });
   p.go = async k => { await p.evaluate(k => { document.getElementById('log').hidden = false; document.querySelector(`[data-go="${k}"]`).click(); }, k); }; // 부모님 화면의 바로가기(구역이 접혀 있어도 누른다)
-  // sr: 가짜 음성 인식(v153 연속 듣기). p.speak = 마이크가 켜진 뒤 아이가 말한 것처럼 최종 결과를 보내고, 말 끝 기다림이 지나 듣기가 끝나게 둔다
+  // sr: 가짜 음성 인식(v153 연속 듣기, pre 가 없으면 기본). 헤드리스 크롬의 진짜 인식은 연속 듣기에서 권한 오류로 바로 끝난다. p.speak = 마이크가 켜진 뒤 아이가 말한 것처럼 최종 결과를 보내고, 말 끝 기다림이 지나 듣기가 끝나게 둔다
   p.speak = async (text, wait = 5000) => { await p.evaluate(t => window.__rec.onresult({ resultIndex: 0, results: [Object.assign([{ transcript: t }], { isFinal: true })] }), text); await p.adv(wait); };
-  p.say = async (text, wait = 1200) => { await p.evaluate(t => { const q = document.getElementById('q'); q.readOnly = false; q.value = t; }, text); await p.press('#q', 'Enter'); await p.adv(wait); };
+  // 듣는 중(가짜 인식)이면 말로 들어가게, 아니면 글자로 친 것처럼
+  p.say = async (text, wait = 1200) => { if (await p.evaluate(() => !!window.__rec && document.getElementById('app').dataset.state === 'listen')) return p.speak(text, wait); await p.evaluate(t => { const q = document.getElementById('q'); q.readOnly = false; q.value = t; }, text); await p.press('#q', 'Enter'); await p.adv(wait); };
   p.st = () => p.evaluate(() => ({ saver: document.getElementById('saver').hidden ? '' : document.getElementById('saver').className.replace('saver', '').trim(), paper: !document.getElementById('paper').hidden, log: !document.getElementById('log').hidden, home: !!document.getElementById('app').dataset.home, sheet: document.getElementById('sheet').textContent, chips: [...document.querySelectorAll('#chips button')].map(b => b.textContent.replace(/^\d/, '')), todo: (JSON.parse(localStorage.getItem('gk-todo') || '{"items":[]}').items || []).map(x => [x.text, x.due, !!x.done]), count: +document.querySelector('#count b').textContent }));
   p.saver = async () => { await p.keyboard.press('F3'); await p.adv(3000); await p.adv(16000); };
   return p;
