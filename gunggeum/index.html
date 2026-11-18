@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v167</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v168</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v167</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v168</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -4042,7 +4042,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v167';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v168';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6706,6 +6706,31 @@ body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]) .zbar{
 .cq-grid span.t.s b{box-shadow:0 0 0 3px #2C4287 !important}
 body[data-theme=night] .cq-grid span.t b{background:rgba(255,255,255,.16) !important;color:#F2E8D2 !important}
 .cq-grid{background-image:repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--row) - 1px), rgba(44,66,135,.10) calc(var(--row) - 1px), rgba(44,66,135,.10) var(--row))}
+</style>
+<style id="ds2-news">
+/* ===== ds2-news (v168): 신문 지면 손질 =====
+   1) 크림 종이 위 흰 단추가 튀지 않게: 채움 없이 먹색 테두리만.
+   2) 머리줄: 제호를 부리 글자로 키워 괘선 가까이 앉힌다(로고 원 높이 때문에 글자 아래가 비어 보이던 것).
+   3) 오늘의 낱말: 낱말 → 한자(글자 옆에 훈·음) → 뜻, 세 줄을 왼쪽 맞춤으로. */
+.rn-sheet{--pill:transparent !important; --pill-edge:inset 0 0 0 1.5px rgba(27,23,18,.42) !important}
+.rn-phead{align-items:flex-end !important;padding-bottom:8px !important;box-sizing:border-box !important}
+.rn-phead .rn-pright{align-items:center}
+.rn-name{font:700 40px/48px var(--ds-buri, "MaruBuri", serif) !important;letter-spacing:-.02em !important}
+.rn-phead .rn-sec{line-height:48px !important;margin-left:4px}
+.rn-box.rn-word{padding-top:12px !important}
+.rn-box.rn-word > .rn-lab{margin:0 0 8px !important}
+.rn-word .rn-w{display:flex !important;flex-wrap:wrap !important;align-items:baseline !important;gap:4px 20px !important;white-space:normal !important;overflow:visible !important}
+.rn-word .rn-w > b{flex:0 0 100% !important;font:700 44px/52px var(--ds-buri, "MaruBuri", serif) !important;letter-spacing:-.02em !important}
+.rn-word .rn-w span:not([id]){display:inline-flex !important;flex-direction:row !important;align-items:baseline !important;gap:8px !important;white-space:nowrap}
+.rn-word .rn-w i{font:600 30px/40px "Noto Serif KR", serif !important}
+.rn-word .rn-w small{font:500 22px/40px "Pretendard", sans-serif !important;letter-spacing:-.01em !important;color:var(--nk2)}
+.rn-word > p{margin-top:8px !important;padding-top:10px;border-top:1px solid rgba(27,23,18,.16);font-size:24px !important;line-height:34px !important}
+/* 폰 세로: 머리줄 단추가 오른쪽 밖으로 밀려 잘리던 것 — 칸을 '제목 | 단추' 두 칸으로 */
+@media (max-width:700px){
+  .rn-phead{grid-template-columns:minmax(0,1fr) auto !important;align-items:center !important;padding-bottom:0 !important}
+  .rn-phead #ppNo:empty{display:none !important}
+  .rn-phead .rn-sec{line-height:1 !important;margin-left:0;padding-left:64px !important;overflow:hidden;text-overflow:ellipsis}
+}
 </style>
 <script>
 // v162: 홈의 시간대 벌 — 아침 7~11시 am, 낮 11~17시 day, 저녁 17~20:30 eve, 그 밖 night. 색만 바꾼다(ds2).

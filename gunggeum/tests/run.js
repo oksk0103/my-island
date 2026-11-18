@@ -94,6 +94,10 @@ async function newsTests(b) {
   ok('신문 닫기 단추가 없음', await p.evaluate(() => !document.getElementById('ppClose') && !/신문 닫기/.test(document.getElementById('paper').textContent)));
   ok('본문 낱말은 굵은 글자(mark)', await p.evaluate(() => { const m = document.querySelector('#ppBody mark'); return !!m && +getComputedStyle(m).fontWeight >= 700 && getComputedStyle(m).backgroundColor === 'rgba(0, 0, 0, 0)'; }));
   ok('낱말 상자에 한자', await p.evaluate(() => document.querySelectorAll('#ppWord .rn-w span i').length >= 2));
+  { const q = await p.evaluate(() => { const R = e => e.getBoundingClientRect(), w = document.querySelector('#ppWord .rn-w'), b = R(w.querySelector('b')), i = R(w.querySelector('span i')), sm = R(w.querySelector('span small')), m = R(document.getElementById('ppM')), hb = getComputedStyle(document.getElementById('ppHome')), nm = getComputedStyle(document.querySelector('.rn-phead .rn-name')), ph = R(document.querySelector('.rn-phead')), nr = R(document.querySelector('.rn-phead .rn-name'));
+      return { rows: b.bottom <= i.top + 2 && i.bottom <= m.top + 2, side: sm.left >= i.right, pill: hb.backgroundColor, name: parseFloat(nm.fontSize), gap: Math.round(ph.bottom - nr.bottom) }; });
+    ok('v168 낱말 칸: 낱말 → 한자(훈·음은 글자 옆) → 뜻 세 줄, 겹치지 않음', q.rows && q.side, q);
+    ok('v168 신문 지면: 홈 단추에 흰 채움 없음, 제호 40이 괘선 가까이(16 이하)', q.pill === 'rgba(0, 0, 0, 0)' && q.name === 40 && q.gap <= 16, q); }
   ok('어절이 쪼개지지 않게 묶임', await p.evaluate(() => [...document.querySelectorAll('#ppBody .w')].some(w => /\(황산화물\)을/.test(w.textContent)) && [...document.querySelectorAll('#ppBody .w')].every(w => getComputedStyle(w).whiteSpace === 'nowrap' && new Set([...w.getClientRects()].map(r => Math.round(r.top))).size === 1)));
   await p.click('#ppHome'); await p.adv(1800); s = await p.st(); ok('기사의 홈 단추 → 홈(위젯 면)', s.saver === 'face' && !s.paper, s);
   ok('다 읽은 뒤 낮 표지는 이야기 (v147)', await p.evaluate(() => { const c = document.getElementById('fcFeat').classList; return c.contains('piece') && !c.contains('sci') && !c.contains('word'); }));
