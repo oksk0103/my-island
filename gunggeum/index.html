@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v173</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v174</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v173</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v174</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2696,11 +2696,10 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('fcWordN').textContent = W ? W.w : '—'; $('fcWordS').textContent = W ? '눌러서 뜻 보기' : '신문이 오면 나와';
     const moonDay = !!(sk && (sk.moon.name === '보름달' || (sk.moon.phase >= 25 && sk.moon.phase <= 50))); // 보름 무렵·저녁 초승달 무렵만 달 카드
     const sciK = moonDay ? 'moon' : 'sci';
-    const wd = d.getDay(), pairHr = wd >= 1 && wd <= 5 && hr >= 15 && hr < 18;
-    let auto = on && !read ? 'news' : pairHr ? 'pair' : hr >= 18 ? sciK : 'line'; // v147: 아침 신문 → 낮 이야기 → 저녁 과학 · v173: 평일 15~18시는 오늘의 단어
+    let auto = on && !read ? 'news' : hr >= 18 ? sciK : 'line'; // v147: 아침 신문 → 낮 이야기 → 저녁 과학 · v174: 오늘의 단어는 다시 설계할 때까지 내림(루아: 재미없음)
     if (faceAutoLast && auto !== faceAutoLast && auto !== 'news' && faceAutoLast !== 'news' && Date.now() - svTouchAt < 180e3) auto = faceAutoLast; else faceAutoLast = auto; // v173: 만진 지 3분 안에는 표지가 저절로 바뀌지 않는다
     const st = window.__gkStudyOn && window.__gkStudyOn(); saverEl.classList.toggle('study', !!st); if ($('fcStudyL')) $('fcStudyL').textContent = '공부칸';
-    const ft = $('fcFeat'), kind = st ? 'study' : cvf === 'news' && on ? 'news' : cvf === 'word' && W ? 'word' : cvf === 'sci' ? sciK : cvf === 'moon' && sk ? 'moon' : cvf === 'piece' ? 'line' : cvf === 'pair' ? 'pair' : auto;
+    const ft = $('fcFeat'), kind = st ? 'study' : cvf === 'news' && on ? 'news' : cvf === 'word' && W ? 'word' : cvf === 'sci' ? sciK : cvf === 'moon' && sk ? 'moon' : cvf === 'piece' ? 'line' : auto; // v174: 저장된 'pair'(단어) 고름은 무시하고 자동으로
     if (kind === 'study') {
       if (fcFeatKey !== 'study') { fcFeatKey = 'study'; ft.className = 'fc-t fc-feat study'; ft.dataset.tile = 'clock'; ft.innerHTML = `<div class="cc"><div class="cc-top"><div class="cc-lab">공부 모드</div></div><div class="cc-mid"><div class="cc-l"><div class="cc-big">공부 중</div><div class="cc-s2">다 하면 공부 끝을 눌러.</div></div></div></div>`; }
     } else if (kind === 'news') {
@@ -4078,7 +4077,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v173';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v174';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -4332,7 +4331,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
 </style>
 <script>
 (function(){ const e = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const tabs = n => `<div class="cc-tabs">${[['news','신문'],['piece','이야기'],['sci','과학'],['pair','단어']].map((t, i) => `<span data-cv="${t[0]}"${i === n ? ' class="on"' : ''}>${t[1]}</span>`).join('')}</div>`;
+  const tabs = n => `<div class="cc-tabs">${[['news','신문'],['piece','이야기'],['sci','과학']].map((t, i) => `<span data-cv="${t[0]}"${i === n ? ' class="on"' : ''}>${t[1]}</span>`).join('')}</div>`;
   const ARW = `<svg viewBox="0 0 36 36"><path d="M7 18h20M19 9.500l8.500 8.500-8.500 8.500"/></svg>`;
   const shell = (lab, n, l, r, foot, go) => `<div class="cc"><div class="cc-top"><div class="cc-lab">${lab}</div>${tabs(n)}</div><div class="cc-mid"><div class="cc-l">${l}${foot ? `<div class="cc-foot${go ? ' rd' : ''}">${foot}</div>` : ''}</div>${r}</div></div>`;
   window.B_news = function(news){ const a = news.articles[0];
