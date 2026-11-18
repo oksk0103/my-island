@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>루아 색 확인</title>
+<style>
+@font-face{font-family:"Pretendard";src:url(fonts/PretendardVariable.woff2) format("woff2");font-weight:100 900}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:"Pretendard",sans-serif;color:#fff;background:#111;word-break:keep-all;display:flex;flex-direction:column;user-select:none}
+.pick{display:flex;gap:12px;padding:12px 16px;background:#111;align-items:center}
+.pick button{flex:1;height:64px;border-radius:32px;border:1px solid rgba(255,255,255,.3);background:none;color:#fff;font:700 24px "Pretendard",sans-serif}
+.pick button.on{background:#fff;color:#111}
+.rows{flex:1;display:grid;grid-template-columns:repeat(4,1fr)}
+.col{padding:3vh 2vw;display:flex;flex-direction:column;gap:2vh;min-width:0}
+.col h3{font-size:clamp(16px,1.5vw,24px);font-weight:600;opacity:.7}
+.big{font-size:clamp(28px,4.2vw,72px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.pn{border-radius:28px;padding:2vh 1.4vw;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14),inset 0 1px 0 rgba(255,255,255,.22);font-size:clamp(16px,1.9vw,30px);font-weight:600}
+.pn small{display:block;font-size:.72em;font-weight:500;opacity:.66;margin-top:.4em}
+.dot{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:10px}
+.paper{display:grid;grid-template-columns:1fr 1fr;color:#1F2846}
+.paper div{padding:2.4vh 2vw;font-size:clamp(18px,2.2vw,36px);font-weight:600;line-height:1.4}
+.paper u{text-decoration-thickness:4px;text-underline-offset:.16em}
+.paper small{display:block;font-size:.6em;opacity:.68;font-weight:500}
+</style></head><body>
+<div class="pick" id="pick"></div>
+<div class="rows" id="rows"></div>
+<div class="paper" id="paper"></div>
+<script>
+// 루아 디자인 가이드 — 실제 모니터에서 남색 채도를 고르는 화면. 가 = 가이드 값, 나·다 = 채도를 더 올린 것.
+const T=[['아침','7:40',226,31,43,'smoke'],['낮','12:19',225,34,35,'smoke'],['저녁','18:40',228,38,28,'white'],['밤','21:10',226,40,14,'white']];
+const C=[['가 (가이드)',1],['나 (조금 진하게)',1.25],['다 (더 진하게)',1.5]];
+let cur=0;
+const hsl=(h,s,l)=>`hsl(${h} ${Math.min(s,90)}% ${l}%)`;
+function draw(){
+  const k=C[cur][1];
+  document.getElementById('pick').innerHTML=C.map((c,i)=>`<button class="${i===cur?'on':''}" data-i="${i}">${c[0]}</button>`).join('');
+  document.getElementById('rows').innerHTML=T.map(([n,t,h,s,l,g])=>{
+    const bg=hsl(h,s*k,l), top=hsl(h,s*k*.9,Math.min(l+9,60));
+    const glass=g==='smoke'?'rgba(31,40,70,.18)':'rgba(255,255,255,.10)';
+    return `<div class="col" style="background:linear-gradient(180deg,${top},${bg} 40%)"><h3>${n}</h3><div class="big">${t}</div><div class="pn" style="background:${glass}"><span class="dot" style="background:#EFA56B"></span>루아 신문<small>흐린 글자는 이 정도</small></div><div class="pn" style="background:${glass}">받아쓰기 연습<small>미니 수학 두 장</small></div></div>`;}).join('');
+  const nv=hsl(225,34*k,35);
+  document.getElementById('paper').innerHTML=
+   `<div style="background:#EEF0F6">달이 보이는 <u style="text-decoration-color:#EFA56B">밝은 쪽</u> — 밝은 살구 밑줄<small>밑줄이 잘 보이는지</small></div>`+
+   `<div style="background:#EEF0F6">달이 보이는 <u style="text-decoration-color:#B8651F">밝은 쪽</u> — 진한 살구 밑줄 <span style="display:inline-block;padding:.2em .9em;border-radius:99px;background:${nv};color:#fff;font-size:.7em;vertical-align:middle">단추</span><small>단추 남색이 회색처럼 보이는지</small></div>`;
+}
+document.getElementById('pick').addEventListener('click',e=>{const b=e.target.closest('button');if(b){cur=+b.dataset.i;draw();}});
+draw();
+</script></body></html>

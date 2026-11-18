@@ -195,18 +195,18 @@ async function newsTests(b) {
   await tile('cal'); await p.adv(100e3); s = await p.st(); const calStill = /\bcal\b/.test(s.saver); await p.adv(100e3); s = await p.st(); ok('달력은 마지막으로 만진 뒤 3분이 지나면 위젯 면으로 (v122: 90초 → 3분)', calStill && /^face/.test(s.saver), s.saver);
   await p.adv(3 * 60e3); s = await p.st(); ok('3분 손대지 않으면 쉬는 막', s.saver === 'face rest', s.saver);
   await p.mouse.move(700, 300); await p.mouse.down(); ok('손대면 바로 밝아짐', !(await p.st()).saver.includes('rest')); await p.mouse.move(700, 380); await p.mouse.up(); await p.adv(500);
-  await p.evaluate(() => { window.__gkCover = { k: 'moon', at: Date.now() }; }); await p.adv(1500); await tile('sky'); s = await p.st(); ok('달 표지 → 밤하늘 장', s.saver === 'sky', s.saver);
+  await p.evaluate(() => { window.__gkCover = { k: 'moon', day: new Date().toLocaleDateString('sv') }; }); await p.adv(1500); await tile('sky'); s = await p.st(); ok('달 표지 → 밤하늘 장', s.saver === 'sky', s.saver);
   await p.adv(11 * 60e3); s = await p.st(); ok('밤하늘 장은 10분 뒤 위젯 면으로', s.saver === 'face rest', s.saver);
   const feat = () => p.evaluate(() => document.getElementById('fcFeat').className.replace('fc-t fc-feat', '').replace('pic', '').trim());
   const eve = await feat(); ok('저녁 기본 표지는 과학 (달이 볼 만한 날엔 달) (v147)', eve === 'piece sci' || eve === 'moon', eve);
   ok('표지 갈래 셋: 신문·이야기·과학 (v147)', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent).join('|') === '신문|이야기|과학'));
   { const bx = await p.locator('#svFace [data-cv="piece"]').boundingBox(); ok('표지 갈래는 60px 이상', bx.height >= 60, bx.height); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); }
   s = await p.st(); ok('이야기 갈래 → 이야기 표지 (깨어나지 않음)', s.saver.startsWith('face') && await feat() === 'piece', [s.saver, await feat()]);
-  await p.adv(150e3); ok('갈래는 2분 뒤 풀림', await feat() === eve, await feat());
+  await p.adv(150e3); ok('고른 갈래는 2분이 지나도 그대로 (v161)', await feat() === 'piece', await feat());
   { const bx = await p.locator('#svFace [data-cv="news"]').boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); } ok('신문 갈래 → 신문 표지', await feat() === 'news', await feat());
   await tile('news'); s = await p.st(); ok('신문 표지 → 신문 1면', s.saver.includes('rnp') && !s.paper, s);
   { const bx = await p.locator('#rnFront [data-rn="art"][data-i="0"]').boundingBox(); await p.mouse.click(bx.x + 80, bx.y + 60); await p.adv(1500); } s = await p.st(); ok('1면의 머리기사 → 기사 열림', !s.saver && s.paper, s);
-  ok('깨어나면 갈래 강제가 지워짐', await p.evaluate(() => window.__gkCover === undefined));
+  await p.saver(); ok('깨어났다 돌아와도 고른 갈래 그대로 (v161)', await feat() === 'news', await feat()); await p.evaluate(() => { delete window.__gkCover; localStorage.setItem('gk-cover', JSON.stringify({ k: 'news', day: '2026-01-01' })); }); await p.saver(); ok('다른 날에 고른 갈래는 쓰지 않음 (v161)', await feat() === eve, await feat());
   await p.saver(); await tile('todo'); s = await p.st(); ok('할 일 빈 곳 → 할 일 화면 (v135)', s.saver === 'pgx' && await p.evaluate(() => document.getElementById('saver').dataset.pg === 'todo'), s);
   { const a0 = p.api; await p.click('[data-act="tdadd"]'); await p.adv(800); await p.speak('수학 익힘책', 3000); await p.adv(1500); s = await p.st();
     const td = await p.evaluate(() => (JSON.parse(localStorage.getItem('gk-todo') || '{"items":[]}').items || []).map(x => x.text));

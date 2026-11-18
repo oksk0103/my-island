@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v160</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v161</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v160</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v161</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2398,7 +2398,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (blocked) { // 쉬는 시간: 안내만 잠깐 보여주고 계속 잠듦
       svSay(blocked); return;
     }
-    saverEl.hidden = true; delete window.__gkForce; delete window.__gkCover; calSel = ''; calOff = 0; agPage = 0; homeSync(); clearInterval(saverTick); showPiece(false); touchIdle();
+    saverEl.hidden = true; delete window.__gkForce; calSel = ''; calOff = 0; agPage = 0; homeSync(); clearInterval(saverTick); showPiece(false); touchIdle();
   }
   // 부모님용: 쉬는 시간에도 대기화면을 빠르게 5번 누르거나 2초 꾹 누르면 부모님 화면이 열림
   let svTaps = [], svHold = null;
@@ -2412,6 +2412,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   // v122: 밤 10시~새벽 6시의 검은 밤 화면을 끈다(부모 요청). 밤에도 위젯 면이 그대로 보인다. 다시 켜려면 true.
   function svWide() { return true; } // v124: 전화도 모니터와 같은 홈(표지·날씨·달력·신문 1면)을 쓴다. 배치는 CSS(max-width:899px)가 맡는다
+  // v161: 홈 표지 갈래 — 아이가 고른 갈래를 그날 자정까지 기억한다(기기에만). 날이 바뀌면 아침 신문부터 다시
+  function coverPick(k) { window.__gkCover = { k, day: dayKey(new Date()) }; try { localStorage.setItem('gk-cover', JSON.stringify(window.__gkCover)); } catch (e) {} }
+  function coverPicked() { let c = window.__gkCover; if (!c) { try { c = JSON.parse(localStorage.getItem('gk-cover') || 'null'); } catch (e) { c = null; } } return c && c.k && c.day === dayKey(new Date()) ? c.k : ''; }
   function restDarkNow() { return settings.restDark !== 'off' && restNow(); } // v146: 쓸 수 있는 시간 밖이면 화면도 어두운 시계만(부모 설정, 기본 켬)
   function nightScreen() { return settings.nightScr !== 'off'; } // v152: 부모님 화면 › 화면 › 밤 화면 (기본 켬, 밤 11시 반~아침 7시)
   function nightHours() { const d = new Date(), m = d.getHours() * 60 + d.getMinutes(); return m >= 23 * 60 + 30 || m < 7 * 60; }
@@ -2476,7 +2479,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       return; }
     if (saverEl.classList.contains('pgx')) { svTaps = []; pgTap(d.el); return; }
     if (d.cv) { const ft = $('fcFeat'), cur = ft.classList.contains('sci') || ft.classList.contains('moon') ? 'sci' : ['news', 'word', 'piece'].find(c => ft.classList.contains(c));
-      if (d.cv !== cur) { svTaps = []; window.__gkCover = { k: d.cv, at: Date.now() }; renderSaver(); return; }
+      if (d.cv !== cur) { svTaps = []; coverPick(d.cv); renderSaver(); return; }
       d.tile = ft.dataset.tile; d.cv = ''; diag('saver', '켜진 탭을 한 번 더 → 그 장 열기'); } // v126: 이미 켜진 탭(예: '신문')을 누르면 그 장의 내용으로 간다
     if (d.tile === 'study' || d.tile === 'studyw') { svTaps = []; // v138: 공부칸 앱을 크게 연다(예전 '공부 모드' 켜고 끄기는 없앰). 표지의 '오늘의 낱말'에서 오면 그 낱말을 펴서
       if (d.tile === 'studyw') { const W = faceWord(); if (W) wordNews(W); } else { const top = wordLoad().items[0]; stSel = top ? top.k : ''; }
@@ -2673,7 +2676,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('fcSkyS').textContent = sk ? sk.moon.name : '오늘의 달';
     // 지금 볼 것: 안 읽은 신문 → 저녁엔 오늘의 달 → 그 밖에는 시각이 들어간 한 문장
     const W = faceWord(); // 낱말은 낮 동안 차례로
-    const cvf = window.__gkCover && Date.now() - window.__gkCover.at < 120e3 ? window.__gkCover.k : ''; // 갈래를 누르면 2분 동안 그 표지
+    const cvf = coverPicked(); // v161: 고른 갈래는 그날 하루 그대로(전에는 2분 뒤·깨어날 때 풀려 저절로 다른 표지로 넘어갔다)
     $('fcWordN').textContent = W ? W.w : '—'; $('fcWordS').textContent = W ? '눌러서 뜻 보기' : '신문이 오면 나와';
     const moonDay = !!(sk && (sk.moon.name === '보름달' || (sk.moon.phase >= 25 && sk.moon.phase <= 50))); // 보름 무렵·저녁 초승달 무렵만 달 카드
     const sciK = moonDay ? 'moon' : 'sci';
@@ -4039,7 +4042,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v160';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v161';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -4132,7 +4135,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   function previewSaver(st) { logEl.hidden = true; window.__gkSaverAt = Date.now(); window.__gkForce = { s: st, at: Date.now() }; enterSaver(); renderSaver(); }
   document.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', async () => {
     const go = b.dataset.go;
-    if (go === 'piece') { window.__gkCover = { k: 'piece', at: Date.now() }; previewSaver('face'); return; }
+    if (go === 'piece') { coverPick('piece'); previewSaver('face'); return; }
     if (go === 'home') { logEl.hidden = true; if (!saverEl.hidden) exitSaver(); if (saverEl.hidden) { hush(); hidePaper(); showPiece(false); } return; }
     if (go === 'paper') { if (!news) await loadNews(true); if (!news) { $('newsNote').textContent = '아직 받은 신문이 없어요'; return; } logEl.hidden = true; if (!saverEl.hidden) exitSaver(); if (saverEl.hidden) openPaper(0); return; }
     previewSaver(go);
