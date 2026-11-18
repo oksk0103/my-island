@@ -3091,6 +3091,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   const MIC = '<svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><rect x="10.2" y="3.2" width="7.6" height="12" rx="3.8"/><path d="M7 12.6a7 7 0 0 0 14 0"/><circle class="ds-dot" cx="14" cy="23.6" r="1.9"/></svg>'; // v136: 마이크 = 캡슐 + 받침 + 주황 점(말해도 돼)
   const zClock = () => { const d = new Date(); return `<small>${ampm(d.getHours())}</small>${d.getHours() % 12 || 12}:${pad(d.getMinutes())}`; };
+  // v171: 공휴일(관공서 공휴일 규정 · 우주항공청 월력요항 2026·2027). 달력이 닿는 범위(2026-10 ~ 2027-12)만. 해마다 새 월력요항이 나오면 여기 덧붙인다
+  const HOLI = { '2026-10-03': '개천절', '2026-10-05': '대체공휴일', '2026-10-09': '한글날', '2026-12-25': '성탄절',
+    '2027-01-01': '새해 첫날', '2027-02-06': '설날 연휴', '2027-02-07': '설날', '2027-02-08': '설날 연휴', '2027-02-09': '대체공휴일', '2027-03-01': '삼일절', '2027-05-01': '노동절', '2027-05-03': '대체공휴일', '2027-05-05': '어린이날', '2027-05-13': '부처님오신날',
+    '2027-06-06': '현충일', '2027-07-17': '제헌절', '2027-07-19': '대체공휴일', '2027-08-15': '광복절', '2027-08-16': '대체공휴일', '2027-09-14': '추석 연휴', '2027-09-15': '추석', '2027-09-16': '추석 연휴',
+    '2027-10-03': '개천절', '2027-10-04': '대체공휴일', '2027-10-09': '한글날', '2027-10-11': '대체공휴일', '2027-12-25': '성탄절', '2027-12-27': '대체공휴일' };
   function renderCal(hr) { // 달력(Z): 판 없이 옅은 바탕 전체. 왼쪽 60% 달(여섯 줄 고정, 앞뒤 달은 회색) + 오른쪽 40% 하루 보기(고른 날 · 일정 줄 · 말로 넣기)
     const now = new Date(), tk = dayKey(now); saverEl.dataset.tone = hr < 12 ? 'morn' : hr < 18 ? 'day' : 'eve'; saverEl.classList.remove('rest', 'late');
     const v = new Date(now.getFullYear(), now.getMonth() + calOff, 1), y = v.getFullYear(), m = v.getMonth(), first = v.getDay(), n = new Date(y, m + 1, 0).getDate(), ym = `${y}-${pad(m + 1)}`, prevN = new Date(y, m, 0).getDate();
@@ -3103,13 +3108,13 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     for (let i = 0; i < weeks * 7; i++) { const dn = i - first + 1, col = i % 7;
       if (dn < 1 || dn > n) { h += `<span class="x"><b>${dn < 1 ? prevN + dn : dn - n}</b></span>`; continue; }
       const k = `${ym}-${pad(dn)}`, e = by[k];
-      h += `<span data-act="day" data-k="${k}" class="${[k === tk ? 't' : '', k === calSel ? 's' : '', col === 0 ? 'su' : col === 6 ? 'sa' : '', fl && fl.date === k ? 'n' : ''].filter(Boolean).join(' ')}"><b>${dn}</b>${e ? `<i${e.length > 1 ? ' class="m"' : ''}></i>` : tdBy[k] ? '<i></i>' : ''}</span>`; }
+      h += `<span data-act="day" data-k="${k}" class="${[k === tk ? 't' : '', k === calSel ? 's' : '', col === 0 ? 'su' : col === 6 ? 'sa' : '', fl && fl.date === k ? 'n' : '', HOLI[k] ? 'hd' : ''].filter(Boolean).join(' ')}"><b>${dn}</b>${HOLI[k] ? `<em>${HOLI[k]}</em>` : ''}${e ? `<i${e.length > 1 ? ' class="m"' : ''}></i>` : tdBy[k] ? '<i></i>' : ''}</span>`; }
     setH($('cqGrid'), h);
     // 하루 보기: 고른 날(기본 오늘)의 일정이 먼저, 그 뒤로 다가오는 일정. 줄은 네 칸 고정
     const hk = calSel || (calOff ? `${ym}-01` : tk), hd = evDay(hk), own = by[hk] || [];
     const rest = ev.filter(x => x.date > hk && x.date >= tk && !own.includes(x)), all0 = own.concat(rest), all = fl && all0.includes(fl) ? [fl].concat(all0.filter(x => x !== fl)) : all0;
     const tdDay = innerWidth >= 900 ? tdAll.filter(x => hk === tk ? (!x.due || x.due <= tk) : x.due === hk) : [], SL = tdDay.length ? 2 : 4; // v171: 그날 할 일이 있으면 일정은 두 줄, 그 아래 할 일 세 줄 // 방금 적은 줄은 맨 위에
-    setH($('agTtl'), `<b>${hd.getDate()}</b><span>${hd.getMonth() + 1}월 ${DAYS[hd.getDay()]}요일${hk === tk ? ' · 오늘' : ''}</span>`);
+    setH($('agTtl'), `<b>${hd.getDate()}</b><span>${hd.getMonth() + 1}월 ${DAYS[hd.getDay()]}요일${hk === tk ? ' · 오늘' : ''}${HOLI[hk] ? ' · ' + HOLI[hk] : ''}</span>`);
     const pages = Math.max(1, Math.ceil(all.length / (SL - 1))); if (all.length <= SL) agPage = 0; else if (agPage >= pages) agPage = 0;
     const shown = all.length <= SL ? all : all.slice(agPage * (SL - 1), agPage * (SL - 1) + SL - 1), left = all.length - (agPage + 1) * (SL - 1);
     let r = shown.map(x => { const dd = evDay(x.date), same = x.date === hk;
@@ -6763,6 +6768,14 @@ html body .cq-nav{gap:0 !important}
   .agt-row.done .tx{color:var(--zk2);opacity:.75;text-decoration:line-through;text-decoration-thickness:2px}
   .agt-row.more{font-size:24px;font-weight:500;color:var(--zk2);padding-left:60px}
   .agt-row.more .tx::after{content:"\00a0›"}
+}
+/* 공휴일: 숫자를 진한 살구로 + 숫자 아래 작은 이름(색만으로 나누지 않는다) */
+.cq-grid span em{display:none}
+@media (min-width:900px){
+  .cq-grid span.hd b{color:#B8651F !important}
+  .cq-grid span.hd.t b{color:#18254E !important}
+  .cq-grid span.hd em{display:block;position:absolute;left:0;right:0;top:calc(50% + 33px);text-align:center;font:600 17px/20px "Pretendard",sans-serif;font-style:normal;letter-spacing:-.03em;color:#B8651F;white-space:nowrap;pointer-events:none}
+  body[data-theme=night] .cq-grid span.hd b, body[data-theme=night] .cq-grid span.hd em{color:#EFA56B !important}
 }
 /* 홈 할 일 칸의 오늘 일정 줄: 동그라미 대신 살구 점 */
 #saver.saver.face .fc-row.ev .bx{box-shadow:none !important;border:0 !important;background:none !important;display:grid !important;place-items:center}
