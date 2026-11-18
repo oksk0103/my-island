@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v171</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v172</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v171</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v172</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -4056,7 +4056,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v171';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v172';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6773,8 +6773,9 @@ html body .cq-nav{gap:0 !important}
 .cq-grid span em{display:none}
 @media (min-width:900px){
   .cq-grid span.hd b{color:#B8651F !important}
+  .cq-grid span.hd b{transform:translateY(-10px)} /* v172: 여섯 줄인 달(줄 높이 88)에서도 이름이 고른 날 원·줄 구분선과 겹치지 않게 숫자를 조금 올리고 이름을 칸 안에 */
   .cq-grid span.hd.t b{color:#18254E !important}
-  .cq-grid span.hd em{display:block;position:absolute;left:0;right:0;top:calc(50% + 33px);text-align:center;font:600 17px/20px "Pretendard",sans-serif;font-style:normal;letter-spacing:-.03em;color:#B8651F;white-space:nowrap;pointer-events:none}
+  .cq-grid span.hd em{display:block;position:absolute;left:0;right:0;top:calc(50% + 26px);text-align:center;font:600 16px/18px "Pretendard",sans-serif;font-style:normal;letter-spacing:-.03em;color:#B8651F;white-space:nowrap;pointer-events:none}
   body[data-theme=night] .cq-grid span.hd b, body[data-theme=night] .cq-grid span.hd em{color:#EFA56B !important}
 }
 /* 홈 할 일 칸의 오늘 일정 줄: 동그라미 대신 살구 점 */
