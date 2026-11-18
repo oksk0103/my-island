@@ -16,13 +16,13 @@
   fit(); addEventListener('orientationchange', function () { setTimeout(fit, 250); }); addEventListener('resize', function () { clearTimeout(fit.t); fit.t = setTimeout(fit, 200); });
 })();
 </script>
-<meta name="theme-color" content="#1E5AD8">
+<meta name="theme-color" content="#2C4287">
 <!-- 그림은 같은 출처(그리고 기기 안에서 만든 data:/blob:)만. 바깥 그림은 브라우저가 막는다 -->
 <meta http-equiv="Content-Security-Policy" content="img-src 'self' data: blob:">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="./icon3-32.png" sizes="32x32"><link rel="icon" href="./icon3-192.png" sizes="192x192">
-<link rel="apple-touch-icon" href="./icon3-180.png">
+<link rel="icon" href="./icon4-32.png" sizes="32x32"><link rel="icon" href="./icon4-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="./icon4-180.png">
 <title>루아</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap">
@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v161</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v162</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v161</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v162</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -4042,7 +4042,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v161';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v162';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6574,5 +6574,53 @@ body[data-night] #app{--paperbg:linear-gradient(180deg,#0A1130,#111B47);--zbg:#0
 /* 홈 신문 표지: 표지 판 안의 둥근 안쪽 판(상자 속 상자)을 걷고 가는 괘선만 */
 @media (min-width:900px){ #saver.saver.face .cc-r:not(.cc-hz){padding:0;border-radius:0;background:none;box-shadow:none} }
 </style>
+<style id="ds2">
+/* ===== ds2 (v162): 루아 디자인 가이드 1단계 — 색과 재질 =====
+   기준: 디자인 시스템 '루아'. 이름은 --ds- 앞말(다른 층의 --ink 등과 겹치지 않게). 색 값은 여기에서만 정한다.
+   홈은 달밤 남색 한 색조, 시간대(html[data-ds])마다 밝기와 판 재질만 바뀐다. 흐림(backdrop-filter)은 쓰지 않는다. */
+:root{
+  --ds-navy-50:#E9ECF7; --ds-navy-100:#C5CEE7; --ds-navy-300:#8F9FD1; --ds-navy-400:#5169B8; --ds-navy-500:#3B52A1;
+  --ds-navy-600:#2C4287; --ds-navy-700:#1F2F70; --ds-navy-800:#18254E; --ds-navy-900:#0E1839;
+  --ds-ink:#18254E; --ds-ink-2:rgba(24,37,78,.68); --ds-ink-3:rgba(24,37,78,.58);
+  --ds-paper:#EEF0F6; --ds-cream:#F2E8D2; --ds-apricot:#EFA56B; --ds-apricot-deep:#B8651F;
+  --ds-line:rgba(255,255,255,.14); --ds-shine:rgba(255,255,255,.22);
+  --ds-shadow:0 1px 2px rgba(10,14,30,.16), 0 16px 40px -16px rgba(10,14,30,.32);
+  /* 낮(기본) */
+  --ds-home:#2C4287; --ds-home-top:#3A55A6; --ds-glow:rgba(200,210,240,.26); --ds-panel:rgba(24,37,78,.18); --ds-hero:rgba(24,37,78,.18);
+}
+html[data-ds=am]{--ds-home:#3B52A1; --ds-home-top:#5169B8; --ds-glow:rgba(214,222,245,.38)}
+html[data-ds=eve]{--ds-home:#1F2F70; --ds-home-top:#283C86; --ds-glow:rgba(170,182,225,.18); --ds-panel:rgba(255,255,255,.08); --ds-hero:rgba(255,255,255,.12)}
+html[data-ds=night]{--ds-home:#0E1839; --ds-home-top:#152250; --ds-glow:rgba(150,165,215,.10); --ds-panel:rgba(255,255,255,.06); --ds-hero:rgba(255,255,255,.08)}
+
+/* 홈 바탕: 사진 대신 같은 색조의 그라데이션 + 왼쪽 위 흐린 빛 하나 */
+#saver.saver.face{background:var(--ds-home) !important}
+#saver.saver.face .sv-face{background:var(--ds-home) !important}
+#saver.saver.face .sv-face::before{filter:none !important;background:radial-gradient(1100px 700px at 18% -10%, var(--ds-glow), transparent 70%), linear-gradient(180deg, var(--ds-home-top), var(--ds-home) 40%) !important}
+/* 20:30 뒤에는 바탕이 이미 밤 남색이다 — 옛 '늦은 밤 어둡게 덮는 막'은 겹치지 않게(쉬는 막은 그대로) */
+#saver.saver.face.late:not(.rest) .sv-face::after{opacity:0 !important}
+/* 판: 바탕이 비치는 유리(아침·낮 연기 유리, 저녁·밤 흰 유리). 판마다 다른 색 없음, 가벼운 그림자 */
+#saver.saver.face .fc-t{background:var(--ds-panel) !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;
+  box-shadow:inset 0 0 0 1px var(--ds-line), inset 0 1px 0 var(--ds-shine), var(--ds-shadow) !important}
+#saver.saver.face .fc-feat{background:var(--ds-hero) !important}
+#saver.saver.face .fc-feat .cc-st{opacity:.35}
+
+/* 밝은 안쪽 화면(달력·할 일·질문·공부칸): 남색을 옅게 섞은 종이 하나, 강조는 남색·살구 점 */
+body{--zbg:#EEF0F6 !important; --zk:#18254E !important; --zk2:rgba(24,37,78,.68) !important; --zrow:#E1E5F1 !important; --zac:#2C4287 !important; --ztint:#E9ECF7 !important;
+  --zhl:#18254E !important; --zhlbg:transparent !important; --red:rgba(24,37,78,.68) !important;
+  --paperbg:linear-gradient(#EEF0F6,#EEF0F6) !important}
+body[data-scr=cal]{--bg:#EEF0F6 !important; --ac:#2C4287 !important}
+/* 낱말 강조: 글자색은 그대로, 굵게 + 살구 밑줄(밝은 종이에서는 진한 살구) */
+#app .sheet .w.wlink, #app .sheet .key.drawn .w.wlink, #app .sheet .key .w.wlink{box-shadow:inset 0 -.09em 0 var(--ds-apricot-deep) !important}
+#app .today .td .dot, .st-srow.on::before{background:var(--ds-apricot-deep) !important}
+/* 밤(22시~06시)의 질문·답: 밤 남색 위 크림 글자, 살구 밑줄 */
+body[data-night] #app{--paperbg:linear-gradient(#0E1839,#0E1839) !important; --zbg:#0E1839 !important; --zk:#F2E8D2 !important; --zk2:rgba(242,232,210,.66) !important; --zrow:rgba(255,255,255,.08) !important;
+  --zhl:#F2E8D2 !important; --zhlbg:transparent !important}
+body[data-night] #app .sheet .w.wlink, body[data-night] #app .sheet .key.drawn .w.wlink, body[data-night] #app .sheet .key .w.wlink{box-shadow:inset 0 -.09em 0 var(--ds-apricot) !important}
+body[data-night] #app .today .td .dot{background:var(--ds-apricot) !important}
+</style>
+<script>
+// v162: 홈의 시간대 벌 — 아침 7~11시 am, 낮 11~17시 day, 저녁 17~20:30 eve, 그 밖 night. 색만 바꾼다(ds2).
+(function () { function ds() { var d = new Date(), m = d.getHours() * 60 + d.getMinutes(); document.documentElement.dataset.ds = m >= 420 && m < 660 ? 'am' : m >= 660 && m < 1020 ? 'day' : m >= 1020 && m < 1230 ? 'eve' : 'night'; } ds(); setInterval(ds, 30000); window.__gkDs = ds; })();
+</script>
 </body>
 </html>
