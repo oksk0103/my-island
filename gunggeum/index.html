@@ -1464,12 +1464,12 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     <div class="rn-front" id="rnFront" hidden></div>
   <div class="sv-dots" id="svDots" hidden aria-hidden="true"></div>
     <div class="pg" id="pg">
-      <header class="pg-top"><h1 class="pg-ttl" id="pgTtl"></h1><div class="pg-sub" id="pgSub"></div></header>
+      <header class="pg-top"><div class="pg-tabs" id="pgTabs" hidden><span data-act="pgtab" data-t="todo">할 일</span><span data-act="pgtab" data-t="cal">달력</span></div><h1 class="pg-ttl" id="pgTtl"></h1><div class="pg-sub" id="pgSub"></div></header>
       <section class="pg-s pg-cal" id="pgCal">
         <div class="pn cq"><div class="cq-head"><b id="cqMon"></b><span class="cq-nav"><i class="pc" id="cqNow" data-act="monnow" hidden>이번 달</i><i class="rb" data-act="mon" data-d="-1" aria-label="지난달"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></i><i class="rb" data-act="mon" data-d="1" aria-label="다음 달"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></i></span></div>
           <div class="cq-dow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
           <div class="cq-body"><canvas class="cq-big" id="cqBig" width="2" height="2" aria-hidden="true"></canvas><div class="cq-grid" id="cqGrid"></div></div></div>
-        <div class="pn ag"><div class="ag-head"><b id="agTtl"></b></div><div class="ag-list" id="agList"></div><div class="ag-ask" id="agAsk" hidden></div><div class="ag-foot" id="agFoot"></div></div>
+        <div class="pn ag"><div class="ag-head"><b id="agTtl"></b></div><div class="ag-list" id="agList"></div><div class="ag-td" id="agTd" hidden></div><div class="ag-ask" id="agAsk" hidden></div><div class="ag-foot" id="agFoot"></div></div>
       </section>
       <section class="pg-s pg-wx" id="pgWx"></section>
       <section class="pg-s pg-todo" id="pgTodo"></section>
@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v170</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v171</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v170</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v171</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -3084,6 +3084,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const pg = c.contains('pgx') ? saverEl.dataset.pg : '';
     if (pg !== 'cal' && evPend && evPend.from === 'cal') { evPend = null; evMsg = ''; } // 달력 화면을 벗어나면 일정 받기 상태를 푼다
     if (pg === 'cal') { setH($('pgTtl'), ''); }
+    { const tb = $('pgTabs'), on = (pg === 'cal' || pg === 'todo') && innerWidth >= 900; tb.hidden = !on; if (on) tb.querySelectorAll('span').forEach(x => x.classList.toggle('on', x.dataset.t === pg)); } // v171: 할 일 | 달력 탭
     if (pg !== 'wx') delete saverEl.dataset.wx;
     $('gkHome').style.translate = $('pg').style.translate = ''; // v136: 앱 화면(달력·날씨·할 일)은 잠깐 열리는 화면이라 자국 방지 이동을 하지 않는다 — 홈 단추·앱 이름·시계가 모든 앱에서 같은 자리(48,40)
     homeSync();
@@ -3094,18 +3095,20 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const now = new Date(), tk = dayKey(now); saverEl.dataset.tone = hr < 12 ? 'morn' : hr < 18 ? 'day' : 'eve'; saverEl.classList.remove('rest', 'late');
     const v = new Date(now.getFullYear(), now.getMonth() + calOff, 1), y = v.getFullYear(), m = v.getMonth(), first = v.getDay(), n = new Date(y, m + 1, 0).getDate(), ym = `${y}-${pad(m + 1)}`, prevN = new Date(y, m, 0).getDate();
     const ev = evLoad().items, by = {}; ev.forEach(x => (by[x.date] = by[x.date] || []).push(x));
+    const tdAll = todoSorted(todoLoad()), tdBy = {}; tdAll.forEach(x => { if (!x.done && x.due) tdBy[x.due] = 1; }); // v171: 할 일이 있는 날에도 점
     if (evFlash && Date.now() - evFlash.at > 60e3) evFlash = null; const fl = evFlash && ev.find(x => x.id === evFlash.id);
-    setH($('cqMon'), `${m + 1}월`); $('cqNow').hidden = !calOff; setH($('pgSub'), zClock());
+    setH($('cqMon'), `${y}년 ${m + 1}월`); $('cqNow').hidden = !calOff; setH($('pgSub'), zClock());
     let h = '';
     const weeks = Math.ceil((first + n) / 7); $('cqGrid').style.gridTemplateRows = `repeat(${weeks},minmax(0,1fr))`;
     for (let i = 0; i < weeks * 7; i++) { const dn = i - first + 1, col = i % 7;
       if (dn < 1 || dn > n) { h += `<span class="x"><b>${dn < 1 ? prevN + dn : dn - n}</b></span>`; continue; }
       const k = `${ym}-${pad(dn)}`, e = by[k];
-      h += `<span data-act="day" data-k="${k}" class="${[k === tk ? 't' : '', k === calSel ? 's' : '', col === 0 ? 'su' : col === 6 ? 'sa' : '', fl && fl.date === k ? 'n' : ''].filter(Boolean).join(' ')}"><b>${dn}</b>${e ? `<i${e.length > 1 ? ' class="m"' : ''}></i>` : ''}</span>`; }
+      h += `<span data-act="day" data-k="${k}" class="${[k === tk ? 't' : '', k === calSel ? 's' : '', col === 0 ? 'su' : col === 6 ? 'sa' : '', fl && fl.date === k ? 'n' : ''].filter(Boolean).join(' ')}"><b>${dn}</b>${e ? `<i${e.length > 1 ? ' class="m"' : ''}></i>` : tdBy[k] ? '<i></i>' : ''}</span>`; }
     setH($('cqGrid'), h);
     // 하루 보기: 고른 날(기본 오늘)의 일정이 먼저, 그 뒤로 다가오는 일정. 줄은 네 칸 고정
     const hk = calSel || (calOff ? `${ym}-01` : tk), hd = evDay(hk), own = by[hk] || [];
-    const rest = ev.filter(x => x.date > hk && x.date >= tk && !own.includes(x)), all0 = own.concat(rest), all = fl && all0.includes(fl) ? [fl].concat(all0.filter(x => x !== fl)) : all0, SL = 4; // 방금 적은 줄은 맨 위에
+    const rest = ev.filter(x => x.date > hk && x.date >= tk && !own.includes(x)), all0 = own.concat(rest), all = fl && all0.includes(fl) ? [fl].concat(all0.filter(x => x !== fl)) : all0;
+    const tdDay = innerWidth >= 900 ? tdAll.filter(x => hk === tk ? (!x.due || x.due <= tk) : x.due === hk) : [], SL = tdDay.length ? 2 : 4; // v171: 그날 할 일이 있으면 일정은 두 줄, 그 아래 할 일 세 줄 // 방금 적은 줄은 맨 위에
     setH($('agTtl'), `<b>${hd.getDate()}</b><span>${hd.getMonth() + 1}월 ${DAYS[hd.getDay()]}요일${hk === tk ? ' · 오늘' : ''}</span>`);
     const pages = Math.max(1, Math.ceil(all.length / (SL - 1))); if (all.length <= SL) agPage = 0; else if (agPage >= pages) agPage = 0;
     const shown = all.length <= SL ? all : all.slice(agPage * (SL - 1), agPage * (SL - 1) + SL - 1), left = all.length - (agPage + 1) * (SL - 1);
@@ -3114,6 +3117,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (!all.length) r = `<div class="ag-none">${calSel ? '이날은 일정이 없어.' : '적어 둔 일정이 없어.'}</div>`;
     if (all.length > SL) r += `<div class="ag-row more" data-act="more"><span class="tx">${left > 0 ? '더 보기' : '처음으로'}</span></div>`;
     setH($('agList'), r);
+    { const TL = 3, sh = tdDay.length > TL ? tdDay.slice(0, TL - 1) : tdDay; // v171: 달력 하루 보기에 그날 할 일(여기서 바로 줄 긋기). 넘치면 '더 보기' → 할 일 화면
+      setH($('agTd'), tdDay.length ? `<div class="agt-lab">할 일</div>` + sh.map(it => `<div class="agt-row${it.done ? ' done' : ''}" data-todo="${it.id}"><span class="bx"></span><span class="tx">${escN(it.text)}</span></div>`).join('') + (tdDay.length > TL ? `<div class="agt-row more" data-act="pgtab" data-t="todo"><span class="tx">더 보기</span></div>` : '') : ''); $('agTd').hidden = !tdDay.length; }
     if (evPend && Date.now() > evPend.until) { evPend = null; evMsg = ''; }
     const yn = evPend && evPend.wait === 'yn' && evPend.from === 'cal';
     if (evSel && !ev.some(x => x.id === evSel)) evSel = '';
@@ -3345,6 +3350,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (act === 'day') { calSel = calSel === a.dataset.k ? '' : a.dataset.k; agPage = 0; evFlash = null; evSel = ''; if (!(evPend && evPend.wait === 'yn')) evMsg = ''; renderSaver(); }
     else if (act === 'mon') { calOff = Math.max(-1, Math.min(11, calOff + +a.dataset.d)); calSel = ''; agPage = 0; evSel = ''; renderSaver(); }
     else if (act === 'more') { agPage++; renderSaver(); }
+    else if (act === 'pgtab') { if (a.dataset.t !== saverEl.dataset.pg) { calSel = ''; calOff = 0; agPage = 0; evSel = ''; tdPage = 0; window.__gkForce = { s: a.dataset.t, at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '탭 → ' + (a.dataset.t === 'cal' ? '달력' : '할 일')); } }
     else if (act === 'wxmore') { wxMore = !wxMore; renderSaver(); }
     else if (act === 'tdmore') { tdPage++; renderSaver(); }
     else if (/^st/.test(act)) { if (window.__gkForce && window.__gkForce.s === 'study') window.__gkForce.at = Date.now(); // v138: 공부칸 — 누를 때마다 10분을 새로
@@ -3410,9 +3416,12 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const on = clockPage && left > 0; c.toggle('todo', on); $('svTodo').hidden = !on;
     if (on) { const h2 = todoRows(list, 'svt-row', 4); if ($('svTodoL').innerHTML !== h2) $('svTodoL').innerHTML = h2; $('svTodoN').textContent = left + '개 남았어'; }
     if (c.contains('pgx') && saverEl.dataset.pg === 'todo') renderTodoPg();
+    if (c.contains('pgx') && saverEl.dataset.pg === 'cal' && !$('agTd').hidden) renderCal(new Date().getHours()); // v171: 달력에서 줄을 그으면 그 자리에서 바뀜
     if (c.contains('face')) {
       $('fcTodoN').textContent = list.length ? left : '0'; $('fcTodoS').textContent = !list.length ? '할 일' : left ? '할 일 남았어' : '다 했어';
-      const hf = list.length ? todoRows(list, 'fc-row', list.length > 5 ? 4 : 5).replace('svt-more', 'fc-more').replace('tdo-more', 'fc-more') : '<div class="fc-empty">할 일이 생기면 말해 줘.</div>';
+      const tk0 = dayKey(new Date()), evT = evLoad().items.filter(x => x.date === tk0).slice(0, 2), cap = (list.length + evT.length > 5 ? 4 : 5) - evT.length; // v171: 오늘 일정을 맨 위에(두 줄까지), 살구 점 — 줄 긋는 것이 아니다
+      const evH = evT.map(x => `<div class="fc-row ev" data-tile="cal"><span class="bx"></span><span class="tx">${escN(x.text)}</span><span class="du"></span></div>`).join('');
+      const hf = list.length || evT.length ? evH + (list.length ? todoRows(list, 'fc-row', cap).replace('svt-more', 'fc-more').replace('tdo-more', 'fc-more').replace(/<span class="du">오늘<\/span>/g, '<span class="du"></span>') : '') : '<div class="fc-empty">할 일이 생기면 말해 줘.</div>';
       if ($('fcTodoL').innerHTML !== hf) $('fcTodoL').innerHTML = hf;
     }
     let dn = $('svTodoDone'); const allDone = clockPage && !left && list.length > 0;
@@ -4042,7 +4051,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v170';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v171';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6725,6 +6734,39 @@ html body .cq-nav{gap:0 !important}
   body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]):not([data-night]) #app:not([data-home]):not([data-state=listen]):not([data-state=think]) .qbar:not(.typing) .qbox :is(#q, .mic, .micico){color:#fff !important;stroke:#fff !important;--pill-ink:#fff}
   body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]):not([data-night]) #app:not([data-home]):not([data-state=listen]):not([data-state=think]) .qbar:not(.typing) #q::placeholder{color:#fff !important;opacity:1 !important;font-weight:700 !important}
 }
+</style>
+<style id="ds2-cal">
+/* ===== ds2-cal (v171): 달력과 할 일을 한 벌로 (Took 참고) =====
+   머리줄에 '할 일 | 달력' 탭, 달 제목·화살표는 달력 위 한 줄로, 하루 보기에 그날 할 일, 홈 할 일 칸 맨 위에 오늘 일정. 개수는 쓰지 않는다. */
+.pg-tabs[hidden]{display:none !important}
+@media (min-width:900px){
+  #saver.pgx .pg-tabs{pointer-events:auto;display:flex;align-items:center;height:64px;padding:4px;border-radius:32px;background:rgba(44,66,135,.10);box-sizing:border-box}
+  #saver.pgx .pg-tabs span{height:56px;padding:0 28px;border-radius:28px;display:flex;align-items:center;font:600 28px/1 "Pretendard",sans-serif;letter-spacing:-.02em;color:var(--zk2);cursor:pointer}
+  #saver.pgx .pg-tabs span.on{background:var(--pill);color:var(--zk);font-weight:700;box-shadow:var(--pill-edge)}
+  body[data-theme=night] #saver.pgx .pg-tabs, body[data-night] #saver.pgx .pg-tabs{background:rgba(255,255,255,.10)}
+  #saver[data-pg=todo] .pg-tabs:not([hidden]) + .pg-ttl{font-size:0 !important}
+  #saver[data-pg=todo] .pg-tabs:not([hidden]) + .pg-ttl .td-n{font:500 24px/1 "Pretendard",sans-serif !important;color:var(--zk2);margin-left:8px}
+  /* 달 제목과 화살표: 머리줄에서 내려와 달력 위 한 줄 — 제목 왼쪽, 화살표 오른쪽 */
+  #saver[data-pg=cal] .cq{grid-template-rows:64px 44px minmax(0,1fr) !important}
+  #saver[data-pg=cal] .cq-head{position:static !important;height:64px !important;padding:0 0 0 24px !important;justify-content:space-between !important;gap:0 !important}
+  /* 하루 보기의 그날 할 일 */
+  #saver[data-pg=cal] .ag{display:flex !important;flex-direction:column}
+  #saver[data-pg=cal] .ag > *{flex:none}
+  #saver[data-pg=cal] .ag-foot{margin-top:auto}
+  .ag-td{margin-top:20px}
+  .agt-lab{font:600 24px/32px "Pretendard",sans-serif;color:var(--zk2);margin-bottom:4px}
+  .agt-row{height:60px;display:flex;align-items:center;gap:20px;cursor:pointer;font:600 32px/1 "Pretendard",sans-serif;letter-spacing:-.02em;color:var(--zk)}
+  .agt-row .bx{flex:none;width:40px;height:40px;border-radius:50%;box-shadow:inset 0 0 0 3px var(--zk);box-sizing:border-box}
+  .agt-row .tx{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .agt-row.done .bx{box-shadow:none;background:var(--zk2);opacity:.6;display:grid;place-items:center}
+  .agt-row.done .bx::after{content:"";width:16px;height:9px;border-left:3px solid var(--zbg, #EEF0F6);border-bottom:3px solid var(--zbg, #EEF0F6);transform:translateY(-2px) rotate(-45deg)}
+  .agt-row.done .tx{color:var(--zk2);opacity:.75;text-decoration:line-through;text-decoration-thickness:2px}
+  .agt-row.more{font-size:24px;font-weight:500;color:var(--zk2);padding-left:60px}
+  .agt-row.more .tx::after{content:"\00a0›"}
+}
+/* 홈 할 일 칸의 오늘 일정 줄: 동그라미 대신 살구 점 */
+#saver.saver.face .fc-row.ev .bx{box-shadow:none !important;border:0 !important;background:none !important;display:grid !important;place-items:center}
+#saver.saver.face .fc-row.ev .bx::after{content:"";width:12px;height:12px;border-radius:50%;background:#EFA56B}
 </style>
 <style id="ds2-news">
 /* ===== ds2-news (v168): 신문 지면 손질 =====

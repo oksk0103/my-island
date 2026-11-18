@@ -351,7 +351,7 @@ async function newsTests(b) {
     await p.evaluate(() => { const t = new Date(), ym = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}`; localStorage.setItem('gk-cal', JSON.stringify({ v: 1, last: null, items: [17, 18, 19, 20, 21, 22, 23].map((d, i) => ({ id: 'x' + i, date: `${ym}-${d}`, text: '일정 ' + i, raw: '', at: i })) })); });
     await p.click('#gkHome'); await p.adv(1200); // 되묻기(며칠이야?)가 떠 있던 것을 홈 단추로 닫는다
     await p.go('cal'); await p.adv(2500); ok('일정이 많을 때: "더 보기"(개수를 세지 않음), 넘침 없음', await p.evaluate(() => /더 보기/.test(document.getElementById('agList').textContent) && document.getElementById('agFoot').getBoundingClientRect().bottom <= innerHeight));
-    await box('.cq-nav [data-d="1"]'); { const m = await p.evaluate(() => [document.getElementById('cqMon').textContent, document.getElementById('cqNow').hidden, document.querySelectorAll('#cqGrid > span').length]); ok('달 넘기기 → 12월, "이번 달" 단추, 칸 수는 7의 배수', m[0] === '12월' && !m[1] && m[2] % 7 === 0, m); }
+    await box('.cq-nav [data-d="1"]'); { const m = await p.evaluate(() => [document.getElementById('cqMon').textContent, document.getElementById('cqNow').hidden, document.querySelectorAll('#cqGrid > span').length]); ok('달 넘기기 → 2026년 12월, "이번 달" 단추, 칸 수는 7의 배수', m[0] === '2026년 12월' && !m[1] && m[2] % 7 === 0, m); }
     await p.context().close();
     // 날씨: 코드마다 제 하늘, 한마디는 지금 상태
     const SKY = ['day-clear', 'day-part', 'day-cloud', 'day-rain', 'day-snow', 'dusk-clear', 'dusk-cloud', 'night-clear', 'night-cloud'], LAYER = ['cloud-a', 'cloud-b', 'cloud-s', 'cloud-p', 'fog', 'rain-1', 'rain-2', 'rain-3', 'snow-1', 'snow-2', 'snow-3'];
@@ -443,6 +443,24 @@ async function newsTests(b) {
     await p.click('#gkHome'); await p.adv(1200); await p.mouse.click(20, 20); await p.adv(1500); const a2 = p.api, n2 = (await p.st()).count;
     await p.say('달력에 27일 치과 적어 줘', 3000); c = await cal(); s = await p.st(); ok('"달력에 27일 치과 적어 줘" → 일정으로, AI 안 부름, 질문 수 그대로, "삭제" 칩', c.includes('2026-11-27 치과') && p.api === a2 && s.count === n2 && /달력에 적었어.*27일 금 · 치과/.test(s.sheet) && s.chips.includes('삭제') && s.todo.length === 0, [c, s.sheet, s.chips]);
     await p.say('삭제', 3000); c = await cal(); ok('"삭제" → 되돌림', !c.includes('2026-11-27 치과'), c); await p.context().close();
+    // v171: 달력과 할 일을 한 벌로 — 탭, 하루 보기의 할 일(줄 긋기), 할 일 있는 날 점, 홈의 오늘 일정 줄
+    { const D = '2026-11-18', p2 = await open(b, { time: D + 'T16:20', read: D }); const tapS = async sel => { const bx = await p2.locator(sel).first().boundingBox(); await p2.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p2.adv(1500); };
+      await p2.evaluate(D => { const now = Date.now(); localStorage.setItem('gk-todo', JSON.stringify({ items: [['미니 수학 두 장', D], ['일기 쓰기', D], ['리코더 연습', '2026-11-19'], ['독서록 쓰기', '2026-11-21']].map(([t, due], i) => ({ id: 't' + i, text: t, due, at: now - (10 - i) * 1000, done: 0 })), last: null }));
+        localStorage.setItem('gk-cal', JSON.stringify({ v: 1, items: [{ id: 'e1', date: D, text: '치과', raw: '', at: 1 }], last: null })); }, D);
+      await p2.saver(); let q = await p2.evaluate(() => { const r = [...document.querySelectorAll('#fcTodoL .fc-row')]; return { first: r[0].className + '|' + r[0].querySelector('.tx').textContent, n: r.length, du: r.map(x => x.querySelector('.du').textContent).join(','), cnt: /\d+개/.test(document.querySelector('.fc-todo').innerText) }; });
+      ok('v171 홈 할 일 칸: 맨 위에 오늘 일정(살구 점 줄), 오늘 할 일에는 "오늘" 표시 없음, 다섯 줄 이내', /\bev\b.*\|치과/.test(q.first) && q.n <= 5 && !/오늘/.test(q.du) && /내일/.test(q.du) && !q.cnt, q);
+      await p2.go('cal'); await p2.adv(2500);
+      q = await p2.evaluate(() => { const R = e => e.getBoundingClientRect(), tb = document.getElementById('pgTabs'), h = R(document.querySelector('.cq-head')), g = R(document.getElementById('cqGrid')), nv = R(document.querySelector('.cq-nav'));
+        return { tabs: !tb.hidden && tb.querySelector('.on').dataset.t, mon: document.getElementById('cqMon').textContent, headIn: h.top >= 120 && h.bottom <= g.top && nv.right <= g.right + 2 && nv.left > g.left + 400, td: [...document.querySelectorAll('#agTd .agt-row[data-todo] .tx')].map(x => x.textContent).join(','), dots: ['19', '21', '20'].map(d => !!document.querySelector('#cqGrid [data-k="2026-11-' + d + '"] i')).join(), foot: R(document.querySelector('#agTd')).bottom <= R(document.querySelector('#agFoot .zbar')).top };
+      });
+      ok('v171 달력: "할 일 | 달력" 탭(달력 켜짐), 제목 "2026년 11월"과 화살표가 달력 위 한 줄', q.tabs === 'cal' && q.mon === '2026년 11월' && q.headIn, q);
+      ok('v171 달력 하루 보기: 오늘 할 일 두 줄, 할 일 있는 날(19·21)에 점, 없는 날(20)엔 없음, 단추와 겹치지 않음', q.td === '미니 수학 두 장,일기 쓰기' && q.dots === 'true,true,false' && q.foot, q);
+      await tapS('#agTd .agt-row[data-todo="t0"]'); q = await p2.evaluate(() => [document.querySelector('#agTd .agt-row[data-todo="t0"]').classList.contains('done'), JSON.parse(localStorage.getItem('gk-todo')).items.filter(x => x.done).map(x => x.id).join(), document.getElementById('saver').dataset.pg]);
+      ok('v171 달력에서 할 일 줄을 누르면 그 자리에서 줄이 그어지고 저장, 화면은 달력 그대로', q[0] && q[1] === 't0' && q[2] === 'cal', q);
+      await tapS('#cqGrid [data-k="2026-11-19"]'); q = await p2.evaluate(() => [...document.querySelectorAll('#agTd .agt-row[data-todo] .tx')].map(x => x.textContent).join(',')); ok('v171 다른 날(19일)을 고르면 그날 할 일만', q === '리코더 연습', q);
+      await tapS('#pgTabs [data-t="todo"]'); q = await p2.evaluate(() => [document.getElementById('saver').dataset.pg, document.querySelector('#pgTabs .on').dataset.t, document.querySelectorAll('#pgTodo .td-row').length]); ok('v171 탭 "할 일" → 할 일 화면(탭 켜짐 바뀜)', q[0] === 'todo' && q[1] === 'todo' && q[2] >= 3, q);
+      await tapS('#pgTabs [data-t="cal"]'); q = await p2.evaluate(() => document.getElementById('saver').dataset.pg); ok('v171 탭 "달력" → 달력으로 돌아옴', q === 'cal', q);
+      await p2.context().close(); }
     // 8. 오늘이 토요일·일요일이어도 파란 원 안 숫자는 흰색
     for (const [d, n] of [['2026-11-21', '토'], ['2026-11-22', '일']]) { p = await open(b, { time: d + 'T16:10', read: d }); await p.go('cal'); await p.adv(2500);
       { const tc = await p.evaluate(() => { const c = getComputedStyle(document.querySelector('#cqGrid span.t b')); return [c.color, c.fontWeight]; }); ok(`오늘이 ${n}요일: 오늘 칸 숫자는 먹색 굵은 글자(v166, 빨강·파랑 아님)`, tc[0] === 'rgb(24, 37, 78)' && +tc[1] >= 700, tc); } { const ln = await p.evaluate(() => { const g = document.getElementById('cqGrid'), c = g.children[0], r = c.getBoundingClientRect(), r2 = g.children[7].getBoundingClientRect(); return [getComputedStyle(g).backgroundImage, getComputedStyle(c).boxShadow !== 'none', Math.abs(r.bottom - r2.top) < 1]; }); ok(`달력(${n}): 주 구분 줄은 칸 아랫변에(바탕 무늬 아님) — 줄 높이와 어긋나지 않음`, ln[0] === 'none' && ln[1] && ln[2], ln); } await p.context().close(); }
