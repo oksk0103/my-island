@@ -441,7 +441,7 @@ async function newsTests(b) {
     await p.say('삭제', 3000); c = await cal(); ok('"삭제" → 되돌림', !c.includes('2026-11-27 치과'), c); await p.context().close();
     // 8. 오늘이 토요일·일요일이어도 파란 원 안 숫자는 흰색
     for (const [d, n] of [['2026-11-21', '토'], ['2026-11-22', '일']]) { p = await open(b, { time: d + 'T16:10', read: d }); await p.go('cal'); await p.adv(2500);
-      ok(`오늘이 ${n}요일: 파란 원 안 숫자는 흰색`, await p.evaluate(() => getComputedStyle(document.querySelector('#cqGrid span.t b')).color === 'rgb(255, 255, 255)')); await p.context().close(); }
+      { const tc = await p.evaluate(() => { const c = getComputedStyle(document.querySelector('#cqGrid span.t b')); return [c.color, c.fontWeight]; }); ok(`오늘이 ${n}요일: 오늘 칸 숫자는 먹색 굵은 글자(v166, 빨강·파랑 아님)`, tc[0] === 'rgb(24, 37, 78)' && +tc[1] >= 700, tc); } await p.context().close(); }
     // 6. 질문 상한이어도 일정 넣기는 된다, 쉬는 시간에는 조용한 한 줄
     p = await open(b, { time: D0 + 'T16:00', read: D0, settings: { cap: 10 } }); await p.evaluate(() => localStorage.setItem('gk-count-2026-11-16', '10')); await p.go('cal'); await p.adv(2500);
     await box('[data-act="evadd"]'); s = await p.st(); await p.say('27일에 치과 가', 3000); await p.adv(2500); c = await cal(); ok('질문 상한에 걸려도 일정 말하기는 된다 (AI 안 부름)', !s.saver && c.includes('2026-11-27 치과') && p.api === 0, [s.saver, c]); await p.context().close();
@@ -692,7 +692,7 @@ async function newsTests(b) {
     q = await p.evaluate(() => [[...document.querySelectorAll('.st-tabs span')].map(x => x.textContent).join(''), document.querySelectorAll('.st-row').length]);
     ok('모은 말 보기: 갈래 넷(오늘·영어·한자·우리말), 오늘 모인 말 두 줄', q[0] === '오늘영어한자우리말' && q[1] === 2, q);
     await p.click('[data-act=sttab][data-t=en]'); await p.adv(500); q = await p.evaluate(() => [...document.querySelectorAll('.st-row')].map(x => x.dataset.k).join()); ok('영어 갈래에는 영어 낱말만', q === 'en:beautiful', q);
-    await p.click('[data-act=stback]'); await p.adv(500); q = await R(p, '.st-foot .st-lb'); ok("공부칸 맨 아랫줄 왼쪽 알약(136,716), 오른쪽 '물어보기'", /^136,716,/.test(q) && await R(p, '#pgStudy .zbar') === '1316,716,1552,780', [q, await R(p, '#pgStudy .zbar')]);
+    await p.click('[data-act=stback]'); await p.adv(500); q = await R(p, '.st-foot .st-lb'); ok("공부칸 맨 아랫줄 왼쪽 알약(136,716), 오른쪽 '물어보기'(주 단추 72)", /^136,716,/.test(q) && await R(p, '#pgStudy .zbar') === '1316,708,1552,780', [q, await R(p, '#pgStudy .zbar')]);
     await p.mouse.move(1200, 420); await p.mouse.down(); await p.mouse.move(700, 430, { steps: 6 }); await p.mouse.up(); await p.adv(800); q = await p.evaluate(() => document.getElementById('saver').dataset.pg); ok('공부칸에서 옆으로 밀어도 다른 장으로 안 넘어감', q === 'study', q);
     await p.evaluate(() => { const d = JSON.parse(localStorage.getItem('gk-words')); d.items.push({ k: 'en:bad', w: 'bad', kind: 'en', syl: 5, hz: 'x' }, { k: 7 }, null); localStorage.setItem('gk-words', JSON.stringify(d)); }); await p.click('.st-srow[data-k]'); await p.adv(16000);
     q = await p.evaluate(() => [!!document.querySelector('.st-big'), document.querySelector('.st-hero') ? !/NaN/.test(document.querySelector('.st-hero').innerText) : false]); ok('저장값이 일부 깨져도 공부칸이 그려짐', q[0] && q[1], q);
