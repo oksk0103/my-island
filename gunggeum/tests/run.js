@@ -638,7 +638,7 @@ async function newsTests(b) {
     p = await open(b, { time: D + 'T16:20', read: D, pre: fake }); await p.say('달은 왜 모양이 바뀌어?', 9000);
     const f0 = await R(p, '#form .qbox'); await p.click('#micBtn'); await p.adv(600);
     const st = await p.evaluate(() => [document.getElementById('app').dataset.state, document.getElementById('app').dataset.from]); const f1 = await R(p, '#form .qbox');
-    ok('답 화면에서 마이크 → 듣는 중이 같은 자리(오른쪽 아래)', st[0] === 'listen' && st[1] === 'ans' && f0 === f1 && f0 === '1316,716,1552,780', [st, f0, f1]);
+    ok('답 화면에서 마이크 → 듣는 중이 같은 자리(오른쪽 아래)', st[0] === 'listen' && st[1] === 'ans' && f0 === f1 && f0 === '1316,708,1552,780', [st, f0, f1]);
     await p.evaluate(() => window.__rec.onresult({ resultIndex: 0, results: [Object.assign([{ transcript: '보름달은 언제 떠' }], { isFinal: true })] })); await p.adv(2500);
     q = await p.evaluate(() => document.getElementById('app').dataset.state); ok('말이 끝나면 생각 중 → 답', q === 'answer' || q === 'think', q); await p.context().close();
     // 알약 가운데(입력칸)를 눌러도 — 초점이 먼저 가 '입력 중'을 거쳐도 — 듣는 중은 제자리

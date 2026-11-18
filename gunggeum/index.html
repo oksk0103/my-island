@@ -6713,6 +6713,7 @@ html body[data-theme=night] .cq-nav .rb, html body[data-night] .cq-nav .rb{color
 html body .cq-nav{gap:0 !important}
 /* v169: 답 화면의 '물어보기'도 다른 화면의 주 행동 단추와 같은 모양(남색 채움 72) */
 @media (min-width:900px){
+  #app:not([data-home])[data-state=listen] .qbar:not(.typing) .qbox{height:72px !important;min-height:72px !important;border-radius:36px !important} /* 듣는 중에도 같은 자리·같은 높이(누르면 8px 튀지 않게) */
   body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]):not([data-night]) #app:not([data-home]):not([data-state=listen]):not([data-state=think]) .qbar:not(.typing) .qbox{background:#2C4287 !important;box-shadow:none !important;height:72px !important;padding-left:30px !important;min-height:72px !important;border-radius:36px !important;color:#fff !important;--ds-dot:#EFA56B}
   body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]):not([data-night]) #app:not([data-home]):not([data-state=listen]):not([data-state=think]) .qbar:not(.typing) .qbox :is(#q, .mic, .micico){color:#fff !important;stroke:#fff !important;--pill-ink:#fff}
   body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]):not([data-night]) #app:not([data-home]):not([data-state=listen]):not([data-state=think]) .qbar:not(.typing) #q::placeholder{color:#fff !important;opacity:1 !important;font-weight:700 !important}
