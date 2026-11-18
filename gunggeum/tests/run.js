@@ -519,6 +519,22 @@ async function newsTests(b) {
     ok('앱 아이콘·manifest가 새 남색', /icon4-192\.png/.test(fs.readFileSync(path.join(ROOT, 'manifest.webmanifest'), 'utf8')) && /#2C4287/.test(fs.readFileSync(path.join(ROOT, 'manifest.webmanifest'), 'utf8')) && fs.existsSync(path.join(ROOT, 'icon4-512-maskable.png')));
   }
 
+  { // v163. 디자인 가이드 2단계 — 서체
+    console.log('v163. 디자인 가이드 2단계 (서체)');
+    const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    ok('서체 파일: 마루 부리 잘라 넣은 것 3 + 전체 3 + 라이선스, 안 쓰는 NanumSquare 없음', ['Regular', 'SemiBold', 'Bold'].every(w => fs.existsSync(path.join(ROOT, 'fonts', `MaruBuri-${w}.sub.woff2`)) && fs.existsSync(path.join(ROOT, 'fonts', `MaruBuri-${w}.woff2`))) && fs.existsSync(path.join(ROOT, 'fonts', 'OFL-MaruBuri.txt')) && !fs.existsSync(path.join(ROOT, 'fonts', 'NanumSquareNeo-Variable.woff2')) && !/NanumSquareNeo-Variable/.test(html));
+    ok('잘라 넣은 마루 부리는 굵기당 300KB 아래', ['Regular', 'SemiBold', 'Bold'].every(w => fs.statSync(path.join(ROOT, 'fonts', `MaruBuri-${w}.sub.woff2`)).size < 300e3));
+    ok('바깥 서체는 한자용 Noto Serif KR 하나뿐 (Do Hyeon·Noto Sans KR 없음)', /family=Noto\+Serif\+KR/.test(html) && !/Do\+Hyeon|Noto\+Sans\+KR/.test(html));
+    const p = await open(b, { time: newsDate + 'T16:20', read: newsDate }); await p.saver();
+    const ff = sel => p.evaluate(sel => { const e = document.querySelector(sel); if (!e) return null; const c = getComputedStyle(e); return [c.fontFamily.split(',')[0].replace(/"/g, '').trim(), c.fontWeight, c.fontVariantNumeric]; }, sel);
+    let q = await ff('#saver .fc-time'); ok('홈 시계 숫자: 마루 부리 600, 같은 폭 숫자', q && q[0] === 'MaruBuri' && q[1] === '600' && /tabular-nums/.test(q[2]), q);
+    q = await ff('#saver .cc-h'); ok('홈 표지 제목: 마루 부리 700', q && q[0] === 'MaruBuri' && q[1] === '700', q);
+    q = await ff('#saver .fc-row .tx, #saver .fc-empty, #saver .fc-lab'); ok('홈의 훑는 글(할 일·꼬리표)은 Pretendard 그대로', q && q[0] === 'Pretendard', q);
+    await p.say('달은 왜 빛나', 9000); q = await ff('#sheet'); ok('답 문장: 마루 부리 600', q && q[0] === 'MaruBuri' && q[1] === '600', q);
+    ok('마루 부리가 실제로 받아져 쓰임(잘라 넣은 파일)', await p.evaluate(async () => { await document.fonts.load('600 40px "MaruBuri"', '달'); return [...document.fonts].some(f => /MaruBuri$/.test(f.family.replace(/"/g, '')) && f.status === 'loaded'); }));
+    ok('이 흐름에서 페이지 오류 없음', p.cerr.length === 0, p.cerr.slice(0, 3)); await p.context().close();
+  }
+
   { // 17. 달 카드: 오늘 이름과 같은 "다음 달"을 내지 않음 (오늘 반달인데 "반달은 내일" 금지)
     console.log('17. 달 카드 다음 모양');
     const p = await open(b, { time: '2026-11-24T19:30', read: '2026-11-24' }); await p.saver(); // v147부터 달 카드는 보름·초승 무렵 저녁에만 — 보름 무렵(11/24)으로 본다
