@@ -507,6 +507,17 @@ async function newsTests(b) {
     }
   }
 
+  { // v162. 디자인 가이드 1단계 — 홈 색·재질
+    console.log('v162. 디자인 가이드 1단계 (홈 색·재질)');
+    const want = { 'T07:40': ['am', 'rgb(59, 82, 161)'], 'T12:19': ['day', 'rgb(44, 66, 135)'], 'T18:40': ['eve', 'rgb(31, 47, 112)'], 'T21:10': ['night', 'rgb(14, 24, 57)'] };
+    for (const [tm, [ds, bg]] of Object.entries(want)) { const p = await open(b, { time: newsDate + tm, read: newsDate }); await p.saver();
+      const q = await p.evaluate(() => { const cs = s => getComputedStyle(document.querySelector(s)); return { ds: document.documentElement.dataset.ds, bg: getComputedStyle(document.getElementById('saver')).backgroundColor, blur: [...document.querySelectorAll('#saver .fc-t')].some(e => { const c = getComputedStyle(e); return (c.backdropFilter && c.backdropFilter !== 'none') || (c.webkitBackdropFilter && c.webkitBackdropFilter !== 'none'); }), wxBg: cs('#saver .fc-wx').backgroundImage + cs('#saver .fc-wx').backgroundColor, wxSh: cs('#saver .fc-wx').boxShadow }; });
+      ok(`홈 ${ds}: 시간대 벌과 바탕색(달밤 남색)`, q.ds === ds && q.bg === bg, q);
+      ok(`홈 ${ds}: 판에 흐림 효과 없음, 날씨 줄은 판 모양 없이 시계 판 안에(두 겹으로 안 보임)`, !q.blur && /none/.test(q.wxBg) && /rgba\(0, 0, 0, 0\)/.test(q.wxBg) && q.wxSh === 'none', q);
+      await p.context().close(); }
+    ok('앱 아이콘·manifest가 새 남색', /icon4-192\.png/.test(fs.readFileSync(path.join(ROOT, 'manifest.webmanifest'), 'utf8')) && /#2C4287/.test(fs.readFileSync(path.join(ROOT, 'manifest.webmanifest'), 'utf8')) && fs.existsSync(path.join(ROOT, 'icon4-512-maskable.png')));
+  }
+
   { // 17. 달 카드: 오늘 이름과 같은 "다음 달"을 내지 않음 (오늘 반달인데 "반달은 내일" 금지)
     console.log('17. 달 카드 다음 모양');
     const p = await open(b, { time: '2026-11-24T19:30', read: '2026-11-24' }); await p.saver(); // v147부터 달 카드는 보름·초승 무렵 저녁에만 — 보름 무렵(11/24)으로 본다
