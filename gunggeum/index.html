@@ -6699,7 +6699,7 @@ body[data-night] #app .today .td .dot{background:var(--ds-apricot) !important}
 body{--pill:#fff !important; --pill-ink:#18254E !important; --pill-edge:inset 0 0 0 1.5px rgba(24,37,78,.55) !important; --pill-shadow:0 0 0 0 rgba(0,0,0,0) !important; --ds-dot:#B8651F !important}
 body[data-theme=sky], body[data-theme=dusk], body[data-theme=night]{--pill:rgba(255,255,255,.16) !important; --pill-ink:#fff !important; --pill-edge:inset 0 0 0 1px rgba(255,255,255,.55) !important; --ds-dot:#EFA56B !important}
 /* 주 행동 단추: 화면에 하나, 오른쪽 아래 */
-body .zbar{height:72px !important;min-height:72px !important;border-radius:36px !important;font-weight:700 !important}
+body .zbar{height:72px !important;min-height:72px !important;border-radius:36px !important;font-weight:700 !important;justify-content:center !important;padding:0 24px !important} /* v169: 너비를 맞춘 단추 안에서 글자가 왼쪽에 몰려 오른쪽이 비던 것 — 가운데로 */
 body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]) .zbar{background:#2C4287 !important;color:#fff !important;box-shadow:none !important;--ds-dot:#EFA56B}
 /* 달력: 오늘은 꽉 찬 원 대신 옅은 남색 칸 + 굵은 글자(색만으로 나누지 않는다). 주마다 옅은 칸 줄 */
 .cq-grid span.t b, .cq-grid span.t.sa b, .cq-grid span.t.su b{background:rgba(44,66,135,.14) !important;color:#18254E !important;font-weight:800 !important;border-radius:18px !important}
@@ -6707,9 +6707,13 @@ body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]) .zbar{
 body[data-theme=night] .cq-grid span.t b{background:rgba(255,255,255,.16) !important;color:#F2E8D2 !important}
 .cq-grid > span{box-shadow:inset 0 -1px 0 rgba(44,66,135,.10)} /* v169: 주 구분 줄은 칸마다(줄 높이가 달라도 맞는다) — 예전 바탕 무늬는 80px 고정이라 실제 줄(118px)과 어긋났다 */
 body[data-theme=night] .cq-grid > span{box-shadow:inset 0 -1px 0 rgba(255,255,255,.10)}
+/* v169: 달력의 지난달·다음달 화살표 — 테두리 원 두 개가 제목보다 눈에 띄던 것. 누르는 자리(64)는 그대로, 원과 채움은 없애고 흐린 먹색 꺾쇠만 */
+html body .cq-nav .rb{background:transparent !important;box-shadow:none !important;color:rgba(24,37,78,.52) !important}
+html body[data-theme=night] .cq-nav .rb, html body[data-night] .cq-nav .rb{color:rgba(242,232,210,.6) !important}
+html body .cq-nav{gap:0 !important}
 /* v169: 답 화면의 '물어보기'도 다른 화면의 주 행동 단추와 같은 모양(남색 채움 72) */
 @media (min-width:900px){
-  body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]):not([data-night]) #app:not([data-home]):not([data-state=listen]):not([data-state=think]) .qbar:not(.typing) .qbox{background:#2C4287 !important;box-shadow:none !important;height:72px !important;min-height:72px !important;border-radius:36px !important;color:#fff !important;--ds-dot:#EFA56B}
+  body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]):not([data-night]) #app:not([data-home]):not([data-state=listen]):not([data-state=think]) .qbar:not(.typing) .qbox{background:#2C4287 !important;box-shadow:none !important;height:72px !important;padding-left:30px !important;min-height:72px !important;border-radius:36px !important;color:#fff !important;--ds-dot:#EFA56B}
   body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]):not([data-night]) #app:not([data-home]):not([data-state=listen]):not([data-state=think]) .qbar:not(.typing) .qbox :is(#q, .mic, .micico){color:#fff !important;stroke:#fff !important;--pill-ink:#fff}
   body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]):not([data-night]) #app:not([data-home]):not([data-state=listen]):not([data-state=think]) .qbar:not(.typing) #q::placeholder{color:#fff !important;opacity:1 !important;font-weight:700 !important}
 }
