@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v165</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v166</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v165</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v166</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -3112,7 +3112,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     let r = shown.map(x => { const dd = evDay(x.date), same = x.date === hk;
       return `<div class="ag-row${same ? ' own' : ''}${fl === x ? ' new' : ''}${evSel === x.id ? ' sel' : ''}" data-act="evsel" data-id="${x.id}" data-k="${x.date}"><span class="tx">${escN(x.text)}</span><span class="aw">${fl === x ? '방금 · ' : ''}${same ? evAway(x.date) : `${dd.getMonth() === hd.getMonth() ? '' : (dd.getMonth() + 1) + '월 '}${dd.getDate()}일 ${DAYS[dd.getDay()]} · ${evAway(x.date)}`}</span></div>`; }).join('');
     if (!all.length) r = `<div class="ag-none">${calSel ? '이날은 일정이 없어.' : '적어 둔 일정이 없어.'}</div>`;
-    if (all.length > SL) r += `<div class="ag-row more" data-act="more"><span class="tx">${left > 0 ? `그리고 ${left}개 더` : '처음으로'}</span></div>`;
+    if (all.length > SL) r += `<div class="ag-row more" data-act="more"><span class="tx">${left > 0 ? '더 보기' : '처음으로'}</span></div>`;
     setH($('agList'), r);
     if (evPend && Date.now() > evPend.until) { evPend = null; evMsg = ''; }
     const yn = evPend && evPend.wait === 'yn' && evPend.from === 'cal';
@@ -3193,11 +3193,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const d = todoLoad(), all = todoSorted(d), open = all.filter(x => !x.done), done = all.filter(x => x.done);
     const t0 = new Date(); t0.setHours(0, 0, 0, 0); const dd = it => it.due ? Math.round((new Date(it.due + 'T00:00:00') - t0) / 864e5) : 0;
     const today = open.filter(x => dd(x) <= 0).length;
-    setH($('pgTtl'), `루아의 할 일${all.length ? `<span class="td-n">${open.length ? (today ? '오늘 ' + today + '개' : '오늘은 없어') : '다 했어'}</span>` : ''}`); setH($('pgSub'), zClock());
+    setH($('pgTtl'), `루아의 할 일${all.length ? `<span class="td-n">${open.length ? (today ? '' : '오늘은 없어') : '다 했어'}</span>` : ''}`); setH($('pgSub'), zClock());
     const row = (it, du) => ({ h: 92, html: `<div class="td-row${it.done ? ' done' : ''}" data-todo="${it.id}"><span class="bx"></span><span class="tx">${escN(it.text)}</span><span class="du">${du}</span></div>` });
     const col = groups => { const E = []; for (const [name, list, du] of groups) if (list.length) { E.push({ h: 56, html: `<div class="td-h">${name}</div>` }); list.forEach(it => E.push(row(it, du ? escN(dueWord(it.due)) : ''))); } return E; };
     const L = col([['지난 것', open.filter(x => dd(x) < 0)], ['오늘', open.filter(x => dd(x) === 0)]]), R = col([['내일', open.filter(x => dd(x) === 1)], ['다음에', open.filter(x => dd(x) >= 2), true]]);
-    if (done.length) { L.push({ h: 68, html: `<div class="td-doneline" data-act="tddone">다 한 것 ${done.length}개<i>${tdShowDone ? '접기' : '보기'}</i></div>` }); if (tdShowDone) done.forEach(it => L.push(row(it, ''))); }
+    if (done.length) { L.push({ h: 68, html: `<div class="td-doneline" data-act="tddone">다 한 것<i>${tdShowDone ? '접기' : '보기'}</i></div>` }); if (tdShowDone) done.forEach(it => L.push(row(it, ''))); }
     const BUD = innerHeight >= 780 ? 540 : 500, split = E => { const P = [[]]; let u = 0; for (const e of E) { if (u + e.h > BUD && P[P.length - 1].length) { P.push([]); u = 0; } P[P.length - 1].push(e); u += e.h; } return P; };
     const PL = split(L), PR = split(R), pages = Math.max(PL.length, PR.length); if (tdPage >= pages) tdPage = 0;
     const part = P => (P[tdPage] || []).map(e => e.html).join('');
@@ -4042,7 +4042,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v165';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v166';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6659,18 +6659,19 @@ body[data-night] #app .today .td .dot{background:var(--ds-apricot) !important}
 </style>
 <style id="ds2-home">
 /* ===== ds2-home (v164): 디자인 가이드 3단계 — 홈 구성 =====
-   한 화면 한 주인공: 표지 제목(72)이 주인공. 시계는 판 없이 맨글자 48(표지 제목의 1.5분의 1), 큰 시계는 밤 화면이 맡는다.
-   오른쪽 단: 시계·날씨(150) / 할 일(남는 높이) / 묻기·공부칸(150). 모니터(폭 900 이상)에서만. */
+   한 화면 한 주인공: 표지 제목(72)이 주인공. 시계는 작은 판 안에 48(표지 제목의 1.5분의 1), 큰 시계는 밤 화면이 맡는다.
+   오른쪽 단: 시계·날씨(140) / 할 일(남는 높이) / 묻기·공부칸(150). 모니터(폭 900 이상)에서만. */
 @media (min-width:900px){
-  #saver.saver.face .fc-grid{grid-template-rows:150px minmax(0,1fr) 150px !important}
-  /* 시계: 판 모양을 걷고 바탕 위 글자로. 날짜(위) → 시각 48 → 날씨 한 줄. 왼쪽 시작선은 아래 판 안 글자와 같은 40 */
-  #saver.saver.face .fc-clock{background:none !important;box-shadow:none !important;border-radius:0 !important;padding:0 40px 60px !important;justify-content:flex-end !important}
+  #saver.saver.face .fc-grid{grid-template-rows:140px minmax(0,1fr) 150px !important}
+  /* v166: 시계·날씨는 다시 판 안에(눌러서 달력·날씨로 가는 곳이라 눌리는 것처럼 보여야 한다). 판 윗변은 표지 판 윗변과 같은 줄.
+     판 안: 날짜 한 줄, 그 아래 시각(48)과 날씨가 한 줄에 나란히. 왼쪽·오른쪽 시작선 40 */
+  #saver.saver.face .fc-clock{border-radius:32px !important;padding:24px 40px 0 !important;justify-content:flex-start !important}
   #saver.saver.face .fc-clock .fc-date, #saver.saver.face .fc-clock .fc-date b{font-size:24px !important;line-height:32px !important;font-weight:600 !important;color:rgba(255,255,255,.66) !important}
-  #saver.saver.face .fc-time{font-size:48px !important;line-height:52px !important;margin:2px 0 0 -1px !important}
-  #saver.saver.face .fc-wx{min-height:60px !important;padding:0 40px !important;align-items:center !important}
+  #saver.saver.face .fc-time{font-size:48px !important;line-height:60px !important;margin:0 0 0 -1px !important}
+  #saver.saver.face .fc-wx{align-self:start !important;justify-self:end !important;width:auto !important;margin:56px 0 0 !important;height:60px !important;min-height:60px !important;padding:0 40px 0 16px !important;align-items:center !important}
   #saver.saver.face .fc-wx::before{display:none !important}
   #saver.saver.face .fc-wx .fc-temp, #saver.saver.face .fc-wx .fc-lab, #saver.saver.face .fc-wx .fc-sub{line-height:32px !important;margin-top:0 !important;margin-bottom:0 !important;align-self:center !important}
-  #saver.saver.face .fc-wx .fc-sub{display:block !important;margin-left:auto !important;font-size:24px !important;font-weight:500 !important;color:rgba(255,255,255,.66) !important}
+  #saver.saver.face .fc-wx .fc-sub{display:none !important}
   /* 표지의 주 단추: 남색 바탕 위 단추 규칙(옅은 흰 채움 + 테두리). 흰 덩어리는 누르는 순간만 */
   #saver.saver.face .cc-foot.rd{background:rgba(255,255,255,.16) !important;color:#fff !important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55) !important;height:72px !important;border-radius:36px !important;padding:0 30px 0 34px !important}
   #saver.saver.face .fc-feat:active .cc-foot.rd{background:#fff !important;color:#1F2F70 !important}
@@ -6690,6 +6691,21 @@ body[data-night] #app .today .td .dot{background:var(--ds-apricot) !important}
   #saver.saver.face .fc-feat.news .cc-r .it span{font-size:28px !important;line-height:60px !important;font-weight:600 !important;color:rgba(255,255,255,.66) !important;white-space:nowrap}
   #saver.saver.face .fc-feat.news .cc-r .it.on b, #saver.saver.face .fc-feat.news .cc-r .it.on span{color:#fff !important;font-weight:700 !important}
 }
+</style>
+<style id="ds2-inner">
+/* ===== ds2-inner (v166): 디자인 가이드 4단계 — 안쪽 화면의 단추·달력 =====
+   단추: 밝은 종이 위 보조 = 흰 채움 + 남색 테두리(3:1), 주 행동(오른쪽 아래 '말하기') = 남색 채움 72. 남색·하늘 바탕 위 = 옅은 흰 채움 + 흰 테두리. 그림자 없음.
+   값은 기존 --pill 변수로만 바꾼다(단추마다 따로 칠하지 않는다). */
+body{--pill:#fff !important; --pill-ink:#18254E !important; --pill-edge:inset 0 0 0 1.5px rgba(24,37,78,.55) !important; --pill-shadow:0 0 0 0 rgba(0,0,0,0) !important; --ds-dot:#B8651F !important}
+body[data-theme=sky], body[data-theme=dusk], body[data-theme=night]{--pill:rgba(255,255,255,.16) !important; --pill-ink:#fff !important; --pill-edge:inset 0 0 0 1px rgba(255,255,255,.55) !important; --ds-dot:#EFA56B !important}
+/* 주 행동 단추: 화면에 하나, 오른쪽 아래 */
+body .zbar{height:72px !important;min-height:72px !important;border-radius:36px !important;font-weight:700 !important}
+body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]) .zbar{background:#2C4287 !important;color:#fff !important;box-shadow:none !important;--ds-dot:#EFA56B}
+/* 달력: 오늘은 꽉 찬 원 대신 옅은 남색 칸 + 굵은 글자(색만으로 나누지 않는다). 주마다 옅은 칸 줄 */
+.cq-grid span.t b, .cq-grid span.t.sa b, .cq-grid span.t.su b{background:rgba(44,66,135,.14) !important;color:#18254E !important;font-weight:800 !important;border-radius:18px !important}
+.cq-grid span.t.s b{box-shadow:0 0 0 3px #2C4287 !important}
+body[data-theme=night] .cq-grid span.t b{background:rgba(255,255,255,.16) !important;color:#F2E8D2 !important}
+.cq-grid{background-image:repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--row) - 1px), rgba(44,66,135,.10) calc(var(--row) - 1px), rgba(44,66,135,.10) var(--row))}
 </style>
 <script>
 // v162: 홈의 시간대 벌 — 아침 7~11시 am, 낮 11~17시 day, 저녁 17~20:30 eve, 그 밖 night. 색만 바꾼다(ds2).

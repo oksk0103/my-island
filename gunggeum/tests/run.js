@@ -346,7 +346,7 @@ async function newsTests(b) {
     await box('[data-act="evadd"]'); await p.speak('치과 가', 5000); c = await cal(); s = await p.st(); ok('날짜를 못 알아들으면 저장하지 않고 되물음', c.length === 0 && /며칠/.test(s.sheet), [c, s.sheet]);
     await p.evaluate(() => { const t = new Date(), ym = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}`; localStorage.setItem('gk-cal', JSON.stringify({ v: 1, last: null, items: [17, 18, 19, 20, 21, 22, 23].map((d, i) => ({ id: 'x' + i, date: `${ym}-${d}`, text: '일정 ' + i, raw: '', at: i })) })); });
     await p.click('#gkHome'); await p.adv(1200); // 되묻기(며칠이야?)가 떠 있던 것을 홈 단추로 닫는다
-    await p.go('cal'); await p.adv(2500); ok('일정이 많을 때: "그리고 N개 더", 넘침 없음', await p.evaluate(() => /그리고 \d+개 더/.test(document.getElementById('agList').textContent) && document.getElementById('agFoot').getBoundingClientRect().bottom <= innerHeight));
+    await p.go('cal'); await p.adv(2500); ok('일정이 많을 때: "더 보기"(개수를 세지 않음), 넘침 없음', await p.evaluate(() => /더 보기/.test(document.getElementById('agList').textContent) && document.getElementById('agFoot').getBoundingClientRect().bottom <= innerHeight));
     await box('.cq-nav [data-d="1"]'); { const m = await p.evaluate(() => [document.getElementById('cqMon').textContent, document.getElementById('cqNow').hidden, document.querySelectorAll('#cqGrid > span').length]); ok('달 넘기기 → 12월, "이번 달" 단추, 칸 수는 7의 배수', m[0] === '12월' && !m[1] && m[2] % 7 === 0, m); }
     await p.context().close();
     // 날씨: 코드마다 제 하늘, 한마디는 지금 상태
@@ -540,9 +540,9 @@ async function newsTests(b) {
     for (const [tm, rd] of [['T07:40', null], ['T12:19', newsDate]]) { const p = await open(b, { time: newsDate + tm, read: rd }); await p.saver();
       const q = await p.evaluate(() => { const g = s => document.querySelector(s), cs = e => getComputedStyle(e), r = e => e.getBoundingClientRect(); const h = g('#saver .cc-h'), t = g('#saver .fc-time'), f = g('#fcFeat'), ck = g('#saver .fc-clock'), wx = g('#saver .fc-wx'), bt = g('#saver .cc-foot.rd');
         const kids = [...f.querySelectorAll('.cc-h, .cc-s2, .cc-foot, .cc-r .it')].filter(e => r(e).height > 0);
-        return { title: parseFloat(cs(h).fontSize), clock: parseFloat(cs(t).fontSize), ckBg: cs(ck).backgroundColor, ckSh: cs(ck).boxShadow, wxH: Math.round(r(wx).height), inside: kids.every(e => r(e).bottom <= r(f).bottom - 8 && r(e).right <= r(f).right - 8), btnH: bt ? Math.round(r(bt).height) : 0, btnBg: bt ? cs(bt).backgroundColor : '', lines: Math.round(r(h).height / parseFloat(cs(h).lineHeight)) }; });
+        return { title: parseFloat(cs(h).fontSize), clock: parseFloat(cs(t).fontSize), ckBg: cs(ck).backgroundColor, ckSh: cs(ck).boxShadow, wxH: Math.round(r(wx).height), inside: kids.every(e => r(e).bottom <= r(f).bottom - 8 && r(e).right <= r(f).right - 8), btnH: bt ? Math.round(r(bt).height) : 0, topEq: Math.abs(r(ck).top - r(f).top) < 1, wxIn: r(wx).bottom <= r(ck).bottom && r(wx).right <= r(ck).right + 1 && r(wx).left >= r(g('#saver .fc-time')).right, btnBg: bt ? cs(bt).backgroundColor : '', lines: Math.round(r(h).height / parseFloat(cs(h).lineHeight)) }; });
       ok(`홈 ${tm}: 표지 제목 72가 주인공(시계 48, 1.5배), 세 줄 안`, q.title === 72 && q.clock === 48 && q.lines <= 3, q);
-      ok(`홈 ${tm}: 시계는 판 없이 맨글자, 날씨 줄 60px 이상`, /rgba\(0, 0, 0, 0\)/.test(q.ckBg) && q.ckSh === 'none' && q.wxH >= 60, q);
+      ok(`홈 ${tm}: 시계·날씨는 판 안에(눌리는 곳으로 보임), 판 윗변이 표지와 같은 줄, 날씨 줄 60px 이상이 판 안`, !/rgba\(0, 0, 0, 0\)/.test(q.ckBg) && q.ckSh !== 'none' && q.wxH >= 60 && q.topEq && q.wxIn, q);
       ok(`홈 ${tm}: 표지 안 글·단추·기사 목록이 판 밖으로 안 나감, 단추 60px 이상·흰 덩어리 아님`, q.inside && q.btnH >= 60 && !/rgb\(255, 255, 255\)/.test(q.btnBg), q);
       await p.context().close(); }
   }
@@ -607,10 +607,10 @@ async function newsTests(b) {
     ok('홈 할 일 판: 네 줄(각 60px 이상) + "더 보기"가 판 안에, 글자 시작선이 같고 개수를 세지 않음 (v162)', q.n === 4 && q.h.every(h => h >= 60) && q.more === '더 보기' && q.moreIn && q.moreX === 0 && !q.cnt, q);
     { const bx = await p.locator('.fc-todo').boundingBox(); await p.mouse.click(bx.x + bx.width - 24, bx.y + bx.height - 16); await p.adv(1500); }
     q = await p.evaluate(() => ({ pg: document.getElementById('saver').dataset.pg, rows: document.querySelectorAll('#pgTodo .td-row').length, t: document.getElementById('pgTtl').textContent }));
-    ok('할 일 타일을 누르면 할 일 화면(큼직한 다섯 줄 + 다음 쪽)', q.pg === 'todo' && q.rows === 5 && /오늘 7개/.test(q.t) && await p.evaluate(() => /다음 쪽/.test(document.querySelector('#pgTodo .td-foot').textContent) && parseFloat(getComputedStyle(document.querySelector('#pgTodo .td-row .tx')).fontSize) >= 50), q);
+    ok('할 일 타일을 누르면 할 일 화면(큼직한 다섯 줄 + 다음 쪽)', q.pg === 'todo' && q.rows === 5 && !/\d+개/.test(q.t) && await p.evaluate(() => /다음 쪽/.test(document.querySelector('#pgTodo .td-foot').textContent) && parseFloat(getComputedStyle(document.querySelector('#pgTodo .td-row .tx')).fontSize) >= 50), q);
     { const r = await p.locator('#pgTodo .td-row').nth(2).boundingBox(); await p.mouse.click(r.x + 200, r.y + r.height / 2); await p.adv(1200); }
     q = await p.evaluate(() => ({ done: JSON.parse(localStorage.getItem('gk-todo')).items.filter(x => x.done).length, t: document.getElementById('pgTtl').textContent }));
-    ok('할 일 화면에서 줄을 누르면 했다로 바뀜', q.done === 1 && /오늘 6개/.test(q.t), q);
+    ok('할 일 화면에서 줄을 누르면 했다로 바뀜', q.done === 1 && !/\d+개/.test(q.t), q);
     await p.click('#gkHome'); await p.adv(1500); q = await p.evaluate(() => document.getElementById('saver').className); ok('할 일 화면 → 홈 단추 → 위젯 면', /\bface\b/.test(q), q); await p.context().close();
     // 밤 12시대 표기
     p = await open(b, { time: newsDate + 'T00:20' }); q = await p.evaluate(() => document.getElementById('tbClock').textContent); ok('0시 20분 시계: "밤 12:20"', /^밤\s*12:20$/.test(q.trim()), q); await p.context().close();
