@@ -458,6 +458,7 @@ async function newsTests(b) {
       await tapS('#agTd .agt-row[data-todo="t0"]'); q = await p2.evaluate(() => [document.querySelector('#agTd .agt-row[data-todo="t0"]').classList.contains('done'), JSON.parse(localStorage.getItem('gk-todo')).items.filter(x => x.done).map(x => x.id).join(), document.getElementById('saver').dataset.pg]);
       ok('v171 달력에서 할 일 줄을 누르면 그 자리에서 줄이 그어지고 저장, 화면은 달력 그대로', q[0] && q[1] === 't0' && q[2] === 'cal', q);
       await tapS('#cqGrid [data-k="2026-11-19"]'); q = await p2.evaluate(() => [...document.querySelectorAll('#agTd .agt-row[data-todo] .tx')].map(x => x.textContent).join(',')); ok('v171 다른 날(19일)을 고르면 그날 할 일만', q === '리코더 연습', q);
+      q = await p2.evaluate(() => { const z = document.querySelector('#agFoot .zbar'); return [z.textContent.trim(), z.scrollWidth <= z.clientWidth + 1]; }); ok('v171 날짜를 골라도 단추 글은 "일정 말하기" 그대로, 단추 밖으로 넘치지 않음', q[0] === '일정 말하기' && q[1], q);
       await tapS('#pgTabs [data-t="todo"]'); q = await p2.evaluate(() => [document.getElementById('saver').dataset.pg, document.querySelector('#pgTabs .on').dataset.t, document.querySelectorAll('#pgTodo .td-row').length]); ok('v171 탭 "할 일" → 할 일 화면(탭 켜짐 바뀜)', q[0] === 'todo' && q[1] === 'todo' && q[2] >= 3, q);
       await tapS('#pgTabs [data-t="cal"]'); q = await p2.evaluate(() => document.getElementById('saver').dataset.pg); ok('v171 탭 "달력" → 달력으로 돌아옴', q === 'cal', q);
       await p2.context().close(); }

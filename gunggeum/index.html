@@ -3124,7 +3124,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (evSel && !ev.some(x => x.id === evSel)) evSel = '';
     const dl = evLoad().last, delRecent = dl && dl.op === 'del' && Date.now() - dl.at < 60e3;
     setH($('agAsk'), evMsg && !fl ? `<p>${escN(evMsg)}</p>` + (yn ? `<span class="pc" data-act="evyes">응, 적어 줘</span><span class="pc" data-act="evno">아니</span>` : delRecent ? `<span class="pc" data-act="evundo">되돌리기</span>` : '') : ''); $('agAsk').hidden = !(evMsg && !fl);
-    setH($('agFoot'), (evSel ? `<span class="pc" data-act="evdel">삭제</span>` : fl ? `<span class="pc" data-act="evdate">다시 말할래</span><span class="pc" data-act="evundo">삭제</span>` : '') + `<span class="zbar" data-act="evadd" role="button">${MIC}${calSel ? evDay(calSel).getDate() + '일에 ' : ''}일정 말하기</span>`);
+    setH($('agFoot'), (evSel ? `<span class="pc" data-act="evdel">삭제</span>` : fl ? `<span class="pc" data-act="evdate">다시 말할래</span><span class="pc" data-act="evundo">삭제</span>` : '') + `<span class="zbar" data-act="evadd" role="button">${MIC}일정 말하기</span>`); // v171: 고른 날짜는 왼쪽 큰 숫자로 이미 보인다 — 단추 글은 늘 같게(예전 '20일에 일정 말하기'는 단추 밖으로 넘쳤다)
   }
   // ---------- 공부칸(v138): 물어본 낱말과 읽은 신문의 낱말을 이 기기에만 모은다(최대 300개). 퀴즈·개수·점수 없이 '다시 보기'만 ----------
   const WORDS_KEY = 'gk-words', WORDS_MAX = 300;
