@@ -6773,7 +6773,8 @@ html body .cq-nav{gap:0 !important}
 .cq-grid span em{display:none}
 @media (min-width:900px){
   .cq-grid span.hd b{color:#B8651F !important}
-  .cq-grid span.hd b{transform:translateY(-10px)} /* v172: 여섯 줄인 달(줄 높이 88)에서도 이름이 고른 날 원·줄 구분선과 겹치지 않게 숫자를 조금 올리고 이름을 칸 안에 */
+  .cq-grid span b{border-radius:18px !important} /* v172: 고른 날 표시도 오늘 칸과 같은 둥근 네모(원은 여섯 줄인 달에서 위 구분선에 닿았다) */
+  .cq-grid span.hd b{height:54px !important;transform:translateY(-11px)} /* v172: 여섯 줄인 달(줄 높이 88)에서도 이름이 고른 날 원·줄 구분선과 겹치지 않게 숫자를 조금 올리고 이름을 칸 안에 */
   .cq-grid span.hd.t b{color:#18254E !important}
   .cq-grid span.hd em{display:block;position:absolute;left:0;right:0;top:calc(50% + 26px);text-align:center;font:600 16px/18px "Pretendard",sans-serif;font-style:normal;letter-spacing:-.03em;color:#B8651F;white-space:nowrap;pointer-events:none}
   body[data-theme=night] .cq-grid span.hd b, body[data-theme=night] .cq-grid span.hd em{color:#EFA56B !important}
