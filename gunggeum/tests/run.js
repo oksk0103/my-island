@@ -541,7 +541,7 @@ async function newsTests(b) {
       const q = await p.evaluate(() => { const g = s => document.querySelector(s), cs = e => getComputedStyle(e), r = e => e.getBoundingClientRect(); const h = g('#saver .cc-h'), t = g('#saver .fc-time'), f = g('#fcFeat'), ck = g('#saver .fc-clock'), wx = g('#saver .fc-wx'), bt = g('#saver .cc-foot.rd');
         const kids = [...f.querySelectorAll('.cc-h, .cc-s2, .cc-foot, .cc-r .it')].filter(e => r(e).height > 0);
         return { title: parseFloat(cs(h).fontSize), clock: parseFloat(cs(t).fontSize), ckBg: cs(ck).backgroundColor, ckSh: cs(ck).boxShadow, wxH: Math.round(r(wx).height), inside: kids.every(e => r(e).bottom <= r(f).bottom - 8 && r(e).right <= r(f).right - 8), btnH: bt ? Math.round(r(bt).height) : 0, topEq: Math.abs(r(ck).top - r(f).top) < 1, wxIn: r(wx).bottom <= r(ck).bottom && r(wx).right <= r(ck).right + 1 && r(wx).left >= r(g('#saver .fc-time')).right, btnBg: bt ? cs(bt).backgroundColor : '', lines: Math.round(r(h).height / parseFloat(cs(h).lineHeight)) }; });
-      ok(`홈 ${tm}: 표지 제목 72가 주인공(시계 48, 1.5배), 세 줄 안`, q.title === 72 && q.clock === 48 && q.lines <= 3, q);
+      ok(`홈 ${tm}: 표지 제목 72가 주인공(시계 60, 부모 요청), 세 줄 안`, q.title === 72 && q.clock === 60 && q.lines <= 3, q);
       ok(`홈 ${tm}: 시계·날씨는 판 안에(눌리는 곳으로 보임), 판 윗변이 표지와 같은 줄, 날씨 줄 60px 이상이 판 안`, !/rgba\(0, 0, 0, 0\)/.test(q.ckBg) && q.ckSh !== 'none' && q.wxH >= 60 && q.topEq && q.wxIn, q);
       ok(`홈 ${tm}: 표지 안 글·단추·기사 목록이 판 밖으로 안 나감, 단추 60px 이상·흰 덩어리 아님`, q.inside && q.btnH >= 60 && !/rgb\(255, 255, 255\)/.test(q.btnBg), q);
       await p.context().close(); }
@@ -585,11 +585,11 @@ async function newsTests(b) {
     // 할 일: '색종이'가 '색종'으로 잘리지 않음
     p = await open(b, { time: newsDate + 'T16:00', offline: true }); await p.say('준비물 색종이 적어 줘');
     const td = await p.evaluate(() => JSON.stringify(localStorage.getItem('gk-todo') || '') + document.body.innerText.slice(0, 0)); ok('할 일 "색종이"가 그대로 적힘', /색종이/.test(td), td.slice(0, 160)); await p.context().close();
-    // 밤 10시~아침 6시: 답 화면도 어둡게
-    p = await open(b, { time: newsDate + 'T22:40' }); await p.say('달은 왜 빛나', 9000);
+    // 밤 9시~아침 6시: 답 화면도 어둡게 (v167: 22시 → 21시)
+    p = await open(b, { time: newsDate + 'T21:10' }); await p.say('달은 왜 빛나', 9000);
     q = await p.evaluate(() => { const L = c => { const m = c.match(/[\d.]+/g).map(Number); return (m[0] * 299 + m[1] * 587 + m[2] * 114) / 1000; }; return { night: document.body.hasAttribute('data-night'), ink: L(getComputedStyle(document.getElementById('sheet')).color), bg: L(getComputedStyle(document.body).backgroundColor), app: getComputedStyle(document.getElementById('app')).backgroundImage.slice(0, 60) }; });
     ok('밤 답 화면: 어두운 바탕에 밝은 글씨', q.night && q.ink > 180 && /rgb\(14, 24, 57\)/.test(q.app), q); await p.context().close();
-    p = await open(b, { time: newsDate + 'T21:50' }); await p.say('달은 왜 빛나', 9000); q = await p.evaluate(() => document.body.hasAttribute('data-night')); ok('밤 9시 50분 답 화면은 아직 밝음', !q); await p.context().close();
+    p = await open(b, { time: newsDate + 'T20:50' }); await p.say('달은 왜 빛나', 9000); q = await p.evaluate(() => document.body.hasAttribute('data-night')); ok('밤 8시 50분 답 화면은 아직 밝음', !q); await p.context().close();
     // 쉬는 시간: 언제 다시 되는지 아이 말로, 묻기 타일도 알려 줌
     p = await open(b, { time: newsDate + 'T21:30', settings: { hFrom: 7, hTo: 21, restDark: 'off' } }); await p.saver();
     q = await p.evaluate(() => document.querySelector('.fc-app[data-tile="ask"] .fc-lab').textContent); ok('쉬는 시간 묻기 타일: "내일 아침 7시에 만나"', q === '내일 아침 7시에 만나', q);

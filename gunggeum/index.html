@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v166</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v167</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v166</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v167</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -3059,7 +3059,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('gkHome').hidden = !on;
     document.body.dataset.tone = sv && saverEl.classList.contains('pgx') && saverEl.dataset.tone ? saverEl.dataset.tone : hourTone();
     document.body.toggleAttribute('data-late', new Date().getHours() >= 21); // 21시 뒤에만 밝은 판을 한 단 낮춘다
-    { const h = new Date().getHours(); document.body.toggleAttribute('data-night', h >= 22 || h < 6); } // v135: 밤 10시~아침 6시엔 묻기·답 화면도 어둡게(부모 요청)
+    { const h = new Date().getHours(); document.body.toggleAttribute('data-night', h >= 21 || h < 6); } // v135: 밤 10시~아침 6시엔 묻기·답 화면도 어둡게(부모 요청)
     document.body.dataset.scr = sv ? (saverEl.classList.contains('pgx') ? saverEl.dataset.pg : saverEl.classList.contains('rnp') ? 'front' : saverEl.classList.contains('sky') ? 'sky' : 'face') : app.dataset.paper ? 'paper' : 'ask'; // 조작부 재질이 화면을 따라가게
     { const h = new Date().getHours(), nt = h >= 22 || h < 6, sc = document.body.dataset.scr; // v136: 부품 재질은 테마 하나로 정한다(토큰은 body 에서만)
       $('askName').hidden = sc !== 'ask'; tbClock();
@@ -3420,7 +3420,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (dn) { dn.hidden = !allDone; if (allDone) dn.textContent = `오늘 할 일 ${list.length}개 다 했어`; }
   }
   $('tdTodoL').addEventListener('click', e => { const r = e.target.closest('[data-todo]'); if (r) todoToggle(r.dataset.todo); });
-  function tbClock() { const d = new Date(), h = d.getHours(); document.body.toggleAttribute('data-night', h >= 22 || h < 6); const html = `<small>${ampm(h)}</small>${h % 12 || 12}:${pad(d.getMinutes())}`; if ($('tbClock').innerHTML !== html) $('tbClock').innerHTML = html; document.querySelectorAll('.ds-clock').forEach(c => { if (c.innerHTML !== html) c.innerHTML = html; }); }
+  function tbClock() { const d = new Date(), h = d.getHours(); document.body.toggleAttribute('data-night', h >= 21 || h < 6); const html = `<small>${ampm(h)}</small>${h % 12 || 12}:${pad(d.getMinutes())}`; if ($('tbClock').innerHTML !== html) $('tbClock').innerHTML = html; document.querySelectorAll('.ds-clock').forEach(c => { if (c.innerHTML !== html) c.innerHTML = html; }); }
   tbClock(); setInterval(() => { tbClock(); homeSync(); }, 15e3);
 
   // ---------- 홈의 '오늘' 줄: 신문 · 밤하늘 · 날씨 ----------
@@ -4042,7 +4042,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v166';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v167';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6662,13 +6662,13 @@ body[data-night] #app .today .td .dot{background:var(--ds-apricot) !important}
    한 화면 한 주인공: 표지 제목(72)이 주인공. 시계는 작은 판 안에 48(표지 제목의 1.5분의 1), 큰 시계는 밤 화면이 맡는다.
    오른쪽 단: 시계·날씨(140) / 할 일(남는 높이) / 묻기·공부칸(150). 모니터(폭 900 이상)에서만. */
 @media (min-width:900px){
-  #saver.saver.face .fc-grid{grid-template-rows:140px minmax(0,1fr) 150px !important}
+  #saver.saver.face .fc-grid{grid-template-rows:152px minmax(0,1fr) 150px !important}
   /* v166: 시계·날씨는 다시 판 안에(눌러서 달력·날씨로 가는 곳이라 눌리는 것처럼 보여야 한다). 판 윗변은 표지 판 윗변과 같은 줄.
      판 안: 날짜 한 줄, 그 아래 시각(48)과 날씨가 한 줄에 나란히. 왼쪽·오른쪽 시작선 40 */
   #saver.saver.face .fc-clock{border-radius:32px !important;padding:24px 40px 0 !important;justify-content:flex-start !important}
   #saver.saver.face .fc-clock .fc-date, #saver.saver.face .fc-clock .fc-date b{font-size:24px !important;line-height:32px !important;font-weight:600 !important;color:rgba(255,255,255,.66) !important}
-  #saver.saver.face .fc-time{font-size:48px !important;line-height:60px !important;margin:0 0 0 -1px !important}
-  #saver.saver.face .fc-wx{align-self:start !important;justify-self:end !important;width:auto !important;margin:56px 0 0 !important;height:60px !important;min-height:60px !important;padding:0 40px 0 16px !important;align-items:center !important}
+  #saver.saver.face .fc-time{font-size:60px !important;line-height:72px !important;margin:0 0 0 -1px !important}
+  #saver.saver.face .fc-wx{align-self:start !important;justify-self:end !important;width:auto !important;margin:56px 0 0 !important;height:72px !important;min-height:72px !important;padding:0 40px 0 16px !important;align-items:center !important}
   #saver.saver.face .fc-wx::before{display:none !important}
   #saver.saver.face .fc-wx .fc-temp, #saver.saver.face .fc-wx .fc-lab, #saver.saver.face .fc-wx .fc-sub{line-height:32px !important;margin-top:0 !important;margin-bottom:0 !important;align-self:center !important}
   #saver.saver.face .fc-wx .fc-sub{display:none !important}
