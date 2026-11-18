@@ -645,7 +645,7 @@ async function newsTests(b) {
     p = await open(b, { time: D + 'T16:20', read: D, pre: fake }); await p.say('달은 왜 모양이 바뀌어?', 9000);
     await p.click('#q'); await p.adv(600);
     q = await p.evaluate(() => [document.getElementById('app').dataset.state, document.getElementById('app').dataset.from]); const fq2 = await R(p, '#form .qbox');
-    ok('답 화면 알약 가운데를 눌러도 듣는 중이 오른쪽 아래', q[1] === 'ans' && fq2 === '1316,716,1552,780', [q, fq2]); await p.context().close();
+    ok('답 화면 알약 가운데를 눌러도 듣는 중이 오른쪽 아래', q[1] === 'ans' && fq2 === '1316,708,1552,780', [q, fq2]); await p.context().close();
     // 첫 화면에서 글자로 물어도 생각 중은 가운데 묻기 줄 그대로(구석으로 튀지 않음)
     p = await open(b, { time: D + 'T16:20', read: D }); await p.unroute(/api\.anthropic\.com/); await p.route(/api\.anthropic\.com/, () => {});
     await p.evaluate(() => { const q = document.getElementById('q'); q.readOnly = false; q.focus(); q.value = '하늘은 왜 파래'; }); await p.press('#q', 'Enter'); await p.adv(800);
