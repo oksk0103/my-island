@@ -445,7 +445,7 @@ async function newsTests(b) {
     await p.say('삭제', 3000); c = await cal(); ok('"삭제" → 되돌림', !c.includes('2026-11-27 치과'), c); await p.context().close();
     // 8. 오늘이 토요일·일요일이어도 파란 원 안 숫자는 흰색
     for (const [d, n] of [['2026-11-21', '토'], ['2026-11-22', '일']]) { p = await open(b, { time: d + 'T16:10', read: d }); await p.go('cal'); await p.adv(2500);
-      { const tc = await p.evaluate(() => { const c = getComputedStyle(document.querySelector('#cqGrid span.t b')); return [c.color, c.fontWeight]; }); ok(`오늘이 ${n}요일: 오늘 칸 숫자는 먹색 굵은 글자(v166, 빨강·파랑 아님)`, tc[0] === 'rgb(24, 37, 78)' && +tc[1] >= 700, tc); } await p.context().close(); }
+      { const tc = await p.evaluate(() => { const c = getComputedStyle(document.querySelector('#cqGrid span.t b')); return [c.color, c.fontWeight]; }); ok(`오늘이 ${n}요일: 오늘 칸 숫자는 먹색 굵은 글자(v166, 빨강·파랑 아님)`, tc[0] === 'rgb(24, 37, 78)' && +tc[1] >= 700, tc); } { const ln = await p.evaluate(() => { const g = document.getElementById('cqGrid'), c = g.children[0], r = c.getBoundingClientRect(), r2 = g.children[7].getBoundingClientRect(); return [getComputedStyle(g).backgroundImage, getComputedStyle(c).boxShadow !== 'none', Math.abs(r.bottom - r2.top) < 1]; }); ok(`달력(${n}): 주 구분 줄은 칸 아랫변에(바탕 무늬 아님) — 줄 높이와 어긋나지 않음`, ln[0] === 'none' && ln[1] && ln[2], ln); } await p.context().close(); }
     // 6. 질문 상한이어도 일정 넣기는 된다, 쉬는 시간에는 조용한 한 줄
     p = await open(b, { time: D0 + 'T16:00', read: D0, settings: { cap: 10 } }); await p.evaluate(() => localStorage.setItem('gk-count-2026-11-16', '10')); await p.go('cal'); await p.adv(2500);
     await box('[data-act="evadd"]'); s = await p.st(); await p.say('27일에 치과 가', 3000); await p.adv(2500); c = await cal(); ok('질문 상한에 걸려도 일정 말하기는 된다 (AI 안 부름)', !s.saver && c.includes('2026-11-27 치과') && p.api === 0, [s.saver, c]); await p.context().close();
@@ -589,6 +589,9 @@ async function newsTests(b) {
     // 할 일: '색종이'가 '색종'으로 잘리지 않음
     p = await open(b, { time: newsDate + 'T16:00', offline: true }); await p.say('준비물 색종이 적어 줘');
     const td = await p.evaluate(() => JSON.stringify(localStorage.getItem('gk-todo') || '') + document.body.innerText.slice(0, 0)); ok('할 일 "색종이"가 그대로 적힘', /색종이/.test(td), td.slice(0, 160)); await p.context().close();
+    p = await open(b, { time: newsDate + 'T16:20' }); await p.say('달은 왜 빛나', 9000);
+    q = await p.evaluate(() => { const x = document.querySelector('#app .qbar .qbox'), c = getComputedStyle(x), r = x.getBoundingClientRect(); return [c.backgroundColor, Math.round(r.height), getComputedStyle(document.querySelector('#app .qbox .micico')).stroke]; });
+    ok("v169 답 화면 '물어보기': 남색 채움 72, 마이크 흰색", q[0] === 'rgb(44, 66, 135)' && q[1] === 72 && q[2] === 'rgb(255, 255, 255)', q); await p.context().close();
     // 밤 9시~아침 6시: 답 화면도 어둡게 (v167: 22시 → 21시)
     p = await open(b, { time: newsDate + 'T21:10' }); await p.say('달은 왜 빛나', 9000);
     q = await p.evaluate(() => { const L = c => { const m = c.match(/[\d.]+/g).map(Number); return (m[0] * 299 + m[1] * 587 + m[2] * 114) / 1000; }; return { night: document.body.hasAttribute('data-night'), ink: L(getComputedStyle(document.getElementById('sheet')).color), bg: L(getComputedStyle(document.body).backgroundColor), app: getComputedStyle(document.getElementById('app')).backgroundImage.slice(0, 60) }; });
