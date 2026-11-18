@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v169</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v170</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v169</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v170</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -4042,7 +4042,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v169';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v170';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6707,6 +6707,13 @@ body:not([data-theme=sky]):not([data-theme=dusk]):not([data-theme=night]) .zbar{
 body[data-theme=night] .cq-grid span.t b{background:rgba(255,255,255,.16) !important;color:#F2E8D2 !important}
 .cq-grid > span{box-shadow:inset 0 -1px 0 rgba(44,66,135,.10)} /* v169: 주 구분 줄은 칸마다(줄 높이가 달라도 맞는다) — 예전 바탕 무늬는 80px 고정이라 실제 줄(118px)과 어긋났다 */
 body[data-theme=night] .cq-grid > span{box-shadow:inset 0 -1px 0 rgba(255,255,255,.10)}
+/* v170: 할 일 앱 — 요일(기한)을 줄 오른쪽 끝이 아니라 글자 바로 옆에. 한 줄로 읽히게 */
+@media (min-width:900px){
+  #saver .pg-todo .td-row{grid-template-columns:64px minmax(0,auto) minmax(max-content,1fr) !important}
+  #saver .pg-todo .td-row .du{justify-self:start;white-space:nowrap}
+}
+/* v170: 머리줄 제목(질문·11월·공부칸…)을 64 로고 옆에서 작아 보이지 않게 30 → 34. 화면의 주인공과 다투지 않도록 글꼴은 그대로 */
+html body .pg-ttl, html body .ds-name, html body #saver.saver.sky .sky-name, html body #saver[data-pg=cal] .cq-head b{font-size:34px !important}
 /* v169: 달력의 지난달·다음달 화살표 — 테두리 원 두 개가 제목보다 눈에 띄던 것. 누르는 자리(64)는 그대로, 원과 채움은 없애고 흐린 먹색 꺾쇠만 */
 html body .cq-nav .rb{background:transparent !important;box-shadow:none !important;color:rgba(24,37,78,.52) !important}
 html body[data-theme=night] .cq-nav .rb, html body[data-night] .cq-nav .rb{color:rgba(242,232,210,.6) !important}
