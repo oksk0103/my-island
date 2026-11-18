@@ -2456,7 +2456,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function pieceClose() { if (!pcFrame) return; pcFrame.remove(); pcFrame = null; clearInterval(pcTimer); window.__gkSaverAt = Date.now(); if (saverEl.hidden) enterSaver(); else renderSaver(); diag('saver', '조각 장 닫음'); }
   function pieceOpen(pc) {
     if (pcFrame) return; hush(); pcFrame = document.createElement('iframe'); pcFrame.id = 'pcFrame'; pcFrame.src = pc.page + (pc.page.includes('?') ? '&' : '?') + 'v=' + APP_V; pcFrame.title = pc.tag || '오늘의 이야기';
-    pcFrame.setAttribute('style', 'position:fixed;inset:0;width:100vw;height:100vh;border:0;z-index:2147483000;background:#120F33');
+    pcFrame.setAttribute('style', 'position:fixed;inset:0;width:100vw;height:100vh;border:0;z-index:2147483000;background:#13203F');
     document.body.append(pcFrame); pcTouch = Date.now(); clearInterval(pcTimer); pcTimer = setInterval(() => { if (Date.now() - pcTouch > 10 * 60e3) pieceClose(); }, 15e3);
     pcFrame.addEventListener('load', () => { try { pcFrame.contentWindow.focus(); } catch (e) {} });
     diag('saver', '조각 장 열림: ' + pc.page);
