@@ -206,7 +206,7 @@ async function newsTests(b) {
   { const bx = await p.locator('#svFace [data-cv="news"]').boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); } ok('신문 갈래 → 신문 표지', await feat() === 'news', await feat());
   await tile('news'); s = await p.st(); ok('신문 표지 → 신문 1면', s.saver.includes('rnp') && !s.paper, s);
   { const bx = await p.locator('#rnFront [data-rn="art"][data-i="0"]').boundingBox(); await p.mouse.click(bx.x + 80, bx.y + 60); await p.adv(1500); } s = await p.st(); ok('1면의 머리기사 → 기사 열림', !s.saver && s.paper, s);
-  await p.saver(); ok('깨어났다 돌아와도 고른 갈래 그대로 (v161)', await feat() === 'news', await feat()); await p.evaluate(() => { delete window.__gkCover; localStorage.setItem('gk-cover', JSON.stringify({ k: 'news', day: '2026-01-01' })); }); await p.saver(); ok('다른 날에 고른 갈래는 쓰지 않음 (v161)', await feat() === eve, await feat());
+  await p.saver(); ok('깨어났다 돌아와도 고른 갈래 그대로 (v161)', await feat() === 'news', await feat()); await p.evaluate(() => { delete window.__gkCover; localStorage.setItem('gk-cover', JSON.stringify({ k: 'piece', day: '2026-01-01' })); }); await p.saver(); ok('다른 날에 고른 갈래는 쓰지 않음 (v161)', await feat() !== 'piece', await feat());
   await p.saver(); await tile('todo'); s = await p.st(); ok('할 일 빈 곳 → 할 일 화면 (v135)', s.saver === 'pgx' && await p.evaluate(() => document.getElementById('saver').dataset.pg === 'todo'), s);
   { const a0 = p.api; await p.click('[data-act="tdadd"]'); await p.adv(800); await p.speak('수학 익힘책', 3000); await p.adv(1500); s = await p.st();
     const td = await p.evaluate(() => (JSON.parse(localStorage.getItem('gk-todo') || '{"items":[]}').items || []).map(x => x.text));
