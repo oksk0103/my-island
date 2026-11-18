@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v163</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v164</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v163</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v164</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -3412,7 +3412,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (c.contains('pgx') && saverEl.dataset.pg === 'todo') renderTodoPg();
     if (c.contains('face')) {
       $('fcTodoN').textContent = list.length ? left : '0'; $('fcTodoS').textContent = !list.length ? '할 일' : left ? '할 일 남았어' : '다 했어';
-      const hf = list.length ? todoRows(list, 'fc-row', list.length > 4 ? 3 : 4).replace('svt-more', 'fc-more').replace('tdo-more', 'fc-more') : '<div class="fc-empty">할 일이 생기면 말해 줘.</div>';
+      const hf = list.length ? todoRows(list, 'fc-row', list.length > 5 ? 4 : 5).replace('svt-more', 'fc-more').replace('tdo-more', 'fc-more') : '<div class="fc-empty">할 일이 생기면 말해 줘.</div>';
       if ($('fcTodoL').innerHTML !== hf) $('fcTodoL').innerHTML = hf;
     }
     let dn = $('svTodoDone'); const allDone = clockPage && !left && list.length > 0;
@@ -4042,7 +4042,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v163';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v164';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6603,7 +6603,7 @@ html[data-ds=night]{--ds-home:#0E1839; --ds-home-top:#152250; --ds-glow:rgba(150
   box-shadow:inset 0 0 0 1px var(--ds-line), inset 0 1px 0 var(--ds-shine), var(--ds-shadow) !important}
 #saver.saver.face .fc-feat{background:var(--ds-hero) !important}
 /* 홈 할 일 판: 판 안쪽 여백 24·40(시계 판의 날짜·시각·날씨 시작선과 같은 40), 줄 높이 60(누르는 곳), 줄 사이 선 없음(여백으로 나눔),
-   동그라미 30 + 간격 18 = 글자 시작 48 → '더 보기'도 같은 48에서 시작. 네 줄까지, 넘치면 세 줄 + 더 보기 */
+   동그라미 30 + 간격 18 = 글자 시작 48 → '더 보기'도 같은 48에서 시작. 다섯 줄까지, 넘치면 네 줄 + 더 보기(v164: 시계가 줄어 판이 커짐) */
 @media (min-width:900px){
   #saver.saver.face .fc-todo{padding:24px 40px !important;justify-content:flex-start !important}
   #saver.saver.face .fc-wx{padding-left:40px !important;padding-right:40px !important}
@@ -6656,6 +6656,40 @@ body[data-night] #app .today .td .dot{background:var(--ds-apricot) !important}
 /* 큰 숫자: 날씨 기온, 달력 오늘 날짜 */
 .wx-temp{font-family:var(--ds-buri) !important;font-weight:600 !important;letter-spacing:-.03em !important}
 #agTtl b{font-family:var(--ds-buri) !important;font-weight:600 !important;font-variant-numeric:tabular-nums}
+</style>
+<style id="ds2-home">
+/* ===== ds2-home (v164): 디자인 가이드 3단계 — 홈 구성 =====
+   한 화면 한 주인공: 표지 제목(72)이 주인공. 시계는 판 없이 맨글자 48(표지 제목의 1.5분의 1), 큰 시계는 밤 화면이 맡는다.
+   오른쪽 단: 시계·날씨(150) / 할 일(남는 높이) / 묻기·공부칸(150). 모니터(폭 900 이상)에서만. */
+@media (min-width:900px){
+  #saver.saver.face .fc-grid{grid-template-rows:150px minmax(0,1fr) 150px !important}
+  /* 시계: 판 모양을 걷고 바탕 위 글자로. 날짜(위) → 시각 48 → 날씨 한 줄. 왼쪽 시작선은 아래 판 안 글자와 같은 40 */
+  #saver.saver.face .fc-clock{background:none !important;box-shadow:none !important;border-radius:0 !important;padding:0 40px 60px !important;justify-content:flex-end !important}
+  #saver.saver.face .fc-clock .fc-date, #saver.saver.face .fc-clock .fc-date b{font-size:24px !important;line-height:32px !important;font-weight:600 !important;color:rgba(255,255,255,.66) !important}
+  #saver.saver.face .fc-time{font-size:48px !important;line-height:52px !important;margin:2px 0 0 -1px !important}
+  #saver.saver.face .fc-wx{min-height:60px !important;padding:0 40px !important;align-items:center !important}
+  #saver.saver.face .fc-wx::before{display:none !important}
+  #saver.saver.face .fc-wx .fc-temp, #saver.saver.face .fc-wx .fc-lab, #saver.saver.face .fc-wx .fc-sub{line-height:32px !important;margin-top:0 !important;margin-bottom:0 !important;align-self:center !important}
+  #saver.saver.face .fc-wx .fc-sub{display:block !important;margin-left:auto !important;font-size:24px !important;font-weight:500 !important;color:rgba(255,255,255,.66) !important}
+  /* 표지의 주 단추: 남색 바탕 위 단추 규칙(옅은 흰 채움 + 테두리). 흰 덩어리는 누르는 순간만 */
+  #saver.saver.face .cc-foot.rd{background:rgba(255,255,255,.16) !important;color:#fff !important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55) !important;height:72px !important;border-radius:36px !important;padding:0 30px 0 34px !important}
+  #saver.saver.face .fc-feat:active .cc-foot.rd{background:#fff !important;color:#1F2F70 !important}
+  #saver.saver.face .cc-foot.rd svg{stroke:currentColor !important}
+  /* 할 일 판은 내용만큼만(빈 상자를 크게 그리지 않는다) */
+  #saver.saver.face .fc-todo{align-self:start !important;height:auto !important;min-height:108px !important}
+  /* 표지 제목 = 주인공 */
+  #saver.saver.face .cc-h, #saver.saver.face .cc-h.pce{font-size:72px !important;line-height:88px !important;max-width:none !important;-webkit-line-clamp:3}
+  /* 신문 표지: 제목이 폭을 다 쓰도록 기사 목록(1·2·3)을 오른쪽 단에서 아래 한 줄로 */
+  #saver.saver.face .fc-feat.news .cc-mid{display:flex !important;flex-direction:column !important;gap:28px !important}
+  #saver.saver.face .fc-feat.news .cc-l{width:auto !important;max-width:none !important}
+  #saver.saver.face .fc-feat.news .cc-s2{max-width:820px !important}
+  #saver.saver.face .fc-feat.news .cc-r:not(.cc-hz){width:auto !important;display:flex !important;justify-content:flex-start !important;align-self:stretch !important;gap:40px !important;padding:0 !important;margin:0 !important}
+  #saver.saver.face .fc-feat.news .cc-r .it{display:flex !important;align-items:baseline !important;gap:12px !important;min-height:60px !important;padding:0 !important;box-shadow:none !important}
+  #saver.saver.face .fc-feat.news .cc-r .it b{font-size:28px !important;font-weight:600 !important;color:rgba(255,255,255,.66) !important}
+  #saver.saver.face .fc-feat.news .cc-r .it small{display:none !important}
+  #saver.saver.face .fc-feat.news .cc-r .it span{font-size:28px !important;line-height:60px !important;font-weight:600 !important;color:rgba(255,255,255,.66) !important;white-space:nowrap}
+  #saver.saver.face .fc-feat.news .cc-r .it.on b, #saver.saver.face .fc-feat.news .cc-r .it.on span{color:#fff !important;font-weight:700 !important}
+}
 </style>
 <script>
 // v162: 홈의 시간대 벌 — 아침 7~11시 am, 낮 11~17시 day, 저녁 17~20:30 eve, 그 밖 night. 색만 바꾼다(ds2).

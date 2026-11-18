@@ -535,6 +535,18 @@ async function newsTests(b) {
     ok('이 흐름에서 페이지 오류 없음', p.cerr.length === 0, p.cerr.slice(0, 3)); await p.context().close();
   }
 
+  { // v164. 디자인 가이드 3단계 — 홈 구성
+    console.log('v164. 디자인 가이드 3단계 (홈 구성)');
+    for (const [tm, rd] of [['T07:40', null], ['T12:19', newsDate]]) { const p = await open(b, { time: newsDate + tm, read: rd }); await p.saver();
+      const q = await p.evaluate(() => { const g = s => document.querySelector(s), cs = e => getComputedStyle(e), r = e => e.getBoundingClientRect(); const h = g('#saver .cc-h'), t = g('#saver .fc-time'), f = g('#fcFeat'), ck = g('#saver .fc-clock'), wx = g('#saver .fc-wx'), bt = g('#saver .cc-foot.rd');
+        const kids = [...f.querySelectorAll('.cc-h, .cc-s2, .cc-foot, .cc-r .it')].filter(e => r(e).height > 0);
+        return { title: parseFloat(cs(h).fontSize), clock: parseFloat(cs(t).fontSize), ckBg: cs(ck).backgroundColor, ckSh: cs(ck).boxShadow, wxH: Math.round(r(wx).height), inside: kids.every(e => r(e).bottom <= r(f).bottom - 8 && r(e).right <= r(f).right - 8), btnH: bt ? Math.round(r(bt).height) : 0, btnBg: bt ? cs(bt).backgroundColor : '', lines: Math.round(r(h).height / parseFloat(cs(h).lineHeight)) }; });
+      ok(`홈 ${tm}: 표지 제목 72가 주인공(시계 48, 1.5배), 세 줄 안`, q.title === 72 && q.clock === 48 && q.lines <= 3, q);
+      ok(`홈 ${tm}: 시계는 판 없이 맨글자, 날씨 줄 60px 이상`, /rgba\(0, 0, 0, 0\)/.test(q.ckBg) && q.ckSh === 'none' && q.wxH >= 60, q);
+      ok(`홈 ${tm}: 표지 안 글·단추·기사 목록이 판 밖으로 안 나감, 단추 60px 이상·흰 덩어리 아님`, q.inside && q.btnH >= 60 && !/rgb\(255, 255, 255\)/.test(q.btnBg), q);
+      await p.context().close(); }
+  }
+
   { // 17. 달 카드: 오늘 이름과 같은 "다음 달"을 내지 않음 (오늘 반달인데 "반달은 내일" 금지)
     console.log('17. 달 카드 다음 모양');
     const p = await open(b, { time: '2026-11-24T19:30', read: '2026-11-24' }); await p.saver(); // v147부터 달 카드는 보름·초승 무렵 저녁에만 — 보름 무렵(11/24)으로 본다
@@ -592,7 +604,7 @@ async function newsTests(b) {
     p = await open(b, { time: newsDate + 'T19:40', read: newsDate });
     await p.evaluate(nd => { const T = ['미니 수학 두 장', '학습지 하나', '받아쓰기 연습', '일기 쓰기', '리코더 연습', '독서록 쓰기', '색종이 챙기기']; const now = Date.now(); localStorage.setItem('gk-todo', JSON.stringify({ items: T.map((t, i) => ({ id: 't' + i, text: t, due: nd, at: now - (10 - i) * 1000, done: 0 })), last: null })); }, newsDate);
     await p.saver(); q = await p.evaluate(() => { const t = document.querySelector('.fc-todo'), r = t.getBoundingClientRect(); const rows = [...t.querySelectorAll('.fc-row')].filter(x => { const q = x.getBoundingClientRect(); return q.bottom <= r.bottom && q.height > 30; }); const m = t.querySelector('.fc-more'), mr = m && m.getBoundingClientRect(), tx = t.querySelector('.fc-row .tx').getBoundingClientRect(); return { n: rows.length, h: rows.map(x => Math.round(x.getBoundingClientRect().height)), more: (m || {}).textContent, moreIn: !!mr && mr.bottom <= r.bottom, moreX: mr && Math.round(parseFloat(getComputedStyle(m).paddingLeft) + mr.left - tx.left), cnt: /\d+개/.test(t.textContent) }; });
-    ok('홈 할 일 판: 세 줄(각 60px 이상) + "더 보기"가 판 안에, 글자 시작선이 같고 개수를 세지 않음 (v162)', q.n === 3 && q.h.every(h => h >= 60) && q.more === '더 보기' && q.moreIn && q.moreX === 0 && !q.cnt, q);
+    ok('홈 할 일 판: 네 줄(각 60px 이상) + "더 보기"가 판 안에, 글자 시작선이 같고 개수를 세지 않음 (v162)', q.n === 4 && q.h.every(h => h >= 60) && q.more === '더 보기' && q.moreIn && q.moreX === 0 && !q.cnt, q);
     { const bx = await p.locator('.fc-todo').boundingBox(); await p.mouse.click(bx.x + bx.width - 24, bx.y + bx.height - 16); await p.adv(1500); }
     q = await p.evaluate(() => ({ pg: document.getElementById('saver').dataset.pg, rows: document.querySelectorAll('#pgTodo .td-row').length, t: document.getElementById('pgTtl').textContent }));
     ok('할 일 타일을 누르면 할 일 화면(큼직한 다섯 줄 + 다음 쪽)', q.pg === 'todo' && q.rows === 5 && /오늘 7개/.test(q.t) && await p.evaluate(() => /다음 쪽/.test(document.querySelector('#pgTodo .td-foot').textContent) && parseFloat(getComputedStyle(document.querySelector('#pgTodo .td-row .tx')).fontSize) >= 50), q);
