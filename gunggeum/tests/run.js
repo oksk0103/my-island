@@ -560,7 +560,7 @@ async function newsTests(b) {
     // 밤 10시~아침 6시: 답 화면도 어둡게
     p = await open(b, { time: newsDate + 'T22:40' }); await p.say('달은 왜 빛나', 9000);
     q = await p.evaluate(() => { const L = c => { const m = c.match(/[\d.]+/g).map(Number); return (m[0] * 299 + m[1] * 587 + m[2] * 114) / 1000; }; return { night: document.body.hasAttribute('data-night'), ink: L(getComputedStyle(document.getElementById('sheet')).color), bg: L(getComputedStyle(document.body).backgroundColor), app: getComputedStyle(document.getElementById('app')).backgroundImage.slice(0, 60) }; });
-    ok('밤 답 화면: 어두운 바탕에 밝은 글씨', q.night && q.ink > 180 && /rgb\(10, 17, 48\)/.test(q.app), q); await p.context().close();
+    ok('밤 답 화면: 어두운 바탕에 밝은 글씨', q.night && q.ink > 180 && /rgb\(14, 24, 57\)/.test(q.app), q); await p.context().close();
     p = await open(b, { time: newsDate + 'T21:50' }); await p.say('달은 왜 빛나', 9000); q = await p.evaluate(() => document.body.hasAttribute('data-night')); ok('밤 9시 50분 답 화면은 아직 밝음', !q); await p.context().close();
     // 쉬는 시간: 언제 다시 되는지 아이 말로, 묻기 타일도 알려 줌
     p = await open(b, { time: newsDate + 'T21:30', settings: { hFrom: 7, hTo: 21, restDark: 'off' } }); await p.saver();
