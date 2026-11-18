@@ -1,0 +1,102 @@
+{
+ "n": 3,
+ "from": "2026-11-23",
+ "kind": "near",
+ "tag": "independent와 독립",
+ "en": {
+  "w": "independent",
+  "syl": "in·de·pend·ent",
+  "mean": "독립한",
+  "parts": [
+   {
+    "p": "in",
+    "m": "아니다"
+   },
+   {
+    "p": "de",
+    "m": "아래로"
+   },
+   {
+    "p": "pend",
+    "m": "매달리다",
+    "from": "라틴어 pendere",
+    "link": 1
+   },
+   {
+    "p": "ent"
+   }
+  ]
+ },
+ "hz": {
+  "w": "독립",
+  "mean": "홀로 섬",
+  "ch": [
+   {
+    "c": "獨",
+    "hun": "홀로 독"
+   },
+   {
+    "c": "立",
+    "hun": "설 립",
+    "m": "서다",
+    "link": 1
+   }
+  ]
+ },
+ "cover": {
+  "h": "independent 속엔<br>무엇이 숨어 있을까?",
+  "b": "네 생각은? 짐작해 보고 넘겨 봐."
+ },
+ "pages": {
+  "en": {
+   "h": "pend는<br>‘매달리다’야",
+   "b": "de는 ‘아래로’, in은 ‘아니다’야.<br>아무 데도 안 매달린 거야."
+  },
+  "hz": {
+   "h": "獨은 ‘홀로’,<br>立은 ‘서다’",
+   "b": "立은 땅 위에 선 사람 모양이야.<br>혼자 서는 거야."
+  },
+  "pair": {
+   "h": "그림은 달라도<br>뜻은 닮았어",
+   "b": "영어는 ‘안 매달려’.<br>한자는 ‘혼자 서’."
+  }
+ },
+ "src": [
+  {
+   "id": "e1",
+   "claim": "independent = in-(아니다) + dependent, depend는 라틴어 de(아래로) + pendere(매달다)",
+   "url": "https://www.etymonline.com/word/independent",
+   "note": "etymonline: 'in- (1) \"not, opposite of\" + dependent'; dependere 'to hang from, hang down'; de 'from, down'; pendere 'to hang'",
+   "checked": "2026-11-18"
+  },
+  {
+   "id": "k1",
+   "claim": "獨 홀로",
+   "url": "https://ko.wiktionary.org/wiki/%E7%8D%A8",
+   "note": "위키낱말사전 獨: 형태소 '홀로', 합성어 獨立(독립)",
+   "checked": "2026-11-18"
+  },
+  {
+   "id": "k2",
+   "claim": "立 서다, 땅 위에 선 사람 모양",
+   "url": "https://dong-chinese.com/dictionary/立",
+   "note": "Dong Chinese: 'stand'; 'Pictograph of a person standing on the ground'",
+   "checked": "2026-11-18"
+  }
+ ],
+ "core": "기대지 않아",
+ "review": [
+  {
+   "by": "검수 A(사실 확인)",
+   "at": "2026-11-18",
+   "ok": true,
+   "note": "지적 반영: 1편 표지, 5편 救 훈음"
+  },
+  {
+   "by": "검수 B(국어·한자)",
+   "at": "2026-11-18",
+   "ok": true,
+   "note": "지적 반영: 1편 표지·衆 옛 모양, 2편 짝 장 문장, 3편 짝 장 제목, 4편 영어 장, 5편 救 훈음·걷는 병원"
+  }
+ ]
+}

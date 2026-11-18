@@ -1,0 +1,118 @@
+{
+ "n": 1,
+ "from": "2026-11-18",
+ "kind": "same",
+ "tag": "audience와 청중",
+ "core": "듣다",
+ "en": {
+  "w": "audience",
+  "syl": "au·di·ence",
+  "mean": "청중",
+  "parts": [
+   {
+    "p": "audi",
+    "m": "듣다",
+    "from": "라틴어 audire",
+    "link": 1
+   },
+   {
+    "p": "ence"
+   }
+  ]
+ },
+ "hz": {
+  "w": "청중",
+  "mean": "듣는 사람들",
+  "ch": [
+   {
+    "c": "聽",
+    "hun": "들을 청",
+    "link": 1
+   },
+   {
+    "c": "衆",
+    "hun": "무리 중"
+   }
+  ]
+ },
+ "cover": {
+  "h": "audience 속엔<br>무엇이 숨어 있을까?",
+  "b": "네 생각은? 짐작해 보고 넘겨 봐."
+ },
+ "pages": {
+  "en": {
+   "h": "audi는<br>‘듣다’야",
+   "b": "옛날 로마 사람 말이야.<br>audience는 ‘듣는 일’에서 왔어."
+  },
+  "hz": {
+   "h": "聽은 ‘듣다’,<br>衆은 ‘무리’",
+   "b": "聽 안에서 귀 耳를 찾아 봐.<br>衆은 옛날엔 해 아래 사람 셋 모양이었어."
+  },
+  "pair": {
+   "h": "둘 다<br>‘듣는 사람들’",
+   "b": "영어도 한자도<br>귀로 이름 지었어."
+  },
+  "more": {
+   "h": "귀 대신<br>눈이면?",
+   "b": "衆은 그대로, 앞 글자만 바꿔 봐.",
+   "reveal": {
+    "w": "관중",
+    "ch": [
+     {
+      "c": "觀",
+      "hun": "볼 관"
+     },
+     {
+      "c": "衆",
+      "hun": "무리 중"
+     }
+    ],
+    "b": "보는 사람들은 관중이야."
+   }
+  }
+ },
+ "src": [
+  {
+   "id": "e1",
+   "claim": "audience는 라틴어 audire(듣다)에서 온 ‘듣는 일’이라는 말에서 왔고, 15세기 초부터 ‘듣는 사람들의 모임’이 됨",
+   "url": "https://www.etymonline.com/word/audience",
+   "note": "etymonline: 'a hearing, listening' … 'present participle of audire \"to hear\"'; 'assembly of listeners' early 15c.",
+   "checked": "2026-11-18"
+  },
+  {
+   "id": "k1",
+   "claim": "聽 들을 청, 글자 안에 귀 耳가 있음",
+   "url": "https://namu.moe/w/%E8%81%BD",
+   "note": "나무위키 미러: 훈음 들을 청, 뜻 부분에 귀 이(耳)",
+   "checked": "2026-11-18"
+  },
+  {
+   "id": "k2",
+   "claim": "衆 무리 중, 갑골문은 해 아래 사람 셋",
+   "url": "https://namu.moe/w/%E8%A1%86",
+   "note": "나무위키 미러: '해(日) 아래 사람(人) 세 명이 늘어선 모습'",
+   "checked": "2026-11-18"
+  },
+  {
+   "id": "k3",
+   "claim": "觀 볼 관, 관중은 觀衆으로 보러 온 사람들",
+   "url": "https://thewiki.kr/w/관중",
+   "note": "더위키 관중: '觀衆', '어떤 행사를 보기 위해 온 사람들', '유사한 단어로 청중(聽衆)'. 훈음 볼 관은 hangulhanja.com/en/hanja/觀 (bol gwan, 見 'to see')",
+   "checked": "2026-11-18"
+  }
+ ],
+ "review": [
+  {
+   "by": "검수 A(사실 확인)",
+   "at": "2026-11-18",
+   "ok": true,
+   "note": "지적 반영: 1편 표지, 5편 救 훈음"
+  },
+  {
+   "by": "검수 B(국어·한자)",
+   "at": "2026-11-18",
+   "ok": true,
+   "note": "지적 반영: 1편 표지·衆 옛 모양, 2편 짝 장 문장, 3편 짝 장 제목, 4편 영어 장, 5편 救 훈음·걷는 병원"
+  }
+ ]
+}

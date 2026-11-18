@@ -1,0 +1,97 @@
+{
+ "n": 4,
+ "from": "2026-11-25",
+ "kind": "same",
+ "tag": "planet과 행성",
+ "core": "돌아다니다",
+ "en": {
+  "w": "planet",
+  "syl": "plan·et",
+  "mean": "행성",
+  "parts": [
+   {
+    "p": "planet",
+    "m": "떠돌이",
+    "from": "그리스어 planētēs",
+    "link": 1
+   }
+  ]
+ },
+ "hz": {
+  "w": "행성",
+  "mean": "다니는 별",
+  "ch": [
+   {
+    "c": "行",
+    "hun": "다닐 행",
+    "link": 1
+   },
+   {
+    "c": "星",
+    "hun": "별 성"
+   }
+  ]
+ },
+ "cover": {
+  "h": "planet 속엔<br>무엇이 숨어 있을까?",
+  "b": "네 생각은? 짐작해 보고 넘겨 봐."
+ },
+ "pages": {
+  "en": {
+   "h": "planet은<br>‘떠돌이 별’이야",
+   "b": "옛날 그리스 사람들은<br>‘떠도는 별’이라고 불렀어."
+  },
+  "hz": {
+   "h": "行은 ‘다니다’,<br>星은 ‘별’",
+   "b": "行은 네 갈래 길 모양이야.<br>돌아다니는 별이라는 뜻이야."
+  },
+  "pair": {
+   "h": "둘 다<br>‘돌아다니는 별’",
+   "b": "하늘에서 자리를 옮겨서<br>붙은 이름이야."
+  }
+ },
+ "src": [
+  {
+   "id": "e1",
+   "claim": "planet은 그리스어 planētēs(떠도는), ‘떠도는 별’에서 옴",
+   "url": "https://dictionary.obspm.fr/terms/planet/",
+   "note": "파리천문대 어원사전: 'from Gk. planetes \"wandering,\" from (asteres) planetai \"wandering (stars)\"'",
+   "checked": "2026-11-18"
+  },
+  {
+   "id": "k1",
+   "claim": "행성(行星)이라는 이름은 움직이기 때문에 붙음",
+   "url": "https://thewiki.kr/w/행성",
+   "note": "더위키: ''행성(行星)'이라는 명칭도 움직이기 때문에 붙은 것이며'",
+   "checked": "2026-11-18"
+  },
+  {
+   "id": "k2",
+   "claim": "行 다닐 행, 네 갈래 길(사거리) 모양",
+   "url": "https://thewiki.kr/w/行",
+   "note": "더위키: '다닐 행', '네 갈래로 난 길, 즉 사거리를 본떠 만든 상형자'",
+   "checked": "2026-11-18"
+  },
+  {
+   "id": "k3",
+   "claim": "星 별",
+   "url": "https://kaweah.freedombox.rocks/kiwix/wiktionary_en_all_maxi_2023-04/%ED%96%89%EC%84%B1",
+   "note": "Wiktionary 행성: 'Sino-Korean word from 行星, from 行 (travel) + 星 (star)'",
+   "checked": "2026-11-18"
+  }
+ ],
+ "review": [
+  {
+   "by": "검수 A(사실 확인)",
+   "at": "2026-11-18",
+   "ok": true,
+   "note": "지적 반영: 1편 표지, 5편 救 훈음"
+  },
+  {
+   "by": "검수 B(국어·한자)",
+   "at": "2026-11-18",
+   "ok": true,
+   "note": "지적 반영: 1편 표지·衆 옛 모양, 2편 짝 장 문장, 3편 짝 장 제목, 4편 영어 장, 5편 救 훈음·걷는 병원"
+  }
+ ]
+}

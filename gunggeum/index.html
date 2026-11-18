@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v172</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v173</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v172</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v173</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1833,6 +1833,16 @@ body { word-break: keep-all; overflow-wrap: break-word; }
     { from: '2026-12-17', f: '화산은 왜 터질까?', q: '우리나라에도 화산이 있을까?', page: 'pieces/piece.html?ep=62&v=2', tag: '땅 · 화산' }];
   const sciPiece = () => { const t = dayKey(new Date()), hit = SCI_PAGES.filter(x => x.from <= t).pop(); if (hit && hit.from === t) return hit; const n = Math.round((new Date(t + 'T12:00') - new Date(SCI_PAGES[0].from + 'T12:00')) / 864e5); return SCI_PAGES[((n % SCI_PAGES.length) + SCI_PAGES.length) % SCI_PAGES.length]; };
   window.__gkSci = sciPiece;
+  // v173 오늘의 단어(영어 단어 + 한자어 짝의 이름 풀이, pieces/word.html?w=N · 데이터 pieces/w/N.json). 새 편은 월·수·금, 그 사이 날은 지난 편을 차례로 다시 보여 준다
+  const WORD_PAGES = [
+    { from: '2026-11-18', n: 1, f: 'audience 속엔 무엇이 숨어 있을까?', page: 'pieces/word.html?w=1', tag: 'audience와 청중' },
+    { from: '2026-11-20', n: 2, f: 'electricity 속엔 무엇이 숨어 있을까?', page: 'pieces/word.html?w=2', tag: 'electricity와 전기' },
+    { from: '2026-11-23', n: 3, f: 'independent 속엔 무엇이 숨어 있을까?', page: 'pieces/word.html?w=3', tag: 'independent와 독립' },
+    { from: '2026-11-25', n: 4, f: 'planet 속엔 무엇이 숨어 있을까?', page: 'pieces/word.html?w=4', tag: 'planet과 행성' },
+    { from: '2026-11-27', n: 5, f: 'ambulance 속엔 무엇이 숨어 있을까?', page: 'pieces/word.html?w=5', tag: 'ambulance와 구급차' }];
+  const pairPiece = () => { const t = dayKey(new Date()), pub = WORD_PAGES.filter(x => x.from <= t); if (!pub.length) return WORD_PAGES[0]; const hit = pub[pub.length - 1]; if (hit.from === t) return hit;
+    const n = Math.round((new Date(t + 'T12:00') - new Date(hit.from + 'T12:00')) / 864e5); return pub[((pub.length - 1 - n) % pub.length + pub.length) % pub.length]; };
+  window.__gkPair = pairPiece;
 
   const recent = [];
   let busy = false, ctl = null, sound = true, wakeLock = null, quiz = false;
@@ -2461,7 +2471,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     pcFrame.addEventListener('load', () => { try { pcFrame.contentWindow.focus(); } catch (e) {} });
     diag('saver', '조각 장 열림: ' + pc.page);
   }
-  addEventListener('message', e => { if (!pcFrame || e.source !== pcFrame.contentWindow || !e.data) return; if (e.data.gk === 'piece-close') pieceClose(); else if (e.data.gk === 'piece-touch') pcTouch = Date.now(); });
+  addEventListener('message', e => { if (!pcFrame || e.source !== pcFrame.contentWindow || !e.data) return; if (e.data.gk === 'piece-close') pieceClose(); else if (e.data.gk === 'piece-touch') pcTouch = Date.now();
+    else if (e.data.gk === 'piece-say' && typeof e.data.t === 'string' && e.data.t.length <= 20) { pcTouch = Date.now(); speak(e.data.t, true); } // v173: 한자 글자를 누르면 훈음
+    else if (e.data.gk === 'piece-words' && Array.isArray(e.data.items) && e.data.items.length <= 2) { // v173: 오늘의 단어를 '나란히 보면' 장까지 보면 공부칸에 짝으로 모은다
+      e.data.items.forEach(x => { if (!x || !['en', 'hz'].includes(x.kind) || typeof x.w !== 'string' || x.w.length > 24 || !/^(en|hz):/.test(x.k || '')) return;
+        try { wordAdd({ k: x.k, w: x.w, kind: x.kind, syl: String(x.syl || '').slice(0, 40), mean: String(x.mean || '').slice(0, 30), hz: Array.isArray(x.hz) ? x.hz.slice(0, 4).map(h => [String(h[0]).slice(0, 2), String(h[1]).slice(0, 12)]) : null, pair: String(x.pair || '').slice(0, 30), from: 'pair', src: '오늘의 단어' }); } catch (er) { diag('err', '단어 모으기 실패: ' + (er.message || er)); } }); } });
   window.__gkPieceClose = pieceClose;
   saverEl.addEventListener('pointerup', e => {
     clearTimeout(svHold); const d = svDown; svDown = null; if (d) svUpAt = Date.now(); if (!d || saverEl.hidden || !logEl.hidden) return;
@@ -2478,7 +2492,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       else if (d.np === 'art') { exitSaver(true); if (saverEl.hidden) openPaper(d.npi); } // 신문은 쉬는 시간에도 읽는다
       return; }
     if (saverEl.classList.contains('pgx')) { svTaps = []; pgTap(d.el); return; }
-    if (d.cv) { const ft = $('fcFeat'), cur = ft.classList.contains('sci') || ft.classList.contains('moon') ? 'sci' : ['news', 'word', 'piece'].find(c => ft.classList.contains(c));
+    if (d.cv) { const ft = $('fcFeat'), cur = ft.classList.contains('pair') ? 'pair' : ft.classList.contains('sci') || ft.classList.contains('moon') ? 'sci' : ['news', 'word', 'piece'].find(c => ft.classList.contains(c));
       if (d.cv !== cur) { svTaps = []; coverPick(d.cv); renderSaver(); return; }
       d.tile = ft.dataset.tile; d.cv = ''; diag('saver', '켜진 탭을 한 번 더 → 그 장 열기'); } // v126: 이미 켜진 탭(예: '신문')을 누르면 그 장의 내용으로 간다
     if (d.tile === 'study' || d.tile === 'studyw') { svTaps = []; // v138: 공부칸 앱을 크게 연다(예전 '공부 모드' 켜고 끄기는 없앰). 표지의 '오늘의 낱말'에서 오면 그 낱말을 펴서
@@ -2491,6 +2505,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (d.tile === 'sky' && window.GKSky) { svTaps = []; window.__gkForce = { s: 'sky', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '타일 → 밤하늘'); return; }
     const hadNews = !!(news && newsFresh());
     if (d.tile === 'news' && hadNews && innerWidth >= 900) { svTaps = []; window.__gkForce = { s: 'front', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '표지 → 신문 1면'); return; }
+    if (d.tile === 'pair') { svTaps = []; pieceOpen(pairPiece()); return; } // v173: 오늘의 단어도 이야기·과학처럼 쉬는 시간에 본다
     if (d.tile === 'sci') { svTaps = []; pieceOpen(sciPiece()); return; } // v147: 과학 편도 쉬는 시간에 본다
     if (d.tile === 'piece' && piece().page) { svTaps = []; pieceOpen(piece()); return; } // v139: 넘겨 보는 조각 장 — 신문처럼 쉬는 시간에도 본다
     exitSaver(!!(d.paper || (d.tile === 'news' && hadNews))); // v128: 신문은 쉬는 시간·질문 상한과 상관없이 읽는다(부모 요청). 묻기는 그대로 막힌다
@@ -2658,6 +2673,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     el.innerHTML = `<svg class="tk" viewBox="0 0 ${W} ${H}"><mask id="tmM"><rect ${R} stroke="#fff" stroke-width="16" stroke-dasharray="${(f * 120).toFixed(2)} 120" stroke-linecap="butt"/></mask><rect ${R} stroke="rgba(255,255,255,.14)" stroke-width="7" stroke-dasharray=".28 1.72"/><rect ${R} stroke="#FFB648" stroke-width="7" stroke-dasharray=".28 1.72" mask="url(#tmM)"/></svg><div class="tl"><b>남은 시간</b><span>지금 ${ampm(d.getHours())} ${d.getHours() % 12 || 12}:${pad(d.getMinutes())}</span></div><div class="tr">${Math.floor(rem / 60)}:${pad(rem % 60)}</div>`;
   };
   const setH = (el, html) => { if (el.innerHTML !== html) el.innerHTML = html; };
+  let faceAutoLast = '';
   function renderFace(on, read, hr) {
     const d = new Date();
     saverEl.dataset.tone = hr >= 5 && hr < 12 ? 'morn' : hr >= 12 && hr < 18 ? 'day' : 'eve'; // 밤에도 위젯 면 그대로: 자정~새벽 5시는 저녁 하늘
@@ -2680,9 +2696,11 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('fcWordN').textContent = W ? W.w : '—'; $('fcWordS').textContent = W ? '눌러서 뜻 보기' : '신문이 오면 나와';
     const moonDay = !!(sk && (sk.moon.name === '보름달' || (sk.moon.phase >= 25 && sk.moon.phase <= 50))); // 보름 무렵·저녁 초승달 무렵만 달 카드
     const sciK = moonDay ? 'moon' : 'sci';
-    const auto = on && !read ? 'news' : hr >= 18 ? sciK : 'line'; // v147: 아침 신문 → 낮 이야기 → 저녁 과학
+    const wd = d.getDay(), pairHr = wd >= 1 && wd <= 5 && hr >= 15 && hr < 18;
+    let auto = on && !read ? 'news' : pairHr ? 'pair' : hr >= 18 ? sciK : 'line'; // v147: 아침 신문 → 낮 이야기 → 저녁 과학 · v173: 평일 15~18시는 오늘의 단어
+    if (faceAutoLast && auto !== faceAutoLast && auto !== 'news' && faceAutoLast !== 'news' && Date.now() - svTouchAt < 180e3) auto = faceAutoLast; else faceAutoLast = auto; // v173: 만진 지 3분 안에는 표지가 저절로 바뀌지 않는다
     const st = window.__gkStudyOn && window.__gkStudyOn(); saverEl.classList.toggle('study', !!st); if ($('fcStudyL')) $('fcStudyL').textContent = '공부칸';
-    const ft = $('fcFeat'), kind = st ? 'study' : cvf === 'news' && on ? 'news' : cvf === 'word' && W ? 'word' : cvf === 'sci' ? sciK : cvf === 'moon' && sk ? 'moon' : cvf === 'piece' ? 'line' : auto;
+    const ft = $('fcFeat'), kind = st ? 'study' : cvf === 'news' && on ? 'news' : cvf === 'word' && W ? 'word' : cvf === 'sci' ? sciK : cvf === 'moon' && sk ? 'moon' : cvf === 'piece' ? 'line' : cvf === 'pair' ? 'pair' : auto;
     if (kind === 'study') {
       if (fcFeatKey !== 'study') { fcFeatKey = 'study'; ft.className = 'fc-t fc-feat study'; ft.dataset.tile = 'clock'; ft.innerHTML = `<div class="cc"><div class="cc-top"><div class="cc-lab">공부 모드</div></div><div class="cc-mid"><div class="cc-l"><div class="cc-big">공부 중</div><div class="cc-s2">다 하면 공부 끝을 눌러.</div></div></div></div>`; }
     } else if (kind === 'news') {
@@ -2700,6 +2718,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
 
       const cv = ft.querySelector('canvas.big'), ms = Math.round(cv.getBoundingClientRect().width), mk = [ms, Math.round(sk.moon.phase), Math.round(sk.moon.limb / 8)].join('|');
       if (mk !== fcMoonKey && ms > 20) { fcMoonKey = mk; try { window.GKSky.drawMoon(cv, ms, sk.moon.phase, sk.moon.limb); } catch (e) { fcMoonKey = ''; } }
+    } else if (kind === 'pair') {
+      const pp = pairPiece(), key = 'pair|' + pp.n;
+      if (fcFeatKey !== key && window.B_pair) { fcFeatKey = key; ft.className = 'fc-t fc-feat piece pair'; ft.dataset.tile = 'pair'; ft.innerHTML = B_pair(pp); }
     } else if (kind === 'sci') {
       const sp = sciPiece(), key = 'sci|' + sp.f;
       if (fcFeatKey !== key && window.B_sci) { fcFeatKey = key; ft.className = 'fc-t fc-feat piece sci'; ft.dataset.tile = 'sci'; ft.innerHTML = B_sci(sp); }
@@ -3138,7 +3159,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function wordAdd(w) { // w: { k, w, syl, kind(en|hz|ko), mean, hz, q, from(ask|news), src, line }
     if (!w || !w.k || !w.w) return null;
     const d = wordLoad(), now = Date.now(); let it = d.items.find(x => x.k === w.k);
-    if (it) { if (w.from === 'ask' && now - it.last > 60e3) { it.n = (it.n || 1) + 1; if (!it.q && w.q) it.q = w.q; } it.last = now; for (const f of ['mean', 'hz', 'syl', 'line', 'src']) if (!it[f] && w[f]) it[f] = w[f]; }
+    if (it) { if (w.from === 'ask' && now - it.last > 60e3) { it.n = (it.n || 1) + 1; if (!it.q && w.q) it.q = w.q; } it.last = now; for (const f of ['mean', 'hz', 'syl', 'line', 'src', 'pair']) if (!it[f] && w[f]) it[f] = w[f]; }
     else { it = Object.assign({ at: now, last: now, n: 1 }, w); d.items.push(it); }
     d.items.sort((a, b) => b.last - a.last); if (d.items.length > WORDS_MAX) d.items.length = WORDS_MAX;
     LS.set(WORDS_KEY, d); stSel = it.k; stView = 'hero'; return it;
@@ -3154,7 +3175,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const stMet = t => { const a = stAgo(t); return a === '어제' ? '어제 만났어' : a + '에 만났어'; };
   const stBig = it => it.kind === 'en' && it.syl ? it.syl.replace(/・/g, '·').split('·').map(escN).join('<i>·</i>') : escN(it.w);
   const stHz = it => (it.hz || []).map(h => `<span><b>${escN(h[0])}</b>${escN(h[1])}</span>`).join('<i>·</i>');
-  const stSrc = it => it.from === 'news' ? `루아 신문${it.src ? ` 《${escN(it.src)}》 기사에서` : '에서'}` : it.q ? `"${escN(it.q)}" 물어봤을 때` : '물어봤을 때';
+  const stPairW = it => (it.pair || '').replace(/^(en|hz):/, '');
+  const stSrc = it => it.from === 'pair' ? `오늘의 단어에서${it.pair && stPairW(it) !== it.mean ? ` · 짝: ${escN(stPairW(it))}` : ''}` : it.from === 'news' ? `루아 신문${it.src ? ` 《${escN(it.src)}》 기사에서` : '에서'}` : it.q ? `"${escN(it.q)}" 물어봤을 때` : '물어봤을 때';
   function stMark(line, w) { const e = escN(line), k = escN(w); if (!k) return e; const i = e.toLowerCase().indexOf(k.toLowerCase()); return i < 0 ? e : e.slice(0, i) + '<mark>' + e.slice(i, i + k.length) + '</mark>' + e.slice(i + k.length); }
   function stSay(it) { if (!it) return; hush();
     if (it.kind === 'en' && 'speechSynthesis' in window) { try { const u = new SpeechSynthesisUtterance(it.w); u.lang = 'en-US'; u.rate = .8; speechSynthesis.speak(u); } catch (e) {} return; }
@@ -3172,9 +3194,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const ask = `<span class="zbar" data-act="stask" role="button">${MIC}물어보기</span>`;
     if (!all.length) { stPut(box, `<div class="st-none">아직 모은 말이 없어.<small>모르는 낱말을 물어보면 여기 모여.</small></div><div class="st-foot">${ask}</div>`); return; }
     if (stView === 'list') { // 모은 말 보기: 갈래 넷, 두 단, 한 쪽에 여섯
-      const list = stTab === 'today' ? all.filter(isT) : all.filter(x => x.kind === stTab), PER = 6, pages = Math.max(1, Math.ceil(list.length / PER)); stPage = Math.max(0, Math.min(stPage, pages - 1));
+      const tl = all.filter(isT), list = stTab === 'today' ? tl.filter(x => !(x.from === 'pair' && x.kind === 'hz' && tl.some(y => y.k === x.pair))) : all.filter(x => x.kind === stTab), PER = 6, pages = Math.max(1, Math.ceil(list.length / PER)); stPage = Math.max(0, Math.min(stPage, pages - 1));
       const tabs = [['today', '오늘'], ['en', '영어'], ['hz', '한자'], ['ko', '우리말']].map(t => `<span data-act="sttab" data-t="${t[0]}"${t[0] === stTab ? ' class="on"' : ''}>${t[1]}</span>`).join('');
-      const rows = list.slice(stPage * PER, stPage * PER + PER).map(it => `<div class="st-row" data-act="stpick" data-k="${escN(it.k)}"><div class="st-rw"><b class="k-${it.kind}">${stBig(it)}</b><span>${it.kind === 'hz' && it.hz ? stHz(it) : escN(it.mean || '')}</span></div><small>${isT(it) ? stSrc(it) : stMet(it.last)}</small></div>`).join('');
+      const rows = list.slice(stPage * PER, stPage * PER + PER).map(it => `<div class="st-row" data-act="stpick" data-k="${escN(it.k)}"><div class="st-rw"><b class="k-${it.kind}">${stBig(it)}</b><span>${stTab === 'today' && it.from === 'pair' && it.kind === 'en' && tl.some(y => y.k === it.pair) ? `↔ ${escN(stPairW(it))}` : it.kind === 'hz' && it.hz ? stHz(it) : escN(it.mean || '')}</span></div><small>${isT(it) ? stSrc(it) : stMet(it.last)}</small></div>`).join('');
       const nav = pages > 1 ? `<span class="rb st-pg${stPage ? '' : ' off'}" data-act="stpg" data-d="-1" aria-label="앞 쪽">${BACKIC}</span><span class="rb st-pg nx${stPage < pages - 1 ? '' : ' off'}" data-act="stpg" data-d="1" aria-label="다음 쪽">${BACKIC}</span>` : '';
       stPut(box, `<div class="st-tabs">${tabs}</div><div class="st-list">${rows || `<div class="st-empty">${stTab === 'today' ? '오늘은 아직 없어.' : '아직 없어.'}</div>`}</div><div class="st-foot"><span class="pc st-lb" data-act="stback">${BACKIC}방금 만난 말</span>${nav}${ask}</div>`);
       return;
@@ -4056,7 +4078,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v172';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v173';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -4310,13 +4332,14 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
 </style>
 <script>
 (function(){ const e = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const tabs = n => `<div class="cc-tabs">${[['news','신문'],['piece','이야기'],['sci','과학']].map((t, i) => `<span data-cv="${t[0]}"${i === n ? ' class="on"' : ''}>${t[1]}</span>`).join('')}</div>`;
+  const tabs = n => `<div class="cc-tabs">${[['news','신문'],['piece','이야기'],['sci','과학'],['pair','단어']].map((t, i) => `<span data-cv="${t[0]}"${i === n ? ' class="on"' : ''}>${t[1]}</span>`).join('')}</div>`;
   const ARW = `<svg viewBox="0 0 36 36"><path d="M7 18h20M19 9.500l8.500 8.500-8.500 8.500"/></svg>`;
   const shell = (lab, n, l, r, foot, go) => `<div class="cc"><div class="cc-top"><div class="cc-lab">${lab}</div>${tabs(n)}</div><div class="cc-mid"><div class="cc-l">${l}${foot ? `<div class="cc-foot${go ? ' rd' : ''}">${foot}</div>` : ''}</div>${r}</div></div>`;
   window.B_news = function(news){ const a = news.articles[0];
     return shell(`<b>루아 신문</b>제${e(news.no)}호`, 0, `<div class="cc-k">${e(a.tag)}</div><h2 class="cc-h">${e(a.title)}</h2><p class="cc-s2">${e(a.lede)}</p>`,
       `<div class="cc-r">${news.articles.slice(0, 3).map((x, i) => `<div class="it${i ? '' : ' on'}"><b>${i + 1}</b><small>${e(x.tag)}</small><span>${e(x.short || x.title)}</span></div>`).join('')}</div>`, `읽기 ${ARW}`, 1); };
   window.B_piece = function(p){ return shell('오늘의 이야기', 1, (p.tag ? `<div class="cc-k">${e(p.tag)}</div>` : '') + `<h2 class="cc-h pce">${e(p.f)}</h2>`, '', p.page ? `보기 ${ARW}` : `${e(p.q)} ${ARW}`, 1); };
+  window.B_pair = function(p){ return shell('오늘의 단어', 3, `<div class="cc-k">이름 풀이 · ${e(p.tag)}</div><h2 class="cc-h pce">${e(p.f)}</h2>`, '', `보기 ${ARW}`, 1); };
   window.B_sci = function(p){ return shell('오늘의 과학', 2, `<div class="cc-k">${e(p.tag)}</div><h2 class="cc-h pce">${e(p.f)}</h2>`, '', `보기 ${ARW}`, 1); };
   window.B_word = function(W, news){
     const art = news.articles.find(x => x.word && x.word.w === W.w) || {};

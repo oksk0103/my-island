@@ -1,0 +1,104 @@
+{
+ "n": 5,
+ "from": "2026-11-27",
+ "kind": "diff",
+ "tag": "ambulance와 구급차",
+ "en": {
+  "w": "ambulance",
+  "syl": "am·bu·lance",
+  "mean": "구급차",
+  "parts": [
+   {
+    "p": "ambul",
+    "m": "걷다",
+    "from": "라틴어 ambulare",
+    "link": 1
+   },
+   {
+    "p": "ance"
+   }
+  ]
+ },
+ "hz": {
+  "w": "구급차",
+  "mean": "급한 사람을 구하는 차",
+  "ch": [
+   {
+    "c": "救",
+    "hun": "구원할 구",
+    "m": "구하다",
+    "link": 1
+   },
+   {
+    "c": "急",
+    "hun": "급할 급"
+   },
+   {
+    "c": "車",
+    "hun": "수레 차"
+   }
+  ]
+ },
+ "cover": {
+  "h": "ambulance 속엔<br>무엇이 숨어 있을까?",
+  "b": "네 생각은? 짐작해 보고 넘겨 봐."
+ },
+ "pages": {
+  "en": {
+   "h": "ambul은<br>‘걷다’야",
+   "b": "처음엔 ‘걷는 병원’이라고 불렀어.<br>군대를 따라 옮겨 다닌 병원이야."
+  },
+  "hz": {
+   "h": "救는 ‘구하다’,<br>急은 ‘급하다’",
+   "b": "車는 수레 모양이야.<br>급한 사람을 구하는 차야."
+  },
+  "pair": {
+   "h": "하나는 걷는 병원,<br>하나는 구하는 차",
+   "b": "영어는 움직이는 모습,<br>한자는 하는 일로 지었어."
+  }
+ },
+ "src": [
+  {
+   "id": "e1",
+   "claim": "ambulance는 프랑스어 hôpital ambulant(글자 그대로 '걷는 병원'), 라틴어 ambulare(걷다), 군대를 따라 옮겨 다닌 야전 병원",
+   "url": "https://my.quword.com/etym/s/ambulance",
+   "note": "quword(etymonline 인용): 'hôpital ambulant, literally \"walking hospital\"', 'ambulare \"to walk\"', mobile field hospital that moved with the army",
+   "checked": "2026-11-18"
+  },
+  {
+   "id": "k1",
+   "claim": "구급차의 한자는 救急車",
+   "url": "https://kiwix.lema.org/wiktionary_en_all_maxi_2024-01/A/%EA%B5%AC%EA%B8%89%EC%B0%A8",
+   "note": "Wiktionary 구급차: 'Sino-Korean word from 救急車'",
+   "checked": "2026-11-18"
+  },
+  {
+   "id": "k2",
+   "claim": "救 구원할 구(뜻 '구원하다'), 急 급할 급, 위급할 때 구하는 것이 구급(救急)",
+   "url": "https://namu.moe/w/%E6%95%91",
+   "note": "나무위키 미러 救: 훈 '구원하다', 어문회 5급. 전북일보(jjan.kr/article/20010121026978): '위급한 상황에서 구원함을 구급(救急)이라 한다'. 急 급할 급은 교육용 기초 한자 1800",
+   "checked": "2026-11-18"
+  },
+  {
+   "id": "k3",
+   "claim": "車 수레 차, 수레 모양을 본뜬 글자",
+   "url": "https://thewiki.kr/w/車",
+   "note": "더위키: ''수레 차/거'', '내려다 본 수레의 모습을 본뜬 한자'",
+   "checked": "2026-11-18"
+  }
+ ],
+ "review": [
+  {
+   "by": "검수 A(사실 확인)",
+   "at": "2026-11-18",
+   "ok": true,
+   "note": "지적 반영: 1편 표지, 5편 救 훈음"
+  },
+  {
+   "by": "검수 B(국어·한자)",
+   "at": "2026-11-18",
+   "ok": true,
+   "note": "지적 반영: 1편 표지·衆 옛 모양, 2편 짝 장 문장, 3편 짝 장 제목, 4편 영어 장, 5편 救 훈음·걷는 병원"
+  }
+ ]
+}

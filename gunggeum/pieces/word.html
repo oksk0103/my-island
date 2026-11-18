@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>오늘의 단어</title>
+<style>
+/* v173 오늘의 단어 — 영어 단어와 한자어 짝의 이름 풀이. 편마다 그림 코드 없이 w/N.json 데이터만으로 그린다.
+   특색 장치는 '뿌리선' 하나: 선 위는 오늘의 말, 선 아래는 옛 뿌리. 같은 생각이면 두 뿌리가 살구 점 하나에서 만난다.
+   글자 단계는 루아 디자인 가이드(72·56·48·32·24, 큰 글자 120)만 쓴다. '다음' 단추 자리는 이야기·과학 펼침면과 같게 왼쪽 아래(가이드 '펼침면 예외'). */
+@font-face{font-family:"MaruBuri";src:url("../fonts/MaruBuri-SemiBold.woff2") format("woff2");font-weight:600;font-display:block}
+@font-face{font-family:"MaruBuri";src:url("../fonts/MaruBuri-Bold.woff2") format("woff2");font-weight:700;font-display:block}
+@font-face{font-family:"Pretendard";src:url("../fonts/PretendardVariable.woff2") format("woff2");font-weight:100 900;font-display:block}
+:root{--cream:#F2E8D2;--c2:rgba(242,232,210,.66);--c3:rgba(242,232,210,.46);--apricot:#EFA56B;--buri:"MaruBuri","Noto Serif KR",serif;--sans:"Pretendard","Noto Sans CJK KR","Noto Sans KR",sans-serif;--hanja:"Noto Serif KR","Noto Serif CJK KR",serif}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{margin:0;height:100%;overflow:hidden;-webkit-tap-highlight-color:transparent;font-family:var(--sans);color:var(--cream);
+ background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),linear-gradient(#1F2F70 0%,#18254E 46%,#0E1839 100%) fixed}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{position:relative;width:1600px;height:820px;flex:none;transform-origin:center;overflow:hidden}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;-webkit-user-select:none;user-select:none;padding:0}
+.soil{position:absolute;left:-400px;right:-400px;top:561px;bottom:-400px;background:rgba(143,159,209,.05)}
+.rootline{position:absolute;left:-400px;right:-400px;top:560px;height:2px;background:rgba(143,159,209,.30)}
+.top{position:absolute;left:48px;top:40px;height:64px;display:flex;align-items:center;gap:24px;z-index:3}
+.logo{width:64px;height:64px;flex:none;border-radius:50%;background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55);display:grid;place-items:center}
+.logo:active{background:#fff}.logo:active svg [stroke]{stroke:#1F2F70}
+.logo svg{width:56%;height:56%}
+.ttl{font-size:24px;font-weight:500;color:var(--c2);cursor:pointer}
+.L{position:absolute;left:136px;top:168px;width:600px;z-index:2}
+.k{font-size:24px;font-weight:600;color:var(--c2);margin:0 0 20px}
+h1{margin:0;font-family:var(--buri);font-weight:700;font-size:72px;line-height:1.22;letter-spacing:-.02em;word-break:keep-all;color:var(--cream)}
+h1.s{font-size:56px;line-height:1.3}
+.b{font-size:32px;line-height:1.55;color:var(--c2);margin:32px 0 0;word-break:keep-all}
+.b .rv{display:block;color:var(--cream);opacity:0;transition:opacity .25s ease-out}
+.b .rv.on{opacity:1}
+.nav{position:absolute;left:136px;right:96px;bottom:52px;height:72px;display:flex;align-items:center;gap:16px;z-index:3}
+.pill{height:72px;padding:0 34px;border-radius:36px;font-size:28px;font-weight:700;display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.16);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55);color:var(--cream);transition:transform .15s ease-out}
+.pill:active{transform:scale(.97);background:#fff;color:#1F2F70}
+.pill.r{width:72px;padding:0;justify-content:center}
+.pill svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.dots{margin-left:auto;display:flex;gap:6px}.dots i{width:32px;height:3px;background:rgba(242,232,210,.25)}.dots i.on{background:var(--cream)}
+svg.fig{position:absolute;left:0;top:0;width:1600px;height:820px;z-index:1;pointer-events:none}
+.fig .tap{pointer-events:all;cursor:pointer}
+.fig text{fill:var(--cream)}
+.w120{font-family:var(--buri);font-size:120px;font-weight:600;letter-spacing:-.02em}
+.w72{font-family:var(--buri);font-size:72px;font-weight:600;letter-spacing:-.02em}
+.w48{font-family:var(--buri);font-size:48px;font-weight:600}
+.z120{font-family:var(--hanja);font-size:120px;font-weight:600}
+.z48{font-family:var(--hanja);font-size:48px;font-weight:600}
+.s32{font-family:var(--sans);font-size:32px;font-weight:600}
+.s32m{font-family:var(--sans);font-size:32px;font-weight:400;fill:var(--c2)!important}
+.s24{font-family:var(--sans);font-size:24px;font-weight:500;fill:var(--c2)!important}
+.c3{fill:var(--c3)!important}
+.fade{opacity:0;transition:opacity .25s ease-out}.fade.on{opacity:1}
+#err{position:absolute;left:136px;top:300px;font-size:32px;color:var(--c2)}
+@media (prefers-reduced-motion: reduce){.fade,.b .rv,.pill{transition:none}}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="stage">
+  <div class="soil"></div><div class="rootline"></div>
+  <header class="top">
+    <button class="logo" id="logo" aria-label="홈으로"><svg viewBox="96 92 320 344"><path d="M116 112H206V169H116V226H206" fill="none" stroke="#fff" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="348" cy="169" r="46" fill="none" stroke="#fff" stroke-width="28"/><path d="M128 296C186 366 320 372 386 288" fill="none" stroke="#fff" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><circle cx="258" cy="412" r="24" fill="#EFA56B"/></svg></button>
+    <div class="ttl" id="ttl">오늘의 단어</div>
+  </header>
+  <div class="L" id="L"><div class="k" id="k"></div><h1 id="h"></h1><p class="b" id="b"></p></div>
+  <svg class="fig" id="fig" viewBox="0 0 1600 820" aria-hidden="true"></svg>
+  <div id="err" hidden>지금은 열 수 없어. 홈으로 가 볼래?</div>
+  <nav class="nav">
+    <button class="pill r" id="back" aria-label="앞으로"><svg viewBox="0 0 28 28"><path d="M16.5 7.5L10 14l6.5 6.5"/></svg></button>
+    <button class="pill" id="next"></button>
+    <div class="dots" id="dots"></div>
+  </nav>
+</div></div>
+<script>
+const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg',S=$('fig');
+const fit=()=>{$('stage').style.transform=`scale(${Math.min(innerWidth/1600,innerHeight/820)})`;};addEventListener('resize',fit);fit();
+const say=m=>{try{parent.postMessage(m,'*');}catch(e){}};
+const closeMe=()=>say({gk:'piece-close'});
+['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>say({gk:'piece-touch'}),true));
+const Q=new URLSearchParams(location.search),N=Math.max(1,+Q.get('w')||1);
+const d0=new Date();$('ttl').textContent=`오늘의 단어 · ${d0.getMonth()+1}월 ${d0.getDate()}일`;
+const ARW='<svg viewBox="0 0 28 28"><path d="M11.5 7.5L18 14l-6.5 6.5"/></svg>';
+const el=(t,a,txt,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;(p||S).appendChild(e);return e;};
+const clear=()=>{while(S.firstChild)S.removeChild(S.firstChild);};
+// 좌표: 뿌리선 y 561, 그 아래 뜻 꼬리표 y 626. 그림은 오른쪽 x 760~1504
+const LINE=561,LAB=626,X0=800,XR=1504,STROKE={stroke:'rgba(242,232,210,.34)','stroke-width':2};
+const ring=x=>el('circle',{cx:x,cy:LINE,r:7,fill:'#18254E',stroke:'rgba(242,232,210,.6)','stroke-width':2});
+const meet=x=>el('circle',{cx:x,cy:LINE,r:7,fill:'#EFA56B'});
+const cdot=x=>el('circle',{cx:x,cy:LINE,r:6,fill:'rgba(242,232,210,.85)'});
+const vline=(x,y1)=>el('line',{x1:x,y1,x2:x,y2:LINE-8,...STROKE});
+// 소리: 영어는 누를 때만 이 장에서 읽고, 한자는 앱(부모)의 목소리로 훈음을 읽는다
+function sayEn(w){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(w);u.lang='en-US';u.rate=.8;speechSynthesis.speak(u);}catch(e){}}
+function sayKo(t){if(parent!==window){say({gk:'piece-say',t});return;}try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';speechSynthesis.speak(u);}catch(e){}}
+function hit(g,fn){const b=g.getBBox();const r=el('rect',{x:b.x-16,y:b.y-16,width:b.width+32,height:b.height+32,fill:'transparent',class:'tap'},null,g);g.insertBefore(r,g.firstChild);r.addEventListener('click',fn);}
+
+let E=null,ORDER=[],cur=0,revealed=false,sent=false;
+// 영어 낱말: 뜻 조각마다 따로 놓고 가운뎃점으로 나눈다. 뿌리로 내려가는 조각만 크림, 나머지는 흐리게
+function drawEn(x0,base,cls,gap){const g=el('g',{});let x=x0;const roots=[];
+  E.en.parts.forEach((pt,i)=>{if(i){x+=gap*.4;el('circle',{cx:x+gap*.15,cy:base-(cls==='w120'?40:16),r:cls==='w120'?7:4,fill:'rgba(242,232,210,.46)'},null,g);x+=gap*.7;}
+    const t=el('text',{x,y:base,class:cls+(pt.link?'':' c3')},pt.p,g);const w=t.getComputedTextLength();if(pt.link)roots.push({x:x+w/2,pt});x+=w;});
+  hit(g,()=>sayEn(E.en.w));return {roots,end:x,g};}
+function enFits(cls,gap){const g=drawEn(X0,-500,cls,gap);const w=g.end-X0;g.g.remove();return w;}
+// 한자: 두 글자 모두 뜻 조각이라 모두 크림. 글자를 누르면 훈음을 읽어 준다
+function drawHz(x0,base,cls,list,hide){let x=x0;const out=[];(list||E.hz.ch).forEach(c=>{const g=el('g',{});const t=el('text',{x,y:base,class:cls+(hide&&hide(c)?' fade':'')},c.c,g);const w=t.getComputedTextLength();hit(g,()=>sayKo(c.hun));out.push({x:x+w/2,c,w,left:x});x+=w+(cls==='z120'?24:0);});return {chars:out,end:x};}
+
+function setText(k,h,b){$('k').textContent=k||'';$('h').innerHTML=h||'';$('b').innerHTML=b||'';const H=$('h');H.classList.remove('s');if(H.scrollWidth>H.clientWidth+2||H.getBoundingClientRect().height>200)H.classList.add('s');}
+
+const PAGES={
+ cover(){setText(E.tag,E.cover.h,E.cover.b);
+   // 표지: 영어만. 뿌리는 빈 원과 '?' — 뜻도, 짝도, 같은지 다른지도 아직 보이지 않는다
+   const {roots}=drawEn(X0,340,'w48',20);roots.forEach(r=>{vline(r.x,368);ring(r.x);el('text',{x:r.x,y:LAB,class:'s32 c3','text-anchor':'middle'},'?');});},
+ en(){const P=E.pages.en;setText('영어 이름',P.h,P.b);
+   const cls=enFits('w120',36)<=XR-760?'w120':'w72',gap=cls==='w120'?36:24,w=enFits(cls,gap),x0=Math.max(760,Math.min(X0,XR-w));
+   const {roots}=drawEn(x0,cls==='w120'?420:400,cls,gap);
+   roots.forEach(r=>{vline(r.x,cls==='w120'?452:424);ring(r.x);el('text',{x:r.x,y:LAB,class:'s32','text-anchor':'middle'},r.pt.m);if(r.pt.from)el('text',{x:r.x+20,y:512,class:'s24'},r.pt.from);});},
+ hz(){const P=E.pages.hz;setText('한자 이름',P.h,P.b);
+   const n=E.hz.ch.length,w=n*120+(n-1)*24,x0=Math.max(800,Math.min(900,XR-w-140));const {chars,end}=drawHz(x0,420,'z120');
+   el('text',{x:end+12,y:412,class:'s32m'},E.hz.w);
+   chars.forEach(c=>{vline(c.x,452);ring(c.x);el('text',{x:c.x,y:LAB,class:'s32','text-anchor':'middle'},c.c.hun);});},
+ pair(){const P=E.pages.pair;setText('나란히 보면',P.h,P.b);
+   const en=drawEn(X0,340,'w48',20),hz=drawHz(Math.max(1180,en.end+120),340,'z48');el('text',{x:hz.end+18,y:338,class:'s32m'},E.hz.w);
+   const a=en.roots[0],b=hz.chars.find(c=>c.c.link)||hz.chars[0],TOP=368;
+   if(E.kind==='same'||E.kind==='near'){ // 같은 생각: 한 점에서 만남(살구 점) · 비슷한 생각: 거의 만남(크림 점 둘)
+     const mx=(a.x+b.x)/2,half=E.kind==='same'?5:56;
+     el('line',{x1:a.x,y1:TOP,x2:mx-half,y2:LINE-6,...STROKE});el('line',{x1:b.x,y1:TOP,x2:mx+half,y2:LINE-6,...STROKE});
+     if(E.kind==='same')meet(mx);else{cdot(mx-56);cdot(mx+56);}
+     el('text',{x:mx,y:LAB,class:'s32','text-anchor':'middle'},E.core||'');
+     const ty=470,ax=a.x+(mx-half-a.x)*(ty-TOP)/(LINE-TOP),bx=b.x+(mx+half-b.x)*(ty-TOP)/(LINE-TOP);
+     el('text',{x:ax-28,y:ty,class:'s24','text-anchor':'end'},a.pt.from||a.pt.m);el('text',{x:bx+28,y:ty,class:'s24'},b.c.c+' '+b.c.hun);
+   }else{ // 다른 생각: 만나지 않는다 → 살구 점 없음, 빈 원 둘
+     [[a.x,a.pt.m],[b.x,b.c.m||b.c.hun]].forEach(([x,m])=>{vline(x,TOP);ring(x);el('text',{x,y:LAB,class:'s32','text-anchor':'middle'},m);});}
+   if(!sent){sent=true;sendWords();}},
+ more(){const P=E.pages.more,R=P.reveal;setText('한 번 더',P.h,P.b+`<span class="rv" id="rv">${R.b}</span>`);
+   // 바뀌지 않는 글자는 그대로 두고, 바뀌는 글자 자리는 빈 원으로 둔다. '다음'을 누르면 채워진다
+   const keep=new Set(E.hz.ch.map(c=>c.c)),x0=900,{chars,end}=drawHz(x0,420,'z120',R.ch,c=>!keep.has(c.c));
+   const lab=el('text',{x:end+12,y:412,class:'s32m fade'},R.w);
+   chars.forEach(c=>{vline(c.x,452);if(!keep.has(c.c.c)){const q=el('text',{x:c.x,y:400,class:'w72 c3 qmark','text-anchor':'middle'},'?');ring(c.x);el('text',{x:c.x,y:LAB,class:'s32 fade','text-anchor':'middle'},c.c.hun);}else{ring(c.x);el('text',{x:c.x,y:LAB,class:'s32','text-anchor':'middle'},c.c.hun);}});
+   revealed=false;}
+};
+function doReveal(){revealed=true;S.querySelectorAll('.fade').forEach(x=>x.classList.add('on'));S.querySelectorAll('.qmark').forEach(x=>x.remove());const rv=$('rv');if(rv)rv.classList.add('on');}
+function sendWords(){const en=E.en,hz=E.hz;say({gk:'piece-words',n:E.n,items:[
+  {k:'en:'+en.w,w:en.w,syl:en.syl||'',kind:'en',mean:en.mean||hz.w,pair:'hz:'+hz.w},
+  {k:'hz:'+hz.w,w:hz.w,kind:'hz',mean:hz.mean||'',hz:hz.ch.map(c=>[c.c,c.hun]),pair:'en:'+en.w}]});}
+function go(i){cur=Math.max(0,Math.min(ORDER.length-1,i));clear();PAGES[ORDER[cur]]();
+  [...$('dots').children].forEach((d,j)=>d.classList.toggle('on',j===cur));$('back').hidden=!cur;refresh();}
+function refresh(){const k=ORDER[cur],last=cur===ORDER.length-1,step=k==='more'&&!revealed;$('next').innerHTML=(last&&!step?'다 봤어':'다음')+ARW;}
+function primary(){if(ORDER[cur]==='more'&&!revealed){doReveal();refresh();return;}if(cur===ORDER.length-1)return closeMe();go(cur+1);}
+$('logo').onclick=closeMe;$('ttl').onclick=closeMe;$('next').onclick=primary;$('back').onclick=()=>go(cur-1);
+addEventListener('keydown',e=>{if(e.repeat)return;
+  if(['ArrowRight','PageDown',' ','Enter','ArrowDown'].includes(e.key)){e.preventDefault();if(E)primary();}
+  else if(['ArrowLeft','PageUp','ArrowUp','Backspace'].includes(e.key)){e.preventDefault();if(E&&cur>0)go(cur-1);}
+  else if(['Escape','Home','F3'].includes(e.key)){e.preventDefault();closeMe();}});
+fetch('w/'+N+'.json?'+(Q.get('v')||'')).then(r=>{if(!r.ok)throw 0;return r.json();}).then(j=>{E=j;
+  ORDER=['cover','en','hz','pair'].concat(E.pages.more?['more']:[]);$('dots').innerHTML=ORDER.map(()=>'<i></i>').join('');
+  window.__word={n:E.n,order:ORDER,go:i=>go(i),cur:()=>cur};
+  return document.fonts.load('600 48px MaruBuri').then(()=>document.fonts.load('700 72px MaruBuri')).then(()=>document.fonts.ready);}).then(()=>{go(0);document.body.dataset.ready='1';})
+ .catch(()=>{$('err').hidden=false;$('L').hidden=true;$('next').innerHTML='홈으로'+ARW;$('next').onclick=closeMe;$('back').hidden=true;document.body.dataset.ready='err';});
+</script>
+</body>
+</html>

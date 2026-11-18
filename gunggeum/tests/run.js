@@ -169,7 +169,7 @@ async function newsTests(b) {
     ok('APP_V 있음', !!v); ok('머리 표시 버전', html.includes(`<span style="opacity:.6">${v}</span>`)); ok('부모님 화면 버전', html.includes(`font-weight:400">${v}</small>`)); ok('sw.js 캐시 이름', sw.includes(`gk-${v}'`) || sw.includes(`gk-${v}"`), v); }
 
   console.log('2. 대기화면 상태 (시간대별)');
-  for (const [t, read, want] of [[newsDate + 'T07:42', false, 'face morn news'], [newsDate + 'T08:15', true, 'face morn piece'], [newsDate + 'T17:59', true, 'face day piece'], [newsDate + 'T18:01', true, 'face eve SCI'], [newsDate + 'T19:00', false, 'face eve news'], [newsDate + 'T22:01', true, 'face eve SCI'], [plus(newsDate, 1) + 'T05:59', true, 'face morn piece'], [plus(newsDate, 1) + 'T06:01', true, 'face morn piece'], [plus(newsDate, 6) + 'T15:20', false, 'face day piece']]) { // v147: 저녁은 과학(달이 볼 만한 날엔 달)
+  for (const [t, read, want] of [[newsDate + 'T07:42', false, 'face morn news'], [newsDate + 'T08:15', true, 'face morn piece'], [newsDate + 'T17:59', true, 'face day piece pair'], [newsDate + 'T18:01', true, 'face eve SCI'], [newsDate + 'T19:00', false, 'face eve news'], [newsDate + 'T22:01', true, 'face eve SCI'], [plus(newsDate, 1) + 'T05:59', true, 'face morn piece'], [plus(newsDate, 1) + 'T06:01', true, 'face morn piece'], [plus(newsDate, 6) + 'T15:20', false, 'face day piece pair']]) { // v147: 저녁은 과학(달이 볼 만한 날엔 달)
     p = await open(b, { time: t, read: read ? newsDate : null }); await p.saver(); s = await p.st(); const got = s.saver === 'face' ? await p.evaluate(() => 'face ' + document.getElementById('saver').dataset.tone + ' ' + document.getElementById('fcFeat').className.replace('fc-t fc-feat', '').replace('pic', '').trim()) : s.saver; ok(`${t} ${read ? '읽음' : '안 읽음'} → ${want}`, want.endsWith('SCI') ? (got === want.replace('SCI', 'piece sci') || got === want.replace('SCI', 'moon')) : got === want, got); await p.context().close(); }
   p = await open(b, { time: newsDate + 'T19:30', read: newsDate, noSky: true }); await p.saver(); s = await p.st(); ok('밤하늘 파일을 못 받으면 기본 화면(과학 편)', s.saver === 'face' && await p.evaluate(() => document.getElementById('fcFeat').classList.contains('sci')), s.saver); await p.context().close();
 
@@ -203,7 +203,7 @@ async function newsTests(b) {
   await p.adv(11 * 60e3); s = await p.st(); ok('밤하늘 장은 10분 뒤 위젯 면으로', s.saver === 'face rest', s.saver);
   const feat = () => p.evaluate(() => document.getElementById('fcFeat').className.replace('fc-t fc-feat', '').replace('pic', '').trim());
   const eve = await feat(); ok('저녁 기본 표지는 과학 (달이 볼 만한 날엔 달) (v147)', eve === 'piece sci' || eve === 'moon', eve);
-  ok('표지 갈래 셋: 신문·이야기·과학 (v147)', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent).join('|') === '신문|이야기|과학'));
+  ok('표지 갈래 넷: 신문·이야기·과학·단어 (v147·v173)', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent).join('|') === '신문|이야기|과학|단어'));
   { const bx = await p.locator('#svFace [data-cv="piece"]').boundingBox(); ok('표지 갈래는 60px 이상', bx.height >= 60, bx.height); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); }
   s = await p.st(); ok('이야기 갈래 → 이야기 표지 (깨어나지 않음)', s.saver.startsWith('face') && await feat() === 'piece', [s.saver, await feat()]);
   await p.adv(150e3); ok('고른 갈래는 2분이 지나도 그대로 (v161)', await feat() === 'piece', await feat());
@@ -322,7 +322,7 @@ async function newsTests(b) {
     let p = await open(b, { time: newsDate + 'T16:10', read: newsDate }), s;
     ok('캐릭터(궁금이) 요소 없음', await p.evaluate(() => !document.querySelector('svg.gk, #loBuddy, .lo-buddy, .lo-glow, .wordmark .eye')));
     // 조각 장 → 궁금칸 → 답 → 아까 물은 것
-    await p.evaluate(() => { window.__gkPieceNoPage = true; }); await p.saver(); await box('#svFace [data-cv="sci"]'); await box('#svFace [data-cv="piece"]'); ok('표지 갈래 셋: 신문·이야기·과학 (v147)', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent).join('') === '신문이야기과학' && document.getElementById('fcFeat').classList.contains('piece')));
+    await p.evaluate(() => { window.__gkPieceNoPage = true; }); await p.saver(); await box('#svFace [data-cv="sci"]'); await box('#svFace [data-cv="piece"]'); ok('표지 갈래 넷: 신문·이야기·과학·단어 (v147·v173)', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent).join('') === '신문이야기과학단어' && document.getElementById('fcFeat').classList.contains('piece')));
     await box('#fcFeat .cc-h'); s = await p.st(); ok('조각 장 본문 → 궁금칸(조각과 이어 묻기 딸려 옴)', s.home && !s.saver && s.sheet === '뭐가 궁금해?' && await p.evaluate(() => !!document.querySelector('#zUnder .zu-pc') && !!document.querySelector('#zUnder .zu-chip')), s);
     const R = () => p.evaluate(() => { const r = document.querySelector('.qbox').getBoundingClientRect(); return [r.left, r.top, r.right, r.bottom].map(Math.round).join(','); });
     const r0 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'listen'; }); await p.adv(400); const r1 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'think'; }); await p.adv(400); const r2 = await R(); await p.evaluate(() => { document.getElementById('app').dataset.state = 'idle'; });
@@ -785,6 +785,64 @@ async function newsTests(b) {
     await p.context().close();
     p = await open(b, { time: newsDate + 'T21:30', read: newsDate, settings: { hFrom: 7, hTo: 21, restDark: 'off' } }); await p.saver(); s = await p.st();
     ok("'그대로'로 두면 쉬는 시간에도 밝은 홈", !/night/.test(s.saver), s.saver); await p.context().close();
+  }
+
+  { // 24. v173 오늘의 단어 — 홈 넷째 갈래, 뿌리선 펼침면(데이터만), 공부칸에 짝으로
+    console.log('24. 오늘의 단어 (v173)');
+    const W = path.join(ROOT, 'pieces', 'w'), eps = fs.readdirSync(W).filter(f => /^\d+\.json$/.test(f)).map(f => JSON.parse(fs.readFileSync(path.join(W, f), 'utf8')));
+    const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8'), pages = [...html.matchAll(/\{ from: '([\d-]+)', n: (\d+), f: '([^']+)', page: 'pieces\/word\.html\?w=(\d+)'/g)];
+    ok('단어 편 데이터: 다섯 편 이상, 쪽 글·짝·근거 모두 있음', eps.length >= 5 && eps.every(e => e.cover && e.cover.h && ['en', 'hz', 'pair'].every(k => e.pages[k] && e.pages[k].h && e.pages[k].b) && ['same', 'near', 'diff'].includes(e.kind) && (e.kind === 'diff' || e.core) && e.en.parts.some(x => x.link) && e.hz.ch.some(x => x.link) && Array.isArray(e.src) && e.src.length >= 2 && e.src.every(s => /^https:\/\//.test(s.url) && s.claim)), eps.map(e => e.n));
+    ok('표지에서 답(공통 뜻·짝 판정)을 말하지 않음', eps.every(e => !(e.core && e.cover.h.includes(e.core)) && !/같은 생각|다른 생각|정답|답 보기/.test(e.cover.h + e.cover.b)));
+    ok('날짜표가 파일·표지 제목과 맞음', pages.length === eps.length && pages.every(m => { const e = eps.find(x => x.n === +m[2]); return e && e.from === m[1] && e.cover.h.replace(/<br>/g, ' ') === m[3] && m[2] === m[4]; }), pages.map(m => m[2]));
+    ok('단어 편 화면에 그림 코드·퀴즈 단추 없음', !/답 보기|정답|점수/.test(fs.readFileSync(path.join(ROOT, 'pieces', 'word.html'), 'utf8')));
+    // 홈: 평일 16:20 → 단어 표지, 갈래 넷
+    let p = await open(b, { time: '2026-11-18T16:20', read: newsDate }), q; await p.saver();
+    const feat = () => p.evaluate(() => document.getElementById('fcFeat').className.replace('fc-t fc-feat', '').trim());
+    ok('평일 15~18시 기본 표지는 오늘의 단어', await feat() === 'piece pair', await feat());
+    ok('단어 표지: 갈래 넷, 넷째가 켜짐, 제목은 질문', await p.evaluate(() => [...document.querySelectorAll('#fcFeat .cc-tabs span')].map(x => x.textContent + (x.classList.contains('on') ? '*' : '')).join('|') === '신문|이야기|과학|단어*' && /audience/.test(document.querySelector('#fcFeat .cc-h').textContent)));
+    await p.evaluate(() => localStorage.removeItem('gk-words'));
+    { const bx = await p.locator('#fcFeat .cc-foot').boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(2500); }
+    q = await p.evaluate(() => (document.getElementById('pcFrame') || {}).src || ''); ok('보기 → 그날 단어 편(1편)이 열림', /pieces\/word\.html\?w=1/.test(q), q);
+    const fd = () => p.evaluate(() => { const d = document.getElementById('pcFrame').contentDocument; return { ready: d.body.dataset.ready, h: d.getElementById('h').textContent, next: d.getElementById('next').textContent.trim(), dots: d.querySelectorAll('#dots i').length, meet: d.querySelectorAll('#fig circle[fill="#EFA56B"]').length, back: d.getElementById('back').hidden }; });
+    await p.adv(1500); q = await fd(); ok('표지: 질문 제목, 살구 점 없음, 앞 단추 없음, 다섯 쪽', q.ready === '1' && /audience/.test(q.h) && q.meet === 0 && q.back && q.dots === 5, q);
+    const key = async k => { await p.evaluate(k => document.getElementById('pcFrame').contentWindow.dispatchEvent(new KeyboardEvent('keydown', { key: k })), k); await p.adv(600); };
+    const words = () => p.evaluate(() => (JSON.parse(localStorage.getItem('gk-words') || '{"items":[]}').items || []).map(x => x.k + (x.pair ? '>' + x.pair : '')).sort().join(','));
+    await key('ArrowRight'); await key('ArrowRight'); ok('한자 장까지는 공부칸에 아무것도 안 들어감', await words() === '', await words());
+    await key('ArrowRight'); q = await fd(); ok('나란히 장: 같은 생각이라 살구 점 하나', q.meet === 1 && /듣는 사람들/.test(q.h), q);
+    ok('나란히 장까지 보면 공부칸에 짝으로 둘', await words() === 'en:audience>hz:청중,hz:청중>en:audience', await words());
+    await key('ArrowLeft'); await key('ArrowRight'); ok('앞뒤로 다시 와도 두 번 들어가지 않음', (await words()).split(',').length === 2);
+    await key('ArrowRight'); q = await fd(); ok('한 번 더: 첫 단추는 "다음"(답 보기 아님)', q.next === '다음' && !/답/.test(q.next), q);
+    await key('ArrowRight'); q = await fd(); ok('채운 뒤 단추는 "다 봤어"', q.next === '다 봤어', q);
+    await key('ArrowRight'); q = await p.evaluate(() => [!!document.getElementById('pcFrame'), document.getElementById('saver').className]); ok('"다 봤어" → 닫히고 홈 위젯 면', !q[0] && /face/.test(q[1]), q);
+    // 공부칸 '오늘': 짝은 한 줄
+    { const bx = await p.locator('#svFace [data-tile="study"]:visible').first().boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1500); }
+    q = await p.evaluate(() => document.querySelector('#pgStudy .st-src') ? document.querySelector('#pgStudy .st-src').textContent : ''); ok('공부칸 첫 화면: "오늘의 단어에서" 출처 줄', /오늘의 단어에서/.test(q), q);
+    { const bx = await p.locator('#pgStudy [data-act="stlist"]').first().boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(1200); }
+    q = await p.evaluate(() => [...document.querySelectorAll('#pgStudy .st-row')].map(r => r.textContent.replace(/\s+/g, ' ').trim()));
+    ok('공부칸 오늘: audience ↔ 청중 한 줄, 청중 줄은 따로 없음', q.length === 1 && /↔ 청중/.test(q[0]) && /오늘의 단어에서/.test(q[0]), q);
+    await p.context().close();
+    // 표지에서 닫으면 아무것도 안 들어감 · 소리
+    p = await open(b, { time: '2026-11-18T16:20', read: newsDate }); await p.saver(); await p.evaluate(() => localStorage.removeItem('gk-words'));
+    { const bx = await p.locator('#fcFeat .cc-foot').boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p.adv(4000); }
+    await key('Escape'); ok('표지에서 닫으면 공부칸에 아무것도 없음, 홈으로', await words() === '' && !(await p.evaluate(() => !!document.getElementById('pcFrame'))));
+    await p.context().close();
+    // 3분 안에 만졌으면 15시가 넘어도 표지가 저절로 바뀌지 않음
+    p = await open(b, { time: '2026-11-18T14:57', read: newsDate }); await p.saver(); const f0 = await feat();
+    await p.mouse.move(700, 300); await p.mouse.down(); await p.mouse.move(700, 340); await p.mouse.up(); await p.adv(500); // 어중간한 끌기 = 손댐만
+    await p.adv(150e3); q = await feat(); ok('14:57 손댄 뒤 15:00을 넘겨도 표지 그대로', q === f0 && q !== 'piece pair', [f0, q]);
+    await p.adv(4 * 60e3); q = await feat(); ok('손 떼고 3분이 지나면 단어 표지로', q === 'piece pair', q); await p.context().close();
+    p = await open(b, { time: '2026-11-21T16:20', read: newsDate }); await p.saver(); q = await feat(); ok('주말 16:20은 단어 표지가 아님', q !== 'piece pair', q);
+    q = await p.evaluate(() => [['2026-11-18', 1], ['2026-11-19', 1], ['2026-11-20', 2], ['2026-11-23', 3], ['2026-11-24', 2], ['2026-11-27', 5], ['2026-11-28', 4]].map(([d, n]) => { const o = Date.now; Date.now = () => +new Date(d + 'T12:00:00+09:00'); const R = window.__gkPair; const _D = Date; let got; try { window.Date = class extends _D { constructor(...a) { super(...(a.length ? a : [d + 'T12:00:00+09:00'])); } }; got = R().n; } finally { window.Date = _D; Date.now = o; } return got === n ? '' : d + '→' + got; }).filter(Boolean));
+    ok('새 편은 그날, 사이 날은 지난 편을 차례로', q.length === 0, q); await p.context().close();
+    // 모든 편·모든 쪽: 글자 겹침 없음, 오류 없음 (1600×820, 전화 세로)
+    for (const [w, h] of [[1600, 820], [390, 780]]) { const pg = await (await b.newContext({ viewport: { width: w, height: h } })).newPage(); const er = []; pg.on('pageerror', e => er.push(e.message)); const bad = [];
+      for (const e of eps) { await pg.goto(`http://localhost:${PORT}/pieces/word.html?w=${e.n}`); await pg.waitForFunction(() => document.body.dataset.ready, null, { timeout: 8000 });
+        bad.push(...await pg.evaluate(async n => { const out = []; for (let i = 0; i < window.__word.order.length; i++) { window.__word.go(i); await new Promise(r => setTimeout(r, 30));
+          const L = document.getElementById('L').getBoundingClientRect(), ts = [...document.querySelectorAll('#fig text')].filter(t => getComputedStyle(t).opacity !== '0' && !t.classList.contains('fade')).map(t => t.getBoundingClientRect());
+          ts.forEach(t => { if (t.left < L.right && t.right > L.left && t.top < L.bottom && t.bottom > L.top) out.push(n + ':' + i + ':L'); });
+          for (let a = 0; a < ts.length; a++) for (let c = a + 1; c < ts.length; c++) { const x = ts[a], y = ts[c]; if (x.left < y.right - 6 && x.right > y.left + 6 && x.top < y.bottom - 2 && x.bottom > y.top + 2) out.push(n + ':' + i + ':' + a + '/' + c); }
+          if (L.bottom > document.querySelector('.rootline').getBoundingClientRect().top + 1) out.push(n + ':' + i + ':line'); } return out; }, e.n)); }
+      ok(`단어 편 모든 쪽 글자 겹침 없음 (${w}×${h})`, bad.length === 0 && er.length === 0, [bad.slice(0, 5), er.slice(0, 2)]); await pg.context().close(); }
   }
 
   await newsTests(b);
