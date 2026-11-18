@@ -25,7 +25,7 @@
 <link rel="apple-touch-icon" href="./icon4-180.png">
 <title>루아</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap"><!-- v163: 한자 전용(마루 부리·Pretendard에는 한자가 없다). 필요한 글자 조각만 받아진다 -->
 <style>
 html, body { margin: 0; }
 [hidden] { display: none !important; }
@@ -294,7 +294,7 @@ button { cursor: pointer; }
 .empty { color: var(--muted); margin: 0; }
 
 /* 대기 화면 글씨체: 명조 */
-.saver { --f-serif: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; }
+.saver { --f-serif: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; }
 .saver .sv-top, .saver .sv-time, .saver .sv-line, .saver .sv-line b, .saver .sv-wx, .saver .sv-tip, .saver .sv-attr, .saver .sv-msg { font-family: var(--f-serif); }
 .saver .sv-time { font-weight: 400; letter-spacing: -.03em; }
 .saver .sv-line { font-weight: 400; letter-spacing: -.015em; line-height: 1.6; }
@@ -323,7 +323,7 @@ button { cursor: pointer; }
 .ws-div { width: 1px; height: 2rem; background: var(--line); }
 .ws-pairs { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 1.6rem; }
 .ws-item { display: flex; align-items: baseline; gap: .55rem; }
-.ws-g { font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 600; font-size: 3rem; line-height: 1; color: var(--ink); }
+.ws-g { font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 600; font-size: 3rem; line-height: 1; color: var(--ink); }
 .ws-g.lat { font-family: var(--f-ui); font-weight: 600; font-size: 2.2rem; letter-spacing: .02em; }
 .ws-g em { font-style: normal; color: var(--accent); text-decoration: underline; text-underline-offset: .18em; }
 .ws-g i { font-style: normal; color: var(--muted); margin: 0 .08em; }
@@ -397,7 +397,7 @@ button { cursor: pointer; }
 .vc-mean { font-size: 1.6rem; font-weight: 500; color: var(--ink); line-height: 1.35; word-break: keep-all; }
 .vc-rule { height: 1px; background: var(--line); margin: .3rem 0; }
 .vc-item { display: flex; align-items: center; gap: 1.1rem; }
-.vc-g { font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 600; font-size: 4.4rem; line-height: 1; color: var(--ink); }
+.vc-g { font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 600; font-size: 4.4rem; line-height: 1; color: var(--ink); }
 .vcard.lat .vc-g { font-family: var(--f-ui); font-size: 2.6rem; letter-spacing: .02em; }
 .vc-g em { font-style: normal; color: var(--accent); text-decoration: underline; text-underline-offset: .18em; }
 .vc-g i { font-style: normal; color: var(--muted); margin: 0 .06em; }
@@ -495,7 +495,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .sheet.plain, .sheet[data-len="s"] { text-wrap: balance; }
 
 /* v65: 먹색 팔레트 + 나눔스퀘어 네오 */
-@font-face { font-family: "NanumSquare Neo"; src: url("fonts/NanumSquareNeo-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+/* v163: NanumSquare Neo 파일 삭제(쓰이지 않던 서체) */
 :root { --f-display: "NanumSquare Neo", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif !important; --f-ui: "NanumSquare Neo", "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif !important; }
 .sheet { font-weight: 500; }
 /* D1 — Warm ink: brown-black paper, cream reading text, one amber accent (emphasis only) */
@@ -530,7 +530,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 /* v67: 진단 기록 */
 
 /* v86: 루아 신문 */
-.np-serif { font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; }
+.np-serif { font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; }
 /* 대기화면 1면 (시간 문장 대신) */
 .saver.has-paper .sv-inner { grid-template-columns: max-content 1px minmax(0, 1fr); max-width: 92rem; column-gap: 4vw; }
 .saver.has-paper .sv-line { display: none; }
@@ -545,8 +545,8 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .svp-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .svp-lead.nopic .svp-photo { display: none; }
 .svp-tag { font-size: clamp(.8rem, 1vw, 1rem); font-weight: 800; color: var(--accent); }
-.svp-hed { margin: .5rem 0 0; font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-weight: 700; font-size: clamp(1.6rem, 2.6vw, 2.6rem); line-height: 1.3; letter-spacing: -.03em; text-wrap: balance; word-break: keep-all; }
-.svp-lede { margin: .9rem 0 0; font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-size: clamp(1rem, 1.3vw, 1.3rem); line-height: 1.75; color: color-mix(in srgb, var(--ink) 78%, transparent); word-break: keep-all; text-wrap: pretty; }
+.svp-hed { margin: .5rem 0 0; font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-weight: 700; font-size: clamp(1.6rem, 2.6vw, 2.6rem); line-height: 1.3; letter-spacing: -.03em; text-wrap: balance; word-break: keep-all; }
+.svp-lede { margin: .9rem 0 0; font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-size: clamp(1rem, 1.3vw, 1.3rem); line-height: 1.75; color: color-mix(in srgb, var(--ink) 78%, transparent); word-break: keep-all; text-wrap: pretty; }
 .svp-more { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding-top: 1.1rem; }
 .svp-more .svp-hed { font-size: clamp(1.05rem, 1.45vw, 1.45rem); margin-top: .35rem; }
 .svp-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 1.6rem; }
@@ -643,7 +643,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .saver.night .sv-msg { text-align: center; }
 
 /* 제호도 명조로 — 대기화면의 시계·제목과 같은 서체 */
-.svp-name { font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif !important; font-weight: 900 !important; letter-spacing: -.02em; }
+.svp-name { font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif !important; font-weight: 900 !important; letter-spacing: -.02em; }
 
 /* v90: 루아 신문 제호 = 직접 그린 궁체 로고(이름 낙관 포함) */
 .svp-name img { display: block; height: 1.05em; width: auto; }
@@ -689,7 +689,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .saver.sky .sky-body { grid-area: body; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) min(33%, 31rem); column-gap: 3vw; padding-top: 1.6vh; }
 .saver.sky .sky-chart { min-width: 0; min-height: 0; position: relative; }
 .sky-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.sky-svg .lb { font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-size: 26px; fill: #E8DDC9; font-weight: 600; paint-order: stroke; stroke: #100D0A; stroke-width: 4px; stroke-linejoin: round; }
+.sky-svg .lb { font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", serif; font-size: 26px; fill: #E8DDC9; font-weight: 600; paint-order: stroke; stroke: #100D0A; stroke-width: 4px; stroke-linejoin: round; }
 .sky-svg .lb.pl { fill: #F0C374; font-weight: 700; }
 .sky-svg .lb.hi { fill: #F0C374; font-size: 38px; font-weight: 900; }
 .sky-svg .lb.hi2 { fill: #F0C374; font-weight: 900; }
@@ -717,12 +717,12 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 /* v100: 홈(쉬는 중) — 오늘의 한 조각은 명조로, 아래에는 '오늘' 줄(신문·밤하늘·날씨) */
 .today { display: none; }
 .app[data-home] .main .inner:not(.has-fig) #textcol { margin-top: auto; }
-.app[data-home] .sheet { font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-weight: 700; letter-spacing: -.035em; }
+.app[data-home] .sheet { font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-weight: 700; letter-spacing: -.035em; }
 .app[data-home] .main .inner:not(.has-fig) .today { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); column-gap: 2.6rem; margin-top: auto; padding-top: .9rem; border-top: 3px double color-mix(in srgb, var(--ink) 45%, transparent); }
 .today .td { all: unset; box-sizing: border-box; display: flex; flex-direction: column; gap: .3rem; min-width: 0; cursor: pointer; padding: .1rem 0 .2rem; text-align: left; }
 .today .td[hidden] { display: none; }
 .today .td .svp-tag { font-size: .8rem; }
-.today .td b { font-family: "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-weight: 700; font-size: 1.45rem; line-height: 1.3; letter-spacing: -.03em; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.today .td b { font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", "Nanum Myeongjo", serif; font-weight: 700; font-size: 1.45rem; line-height: 1.3; letter-spacing: -.03em; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .today .td small { font-size: .9rem; font-weight: 600; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .today .td:active b { color: var(--accent); }
 .today .td .dot { display: inline-block; width: .5em; height: .5em; border-radius: 50%; background: var(--accent); margin-right: .45em; vertical-align: .08em; }
@@ -1056,7 +1056,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .fc-feat.word .w { margin-top: 18px; font-size: 128px; font-weight: 800; letter-spacing: -.04em; line-height: 1.05; }
 .fc-feat.word .hj { display: flex; gap: 12px; margin-top: 16px; }
 .fc-feat.word .hj div { min-width: 96px; padding: 10px 16px 12px; border-radius: 22px; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); text-align: center; }
-.fc-feat.word .hj span { display: block; font-family: "Noto Serif KR", serif; font-size: 50px; font-weight: 600; line-height: 1.15; }
+.fc-feat.word .hj span { display: block; font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", serif; font-size: 50px; font-weight: 600; line-height: 1.15; }
 .fc-feat.word .hj small { display: block; font-size: 22px; font-weight: 600; color: rgba(255,255,255,.8); }
 .fc-feat.word .lede { -webkit-line-clamp: 2; font-size: 34px; }
 .fc-feat.line .fc-hed { font-size: 52px; font-weight: 700; line-height: 1.3; -webkit-line-clamp: 5; }
@@ -1089,7 +1089,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 #replayBtn { min-height: 3rem; padding-inline: 1rem; }
 .top-right .iconbtn { width: 3rem; height: 3rem; }
 /* v106: 홈 시계 (머리띠) */
-.tb-clock { font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-size: 1.7rem; font-weight: 600; letter-spacing: -.02em; color: var(--ink); font-variant-numeric: tabular-nums; margin-right: .6rem; white-space: nowrap; }
+.tb-clock { font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", serif; font-size: 1.7rem; font-weight: 600; letter-spacing: -.02em; color: var(--ink); font-variant-numeric: tabular-nums; margin-right: .6rem; white-space: nowrap; }
 .tb-clock small { font-family: var(--f-ui, inherit); font-size: .5em; font-weight: 700; color: var(--muted); margin-right: .35em; letter-spacing: 0; }
 @media (max-width: 900px) { .tb-clock { display: none; } }
 /* v106: 루아의 할 일 — 홈 '오늘' 줄 네 번째 칸 */
@@ -1098,7 +1098,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 .today .td.tdo .svp-tag::after { content: none; }
 .today .td.tdo .svp-tag b { all: unset; color: var(--muted); font-weight: 700; margin-left: .6em; }
 .tdo-row, .svt-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: .7em; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.tdo-row { min-height: 2.3rem; font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 600; font-size: 1.35rem; letter-spacing: -.03em; color: var(--ink); }
+.tdo-row { min-height: 2.3rem; font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 600; font-size: 1.35rem; letter-spacing: -.03em; color: var(--ink); }
 .tdo-row .tx, .svt-row .tx { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; justify-self: start; max-width: 100%; }
 .tdo-row .bx, .svt-row .bx { width: .78em; height: .78em; border: 1.5px solid var(--ink); box-sizing: border-box; }
 .tdo-row .du, .svt-row .du { font-family: var(--f-ui, "NanumSquare Neo", sans-serif); font-size: .62em; font-weight: 700; color: var(--muted); letter-spacing: 0; }
@@ -1128,7 +1128,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
 <style id="Bcss">
 /* ===== B안: 큰 자리는 "그림 타일"(불투명), 나머지는 조용한 유리 ===== */
 @font-face { font-family: "Pretendard"; src: url("fonts/PretendardVariable.woff2") format("woff2"); font-weight: 45 920; font-display: swap; }
-:root { --f-ui: "Pretendard", "Noto Sans KR", sans-serif !important; --f-display: "Pretendard", "Noto Sans KR", sans-serif !important; --f-serif: "Noto Serif KR", "Noto Serif CJK KR", serif; }
+:root { --f-ui: "Pretendard", "Noto Sans KR", sans-serif !important; --f-display: "Pretendard", "Noto Sans KR", sans-serif !important; --f-serif: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", serif; }
 .saver.face { --bgk: .18; } .saver.face[data-tone="day"] { --bgk: .26; } .saver.face[data-tone="eve"] { --bgk: .12; }
 .fc-t { padding: 24px 28px; background: linear-gradient(160deg, rgba(255,255,255,.17), rgba(255,255,255,.07) 60%, rgba(255,255,255,.10)); }
 .fc-lab { font-size: 28px; font-weight: 700; letter-spacing: -.02em; }
@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v162</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v163</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v162</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v163</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -4042,7 +4042,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v162';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v163';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -4280,7 +4280,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
 .cc-r .it.on span { color: #F7F2E6; }
 .cc-hz { display: grid; grid-template-columns: repeat(2, 168px); gap: 28px 36px; justify-content: space-between; }
 .cc-hz .h { text-align: center; }
-.cc-hz .h span { display: block; font-family: "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 700; font-size: 152px; line-height: 180px; color: #F7F2E6; margin: 0 -10px; }
+.cc-hz .h span { display: block; font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", serif; font-weight: 700; font-size: 152px; line-height: 180px; color: #F7F2E6; margin: 0 -10px; }
 .cc-hz .h small { display: block; margin-top: 8px; padding-top: 14px; box-shadow: inset 0 1px 0 rgba(241,236,224,.14); font-size: 24px; font-weight: 400; line-height: 30px; color: rgba(241,236,224,.6); white-space: nowrap; }
 .cc-hz .h small b { font-weight: 700; color: #F1ECE0; margin-left: 6px; }
 .cc-hz.n4 .h span { font-size: 112px; line-height: 128px; }
@@ -4655,7 +4655,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
    종이 안에는 카드 · 둥근 판 · 색 단추가 없다. 먹색 하나, 괘선, 명조. 종이 자리는 두 화면에서 같다.
    그림은 발행 때 사람이 본 같은 출처 파일만(newsImg) — 없거나 검사에 걸리면 그림 없는 조판으로 접힌다. */
 .rn-front, .paper{ --nk:#1B1712; --nk2:#4A4239; --nrule:rgb(27 23 18 / .3); --sheet:#F7F3E9; --desk:linear-gradient(180deg,#E2D2B8,#EBDFCB); --S:90 64 30;
-  --serif:"Noto Serif KR","Noto Serif CJK KR","Nanum Myeongjo",serif; --sans:"Pretendard",system-ui,sans-serif; --cw:calc((100vw - 208px) / 3);
+  --serif:"MaruBuri", "MaruBuri Full", "Noto Serif KR","Noto Serif CJK KR","Nanum Myeongjo",serif; --sans:"Pretendard",system-ui,sans-serif; --cw:calc((100vw - 208px) / 3);
   position:fixed;inset:0;background:var(--desk);color:var(--nk);font-family:var(--serif);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;cursor:default}
 .rn-front[data-t=eve], .paper[data-t=eve], .rn-front[data-t=late], .paper[data-t=late]{ --desk:linear-gradient(180deg,#D6C0B4,#E2D2C6) }
 .rn-front[data-t=late], .paper[data-t=late]{ --sheet:#EDE6D8 }
@@ -4791,7 +4791,7 @@ body{--X:48px; --T:40px; --G:24px; --B:48px; --HH:64px; --top:calc(var(--T) + va
   --f-btn:700 28px/1 "Pretendard",system-ui,sans-serif;       --ls-btn:-.018em;
   --f-aside:500 26px/36px "Pretendard",system-ui,sans-serif;  --ls-aside:-.012em;
   --f-lab:600 24px/32px "Pretendard",system-ui,sans-serif;    --ls-lab:-.01em;
-  --serif:"Noto Serif KR","Noto Serif CJK KR","Nanum Myeongjo",serif;
+  --serif:"MaruBuri", "MaruBuri Full", "Noto Serif KR","Noto Serif CJK KR","Nanum Myeongjo",serif;
   
   --bgi:url('bg/c-morn.jpg'); --c1:6 90 170; --c2:4 72 150; --p1:6 88 168; --p2:4 76 156; --sh:18 62 120; --warm:255 214 170; --wk:.10; --skyink:#06183F;}
 body[data-tone=day]{--bgi:url('bg/c-day.jpg'); --c1:20 84 204; --c2:13 62 172; --p1:18 80 196; --p2:14 68 180; --sh:10 52 130; --warm:190 226 255}
@@ -6635,6 +6635,27 @@ body[data-night] #app{--paperbg:linear-gradient(#0E1839,#0E1839) !important; --z
   --zhl:#F2E8D2 !important; --zhlbg:transparent !important}
 body[data-night] #app .sheet .w.wlink, body[data-night] #app .sheet .key.drawn .w.wlink, body[data-night] #app .sheet .key .w.wlink{box-shadow:inset 0 -.09em 0 var(--ds-apricot) !important}
 body[data-night] #app .today .td .dot{background:var(--ds-apricot) !important}
+</style>
+<style id="ds2-type">
+/* ===== ds2-type (v163): 디자인 가이드 2단계 — 서체 =====
+   목소리 = 마루 부리(네이버, OFL): 홈 시계·표지 제목·답·큰 숫자·신문. 훑는 글(목록·단추·꼬리표) = Pretendard 그대로.
+   MaruBuri = 자주 쓰는 한글 2,350자 + 영문(굵기당 약 200KB). 그 밖의 한글은 MaruBuri Full(그 글자가 나올 때만 받음). 한자는 Noto Serif KR. */
+@font-face{font-family:"MaruBuri";src:url("fonts/MaruBuri-Regular.sub.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"MaruBuri";src:url("fonts/MaruBuri-SemiBold.sub.woff2") format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"MaruBuri";src:url("fonts/MaruBuri-Bold.sub.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"MaruBuri Full";src:url("fonts/MaruBuri-Regular.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+AC00-D7A3,U+1100-11FF,U+3130-318F}
+@font-face{font-family:"MaruBuri Full";src:url("fonts/MaruBuri-SemiBold.woff2") format("woff2");font-weight:600;font-display:swap;unicode-range:U+AC00-D7A3,U+1100-11FF,U+3130-318F}
+@font-face{font-family:"MaruBuri Full";src:url("fonts/MaruBuri-Bold.woff2") format("woff2");font-weight:700;font-display:swap;unicode-range:U+AC00-D7A3,U+1100-11FF,U+3130-318F}
+:root{--ds-buri:"MaruBuri","MaruBuri Full","Noto Serif KR",serif; --ds-hanja:"Noto Serif KR","MaruBuri",serif}
+/* 홈: 시계 숫자와 표지 제목 */
+#saver.saver.face .fc-time{font-family:var(--ds-buri) !important;font-weight:600 !important;font-variant-numeric:tabular-nums !important;letter-spacing:-.02em !important}
+#saver.saver.face .cc-h, #saver.saver.face .cc-h.pce, #saver.saver.face .cc-big{font-family:var(--ds-buri) !important;font-weight:700 !important;letter-spacing:-.02em !important}
+/* 답: 아이가 읽는 문장. 남색·밤 바탕에서는 600 이상 */
+#app .sheet{font-family:var(--ds-buri) !important;font-weight:600 !important;letter-spacing:-.02em !important}
+#app .sheet .key .w, #app .sheet .key.drawn .w, #app .sheet .w.wlink{font-weight:700 !important}
+/* 큰 숫자: 날씨 기온, 달력 오늘 날짜 */
+.wx-temp{font-family:var(--ds-buri) !important;font-weight:600 !important;letter-spacing:-.03em !important}
+#agTtl b{font-family:var(--ds-buri) !important;font-weight:600 !important;font-variant-numeric:tabular-nums}
 </style>
 <script>
 // v162: 홈의 시간대 벌 — 아침 7~11시 am, 낮 11~17시 day, 저녁 17~20:30 eve, 그 밖 night. 색만 바꾼다(ds2).
