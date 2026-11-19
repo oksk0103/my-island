@@ -1533,13 +1533,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v176</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v177</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v176</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v177</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -4077,7 +4077,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v176';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v177';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6727,6 +6727,24 @@ body[data-night] #app .today .td .dot{background:var(--ds-apricot) !important}
   #saver.saver.face .fc-feat.news .cc-r .it span{font-size:28px !important;line-height:60px !important;font-weight:600 !important;color:rgba(255,255,255,.66) !important;white-space:nowrap}
   #saver.saver.face .fc-feat.news .cc-r .it.on b, #saver.saver.face .fc-feat.news .cc-r .it.on span{color:#fff !important;font-weight:700 !important}
 }
+</style>
+<style id="ds2-news-calm">
+/* ===== v177 신문 선 줄이기 (선생님 피드백: "선이 너무 많아서 보기 피곤") =====
+   1면 10개·기사 6개였던 선을 머리줄 아래 한 줄씩만 남긴다. 나머지 구분은 여백과 꼬리표 글자로. */
+.rn-rule2{border-top:0 !important;border-bottom:0 !important;height:6px !important}
+.rn-date{border-bottom:2px solid var(--nk) !important}
+.rn-phead{border-bottom:2px solid var(--nk) !important;box-shadow:none !important}
+.rn-body::before, .rn-cols::before, #ppArt::before{display:none !important}
+.rn-box, #ppWord{border:0 !important}
+@media (max-width:899px){ .rn-box, #ppWord{padding-left:0 !important;padding-right:0 !important} } /* 폰 세로 낱말 칸은 네모 상자였다 — 위만 지우면 뚫린 상자가 되어 통째로 지운다 */
+.rn-box > *, #ppM, .rn-word > p{border-top:0 !important}
+.rn-it{border-bottom:0 !important;padding-bottom:0 !important;margin-bottom:28px !important}
+.rn-num{border-top:0 !important}
+.rn-pnav{border-top:0 !important}
+.rn-art .rn-text{column-rule:0 none !important;column-gap:48px !important}
+/* 선이 빠진 자리: 꼬리표(오늘의 낱말·오늘의 숫자)를 살구 글자로 해 칸이 바뀌는 것을 알린다 */
+.rn-box .rn-lab, #ppWord .rn-lab{color:#B8651F !important}
+.rn-box > .rn-lab{position:static !important;display:block !important;background:none !important;padding:0 !important;left:auto !important;top:auto !important}
 </style>
 <style id="ds2-inner">
 /* ===== ds2-inner (v166): 디자인 가이드 4단계 — 안쪽 화면의 단추·달력 =====
