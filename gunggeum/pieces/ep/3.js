@@ -42,11 +42,11 @@ EPX[3]={day:'3일차',topic:'정오와 자정',cat:'말의 유래',field:'국어
   {k:'정오',h:'낮 12시는<br>오시의 한가운데',b:'오시(午時)는 오전 11시부터 오후 1시까지야. 그 한가운데인 낮 12시가 <em>정오(正午)</em>. 정오 앞은 오전, 뒤는 오후야.',steps:['오시 보기','오전·오후 나누기'],
    draw(S){const X0=680,X1=1480,Y=470,hx=h=>X0+h*(X1-X0)/24;
     // 시간 띠: 12칸
-    wl(S,X0,Y,X1,Y,W0);wl(S,X0,Y+60,X1,Y+60,W0);for(let i=0;i<=12;i++){const x=hx(Math.min(24,Math.max(0,i*2-1)));wl(S,x,Y,x,Y+60,CM);}
+    wl(S,X0,Y,X1,Y,W0);wl(S,X0,Y+60,X1,Y+60,W0);[0,1,3,5,7,9,11,13,15,17,19,21,23,24].forEach(h=>wl(S,hx(h),Y,hx(h),Y+60,CM)); /* 子시는 밤 11시~새벽 1시라 띠 양 끝에 반 칸씩. 0시·24시 끝선을 둘 다 긋는다(예전엔 24시 쪽이 뚫려 있었다) */
     for(let h=0;h<=24;h++)wl(S,hx(h),Y+60,hx(h),Y+60+(h%6===0?16:8),h%6===0?W0:CM);
     [[0,'0시'],[6,'6시'],[12,'12시'],[18,'18시'],[24,'24시']].forEach(([h,s])=>tx(S,hx(h),Y+106,s,'v22m','middle'));
     const fill=el('rect',{x:hx(11),y:Y+2,width:hx(13)-hx(11),height:56,fill:SA,opacity:0},S);
-    let wu;ZH.forEach((z,i)=>{const c=i===0?hx(.5):hx(i*2);const t=tx(S,c,Y+44,z,'vs28','middle');if(i===6)wu=t;});
+    let wu;ZH.forEach((z,i)=>{const t=i===0?tx(S,hx(.5),Y+41,z,'vs28','middle',{style:'font-size:22px'}):tx(S,hx(i*2),Y+44,z,'vs28','middle');if(i===6)wu=t;});tx(S,hx(23.5),Y+41,'子','vs28','middle',{style:'font-size:22px'}); /* 반 칸 두 개는 같은 子, 칸에 맞게 조금 작게 */
     const big=tx(S,hx(12),300,'午','vs160','middle',{style:`fill:${CM}`});const zheng=tx(S,hx(12)-90,300,'正','vs160','end');zheng.setAttribute('opacity',0);
     const cap=tx(S,hx(12),360,'오시 · 오전 11시~오후 1시','v28','middle');cap.setAttribute('opacity',0);
     const mid=wl(S,hx(12),Y-40,hx(12),Y,W0,{'stroke-width':3});hidLine(mid);

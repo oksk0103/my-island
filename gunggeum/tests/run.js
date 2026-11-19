@@ -813,6 +813,11 @@ async function newsTests(b) {
     ok('평일 16:20 표지는 단어가 아님, 갈래에 단어 없음', !/pair/.test(q[0]) && q[1] === '신문|이야기|과학', q); await p.context().close();
     p = await open(b, { time: '2026-11-18T16:20', read: newsDate, pre: async pg => { await pg.addInitScript(() => localStorage.setItem('gk-cover', JSON.stringify({ k: 'pair', day: '2026-11-18' }))); } }); await p.saver();
     q = await p.evaluate(() => document.getElementById('fcFeat').className); ok('예전에 단어를 골라 둔 기기도 단어 표지가 안 뜸', !/pair/.test(q), q); await p.context().close();
+    // v176: 3일차(정오와 자정) 시간 띠 — 子시는 양 끝에 반 칸씩. 0시·24시 끝선이 둘 다 있고, 반 칸 둘 다 '子'
+    { const pg = await (await b.newContext({ viewport: { width: 1600, height: 820 }, reducedMotion: 'reduce' })).newPage(); await pg.goto(`http://localhost:${PORT}/pieces/piece.html?ep=3&v=2`); await pg.waitForTimeout(1200);
+      for (let i = 0; i < 8; i++) { if (await pg.evaluate(() => [...document.querySelectorAll('.scr.on text')].some(e => e.textContent === '오전 午前'))) break; await pg.keyboard.press('ArrowRight'); await pg.waitForTimeout(600); }
+      const q = await pg.evaluate(() => { const sc = document.querySelector('.scr.on'); const V = [...sc.querySelectorAll('line')].filter(l => l.getAttribute('x1') === l.getAttribute('x2') && Math.abs(+l.getAttribute('y2') - +l.getAttribute('y1') - 60) < 1).map(l => Math.round(+l.getAttribute('x1'))); const zi = [...sc.querySelectorAll('text')].filter(e => e.textContent === '子').map(e => Math.round(+e.getAttribute('x'))); return { ends: [V.includes(680), V.includes(1480)], n: V.length, zi }; });
+      ok('v176 3일차 시간 띠: 0시·24시 양 끝선이 다 있고(14줄), 子 반 칸이 양 끝에 둘', q.ends.join() === 'true,true' && q.n === 14 && q.zi.length === 2 && q.zi[0] < 700 && q.zi[1] > 1460, q); await pg.context().close(); }
     // 모든 편·모든 쪽: 글자 겹침 없음, 오류 없음 (1600×820, 전화 세로)
     for (const [w, h] of [[1600, 820], [390, 780]]) { const pg = await (await b.newContext({ viewport: { width: w, height: h } })).newPage(); const er = []; pg.on('pageerror', e => er.push(e.message)); const bad = [];
       for (const e of eps) { await pg.goto(`http://localhost:${PORT}/pieces/word.html?w=${e.n}`); await pg.waitForFunction(() => document.body.dataset.ready, null, { timeout: 8000 });
