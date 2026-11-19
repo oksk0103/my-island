@@ -6729,22 +6729,26 @@ body[data-night] #app .today .td .dot{background:var(--ds-apricot) !important}
 }
 </style>
 <style id="ds2-news-calm">
-/* ===== v177 신문 선 줄이기 (선생님 피드백: "선이 너무 많아서 보기 피곤") =====
-   1면 10개·기사 6개였던 선을 머리줄 아래 한 줄씩만 남긴다. 나머지 구분은 여백과 꼬리표 글자로. */
-.rn-rule2{border-top:0 !important;border-bottom:0 !important;height:6px !important}
-.rn-date{border-bottom:2px solid var(--nk) !important}
+/* ===== v177 신문 선 줄이기 (선생님 피드백 "선이 너무 많아서 보기 피곤" → 디자이너 세 명 검토의 공통 결론) =====
+   1면 10개 → 4개, 기사면 6개 → 1개.
+   지운 것: 제호 밑에 몰려 있던 세 줄 가운데 하나, 같은 기사 안을 가르던 세로선(그림·본문 사이, 본문 단 사이), 낱말·숫자 칸 위 굵은 선, 낱말 칸 안쪽 선, 기사면 아래 선.
+   남긴 것: 날짜 줄 아래 이중 괘선 한 벌(신문다움은 이 한 곳), 머리기사와 다른 기사 사이 세로선, 오른쪽 두 꼭지 사이 가는 선. 기사와 기사 사이만 선, 같은 기사 안은 여백. */
+.rn-rule2{border-top:0 !important;border-bottom:0 !important;height:0 !important}
+.rn-date{border-bottom:3px solid var(--nk) !important;box-shadow:0 4px 0 var(--sheet), 0 5px 0 var(--nk) !important;margin-bottom:5px !important}
 .rn-phead{border-bottom:2px solid var(--nk) !important;box-shadow:none !important}
-.rn-body::before, .rn-cols::before, #ppArt::before{display:none !important}
+.rn-cols::before, #ppArt::before{display:none !important}
+.rn-art .rn-text{column-rule:0 none !important;column-gap:48px !important}
 .rn-box, #ppWord{border:0 !important}
-@media (max-width:899px){ .rn-box, #ppWord{padding-left:0 !important;padding-right:0 !important} } /* 폰 세로 낱말 칸은 네모 상자였다 — 위만 지우면 뚫린 상자가 되어 통째로 지운다 */
+@media (max-width:899px){ .rn-box, #ppWord{padding-left:0 !important;padding-right:0 !important} }
 .rn-box > *, #ppM, .rn-word > p{border-top:0 !important}
-.rn-it{border-bottom:0 !important;padding-bottom:0 !important;margin-bottom:28px !important}
+.rn-side .rn-it{border-bottom:0 !important}
+.rn-side .rn-it:first-child{border-bottom:1px solid var(--nrule) !important;padding-bottom:24px !important;margin-bottom:24px !important}
 .rn-num{border-top:0 !important}
 .rn-pnav{border-top:0 !important}
-.rn-art .rn-text{column-rule:0 none !important;column-gap:48px !important}
-/* 선이 빠진 자리: 꼬리표(오늘의 낱말·오늘의 숫자)를 살구 글자로 해 칸이 바뀌는 것을 알린다 */
+/* 선이 빠진 자리: 꼬리표를 살구 글자로, 칸 위 여백은 넓게·칸 안은 좁게(덩어리 사이가 안쪽 간격의 2배 이상) */
 .rn-box .rn-lab, #ppWord .rn-lab{color:#B8651F !important}
 .rn-box > .rn-lab{position:static !important;display:block !important;background:none !important;padding:0 !important;left:auto !important;top:auto !important}
+@media (min-width:900px){ #ppWord{margin-top:28px !important} .rn-word > p{margin-top:0 !important;padding-top:2px !important} }
 </style>
 <style id="ds2-inner">
 /* ===== ds2-inner (v166): 디자인 가이드 4단계 — 안쪽 화면의 단추·달력 =====

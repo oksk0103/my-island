@@ -89,7 +89,11 @@ async function newsTests(b) {
   ok('1면: 날씨는 날짜 줄에, 오른쪽 끝에는 시계 (v136)', await p.evaluate(() => /7°/.test((document.querySelector('#rnFront .rn-date') || {}).textContent || '') && /\d:\d\d/.test((document.querySelector('#rnFront .rn-ear') || {}).textContent || '')));
   await p.tap('#rnFront .rn-home'); s = await p.st(); ok('1면의 홈 단추 → 홈(위젯 면)', s.saver === 'face' && !s.paper, s);
   ok('홈으로 가도 읽음 처리되지 않음(1면만 봄)', await p.evaluate(() => !JSON.parse(localStorage.getItem('gk-news-read2') || '""')));
-  await p.tap('#svFace [data-tile="news"]'); await p.adv(2000); await p.tap('#rnFront [data-rn="art"][data-i="0"]'); s = await p.st(); ok('1면의 머리기사 → 기사 화면', !s.saver && s.paper, s);
+  await p.tap('#svFace [data-tile="news"]'); await p.adv(2000);
+  { const q = await p.evaluate(() => { const bw = (e, sd) => { if (!e) return -1; const c = getComputedStyle(e); return c['border' + sd + 'Style'] === 'none' ? 0 : parseFloat(c['border' + sd + 'Width']); }, $ = x => document.querySelector('#rnFront ' + x) || document.querySelector(x), it = document.querySelectorAll('.rn-side .rn-it');
+      return { box: bw($('.rn-box'), 'Top'), rule2: bw($('.rn-rule2'), 'Top') + bw($('.rn-rule2'), 'Bottom'), date: bw($('.rn-date'), 'Bottom'), first: bw(it[0], 'Bottom'), last: bw(it[it.length - 1], 'Bottom'), n: it.length }; });
+    ok('v177 신문 1면: 날짜 아래 괘선과 오른쪽 꼭지 사이 한 줄만, 낱말·숫자 상자 위 선 없음', q.box === 0 && q.rule2 === 0 && q.date > 0 && q.first === 1 && (q.n < 2 || q.last === 0), q); }
+  await p.tap('#rnFront [data-rn="art"][data-i="0"]'); s = await p.st(); ok('1면의 머리기사 → 기사 화면', !s.saver && s.paper, s);
   ok('기사를 펴면 읽음 처리', await p.evaluate(d => JSON.parse(localStorage.getItem('gk-news-read2') || '""') === d, day));
   ok('신문 닫기 단추가 없음', await p.evaluate(() => !document.getElementById('ppClose') && !/신문 닫기/.test(document.getElementById('paper').textContent)));
   ok('본문 낱말은 굵은 글자(mark)', await p.evaluate(() => { const m = document.querySelector('#ppBody mark'); return !!m && +getComputedStyle(m).fontWeight >= 700 && getComputedStyle(m).backgroundColor === 'rgba(0, 0, 0, 0)'; }));
