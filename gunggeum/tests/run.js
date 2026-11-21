@@ -799,9 +799,10 @@ async function newsTests(b) {
       { const pg = await p2.context().newPage(); const r2 = [];
         for (const u of ['pieces/piece.html?ep=5&v=2', 'pieces/piece.html?ep=3', 'pieces/p2.html?ep=3']) { await pg.goto(`http://localhost:${PORT}/${u}`); await pg.waitForTimeout(3500); r2.push(await pg.evaluate(() => [location.pathname.split('/').pop(), document.body.classList.contains('v2'), !!document.getElementById('epFail')])); }
         ok('옛 주소(piece.html)는 새 파일로 넘어가고, 옛 틀은 어디서도 그려지지 않음 (v181)', r2.every(x => x[0] === 'p2.html' && (x[1] || x[2])) && r2[1][2] && r2[2][2], r2); await pg.close(); }
-      { const pg = await p2.context().newPage(); await pg.route(/pieces\/ep\//, async r => { await new Promise(z => setTimeout(z, 1200)); r.continue(); });
+      { const pg = await p2.context().newPage(); let rel; const gate = new Promise(z => { rel = z; }); await pg.route(/pieces\/ep\//, async r => { await gate; r.continue(); }); // 편 파일을 붙잡아 두었다가 풀어 준다
         pg.goto(`http://localhost:${PORT}/pieces/p2.html?ep=5&v=2`).catch(() => {}); await pg.waitForTimeout(600);
-        const mid = await pg.evaluate(() => getComputedStyle(document.getElementById('stage')).visibility); await pg.waitForTimeout(2500);
+        const mid = await pg.evaluate(() => { const st = document.getElementById('stage'); const seen = [...st.querySelectorAll('*')].filter(e => { const c = getComputedStyle(e), r = e.getBoundingClientRect(); return c.visibility === 'visible' && c.display !== 'none' && r.width > 2 && r.height > 2; }).length; return getComputedStyle(st).opacity === '0' && seen === 0 ? 'hidden' : 'seen:' + seen; });
+        rel(); for (let i = 0; i < 40 && !(await pg.evaluate(() => document.body.classList.contains('on'))); i++) await pg.waitForTimeout(250); await pg.waitForTimeout(400);
         const end = await pg.evaluate(() => getComputedStyle(document.getElementById('stage')).visibility + '/' + document.body.classList.contains('v2'));
         ok('조각 장을 여는 동안 옛 틀이 잠깐도 비치지 않음: 다 그리기 전에는 무대를 숨김 (v182)', mid === 'hidden' && end === 'visible/true', [mid, end]); await pg.close(); }
       await p2.context().close(); }

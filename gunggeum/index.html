@@ -1573,13 +1573,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v182</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v183</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v182</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v183</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2436,6 +2436,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function enterSaver(lockMsg) {
     saverLock = lockMsg || '';
     if (!saverEl.hidden) return;
+    setTimeout(pieceWarm, 1500);
     svTouchAt = Date.now(); recent.length = 0; quiz = false; hidePic(); setChips([]); followChips = []; input.value = ''; input.blur();
     hidePaper(); paperCtx = null; delete app.dataset.fromPaper;
     hush(); saverEl.hidden = false; loadNews().then(() => { if (!saverEl.hidden) renderSaver(); }); $('svMsg').hidden = $('fcMsg').hidden = true; renderSaver(); fetchWeather().then(renderSaver).catch(() => {});
@@ -2545,9 +2546,13 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   // v139: 조각 장(pieces/*.html)을 화면 전체 틀(iframe)로 연다. 홈 단추·'다 봤어'·10분 손대지 않음 → 닫고 홈으로
   let pcFrame = null, pcTouch = 0, pcTimer = null, pcOk = false;
   function pieceClose() { if (!pcFrame) return; pcFrame.remove(); pcFrame = null; clearInterval(pcTimer); window.__gkSaverAt = Date.now(); if (saverEl.hidden) enterSaver(); else renderSaver(); diag('saver', '조각 장 닫음'); }
+  // v183: 대기화면이 뜰 때 그날 이야기·과학 파일을 미리 받아 둔다 → "보기"를 누르면 빈 화면 없이 바로 열린다
+  let pcWarmKey = '';
+  function pieceWarm() { try { const k = dayKey(new Date()) + APP_V; if (pcWarmKey === k || navigator.onLine === false) return; pcWarmKey = k;
+    [piece(), sciPiece()].forEach(pc => { if (!pc || !pc.page) return; const u = pc.page + (pc.page.includes('?') ? '&' : '?') + 'v=' + APP_V; fetch(u).catch(() => { pcWarmKey = ''; }); const m = /p2\.html\?ep=(\d+)&v=2/.exec(pc.page); if (m) fetch('pieces/ep/' + m[1] + '.js?').catch(() => {}); }); } catch (e) {} }
   function pieceOpen(pc) {
     if (pcFrame) return; hush(); pcFrame = document.createElement('iframe'); pcFrame.id = 'pcFrame'; pcFrame.src = pc.page + (pc.page.includes('?') ? '&' : '?') + 'v=' + APP_V; pcFrame.title = pc.tag || '오늘의 이야기';
-    pcFrame.setAttribute('style', 'position:fixed;inset:0;width:100vw;height:100vh;border:0;z-index:2147483000;background:#13203F');
+    pcFrame.setAttribute('style', 'position:fixed;inset:0;width:100vw;height:100vh;border:0;z-index:2147483000;background:linear-gradient(#1A2C55,#0C1630)');
     document.body.append(pcFrame); pcTouch = Date.now(); clearInterval(pcTimer); pcTimer = setInterval(() => { if (Date.now() - pcTouch > 10 * 60e3) pieceClose(); }, 15e3);
     pcFrame.addEventListener('load', () => { try { pcFrame.contentWindow.focus(); } catch (e) {} });
     diag('saver', '조각 장 열림: ' + pc.page);
@@ -4161,7 +4166,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v182';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v183';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {

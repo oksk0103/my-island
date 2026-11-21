@@ -93,8 +93,12 @@ svg text{font-family:"Pretendard","Noto Sans CJK KR",sans-serif}
 #end .main{position:absolute;left:136px;top:330px;width:900px}
 #end .tile{left:1112px;top:230px;width:440px;height:440px}
 /* v182: 여는 순간 옛 틀(미색 바탕·남색 상자)이 잠깐 비치던 것을 막는다. 새 틀로 다 그린 뒤(body.on)에만 무대를 보인다 */
-html,body{background:#13203F}
-body:not(.on) #stage{visibility:hidden}
+html,body{background:linear-gradient(#1A2C55,#0C1630) fixed}
+body:not(.on) #stage,body:not(.on) #stage *{visibility:hidden!important}
+body:not(.on) #stage{opacity:0!important}
+body.on #stage{animation:pcIn .22s ease-out}
+@keyframes pcIn{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){body.on #stage{animation:none}}
 </style>
 <style>
 /* ===== 새 틀 v2 (편 정의에 frame:'v2' 가 있을 때만: body.v2) ===== */
@@ -1198,10 +1202,11 @@ document.body.classList.add('on'); // v182: 다 그린 뒤에만 보이게
 /* v180: 편 파일(ep/NN.js)을 다 받은 뒤에만 화면을 그린다. 못 받으면 예전 틀(미색 바탕에 남색 상자)로 떨어지지 않고, 두 번 다시 받아 본 뒤 조용히 알리고 앱의 진단 기록에 까닭을 남긴다. */
 (()=>{const q=new URLSearchParams(location.search),n=+q.get('ep')||0,want=q.get('v')==='2'&&n>0;
 const say=m=>{try{parent.postMessage({gk:'piece-diag',t:String(m).slice(0,160)},'*');}catch(e){}};
+const errs=[];
 const run=()=>{const s=document.createElement('script');s.textContent=document.getElementById('mainJs').textContent;document.body.appendChild(s);};
 const ok=()=>{const e=EPX[n]||EP[Math.max(1,Math.min(EP.length,n||1))-1];return !!e&&e.frame==='v2';};
-const go=()=>{if(ok()){run();try{parent.postMessage({gk:'piece-ok'},'*');}catch(e){}}else fail(9,'새 틀이 아닌 편(ep='+n+')');};
-const errs=[];addEventListener('error',e=>{if(e.message)errs.push(e.message+' @'+(e.filename||'').split('/').pop().split('?')[0]+':'+(e.lineno||''));});
+const go=()=>{if(ok()){run();if(document.body.classList.contains('v2')){if(!document.body.classList.contains('on')){document.body.classList.add('on');say('편 '+n+' 그리다 멈춤: '+errs.slice(0,2).join(' / '));}}try{parent.postMessage({gk:'piece-ok'},'*');}catch(e){}}else fail(9,'새 틀이 아닌 편(ep='+n+')');};
+addEventListener('error',e=>{if(e.message)errs.push(e.message+' @'+(e.filename||'').split('/').pop().split('?')[0]+':'+(e.lineno||''));});
 const fail=(k,why)=>{if(k<2){setTimeout(()=>load(k+1),700);return;}say('편 '+n+' 못 엶: '+why);
   const d=document.createElement('div');d.id='epFail';d.setAttribute('style','position:fixed;inset:0;z-index:9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;background:linear-gradient(#1A2C55,#0C1630);color:#F3E9D2;font-family:Pretendard,"Noto Sans KR",sans-serif;text-align:center;padding:24px');
   d.innerHTML='<p style="margin:0;font-size:clamp(24px,3.2vw,40px);font-weight:600;line-height:1.4;word-break:keep-all">지금은 못 불러왔어.<br>조금 있다가 다시 열어 봐.</p><button type="button" style="min-height:72px;padding:0 40px;border:0;border-radius:36px;background:#F3E9D2;color:#18254E;font:600 26px Pretendard,sans-serif">돌아가기</button>';
