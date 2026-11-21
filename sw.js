@@ -6,6 +6,7 @@ self.addEventListener('install',function(e){e.waitUntil(caches.open(CACHE).then(
 self.addEventListener('activate',function(e){e.waitUntil(caches.keys().then(function(ks){return Promise.all(ks.filter(function(k){return k!==CACHE&&k!==AUDC&&k!==BLOBC}).map(function(k){return caches.delete(k)}))}).then(function(){return self.clients.claim()}))});
 self.addEventListener('fetch',function(e){
   var u=new URL(e.request.url);if(e.request.method!=='GET'||u.origin!==location.origin)return;
+  if(/\/gunggeum\//.test(u.pathname))return; // 루아(궁금칸)는 제 캐시 관리자가 따로 있어요. 여기서 옛 파일을 내주지 않게 손대지 않아요
   // 녹음 파일은 따로 오래 보관해요 (새 버전이 나와도 다시 받지 않게)
   // 그림·소리 파일은 이름에 내용 지문이 있어서 한 번 받으면 바뀌지 않아요
   if(/\/b\//.test(u.pathname)){e.respondWith(caches.open(BLOBC).then(function(c){return c.match(e.request).then(function(hit){return hit||fetch(e.request).then(function(res){if(res&&res.ok)c.put(e.request,res.clone());return res})})}));return}

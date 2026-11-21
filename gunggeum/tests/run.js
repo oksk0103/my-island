@@ -227,7 +227,7 @@ async function newsTests(b) {
   await p.click('#gkHome'); await p.adv(1500); ok('공부칸의 홈 단추 → 위젯 면 (공부 중 표지는 없음)', /^face/.test((await p.st()).saver) && await feat() !== 'study', await feat());
   { await p.mouse.click(20, 20); await p.adv(1000); await p.saver(); await tile('cv-sci');
     const moonNow = await feat() === 'moon';
-    if (!moonNow) { await tile('sci'); const src = await p.evaluate(() => (document.getElementById('pcFrame') || {}).src || ''); ok('과학 표지를 누르면 그날 과학 편이 열림 (v147)', /pieces\/piece\.html\?ep=(1[5-9]|2[01])/.test(src), src);
+    if (!moonNow) { await tile('sci'); const src = await p.evaluate(() => (document.getElementById('pcFrame') || {}).src || ''); ok('과학 표지를 누르면 그날 과학 편이 열림 (v147)', /pieces\/p2\.html\?ep=(1[5-9]|2[01])/.test(src), src);
       await p.adv(2500); await p.evaluate(() => { const f = document.getElementById('pcFrame'); const l = f && f.contentDocument && f.contentDocument.getElementById('logo'); if (l) l.click(); }); await p.adv(1500);
       ok('과학 편을 닫으면 위젯 면으로', !(await p.evaluate(() => !!document.getElementById('pcFrame'))) && (await p.st()).saver.startsWith('face')); }
     else ok('과학 갈래: 달이 볼 만한 날이라 달 카드 (v147)', true);
@@ -796,6 +796,9 @@ async function newsTests(b) {
       ok('편 파일을 못 받으면 예전 틀 대신 알림 + 진단 기록 (v180)', r && r.fail && !r.old && r.diag, r);
       if (r && r.fail) { await p2.frameLocator('#pcFrame').locator('#epFail button').click(); await p2.adv(1500); }
       ok('알림의 "돌아가기" → 조각 장 닫힘 (v180)', !(await p2.evaluate(() => !!document.getElementById('pcFrame'))));
+      { const pg = await p2.context().newPage(); const r2 = [];
+        for (const u of ['pieces/piece.html?ep=5&v=2', 'pieces/piece.html?ep=3', 'pieces/p2.html?ep=3']) { await pg.goto(`http://localhost:${PORT}/${u}`); await pg.waitForTimeout(3500); r2.push(await pg.evaluate(() => [location.pathname.split('/').pop(), document.body.classList.contains('v2'), !!document.getElementById('epFail')])); }
+        ok('옛 주소(piece.html)는 새 파일로 넘어가고, 옛 틀은 어디서도 그려지지 않음 (v181)', r2.every(x => x[0] === 'p2.html' && (x[1] || x[2])) && r2[1][2] && r2[2][2], r2); await pg.close(); }
       await p2.context().close(); }
     { const p3 = await open(b, { time: '2026-11-30T16:20' }); await p3.saver(); { const bx = await p3.locator('#svFace [data-cv="piece"]').boundingBox(); await p3.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p3.adv(1500); }
       q = await p3.evaluate(() => document.querySelector('#fcFeat .cc-h').textContent); ok('14일째(11/30)는 마지막 편 "며칠"', /며칠/.test(q), q);
@@ -846,7 +849,7 @@ async function newsTests(b) {
     p = await open(b, { time: '2026-11-18T16:20', read: newsDate, pre: async pg => { await pg.addInitScript(() => localStorage.setItem('gk-cover', JSON.stringify({ k: 'pair', day: '2026-11-18' }))); } }); await p.saver();
     q = await p.evaluate(() => document.getElementById('fcFeat').className); ok('예전에 단어를 골라 둔 기기도 단어 표지가 안 뜸', !/pair/.test(q), q); await p.context().close();
     // v176: 3일차(정오와 자정) 시간 띠 — 子시는 양 끝에 반 칸씩. 0시·24시 끝선이 둘 다 있고, 반 칸 둘 다 '子'
-    { const pg = await (await b.newContext({ viewport: { width: 1600, height: 820 }, reducedMotion: 'reduce' })).newPage(); await pg.goto(`http://localhost:${PORT}/pieces/piece.html?ep=3&v=2`); await pg.waitForTimeout(1200);
+    { const pg = await (await b.newContext({ viewport: { width: 1600, height: 820 }, reducedMotion: 'reduce' })).newPage(); await pg.goto(`http://localhost:${PORT}/pieces/p2.html?ep=3&v=2`); await pg.waitForTimeout(1200);
       for (let i = 0; i < 8; i++) { if (await pg.evaluate(() => [...document.querySelectorAll('.scr.on text')].some(e => e.textContent === '오전 午前'))) break; await pg.keyboard.press('ArrowRight'); await pg.waitForTimeout(600); }
       const q = await pg.evaluate(() => { const sc = document.querySelector('.scr.on'); const V = [...sc.querySelectorAll('line')].filter(l => l.getAttribute('x1') === l.getAttribute('x2') && Math.abs(+l.getAttribute('y2') - +l.getAttribute('y1') - 60) < 1).map(l => Math.round(+l.getAttribute('x1'))); const zi = [...sc.querySelectorAll('text')].filter(e => e.textContent === '子').map(e => Math.round(+e.getAttribute('x'))); return { ends: [V.includes(680), V.includes(1480)], n: V.length, zi }; });
       ok('v176 3일차 시간 띠: 0시·24시 양 끝선이 다 있고(14줄), 子 반 칸이 양 끝에 둘', q.ends.join() === 'true,true' && q.n === 14 && q.zi.length === 2 && q.zi[0] < 700 && q.zi[1] > 1460, q); await pg.context().close(); }
