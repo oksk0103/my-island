@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>루아 신문 종이판</title>
+<!-- v185: 루아 신문 종이판(A4 두 장). 부모님 화면 '종이 신문'과 매일 아침 자동 인쇄(tools/paper-render.js → news/paper/)가 이 파일을 쓴다 -->
+<style>
+@font-face{font-family:"MaruBuri";src:url("fonts/MaruBuri-Regular.woff2") format("woff2");font-weight:400}
+@font-face{font-family:"MaruBuri";src:url("fonts/MaruBuri-SemiBold.woff2") format("woff2");font-weight:600}
+@font-face{font-family:"MaruBuri";src:url("fonts/MaruBuri-Bold.woff2") format("woff2");font-weight:700}
+@font-face{font-family:"Pretendard";src:url("fonts/PretendardVariable.woff2") format("woff2");font-weight:100 900}
+@page{size:A4;margin:0}
+:root{--ink:#141414;--ink2:#4a4a4a;--rule:#141414}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:var(--ink)}
+body{font-family:"MaruBuri","Noto Serif KR",serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:210mm;height:297mm;padding:11mm 12mm 10mm;overflow:hidden;position:relative;word-break:keep-all;overflow-wrap:break-word;break-after:page;display:flex;flex-direction:column}
+.page:last-child{break-after:auto}
+@media screen{body{background:#8a8a8a;padding:8mm 0}.page{background:#fff;margin:0 auto 8mm;box-shadow:0 2mm 8mm rgba(0,0,0,.35)}}
+.mast img{height:20mm;display:block;margin:0 auto 2mm}
+.meta{display:flex;justify-content:space-between;align-items:baseline;border-top:.6mm solid var(--rule);border-bottom:.25mm solid var(--rule);padding:1.4mm 0 1.2mm;font-family:"Pretendard",sans-serif;font-size:9.5pt}
+.meta b{font-weight:700}
+.dbl{height:1.2mm;border-bottom:.25mm solid var(--rule);margin-bottom:4mm}
+.run{display:flex;justify-content:space-between;font-family:"Pretendard",sans-serif;font-size:9pt;border-bottom:.6mm solid var(--rule);padding-bottom:1.4mm;margin-bottom:5mm}
+.run b{font-family:"MaruBuri",serif;font-size:12pt}
+.tag{font-family:"Pretendard",sans-serif;font-size:9.5pt;font-weight:700;letter-spacing:.14em;margin:0 0 1.4mm}
+h1,h2{font-weight:700;margin:0;line-height:1.18;letter-spacing:-.02em;text-wrap:balance}
+h1{font-size:28pt;margin-bottom:2.2mm}
+h2{font-size:21pt;margin-bottom:2mm}
+.lede{font-weight:600;font-size:12.5pt;line-height:1.45;margin:0 0 3mm}
+.body{column-count:3;column-gap:5.5mm;column-rule:.2mm solid #aaa}
+.body p{font-size:11pt;line-height:1.6;margin:0 0 1.6mm;text-indent:1em}
+.body p:first-child{text-indent:0}
+.body b{font-weight:700;border-bottom:.3mm solid var(--ink)}
+.src{font-family:"Pretendard",sans-serif;font-size:8pt;color:var(--ink2);margin:1.4mm 0 0}
+figure{margin:0}
+figure img{width:100%;display:block;filter:grayscale(1) contrast(1.05);border:.2mm solid #bbb}
+figcaption{font-family:"Pretendard",sans-serif;font-size:8.5pt;color:var(--ink2);margin-top:1.2mm}
+.lead{padding-bottom:4.4mm;border-bottom:.25mm solid var(--rule)}
+.lead .row{display:grid;grid-template-columns:1fr 54mm;gap:0 6mm}
+.lead .body{column-count:2}
+.num{border-top:.6mm solid var(--rule);border-bottom:.25mm solid var(--rule);padding:2.4mm 0;margin-top:4mm;text-align:center}
+.num strong{display:block;font-size:32pt;font-weight:700;line-height:1;letter-spacing:-.02em}
+.num span{font-family:"Pretendard",sans-serif;font-size:9pt;color:var(--ink2)}
+.sec{padding:4.4mm 0;border-bottom:.25mm solid var(--rule)}
+.sec .top{display:grid;grid-template-columns:1fr 70mm;gap:0 6mm;align-items:start;margin-bottom:3mm}
+.sec .top .lede{margin:0}
+.words{padding-top:4mm}
+.words h3{font-family:"Pretendard",sans-serif;font-size:9.5pt;font-weight:700;letter-spacing:.14em;margin:0 0 2.6mm}
+.wrow{display:grid;grid-template-columns:repeat(3,1fr);gap:0 6mm}
+.w+.w{border-left:.2mm solid #999;padding-left:6mm}
+.w .g{font-size:24pt;font-weight:700;line-height:1.1}
+.w .hj{font-size:10pt;margin:1.4mm 0 1.4mm;color:var(--ink2)}
+.w .hj span{font-size:14pt;color:var(--ink);font-family:"Noto Serif KR","Noto Serif CJK KR",serif;margin-right:.6mm}
+.w .m{font-size:11pt;line-height:1.5}
+.grow{flex:1}
+body.ink{filter:grayscale(1)}
+.foot{border-top:.6mm solid var(--rule);padding-top:1.4mm;font-family:"Pretendard",sans-serif;font-size:7.5pt;color:var(--ink2);display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+<div id="sheet"></div>
+<script>
+(async () => {
+  const q = new URLSearchParams(location.search), want = /^\d{4}-\d{2}-\d{2}$/.test(q.get('d') || '') ? q.get('d') : '';
+  const d = await (await fetch('news/' + (want || 'latest') + '.json', { cache: 'no-cache' })).json();
+  if (q.get('ink') === '1') document.body.classList.add('ink'); // 인쇄 파일 만들 때: 회색조
+  const esc = s => String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const body = t => esc(t).split(/\n+/).filter(Boolean).map(p => '<p>' + p.replace(/《(.+?)》/g, '<b>$1</b>') + '</p>').join('');
+  const dt = new Date(d.date + 'T12:00'); const days = '일월화수목금토';
+  const dateTxt = `${dt.getFullYear()}년 ${dt.getMonth() + 1}월 ${dt.getDate()}일 ${days[dt.getDay()]}요일`;
+  const fig = a => a.img ? `<figure><img src="${esc(a.img)}" alt=""><figcaption>그림 · ${esc(a.cap || '')}</figcaption></figure>` : '';
+  const [A, B, C] = d.articles;
+  const head = a => `<p class="tag">${esc(a.tag)}</p>`;
+  const src = a => `<p class="src">출처 · ${esc(a.source)}</p>`;
+  const words = d.articles.filter(a => a.word).map(a => `<div class="w"><div class="g">${esc(a.word.w)}</div><div class="hj">${(a.word.hanja || []).map(h => `<span>${esc(h[0])}</span>${esc(h[1])}`).join(' &nbsp;')}</div><div class="m">${esc(a.word.mean)}</div></div>`).join('');
+  const sec = a => a ? `<section class="sec">${head(a)}<h2>${esc(a.title)}</h2><div class="top"><p class="lede">${esc(a.lede)}</p>${fig(a)}</div><div class="body">${body(a.body)}</div>${src(a)}</section>` : '';
+  document.getElementById('sheet').innerHTML = `
+   <div class="page">
+    <header class="mast"><img src="rua-masthead-ink.svg" alt="루아 신문"></header>
+    <div class="meta"><span><b>제${d.no}호</b></span><span>${dateTxt}</span><span>${esc(d.theme)}</span></div><div class="dbl"></div>
+    <section class="lead">${head(A)}<h1>${esc(A.title)}</h1><p class="lede">${esc(A.lede)}</p><div class="row"><div><div class="body">${body(A.body)}</div>${src(A)}</div><aside>${fig(A)}${A.num ? `<div class="num"><strong>${esc(A.num.n)}</strong><span>${esc(A.num.t)}</span></div>` : ''}</aside></div></section>
+    ${sec(B)}<div class="grow"></div>
+    <footer class="foot"><span>루아 신문 제${d.no}호 · 1면</span><span>뒷면에 이어요</span></footer>
+   </div>
+   <div class="page">
+    <div class="run"><b>루아 신문</b><span>제${d.no}호 · ${dateTxt}</span></div>
+    ${sec(C)}
+    <section class="words"><h3>오늘의 낱말</h3><div class="wrow">${words}</div></section><div class="grow"></div>
+    <footer class="foot"><span>루아 신문 제${d.no}호 · 2면</span><span>${dateTxt}</span></footer>
+   </div>`;
+  await document.fonts.ready; await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
+  document.body.dataset.ready = '1';
+})();
+</script>
+</body>
+</html>
