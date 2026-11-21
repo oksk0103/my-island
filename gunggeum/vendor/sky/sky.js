@@ -48,7 +48,7 @@
     var live = now >= dark, date = live ? now : dark; // 아직 밝으면 '어두워진 뒤'의 하늘을 미리 보여 줌
 
     var W = 968, H = Math.max(380, Math.min(760, Math.round(o.H / o.W * 968))) || 528;
-    var AZ0 = 180, ALT0 = 8, S = 4.6, CX = W / 2, CY = H - 52 - ALT0 * S;
+    var AZ0 = o.az0 || 180, ALT0 = 8, S = 4.6, CX = W / 2, CY = H - 52 - ALT0 * S;
     function proj(alt, az) {
       var a = alt * RAD, a0 = ALT0 * RAD, d = (az - AZ0) * RAD;
       var cosd = Math.sin(a0) * Math.sin(a) + Math.cos(a0) * Math.cos(a) * Math.cos(d);
@@ -79,7 +79,18 @@
     var rOf = function (m) { return Math.max(0.55, 5.0 - 0.98 * Math.max(m, -0.5)); };
     var col = function (bv) { return bv < 0.1 ? '#F6F1E6' : bv < 0.7 ? '#F0E6D2' : bv < 1.2 ? '#EDD3A4' : '#E8BC84'; };
     var starSvg = '', glowSvg = '';
+    var I = !!o.idle, starHi = ''; // v178 대기화면(I): 창밖에서 보이는 밝은 별만 또렷하게, 선·이름표·눈금 없음
     stars.forEach(function (s) {
+      if (I) {
+        if (o.pickStar && s.name === o.pickStar) { starHi = '<g transform="translate(' + f1(s.x) + ' ' + f1(s.y) + ')"><circle r="20" fill="url(#gkAg)" opacity=".9"/><circle r="6.5" fill="#EFA56B"/></g>'; return; }
+        if (s.mag > 3.4) return;
+        var br = s.mag <= 1.5, md = s.mag <= 2.6, ri = br ? Math.max(2.4, 4.2 - 0.9 * Math.max(s.mag, -0.5)) : md ? 1.5 : Math.max(0.5, 1.25 - 0.18 * (s.mag - 2.6));
+        var ci = s.bv < 0.1 ? '#DCE6FF' : s.bv < 0.7 ? '#F4EEDC' : '#EFE3CF', oi = br ? 1 : md ? 0.5 : Math.max(0.1, 0.3 - 0.07 * (s.mag - 2.6));
+        if (s.alt < 8) oi *= 0.45 + s.alt / 15;
+        if (br) glowSvg += '<circle cx="' + f1(s.x) + '" cy="' + f1(s.y) + '" r="' + f1(ri * 6) + '" fill="url(#gkSg)" opacity=".7"/>';
+        starSvg += '<circle cx="' + f1(s.x) + '" cy="' + f1(s.y) + '" r="' + ri.toFixed(2) + '" fill="' + ci + '" opacity="' + oi.toFixed(2) + '"/>';
+        return;
+      }
       var r = rOf(s.mag), c = col(s.bv), op = s.mag > 3.4 ? 0.4 : s.mag > 2.4 ? 0.62 : s.mag > 1.6 ? 0.85 : 1; // 도시 하늘: 어두운 별은 흐리게
       if (s.alt < 8) op *= 0.45 + s.alt / 15;
       if (s.mag < 2.6) glowSvg += '<circle cx="' + f1(s.x) + '" cy="' + f1(s.y) + '" r="' + f1(r * 4.2) + '" fill="url(#gkSg)" opacity="' + (s.mag < 1.6 ? .5 : .28) + '"/>';
@@ -183,10 +194,11 @@
     named.forEach(function (s) { if (s.mag < 1.6) boxes.push([s.x - 6, s.y - 6, s.x + 6, s.y + 6]); });
     planets.forEach(function (p) {
       if (!p.vis) return; var hi = pick && pick.name === p.name;
+      if (I) { bodySvg += '<g transform="translate(' + f1(p.x) + ' ' + f1(p.y) + ')">' + (hi ? '<circle r="20" fill="url(#gkAg)" opacity=".9"/><circle r="6.5" fill="#EFA56B"/>' : '<circle r="3.6" fill="#F2E8D2"/>') + '</g>'; return; }
       bodySvg += '<g transform="translate(' + f1(p.x) + ' ' + f1(p.y) + ')">' + (hi ? '<circle r="74" fill="url(#gkAg)" opacity=".55"/><circle r="30" fill="url(#gkAg)" opacity=".9"/><path d="M-46,0H46M0,-46V46" stroke="#F0C374" stroke-width="1" opacity=".55" stroke-linecap="round"/><path d="M-15,-15L15,15M-15,15L15,-15" stroke="#F0C374" stroke-width=".7" opacity=".3" stroke-linecap="round"/><circle r="6.5" fill="#F6D08A"/><circle r="3" fill="#FFF3D6"/>'
         : '<circle r="34" fill="url(#gkAg)" opacity=".6"/><circle r="4.8" fill="#F6D08A"/><circle r="2.2" fill="#FFF3D6"/>') + '</g>';
     });
-    if (moonVis) {
+    if (moonVis && !I) {
       var pm2 = proj(moon.alt + 1, moon.az), up = Math.atan2(pm2.x - pm.x, -(pm2.y - pm.y)) / RAD, k = Math.cos(fold * RAD), rm = 12;
       bodySvg += '<g transform="translate(' + f1(pm.x) + ' ' + f1(pm.y) + ')"><circle r="46" fill="url(#gkMg)" opacity=".55"/><g transform="rotate(' + f1(limb - 90 + up) + ')"><circle r="' + rm + '" fill="#2B251F"/><circle r="' + rm + '" fill="none" stroke="#6E6252" stroke-width=".6"/>' +
         '<path d="M0,' + -rm + 'A' + rm + ',' + rm + ' 0 0 1 0,' + rm + 'A' + f1(Math.abs(k) * rm) + ',' + rm + ' 0 0 ' + (k > 0 ? 0 : 1) + ' 0,' + -rm + 'Z" fill="#F3E8D0"/></g></g>';
@@ -209,14 +221,15 @@
       '<linearGradient id="gkFl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#100D0A"/><stop offset="1" stop-color="#100D0A" stop-opacity="0"/></linearGradient>' +
       '<linearGradient id="gkFr" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#100D0A"/><stop offset="1" stop-color="#100D0A" stop-opacity="0"/></linearGradient>' +
       '<linearGradient id="gkFt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#100D0A"/><stop offset="1" stop-color="#100D0A" stop-opacity="0"/></linearGradient></defs>' +
+(I ? '<g clip-path="url(#gkCc)"><g clip-path="url(#gkSc)">' + glowSvg + starSvg + starHi + bodySvg + '</g><path d="' + ground + '" fill="' + (o.ground || 'none') + '"/></g></svg>' :
       '<g clip-path="url(#gkCc)"><rect width="' + W + '" height="' + H + '" fill="url(#gkSky)"/><g clip-path="url(#gkSc)"><rect y="' + (H - 260) + '" width="' + W + '" height="260" fill="url(#gkHz)"/>' +
       '<path d="' + lineSvg + '" fill="none" stroke="#D8CBB4" stroke-width=".9" opacity=".3"/>' + glowSvg + starSvg + bodySvg + labelSvg + '</g>' +
       '<path d="' + ground + '" fill="url(#gkGr)"/><path d="' + horizon + '" fill="none" stroke="#CFC3AD" stroke-width="1.6"/><path d="' + horizon2 + '" fill="none" stroke="#CFC3AD" stroke-width=".6" opacity=".7"/>' +
-      '<g stroke="#CFC3AD" fill="none">' + ticks + '</g><rect width="70" height="' + H + '" fill="url(#gkFl)"/><rect x="' + (W - 70) + '" width="70" height="' + H + '" fill="url(#gkFr)"/><rect width="' + W + '" height="36" fill="url(#gkFt)"/>' + dirs + '</g></svg>';
+      '<g stroke="#CFC3AD" fill="none">' + ticks + '</g><rect width="70" height="' + H + '" fill="url(#gkFl)"/><rect x="' + (W - 70) + '" width="70" height="' + H + '" fill="url(#gkFr)"/><rect width="' + W + '" height="36" fill="url(#gkFt)"/>' + dirs + '</g></svg>');
 
     var when = live ? '지금' : (function () { var h = date.getHours(), m = Math.round(date.getMinutes() / 10) * 10; if (m === 60) { h++; m = 0; } return (h < 21 ? '저녁 ' : '밤 ') + (h % 12 || 12) + '시' + (m ? ' ' + m + '분' : '') + '쯤'; })();
     return {
-      svg: svg, when: when, live: live, sunset: sunset ? clock(sunset) : '',
+      svg: svg, idle: I ? { az0: AZ0, dir: ({ 90: '동', 135: '남동', 180: '남', 225: '남서', 270: '서' })[AZ0] || '남', moon: { x: pm.x, y: pm.y, vis: moonVis, up: Math.atan2(proj(moon.alt + 1, moon.az).x - pm.x, -(proj(moon.alt + 1, moon.az).y - pm.y)) / RAD }, pick: (function () { if (!pick) return null; var t = planets.filter(function (q) { return q.name === pick.name; })[0] || stars.filter(function (q) { return q.name === pick.name; })[0]; return { x: t ? t.x : null, y: t ? t.y : null, az: pick.az, planet: !!pick.planet, moon: pick.name === '달' }; })(), W: W, H: H } : null, when: when, live: live, sunset: sunset ? clock(sunset) : '',
       moon: { phase: ph, limb: limb, long: nm[0].length > 3, name: nm[0], sub: nm[1], lines: mLines, up: moonUp }, next: next,
       pick: pick ? { name: pick.name, head: dir8(pick.az) + '쪽 ' + howHigh(pick.alt) + ',', sub: fists(pick.alt), note: pick.note } : null
     };
@@ -256,7 +269,7 @@
     return (H[o] * (1 - xf) + H[o + 1] * xf) * (1 - yf) + (H[o + N] * (1 - xf) + H[o + N + 1] * xf) * yf;
   }
   // phase: 0 삭 … 180 보름 … 360, limb: 밝은 쪽 방향(위에서 시계 방향, 도)
-  function drawMoon(cv, cssSize, phase, limb) {
+  function drawMoon(cv, cssSize, phase, limb, clear) { // clear: 어두운 쪽을 거의 투명하게(대기화면)
     var N = Math.min(640, Math.round(cssSize * Math.min(2, Math.max(1.5, window.devicePixelRatio || 1))));
     cv.width = cv.height = N;
     var ctx = cv.getContext('2d'), img = ctx.createImageData(N, N), d = img.data;
@@ -280,7 +293,7 @@
       var es = .03 * alb * (.55 + .45 * z);
       var R = 270 * alb * lit + 150 * es, G = 254 * alb * lit + 141 * es, B = 222 * alb * lit + 128 * es;
       var aa = Math.max(0, Math.min(1, (1 - Math.sqrt(rr)) * rad + .5));
-      d[o] = Math.min(255, R + 13); d[o + 1] = Math.min(255, G + 10.5); d[o + 2] = Math.min(255, B + 8); d[o + 3] = 255 * aa;
+      d[o] = Math.min(255, R + 13); d[o + 1] = Math.min(255, G + 10.5); d[o + 2] = Math.min(255, B + 8); d[o + 3] = 255 * aa * (clear ? Math.min(1, lit * 4 + 0.12) : 1);
     }
     ctx.putImageData(img, 0, 0);
   }
