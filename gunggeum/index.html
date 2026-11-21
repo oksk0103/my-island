@@ -1573,13 +1573,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v179</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v180</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v179</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v180</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2552,7 +2552,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     pcFrame.addEventListener('load', () => { try { pcFrame.contentWindow.focus(); } catch (e) {} });
     diag('saver', '조각 장 열림: ' + pc.page);
   }
-  addEventListener('message', e => { if (!pcFrame || e.source !== pcFrame.contentWindow || !e.data) return; if (e.data.gk === 'piece-close') pieceClose(); else if (e.data.gk === 'piece-touch') pcTouch = Date.now();
+  addEventListener('message', e => { if (!pcFrame || e.source !== pcFrame.contentWindow || !e.data) return; if (e.data.gk === 'piece-close') pieceClose(); else if (e.data.gk === 'piece-diag' && typeof e.data.t === 'string') diag('saver', '조각 장: ' + e.data.t.slice(0, 160)); else if (e.data.gk === 'piece-touch') pcTouch = Date.now();
     else if (e.data.gk === 'piece-say' && typeof e.data.t === 'string' && e.data.t.length <= 20) { pcTouch = Date.now(); speak(e.data.t, true); } // v173: 한자 글자를 누르면 훈음
     else if (e.data.gk === 'piece-words' && Array.isArray(e.data.items) && e.data.items.length <= 2) { // v173: 오늘의 단어를 '나란히 보면' 장까지 보면 공부칸에 짝으로 모은다
       e.data.items.forEach(x => { if (!x || !['en', 'hz'].includes(x.kind) || typeof x.w !== 'string' || x.w.length > 24 || !/^(en|hz):/.test(x.k || '')) return;
@@ -4160,7 +4160,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v179';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v180';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {

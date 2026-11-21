@@ -1166,8 +1166,7 @@ const closeMe=()=>{try{parent.postMessage({gk:'piece-close'},'*');}catch(e){}};
 ['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>{try{parent.postMessage({gk:'piece-touch'},'*');}catch(e){}},true));
 const tick=()=>{const d=new Date(),h=d.getHours();$('clock').innerHTML=`<small>${h===0?'밤':h<12?'오전':'오후'}</small>${h%12||12}:${String(d.getMinutes()).padStart(2,'0')}`;};tick();setInterval(tick,15e3);
 </script>
-<script>(()=>{const q=new URLSearchParams(location.search),n=+q.get('ep')||0;if(q.get('v')==='2'&&n>0)document.write('<script src="ep/'+n+'.js?'+(q.get('t')||'')+'"><\/script>');})();</script>
-<script>
+<script type="text/plain" id="mainJs">
 const P=new URLSearchParams(location.search),EN=+P.get('ep')||1,EI=Math.max(1,Math.min(EP.length,EN))-1;
 let E=EPX[EN]||EP[EI],cur=0;const V2=E.frame==='v2',VB=V2?'0 0 1600 820':'0 0 792 540';if(V2)document.body.classList.add('v2');const ORDER=['cover','s0','s1','s2','sum','end'],stepsDone={},runners={};let coverPlay=null;
 window.__piece={id:EN,topic:E.topic};if(V2&&E.field!=='과학')document.body.classList.add('story');
@@ -1190,6 +1189,22 @@ addEventListener('keydown',e=>{if(e.repeat)return;
   else if(['ArrowLeft','PageUp','ArrowUp','Backspace'].includes(e.key)){e.preventDefault();if(cur>0)go(cur-1);}
   else if(['Escape','Home','F3'].includes(e.key)){e.preventDefault();closeMe();}});
 go(0);
+</script>
+<script>
+/* v180: 편 파일(ep/NN.js)을 다 받은 뒤에만 화면을 그린다. 못 받으면 예전 틀(미색 바탕에 남색 상자)로 떨어지지 않고, 두 번 다시 받아 본 뒤 조용히 알리고 앱의 진단 기록에 까닭을 남긴다. */
+(()=>{const q=new URLSearchParams(location.search),n=+q.get('ep')||0,want=q.get('v')==='2'&&n>0;
+const say=m=>{try{parent.postMessage({gk:'piece-diag',t:String(m).slice(0,160)},'*');}catch(e){}};
+const run=()=>{const s=document.createElement('script');s.textContent=document.getElementById('mainJs').textContent;document.body.appendChild(s);};
+if(!want){run();return;}
+const errs=[];addEventListener('error',e=>{if(e.message)errs.push(e.message+' @'+(e.filename||'').split('/').pop().split('?')[0]+':'+(e.lineno||''));});
+const fail=(k,why)=>{if(k<2){setTimeout(()=>load(k+1),700);return;}say('편 '+n+' 못 엶: '+why);
+  const d=document.createElement('div');d.id='epFail';d.setAttribute('style','position:fixed;inset:0;z-index:9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;background:linear-gradient(#1A2C55,#0C1630);color:#F3E9D2;font-family:Pretendard,"Noto Sans KR",sans-serif;text-align:center;padding:24px');
+  d.innerHTML='<p style="margin:0;font-size:clamp(24px,3.2vw,40px);font-weight:600;line-height:1.4;word-break:keep-all">지금은 못 불러왔어.<br>조금 있다가 다시 열어 봐.</p><button type="button" style="min-height:72px;padding:0 40px;border:0;border-radius:36px;background:#F3E9D2;color:#18254E;font:600 26px Pretendard,sans-serif">돌아가기</button>';
+  d.querySelector('button').addEventListener('click',closeMe);addEventListener('keydown',e=>{if(!e.repeat){e.preventDefault();closeMe();}});document.body.appendChild(d);};
+const load=k=>{const s=document.createElement('script');s.src='ep/'+n+'.js?'+(k?'r='+Date.now():(q.get('t')||''));
+  s.onload=()=>{if(EPX[n]){if(k)say('편 '+n+' 다시 받아서 열림');run();}else fail(k,'받았지만 읽지 못함 '+errs.slice(0,2).join(' / '));};
+  s.onerror=()=>fail(k,'파일을 못 받음'+(navigator.onLine===false?' (인터넷 끊김)':''));document.head.appendChild(s);};
+load(0);})();
 </script>
 </body>
 </html>

@@ -787,6 +787,16 @@ async function newsTests(b) {
     { const bx = await p.locator('#fcFeat .cc-h').boundingBox(); await p.mouse.click(bx.x + 40, bx.y + 20); await p.adv(2500); } await p.jump(11 * 60e3);
     ok('조각 장도 10분 손대지 않으면 닫힘', await p.evaluate(() => !document.getElementById('pcFrame')));
     await p.context().close();
+    { // v180: 편 파일을 못 받아도 예전 틀(미색 바탕에 남색 상자)이 뜨면 안 된다
+      const p2 = await open(b, { time: '2026-11-17T16:20', sw: 'block' }); await p2.route(/pieces\/ep\//, r => r.abort());
+      await p2.saver(); { const bx = await p2.locator('#svFace [data-cv="piece"]').boundingBox(); await p2.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p2.adv(1500); }
+      { const bx = await p2.locator('#fcFeat .cc-h').boundingBox(); await p2.mouse.click(bx.x + 40, bx.y + 20); await p2.adv(1500); }
+      for (let i = 0; i < 8; i++) { await p2.waitForTimeout(300); await p2.adv(800); }
+      const r = await p2.evaluate(() => { const f = document.getElementById('pcFrame'), d = f && f.contentDocument; return d ? { fail: !!d.getElementById('epFail'), old: !!d.querySelector('#cover h2') && d.querySelector('#cover h2').textContent !== '', diag: JSON.stringify(JSON.parse(localStorage.getItem('gk-diag') || '[]')).includes('못 엶') } : null; });
+      ok('편 파일을 못 받으면 예전 틀 대신 알림 + 진단 기록 (v180)', r && r.fail && !r.old && r.diag, r);
+      if (r && r.fail) { await p2.frameLocator('#pcFrame').locator('#epFail button').click(); await p2.adv(1500); }
+      ok('알림의 "돌아가기" → 조각 장 닫힘 (v180)', !(await p2.evaluate(() => !!document.getElementById('pcFrame'))));
+      await p2.context().close(); }
     { const p3 = await open(b, { time: '2026-11-30T16:20' }); await p3.saver(); { const bx = await p3.locator('#svFace [data-cv="piece"]').boundingBox(); await p3.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p3.adv(1500); }
       q = await p3.evaluate(() => document.querySelector('#fcFeat .cc-h').textContent); ok('14일째(11/30)는 마지막 편 "며칠"', /며칠/.test(q), q);
       { const bx = await p3.locator('#fcFeat .cc-h').boundingBox(); await p3.mouse.click(bx.x + 40, bx.y + 20); await p3.adv(2500); }
