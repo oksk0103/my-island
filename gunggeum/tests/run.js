@@ -11,14 +11,14 @@ let fails = 0, passes = 0; const errs = [];
 const ok = (name, cond, info) => { if (process.env.V) console.log('   · ' + name); if (cond) passes++; else { fails++; console.log('  ✗ ' + name + (info !== undefined ? '  → ' + JSON.stringify(info) : '')); } };
 const ANSWER = '달은 스스로 빛을 내지 못해. 《햇빛을 반사》해서 밝게 보이는 거야.\n@@ 달 | 🌙 | 왜 달은 안 떨어져?; 달에도 바다가 있어?; 보름달은 왜 둥글어?; 달에서 뛰면 어떻게 돼?';
 
-async function open(b, { time, settings = {}, read, offline, noSky, w = 1600, h = 820, pre, sw, wx = {}, sr = !pre } = {}) {
+async function open(b, { time, settings = {}, read, offline, apiErr, noSky, w = 1600, h = 820, pre, sw, wx = {}, sr = !pre } = {}) {
   const ctx = await b.newContext({ viewport: { width: w, height: h }, timezoneId: 'Asia/Seoul', serviceWorkers: sw || 'allow' }); const p = await ctx.newPage(); p.api = 0;
   p.on('pageerror', e => { errs.push(e.message); if (process.env.V) console.log('ERR', e.message); });
   p.cerr = []; p.on('console', m => { if (m.type() === 'error' && !/Failed to load resource|net::ERR/.test(m.text())) p.cerr.push(m.text().slice(0, 120)); });
   p.ext = []; p.on('request', q => { const u = q.url(); if (!/^(http:\/\/localhost|data:|blob:)/.test(u) && !/open-meteo|api\.anthropic\.com|wttr|tts\.speech|fonts\.(googleapis|gstatic)/.test(u)) p.ext.push(u.slice(0, 80)); }); // 날씨·답·목소리·글꼴(전부터 있던 것) 말고 바깥으로 나가는 요청
   const day = (time || '2026-11-14T10:00').slice(0, 10), H = [...Array(48)].map((_, i) => `${day}T${String(i % 24).padStart(2, '0')}:00`);
   await p.route(/open-meteo/, r => offline ? r.abort() : r.request().url().includes('air-quality') ? r.fulfill({ json: { current: { pm10: 28, pm2_5: 12 } }, headers: CORS }) : r.fulfill({ headers: CORS, json: { current: { temperature_2m: wx.t ?? 7.2, apparent_temperature: 4, weather_code: wx.code ?? 0, precipitation: 0 }, hourly: { time: H, temperature_2m: H.map(() => 8), weather_code: H.map(() => 0), precipitation_probability: H.map(() => 0), is_day: H.map(() => 1) }, daily: { temperature_2m_max: [13, 13], temperature_2m_min: [4, 4], precipitation_probability_max: [0, 10], weather_code: [0, 1], sunrise: [day + 'T07:11', 'x'], sunset: [day + 'T17:22', 'x'] } } }));
-  await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); if (offline) return r.abort(); const bd = JSON.parse(r.request().postData()); if (/시계 화면에 쓸 문장/.test(JSON.stringify(bd.messages || ''))) { p.quotes = (p.quotes || 0) + 1; } else { p.api++; p.lastBody = bd; (p.bodies = p.bodies || []).push(JSON.stringify(bd.messages || '').slice(-160)); } r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: ANSWER }], stop_reason: 'end_turn' } }); });
+  await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); if (offline) return r.abort(); if (apiErr) return r.fulfill({ status: apiErr.status, headers: CORS, json: { type: 'error', error: { type: 'invalid_request_error', message: apiErr.msg } } }); const bd = JSON.parse(r.request().postData()); if (/시계 화면에 쓸 문장/.test(JSON.stringify(bd.messages || ''))) { p.quotes = (p.quotes || 0) + 1; } else if (/순우리말이면/.test(JSON.stringify(bd.messages || ''))) { p.gloss = (p.gloss || 0) + 1; } else { p.api++; p.lastBody = bd; (p.bodies = p.bodies || []).push(JSON.stringify(bd.messages || '').slice(-160)); } r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: ANSWER }], stop_reason: 'end_turn' } }); });
   p.wiki = 0; await p.route(/wttr|googleapis|gstatic|wikidata|wikimedia|wikipedia|tts\.speech/, r => { if (/wikidata|wikimedia|wikipedia/.test(r.request().url())) p.wiki++; return r.abort(); });
   if (noSky) await p.route(/vendor\/sky/, r => r.abort());
   await p.addInitScript(([day, st, read]) => { localStorage.setItem('gk-settings', JSON.stringify(Object.assign({ apiKey: 'sk-test', hFrom: 0, hTo: 24, wxName: '영등포구', nightScr: 'off' }, st))); if (read) { localStorage.setItem('gk-news-read2', JSON.stringify(read)); localStorage.setItem('gk-news-done2', JSON.stringify([read])); } }, [day, settings, read]);
@@ -314,6 +314,9 @@ async function newsTests(b) {
   await p.context().close();
 
   console.log('9. 인터넷이 안 될 때·질문 상한');
+  p = await open(b, { time: '2026-11-16T16:00', apiErr: { status: 400, msg: 'You have reached your specified API usage limits. You will regain access on 2026-12-01 at 00:00 UTC.' } }); await p.say('하늘은 왜 파래', 2500);
+  s = await p.evaluate(() => ({ t: document.body.innerText.includes('엄마 아빠한테 말해 줘'), d: JSON.stringify(JSON.parse(localStorage.getItem('gk-diag') || '[]')).includes('월 사용 한도') }));
+  ok('월 사용 한도에 걸리면 부모에게 알리라는 말 + 진단 기록 (v178)', s.t && s.d, s); await p.context().close();
   p = await open(b, { time: '2026-11-16T16:00', offline: true }); await p.say('내일 준비물 색종이 가져가야 돼'); s = await p.st(); ok('기준6 인터넷 없이 적힘', s.todo.length === 1 && s.todo[0][1] === '2026-11-17', s); await p.context().close();
   p = await open(b, { time: '2026-11-16T16:00', settings: { cap: 10 } }); await p.evaluate(() => localStorage.setItem('gk-count-2026-11-16', '10'));
   await p.say('일기 써야 돼'); s = await p.st(); ok('기준6 상한 뒤에도 적힘', s.todo.length === 1 && s.todo[0][0] === '일기 쓰기' && !s.saver, s);
@@ -387,7 +390,7 @@ async function newsTests(b) {
 
   { // v178 저녁 밤하늘 대기화면: 어두워진 뒤~잠자기 30분 전 전체판, 그 뒤 30분은 글 없이 어둡게, 잠자는 시각부터 밤 화면
     console.log('v178. 저녁 밤하늘 대기화면');
-    const nsSt = p => p.evaluate(() => { const sv = document.getElementById('saver'), ch = document.querySelector('#nsChart svg'); return { c: [...sv.classList].filter(x => x !== 'saver').join(' '), one: !document.getElementById('nsOne').hidden, h: document.getElementById('nsH').textContent, t: document.getElementById('nsTime').textContent, dots: ch ? ch.querySelectorAll('circle').length : 0, lines: ch ? ch.querySelectorAll('path[stroke], text').length : -1, home: !document.getElementById('gkHome').hidden }; });
+    const nsSt = p => p.evaluate(() => { const sv = document.getElementById('saver'), ch = document.querySelector('#nsChart svg'); return { c: [...sv.classList].filter(x => x !== 'saver').join(' '), one: getComputedStyle(document.getElementById('nsOne')).display !== 'none' && !document.getElementById('nsOne').hidden, h: document.getElementById('nsH').textContent, t: document.getElementById('nsTime').textContent, dots: ch ? ch.querySelectorAll('circle').length : 0, lines: ch ? ch.querySelectorAll('path[stroke], text').length : -1, home: !document.getElementById('gkHome').hidden }; });
     const nsOpen = async (t, settings) => { const p = await open(b, { time: newsDate + t, read: newsDate, settings: Object.assign({ nightScr: 'on' }, settings) }); await p.saver(); await p.adv(4000); await p.waitForTimeout(1500); await p.adv(1000); return p; };
     let p = await nsOpen('T20:30'); let q = await nsSt(p);
     ok('20:30: 밤하늘 대기화면, 시계·찾아볼 것 한 줄, 별은 점만(선·이름표 없음), 홈 단추 없음', q.c === 'nsky' && q.t === '8:30' && q.one && q.h.length > 3 && q.dots > 20 && q.lines === 0 && !q.home, q);

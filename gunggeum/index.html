@@ -4024,7 +4024,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     } catch (e) {
       if (e.name === 'AbortError') { setState('idle', '멈췄어', '다시 물어봐도 돼.'); draw('멈췄어. 다시 물어봐.', false, 'soft'); return; }
       let msg = '잠깐 연결이 안 됐어. 다시 물어봐 줄래?';
-      if (e.status === 401 || e.status === 404 || (e.status === 400 && /credit|balance/i.test(e.detail || ''))) { msg = '지금은 대답할 수 없어. 엄마 아빠한테 말해 줘.'; diag('api', '답 못 함: ' + (e.status === 401 ? 'API 키가 맞지 않음' : e.status === 404 ? '모델 이름이 맞지 않음(부모님 설정에서 모델 바꾸기)' : 'API 크레딧 충전 필요')); }
+      if (e.status === 401 || e.status === 404 || (e.status === 400 && /credit|balance|usage limit/i.test(e.detail || ''))) { const lim = /usage limit/i.test(e.detail || ''); msg = '지금은 대답할 수 없어. 엄마 아빠한테 말해 줘.'; diag('api', '답 못 함: ' + (e.status === 401 ? 'API 키가 맞지 않음' : e.status === 404 ? '모델 이름이 맞지 않음(부모님 설정에서 모델 바꾸기)' : lim ? 'API 월 사용 한도 도달(콘솔 Settings → Limits에서 올리기) · ' + String(e.detail).slice(0, 120) : 'API 크레딧 충전 필요')); }
       else if (e.status === 429) msg = '조금 쉬었다가 다시 물어봐 줘.';
       current = msg; draw(msg, true, 'plain'); holdUntil = Date.now() + 60 * 1000;
       setState('idle', '잠깐', e.detail ? ('오류: ' + String(e.detail).slice(0, 80)) : '마이크를 누르고 다시 해 봐.');
