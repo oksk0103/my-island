@@ -44,7 +44,9 @@ figcaption{font-family:"Pretendard",sans-serif;font-size:8.5pt;color:var(--ink2)
 .num strong{display:block;font-size:32pt;font-weight:700;line-height:1;letter-spacing:-.02em}
 .num span{font-family:"Pretendard",sans-serif;font-size:9pt;color:var(--ink2)}
 .sec{padding:4.4mm 0;border-bottom:.25mm solid var(--rule)}
-.sec .top{display:grid;grid-template-columns:1fr 70mm;gap:0 6mm;align-items:start;margin-bottom:3mm}
+.sec .top{display:grid;grid-template-columns:1fr 70mm;gap:0 6mm;align-items:center;margin-bottom:3mm}
+.page:first-child .sec .top{grid-template-columns:1fr 44mm}
+.page:first-child .sec{border-bottom:0;padding-bottom:0}
 .sec .top .lede{margin:0}
 .words{padding-top:4mm}
 .words h3{font-family:"Pretendard",sans-serif;font-size:9.5pt;font-weight:700;letter-spacing:.14em;margin:0 0 2.6mm}
@@ -91,6 +93,8 @@ body.ink{filter:grayscale(1)}
     <footer class="foot"><span>루아 신문 제${d.no}호 · 2면</span><span>${dateTxt}</span></footer>
    </div>`;
   await document.fonts.ready; await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
+  // 넘침 확인: 쪽 안의 내용이 꼬리줄을 넘으면 표시(인쇄 파일을 만들 때 실패시킨다)
+  document.body.dataset.over = [...document.querySelectorAll('.page')].map(p => { const f = p.querySelector('.foot').getBoundingClientRect(); return Math.max(0, ...[...p.querySelectorAll('section')].map(e => Math.round(e.getBoundingClientRect().bottom - f.top))); }).join(',');
   document.body.dataset.ready = '1';
 })();
 </script>

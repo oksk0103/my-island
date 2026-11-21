@@ -18,6 +18,7 @@ const want = process.argv[2] || '';
   await p.goto(`http://localhost:${port}/paper.html?d=${date}`);
   await p.waitForFunction(() => document.body.dataset.ready === '1', null, { timeout: 30000 });
   if (errs.length) throw new Error(errs.join(' / '));
+  const over = await p.evaluate(() => document.body.dataset.over || ''); if (over.split(',').some(v => +v > 0)) throw new Error('지면이 넘침(쪽별 px): ' + over);
   fs.mkdirSync(OUT, { recursive: true });
   const pages = await p.$$('.page'); const files = [];
   for (let i = 0; i < pages.length; i++) { const f = `${date}-${i + 1}.jpg`; await pages[i].screenshot({ path: path.join(OUT, f), type: 'jpeg', quality: 88 }); files.push(f); }
