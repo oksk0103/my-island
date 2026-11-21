@@ -6,7 +6,11 @@ set -e
 HOUR=${HOUR:-6}; MIN=${MIN:-50}
 URL=https://oksk0103.github.io/my-island/gunggeum/tools/rua-print.py
 echo "[1/4] 필요한 것 설치 (python, cron)"
-pkg install -y python cronie termux-services >/dev/null 2>&1 || { yes | pkg update >/dev/null 2>&1; pkg install -y python cronie termux-services; }
+echo "  (처음에는 3~5분 걸려요. 글자가 계속 올라가면 정상이에요)"
+export DEBIAN_FRONTEND=noninteractive
+O='-o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold'
+yes | pkg update -y $O || true
+yes | pkg install -y $O python cronie termux-services
 echo "[2/4] 인쇄 프로그램 받기"
 curl -sfL "$URL?t=$(date +%s)" -o ~/rua-print.py
 echo "[3/4] 프린터 찾기"
