@@ -799,6 +799,11 @@ async function newsTests(b) {
       { const pg = await p2.context().newPage(); const r2 = [];
         for (const u of ['pieces/piece.html?ep=5&v=2', 'pieces/piece.html?ep=3', 'pieces/p2.html?ep=3']) { await pg.goto(`http://localhost:${PORT}/${u}`); await pg.waitForTimeout(3500); r2.push(await pg.evaluate(() => [location.pathname.split('/').pop(), document.body.classList.contains('v2'), !!document.getElementById('epFail')])); }
         ok('옛 주소(piece.html)는 새 파일로 넘어가고, 옛 틀은 어디서도 그려지지 않음 (v181)', r2.every(x => x[0] === 'p2.html' && (x[1] || x[2])) && r2[1][2] && r2[2][2], r2); await pg.close(); }
+      { const pg = await p2.context().newPage(); await pg.route(/pieces\/ep\//, async r => { await new Promise(z => setTimeout(z, 1200)); r.continue(); });
+        pg.goto(`http://localhost:${PORT}/pieces/p2.html?ep=5&v=2`).catch(() => {}); await pg.waitForTimeout(600);
+        const mid = await pg.evaluate(() => getComputedStyle(document.getElementById('stage')).visibility); await pg.waitForTimeout(2500);
+        const end = await pg.evaluate(() => getComputedStyle(document.getElementById('stage')).visibility + '/' + document.body.classList.contains('v2'));
+        ok('조각 장을 여는 동안 옛 틀이 잠깐도 비치지 않음: 다 그리기 전에는 무대를 숨김 (v182)', mid === 'hidden' && end === 'visible/true', [mid, end]); await pg.close(); }
       await p2.context().close(); }
     { const p3 = await open(b, { time: '2026-11-30T16:20' }); await p3.saver(); { const bx = await p3.locator('#svFace [data-cv="piece"]').boundingBox(); await p3.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await p3.adv(1500); }
       q = await p3.evaluate(() => document.querySelector('#fcFeat .cc-h').textContent); ok('14일째(11/30)는 마지막 편 "며칠"', /며칠/.test(q), q);

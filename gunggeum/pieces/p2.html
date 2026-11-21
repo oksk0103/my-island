@@ -92,6 +92,9 @@ svg text{font-family:"Pretendard","Noto Sans CJK KR",sans-serif}
 #end .top30 .a.show{opacity:1}
 #end .main{position:absolute;left:136px;top:330px;width:900px}
 #end .tile{left:1112px;top:230px;width:440px;height:440px}
+/* v182: 여는 순간 옛 틀(미색 바탕·남색 상자)이 잠깐 비치던 것을 막는다. 새 틀로 다 그린 뒤(body.on)에만 무대를 보인다 */
+html,body{background:#13203F}
+body:not(.on) #stage{visibility:hidden}
 </style>
 <style>
 /* ===== 새 틀 v2 (편 정의에 frame:'v2' 가 있을 때만: body.v2) ===== */
@@ -1189,6 +1192,7 @@ addEventListener('keydown',e=>{if(e.repeat)return;
   else if(['ArrowLeft','PageUp','ArrowUp','Backspace'].includes(e.key)){e.preventDefault();if(cur>0)go(cur-1);}
   else if(['Escape','Home','F3'].includes(e.key)){e.preventDefault();closeMe();}});
 go(0);
+document.body.classList.add('on'); // v182: 다 그린 뒤에만 보이게
 </script>
 <script>
 /* v180: 편 파일(ep/NN.js)을 다 받은 뒤에만 화면을 그린다. 못 받으면 예전 틀(미색 바탕에 남색 상자)로 떨어지지 않고, 두 번 다시 받아 본 뒤 조용히 알리고 앱의 진단 기록에 까닭을 남긴다. */
