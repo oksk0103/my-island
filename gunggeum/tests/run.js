@@ -616,7 +616,7 @@ async function newsTests(b) {
 
   { // 17. 달 카드: 오늘 이름과 같은 "다음 달"을 내지 않음 (오늘 반달인데 "반달은 내일" 금지)
     console.log('17. 달 카드 다음 모양');
-    const p = await open(b, { time: '2026-11-24T19:30', read: '2026-11-24' }); await p.saver(); // v147부터 달 카드는 보름·초승 무렵 저녁에만 — 보름 무렵(11/24)으로 본다
+    const p = await open(b, { time: '2026-11-24T19:30', read: newsDate }); await p.saver(); // 신문은 읽은 것으로(그날 신문 날짜에 따라 신문 카드가 대신 뜨지 않게) · v147부터 달 카드는 보름·초승 무렵 저녁에만 — 보름 무렵(11/24)으로 본다
     const m = await p.evaluate(() => { const sk = window.Sky && window.Sky.compute ? null : null; const big = [...document.querySelectorAll('#fcFeat .cc-big')].map(x => x.textContent.trim()); const all = document.getElementById('fcFeat').innerText; return { big, all }; });
     const nm = m.big.find(x => /달/.test(x)) || '';
     ok('달 카드: "' + nm + '" 아래에 "' + nm + '은 …"이 없다', !!nm && !new RegExp(nm + '은 ').test(m.all), m);
