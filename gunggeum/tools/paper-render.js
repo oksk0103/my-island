@@ -1,6 +1,6 @@
 // 루아 신문 종이판 → 인쇄용 파일 (v185)
 // 쓰임: node tools/paper-render.js [YYYY-MM-DD]   (날짜를 빼면 news/latest.json)
-// 결과: news/paper/<날짜>-1.jpg, -2.jpg (A4 300dpi 회색조), <날짜>.pdf, latest.json(폴드4 자동 인쇄가 읽는 목록)
+// 결과: news/paper/<날짜>-1.jpg, -2.jpg (A4 300dpi 컬러), <날짜>.pdf, latest.json(폴드4 자동 인쇄가 읽는 목록)
 // 깃허브 Actions(.github/workflows/rua-paper.yml)가 새 신문이 올라올 때마다 돌린다. 14일 지난 파일은 지운다.
 const { chromium } = require('playwright');
 const fs = require('fs'), http = require('http'), path = require('path');
@@ -15,7 +15,7 @@ const want = process.argv[2] || '';
   const b = await chromium.launch();
   const p = await b.newPage({ viewport: { width: 900, height: 1200 }, deviceScaleFactor: 300 / 96 });
   const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('requestfailed', q => errs.push('못 받음 ' + q.url()));
-  await p.goto(`http://localhost:${port}/paper.html?d=${date}&ink=1`);
+  await p.goto(`http://localhost:${port}/paper.html?d=${date}`);
   await p.waitForFunction(() => document.body.dataset.ready === '1', null, { timeout: 30000 });
   if (errs.length) throw new Error(errs.join(' / '));
   fs.mkdirSync(OUT, { recursive: true });
