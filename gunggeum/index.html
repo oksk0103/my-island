@@ -1427,7 +1427,7 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <span id="stateLabel">쉬는 중</span>
     </div>
     <div class="top-right">
-      <span class="tb-clock" id="tbClock" aria-hidden="true"></span>
+      <span class="tb-clock" id="tbClock" role="button" aria-label="홈으로"></span>
       <button class="iconbtn gear" id="gearBtn" type="button" aria-label="부모님 설정"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg></button>
       <button class="iconbtn" id="soundBtn" type="button" aria-pressed="true" aria-label="소리 켜짐/꺼짐" title="소리">
         <svg class="ds-ic" viewBox="0 0 28 28" aria-hidden="true"><path d="M4.6 11.2h3.5l5-4.3v14.2l-5-4.3H4.6z"/><path class="waves" d="M17.2 10.7a4.6 4.6 0 0 1 0 6.6M20.3 7.7a8.8 8.8 0 0 1 0 12.6"/><path class="slash" d="M18 11l6 6M24 11l-6 6"/></svg>
@@ -1573,13 +1573,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v185</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v186</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v185</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v186</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2572,6 +2572,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     svAct(d);
   }, true);
   function svAct(d) {
+    if (d.el && d.el.closest && d.el.closest('#pgSub, .ds-clock')) { svTaps = []; if (saverEl.classList.contains('rnp')) { delete window.__gkForce; window.__gkSaverAt = Date.now(); renderSaver(); } else goHome(); diag('saver', '시계 → 홈'); return; } // v186: 어느 화면이든 오른쪽 위 시계를 누르면 홈
     diag('saver', '톡: ' + (d.cv ? '탭 ' + d.cv : d.tile || d.np || (d.todo ? '할 일' : '빈 곳')) + ' · 폭 ' + innerWidth + ' · ' + (news ? '신문 ' + news.date + (newsFresh() ? '' : ' (지난 신문)') : '신문 없음')); // v129: 전화에서 신문이 안 열리는 원인 찾기
     if (d.todo) { todoToggle(d.todo); return; }
     if (saverEl.classList.contains('rnp')) { svTaps = []; // 신문 1면: 홈 단추와 기사만 눌린다 (빈 곳은 아무 일도 없다)
@@ -3182,7 +3183,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (saverEl.hidden) enterSaver(); else renderSaver();
     diag('app', '홈 단추');
   }
-  $('gkHome').addEventListener('click', goHome); setTimeout(homeSync, 0);
+  $('gkHome').addEventListener('click', goHome); $('tbClock').addEventListener('click', e => { e.stopPropagation(); goHome(); diag('app', '시계 → 홈'); }); // v186: 묻기·답 화면의 시계도 홈 단추 setTimeout(homeSync, 0);
   // 묻기 줄(.qbox) 누르기는 '말하기 막대' 처리기 하나만 맡는다. 여기에 또 달면 듣기가 켜지자마자 꺼진다(v122 검토에서 나온 버그)
   setTimeout(() => { $('zUnder').addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (b) { e.preventDefault(); if (b.classList.contains('zu-prev')) reopenLast(); else ask(b.dataset.q); } }); }, 0);
 
@@ -3624,7 +3625,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function readArticle() { const A = curArticle(); if (A) speak(`${A.title}. ${A.lede || ''} ${String(A.body || '').replace(/[《》]/g, '')}`, true); }
   $('ppNext').addEventListener('click', paperNext);
   $('ppPrev').addEventListener('click', paperPrev);
-  $('ppHome').addEventListener('click', paperHome);
+  $('ppHome').addEventListener('click', paperHome); $('ppClock').addEventListener('click', e => { e.stopPropagation(); paperHome(); }); // v186: 신문 기사 화면 시계도 홈
   $('ppAsk').addEventListener('click', () => { try { $('micBtn').click(); } catch (e) {} }); // 기사를 읽다가 물어보기 (듣는 동안은 기사가 가려진다)
   // v136: 신문의 소리 단추도 '켬/끔' 하나의 뜻 — 켜면 이 면부터 읽어 주고, 끄면 멈춘다(기본 끔, 기억함)
   var paperSound = LS.get('gk-paper-sound', 'off') === 'on';
@@ -4166,7 +4167,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v185';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v186';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6422,6 +6423,7 @@ html body .ds-pillbtn{height:64px;padding:0 26px 0 20px;border:0;border-radius:3
 [aria-pressed=false] > .ds-ic .slash{display:inline !important}
 /* 시계 폭을 고정해 소리 단추가 흔들리지 않게 */
 #app .tb-clock, .rn-phead .ds-clock{min-width:132px;text-align:right;display:inline-block}
+#app .tb-clock, .ds-clock, #pgSub{cursor:pointer;-webkit-tap-highlight-color:transparent}
 /* 신문도 상자(틀·그림자) 없이 종이가 화면 전체 — 다른 앱처럼 바탕 위에 바로. 지면 안 자리는 그대로 */
 .rn-sheet{left:0 !important;right:0 !important;top:0 !important;bottom:0 !important;border-radius:0 !important;box-shadow:none !important;padding:32px 48px 0 !important} /* 지면 좌우 끝 = 다른 앱의 머리줄 끝(48) — 시계·괘선이 같은 선에서 끝난다 */
 .rn-front, .paper{--cw:calc((100vw - 144px) / 3)} /* v136: 종이가 화면 끝까지 넓어졌으니 세 단도 48~1552를 꽉 채운다(전엔 1488에서 끝나 괘선만 64px 삐져나옴) */
