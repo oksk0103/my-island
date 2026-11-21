@@ -583,7 +583,7 @@ async function newsTests(b) {
       ok(`홈 ${ds}: 판에 흐림 효과 없음, 날씨 줄은 판 모양 없이 시계 판 안에(두 겹으로 안 보임)`, !q.blur && /none/.test(q.wxBg) && /rgba\(0, 0, 0, 0\)/.test(q.wxBg) && q.wxSh === 'none', q);
       ok(`홈 ${ds}: 시계·날씨 사이 줄은 1px 한 줄(속 빈 고리 아님)`, q.ln === '1px|0px|none|0px', q.ln);
       await p.context().close(); }
-    ok('앱 아이콘·manifest가 새 남색', /icon4-192\.png/.test(fs.readFileSync(path.join(ROOT, 'manifest.webmanifest'), 'utf8')) && /#2C4287/.test(fs.readFileSync(path.join(ROOT, 'manifest.webmanifest'), 'utf8')) && fs.existsSync(path.join(ROOT, 'icon4-512-maskable.png')));
+    ok('앱 아이콘·manifest가 새 남색', /icon5-192\.png/.test(fs.readFileSync(path.join(ROOT, 'manifest.webmanifest'), 'utf8')) && /#2C4287/.test(fs.readFileSync(path.join(ROOT, 'manifest.webmanifest'), 'utf8')) && fs.existsSync(path.join(ROOT, 'icon5-512-maskable.png')));
   }
 
   { // v163. 디자인 가이드 2단계 — 서체
