@@ -608,48 +608,6 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
 .fig-box:has(.vcard),.fig-box:has(.era){ border-left: 0 !important; border-radius: 20px !important; }
 
 /* v99: 저녁(18~22시) 대기화면 = 오늘 밤하늘 — 아침 신문과 같은 제호 띠, 아래는 남쪽 하늘과 오늘의 달 */
-.sv-sky{ display: none; }
-.saver.sky{ padding: 3.5vh 5vw; }
-.saver.sky .sv-inner{ display: grid; width: 100%; height: 100%; max-width: 100rem; align-items: stretch; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-rows: auto auto auto auto auto minmax(0, 1fr) auto; column-gap: 3vw; row-gap: 0;
-  grid-template-areas: "top name wxn" "time name wxs" "time name tip" "rule rule rule" "meta meta meta" "body body body" "msg msg msg"; }
-.saver.sky .sv-date,.saver.sky .sv-text,.saver.sky .sv-sky,.saver.sky .sv-wx{ display: contents; }
-.saver.sky .sv-line,.saver.sky .sv-paper,.saver.sky .sv-night{ display: none !important; }
-.saver.sky .sv-top{ grid-area: top; font-size: clamp(1.2rem, min(1.7vw, 3.1vh), 1.8rem); align-self: start; padding: 0; line-height: 1; }
-.saver.sky .sv-time{ grid-area: time; font-size: clamp(4.8rem, min(8.4vw, 16vh), 10rem); margin: .2rem 0 0 -.03em; line-height: .74; align-self: end; }
-.saver.sky .sky-name{ grid-area: name; align-self: end; justify-self: center; font-family: var(--f-serif); font-weight: 900; font-size: clamp(2.6rem, min(5.7vw, 10.8vh), 6.6rem); line-height: .86; letter-spacing: -.035em; white-space: nowrap; color: var(--ink); }
-.saver.sky .sv-wx .wx-now{ grid-area: wxn; justify-self: end; align-self: start; line-height: 1; font-size: clamp(2.4rem, min(3.8vw, 7vh), 4.2rem); color: color-mix(in srgb, var(--sv-text) 82%, transparent); letter-spacing: -.02em; white-space: nowrap; }
-.saver.sky .sv-wx .wx-now b{ font-weight: 600; color: var(--ink); }
-.saver.sky .sv-wx .wx-sub{ grid-area: wxs; justify-self: end; align-self: end; margin-top: .7rem; font-size: clamp(1.1rem, min(1.45vw, 2.8vh), 1.6rem); color: color-mix(in srgb, var(--sv-text) 62%, transparent); font-family: var(--f-serif); }
-.saver.sky .sv-tip{ grid-area: tip; justify-self: end; align-self: end; margin-top: .5rem !important; font-size: clamp(1.4rem, min(2.1vw, 4vh), 2.3rem); line-height: .9; position: relative; top: .24em; }
-.saver.sky .sv-rule{ grid-area: rule; width: auto; height: 0; margin-top: 3.4vh; border-top: 3px solid color-mix(in srgb, var(--ink) 70%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--ink) 70%, transparent); padding-top: 4px; background: none; }
-.saver.sky .sky-meta{ grid-area: meta; text-align: center; padding-top: .8rem; font-size: clamp(.85rem, min(1.1vw, 2vh), 1.15rem); font-weight: 700; color: var(--muted); line-height: 1.55; }
-.saver.sky .sky-body{ grid-area: body; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) min(33%, 31rem); column-gap: 3vw; padding-top: 1.6vh; }
-.saver.sky .sky-chart{ min-width: 0; min-height: 0; position: relative; }
-.sky-svg{ position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.sky-svg .lb{ font-family: "MaruBuri", "MaruBuri Full", "Noto Serif KR", "Noto Serif CJK KR", serif; font-size: 26px; fill: #E8DDC9; font-weight: 600; paint-order: stroke; stroke: #100D0A; stroke-width: 4px; stroke-linejoin: round; }
-.sky-svg .lb.pl{ fill: #F0C374; font-weight: 700; }
-.sky-svg .lb.hi{ fill: #F0C374; font-size: 38px; font-weight: 900; }
-.sky-svg .lb.hi2{ fill: #F0C374; font-weight: 900; }
-.sky-svg .dir{ font-family: var(--f-ui); font-size: 18px; fill: #A39682; text-anchor: middle; font-weight: 800; }
-.sky-svg .dir.s{ fill: #E8DDC9; }
-.saver.sky .sky-col{ min-width: 0; display: flex; flex-direction: column; padding: .4vh 0 1.2vh; text-align: left; }
-.saver.sky .sky-col .svp-tag{ font-size: clamp(.95rem, min(1.2vw, 2.2vh), 1.25rem); display: block; }
-.saver.sky .sky-moon{ display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 1.7vw; align-items: center; margin-top: 1vh; }
-.saver.sky #skyMoon{ display: block; width: min(16.6vw, 32.4vh); height: min(16.6vw, 32.4vh); margin-left: -.3vw; }
-.sky-mtxt{ display: flex; flex-direction: column; min-width: 0; }
-.sky-mname{ font-family: var(--f-serif); font-weight: 900; font-size: clamp(2rem, min(3.4vw, 6.6vh), 3.9rem); letter-spacing: -.04em; line-height: 1.05; color: var(--ink); word-break: keep-all; }
-.sky-mname.long{ font-size: clamp(1.5rem, min(2.5vw, 4.8vh), 2.9rem); white-space: nowrap; }
-.sky-msub{ margin-top: .9vh; font-size: clamp(1rem, min(1.3vw, 2.5vh), 1.4rem); font-weight: 600; color: color-mix(in srgb, var(--ink) 80%, transparent); word-break: keep-all; }
-.sky-mset{ margin-top: 2vh; padding-top: 1.8vh; border-top: 1px solid var(--line); font-family: var(--f-serif); font-weight: 600; font-size: clamp(1.1rem, min(1.5vw, 2.9vh), 1.65rem); line-height: 1.35; color: var(--ink); }
-.sky-mset small{ display: block; font-family: var(--f-ui); font-size: .78em; font-weight: 700; color: var(--muted); }
-.sky-mnext{ margin-top: 1.6vh; font-size: clamp(.95rem, min(1.2vw, 2.3vh), 1.3rem); font-weight: 700; color: var(--muted); line-height: 1.5; }
-.sky-mnext span{ display: block; white-space: nowrap; }
-.sky-mnext b{ color: color-mix(in srgb, var(--ink) 85%, transparent); font-weight: 700; }
-.saver.sky .sky-one{ border-top: 1px solid var(--line); padding-top: 1.8vh; margin-top: auto; }
-.saver.sky .sky-one .svp-hed{ margin-top: .5vh; font-size: clamp(1.5rem, min(2.3vw, 4.4vh), 2.6rem); line-height: 1.25; font-weight: 700; }
-.saver.sky .sky-one .svp-hed b{ color: #F0C374; font-weight: 900; }
-.saver.sky .sky-one p{ margin: .7vh 0 0; font-size: clamp(1rem, min(1.35vw, 2.6vh), 1.45rem); font-weight: 500; line-height: 1.45; color: color-mix(in srgb, var(--ink) 80%, transparent); word-break: keep-all; }
-.saver.sky .sv-msg{ grid-area: msg; }
 
 /* v100: 홈(쉬는 중) — 오늘의 한 조각은 명조로, 아래에는 '오늘' 줄(신문·밤하늘·날씨) */
 .today{ display: none; }
@@ -689,11 +647,8 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
 .svp-done small{ font-size: 1em; color: var(--muted); }
 .svp-done .again{ margin-left: .9em; font-family: var(--f-serif); font-size: 1em; font-weight: 600; color: var(--accent); }
 .saver.night .sv-night{ font-family: var(--f-serif); }
-.saver.paper-hero .svp-meta,.saver.sky .sky-meta{ font-size: clamp(1rem, min(1.35vw, 2.6vh), 1.4rem); }
-.saver.paper-hero .svp-tag,.saver.sky .sky-col .svp-tag{ font-size: clamp(1.05rem, min(1.4vw, 2.7vh), 1.45rem); }
-.sky-svg .dir{ font-size: 22px; }
-.sky-mset small,.sky-mnext{ font-family: var(--f-ui); font-size: clamp(1.05rem, min(1.35vw, 2.6vh), 1.45rem); font-weight: 700; color: var(--muted); }
-.sky-mnext b{ color: inherit; }
+.saver.paper-hero .svp-meta{ font-size: clamp(1rem, min(1.35vw, 2.6vh), 1.4rem); }
+.saver.paper-hero .svp-tag{ font-size: clamp(1.05rem, min(1.4vw, 2.7vh), 1.45rem); }
 .today .td .svp-tag{ font-size: 1.05rem; }
 .today .td b{ font-size: 1.6rem; }
 .today .td small{ font-size: 1.15rem; }
@@ -1442,21 +1397,6 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
           <div class="svp-foot"><span class="svp-unread" id="svpUnread"><i></i><span></span></span><button class="svp-open" id="svpOpen" type="button">신문 펴기<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button></div>
           <div class="svp-done" id="svpDone"><b id="svpDoneT"></b><small id="svpCount"></small><span class="again">다시 보기</span></div>
         </div>
-        <div class="sv-sky" id="svSky">
-          <div class="sky-name">오늘 밤하늘</div>
-          <div class="sky-meta" id="skyMeta"></div>
-          <div class="sky-body">
-            <div class="sky-chart" id="skyChart"></div>
-            <div class="sky-col">
-              <span class="svp-tag">오늘의 달</span>
-              <div class="sky-moon">
-                <canvas id="skyMoon" width="2" height="2"></canvas>
-                <div class="sky-mtxt"><b class="sky-mname" id="skyMName"></b><span class="sky-msub" id="skyMSub"></span><span class="sky-mset" id="skyMSet"></span><span class="sky-mnext" id="skyMNext"></span></div>
-              </div>
-              <div class="sky-one" id="skyOne"><span class="svp-tag">오늘 밤 찾아볼 것</span><h2 class="svp-hed" id="skyOneH"></h2><p id="skyOneP"></p></div>
-            </div>
-          </div>
-        </div>
         <div class="sv-msg" id="svMsg" hidden></div>
       </section>
       <section class="sv-todo" id="svTodo" hidden><div class="svt-head"><span class="svp-tag">루아의 할 일</span><span class="svt-left" id="svTodoN"></span></div><div class="svt-list" id="svTodoL"></div></section>
@@ -1470,13 +1410,13 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v196</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v197</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v196</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v197</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2366,7 +2306,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('nsDate').textContent = `${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`;
     saverEl.classList.toggle('quiet', ph === 'quiet');
     const key = [Math.floor(Date.now() / 300e3), settings.wxLat, settings.wxLon].join('|'); if (key === nsKey) return; // 하늘은 5분마다
-    const o = { lat: +settings.wxLat || 37.526, lon: +settings.wxLon || 126.896, now: d, W: 1120, H: 774, idle: true }; let s;
+    let at = d; { const dk = nsDark(), m = d.getHours() * 60 + d.getMinutes(); if (dk != null && m < dk && m >= 300) { at = new Date(d); at.setHours(0, dk, 0, 0); } } // v197: 해 지기 전에 달 카드로 열면 오늘 어두워진 뒤의 하늘
+    const o = { lat: +settings.wxLat || 37.526, lon: +settings.wxLon || 126.896, now: at, W: 1120, H: 774, idle: true }; let s;
     try { s = window.GKSky.build(o); const pk = s.idle.pick;
       if (pk && (pk.az < 140 || pk.az > 220)) o.az0 = Math.max(90, Math.min(270, Math.round(pk.az / 45) * 45)); // 찾아볼 것이 한쪽 끝이면 하늘 창을 그쪽으로
       if (s.pick && pk && !pk.planet && !pk.moon) o.pickStar = s.pick.name;
@@ -2467,7 +2408,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (d.tile === 'todo' && svWide()) { svTaps = []; window.__gkForce = { s: 'todo', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '할 일 타일 → 할 일 화면'); return; }
     if (d.tile === 'cal') { svTaps = []; window.__gkForce = { s: 'cal', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날짜 → 달력'); return; }
     if (d.tile === 'sky' && saverEl.classList.contains('skyback')) { svTaps = []; delete window.__gkForce; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '홈 → 밤하늘'); return; } // v196
-    if (d.tile === 'sky' && window.GKSky) { svTaps = []; window.__gkForce = { s: 'sky', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '타일 → 밤하늘'); return; }
+    if (d.tile === 'sky') { svTaps = []; if (innerWidth >= 900 && skyReady()) { window.__gkForce = { s: 'nsky', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '달 → 밤하늘'); } return; } // v197: 달 카드·밤하늘 판은 새 밤하늘로(전화는 달 카드가 곧 밤하늘 정보라 넘어가지 않음)
     const hadNews = !!(news && newsFresh());
     if (d.tile === 'news' && hadNews && innerWidth >= 900) { svTaps = []; window.__gkForce = { s: 'front', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '표지 → 신문 1면'); return; }
     if (d.tile === 'pair') { svTaps = []; pieceOpen(pairPiece()); return; } // v173: 오늘의 단어도 이야기·과학처럼 쉬는 시간에 본다
@@ -2581,7 +2522,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const hr = new Date().getHours(), night = fz ? fz === 'night' : (window.__gkNight ?? ((nightScreen() && nightHours()) || restDarkNow()));
     // 저녁(18~22시): 신문을 다 읽었거나 신문이 없으면 '오늘 밤하늘'. 안 읽은 신문이 있으면 신문이 먼저.
     const wide = svWide();
-    const sky = !night && (fz ? fz === 'sky' : (!wide && hr >= 18 && !(on && !read))) && wide && Date.now() - skyBadAt > 10 * 60e3 && skyReady();
+    const sky = false; // v197: 옛 '오늘 밤하늘' 화면 삭제(부모 요청) — 밤하늘은 저녁 밤하늘 대기화면 하나
     const face = wide && !night && !sky && (!fz || fz === 'face' || fz === 'sky'); // 넓은 화면의 낮·저녁 기본: 위젯 면
     const cal = wide && !night && fz === 'cal';
     saverEl.classList.toggle('sky', sky); saverEl.classList.toggle('face', face); saverEl.classList.toggle('cal', cal);
@@ -2596,7 +2537,6 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (cal) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain'].forEach(c => saverEl.classList.remove(c)); renderCal(hr); return true; }
     if (face) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain'].forEach(c => saverEl.classList.remove(c)); return renderFace(on, read, hr) !== 'line'; }
     saverEl.classList.toggle('plain', !on && !night && !sky);
-    if (sky) { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done'].forEach(c => saverEl.classList.remove(c)); renderSky(); return true; }
     el.hidden = !on || night; saverEl.classList.toggle('has-paper', on && !night); saverEl.classList.toggle('night', night);
     // 낮: 아직 안 읽었으면 신문이 주인공, 다 읽었으면 시계가 주인공 + 신문은 한 줄로 접힘. 밤(22~6시): 시계만 어둡게
     saverEl.classList.toggle('paper-hero', on && !night && (!read || fz === 'front'));
@@ -2701,7 +2641,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   // ---------- 오늘 밤하늘 (저녁 대기화면): 별 계산 라이브러리는 처음 필요할 때만 받음 ----------
   var skyBadAt = 0;
-  let skyLoading = null, skyFailAt = 0, skyKey = '', skyMoonKey = '';
+  let skyLoading = null, skyFailAt = 0;
   function skyReady() {
     if (window.GKSky && window.Astronomy && window.GK_SKY) return true;
     if (!skyLoading && Date.now() - skyFailAt > 5 * 60e3) {
@@ -2711,22 +2651,6 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
         .catch(e => { skyLoading = null; skyFailAt = Date.now(); diag('err', '밤하늘 못 받음: ' + (e.message || e)); });
     }
     return false;
-  }
-  function renderSky() {
-    const box = $('skyChart'), bw = box.clientWidth, bh = box.clientHeight; if (!bw || !bh) return;
-    const cv = $('skyMoon'), ms = Math.round(cv.getBoundingClientRect().width);
-    const key = [Math.floor(Date.now() / 300e3), bw, bh, settings.wxLat, settings.wxLon].join('|'); // 5분마다 다시 계산
-    if (key === skyKey) return;
-    let s; try { s = window.GKSky.build({ lat: +settings.wxLat || 37.526, lon: +settings.wxLon || 126.896, now: new Date(), W: bw, H: bh }); }
-    catch (e) { diag('err', '밤하늘 계산 실패: ' + (e.message || e)); skyBadAt = Date.now(); renderFront(); return; }
-    skyKey = key; box.innerHTML = s.svg;
-    $('skyMeta').textContent = [settings.wxName || '', '남쪽을 바라본 ' + s.when + ' 하늘', s.sunset ? '해 진 때 ' + s.sunset : ''].filter(Boolean).join(' · ');
-    $('skyMName').textContent = s.moon.name; $('skyMName').classList.toggle('long', !!s.moon.long); $('skyMSub').textContent = s.moon.sub;
-    $('skyMSet').innerHTML = `${escN(s.moon.lines[0])}<small>${escN(s.moon.lines[1])}</small>`;
-    $('skyMNext').innerHTML = s.next.map(x => `<span><b>${escN(x[0])}</b> ${escN(x[1])}</span>`).join('');
-    $('skyOne').hidden = !s.pick; if (s.pick) { $('skyOneH').innerHTML = `${escN(s.pick.head)} <b>${escN(s.pick.name)}</b>`; $('skyOneP').innerHTML = `${escN(s.pick.note)}<br>${escN(s.pick.sub)}`; }
-    const mk = [ms, Math.round(s.moon.phase), Math.round(s.moon.limb / 8)].join('|'); // 달은 모양이 달라질 때만 다시 그림
-    if (mk !== skyMoonKey && ms > 20) { skyMoonKey = mk; setTimeout(() => { try { window.GKSky.drawMoon(cv, ms, s.moon.phase, s.moon.limb); } catch (e) { skyMoonKey = ''; } }, 30); }
   }
 
   // ---------- 루아의 할 일: 말로 적고, 눌러서 줄 긋기. 알아듣기·저장은 모두 기기에서 (AI를 부르지 않음) ----------
@@ -3268,7 +3192,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     s = sec('voice', '목소리');
     s.append(h3('읽어 주는 목소리'), row('서비스', P['AI 목소리 서비스']), row('서비스 키', P['AI 목소리 키']), row('목소리', P['AI 목소리']), row('말 빠르기', P['말 빠르기']), row('목소리 높이', P['목소리 높이']), h3('키가 없거나 안 될 때'), row('폰 목소리', P['폰 목소리']));
     s = sec('scr', '화면');
-    const go = mk('div', 'row'); [['face', '홈'], ['piece', '조각 장'], ['home', '묻기'], ['cal', '달력'], ['todo', '할 일'], ['study', '공부칸'], ['wx', '날씨'], ['hero', '신문 1면'], ['paper', '신문 기사'], ['sky', '밤하늘'], ['nsky', '저녁 밤하늘'], ['night', '밤 화면']].forEach(([k, t]) => { let b = L.querySelector(`[data-go="${k}"]`); if (!b) { b = mk('button', 'chip', t); b.type = 'button'; b.dataset.go = k; b.addEventListener('click', () => { previewSaver('face'); window.__gkForce = { s: k, at: Date.now() }; renderSaver(); }); } /* v175: 나중에 만든 바로가기도 제 화면으로(예전엔 날씨로만 갔다) */ b.textContent = t; go.append(b); });
+    const go = mk('div', 'row'); [['face', '홈'], ['piece', '조각 장'], ['home', '묻기'], ['cal', '달력'], ['todo', '할 일'], ['study', '공부칸'], ['wx', '날씨'], ['hero', '신문 1면'], ['paper', '신문 기사'], ['nsky', '밤하늘'], ['night', '밤 화면']].forEach(([k, t]) => { let b = L.querySelector(`[data-go="${k}"]`); if (!b) { b = mk('button', 'chip', t); b.type = 'button'; b.dataset.go = k; b.addEventListener('click', () => { previewSaver('face'); window.__gkForce = { s: k, at: Date.now() }; renderSaver(); }); } /* v175: 나중에 만든 바로가기도 제 화면으로(예전엔 날씨로만 갔다) */ b.textContent = t; go.append(b); });
     s.append(h3('날씨'), row('날씨 지역', P['날씨 지역']), row('날씨 하늘', P['날씨 하늘']), h3('밤'), row('밤 10시 화면', P['밤 10시 화면']), h3('그림'), row('신문 그림', P['신문 그림']), h3('화면 바로가기'), row('열어 보기', [go, note('열어 본 화면은 홈 단추로 돌아와요. 그대로 두면 10분 뒤 홈으로 가요.')], true), h3('기기'), row('전체 화면', $('fsBtn')));
     const inst = $('installCard'); if (inst) { const r = row('앱으로 설치', [$('installBtn'), $('installNote')]); s.append(r); new MutationObserver(() => { r.hidden = inst.hidden; }).observe(inst, { attributes: true }); r.hidden = inst.hidden; }
     s = sec('news', '신문');
@@ -3389,7 +3313,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (/^(이번달|이달)?(달력|일정)(을|좀)?(보여줘|열어줘|볼래|보자|보여)$/.test(t)) { previewSaver('cal'); return true; }
     if (/^(오늘)?(할일|숙제|할일목록)(을|좀)?(보여줘|열어줘|볼래|보자|보여)$/.test(t)) { previewSaver('todo'); return true; }
     if (/^(공부칸|낱말장|단어장|모은말)(을|좀)?(보여줘|열어줘|볼래|보자|보여)$/.test(t)) { const top = wordLoad().items[0]; stSel = top ? top.k : ''; stView = 'hero'; previewSaver('study'); return true; }
-    if (/^(오늘)?(밤하늘|달)(을|좀)?(보여줘|열어줘|볼래|보자|보여)$/.test(t)) { if (window.GKSky) previewSaver('sky'); else todoShow(s, '밤하늘은 지금 못 보여 줘.', []); return true; }
+    if (/^(오늘)?(밤하늘|달)(을|좀)?(보여줘|열어줘|볼래|보자|보여)$/.test(t)) { if (window.GKSky && innerWidth >= 900) previewSaver('nsky'); else todoShow(s, '밤하늘은 지금 못 보여 줘.', []); return true; }
     return false;
   }
   // 화면에 그리기: 홈 '오늘' 줄의 칸 + 대기화면 시계 장의 단
@@ -3450,7 +3374,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       $('tdSkyH').textContent = s.moon.name + (pk ? ' · ' + pk.name : ''); $('tdSkyS').textContent = pk ? `${pk.head.split(' ')[0]} 하늘에서 찾아봐` : s.moon.sub; }
   }
   $('tdNews').addEventListener('click', () => openPaper(0));
-  $('tdSky').addEventListener('click', () => previewSaver('sky'));
+  $('tdSky').addEventListener('click', () => previewSaver('nsky'));
   $('tdWx').addEventListener('click', () => ask('오늘 날씨 어때?'));
   setInterval(renderToday, 5 * 60e3);
   const curArticle = () => news && news.articles[paperIdx];
@@ -3924,7 +3848,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v196';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v197';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -5575,10 +5499,7 @@ body[data-wxstill] .wx-sky *{animation:none !important}
 .ag-ask .pc{height:64px;padding:0 26px;border-radius:22px;background:var(--strip);box-shadow:var(--strips);color:var(--zk);font:600 28px/1 "Pretendard",sans-serif;cursor:pointer}
 .ag:has(.ag-ask:not([hidden])){grid-template-rows:auto minmax(0,1fr) auto 72px}
 .cq-grid span.t b,.cq-grid span.t.sa b,.cq-grid span.t.su b{color:#fff !important}
-body[data-scr=sky] .gk-home{background:rgb(255 255 255 / .14);color:#fff;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .22);-webkit-backdrop-filter:none;backdrop-filter:none}
 /* 밤하늘: 홈 캡슐이 날짜·시각을 가리지 않게 — 날짜 줄은 캡슐 오른쪽으로, 캡슐은 12px 위로 */
-.saver.sky .sv-top{padding-left:112px}
-body[data-scr=sky] .gk-home{top:28px}
 
 /* v133: 답 화면의 낱말 카드·연표 카드 — 밝은 지면에 맞춘 흰 카드, 오른쪽 칸에 고정. 글과 칩은 카드 왼쪽 칸에서만 흐른다 */
 #app .fig-box:has(.vcard),#app .fig-box:has(.era){background:var(--strip) !important;box-shadow:var(--strips);border:0 !important;border-radius:28px !important;aspect-ratio:auto}
@@ -5688,46 +5609,46 @@ body{--X:20px;--T:20px}
 .gk-home svg{width:24px;height:24px}
 .rb,#app .iconbtn#soundBtn,#app #replayBtn{width:52px;height:52px}
 /* 대기화면: 밝은 지면 위 시계 · 날씨 한마디 · 신문 한 장 */
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night){background:var(--paperbg) !important;color:var(--zk);--ink:#16181D;--sv-text:#16181D;--muted:#5F6673;--line:rgba(10,30,90,.12);--accent:#0D3EAC;--accent-ink:#fff;padding:0 20px !important;overflow-y:auto;display:block}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-inner{display:flex !important;flex-direction:column;align-items:stretch !important;justify-content:center;min-height:100%;box-sizing:border-box;padding:48px 0 52px;max-width:none !important;width:auto;text-align:left !important;gap:0}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-date{display:flex !important;flex-direction:column;align-items:flex-start !important}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-top{font:500 22px/1.2 "Pretendard",sans-serif !important;letter-spacing:-.01em;color:var(--zk2);padding:0 !important;align-self:auto !important}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-top span{color:var(--zk2);font:inherit}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-top .sv-dow{color:var(--zac)}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-time{font:400 96px/1 "Pretendard",sans-serif !important;letter-spacing:-.045em;color:var(--zk);margin:12px 0 0 -4px !important;font-variant-numeric:tabular-nums;white-space:nowrap}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-time small{position:static !important;display:inline-block;margin:0 10px 0 4px;font:500 22px/1 "Pretendard",sans-serif !important;letter-spacing:0;color:var(--zk2);transform:none;writing-mode:horizontal-tb}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-wx{display:block !important;margin:20px 0 0 !important;color:var(--zk)}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-wx .wx-now{font:500 30px/1.25 "Pretendard",sans-serif !important;letter-spacing:-.02em;color:var(--zk) !important;white-space:normal}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-wx .wx-now b{color:var(--zk);font-weight:500}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-wx .wx-sub{font:500 18px/1.45 "Pretendard",sans-serif !important;color:var(--zk2) !important;margin-top:6px !important}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-tip{display:block;font:600 22px/1.35 "Pretendard",sans-serif !important;letter-spacing:-.02em;color:var(--zac) !important;margin:14px 0 0 !important;position:static !important;text-align:left;writing-mode:horizontal-tb;align-self:auto !important}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-rule,#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-sky,#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-night{display:none !important}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-text{display:block !important;margin-top:36px}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-line{font:500 20px/1.55 "Pretendard",sans-serif !important;letter-spacing:-.015em;color:var(--zk);text-align:left !important;word-break:keep-all;max-width:none}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-line b{color:var(--zac);font-weight:600}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-paper:not([hidden]){display:block !important;background:var(--strip);box-shadow:var(--strips);border-radius:24px;padding:18px 20px 20px}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-mast{display:flex !important;align-items:center;justify-content:space-between;gap:12px;padding:0 0 12px;border:0;border-bottom:1px solid var(--line)}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-name{font-size:30px !important;align-self:auto !important;justify-self:auto !important}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-name img{top:0}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-meta{font:500 15px/1.35 "Pretendard",sans-serif !important;color:var(--zk2);text-align:right;padding:0 !important}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-meta br,#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-meta .msep{display:none}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-meta .mdate{display:inline !important}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-lead{display:block !important;padding:14px 0 0 !important;border:0}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-tag{font:600 15px/1.2 "Pretendard",sans-serif !important;color:var(--zac)}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-lead .svp-hed{font-size:24px !important;line-height:1.38;margin-top:6px;color:var(--zk)}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-more{display:block !important;padding-top:2px !important}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-more > div{padding-top:14px}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-more .svp-hed{font-size:19px !important;line-height:1.38;margin-top:4px;color:var(--zk)}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-foot{display:flex !important;align-items:center;justify-content:space-between;gap:12px;margin-top:18px !important}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-unread{font:500 15px/1.35 "Pretendard",sans-serif !important;color:var(--zk2) !important}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-unread i{background:var(--zac)}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-open{flex:none;min-height:52px !important;padding:0 20px 0 24px !important;border:0 !important;border-radius:26px;background:var(--zac) !important;color:#fff !important;font:600 18px/1 "Pretendard",sans-serif !important}
-#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .sv-paper:not([hidden]){background:none;box-shadow:none;padding:0}
-#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-done{display:flex !important;align-items:center;gap:8px;width:100%;box-sizing:border-box;margin:0 !important;padding:10px 10px 10px 22px !important;border:0 !important;border-radius:24px;background:var(--strip);box-shadow:var(--strips);text-align:left}
-#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-done b{font:500 18px/1.3 "Pretendard",sans-serif;color:var(--zk)}
-#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-done small{font:500 15px/1.3 "Pretendard",sans-serif;color:var(--zk2)}
-#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-done .again{margin-left:auto;flex:none;display:inline-flex;align-items:center;height:48px;padding:0 18px;border-radius:24px;background:rgba(13,62,172,.08);font:600 18px/1 "Pretendard",sans-serif !important;color:var(--zac) !important}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-dots i{background:var(--zk)}
+#saver.saver:not(.face):not(.pgx):not(.night){background:var(--paperbg) !important;color:var(--zk);--ink:#16181D;--sv-text:#16181D;--muted:#5F6673;--line:rgba(10,30,90,.12);--accent:#0D3EAC;--accent-ink:#fff;padding:0 20px !important;overflow-y:auto;display:block}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-inner{display:flex !important;flex-direction:column;align-items:stretch !important;justify-content:center;min-height:100%;box-sizing:border-box;padding:48px 0 52px;max-width:none !important;width:auto;text-align:left !important;gap:0}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-date{display:flex !important;flex-direction:column;align-items:flex-start !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-top{font:500 22px/1.2 "Pretendard",sans-serif !important;letter-spacing:-.01em;color:var(--zk2);padding:0 !important;align-self:auto !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-top span{color:var(--zk2);font:inherit}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-top .sv-dow{color:var(--zac)}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-time{font:400 96px/1 "Pretendard",sans-serif !important;letter-spacing:-.045em;color:var(--zk);margin:12px 0 0 -4px !important;font-variant-numeric:tabular-nums;white-space:nowrap}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-time small{position:static !important;display:inline-block;margin:0 10px 0 4px;font:500 22px/1 "Pretendard",sans-serif !important;letter-spacing:0;color:var(--zk2);transform:none;writing-mode:horizontal-tb}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-wx{display:block !important;margin:20px 0 0 !important;color:var(--zk)}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-wx .wx-now{font:500 30px/1.25 "Pretendard",sans-serif !important;letter-spacing:-.02em;color:var(--zk) !important;white-space:normal}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-wx .wx-now b{color:var(--zk);font-weight:500}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-wx .wx-sub{font:500 18px/1.45 "Pretendard",sans-serif !important;color:var(--zk2) !important;margin-top:6px !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-tip{display:block;font:600 22px/1.35 "Pretendard",sans-serif !important;letter-spacing:-.02em;color:var(--zac) !important;margin:14px 0 0 !important;position:static !important;text-align:left;writing-mode:horizontal-tb;align-self:auto !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-rule,#saver.saver:not(.face):not(.pgx):not(.night) .sv-night{display:none !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-text{display:block !important;margin-top:36px}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-line{font:500 20px/1.55 "Pretendard",sans-serif !important;letter-spacing:-.015em;color:var(--zk);text-align:left !important;word-break:keep-all;max-width:none}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-line b{color:var(--zac);font-weight:600}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-paper:not([hidden]){display:block !important;background:var(--strip);box-shadow:var(--strips);border-radius:24px;padding:18px 20px 20px}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-mast{display:flex !important;align-items:center;justify-content:space-between;gap:12px;padding:0 0 12px;border:0;border-bottom:1px solid var(--line)}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-name{font-size:30px !important;align-self:auto !important;justify-self:auto !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-name img{top:0}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-meta{font:500 15px/1.35 "Pretendard",sans-serif !important;color:var(--zk2);text-align:right;padding:0 !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-meta br,#saver.saver:not(.face):not(.pgx):not(.night) .svp-meta .msep{display:none}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-meta .mdate{display:inline !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-lead{display:block !important;padding:14px 0 0 !important;border:0}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-tag{font:600 15px/1.2 "Pretendard",sans-serif !important;color:var(--zac)}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-lead .svp-hed{font-size:24px !important;line-height:1.38;margin-top:6px;color:var(--zk)}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-more{display:block !important;padding-top:2px !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-more > div{padding-top:14px}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-more .svp-hed{font-size:19px !important;line-height:1.38;margin-top:4px;color:var(--zk)}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-foot{display:flex !important;align-items:center;justify-content:space-between;gap:12px;margin-top:18px !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-unread{font:500 15px/1.35 "Pretendard",sans-serif !important;color:var(--zk2) !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-unread i{background:var(--zac)}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-open{flex:none;min-height:52px !important;padding:0 20px 0 24px !important;border:0 !important;border-radius:26px;background:var(--zac) !important;color:#fff !important;font:600 18px/1 "Pretendard",sans-serif !important}
+#saver.saver.paper-done:not(.face):not(.pgx):not(.night) .sv-paper:not([hidden]){background:none;box-shadow:none;padding:0}
+#saver.saver.paper-done:not(.face):not(.pgx):not(.night) .svp-done{display:flex !important;align-items:center;gap:8px;width:100%;box-sizing:border-box;margin:0 !important;padding:10px 10px 10px 22px !important;border:0 !important;border-radius:24px;background:var(--strip);box-shadow:var(--strips);text-align:left}
+#saver.saver.paper-done:not(.face):not(.pgx):not(.night) .svp-done b{font:500 18px/1.3 "Pretendard",sans-serif;color:var(--zk)}
+#saver.saver.paper-done:not(.face):not(.pgx):not(.night) .svp-done small{font:500 15px/1.3 "Pretendard",sans-serif;color:var(--zk2)}
+#saver.saver.paper-done:not(.face):not(.pgx):not(.night) .svp-done .again{margin-left:auto;flex:none;display:inline-flex;align-items:center;height:48px;padding:0 18px;border-radius:24px;background:rgba(13,62,172,.08);font:600 18px/1 "Pretendard",sans-serif !important;color:var(--zac) !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-dots i{background:var(--zk)}
 /* 궁금칸 */
 #app[data-home]{padding:0 20px 24px !important;justify-content:center}
 #app[data-home] .sheet.plain{font-size:44px !important;line-height:56px !important}
@@ -5778,29 +5699,29 @@ body{--X:20px;--T:20px}
 .zu-chip{height:auto;min-height:52px;padding:12px 18px;border-radius:18px;font-size:18px;line-height:1.3}
 #app[data-state=listen] .listen-ov,#app[data-state=think] .listen-ov{inset:84px 0 auto 0 !important;height:calc(40vh - 84px);padding:0 20px 10px !important;justify-content:flex-end}
 #app .lo-text{font-size:34px;line-height:44px;min-height:44px}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-name img{filter:brightness(0);opacity:.88;clip-path:inset(0 7.5% 0 0);margin-right:-12px;height:1em}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .svp-meta .mth{display:none}
-#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-mast,#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-lead,#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-more,#saver.saver.paper-done:not(.face):not(.pgx):not(.sky):not(.night) .svp-foot{display:none !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-name img{filter:brightness(0);opacity:.88;clip-path:inset(0 7.5% 0 0);margin-right:-12px;height:1em}
+#saver.saver:not(.face):not(.pgx):not(.night) .svp-meta .mth{display:none}
+#saver.saver.paper-done:not(.face):not(.pgx):not(.night) .svp-mast,#saver.saver.paper-done:not(.face):not(.pgx):not(.night) .svp-lead,#saver.saver.paper-done:not(.face):not(.pgx):not(.night) .svp-more,#saver.saver.paper-done:not(.face):not(.pgx):not(.night) .svp-foot{display:none !important}
 #saver.saver.paper-hero .sv-inner{justify-content:flex-start;padding-top:40px}
 #saver.saver.paper-hero .sv-time{font-size:76px !important}
 #saver.saver.paper-hero .sv-wx{margin-top:14px !important}
 #saver.saver.paper-hero .sv-wx .wx-now{font-size:26px !important}
 #saver.saver.paper-hero .sv-text{margin-top:24px}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-date > *,#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-wx > *{justify-self:auto !important;align-self:auto !important;text-align:left !important;margin-left:0}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-date > *,#saver.saver:not(.face):not(.pgx):not(.night) .sv-wx > *{justify-self:auto !important;align-self:auto !important;text-align:left !important;margin-left:0}
 
 #app .qbar{background:none !important;box-shadow:none !important;border:0 !important}
-#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .sv-time{font-size:72px !important;margin-top:8px !important}
-#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .sv-tip{margin-top:10px !important;font-size:20px !important}
-#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .sv-wx .wx-sub{font-size:16px !important}
-#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .sv-text{margin-top:20px}
-#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .sv-paper:not([hidden]){padding:14px 18px 16px}
-#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .svp-lead .svp-hed{font-size:22px !important}
-#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .svp-more > div{padding-top:10px}
-#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .svp-more .svp-hed{font-size:18px !important}
-#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .svp-unread{display:none !important}
-#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .svp-foot{justify-content:flex-end;margin-top:14px !important}
-#saver.saver:not(.face):not(.pgx):not(.sky):not(.night) .sv-dots{bottom:10px}
-#saver.saver.paper-hero:not(.face):not(.pgx):not(.sky):not(.night) .svp-open{border-radius:26px !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.night) .sv-time{font-size:72px !important;margin-top:8px !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.night) .sv-tip{margin-top:10px !important;font-size:20px !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.night) .sv-wx .wx-sub{font-size:16px !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.night) .sv-text{margin-top:20px}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.night) .sv-paper:not([hidden]){padding:14px 18px 16px}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.night) .svp-lead .svp-hed{font-size:22px !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.night) .svp-more > div{padding-top:10px}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.night) .svp-more .svp-hed{font-size:18px !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.night) .svp-unread{display:none !important}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.night) .svp-foot{justify-content:flex-end;margin-top:14px !important}
+#saver.saver:not(.face):not(.pgx):not(.night) .sv-dots{bottom:10px}
+#saver.saver.paper-hero:not(.face):not(.pgx):not(.night) .svp-open{border-radius:26px !important}
 /* 부모님 화면: 위에 제목 줄, 그 아래 구역 단추 한 줄(옆으로 밀기), 내용은 한 단 */
 .log .log-head{left:16px;right:16px;top:16px;height:52px;gap:14px}
 .log .log-head h2{font-size:26px;line-height:52px;white-space:nowrap}
@@ -5947,36 +5868,6 @@ body{--X:20px;--T:20px}
 /* 전화: 쪽 점은 숨긴다(위아래로 밀어 보는 화면과 겹친다) */
 #saver .sv-dots{display:none !important}
 /* 전화: 밤하늘 — 남색 밤 바탕, 위에서 아래로(제목 · 하늘 그림 · 오늘의 달 · 찾아볼 것) */
-#saver.saver.sky:not([hidden]){display:block !important;overflow-y:auto !important;padding:0 !important;background:radial-gradient(120% 60% at 20% 0,#1B2C63 0,transparent 60%),linear-gradient(180deg,#0B1534,#060B1D 55%,#03060F) !important;color:#E9EEFB}
-#saver.saver.sky .sv-inner{display:block !important;padding:92px 20px 40px !important;max-width:none !important;width:auto !important;min-height:0 !important}
-#saver.saver.sky .sv-date,#saver.saver.sky .sv-rule,#saver.saver.sky .sv-line,#saver.saver.sky .sv-paper{display:none !important}
-#saver.saver.sky .sv-text,#saver.saver.sky .sv-sky{display:block !important;margin:0 !important;width:auto !important}
-#saver.saver.sky .sky-name{display:block !important;font:700 34px/42px "Pretendard",sans-serif !important;letter-spacing:-.03em !important;color:#fff !important;writing-mode:horizontal-tb !important;text-align:left !important;margin:0 !important;position:static !important}
-#saver.saver.sky .sky-meta{display:block !important;font:500 15px/22px "Pretendard",sans-serif !important;color:rgba(233,238,251,.72) !important;text-align:left !important;margin:8px 0 0 !important;position:static !important}
-#saver.saver.sky .sky-body{display:block !important;margin:14px 0 0 !important;width:auto !important;height:auto !important}
-#saver.saver.sky .sky-chart{display:block !important;width:calc(100% + 24px) !important;height:min(78vw, 360px) !important;margin:0 -12px !important;position:static !important;box-sizing:border-box}
-#saver.saver.sky .sv-text,#saver.saver.sky .sv-sky,#saver.saver.sky .sky-body,#saver.saver.sky .sky-col{width:100% !important;max-width:none !important;box-sizing:border-box;text-align:left !important;align-items:stretch !important}
-#saver.saver.sky .sky-mset small{display:block;font:500 15px/22px "Pretendard",sans-serif;color:rgba(233,238,251,.75)}
-#saver.saver.sky .sky-mnext span{display:block}
-#saver.saver.sky .sky-chart svg{position:static !important;inset:auto !important;width:100% !important;height:100% !important;display:block;border-radius:20px}
-#saver.saver.sky .sky-col{display:block !important;width:auto !important;margin:18px 0 0 !important;padding:18px 20px !important;border-radius:28px;background:rgba(255,255,255,.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.12);position:static !important}
-#saver.saver.sky .svp-tag{font:600 15px/20px "Pretendard",sans-serif !important;color:#F3C46B !important}
-#saver.saver.sky .sky-moon{display:flex !important;flex-direction:row !important;align-items:center !important;gap:18px !important;margin:12px 0 0 !important;width:auto !important;height:auto !important}
-#saver.saver.sky #skyMoon{width:112px !important;height:112px !important;flex:none;position:static !important}
-#saver.saver.sky .sky-mtxt{display:flex !important;flex-direction:column !important;gap:4px !important;min-width:0;position:static !important;writing-mode:horizontal-tb !important}
-#saver.saver.sky .sky-mtxt > *{writing-mode:horizontal-tb !important;white-space:normal !important;text-align:left !important}
-#saver.saver.sky .sky-mname{font:700 32px/38px "Pretendard",sans-serif !important;color:#fff !important}
-#saver.saver.sky .sky-msub,#saver.saver.sky .sky-mnext{font:500 15px/22px "Pretendard",sans-serif !important;color:rgba(233,238,251,.75) !important}
-#saver.saver.sky .sky-mset{font:600 18px/26px "Pretendard",sans-serif !important;color:#fff !important}
-#saver.saver.sky .sky-one{margin:18px 0 0 !important;padding:16px 0 0 !important;border-top:1px solid rgba(255,255,255,.12) !important;position:static !important}
-#saver.saver.sky .sky-one .svp-hed,#saver.saver.sky #skyOneH{font:700 22px/30px "Pretendard",sans-serif !important;color:#fff !important;margin:6px 0 0 !important}
-#saver.saver.sky .sky-one p{font:500 15px/23px "Pretendard",sans-serif !important;color:rgba(233,238,251,.8) !important;margin:6px 0 0 !important;white-space:pre-line}
-#saver.saver.sky .sky-one b,#saver.saver.sky .sky-one em{color:#F3C46B}
-#saver.saver.sky #skyChart #gkSky stop:nth-child(1){stop-color:#1A2A60 !important}
-#saver.saver.sky #skyChart #gkSky stop:nth-child(2){stop-color:#0F1C47 !important}
-#saver.saver.sky #skyChart #gkSky stop:nth-child(3),#saver.saver.sky #skyChart #gkGr stop:nth-child(2),#saver.saver.sky #skyChart #gkFl stop,#saver.saver.sky #skyChart #gkFr stop,#saver.saver.sky #skyChart #gkFt stop{stop-color:#0A1432 !important}
-#saver.saver.sky #skyChart #gkGr stop:nth-child(1){stop-color:#081029 !important}
-#saver.saver.sky .sky-name{width:100% !important;transform:none !important;left:auto !important;right:auto !important}
 #saver.saver.face .fc-feat:active,#saver.saver.face .fc-clock:active,#saver.saver.face .fc-app:active{transform:scale(.985);transition:transform .08s}
 #saver.saver.face .cc-foot:active,#saver.saver.face .cc-tabs span:active{opacity:.75}
 /* 쉬는 시간·질문 상한 안내: 전화 표지는 길어서 아래쪽에 두면 화면 밖으로 나간다 → 화면 아래에 고정 */
@@ -6024,40 +5915,7 @@ body{--X:20px;--T:20px}
 
 /* 숨긴 대기화면은 무엇이 덮어써도 숨는다(v124~v130: display:block !important 가 hidden 을 이겨서, 신문이 열려도 표지가 그 위를 덮었다) */
 /* v135: 밤하늘 앱(모니터) — 다른 앱과 같은 틀: 머리줄(홈 · 이름 · 시계), Pretendard, 남색 밤 바탕, 둥근 카드 두 개(하늘 그림 / 오늘의 달·찾아볼 것) */
-@media (min-width:900px){
-#saver.saver.sky:not([hidden]){padding:0 !important;background:radial-gradient(90% 70% at 30% 0,#22336E 0,transparent 65%),linear-gradient(180deg,#121C45,#0B1232 60%,#070C22) !important;color:#E9EEFB}
-#saver.saver.sky .sv-inner{display:block !important;position:absolute !important;inset:0 !important;max-width:none !important;width:auto !important;height:auto !important;padding:0 !important}
-#saver.saver.sky .sv-top,#saver.saver.sky .sv-wx,#saver.saver.sky .sv-tip,#saver.saver.sky .sv-night,#saver.saver.sky .sv-rule{display:none !important}
-#saver.saver.sky .sv-time{position:absolute !important;right:60px;top:40px;height:64px;margin:0 !important;display:flex;align-items:center;gap:8px;font:600 28px/1 "Pretendard",sans-serif !important;letter-spacing:-.01em;color:#E9EEFB !important}
-#saver.saver.sky .sv-time small{font:500 24px/1 "Pretendard",sans-serif !important;color:rgba(233,238,251,.72) !important;margin:0 !important}
-#saver.saver.sky .sky-name{position:absolute !important;left:200px;top:40px;height:64px;display:flex !important;align-items:center;margin:0 !important;font:700 30px/1 "Pretendard",sans-serif !important;letter-spacing:-.02em !important;color:#fff !important;writing-mode:horizontal-tb !important;transform:none !important}
-#saver.saver.sky .sky-meta{position:absolute !important;left:372px;top:40px;height:64px;display:flex !important;align-items:center;margin:0 !important;padding:0 !important;font:500 22px/1 "Pretendard",sans-serif !important;color:rgba(233,238,251,.68) !important;text-align:left !important}
-#saver.saver.sky .sky-body{position:absolute !important;left:48px;right:60px;top:120px;bottom:44px;display:grid !important;grid-template-columns:minmax(0,1fr) 420px;column-gap:0;padding:0 !important;margin:0 !important;width:auto !important;height:auto !important}
-#saver.saver.sky .sky-chart{position:relative !important;overflow:visible;width:auto !important;height:auto !important;margin:0 !important;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
-#saver.saver.sky .sky-chart svg{position:absolute !important;inset:0 !important;width:100% !important;height:100% !important}
-#saver.saver.sky .sky-col{display:flex !important;flex-direction:column;padding:12px 0 8px 40px !important;margin:0 !important;border-left:0 !important;background:none;box-shadow:none;min-height:0;overflow:hidden;text-align:left !important}
-#saver.saver.sky .svp-tag{font:600 22px/1.2 "Pretendard",sans-serif !important;letter-spacing:-.01em !important;color:#F3C46B !important;text-transform:none !important}
-#saver.saver.sky .sky-moon{display:flex !important;flex-direction:row !important;align-items:center !important;gap:24px !important;margin:18px 0 0 !important}
-#saver.saver.sky #skyMoon{width:150px !important;height:150px !important;flex:none;margin:0 !important}
-#saver.saver.sky .sky-mtxt{display:flex !important;flex-direction:column !important;gap:6px !important;min-width:0}
-#saver.saver.sky .sky-mname,#saver.saver.sky .sky-mname.long{font:700 44px/1.1 "Pretendard",sans-serif !important;letter-spacing:-.03em !important;color:#fff !important;white-space:nowrap}
-#saver.saver.sky .sky-msub{font:500 20px/1.35 "Pretendard",sans-serif !important;color:rgba(233,238,251,.72) !important}
-#saver.saver.sky .sky-mset{margin:10px 0 0 !important;padding:10px 0 0 !important;border-top:1px solid rgba(255,255,255,.14) !important;font:600 24px/1.3 "Pretendard",sans-serif !important;color:#fff !important}
-#saver.saver.sky .sky-mset small{display:block;font:500 20px/1.35 "Pretendard",sans-serif !important;color:rgba(233,238,251,.72) !important}
-#saver.saver.sky .sky-mnext{margin:8px 0 0 !important;font:500 20px/1.45 "Pretendard",sans-serif !important;color:rgba(233,238,251,.72) !important}
-#saver.saver.sky .sky-mnext span{display:block}
-#saver.saver.sky .sky-mnext b{color:#fff;font-weight:600}
-#saver.saver.sky .sky-one{margin:auto 0 0 !important;padding:22px 0 0 !important;border-top:1px solid rgba(255,255,255,.14) !important}
-#saver.saver.sky .sky-one .svp-hed,#saver.saver.sky #skyOneH{font:700 30px/1.3 "Pretendard",sans-serif !important;letter-spacing:-.02em;color:#fff !important;margin:10px 0 0 !important}
-#saver.saver.sky .sky-one .svp-hed b{color:#F3C46B !important}
-#saver.saver.sky .sky-one p{font:500 20px/1.45 "Pretendard",sans-serif !important;color:rgba(233,238,251,.78) !important;margin:8px 0 0 !important}
-#saver.saver.sky #skyChart #gkSky stop,#saver.saver.sky #skyChart #gkFl stop,#saver.saver.sky #skyChart #gkFr stop,#saver.saver.sky #skyChart #gkFt stop{stop-opacity:0 !important} /* 상자 없이 바탕에 바로 — 하늘 그림의 배경은 비운다 */
-#saver.saver.sky #skyChart #gkGr stop{stop-color:#070C22 !important;stop-opacity:.55 !important}
-#saver.saver.sky #skyChart #gkHz stop{stop-color:#7C95E8 !important}
-#saver.saver.sky .sky-svg .lb{font-family:"Pretendard",sans-serif !important;font-weight:600;fill:#E9EEFB;stroke:#0E1840}
-#saver.saver.sky .sky-svg .lb.pl,#saver.saver.sky .sky-svg .lb.hi,#saver.saver.sky .sky-svg .lb.hi2{fill:#F3C46B;font-weight:700}
-#saver.saver.sky .sky-svg .dir{font-family:"Pretendard",sans-serif !important;font-weight:600;fill:rgba(233,238,251,.6)}
-#saver.saver.sky .sky-svg .dir.s{fill:#E9EEFB}
+@media (min-width:900px){ /* 상자 없이 바탕에 바로 — 하늘 그림의 배경은 비운다 */
 }
 #saver[hidden]{display:none !important}
 </style>
@@ -6082,22 +5940,19 @@ html body .gk-home,html body .rn-home{width:64px !important;min-width:64px !impo
 svg.ds-lg{width:33.5px !important;height:36px !important;flex:none;display:block;margin:0 !important;transform:translateY(2.5px);fill:none !important;stroke:currentColor !important;stroke-width:23 !important;stroke-linecap:round;stroke-linejoin:round}
 svg.ds-lg .ds-dot{fill:var(--ds-dot) !important;stroke:none !important}
 /* 단추가 작아진 만큼 앱 이름을 당긴다 */
-#saver.saver.sky .sky-name{left:136px !important}
 #saver[data-pg=wx] .pg-ttl{margin-left:0 !important}
 #saver[data-pg=cal] .cq-head{left:92px !important}
 /* ===== 머리줄 규격(v136): 왼쪽 = 홈(48,40) + 앱 이름(x136, 30/600) + 곁말(26/500) · 오른쪽 끝 = 시계(30/600, '오후'는 24/500). 모든 앱 같음 ===== */
 .pg-top{left:136px !important;right:48px !important;top:40px !important;height:64px !important;gap:16px !important}
-.pg-ttl,.ds-name,#saver.saver.sky .sky-name,#saver[data-pg=cal] .cq-head b{font:600 30px/1 "Pretendard",sans-serif !important;letter-spacing:-.02em !important}
-.pg-ttl .td-n,.pg-ttl .ap-n,#saver.saver.sky .sky-meta{font:500 26px/1 "Pretendard",sans-serif !important;letter-spacing:-.01em !important;margin-left:16px !important;font-style:normal}
-#saver.saver.sky .sky-meta{left:300px !important;margin-left:0 !important;font-size:26px !important}
+.pg-ttl,.ds-name,#saver[data-pg=cal] .cq-head b{font:600 30px/1 "Pretendard",sans-serif !important;letter-spacing:-.02em !important}
+.pg-ttl .td-n,.pg-ttl .ap-n{font:500 26px/1 "Pretendard",sans-serif !important;letter-spacing:-.01em !important;margin-left:16px !important;font-style:normal}
 .ds-name{position:fixed;z-index:4;left:136px;top:40px;height:64px;display:flex;align-items:center;color:var(--zk)}
 .ds-name[hidden]{display:none}
 body[data-night] .ds-name{color:#ECE6D8}
 body.log-open .ds-name{display:none}
-.pg-sub,#app .tb-clock,#saver.saver.sky .sv-time,.ds-clock{font:600 30px/1 "Pretendard",sans-serif !important;letter-spacing:-.01em !important;font-variant-numeric:tabular-nums;white-space:nowrap}
-.pg-sub small,#app .tb-clock small,#saver.saver.sky .sv-time small,.ds-clock small{font:500 24px/1 "Pretendard",sans-serif !important;margin:0 8px 0 0 !important;opacity:.72}
+.pg-sub,#app .tb-clock,.ds-clock{font:600 30px/1 "Pretendard",sans-serif !important;letter-spacing:-.01em !important;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pg-sub small,#app .tb-clock small,.ds-clock small{font:500 24px/1 "Pretendard",sans-serif !important;margin:0 8px 0 0 !important;opacity:.72}
 #app .top-right{right:48px !important;top:40px !important;height:64px !important;gap:20px !important}
-#saver.saver.sky .sv-time{right:48px !important;top:40px !important;height:64px !important;gap:0 !important}
 #app .tb-clock{margin:0 !important;padding:0 !important}
 /* 신문 1면: 날씨 귀 자리에 공통 시계 */
 .rn-ear.ds-clock{position:absolute !important;right:0 !important;top:8px !important;height:64px !important;display:flex !important;flex-direction:row !important;align-items:center !important;justify-content:flex-end;color:var(--nk) !important}
@@ -6574,7 +6429,7 @@ body[data-theme=night] .cq-grid > span{box-shadow:inset 0 -1px 0 rgba(255,255,25
   #saver .pg-todo .td-row .du{justify-self:start;white-space:nowrap}
 }
 /* v170: 머리줄 제목(질문·11월·공부칸…)을 64 로고 옆에서 작아 보이지 않게 30 → 34. 화면의 주인공과 다투지 않도록 글꼴은 그대로 */
-@media (min-width:900px){ html body .pg-ttl,html body .ds-name,html body #saver.saver.sky .sky-name,html body #saver[data-pg=cal] .cq-head b{font-size:34px !important} } /* v175: 폰 세로에는 걸지 않는다 — 달력 제목 '2026년 11월'이 34px로 두 줄이 되어 요일 줄을 덮었다 */
+@media (min-width:900px){ html body .pg-ttl,html body .ds-name,html body #saver[data-pg=cal] .cq-head b{font-size:34px !important} } /* v175: 폰 세로에는 걸지 않는다 — 달력 제목 '2026년 11월'이 34px로 두 줄이 되어 요일 줄을 덮었다 */
 /* v169: 달력의 지난달·다음달 화살표 — 테두리 원 두 개가 제목보다 눈에 띄던 것. 누르는 자리(64)는 그대로, 원과 채움은 없애고 흐린 먹색 꺾쇠만 */
 html body .cq-nav .rb{background:transparent !important;box-shadow:none !important;color:rgba(24,37,78,.52) !important}
 html body[data-theme=night] .cq-nav .rb,html body[data-night] .cq-nav .rb{color:rgba(242,232,210,.6) !important}

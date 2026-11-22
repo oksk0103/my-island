@@ -181,8 +181,8 @@ async function newsTests(b) {
 
   console.log('3. 미리 보기는 10분 뒤 풀림 (v102 버그)');
   p = await open(b, { time: newsDate + 'T16:00' });
-  await p.go("sky"); await p.adv(4000); s = await p.st(); ok('미리 보기 → sky', s.saver === 'sky', s.saver);
-  await p.adv(12 * 60e3); s = await p.st(); ok('12분 뒤 원래 화면', s.saver !== 'sky' && s.saver !== '', s.saver);
+  await p.go("nsky"); await p.adv(4000); s = await p.st(); ok('미리 보기 → 밤하늘(v197: 옛 밤하늘 화면 삭제)', s.saver === 'nsky', s.saver);
+  await p.adv(12 * 60e3); s = await p.st(); ok('12분 뒤 원래 화면', s.saver !== 'nsky' && s.saver !== '', s.saver);
   await p.jump(7 * 3600e3); await p.adv(16000); s = await p.st(); ok('밤 11시에도 검은 밤 화면 없이 위젯 면 (v122)', s.saver.startsWith('face') && await p.evaluate(() => document.getElementById('saver').dataset.tone === 'eve'), s.saver);
   await p.jump(3 * 3600e3); await p.adv(16000); s = await p.st(); ok('새벽 2시에도 위젯 면, 저녁 하늘 (아침 하늘 아님)', s.saver.startsWith('face') && await p.evaluate(() => document.getElementById('saver').dataset.tone === 'eve'), s.saver); await p.context().close();
 
@@ -204,7 +204,7 @@ async function newsTests(b) {
   await tile('cal'); await p.adv(100e3); s = await p.st(); const calStill = /\bcal\b/.test(s.saver); await p.adv(100e3); s = await p.st(); ok('달력은 마지막으로 만진 뒤 3분이 지나면 위젯 면으로 (v122: 90초 → 3분)', calStill && /^face/.test(s.saver), s.saver);
   await p.adv(3 * 60e3); s = await p.st(); ok('3분 손대지 않으면 쉬는 막', s.saver === 'face rest', s.saver);
   await p.mouse.move(700, 300); await p.mouse.down(); ok('손대면 바로 밝아짐', !(await p.st()).saver.includes('rest')); await p.mouse.move(700, 380); await p.mouse.up(); await p.adv(500);
-  await p.evaluate(() => { window.__gkCover = { k: 'moon', day: new Date().toLocaleDateString('sv') }; }); await p.adv(1500); await tile('sky'); s = await p.st(); ok('달 표지 → 밤하늘 장', s.saver === 'sky', s.saver);
+  await p.evaluate(() => { window.__gkCover = { k: 'moon', day: new Date().toLocaleDateString('sv') }; }); await p.adv(1500); await tile('sky'); s = await p.st(); ok('달 표지 → 새 밤하늘(v197)', s.saver === 'nsky', s.saver);
   await p.adv(11 * 60e3); s = await p.st(); ok('밤하늘 장은 10분 뒤 위젯 면으로', s.saver === 'face rest', s.saver);
   const feat = () => p.evaluate(() => document.getElementById('fcFeat').className.replace('fc-t fc-feat', '').replace('pic', '').trim());
   const eve = await feat(); ok('저녁 기본 표지는 과학 (달이 볼 만한 날엔 달) (v147)', eve === 'piece sci' || eve === 'moon', eve);
@@ -238,8 +238,8 @@ async function newsTests(b) {
 
   console.log('5. 부모님 화면 바로가기');
   p = await open(b, {});
-  for (const [g, want] of [['face', 'face'], ['cal', 'cal'], ['hero', 'paper-hero'], ['sky', 'sky'], ['night', 'night']]) {
-    await p.go(g); await p.waitForTimeout(g === 'sky' ? 2500 : 700); s = await p.st(); ok(`바로가기 ${g}`, s.saver.includes(want) && !s.log, s.saver);
+  for (const [g, want] of [['face', 'face'], ['cal', 'cal'], ['hero', 'paper-hero'], ['nsky', 'nsky'], ['night', 'night']]) {
+    await p.go(g); await p.waitForTimeout(g === 'nsky' ? 2500 : 700); s = await p.st(); ok(`바로가기 ${g}`, s.saver.includes(want) && !s.log, s.saver);
     await p.waitForTimeout(1600); await p.mouse.click(60, 60); await p.waitForTimeout(400); }
   await p.go("paper"); await p.waitForTimeout(700); s = await p.st(); await p.adv(4000); ok('신문이 바깥(위키) 사진을 부르지 않음', p.wiki === 0, p.wiki); ok('바로가기 신문', s.paper, s);
   await p.go("home"); await p.waitForTimeout(700); s = await p.st(); ok('바로가기 홈', s.home && !s.paper && !s.saver, s); await p.context().close();
@@ -446,8 +446,7 @@ async function newsTests(b) {
     ok('일정 말하기 → 듣는 중 → 말없이 끝나면 달력으로 돌아옴', l5 === 'listen' && /\bcal\b/.test(s.saver), [l5, s.saver]);
     await p.click('#gkHome'); await p.adv(1200); await p.mouse.click(20, 20); await p.adv(1500); await p.say('27일에 치과 가', 5000); c = await cal(); ok('말없이 끝난 뒤의 다음 말은 일정으로 가지 않음', c.length === 0, c);
     // 11. 밤하늘 화면에도 홈 캡슐
-    await p.go('sky'); await p.adv(4000); s = await p.st(); const hb = await p.evaluate(() => { const h = document.getElementById('gkHome'), r = h.getBoundingClientRect(); return [!h.hidden, Math.round(r.left), Math.round(r.top), Math.round(r.height)]; });
-    await p.click('#gkHome'); await p.adv(1500); const s2 = await p.st(); ok('밤하늘 화면: 홈 캡슐이 같은 자리에 있고 누르면 위젯 면(깨어나지 않음)', s.saver === 'sky' && hb[0] && Math.abs(hb[1] - 48) <= 4 && Math.abs(hb[2] - 40) <= 4 && hb[3] >= 60 && await p.evaluate(() => { const h = document.getElementById('gkHome').getBoundingClientRect(), o = (a, b) => !(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top); return true; }) && /^face/.test(s2.saver), [s.saver, hb, s2.saver]);
+    ok('v197 옛 \'오늘 밤하늘\' 화면이 없음(마크업·CSS)', await p.evaluate(() => !document.getElementById('svSky') && !document.getElementById('skyChart') && ![...document.styleSheets].some(ss => { try { return [...ss.cssRules].some(r => /saver\.sky(?![\w-])/.test(r.cssText)); } catch (e) { return false; } })));
     ok('지운 진단 줄(linesDbg)을 참조하는 코드가 없음', !fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8').includes('linesDbg')); await p.context().close();
     // 7. 마이크를 못 켜면 묻기 줄 아래에 한 줄
     p = await open(b, { time: D0 + 'T16:10', read: D0, pre: fakeSR(true) }); await box('.qbox');
@@ -549,9 +548,6 @@ async function newsTests(b) {
     x = await side(); ok('전화 날씨 화면: 옆으로 넘치는 것 없음', !x.length, x);
     await tapAt(p, '#gkHome'); await tapAt(p, '.fc-clock'); ok('전화: 시계 → 달력', await p.evaluate(() => document.getElementById('saver').dataset.pg === 'cal'));
     x = await side(); ok('전화 달력: 옆으로 넘치는 것 없음', !x.length, x);
-    await tapAt(p, '#gkHome'); await p.evaluate(() => { document.getElementById('saver').scrollTop = 600; }); await p.go('sky'); await p.adv(2500);
-    ok('전화 밤하늘: 새 배치(맨 위부터, 제목·하늘 그림·달이 위에서 아래로)', await p.evaluate(() => { const sv = document.getElementById('saver'), y = q => document.querySelector(q).getBoundingClientRect().top; return sv.classList.contains('sky') && sv.scrollTop === 0 && y('.sky-name') > 60 && y('.sky-name') < y('#skyChart svg') && y('#skyChart svg') < y('#skyMoon') && getComputedStyle(document.querySelector('.sky-name')).writingMode === 'horizontal-tb'; }));
-    x = await side(); ok('전화 밤하늘: 옆으로 넘치는 것 없음', !x.length, x);
     await tapAt(p, '#gkHome'); await tapAt(p, '#fcFeat .cc-h'); s = await p.st(); ok('전화: 표지의 신문 → 기사 화면 바로(1면을 거치지 않음)', s.paper && !s.saver, s);
     ok('전화: 기사 화면이 실제로 맨 위에 보인다(숨긴 표지가 덮지 않음)', await p.evaluate(() => getComputedStyle(document.getElementById('saver')).display === 'none' && [[160, 200], [160, 500]].every(([x, y]) => { const e = document.elementFromPoint(x, y); return e && !e.closest('#saver'); }))); await p.context().close();
     p = await open(b, { time: newsDate + 'T12:19', w: 390, h: 780, settings: { hFrom: 15, hTo: 21, restDark: 'off' } }); await p.saver(); await tapAt(p, '.fc-app[data-tile="ask"]');
