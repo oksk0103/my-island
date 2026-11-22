@@ -10,7 +10,7 @@ function soil(S,x1,x2,y1,y2,seed=3){const q=rnd(seed),g=el('g',{stroke:WA,'strok
  for(let y=y1+22;y<y2;y+=26)for(let x=x1+(q()*30);x<x2-20;x+=40+q()*24)el('line',{x1:x,y1:y,x2:x+12,y2:y},g);wl(S,x1,y1,x2,y1,W0);gapGrid(S,g);return g;}
 // 씨앗(콩 모양): 바깥 껍질 선 + 씨눈 자국
 function seed(p,cx,cy,rx,ry,o={}){const g=el('g',{transform:`translate(${cx},${cy})`},p),body=el('g',{},g);
- el('ellipse',{cx:0,cy:0,rx,ry,fill:o.fill||'none',stroke:W0,'stroke-width':2},body);
+ el('ellipse',{cx:0,cy:0,rx,ry,fill:o.fill||'#C9A26B',stroke:'#E8D3A8','stroke-width':2},body);   /* v191: 씨앗은 콩 빛깔 */
  el('path',{d:`M${-rx*.18},${-ry*.98}Q0,${-ry*.7} ${rx*.18},${-ry*.98}`,fill:'none',stroke:W0,'stroke-width':2},body);
  return {g,body,set:s=>body.setAttribute('transform',`scale(${s.toFixed(3)})`)};}
 const grow=(path,ms,end)=>{const L=path.getTotalLength();path.style.strokeDasharray=L;path.style.strokeDashoffset=L;play(ms,e=>path.style.strokeDashoffset=L*(1-e),end);};
@@ -53,7 +53,7 @@ EPX[55]={day:'12월 10일',topic:'씨앗의 싹트기',cat:'식물의 한살이'
     const shootP='M1000,316C998,260 1000,200 1008,140';
     const r=pth(S,rootP),rs=side.map(d=>pth(S,d));[r,...rs].forEach(p=>{const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;});
     const s=pth(S,shootP);{const L=s.getTotalLength();s.style.strokeDasharray=L;s.style.strokeDashoffset=L;}
-    const leaves=grp(S,0);el('path',{d:'M1008,140C980,110 940,112 924,128C944,150 984,152 1008,140Z',fill:W0},leaves);el('path',{d:'M1008,140C1036,110 1076,112 1092,128C1072,150 1032,152 1008,140Z',fill:W0},leaves);
+    const leaves=grp(S,0);el('path',{d:'M1008,140C980,110 940,112 924,128C944,150 984,152 1008,140Z',fill:'#7DBB6A'},leaves);el('path',{d:'M1008,140C1036,110 1076,112 1092,128C1072,150 1032,152 1008,140Z',fill:'#7DBB6A'},leaves);
     const tip=wdot(S,1040,430,0,WO);
     const c1=grp(S,0);tx(c1,1150,600,'먼저, 뿌리','v28');tx(c1,1150,632,'아래로','v22m');
     const c2=grp(S,0);tx(c2,1150,170,'그다음, 싹','v28');tx(c2,1150,202,'위로','v22m');
@@ -64,14 +64,14 @@ EPX[55]={day:'12월 10일',topic:'씨앗의 싹트기',cat:'식물의 한살이'
    draw(S){const GY=520;soil(S,640,1504,GY,660,11);
     const cx=960;const stem=wl(S,cx,GY,cx,330,W0);const stem0=wl(S,cx,GY,cx,GY+128,W0);[[GY+40,-1,46,30],[GY+56,1,54,34],[GY+82,-1,40,26],[GY+96,1,36,22]].forEach(([y,s,w,h])=>wl(S,cx,y,cx+s*w,y+h*1.6,W0m));
     // 떡잎 두 장(크림 선) + 속 양분(보조색 점)
-    const cot=[[-1],[1]].map(([s])=>{const g=el('g',{transform:`translate(${cx},380)`},S);const b=el('g',{},g);el('ellipse',{cx:s*96,cy:0,rx:92,ry:52,fill:'none',stroke:W0,'stroke-width':2},b);return {g,b,s};});
+    const cot=[[-1],[1]].map(([s])=>{const g=el('g',{transform:`translate(${cx},380)`},S);const b=el('g',{},g);el('ellipse',{cx:s*96,cy:0,rx:92,ry:52,fill:'#C9A26B',stroke:'#E8D3A8','stroke-width':2},b);return {g,b,s};});
     const q=rnd(21),N=[];cot.forEach(c=>{for(let i=0;i<26;i++){const a=q()*Math.PI*2,r=Math.sqrt(q());N.push({c:wdot(S,cx+c.s*96+Math.cos(a)*r*74,380+Math.sin(a)*r*38,5,WA)});}});
     tx(S,cx-96,306,'떡잎','v28','middle');
     // 양분 막대(오른쪽)
     const BX=1370,BT=150,BB=470;wl(S,BX,BT,BX,BB,W0m);wl(S,BX+60,BT,BX+60,BB,W0m);wl(S,BX,BB,BX+60,BB,W0m);
-    const fill=el('rect',{x:BX+8,y:BT+8,width:44,height:BB-BT-8,fill:WA},S);tx(S,BX+30,BT-24,'씨앗 속 양분','v22','middle');
+    const fill=el('rect',{x:BX+8,y:BT+8,width:44,height:BB-BT-8,fill:'#D9B86E'},S);tx(S,BX+30,BT-24,'씨앗 속 양분','v22','middle');
     const pct=tx(S,BX-20,BT+40,'가득','v60','end');
-    const newL=grp(S,0);el('path',{d:`M${cx},250C${cx-30},210 ${cx-80},214 ${cx-96},236C${cx-70},262 ${cx-24},262 ${cx},250Z`,fill:WO},newL);el('path',{d:`M${cx},250C${cx+30},210 ${cx+80},214 ${cx+96},236C${cx+70},262 ${cx+24},262 ${cx},250Z`,fill:WO},newL);
+    const newL=grp(S,0);el('path',{d:`M${cx},250C${cx-30},210 ${cx-80},214 ${cx-96},236C${cx-70},262 ${cx-24},262 ${cx},250Z`,fill:'#9AD07F'},newL);el('path',{d:`M${cx},250C${cx+30},210 ${cx+80},214 ${cx+96},236C${cx+70},262 ${cx+24},262 ${cx},250Z`,fill:'#9AD07F'},newL);
     const nl=grp(S,0);tx(nl,cx+130,226,'새 잎','v28');tx(nl,cx+130,258,'스스로 양분을 만들어','v22m');
     return i=>{if(i===0){const st=N.map(n=>[+n.c.getAttribute('cx'),+n.c.getAttribute('cy')]);
       play(1600,e=>{N.forEach((n,k)=>{const d=Math.max(0,Math.min(1,e*1.6-k/N.length*.6));n.c.setAttribute('cx',(st[k][0]+(cx-st[k][0])*d).toFixed(1));n.c.setAttribute('cy',(st[k][1]+(GY+60-st[k][1])*d).toFixed(1));n.c.setAttribute('r',(5*(1-d)).toFixed(2));});

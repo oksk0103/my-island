@@ -1,5 +1,5 @@
 (()=>{ /* 45. 얼음은 왜 물에 뜰까 — 새 틀(v2): 관측 노트 */
-const BG='#1B1745';
+/* v191: 색이 사물을 알려 주는 편이라 실제 색으로(부모가 2026-11-22 허락 — 물=파랑, 풀=초록, 얼음=얼음빛) */ const WA='#3F7FCF',ICE='#DCEEFA';const BG='#1B1745';
 const cl=v=>Math.max(0,Math.min(1,v));
 const mv=(g,x,y)=>g.setAttribute('transform',`translate(${x},${y})`);
 // 눈금 원통: 왼쪽 위(x,top), 폭 w, 칸 높이 u, 칸 수 n. 바닥 = top+n*u
@@ -14,7 +14,7 @@ EPX[45]={day:'과학 14',topic:'얼음',cat:'물의 변신',field:'과학',frame
    const X0=760,X1=1400,WY=300,BY=640;
    const water=el('rect',{x:X0,y:WY,width:X1-X0,height:BY-WY,fill:WA},S);
    el('path',{d:`M${X0},150V${BY}H${X1}V150`,fill:'none',stroke:W0,'stroke-width':2},S);
-   const H=300,u=H/10,ice=el('g',{},S);el('rect',{x:-110,y:0,width:220,height:H,fill:W0},ice);
+   const H=300,u=H/10,ice=el('g',{},S);el('rect',{x:-110,y:0,width:220,height:H,fill:ICE},ice);
    for(let i=1;i<10;i++)wl(ice,-110,i*u,-80,i*u,WA);
    const ix=1080;const top0=WY-u;mv(ice,ix,top0);
    wl(S,X0-40,WY,X1+40,WY,WO);tx(S,648,WY-16,'물 높이','v22');
@@ -34,7 +34,7 @@ EPX[45]={day:'과학 14',topic:'얼음',cat:'물의 변신',field:'과학',frame
     const add=grp(S,0);wl(add,1030,base-11*u,1210,base-11*u,WO);el('path',{d:`M1220,${base-11*u}H1250V${base-10*u}H1220`,fill:'none',stroke:W0m,'stroke-width':2},add);
     el('path',{d:`M1250,${base-10.5*u}H1300`,fill:'none',stroke:W0m,'stroke-width':2},add);tx(add,1310,base-10.5*u+10,'늘어난 만큼','v28');tx(add,1310,base-5*u,'+1','v96');
     tx(S,835,165,'10','v60','middle');const n2=tx(S,1115,165,'10','v60','middle');
-    return ()=>{play(1200,e=>{const h=10+e;r.setAttribute('y',base-h*u);r.setAttribute('height',h*u-1);r.setAttribute('fill',e>.3?W0:WA);n2.textContent=e>.95?'11':'10';},()=>{show(add);rl.textContent='얼음';});};}},
+    return ()=>{play(1200,e=>{const h=10+e;r.setAttribute('y',base-h*u);r.setAttribute('height',h*u-1);r.setAttribute('fill',e>.3?ICE:WA);n2.textContent=e>.95?'11':'10';},()=>{show(add);rl.textContent='얼음';});};}},
   {k:'틈 많은 얼음',h:'얼음 속에는<br>빈틈이 많다',b:'물 알갱이들이 얼 때 서로 손을 잡고 줄을 맞춰 서. 그 바람에 사이가 벌어져 <em>빈틈</em>이 생겨.',steps:['얼리기'],
    draw(S){const cx=1150,cy=400,R=250;wLens(S,cx,cy,R);tx(S,cx,128,'크게 키워 본 속','v22m','middle');
     // 얼음 자리: 벌집처럼 벌어진 줄
@@ -48,7 +48,7 @@ EPX[45]={day:'과학 14',topic:'얼음',cat:'물의 변신',field:'과학',frame
    draw(S){const X0=700,X1=1240,WY=360,BY=660;
     el('rect',{x:X0,y:WY,width:X1-X0,height:BY-WY,fill:WA},S);el('path',{d:`M${X0},120V${BY}H${X1}V120`,fill:'none',stroke:W0,'stroke-width':2},S);
     wl(S,X0-30,WY,X1+30,WY,W0);
-    const u=24,H=10*u,ice=el('g',{},S);el('rect',{x:-90,y:0,width:180,height:H,fill:W0},ice);for(let i=1;i<10;i++)wl(ice,-90,i*u,-66,i*u,WA);
+    const u=24,H=10*u,ice=el('g',{},S);el('rect',{x:-90,y:0,width:180,height:H,fill:ICE},ice);for(let i=1;i<10;i++)wl(ice,-90,i*u,-66,i*u,WA);
     const ix=970,y0=WY-H-14,y1=WY-u;mv(ice,ix,y0);
     // 오른쪽 눈금과 큰 숫자
     const RX=1320;wl(S,RX,WY-u,RX,WY+9*u,W0);for(let i=0;i<=10;i++)wl(S,RX,WY-u+i*u,RX+(i%5===0?20:12),WY-u+i*u,i%5===0?W0:W0m);
@@ -62,9 +62,9 @@ EPX[45]={day:'과학 14',topic:'얼음',cat:'물의 변신',field:'과학',frame
    const bowl=`M${X0},${WY}C${X0+60},560 ${X1-160},640 ${X1},${WY}Z`;el('path',{d:bowl,fill:WA},S);
    wl(S,640,WY,X0,WY,W0);wl(S,X1,WY,1504,WY,W0);el('path',{d:`M${X0},${WY}C${X0+60},560 ${X1-160},640 ${X1},${WY}`,fill:'none',stroke:W0,'stroke-width':2},S);
    // 물고기 실루엣 하나
-   const f=el('g',{transform:'translate(1110,470)'},S);el('path',{d:'M-60,0C-30,-28 30,-28 54,0C30,28 -30,28 -60,0ZM54,0L84,-22V22Z',fill:W0},f);
+   const f=el('g',{transform:'translate(1110,470)'},S);el('path',{d:'M-60,0C-30,-28 30,-28 54,0C30,28 -30,28 -60,0ZM54,0L84,-22V22Z',fill:ICE},f);
    tx(S,1110,540,'물고기','v22','middle');
-   const ice=el('rect',{x:X0,y:WY,width:X1-X0,height:0,fill:W0},S);
+   const ice=el('rect',{x:X0,y:WY,width:X1-X0,height:0,fill:ICE},S);
    const lab=grp(S,0);el('path',{d:`M1300,${WY+20}V180H1460`,fill:'none',stroke:W0m,'stroke-width':2},lab);tx(lab,1460,164,'위에 뜬 얼음','v28','end');
    tx(S,700,180,'추운 공기','v28');tx(S,640,700,'관측 · 겨울 호수 단면','v22m');
    const arr=grp(S,0);[820,1000,1180].forEach(x=>{wl(arr,x,200,x,WY-14,WO);el('path',{d:`M${x-8},${WY-26}L${x},${WY-14}L${x+8},${WY-26}`,fill:'none',stroke:WO,'stroke-width':2},arr);});

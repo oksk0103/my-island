@@ -1,5 +1,5 @@
 (()=>{ /* 46. 소금은 물에 녹으면 어디로 갈까 — 새 틀(v2): 관측 노트 */
-const BG='#1B1745';
+/* v191: 색이 사물을 알려 주는 편이라 실제 색으로(부모가 2026-11-22 허락 — 물=파랑, 풀=초록, 얼음=얼음빛) */ const WA='#3F7FCF';const BG='#1B1745';
 const cl=v=>Math.max(0,Math.min(1,v));
 // 비커(선): 왼쪽 x, 위 top, 폭 w, 바닥 base. 물 높이 wy(보조색 면)
 function beaker(p,x,top,w,base,wy){const g=el('g',{},p);const water=el('rect',{x:x+2,y:wy,width:w-4,height:base-wy-1,fill:WA},g);

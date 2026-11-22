@@ -42,7 +42,7 @@ EPX[59]={day:'12월 14일',topic:'눈 깜빡임',cat:'우리 몸',field:'과학'
     const lab=grp(S,0);lead(lab,[[1360,470],[1420,560],[1440,560]],'눈물','v28');
     // 눈물 점: 처음엔 눈꺼풀 가장자리에 줄지어 있다가, 눈꺼풀을 따라 내려가며 제자리에 깔림
     const q=rnd(59),T=[];let g=0;while(T.length<170&&g++<5000){const x=E.x0+20+q()*(2*E.w-40),y=E.cy-E.h+q()*2*E.h;const top=E.edgeY(x,0)+6,bot=2*E.cy-E.edgeY(x,0)-6;if(y>top&&y<bot)T.push([x,y]);}
-    const D=T.map(([x,y])=>({c:wdot(E.layer,x,E.edgeY(x,0)+4,3.2,WO),x,ty:y}));
+    const D=T.map(([x,y])=>({c:wdot(E.layer,x,E.edgeY(x,0)+4,3.6,'#8CC4F0')   /* v191: 눈물은 물빛 */,x,ty:y}));
     // 아래: 눈물 막 두께 눈금(없음 → 덮임)
     tx(S,700,690,'마른 눈','v22m');tx(S,1420,690,'촉촉한 눈','v22m','end');const bar=el('line',{x1:820,y1:682,x2:820,y2:682,stroke:W0,'stroke-width':2},S);wl(S,820,682,1290,682,W0m,{'stroke-dasharray':'2 8'});
     return ()=>{let low=0;blink(E,1500,(t,x)=>{D.forEach(d=>{const ey=E.edgeY(d.x,t)+4;if(x<.45)d.c.setAttribute('cy',Math.min(ey,d.ty));});bar.setAttribute('x2',820+470*Math.min(1,x*1.2));},()=>{show(lab);});};}},

@@ -2,7 +2,7 @@
 // 북극 위에서 내려다본 지구(시계 반대 방향으로 돎). 햇빛은 왼쪽에서. 낮 = 크림 반원, 밤 = 보조색 반원. 산호 = 우리 집 점.
 const CX=1200,CY=390,R=200;
 const P=(th,r=R)=>[CX+r*Math.cos(th*Math.PI/180),CY-r*Math.sin(th*Math.PI/180)];
-function earth(S,lit=true){el('path',{d:`M${CX},${CY-R}A${R},${R} 0 0 0 ${CX},${CY+R}Z`,fill:lit?W0:'none'},S);el('path',{d:`M${CX},${CY-R}A${R},${R} 0 0 1 ${CX},${CY+R}Z`,fill:lit?WA:'none'},S);
+function earth(S,lit=true){el('path',{d:`M${CX},${CY-R}A${R},${R} 0 0 0 ${CX},${CY+R}Z`,fill:lit?'#8EC3EE':'none'},S);el('path',{d:`M${CX},${CY-R}A${R},${R} 0 0 1 ${CX},${CY+R}Z`,fill:lit?'#18244F':'none'},S);
  el('circle',{cx:CX,cy:CY,r:R,fill:'none',stroke:W0,'stroke-width':2},S);wdot(S,CX,CY,5,lit?W0m:W0);}
 function sunRays(S){tx(S,660,170,'햇빛','v28');for(let i=0;i<6;i++){const y=CY-150+i*60,x2=CX-Math.sqrt(Math.max(0,R*R-(y-CY)**2))-24;wl(S,660,y,x2,y);el('path',{d:`M${x2-12},${y-9}L${x2},${y}L${x2-12},${y+9}`,fill:'none',stroke:W0,'stroke-width':2,'stroke-linecap':'round','stroke-linejoin':'round'},S);}}
 function spinArrow(S){const r=R+48,a0=60,a1=120,[x0,y0]=P(a0,r),[x1,y1]=P(a1,r);el('path',{d:`M${x0},${y0}A${r},${r} 0 0 0 ${x1},${y1}`,fill:'none',stroke:W0m,'stroke-width':2},S);

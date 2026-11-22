@@ -1,11 +1,13 @@
 (()=>{ // 50. 펭귄은 왜 발이 안 얼까 — v2 관측 노트 (실루엣은 화면당 하나, 발·혈관 도식 중심)
 // 크림 = 따뜻한 피·주 그림, 보조색 = 식은 피, 산호 = 화면당 한 곳
-function penguin(p,x,gy,s=1){const g=el('g',{transform:`translate(${x},${gy}) scale(${s})`},p);
- el('ellipse',{cx:0,cy:-170,rx:84,ry:160,fill:W0},g);el('circle',{cx:14,cy:-318,r:50,fill:W0},g);
- el('path',{d:'M56,-330L100,-318L56,-306Z',fill:W0},g);el('path',{d:'M-78,-60L-118,-2L-56,-14Z',fill:W0},g);
- el('path',{d:'M-30,-12L-30,0L66,0Q74,-6 64,-12Z',fill:W0},g);
- el('path',{d:'M-20,-250Q-70,-170 -40,-90',fill:'none',stroke:WBG,'stroke-width':3,'stroke-linecap':'round'},g);
- el('circle',{cx:30,cy:-326,r:6,fill:WBG},g);return g;}
+function penguin(p,x,gy,s=1){const g=el('g',{transform:`translate(${x},${gy}) scale(${s})`},p);   /* v191: 크림 실루엣 → 실제 펭귄 빛깔(검은 등, 흰 배, 주황 부리·발) */
+ const BK='#262B36',LN='rgba(243,233,210,.55)',OR='#F0A23C';
+ el('path',{d:'M-30,-12L-30,0L66,0Q74,-6 64,-12Z',fill:OR},g);
+ el('ellipse',{cx:0,cy:-170,rx:84,ry:160,fill:BK,stroke:LN,'stroke-width':2},g);el('ellipse',{cx:22,cy:-150,rx:56,ry:130,fill:'#F4EEE2'},g);
+ el('path',{d:'M-78,-60L-118,-2L-56,-14Z',fill:BK,stroke:LN,'stroke-width':2},g);
+ el('circle',{cx:14,cy:-318,r:50,fill:BK,stroke:LN,'stroke-width':2},g);el('path',{d:'M40,-292Q58,-270 48,-246Q30,-262 30,-286Z',fill:'#F2C14E'},g);
+ el('path',{d:'M56,-330L100,-318L56,-306Z',fill:OR},g);
+ el('circle',{cx:30,cy:-326,r:8,fill:'#F4EEE2'},g);el('circle',{cx:32,cy:-326,r:4,fill:BK},g);return g;}
 function iceSlab(S,y,x1=640,x2=1504){el('rect',{x:x1,y,width:x2-x1,height:30,fill:W0},S);for(let x=x1+30;x<x2;x+=60)wl(S,x,y+30,x-18,y+52,W0m);}
 const arrowHead=(p,x,y,dir,c=W0)=>el('path',{d:dir==='down'?`M${x-9},${y-12}L${x},${y}L${x+9},${y-12}`:dir==='up'?`M${x-9},${y+12}L${x},${y}L${x+9},${y+12}`:`M${x-12},${y-9}L${x},${y}L${x-12},${y+9}`,fill:'none',stroke:c,'stroke-width':2,'stroke-linecap':'round','stroke-linejoin':'round'},p);
 EPX[50]={day:'12월 5일',topic:'펭귄의 발',cat:'추위 버티기',field:'과학',frame:'v2',

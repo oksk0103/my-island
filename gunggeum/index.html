@@ -1573,13 +1573,13 @@ body { word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v190</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v191</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v190</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v191</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2630,6 +2630,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (!news || !news.date) return false;
     const d = new Date(news.date + 'T00:00:00'); return (Date.now() - d.getTime()) < 3.5 * 864e5 && d.getTime() - Date.now() < 864e5;
   }
+  // v191: 오늘 신문이 아직 안 온 아침에 지난 호를 '오늘 새 소식'이라 부르지 않는다
+  const newsAgo = () => { if (!news || !news.date) return 0; const a = new Date(); a.setHours(0, 0, 0, 0); return Math.max(0, Math.round((a - new Date(news.date + 'T00:00:00')) / 864e5)); };
+  const newsWhen = () => { const n = newsAgo(); return n === 0 ? '오늘' : n === 1 ? '어제' : n + '일 전'; };
   function newsDate() { const d = new Date(news.date + 'T00:00:00'); return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${DAYS[d.getDay()]}요일`; }
   const newsRead = () => !!news && LS.get(NEWS_READ, '') === news.date;
   // 기사 사진: 질문 답과 똑같은 안전 검사(분류 허용 목록 + 기기 안 선정성 검사)를 통과한 사진만
@@ -2731,7 +2734,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     $('svpHed').textContent = a.title; $('svpLede').textContent = a.lede || '';
     $('svpMore').innerHTML = rest.slice(0, 2).map((x, i) => `<div><span class="svp-tag">${escN(x.tag)} · ${i + 2}면</span><h3 class="svp-hed">${escN(x.title)}</h3></div>`).join('');
     const words = news.articles.map(x => x.word && x.word.w).filter(Boolean).length;
-    const u = $('svpUnread'); u.classList.toggle('read', read); u.querySelector('span').textContent = read ? `오늘 신문 다 읽음` : `오늘 새 소식 ${news.articles.length}개 · 오늘의 낱말 ${words}개`;
+    const u = $('svpUnread'); u.classList.toggle('read', read); u.querySelector('span').textContent = read ? `${newsWhen()} 신문 다 읽음` : newsAgo() ? `${newsWhen()} 신문 · 소식 ${news.articles.length}개 · 낱말 ${words}개` : `오늘 새 소식 ${news.articles.length}개 · 오늘의 낱말 ${words}개`;
     { const done = LS.get(NEWS_DONE, []); $('svpDoneT').textContent = `루아 신문 제${news.no}호 다 읽었어`; $('svpCount').textContent = done.length > 1 ? ` · 지금까지 ${done.length}호` : ''; }
     $('svpLead').classList.add('nopic'); $('svpPhoto').innerHTML = ''; // 좁은 화면의 옛 1면: 그림 없이
     return true;
@@ -2778,7 +2781,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       if (L) L.textContent = rest ? `${restNext()}에 만나` : '궁금한 걸 물어 봐'; if (S) S.textContent = rest ? '지금은 쉬는 시간' : '눌러서 말해'; }
     setH($('fcWx'), w ? `${wxIcon(w.code, hr >= 18 || hr < 7)}<div class="tt"><div class="fc-temp">${w.t}<i>°</i></div><div class="fc-lab">${escN((WX[w.code] || [''])[0])}</div><div class="fc-sub">${w.hi}° / ${w.lo}°</div></div>` : `<div class="tt"><div class="fc-lab">날씨</div><div class="fc-sub">아직 못 받았어</div></div>`);
     const sk = faceSky();
-    setH($('fcNewsS'), on ? (read ? '다 읽었어' : `<i class="dot"></i>새 소식 ${news.articles.length}개`) : '아직 안 왔어');
+    setH($('fcNewsS'), on ? (read ? '다 읽었어' : newsAgo() ? `${newsWhen()} 신문 · 소식 ${news.articles.length}개` : `<i class="dot"></i>새 소식 ${news.articles.length}개`) : '아직 안 왔어');
     $('fcSkyS').textContent = sk ? sk.moon.name : '오늘의 달';
     // 지금 볼 것: 안 읽은 신문 → 저녁엔 오늘의 달 → 그 밖에는 시각이 들어간 한 문장
     const W = faceWord(); // 낱말은 낮 동안 차례로
@@ -3557,7 +3560,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const on = !!(news && newsFresh());
     $('tdNews').hidden = !on;
     if (on) { $('tdNewsT').textContent = `루아 신문 · 제${news.no}호`; $('tdNewsH').textContent = news.articles[0].title;
-      $('tdNewsS').innerHTML = newsRead() ? '다 읽었어 · 다시 보기' : `<i class="dot"></i>새 소식 ${news.articles.length}개 · 아직 안 읽었어`; }
+      $('tdNewsS').innerHTML = newsRead() ? '다 읽었어 · 다시 보기' : newsAgo() ? `${newsWhen()} 신문 · 소식 ${news.articles.length}개` : `<i class="dot"></i>새 소식 ${news.articles.length}개 · 아직 안 읽었어`; }
     let w = wxCache; if (!w) { const last = LS.get('gk-wx-last', null); if (last && Date.now() - last.at < 12 * 3600e3) w = last.w; }
     if ((!wxCache || Date.now() - wxAt > 20 * 60e3) && Date.now() - wxTryAt > 3 * 60e3) { wxTryAt = Date.now(); fetchWeather().then(renderToday).catch(() => {}); }
     $('tdWx').hidden = !w;
@@ -3751,37 +3754,9 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const ALONE = w => `(?:^|[\\s:(])${w}(?:$|[\\s)(,·])`;
   const BLOCK = new RegExp(['성기','성교','성행위','성관계','생식','음부','음경','음핵','자궁','고환','유방','항문','나체','누드','포르노','성적 ','섹스','야동','자위','강간','성폭','성희롱','매춘','성매매','해부','시신','시체','살해','살인','자살','학살','처형','고문','폭력','테러','총기','권총','소총','폭탄','폭발물','칼부림','마약','필로폰','코카인','헤로인','담배','흡연','음주','소주','맥주','도박','카지노','질병','종양','감염','출혈','피부병','배설물','대변','소변','욕설','혐오','인종차별','나치','극단주의','낙태','임신','출산','피임','성인물','19금','교미','짝짓기','번식기','심장','뇌','허파','간장','신장','혀','해골','두개골','미라','화상','부상','골절','외상','핵무기','미사일','전쟁','전투','사형','익사','사고','재난','장례','묘지','와인','위스키','막걸리','소맥','다비드상','비너스','아담과 이브','나체화','누드화','피','혈액',
     ALONE('질'), ALONE('젖'), ALONE('술'), ALONE('암'), ALONE('무기'), ALONE('장기'), ALONE('대마'), ALONE('똥'), ALONE('오줌'), ALONE('상처'), ALONE('사망'), ALONE('성인'), ALONE('칼'), ALONE('총'), ALONE('활'), ALONE('폐'), ALONE('간'), ALONE('위'), '분류:[^ ]*(?:성행위|성기|성교|성적|성인|음란|포르노|누드|해부학|생식기|생식 기관|범죄|살인|질병|사망|무기|약물|마약|담배|주류|음주|도박)'].join('|'));
-  async function wikiImage(term, signal) {
-    if (!WIKI_PICS) return null;
-    if (!term || term.length > 20 || BLOCK.test(term)) return null;
-    const u = 'https://ko.wikipedia.org/w/api.php?action=query&format=json&origin=*&redirects=1&prop=pageimages|categories|pageprops&piprop=thumbnail|name&pithumbsize=900&cllimit=max&clshow=!hidden&titles=' + encodeURIComponent(term);
-    const res = await fetch(u, { signal }); if (!res.ok) return null;
-    const pages = Object.values((await res.json()).query?.pages || {});
-    const p = pages[0];
-    if (!p || p.missing !== undefined || !p.thumbnail) return null;
-    if (p.pageprops && 'disambiguation' in p.pageprops) return null; // 동음이의 문서는 제외
-    const cats = (p.categories || []).map(c => c.title).join(' ');
-    if (BLOCK.test(p.title) || BLOCK.test(cats) || BLOCK.test(p.pageimage || '')) return null;
-    // 안전 분야만: 문서 분류가 자연·사물·장소 쪽일 때만 사진을 씀 (몸·의학·사람 문서는 여기서 걸러짐)
-    if (!SAFE_CAT.test(cats)) { diag('pic', `안전 분야 아님: ${p.title} (${cats.replace(/분류:/g, '').slice(0, 90)})`); return null; }
-    if (picBlocked().includes(p.title)) return null;
-    if (/분류:[^ ]*(?:년 출생|년 사망|살아있는 사람|생년 미상|몰년 미상)|분류:[^ ]*(?:배우|가수|모델|정치인|운동 선수|아이돌)/.test(cats)) return null; // 사람 문서는 사진을 쓰지 않음
-    if (/\.svg$/i.test(p.pageimage || '') || /map|flag|icon|logo|nude|naked|corpse|autops|penis|vagin|vulva|blood|wound|burn|injur|dead|death|skull|sex|breast|anus|genital/i.test(p.pageimage || '')) return null;
-    let best = { src: p.thumbnail.source, title: p.title, w: p.thumbnail.width, h: p.thumbnail.height };
-    // 위키데이터 대표 이미지(P18)가 있으면 그걸 먼저 — 문서 첫 사진보다 주제를 잘 보여 주는 경우가 많음
-    try {
-      const qid = p.pageprops && p.pageprops.wikibase_item;
-      if (qid) {
-        const c = await (await fetch(`https://www.wikidata.org/w/api.php?action=wbgetclaims&format=json&origin=*&property=P18&entity=${qid}`, { signal })).json();
-        const file = c.claims?.P18?.[0]?.mainsnak?.datavalue?.value;
-        if (file && !/\.svg$/i.test(file) && !/map|flag|icon|logo|nude|naked|corpse|blood|wound|dead|skull|sex|genital/i.test(file) && !BLOCK.test(file)) {
-          const ii = Object.values((await (await fetch(`https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&prop=imageinfo&iiprop=url|size|mime&iiurlwidth=900&titles=${encodeURIComponent('File:' + file)}`, { signal })).json()).query?.pages || {})[0]?.imageinfo?.[0];
-          if (ii && ii.thumburl && /jpeg|png|webp/.test(ii.mime || '') && Math.min(ii.width, ii.height) >= 600) best = { src: ii.thumburl, title: p.title, w: ii.width, h: ii.height, p18: true };
-        }
-      }
-    } catch (e) {}
-    return best;
-  }
+  // v191: 위키백과·위키데이터·위키미디어에서 사진을 받아 오던 코드를 지웠다(v1xx부터 WIKI_PICS=false 로 꺼 두었던 것).
+  // 아이 화면의 사진은 검수한 신문 그림만 쓴다 — 바깥 사진 길 자체를 남기지 않는다(부모 요청: 안 좋은 사진 제한).
+  async function wikiImage() { return null; }
   const picDbg = m => { try { const el = $('picDbg'); if (el) el.textContent = '마지막 그림: ' + m + (lastRaw ? ' ‖ 원문: ' + lastRaw.slice(0, 300).replace(/\n/g, '⏎') : ''); } catch (e) {} };
   let stripReserve = false, answerDone = Promise.resolve(), cardLine = Promise.resolve(), followUp = '', askSeq = 0;
   // 말로 이어서 질문 고르기: '응/더/왜' → 1번, '2번/두 번째/둘째' → 그 번호, 칩 글자 일부를 말하면 그 칩
@@ -4167,7 +4142,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v190';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v191';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6967,6 +6942,25 @@ html body[data-theme=night] #saver .cq-grid > span.hd:not(.t) b, html body[data-
   .rn-phead #ppNo:empty{display:none !important}
   .rn-phead .rn-sec{line-height:1 !important;margin-left:0;padding-left:64px !important;overflow:hidden;text-overflow:ellipsis}
 }
+
+/* v191 휴대폰 기사: 본문(28px)이 첫 문장(24px)보다 컸고, 오늘의 낱말 카드가 본문 앞을 막았다.
+   제목 > 첫 문장 > 본문 순으로 크기를 맞추고, 그림 → 본문 → 오늘의 낱말 → 출처 순서로 놓는다. */
+@media (max-width:899px){
+  html body .rn-art{display:flex !important;flex-direction:column}
+  html body .rn-art .rn-aside{display:contents !important}
+  html body .rn-art > *, html body .rn-art .rn-aside > *{flex:none !important;position:static !important;max-height:none !important}
+  html body .rn-art .rn-text{height:auto !important;overflow:visible !important}
+  html body .rn-art .rn-hed{display:block !important;-webkit-line-clamp:unset !important;overflow:visible !important}
+  html body .rn-art .rn-hed{order:1} html body .rn-art .rn-deck{order:2;font-size:21px !important;line-height:32px !important;font-weight:700 !important;margin-bottom:14px}
+  html body .rn-art .rn-fig{order:3} html body .rn-art .rn-cap{order:4;font-size:16px !important;margin:6px 0 16px !important}
+  html body .rn-art .rn-text{order:5} html body .rn-art .rn-text p{font-size:20px !important;line-height:1.75 !important;margin:0 0 10px !important}
+  html body .rn-art .rn-text mark{font-size:inherit !important}
+  html body .rn-art .rn-word{order:6;margin:22px 0 10px !important} html body .rn-art .rn-src{order:7;padding-bottom:24px !important}
+}
+
+/* v191: 묻기·답 화면 시계(누르면 홈)의 누르는 자리가 높이 30px뿐이었다 — 보이는 크기는 그대로, 누르는 자리만 위아래로 넓힌다 */
+html body #tbClock{position:relative}
+html body #tbClock::before{content:"";position:absolute;left:-10px;right:-10px;top:-16px;bottom:-16px}
 </style>
 <script>
 // v162: 홈의 시간대 벌 — 아침 7~11시 am, 낮 11~17시 day, 저녁 17~20:30 eve, 그 밖 night. 색만 바꾼다(ds2).

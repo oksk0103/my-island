@@ -859,6 +859,8 @@ async function newsTests(b) {
       for (let i = 0; i < 8; i++) { if (await pg.evaluate(() => [...document.querySelectorAll('.scr.on text')].some(e => e.textContent === '오전 午前'))) break; await pg.keyboard.press('ArrowRight'); await pg.waitForTimeout(600); }
       const q = await pg.evaluate(() => { const sc = document.querySelector('.scr.on'); const V = [...sc.querySelectorAll('line')].filter(l => l.getAttribute('x1') === l.getAttribute('x2') && Math.abs(+l.getAttribute('y2') - +l.getAttribute('y1') - 60) < 1).map(l => Math.round(+l.getAttribute('x1'))); const zi = [...sc.querySelectorAll('text')].filter(e => e.textContent === '子').map(e => Math.round(+e.getAttribute('x'))); return { ends: [V.includes(680), V.includes(1480)], n: V.length, zi }; });
       ok('v176 3일차 시간 띠: 0시·24시 양 끝선이 다 있고(14줄), 子 반 칸이 양 끝에 둘', q.ends.join() === 'true,true' && q.n === 14 && q.zi.length === 2 && q.zi[0] < 700 && q.zi[1] > 1460, q); await pg.context().close(); }
+    { const p = await open(b, { time: plus(newsDate, 1) + 'T07:30', w: 412, h: 891 }); await p.adv(2000); const q = await p.evaluate(() => ['svpUnread', 'fcNewsS', 'tdNewsS'].map(i => (document.getElementById(i) || {}).textContent || '').join(' | '));
+      ok('v191 다음 날 아침(새 호 전): 지난 호를 \'오늘 새 소식\'이라 하지 않고 \'어제 신문\'이라 함', /어제 신문/.test(q) && !/오늘 새 소식/.test(q), q); await p.context().close(); }
     { const p = await open(b, { time: '2026-11-22T11:10', w: 412, h: 891 }); const q = await p.evaluate(() => { const h = document.getElementById('gkHome'), r = h.getBoundingClientRect(); return { saver: !document.getElementById('saver').hidden, shown: !h.hidden && r.width > 0 }; });
       ok('v189 휴대폰: 켜자마자 묻기 화면에서도 홈 단추가 바로 보임(15초 기다리지 않음)', q.saver || q.shown, q); await p.context().close(); }
     // 모든 편·모든 쪽: 글자 겹침 없음, 오류 없음 (1600×820, 전화 세로)
@@ -883,6 +885,7 @@ async function newsTests(b) {
       if (er.length || stuck || !ended) bad.push([ep, er[0] || (stuck ? '멈춤' : '끝 못 감')]); await pg.close(); } };
     await Promise.all([...Array(5)].map(work)); ok(`조각 장 ${EPN.length}편 모두 끝까지 눌러도 오류·멈춤 없음`, EPN.length > 50 && bad.length === 0, bad.slice(0, 5)); }
 
+  ok('v191 앱 코드에 바깥 사진(위키) 주소가 없음', !/wikipedia\.org|wikidata\.org|commons\.wikimedia/.test(fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8')));
   await newsTests(b);
   ok('페이지 오류 없음', errs.length === 0, errs.slice(0, 3));
   await b.close(); server.close();
