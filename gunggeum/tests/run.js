@@ -402,7 +402,7 @@ async function newsTests(b) {
       p = await nsOpen('T20:30'); r = await tap(p, 'sci'); ok('v193 밤하늘의 과학 단추 → 오늘의 과학이 열림', r.vis && await p.evaluate(() => !!document.getElementById('pcFrame') && /p2\.html|pieces\//.test(document.getElementById('pcFrame').src)), r); await p.context().close();
       p = await nsOpen('T20:30'); r = await tap(p, 'story'); ok('v193 밤하늘의 이야기 단추 → 오늘의 이야기가 열림', r.vis && await p.evaluate(() => !!document.getElementById('pcFrame')), r); await p.context().close();
       p = await nsOpen('T20:30'); r = await tap(p, 'news'); await p.adv(1500); const s9 = await p.st(); ok('v193 밤하늘의 신문 단추 → 신문 기사가 열림', r.vis && await p.evaluate(() => document.getElementById('saver').hidden && !document.getElementById('paper').hidden), r); await p.context().close();
-      p = await nsOpen('T21:45'); r = await p.evaluate(() => getComputedStyle(document.getElementById('nsGo')).display); ok('v193 잠자기 30분 전에는 바로 가기 단추를 숨김', r === 'none', r); await p.context().close(); }
+      p = await nsOpen('T21:45'); r = await tap(p, 'home'); q = await nsSt(p); ok('v193 잠자기 30분 전에도 바로 가기 단추가 남아 있고 눌림(부모 요청)', r.vis && /^face/.test(q.c), [r, q.c]); await p.context().close(); }
     p = await nsOpen('T17:20'); q = await nsSt(p); ok('17:20(아직 밝음): 위젯 면 그대로', /^face/.test(q.c), q); await p.context().close();
     p = await nsOpen('T22:15', { bed: '22:30' }); q = await nsSt(p); ok('잠자는 시각 22:30이면 22:15는 아직 밤하늘(어둡게)', q.c === 'nsky quiet', q); await p.context().close();
     p = await nsOpen('T20:30', { nsky: 'off' }); q = await nsSt(p); ok('저녁 밤하늘을 끄면 위젯 면', /^face/.test(q.c), q); await p.context().close();

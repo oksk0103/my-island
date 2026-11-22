@@ -1289,11 +1289,11 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
 #svNsky .ns-one .p{ margin-top: 12px; font-size: 28px; line-height: 1.4; color: rgba(242,232,210,.68); word-break: keep-all; }
 #saver.nsky.quiet #svNsky .ns-chart,#saver.nsky.quiet #svNsky .ns-moon,#saver.nsky.quiet #svNsky .ns-halo{ opacity: .55; }
 #saver.nsky.quiet #svNsky .ns-one{ display: none; }
-/* v193: 저녁 밤하늘에서도 홈·신문·과학·이야기로 바로 간다(부모: 저녁엔 다른 화면을 못 쓴다). 잠자기 30분 전(quiet)에는 숨긴다 */
+/* v193: 저녁 밤하늘에서도 홈·신문·과학·이야기로 바로 간다(부모: 저녁엔 다른 화면을 못 쓴다). 잠자기 30분 전(quiet)에는 어둡게만 */
 #svNsky .ns-go{ position: absolute; left: 80px; top: 300px; display: flex; gap: 10px; z-index: 3; }
 #svNsky .ns-go button{ height: 64px; min-width: 96px; padding: 0 22px; border: 1.5px solid rgba(242,232,210,.34); border-radius: 0; background: rgba(12,20,48,.35); color: rgba(242,232,210,.88); font: 600 26px/1 "Pretendard", sans-serif; letter-spacing: -.01em; }
 #svNsky .ns-go button[hidden]{ display: none; }
-#saver.nsky.quiet #svNsky .ns-go{ display: none; }
+#saver.nsky.quiet #svNsky .ns-go button{ color: #9A8C76; border-color: rgba(154,140,118,.38); background: rgba(8,12,30,.3); } /* 잠자기 30분 전에도 남기되(부모 요청) 시계처럼 어둡게 */
 #saver.nsky.quiet #svNsky .ns-clock b{ color: #B9A88C; }
 #saver.nsky.quiet #svNsky .ns-clock small,#saver.nsky.quiet #svNsky .ns-date{ color: #7C6F5C; }
 /* 밤 화면(잠자는 시각~아침 7시): 저녁 화면과 같은 자리·같은 글꼴, 따뜻하고 아주 어두운 색 */
