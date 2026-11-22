@@ -1410,13 +1410,13 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v197</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v198</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v197</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v198</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1529,7 +1529,12 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
   const app = $('app'), sheet = $('sheet'), eyebrow = $('eyebrow'), statusEl = $('status'), stateLabel = $('stateLabel');
   const form = $('form'), input = $('q'), askBtn = $('askBtn'), soundBtn = $('soundBtn'), countEl = $('count'), chipsEl = $('chips');
   const logEl = $('log'), logBody = $('logBody'), keyTest = $('keyTest');
-  const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+  // v198: 저장된 값이 옛 모양이거나 깨져 있어도 화면이 죽지 않게 — 기본값과 모양(배열/객체)이 다르면 기본값을 쓴다
+  const isObj = x => !!x && typeof x === 'object' && !Array.isArray(x);
+  const boxOf = x => isObj(x) && Array.isArray(x.items) ? (x.items = x.items.filter(isObj), x) : null; // {items:[…]} 모양만 받고, 줄마다 객체인 것만
+  const LS = { get(k, d) { try { const s = localStorage.getItem(k); if (s === null) return d; const v = JSON.parse(s); if (v === null || v === undefined) return d; if (Array.isArray(d) && !Array.isArray(v)) return d; if (isObj(d) && !isObj(v)) return d; return v; } catch (e) { return d; } },
+    rows(k) { return this.get(k, []).filter(Array.isArray); }, /* [시각, …] 줄 기록(진단·배터리) */
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
   // ---------- settings (stored on this device) ----------
   const DEFAULTS = { bed: '22:00', nsky: 'on', len: 'normal', level: 'e3', hFrom: 0, hTo: 24, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on', scaryNight: 'on', night10: 'off', nightScr: 'on', restDark: 'on', wxStill: 'off' };
@@ -2658,7 +2663,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   var todoPend = null; // { text, due, orig, until } 또는 { wait: true, until }
   const tdNorm = t => String(t).replace(/\s+/g, '').replace(/[.,!?~]/g, '');
   function todoLoad() {
-    const d = LS.get(TODO_KEY, null) || { items: [], last: null }, today = dayKey(new Date()), now = Date.now();
+    const d = boxOf(LS.get(TODO_KEY, null)) || { items: [], last: null }, today = dayKey(new Date()), now = Date.now();
     const n = d.items.length;
     d.items = d.items.filter(it => {
       if (it.done) return dayKey(new Date(it.done)) === today; // 다 한 줄은 다음 날 아침에 사라짐
@@ -2800,7 +2805,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   const CAL_KEY = 'gk-cal', EV_MAX = 40, EV_DAY_MAX = 3, EV_SLOTS = 5;
   var evPend = null, evFlash = null, evMsg = '', calSel = '', calOff = 0, agPage = 0, evSel = ''; // evSel: 눌러서 고른 일정(아래에 '삭제') // evMsg: 달력 오른쪽 열에 보여 줄 한 줄(되묻기·안내)
   function evLoad() {
-    const d = LS.get(CAL_KEY, null) || { v: 1, items: [], last: null }, cut = dayKey(new Date(Date.now() - 35 * 864e5)), n = d.items.length;
+    const d = boxOf(LS.get(CAL_KEY, null)) || { v: 1, items: [], last: null }, cut = dayKey(new Date(Date.now() - 35 * 864e5)), n = d.items.length;
     d.items = (d.items || []).filter(x => x && x.date >= cut).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : a.at - b.at); // 지난 일정은 35일 뒤 말없이 사라짐
     if (d.items.length !== n) LS.set(CAL_KEY, d);
     return d;
@@ -2903,7 +2908,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (evPend) evPend.fresh = 0; // 말을 받았다
     if (evPend && now > evPend.until) evPend = null;
     if (todoPend && now <= todoPend.until) return false; // 할 일 되묻기에 대한 대답이 먼저
-    const d = evLoad(), L = d.last, tl = ((LS.get(TODO_KEY, null) || {}).last || {}).at || 0, YES = /^(적어줘|적어|응+|어+|엉|그래|맞아|네|예|좋아)$/;
+    const d = evLoad(), L = d.last, tl = ((boxOf(LS.get(TODO_KEY, null)) || {}).last || {}).at || 0, YES = /^(적어줘|적어|응+|어+|엉|그래|맞아|네|예|좋아)$/;
     if (evPend) {
       const P = evPend; evPend = null;
       if (P.wait === 'yn') {
@@ -3744,7 +3749,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   // ---------- parent: log (this device) ----------
   function saveLog(q, a) {
     const now = new Date(), k = 'gk-log-' + dayKey(now);
-    const items = LS.get(k, []); items.push({ t: `${pad(now.getHours())}:${pad(now.getMinutes())}`, q, a });
+    const items = LS.get(k, []).filter(isObj); items.push({ t: `${pad(now.getHours())}:${pad(now.getMinutes())}`, q, a });
     LS.set(k, items.slice(-200));
     try { // keep 30 days
       const keys = Object.keys(localStorage).filter(x => x.startsWith('gk-log-')).sort();
@@ -3753,7 +3758,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   }
   function loadDays(n) {
     let keys = []; try { keys = Object.keys(localStorage).filter(x => x.startsWith('gk-log-')).sort().reverse().slice(0, n); } catch (e) {}
-    return keys.map(k => ({ day: k.slice(7), items: LS.get(k, []) })).filter(d => d.items.length);
+    return keys.map(k => ({ day: k.slice(7), items: LS.get(k, []).filter(x => isObj(x) && (x.q != null || x.a != null)).map(x => ({ t: String(x.t ?? ''), q: String(x.q ?? ''), a: String(x.a ?? '') })) })).filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d.day) && d.items.length);
   }
   // 터치 진단: 모니터/펜이 어떤 이벤트를 보내는지 그대로 보여줌
   (function touchDiag() {
@@ -3848,11 +3853,11 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v197';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v198';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
-    try { const a = LS.get(DIAG_KEY, []); a.push([Date.now(), kind, String(msg).slice(0, 300)]); while (a.length > 400) a.shift(); LS.set(DIAG_KEY, a); } catch (e) {}
+    try { const a = LS.rows(DIAG_KEY); a.push([Date.now(), kind, String(msg).slice(0, 300)]); while (a.length > 400) a.shift(); LS.set(DIAG_KEY, a); } catch (e) {}
     if (!logEl.hidden) renderDiag();
   }
   window.addEventListener('error', e => diag('err', `${e.message || '오류'} @${(e.filename || '').split('/').pop()}:${e.lineno || ''}`));
@@ -3877,7 +3882,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   function batSample(why) {
     if (!bat) return;
     const lv = Math.round(bat.level * 100), ch = bat.charging;
-    try { const a = LS.get(BAT_KEY, []); a.push([Date.now(), lv, ch ? 1 : 0]); const cut = Date.now() - 48 * 3600e3; while (a.length && a[0][0] < cut) a.shift(); LS.set(BAT_KEY, a); } catch (e) {}
+    try { const a = LS.rows(BAT_KEY); a.push([Date.now(), lv, ch ? 1 : 0]); const cut = Date.now() - 48 * 3600e3; while (a.length && a[0][0] < cut) a.shift(); LS.set(BAT_KEY, a); } catch (e) {}
     if (why) diag('bat', `${lv}% · ${ch ? '충전 중' : '충전 안 됨'} (${why})`);
     if (!logEl.hidden) { renderDevStat(); renderBat(); }
   }
@@ -3898,7 +3903,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
     $('devStat').textContent = lines.join('\n');
   }
   function renderBat() {
-    const svg = $('batChart'), a = LS.get(BAT_KEY, []), now = Date.now(), span = 24 * 3600e3, W = 720, H = 120;
+    const svg = $('batChart'), a = LS.rows(BAT_KEY), now = Date.now(), span = 24 * 3600e3, W = 720, H = 120;
     const X = t => ((t - (now - span)) / span) * W, Y = l => H - 6 - (l / 100) * (H - 12);
     let g = `<line x1="0" x2="${W}" y1="${Y(20)}" y2="${Y(20)}" stroke="#5A1E14" stroke-dasharray="4 4"/>`;
     for (let h = 0; h <= 24; h += 6) g += `<line x1="${W - h * W / 24}" x2="${W - h * W / 24}" y1="0" y2="${H}" stroke="var(--line)" stroke-width=".5"/>`;
@@ -3911,7 +3916,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
     $('batNote').textContent = note + ' 왼쪽 끝이 24시간 전, 오른쪽 끝이 지금 · 빨간 점선 20%';
   }
   function renderDiag() {
-    const f = $('diagFilter').value, a = LS.get(DIAG_KEY, []).filter(r => !f || r[1] === f).slice(-150).reverse();
+    const f = $('diagFilter').value, a = LS.rows(DIAG_KEY).filter(r => !f || r[1] === f).slice(-150).reverse();
     const lab = { bat: '배터리', err: '오류', api: '서버', wake: '켜짐', saver: '대기', vis: '화면', net: '인터넷', app: '앱', pic: '사진' };
     $('diagLog').textContent = a.length ? a.map(r => `${stamp(new Date(r[0]))}  [${lab[r[1]] || r[1]}] ${r[2]}`).join('\n') : '기록 없음';
   }
@@ -3950,8 +3955,8 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { if (!logEl.hidden) newsNoteRender(); }).observe(logEl, { attributes: true, attributeFilter: ['hidden'] });
   $('diagCopy').addEventListener('click', async () => {
     renderDevStat();
-    const a = LS.get(DIAG_KEY, []).slice(-200).map(r => `${stamp(new Date(r[0]))} [${r[1]}] ${r[2]}`);
-    const b = LS.get(BAT_KEY, []).slice(-150).map(r => `${stamp(new Date(r[0]))} ${r[1]}%${r[2] ? '+' : ''}`);
+    const a = LS.rows(DIAG_KEY).slice(-200).map(r => `${stamp(new Date(r[0]))} [${r[1]}] ${r[2]}`);
+    const b = LS.rows(BAT_KEY).slice(-150).map(r => `${stamp(new Date(r[0]))} ${r[1]}%${r[2] ? '+' : ''}`);
     const txt = `[루아 진단]\n${$('devStat').textContent}\n\n[기록]\n${a.join('\n')}\n\n[배터리 (+는 충전 중)]\n${b.join('  ')}`;
     try { await navigator.clipboard.writeText(txt); $('diagNote').textContent = '복사됨 — 채팅에 붙여 넣어 주세요'; }
     catch (e) { const r = document.createRange(); r.selectNodeContents($('diagLog')); getSelection().removeAllRanges(); getSelection().addRange(r); $('diagNote').textContent = '복사가 막혀서 기록을 선택해 뒀어요. 길게 눌러 복사하세요'; }

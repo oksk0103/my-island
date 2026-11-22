@@ -893,6 +893,19 @@ async function newsTests(b) {
     await Promise.all([...Array(5)].map(work)); ok(`조각 장 ${EPN.length}편 모두 끝까지 눌러도 오류·멈춤 없음`, EPN.length > 50 && bad.length === 0, bad.slice(0, 5)); }
 
   ok('v191 앱 코드에 바깥 사진(위키) 주소가 없음', !/wikipedia\.org|wikidata\.org|commons\.wikimedia/.test(fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8')));
+  // v198: 기기에 남아 있는 옛 모양·깨진 저장값으로도 화면이 죽지 않는다(홈·달력·묻기·부모님 화면까지)
+  { const D0 = '2026-11-23', sets = [
+      { 'gk-todo': '[{"text":"옛 모양"},null,"글자"]', 'gk-cal': '{"2026-11-23":"소풍"}', 'gk-diag': '{}', 'gk-bat': '[null,1,"a"]' },
+      { 'gk-todo': '{"items":[null,"x",{"t":"수학"}]}', 'gk-cal': '[1]', 'gk-diag': '[null,1,"a",{}]', 'gk-news-done2': '"2026-11-13"', 'gk-lines': 'null' },
+      { ['gk-log-' + D0]: '[{"q":"질문만"},null,"글자",{"q":1,"a":2}]', 'gk-log-2025-12-31': '"글자"', 'gk-log-이상한키': '[{"q":"a","a":"b"}]', 'gk-lastqa': '"x"', 'gk-words': '{"x":1}' },
+      { 'gk-cover': '{"k":"sky","day":"' + D0 + '"}', 'gk-wx-last': '{"current":null}', 'gk-news': '{"no":"x","date":"어제","articles":[{},{"title":"t","body":null}]}' } ], bad = [];
+    for (const [i, set] of sets.entries()) { const p = await open(b, { time: D0 + 'T13:00' }), er = []; p.on('pageerror', e => er.push(e.message.slice(0, 90)));
+      try { await p.evaluate(set => { for (const [k, v] of Object.entries(set)) localStorage.setItem(k, v); }, set); await p.reload(); await p.adv(3000); await p.keyboard.press('F3'); await p.adv(16000); for (const k of ['face', 'cal', 'hero', 'home']) { await p.evaluate(k => { document.getElementById('log').hidden = false; const e = document.querySelector(`[data-go="${k}"]`); if (e) e.click(); }, k); await p.adv(2000); }
+        await p.evaluate(() => { document.getElementById('pinInput').value = '1234'; document.getElementById('pinForm').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })); }); await p.adv(2000);
+      } catch (e) { er.push('X ' + e.message.slice(0, 80)); }
+      if (er.length) bad.push([i, er[0]]); await p.context().close(); }
+    ok('v198 옛 모양·깨진 저장값 4묶음으로도 오류 없이 열림', bad.length === 0, bad); }
+
   await newsTests(b);
   ok('페이지 오류 없음', errs.length === 0, errs.slice(0, 3));
   await b.close(); server.close();
