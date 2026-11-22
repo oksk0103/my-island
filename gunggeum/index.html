@@ -1470,13 +1470,13 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v195</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v196</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v195</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v196</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2466,6 +2466,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (d.tile === 'wx' && svWide()) { svTaps = []; window.__gkForce = { s: 'wx', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날씨 줄 → 날씨 화면'); return; }
     if (d.tile === 'todo' && svWide()) { svTaps = []; window.__gkForce = { s: 'todo', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '할 일 타일 → 할 일 화면'); return; }
     if (d.tile === 'cal') { svTaps = []; window.__gkForce = { s: 'cal', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '날짜 → 달력'); return; }
+    if (d.tile === 'sky' && saverEl.classList.contains('skyback')) { svTaps = []; delete window.__gkForce; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '홈 → 밤하늘'); return; } // v196
     if (d.tile === 'sky' && window.GKSky) { svTaps = []; window.__gkForce = { s: 'sky', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '타일 → 밤하늘'); return; }
     const hadNews = !!(news && newsFresh());
     if (d.tile === 'news' && hadNews && innerWidth >= 900) { svTaps = []; window.__gkForce = { s: 'front', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); diag('saver', '표지 → 신문 1면'); return; }
@@ -2583,7 +2584,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     const sky = !night && (fz ? fz === 'sky' : (!wide && hr >= 18 && !(on && !read))) && wide && Date.now() - skyBadAt > 10 * 60e3 && skyReady();
     const face = wide && !night && !sky && (!fz || fz === 'face' || fz === 'sky'); // 넓은 화면의 낮·저녁 기본: 위젯 면
     const cal = wide && !night && fz === 'cal';
-    saverEl.classList.toggle('sky', sky); saverEl.classList.toggle('face', face); saverEl.classList.toggle('cal', cal); if (!face) saverEl.classList.remove('rest', 'late');
+    saverEl.classList.toggle('sky', sky); saverEl.classList.toggle('face', face); saverEl.classList.toggle('cal', cal);
+    saverEl.classList.toggle('skyback', !!(face && fz === 'face' && nskyPhase())); // v196: 저녁 밤하늘에서 홈으로 왔으면 홈에 '밤하늘' 판을 띄워 돌아갈 길을 둔다 if (!face) saverEl.classList.remove('rest', 'late');
     saverEl.classList.remove('rnp'); $('rnFront').hidden = true;
     if (wide && fz === 'todo') { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain', 'face', 'sky', 'cal'].forEach(c => saverEl.classList.remove(c)); pgPre('todo'); renderTodoPg(); return true; } // v135: 할 일 화면(달력처럼 따로)
     if (wide && fz === 'study') { el.hidden = true; ['has-paper', 'night', 'paper-hero', 'paper-done', 'plain', 'face', 'sky', 'cal'].forEach(c => saverEl.classList.remove(c)); pgPre('study'); renderStudyPg(); return true; } // v138: 공부칸(모은 말)
@@ -3922,7 +3924,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v195';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v196';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -6696,6 +6698,16 @@ html body[data-theme=night] #saver .cq-grid > span.hd:not(.t) b,html body[data-n
 /* v191: 묻기·답 화면 시계(누르면 홈)의 누르는 자리가 높이 30px뿐이었다 — 보이는 크기는 그대로, 누르는 자리만 위아래로 넓힌다 */
 html body #tbClock{position:relative}
 html body #tbClock::before{content:"";position:absolute;left:-10px;right:-10px;top:-16px;bottom:-16px}
+
+/* v196: 저녁에 밤하늘 → 홈으로 온 경우에만, 할 일 판 아래 빈 자리에 '밤하늘' 판(누르면 밤하늘로). 낮에는 없다. */
+@media (min-width:900px){
+  #saver.saver.face.skyback .fc-app[data-tile="sky"]{display:flex !important;grid-column:2 !important;grid-row:2 !important;align-self:end !important;justify-self:stretch !important;width:100% !important;min-width:0 !important;max-width:100% !important;box-sizing:border-box !important;margin:0 !important;height:96px !important;min-height:96px !important;
+    flex-direction:row !important;align-items:center !important;justify-content:flex-start !important;gap:16px !important;padding:0 40px !important;border-radius:32px !important;text-align:left !important}
+  #saver.saver.face.skyback .fc-app[data-tile="sky"] svg{width:40px !important;height:40px !important;margin:0 !important}
+  #saver.saver.face.skyback .fc-app[data-tile="sky"] .fc-lab{margin:0 !important;font-size:28px !important;line-height:1 !important;font-weight:600 !important}
+  #saver.saver.face.skyback .fc-app[data-tile="sky"] .fc-sub{display:none !important}
+  #saver.saver.face.skyback .fc-todo{max-height:calc(100% - 108px) !important;overflow:hidden !important}
+}
 </style>
 <script>
 // v162: 홈의 시간대 벌 — 아침 7~11시 am, 낮 11~17시 day, 저녁 17~20:30 eve, 그 밖 night. 색만 바꾼다(ds2).
