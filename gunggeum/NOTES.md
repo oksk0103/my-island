@@ -249,3 +249,9 @@
 - 진짜 원인: 밤하늘 그림은 vendor/sky/sky.js 가 sky-svg·gkSky·gkHz 같은 클래스를 붙여 만든다. index.html 만 보면 안 쓰는 것처럼 보인다.
 - 다음에는: 선택자를 지우기 전에 index.html 이 불러오는 모든 스크립트(vendor/sky/*.js 등)까지 이름을 찾고, 지운 뒤에는 옛 화면과 새 화면을 상태별로 찍어 화소 비교를 한다(달라진 곳이 '글자 타이핑 진행'뿐이어야 한다).
 - 관련: v192, index.html <style>, vendor/sky/sky.js
+
+## 대기화면 안에 <button>을 넣지 않는다 · 누르는 것은 터치로도 점검한다
+- 무슨 일: v193 밤하늘의 '홈' 단추를 터치로 누르면 홈이 잠깐 떴다가 곧바로 묻기 화면으로 넘어갔다. 점검은 통과했다.
+- 진짜 원인: 터치 보정(robustTap)이 button 에 가짜 click 을 먼저 보내고, 이어서 대기화면의 pointerup 처리가 같은 누름을 한 번 더 처리했다(두 번째에는 이미 홈이라 '빈 곳 누름 = 깨우기'). 점검은 마우스 클릭뿐이었다.
+- 다음에는: 대기화면(#saver) 안의 누르는 자리는 div[role=button] + data-속성으로 만들고 svAct 에서 처리한다. 새 누름 자리를 만들면 pointerType:'touch' 로 pointerdown→pointerup→click 을 보내는 점검을 함께 넣는다.
+- 관련: v194, robustTap, svAct, tests 'v194 밤하늘 홈 단추를 터치로'
