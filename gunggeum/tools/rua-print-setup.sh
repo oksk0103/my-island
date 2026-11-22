@@ -22,7 +22,7 @@ PY="$PREFIX/bin/python"; H="$HOME"
 # 주의: 걸러 낼 줄이 없으면 grep이 실패로 끝나고, set -e 때문에 아래 예약 줄이 하나도 안 들어갔었다(v186에서 고침)
 ( { crontab -l 2>/dev/null | grep -v rua-print; } || true
   for t in $LIST; do echo "${t#*:} ${t%%:*} * * * $PY $H/rua-print.py >> $H/rua-cron.log 2>&1"; done
-  echo "15 3 * * 0 $PREFIX/bin/curl -sfL $URL -o $H/rua-print.py.new && mv $H/rua-print.py.new $H/rua-print.py"
+  echo "15 3 * * * $PREFIX/bin/curl -sfL $URL -o $H/rua-print.py.new && mv $H/rua-print.py.new $H/rua-print.py"  # v187: 고친 인쇄 프로그램을 매일 새벽 받는다(예전엔 일요일만)
 ) | crontab -
 # 시계(crond)를 지금 바로 켜고, Termux를 열 때마다 다시 켜지게 한다 (sv-enable은 Termux를 껐다 켜야만 듣는다)
 sv-enable crond 2>/dev/null || true

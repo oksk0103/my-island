@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# 루아 신문 아침 자동 인쇄 (폴드4 · Termux) — v185
+# 루아 신문 아침 자동 인쇄 (폴드4 · Termux) — v187 (컬러로 뽑기)
 #
 #   python rua-print.py probe   집 와이파이에서 프린터를 찾아 기억하고, 프린터가 받는 파일 종류를 보여 준다
 #   python rua-print.py test    오늘 날짜와 상관없이 가장 최근 종이판을 지금 뽑는다(설치 확인용)
@@ -236,7 +236,9 @@ def print_job(host, path, attrs, fmt, payload, name):
     sup = lambda k, v: v in attrs.get(k, [])
     if sup('media-supported', 'iso_a4_210x297mm'):
         job += attr(0x44, 'media', 'iso_a4_210x297mm')
-    if sup('print-color-mode-supported', 'monochrome'):
+    if fmt != 'image/pwg-raster' and sup('print-color-mode-supported', 'color'):
+        job += attr(0x44, 'print-color-mode', 'color')       # v187: 종이판은 컬러 그림(v185~). 예전엔 흑백으로 못박아 옛날 신문처럼 나왔다
+    elif sup('print-color-mode-supported', 'monochrome'):
         job += attr(0x44, 'print-color-mode', 'monochrome')
     if sup('print-scaling-supported', 'fit'):
         job += attr(0x44, 'print-scaling', 'fit')
@@ -277,7 +279,7 @@ def run(force=False):
         raise SystemExit('이 프린터가 받는 파일 종류를 몰라요: %s' % ', '.join(fmts))
     state['printed'] = man['date']
     save(os.path.join(HOME, '.rua-print-state.json'), state)
-    log('뽑음:', title, man['date'], how, '작업', ids)
+    log('뽑음:', title, man['date'], how, '컬러' if 'color' in a.get('print-color-mode-supported', []) and how != 'PWG' and not how.startswith('PWG') else '흑백', '작업', ids)
 
 
 def probe():
