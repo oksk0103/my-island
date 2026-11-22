@@ -1289,12 +1289,15 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
 #svNsky .ns-one .p{ margin-top: 12px; font-size: 28px; line-height: 1.4; color: rgba(242,232,210,.68); word-break: keep-all; }
 #saver.nsky.quiet #svNsky .ns-chart,#saver.nsky.quiet #svNsky .ns-moon,#saver.nsky.quiet #svNsky .ns-halo{ opacity: .55; }
 #saver.nsky.quiet #svNsky .ns-one{ display: none; }
-/* v193: 저녁 밤하늘에서도 홈·신문·과학·이야기로 바로 간다(부모: 저녁엔 다른 화면을 못 쓴다). 잠자기 30분 전(quiet)에는 어둡게만 */
-#svNsky .ns-go{ position: absolute; left: 80px; top: 300px; display: flex; gap: 10px; z-index: 3; }
-/* v194: <button>이면 터치 보정(robustTap)이 가짜 클릭을 한 번 더 보내 '홈 → 곧바로 묻기'가 됐다. 대기화면의 다른 누름 자리처럼 div 로 둔다 */
-#svNsky .ns-go [data-ns]{ display: flex; align-items: center; justify-content: center; box-sizing: border-box; height: 64px; min-width: 96px; padding: 0 22px; border: 1.5px solid rgba(242,232,210,.34); border-radius: 0; background: rgba(12,20,48,.35); color: rgba(242,232,210,.88); font: 600 26px/1 "Pretendard", sans-serif; letter-spacing: -.01em; }
-#svNsky .ns-go [data-ns][hidden]{ display: none; }
-#saver.nsky.quiet #svNsky .ns-go [data-ns]{ color: #9A8C76; border-color: rgba(154,140,118,.38); background: rgba(8,12,30,.3); } /* 잠자기 30분 전에도 남기되(부모 요청) 시계처럼 어둡게 */
+/* v195: 밤하늘의 홈 단추 — 다른 모든 화면과 같은 '루아 동그라미'를 같은 자리(왼쪽 위)에 둔다. 아이는 모양과 자리로 홈을 안다.
+   네모 글자 단추 넷(v193)은 홈 화면에 이미 있는 탭과 겹치고 밤하늘을 시끄럽게 해서 뺐다(부모 의견). 누르는 자리는 보이는 원보다 넓게. */
+#svNsky .ns-home{ position: absolute; left: 48px; top: 40px; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 3;
+  color: rgba(242,232,210,.92); background: rgba(255,255,255,.10); box-shadow: inset 0 0 0 1px rgba(255,255,255,.22); -webkit-tap-highlight-color: transparent; transition: background .2s ease, transform .12s ease; }
+#svNsky .ns-home::after{ content: ""; position: absolute; inset: -18px; border-radius: 50%; }
+#svNsky .ns-home:active{ transform: scale(.95); background: rgba(255,255,255,.18); }
+#svNsky .ns-home svg.ds-lg{ width: 29px !important; height: 31px !important; transform: translateY(2px); }
+#saver.nsky.quiet #svNsky .ns-home{ color: #9A8C76; background: rgba(255,255,255,.05); box-shadow: inset 0 0 0 1px rgba(154,140,118,.32); }
+#svNsky .ns-clock{ top: 124px; } #svNsky .ns-date{ top: 290px; }   /* 홈 동그라미 자리만큼 시계를 아래로 */
 #saver.nsky.quiet #svNsky .ns-clock b{ color: #B9A88C; }
 #saver.nsky.quiet #svNsky .ns-clock small,#saver.nsky.quiet #svNsky .ns-date{ color: #7C6F5C; }
 /* 밤 화면(잠자는 시각~아침 7시): 저녁 화면과 같은 자리·같은 글꼴, 따뜻하고 아주 어두운 색 */
@@ -1420,7 +1423,7 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
       <section class="fc-t fc-app" data-tile="word"><div class="big ko" id="fcWordN"></div><div class="fc-lab">오늘의 낱말</div><div class="fc-sub" id="fcWordS"></div></section>
       <section class="fc-t fc-app" data-tile="cal"><div class="big" id="fcCalN"></div><div class="fc-lab">달력</div><div class="fc-sub" id="fcCalS"></div></section>
     </div><div class="fc-msg" id="fcMsg" hidden></div></div>
-    <div class="nsky" id="svNsky" hidden><div class="ns-st" id="nsSt"><div class="ns-go" id="nsGo"><div role="button" data-ns="home">홈</div><div role="button" data-ns="news" id="nsGoNews">신문</div><div role="button" data-ns="sci" id="nsGoSci">과학</div><div role="button" data-ns="story" id="nsGoStory">이야기</div></div><div class="ns-chart" id="nsChart"></div><div class="ns-halo" id="nsHalo" hidden></div><canvas class="ns-moon" id="nsMoon" hidden></canvas><svg class="ns-land" viewBox="0 0 1600 820" aria-hidden="true"><path fill="#0A1230" d="M0,820L0,752L16,751L32,750L48,750L64,751L80,751L96,749L112,747L128,745L144,744L160,743L176,744L192,744L208,744L224,744L240,744L256,746L272,748L288,750L304,751L320,751L336,750L352,749L368,748L384,748L400,747L416,745L432,743L448,741L464,740L480,740L496,740L512,740L528,739L544,738L560,736L576,735L592,734L608,733L624,731L640,728L656,725L672,723L688,722L704,722L720,723L736,723L752,723L768,723L784,725L800,727L816,729L832,731L848,732L864,732L880,732L896,732L912,733L928,734L944,735L960,735L976,735L992,736L1008,738L1024,741L1040,743L1056,744L1072,745L1088,744L1104,744L1120,744L1136,744L1152,743L1168,742L1184,740L1200,738L1216,737L1232,738L1248,739L1264,740L1280,741L1296,741L1312,742L1328,743L1344,745L1360,747L1376,748L1392,747L1408,747L1424,746L1440,747L1456,749L1472,751L1488,752L1504,752L1520,753L1536,755L1552,758L1568,761L1584,763L1600,763L1600,820Z"/><path fill="#050919" d="M0,820L0,767L16,765L32,763L48,763L64,762L80,761L96,760L112,759L128,759L144,760L160,761L176,761L192,762L208,761L224,760L240,760L256,760L272,761L288,761L304,761L320,761L336,762L352,763L368,766L384,768L400,770L416,772L432,772L448,773L464,775L480,776L496,777L512,777L528,776L544,775L560,774L576,775L592,775L608,776L624,776L640,776L656,776L672,776L688,777L704,778L720,778L736,777L752,776L768,775L784,774L800,774L816,774L832,774L848,774L864,774L880,775L896,777L912,779L928,780L944,781L960,782L976,782L992,783L1008,783L1024,784L1040,784L1056,783L1072,782L1088,781L1104,781L1120,782L1136,783L1152,783L1168,782L1184,781L1200,781L1216,781L1232,780L1248,780L1264,778L1280,775L1296,772L1312,771L1328,769L1344,768L1360,767L1376,766L1392,765L1408,764L1424,765L1440,766L1456,767L1472,767L1488,766L1504,765L1520,765L1536,765L1552,765L1568,765L1584,765L1600,764L1600,820Z"/></svg><div class="ns-dir" id="nsDir">남</div><div class="ns-clock"><small id="nsAp">밤</small><b id="nsTime"></b></div><div class="ns-date" id="nsDate"></div><div class="ns-one" id="nsOne" hidden><div class="t">요즘 저녁 하늘</div><div class="h" id="nsH"></div><div class="p" id="nsP"></div></div></div></div>
+    <div class="nsky" id="svNsky" hidden><div class="ns-st" id="nsSt"><div class="ns-home" id="nsGo" role="button" aria-label="홈으로" data-ns="home"><svg class="ds-lg" viewBox="96 92 320 344" aria-hidden="true"><path d="M116 112H206V169H116V226H206"/><circle cx="348" cy="169" r="46"/><path d="M128 296C186 366 320 372 386 288"/><circle class="ds-dot" cx="258" cy="412" r="24"/></svg></div><div class="ns-chart" id="nsChart"></div><div class="ns-halo" id="nsHalo" hidden></div><canvas class="ns-moon" id="nsMoon" hidden></canvas><svg class="ns-land" viewBox="0 0 1600 820" aria-hidden="true"><path fill="#0A1230" d="M0,820L0,752L16,751L32,750L48,750L64,751L80,751L96,749L112,747L128,745L144,744L160,743L176,744L192,744L208,744L224,744L240,744L256,746L272,748L288,750L304,751L320,751L336,750L352,749L368,748L384,748L400,747L416,745L432,743L448,741L464,740L480,740L496,740L512,740L528,739L544,738L560,736L576,735L592,734L608,733L624,731L640,728L656,725L672,723L688,722L704,722L720,723L736,723L752,723L768,723L784,725L800,727L816,729L832,731L848,732L864,732L880,732L896,732L912,733L928,734L944,735L960,735L976,735L992,736L1008,738L1024,741L1040,743L1056,744L1072,745L1088,744L1104,744L1120,744L1136,744L1152,743L1168,742L1184,740L1200,738L1216,737L1232,738L1248,739L1264,740L1280,741L1296,741L1312,742L1328,743L1344,745L1360,747L1376,748L1392,747L1408,747L1424,746L1440,747L1456,749L1472,751L1488,752L1504,752L1520,753L1536,755L1552,758L1568,761L1584,763L1600,763L1600,820Z"/><path fill="#050919" d="M0,820L0,767L16,765L32,763L48,763L64,762L80,761L96,760L112,759L128,759L144,760L160,761L176,761L192,762L208,761L224,760L240,760L256,760L272,761L288,761L304,761L320,761L336,762L352,763L368,766L384,768L400,770L416,772L432,772L448,773L464,775L480,776L496,777L512,777L528,776L544,775L560,774L576,775L592,775L608,776L624,776L640,776L656,776L672,776L688,777L704,778L720,778L736,777L752,776L768,775L784,774L800,774L816,774L832,774L848,774L864,774L880,775L896,777L912,779L928,780L944,781L960,782L976,782L992,783L1008,783L1024,784L1040,784L1056,783L1072,782L1088,781L1104,781L1120,782L1136,783L1152,783L1168,782L1184,781L1200,781L1216,781L1232,780L1248,780L1264,778L1280,775L1296,772L1312,771L1328,769L1344,768L1360,767L1376,766L1392,765L1408,764L1424,765L1440,766L1456,767L1472,767L1488,766L1504,765L1520,765L1536,765L1552,765L1568,765L1584,765L1600,764L1600,820Z"/></svg><div class="ns-dir" id="nsDir">남</div><div class="ns-clock"><small id="nsAp">밤</small><b id="nsTime"></b></div><div class="ns-date" id="nsDate"></div><div class="ns-one" id="nsOne" hidden><div class="t">요즘 저녁 하늘</div><div class="h" id="nsH"></div><div class="p" id="nsP"></div></div></div></div>
     <div class="sv-inner">
       <section class="sv-date">
         <div class="sv-top"><span class="sv-mon" id="svMon"></span> <span class="sv-day" id="svDay"></span> <span class="sv-dow" id="svDow"></span></div>
@@ -1467,13 +1470,13 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v194</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v195</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v194</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v195</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2357,7 +2360,6 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (!skyReady()) return ''; const dk = nsDark(); if (dk == null || m < dk) return '';
     return m >= b - 30 ? 'quiet' : 'eve'; }
   function renderNsky(ph) {
-    try { $('nsGoNews').hidden = !(news && newsFresh()); const sp = sciPiece(), lp = piece(); $('nsGoSci').hidden = !(sp && sp.page); $('nsGoStory').hidden = !(lp && lp.page); } catch (e) {}
     const d = new Date(), st = $('nsSt'), sc = Math.min(innerWidth / 1600, innerHeight / 820), o5 = [[0, 0], [4, 2], [-3, 4], [2, -4], [-4, -2], [3, 3]][Math.floor(Date.now() / 300e3) % 6];
     st.style.transform = `translate(${((innerWidth - 1600 * sc) / 2 + o5[0]).toFixed(1)}px, ${((innerHeight - 820 * sc) / 2 + o5[1]).toFixed(1)}px) scale(${sc.toFixed(4)})`; // 화면 자국 방지: 5분마다 몇 px씩
     const h = d.getHours(), mm = d.getMinutes(); $('nsTime').textContent = `${h % 12 || 12}:${String(mm).padStart(2, '0')}`; $('nsAp').textContent = h >= 18 || h < 4 ? '밤' : h < 12 ? '아침' : '오후';
@@ -2444,12 +2446,8 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     svAct(d);
   }, true);
   function svAct(d) {
-    { const ng = d.el && d.el.closest && d.el.closest('[data-ns]'); if (ng && saverEl.classList.contains('nsky')) { svTaps = []; const k = ng.dataset.ns; diag('saver', '밤하늘 → ' + k); // v193
-        if (k === 'home') { window.__gkForce = { s: 'face', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); }
-        else if (k === 'news') { if (news) { exitSaver(true); if (saverEl.hidden) openPaper(0); } }
-        else if (k === 'sci') { const pc = sciPiece(); if (pc && pc.page) pieceOpen(pc); }
-        else if (k === 'story') { const pc = piece(); if (pc && pc.page) pieceOpen(pc); }
-        return; } }
+    { const ng = d.el && d.el.closest && d.el.closest('[data-ns]'); if (ng && saverEl.classList.contains('nsky')) { svTaps = []; diag('saver', '밤하늘 → 홈'); // v193·v195: 밤하늘 왼쪽 위 루아 동그라미 = 홈(10분 뒤 다시 밤하늘)
+        window.__gkForce = { s: 'face', at: Date.now() }; window.__gkSaverAt = Date.now(); renderSaver(); return; } }
     if (d.el && d.el.closest && d.el.closest('#pgSub, .ds-clock')) { svTaps = []; if (saverEl.classList.contains('rnp')) { delete window.__gkForce; window.__gkSaverAt = Date.now(); renderSaver(); } else goHome(); diag('saver', '시계 → 홈'); return; } // v186: 어느 화면이든 오른쪽 위 시계를 누르면 홈
     diag('saver', '톡: ' + (d.cv ? '탭 ' + d.cv : d.tile || d.np || (d.todo ? '할 일' : '빈 곳')) + ' · 폭 ' + innerWidth + ' · ' + (news ? '신문 ' + news.date + (newsFresh() ? '' : ' (지난 신문)') : '신문 없음')); // v129: 전화에서 신문이 안 열리는 원인 찾기
     if (d.todo) { todoToggle(d.todo); return; }
@@ -3924,7 +3922,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v194';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v195';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
