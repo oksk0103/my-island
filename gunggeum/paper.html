@@ -4,61 +4,337 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>루아 신문 종이판</title>
-<!-- v185: 루아 신문 종이판(A4 두 장). 부모님 화면 '종이 신문'과 매일 아침 자동 인쇄(tools/paper-render.js → news/paper/)가 이 파일을 쓴다 -->
+<!-- 루아 신문 종이판(A4 두 장, 컬러). 부모님 화면 '종이 신문'과 매일 아침 자동 인쇄(tools/paper-render.js → paper 가지)가 이 파일을 쓴다.
+     화면판과 따로 짠다: 1면 = 머리기사·둘째 기사·짧은 소식, 2면 = 셋째 기사·오늘의 낱말·놀이터(낱말 찾기·미로·스도쿠).
+     놀이는 날짜를 씨앗으로 이 파일이 만든다(점수·정답 맞히기 없음, 낱말 찾기 답만 작게). -->
 <style>
 @font-face{font-family:"MaruBuri";src:url("fonts/MaruBuri-Regular.woff2") format("woff2");font-weight:400}
 @font-face{font-family:"MaruBuri";src:url("fonts/MaruBuri-SemiBold.woff2") format("woff2");font-weight:600}
 @font-face{font-family:"MaruBuri";src:url("fonts/MaruBuri-Bold.woff2") format("woff2");font-weight:700}
 @font-face{font-family:"Pretendard";src:url("fonts/PretendardVariable.woff2") format("woff2");font-weight:100 900}
 @page{size:A4;margin:0}
-:root{--ink:#141414;--ink2:#4a4a4a;--rule:#141414}
+:root{--ink:#16181F;--ink2:#555A66;--navy:#2C4287;--navy2:#18254E;--apricot:#D9822B;--cream:#F6F0E2;--sky:#E9EDF8;--rule:#16181F}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:var(--ink)}
 body{font-family:"MaruBuri","Noto Serif KR",serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.page{width:210mm;height:297mm;padding:11mm 12mm 10mm;overflow:hidden;position:relative;word-break:keep-all;overflow-wrap:break-word;break-after:page;display:flex;flex-direction:column}
+body.ink{filter:grayscale(1)}
+.page{width:210mm;height:297mm;padding:10mm 11mm 8mm;overflow:hidden;position:relative;word-break:keep-all;overflow-wrap:break-word;break-after:page;display:flex;flex-direction:column}
 .page:last-child{break-after:auto}
 @media screen{body{background:#8a8a8a;padding:8mm 0}.page{background:#fff;margin:0 auto 8mm;box-shadow:0 2mm 8mm rgba(0,0,0,.35)}}
-.mast img{height:20mm;display:block;margin:0 auto 2mm}
-.meta{display:flex;justify-content:space-between;align-items:baseline;border-top:.6mm solid var(--rule);border-bottom:.25mm solid var(--rule);padding:1.4mm 0 1.2mm;font-family:"Pretendard",sans-serif;font-size:9.5pt}
-.meta b{font-weight:700}
-.dbl{height:1.2mm;border-bottom:.25mm solid var(--rule);margin-bottom:4mm}
-.run{display:flex;justify-content:space-between;font-family:"Pretendard",sans-serif;font-size:9pt;border-bottom:.6mm solid var(--rule);padding-bottom:1.4mm;margin-bottom:5mm}
-.run b{font-family:"MaruBuri",serif;font-size:12pt}
-.tag{font-family:"Pretendard",sans-serif;font-size:9.5pt;font-weight:700;letter-spacing:.14em;margin:0 0 1.4mm}
-h1,h2{font-weight:700;margin:0;line-height:1.18;letter-spacing:-.02em;text-wrap:balance}
-h1{font-size:28pt;margin-bottom:2.2mm}
-h2{font-size:21pt;margin-bottom:2mm}
-.lede{font-weight:600;font-size:12.5pt;line-height:1.45;margin:0 0 3mm}
-.body{column-count:3;column-gap:5.5mm;column-rule:.2mm solid #aaa}
-.body p{font-size:11pt;line-height:1.6;margin:0 0 1.6mm;text-indent:1em}
+.sans{font-family:"Pretendard",sans-serif}
+
+/* 제호 */
+.mast img{height:16mm;display:block;margin:0 auto 1.6mm}
+.meta{display:flex;justify-content:space-between;align-items:baseline;border-top:.7mm solid var(--rule);border-bottom:.25mm solid var(--rule);padding:1.3mm 0 1.1mm;font-family:"Pretendard",sans-serif;font-size:9.5pt}
+.meta b{font-weight:700;color:var(--navy)}
+.dbl{height:1.1mm;border-bottom:.25mm solid var(--rule);margin-bottom:3mm}
+.run{display:flex;justify-content:space-between;align-items:baseline;font-family:"Pretendard",sans-serif;font-size:9pt;border-bottom:.7mm solid var(--rule);padding-bottom:1.3mm;margin-bottom:4mm}
+.run b{font-family:"MaruBuri",serif;font-size:13pt}
+
+/* 기사 */
+.tag{display:inline-block;font-family:"Pretendard",sans-serif;font-size:8.5pt;font-weight:700;letter-spacing:.1em;color:#fff;background:var(--navy);padding:.5mm 2.2mm .6mm;margin:0 0 1.6mm}
+h1,h2{font-weight:700;margin:0;line-height:1.16;letter-spacing:-.025em;text-wrap:balance}
+h1{font-size:25pt;margin-bottom:1.6mm}
+h2{font-size:18pt;margin-bottom:1.4mm}
+.lede{font-weight:600;font-size:12pt;line-height:1.45;margin:0 0 2.6mm;color:var(--navy2)}
+.body{column-gap:5mm;column-rule:.2mm solid #b9bcc6}
+.body p{font-size:10.2pt;line-height:1.5;margin:0 0 1.4mm;text-indent:1em}
 .body p:first-child{text-indent:0}
-.body b{font-weight:700;border-bottom:.3mm solid var(--ink)}
-.src{font-family:"Pretendard",sans-serif;font-size:8pt;color:var(--ink2);margin:1.4mm 0 0}
+.body b{font-weight:700;background:linear-gradient(transparent 62%,#F7D9A8 62%)}
+.src{font-family:"Pretendard",sans-serif;font-size:7.5pt;color:var(--ink2);margin:1mm 0 0}
 figure{margin:0}
 figure img{width:100%;display:block}
-figcaption{font-family:"Pretendard",sans-serif;font-size:8.5pt;color:var(--ink2);margin-top:1.2mm}
-.lead{padding-bottom:4.4mm;border-bottom:.25mm solid var(--rule)}
-.lead .row{display:grid;grid-template-columns:1fr 54mm;gap:0 6mm}
+figcaption{font-family:"Pretendard",sans-serif;font-size:8pt;color:var(--ink2);margin-top:1mm}
+
+/* 1면 */
+.p1{flex:1;display:grid;grid-template-columns:1fr 50mm;gap:0 5mm;min-height:0}
+.main{display:flex;flex-direction:column;min-width:0}
+.lead{padding-bottom:2.8mm;border-bottom:.25mm solid var(--rule)}
+.lead .pic{display:grid;grid-template-columns:1fr 43mm;gap:0 5mm;align-items:center;margin-bottom:2mm}
+.lead .lede{font-size:14pt;line-height:1.45;margin:0}
+.lead .lede::before{content:'';display:block;width:12mm;height:.9mm;background:var(--apricot);margin-bottom:3mm}
+.sidenum{margin:0}
+.lead .num{margin:0;text-align:left;padding:1.6mm 0 1.8mm}
+.lead .num strong{font-size:22pt}
+.lead .pic .lede{font-size:15pt;line-height:1.5;margin:0;padding:0}
+.lead .pic .lede::before{content:'';display:block;width:14mm;height:.9mm;background:var(--apricot);margin-bottom:3mm}
+.num{border-top:.7mm solid var(--navy);border-bottom:.25mm solid var(--navy);padding:2.4mm 0;text-align:center;margin-bottom:3mm}
+.num em{display:block;font-style:normal;font-family:"Pretendard",sans-serif;font-size:8pt;font-weight:800;letter-spacing:.14em;margin-bottom:1.6mm}
+.num strong{display:block;font-size:28pt;font-weight:700;line-height:1;letter-spacing:-.02em;color:var(--navy)}
+.num span{display:block;font-family:"Pretendard",sans-serif;font-size:8pt;color:var(--ink2);margin-top:1.2mm;line-height:1.35}
 .lead .body{column-count:2}
-.num{border-top:.6mm solid var(--rule);border-bottom:.25mm solid var(--rule);padding:2.4mm 0;margin-top:4mm;text-align:center}
-.num strong{display:block;font-size:32pt;font-weight:700;line-height:1;letter-spacing:-.02em}
-.num span{font-family:"Pretendard",sans-serif;font-size:9pt;color:var(--ink2)}
-.sec{padding:4.4mm 0;border-bottom:.25mm solid var(--rule)}
-.sec .top{display:grid;grid-template-columns:1fr 70mm;gap:0 6mm;align-items:center;margin-bottom:3mm}
-.page:first-child .sec .top{grid-template-columns:1fr 44mm}
-.page:first-child .sec{border-bottom:0;padding-bottom:0}
-.sec .top .lede{margin:0}
-.words{padding-top:4mm}
-.words h3{font-family:"Pretendard",sans-serif;font-size:9.5pt;font-weight:700;letter-spacing:.14em;margin:0 0 2.6mm}
-.wrow{display:grid;grid-template-columns:repeat(3,1fr);gap:0 6mm}
-.w+.w{border-left:.2mm solid #999;padding-left:6mm}
-.w .g{font-size:24pt;font-weight:700;line-height:1.1}
-.w .hj{font-size:10pt;margin:1.4mm 0 1.4mm;color:var(--ink2)}
-.w .hj span{font-size:14pt;color:var(--ink);font-family:"Noto Serif KR","Noto Serif CJK KR",serif;margin-right:.6mm}
-.w .m{font-size:11pt;line-height:1.5}
-.grow{flex:1}
-body.ink{filter:grayscale(1)}
-.foot{border-top:.6mm solid var(--rule);padding-top:1.4mm;font-family:"Pretendard",sans-serif;font-size:7.5pt;color:var(--ink2);display:flex;justify-content:space-between}
+.second{padding-top:2.8mm}
+.second .body{column-count:2}
+.pic2{display:grid;grid-template-columns:1fr 36mm;gap:0 5mm;align-items:center;margin-bottom:1.6mm}
+.pic2 .lede{font-size:13pt;margin:0}
+.side{background:var(--cream);padding:3.4mm 3.6mm;display:flex;flex-direction:column}
+.side h3{font-family:"Pretendard",sans-serif;font-size:9.5pt;font-weight:800;letter-spacing:.14em;margin:0 0 2.4mm;padding-bottom:1.6mm;border-bottom:.6mm solid var(--ink)}
+.brief{padding:0 0 2.3mm;margin-bottom:2.3mm;border-bottom:.2mm solid #b8ad92}
+.brief:last-of-type{border-bottom:0;margin-bottom:0}
+.brief .k{font-family:"Pretendard",sans-serif;font-size:8pt;font-weight:700;color:var(--apricot);letter-spacing:.08em}
+.brief h4{font-size:12.5pt;font-weight:700;line-height:1.25;margin:.6mm 0 1.2mm;letter-spacing:-.02em}
+.bimg{display:block;width:44%;margin:0 auto 1.4mm;mix-blend-mode:multiply}
+.brief p{font-size:9.8pt;line-height:1.52;margin:0}
+.brief .s{font-family:"Pretendard",sans-serif;font-size:7pt;color:var(--ink2);margin-top:.8mm}
+.side .fill{flex:1}
+.inside{border-top:.6mm solid var(--ink);padding-top:1.8mm;font-family:"Pretendard",sans-serif;font-size:8.5pt;line-height:1.5}
+.inside b{display:block;font-size:8pt;letter-spacing:.12em;margin-bottom:.6mm}
+
+/* 2면 */
+.third{padding-bottom:3.4mm;border-bottom:.25mm solid var(--rule)}
+.third .top{display:grid;grid-template-columns:1fr 58mm;gap:0 5mm;align-items:start}
+.third .body{column-count:2}
+.words{padding:3mm 0 3.2mm;border-bottom:.25mm solid var(--rule)}
+.hd{font-family:"Pretendard",sans-serif;font-size:9.5pt;font-weight:800;letter-spacing:.14em;margin:0 0 2mm}
+.wrow{display:grid;grid-template-columns:repeat(3,1fr);gap:0 5mm}
+.w{display:grid;grid-template-columns:auto 1fr;gap:0 3mm;align-items:start}
+.w+.w{border-left:.2mm solid #b9bcc6;padding-left:5mm}
+.w .g{font-size:21pt;font-weight:700;line-height:1.05;color:var(--navy)}
+.w .hj{font-size:9pt;color:var(--ink2);margin-bottom:.8mm}
+.w .hj span{font-size:13pt;color:var(--ink);font-family:"Noto Serif KR","Noto Serif CJK KR",serif;margin-right:.5mm}
+.w .m{font-size:10pt;line-height:1.42}
+.play{flex:1;padding-top:3mm;display:flex;flex-direction:column;min-height:0}
+.play .hd{display:flex;align-items:baseline;gap:3mm}
+.play .hd small{font-weight:500;letter-spacing:0;color:var(--ink2);font-size:8.5pt}
+.spot{display:grid;grid-template-columns:1fr 1fr;gap:0 5mm;margin-bottom:2.6mm}
+.spot svg{width:100%;height:39mm;display:block}
+.spot span{display:block;font-family:"Pretendard",sans-serif;font-size:8pt;color:var(--ink2);margin-top:.6mm}
+.games{flex:1;display:grid;grid-template-columns:67mm 1fr 37mm;gap:0 5mm;min-height:0}
+.game{display:flex;flex-direction:column;min-height:0}
+.game h4{font-family:"Pretendard",sans-serif;font-size:10.5pt;font-weight:800;margin:0 0 .8mm;color:var(--navy)}
+.game p{font-family:"Pretendard",sans-serif;font-size:8.6pt;line-height:1.35;margin:0 0 1.6mm;color:var(--ink)}
+.wsrow{display:flex;gap:3mm;align-items:flex-start}
+.ws{width:41mm;flex:none;display:grid;grid-template-columns:repeat(8,1fr);border:.5mm solid var(--navy);background:var(--sky)}
+.ws i{font-style:normal;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:"Pretendard",sans-serif;font-weight:600;font-size:10pt;border-right:.15mm solid #c3cbe2;border-bottom:.15mm solid #c3cbe2}
+.wl{display:flex;flex-direction:column;gap:.7mm;align-items:flex-start}
+.wl span{font-family:"Pretendard",sans-serif;font-size:8.3pt;white-space:nowrap;font-weight:600;border:.25mm solid var(--navy);border-radius:3mm;padding:.3mm 2mm .4mm}
+.maze{height:41mm;display:flex}
+.maze svg{width:100%;height:100%}
+.sd{display:grid;grid-template-columns:repeat(4,1fr);border:.6mm solid var(--navy);width:100%}
+.sd i{font-style:normal;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:"Pretendard",sans-serif;font-weight:700;font-size:15pt;border-right:.15mm solid #9aa5c8;border-bottom:.15mm solid #9aa5c8;color:var(--navy2)}
+.sd i:nth-child(4n+2){border-right:.5mm solid var(--navy)} .sd i:nth-child(n+5):nth-child(-n+8){border-bottom:.5mm solid var(--navy)}
+.sd i.e{background:#fff} .sd i:not(.e){background:var(--sky)}
+.ch{display:flex;flex-direction:column;gap:1.6mm}
+.ch b,.ch i{display:flex;align-items:center;height:8.5mm;border:.3mm solid var(--navy);border-radius:2mm;padding:0 3mm;font-family:"Pretendard",sans-serif;font-style:normal;font-size:12pt;font-weight:700}
+.ch b{background:var(--sky);color:var(--navy2)}
+.ch i::before{content:'→';color:#9aa5c8;font-weight:500}
+.ans{font-family:"Pretendard",sans-serif;font-size:6.5pt;color:#8a8f9c;margin-top:1.6mm;transform:rotate(180deg);text-align:left;line-height:1.35}
+.foot{border-top:.7mm solid var(--rule);padding-top:1.2mm;margin-top:3mm;font-family:"Pretendard",sans-serif;font-size:7.5pt;color:var(--ink2);display:flex;justify-content:space-between}
+
+/* ===== 세 장 판: 1면 머리기사·짧은 소식·낱말 / 2면 기사 둘 / 3면 생각과 놀이 ===== */
+.body p{font-size:11pt;line-height:1.6}
+.lead{border-bottom:0;padding-bottom:0}
+.lead .pic{grid-template-columns:1fr 74mm;margin-bottom:4mm}
+.lead .lw .num{margin-top:5mm;text-align:left;padding:2mm 0}
+.lead .body p{font-size:11.8pt;line-height:1.68}
+.lead .lede{font-size:16pt}
+.p1b{border-top:.25mm solid var(--rule);margin-top:3.4mm}
+.p1b .words{border-bottom:0;padding-bottom:0}
+.half{flex:1;min-height:0;padding:0 0 4mm}
+.half+.half{border-top:.25mm solid var(--rule);padding-top:4mm}
+.half .hrow{display:grid;grid-template-columns:1fr 50mm;gap:0 6mm;align-items:center;margin-bottom:3mm}
+.half .hrow .lede{font-size:14.5pt;line-height:1.5;margin:0}
+.half h2{font-size:21pt;margin-bottom:2mm}
+.half{display:flex;flex-direction:column;justify-content:center}
+.half .tag{align-self:flex-start}
+.half .body{column-count:3}
+.p3h{display:flex;align-items:baseline;gap:3mm;margin:0 0 2.4mm}
+.p3h b{font-family:"Pretendard",sans-serif;font-size:11pt;font-weight:800;letter-spacing:.14em}
+.p3h small{font-family:"Pretendard",sans-serif;font-size:9pt;color:var(--ink2)}
+.think{display:grid;grid-template-columns:1fr 1fr;gap:0 6mm;padding-bottom:4mm;border-bottom:.25mm solid var(--rule)}
+.tk h4{font-family:"Pretendard",sans-serif;font-size:12pt;font-weight:800;color:var(--navy);margin:0 0 1mm}
+.tk p{font-family:"Pretendard",sans-serif;font-size:9.6pt;line-height:1.45;margin:0 0 2mm}
+.tk .q{font-family:"MaruBuri",serif;font-size:13pt;font-weight:700;line-height:1.4;margin:0 0 2.4mm}
+.wline{height:11mm;border-bottom:.3mm solid #9aa5c8;display:flex;align-items:flex-end;font-size:12pt;color:var(--ink2);padding-bottom:1.2mm}
+.sides{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin-bottom:1mm}
+.sides div{border:.35mm solid var(--navy);border-radius:2.5mm;padding:2mm 2.6mm 2.2mm;background:var(--sky)}
+.sides div+div{background:var(--cream);border-color:#B98A3A}
+.sides b{display:flex;align-items:center;gap:2mm;font-family:"Pretendard",sans-serif;font-size:10.5pt;font-weight:800}
+.sides b::before{content:'';width:4.4mm;height:4.4mm;border:.4mm solid currentColor;border-radius:50%;background:#fff;flex:none}
+.sides span{display:block;font-family:"Pretendard",sans-serif;font-size:8.8pt;line-height:1.4;margin-top:1mm}
+.play3{flex:1;min-height:0;padding-top:3.4mm;display:flex;flex-direction:column}
+.play3 .spot svg{height:56mm}
+.g2{flex:1;min-height:0;display:grid;grid-template-columns:86mm 1fr;gap:0 7mm}
+.g2 .ws{width:58mm}
+.g2 .ws i{font-size:14pt}
+.g2 .wl span{font-size:10pt}
+.g2 .wl{gap:1.2mm}
+.g2 .maze{height:auto;flex:1}
+.endrow{display:grid;grid-template-columns:1fr 34mm;gap:0 6mm;align-items:end;border-top:.25mm solid var(--rule);padding-top:3mm;margin-top:3mm}
+.endrow .say b{font-family:"Pretendard",sans-serif;font-size:9.5pt;font-weight:800;letter-spacing:.1em}
+.endrow .say .wline{height:10mm}
+.stk{display:flex;flex-direction:column;align-items:center;gap:1mm;font-family:"Pretendard",sans-serif;font-size:8pt;color:var(--ink2)}
+.stk i{width:24mm;height:24mm;border:.4mm dashed #9aa5c8;border-radius:50%;display:block}
+
+
+/* ===== 조판 A안: 고정 격자에 글을 붓고, 그림 높이가 남는 자리를 먹는다 ===== */
+.page{--u:6.2mm}
+.colv{overflow:hidden}
+.flow p{margin:0;text-indent:1em;font-size:var(--fs,11pt);line-height:var(--u)}
+.flow p:first-child{text-indent:0}
+.flow b{font-weight:700;background:linear-gradient(transparent 62%,#F7D9A8 62%)}
+.cell{position:relative;min-width:0}
+.cell.r::before,.fg.r::before{content:'';position:absolute;left:-2.5mm;top:1.3mm;bottom:0;border-left:.2mm solid #b9bcc6}
+.fg{position:relative;margin:0}
+.fg .crop{overflow:hidden;margin-top:1.3mm;background:#fff}
+.fg .crop img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.1)}
+.fg figcaption{height:5mm;margin:0;padding-top:1.1mm;line-height:3.6mm;font-size:8pt;overflow:hidden}
+.srcl{font-family:"Pretendard",sans-serif;font-size:7.5pt;color:var(--ink2);margin:0;height:var(--u);line-height:var(--u);text-align:right}
+.deck{font-weight:600;color:var(--navy2);margin:0;letter-spacing:-.01em;text-wrap:balance}
+
+/* 1면 */
+.p1{grid-template-columns:1fr 55mm}
+.lead{border:0;padding:0;flex:1;min-height:0;display:flex;flex-direction:column}
+.lead h1{font-size:27pt;margin-bottom:2.2mm}
+.lead .deck{font-size:15pt;line-height:1.42;padding-bottom:1.2mm}
+.lead .deck::before{content:'';display:inline-block;width:9mm;height:.9mm;background:var(--apricot);vertical-align:.32em;margin-right:2.4mm}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:0 5mm}
+.lead .num{margin:0;padding:0;display:flex;flex-direction:column;justify-content:center;text-align:left;border-top:.7mm solid var(--navy);border-bottom:.25mm solid var(--navy)}
+.lead .num div{display:flex;align-items:baseline;gap:3mm}
+.lead .num em{margin:0 0 1.4mm}
+.lead .num strong{font-size:27pt;flex:none}
+.lead .num span{font-size:9pt;margin:0;line-height:1.35;color:var(--ink)}
+.side{padding:3.2mm 3.6mm 2.6mm;justify-content:space-between;min-height:0}
+.side h3{margin-bottom:0}
+.brief{margin:0;padding:0;border:0}
+.side hr{border:0;border-top:.2mm solid #b8ad92;margin:0;width:100%}
+.brief h4{font-size:13pt;margin:.5mm 0 1mm}
+.brief p{font-size:10.5pt;line-height:1.5}
+.brief.haspic{flex:0 1 auto;display:flex;flex-direction:column;min-height:0}
+.bimg{width:62%;flex:0 1 24mm;min-height:12mm;object-fit:cover;margin:0 auto 1mm}
+.idx{border-top:.6mm solid var(--ink);padding-top:1.6mm;font-family:"Pretendard",sans-serif}
+.idx b{display:block;font-size:8.5pt;font-weight:800;letter-spacing:.14em;margin-bottom:1mm}
+.idx div{display:flex;gap:2mm;align-items:baseline;font-size:9.5pt;line-height:1.5}
+.idx i{font-style:normal;font-weight:800;color:var(--navy);flex:none}
+.p1b{margin-top:3mm}
+.p1b .words{padding-top:2.4mm}
+
+/* 2면 */
+.p2{flex:1;min-height:0;display:flex;flex-direction:column}
+.mod .tag{margin-bottom:1.4mm}
+.mod h2{font-size:23pt;margin:0 0 1.6mm}
+.mod.sub h2{font-size:20pt}
+.mod .deck{font-size:13.5pt;line-height:1.4;padding-bottom:1.2mm}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0 5mm}
+.sep{border-top:.25mm solid var(--rule)}
+.p2{box-sizing:border-box}
+
+/* 3면: 빈 띠를 놀이판 크기로 메운다 */
+.play3 .spot svg{height:auto}
+.play3 .spot{margin-bottom:4mm}
+.think .wline{height:12.5mm}
+.think{padding-bottom:5mm}
+.g2{grid-template-columns:92mm 1fr;gap:0 6mm}
+.g2 .ws{width:66mm}
+.g2 .ws i{font-size:15pt}
+.g2 .maze{flex:none;height:auto}
+.g2 .maze svg{height:auto}
+/* ===== C안: 3면 놀이 ===== */
+.play3 .spot svg{height:auto;aspect-ratio:202/126}
+.play3 .spot{margin-bottom:3mm}
+.g2{grid-template-columns:92mm 1fr;gap:0 6mm}
+.g2 .ws{width:68mm}
+.g2 .ws i{font-size:13pt}
+.g2 .wl span{font-size:9.6pt}
+.dots{flex:1;min-height:0;display:flex;border:.35mm solid var(--navy2);border-radius:1.6mm;background:#FBFAF5}
+.dots svg{width:100%;height:100%}
+
+/* ===== C안 3라운드: 3면 = 논술 두 줄 + 큰 놀이 1 + 작은 놀이 1. 가는 괘선, 미색 바탕, 살구·남색만. ===== */
+.think3{display:grid;grid-template-columns:1fr 1.3fr;gap:0 8mm;padding-bottom:4mm;border-bottom:.25mm solid var(--rule)}
+.think3>div{display:flex;flex-direction:column}
+.think3 .wr{margin-top:auto}
+.think3 h4,.big h4,.small h4{font-family:"Pretendard",sans-serif;font-size:11.5pt;font-weight:800;color:var(--navy);margin:0 0 .8mm}
+.think3 p,.big>p,.small>p{font-family:"Pretendard",sans-serif;font-size:9.4pt;line-height:1.45;margin:0 0 1.6mm;color:var(--ink)}
+.think3 .q{font-size:13pt;font-weight:700;line-height:1.4;margin:0 0 2mm}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:0 6mm;border-top:.2mm solid var(--ink);border-bottom:.2mm solid var(--ink);padding:1.8mm 0 2mm;margin-bottom:1.8mm}
+.pair b{display:flex;align-items:center;gap:2mm;font-family:"Pretendard",sans-serif;font-size:10.5pt;font-weight:800}
+.pair b::before{content:'';width:4.6mm;height:4.6mm;border:.3mm solid var(--ink);border-radius:50%;background:#fff;flex:none}
+.pair span{display:block;font-family:"Pretendard",sans-serif;font-size:8.8pt;line-height:1.4;margin-top:.8mm}
+.wr{height:12mm;border-bottom:.25mm solid var(--ink2);display:flex;align-items:flex-end;font-size:12pt;color:var(--ink2);padding-bottom:1.2mm}
+.big{flex:1;min-height:0;display:flex;flex-direction:column;padding:3.4mm 0 3mm;border-bottom:.25mm solid var(--rule)}
+.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:9mm}
+.stage svg{display:block;flex:none}
+.cap{display:flex;flex-direction:column;gap:1.2mm}
+.cap span,.exb span{font-family:"Pretendard",sans-serif;font-size:8.4pt;font-weight:700;letter-spacing:.08em;color:var(--ink2)}
+.exb{display:flex;flex-direction:column;gap:1.2mm}
+.s-flow{gap:7mm;align-items:center}
+.low{display:grid;grid-template-columns:1fr 46mm;gap:0 8mm;padding-top:3.4mm}
+.small{display:flex;flex-direction:column;height:80mm}
+.small .stage{justify-content:flex-start;gap:5mm}
+.par{display:flex;flex-direction:column;justify-content:flex-end}
+.par b{font-family:"Pretendard",sans-serif;font-size:9pt;font-weight:800;letter-spacing:.1em}
+.par .wr{height:10.5mm}
+.stk3{display:flex;flex-direction:column;align-items:center;gap:1mm;font-family:"Pretendard",sans-serif;font-size:8pt;color:var(--ink2);margin-bottom:auto}
+.stk3 i{width:29mm;height:29mm;border:.3mm dashed var(--ink2);border-radius:50%;display:block}
+.ws3{width:66mm;flex:none;display:grid;grid-template-columns:repeat(8,1fr);border:.3mm solid var(--ink);background:var(--cream)}
+.ws3 i{font-style:normal;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-family:"Pretendard",sans-serif;font-weight:600;font-size:14pt;border-right:.12mm solid #B8AD92;border-bottom:.12mm solid #B8AD92}
+.ws3 i:nth-child(8n){border-right:0}.ws3 i:nth-last-child(-n+8){border-bottom:0}
+.wl3{display:flex;flex-direction:column;align-self:flex-start;border-top:.2mm solid var(--ink)}
+.wl3 span{font-size:12pt;font-weight:700;padding:1.5mm 5mm 1.5mm .5mm;border-bottom:.2mm solid #B8AD92;white-space:nowrap}
+.two{display:flex;gap:12mm}
+.cip{display:flex;flex-direction:column;align-items:center;gap:5mm;width:100%}
+.ctab{display:flex;border-top:.25mm solid var(--ink);border-bottom:.25mm solid var(--ink);padding:1.6mm 0 1mm}
+.ctab i{font-style:normal;display:flex;flex-direction:column;align-items:center;gap:.8mm;width:11.4mm}
+.ctab b{font-family:"Pretendard",sans-serif;font-size:13pt;font-weight:700}
+.crow{display:flex;gap:16mm;justify-content:center}
+.cw{display:flex;gap:2.4mm}
+.cw i{font-style:normal;display:flex;flex-direction:column;align-items:center;gap:1.6mm;width:25mm}
+.cw u{text-decoration:none;display:flex;gap:.7mm;height:7mm}
+.cw s{text-decoration:none;display:block;width:19mm;height:19mm;border:.25mm solid var(--ink);background:#fff}
+/* ===== C안 4라운드: 기사 그림 놀이, 주말판(놀이 셋) ===== */
+.s-jigsaw{gap:10mm}
+.jgref{display:flex;flex-direction:column;gap:1.4mm}
+.jgref span{font-family:"Pretendard",sans-serif;font-size:8.4pt;font-weight:700;letter-spacing:.08em;color:var(--ink2)}
+.jgr{display:grid;border-top:.25mm solid var(--ink);border-left:.25mm solid var(--ink)}
+.jgr i{font-style:normal;display:flex;align-items:center;justify-content:center;font-size:12pt;font-weight:700;background:var(--cream);border-right:.25mm solid var(--ink);border-bottom:.25mm solid var(--ink)}
+.jgt{display:grid;gap:3.2mm}
+.jgt i{display:block;position:relative;background-repeat:no-repeat;box-shadow:0 0 0 .2mm var(--ink)}
+.jgt b{position:absolute;right:1.2mm;bottom:1.2mm;width:8.6mm;height:8.6mm;border-radius:50%;background:#fff;border:.25mm solid var(--ink)}
+.lpw{display:grid;grid-template-columns:5.5mm auto;grid-template-rows:5.5mm auto;font-family:"Pretendard",sans-serif;font-size:9.5pt;font-weight:700}
+.lpc{grid-column:2;display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+.lpr{grid-row:2;display:grid;grid-template-rows:repeat(3,1fr);align-items:center}
+.lpi{grid-column:2;grid-row:2;position:relative;background-repeat:no-repeat;box-shadow:0 0 0 .2mm var(--ink)}
+.lns{display:grid;grid-template-columns:auto auto;gap:3.6mm 7mm}
+.ln{display:flex;flex-direction:column;align-items:center;gap:1.6mm}
+.ln i{display:block;border-radius:50%;border:.3mm solid var(--ink);background-repeat:no-repeat}
+.ln b{width:17mm;height:8mm;border:.25mm solid var(--ink);background:#fff}
+.sw{display:inline-block;width:3mm;height:3mm;vertical-align:-.3mm;margin:0 .4mm}
+.s-color{gap:12mm}
+.spot4{display:grid;grid-template-columns:1fr 1fr;gap:5mm;width:100%}
+.spot4 svg{width:100%;height:auto}
+.dots4{width:116mm;border:.25mm solid var(--ink);background:var(--cream)}
+.dots4 svg{width:100%;height:auto;display:block}
+.bg{display:grid;grid-template-columns:repeat(3,25mm);border-top:.25mm solid var(--ink);border-left:.25mm solid var(--ink)}
+.bg i{font-style:normal;height:17mm;display:flex;align-items:center;justify-content:center;font-size:13pt;font-weight:700;background:var(--cream);border-right:.25mm solid var(--ink);border-bottom:.25mm solid var(--ink)}
+.s-bingo{gap:16mm}
+.nh{display:flex;flex-wrap:wrap;gap:5mm 8mm;align-content:center}
+.nh i{font-style:normal;display:flex;align-items:center;gap:1.6mm;border-bottom:.2mm solid var(--ink);padding-bottom:1.6mm}
+.nh b{font-size:17pt;font-weight:700;color:var(--navy);min-width:23mm}
+.nh u{width:8mm;height:8mm;border:.25mm solid var(--ink);background:#fff;text-decoration:none}
+.nh span{font-family:"Pretendard",sans-serif;font-size:9pt}
+.mr{display:flex;flex-direction:column;gap:3.4mm}
+.mr div{display:flex;align-items:center;gap:6mm}
+.mr b{display:inline-block;transform:scaleX(-1);font-size:21pt;font-weight:700;min-width:34mm;text-align:center}
+.mr span{display:flex;gap:1mm}
+.mr u{width:11.5mm;height:11.5mm;border:.25mm solid var(--ink);background:#fff;text-decoration:none}
+.s-stroke{gap:6mm}
+.low2{display:grid;grid-template-columns:1fr 1fr;gap:0 8mm;padding-top:3.4mm}
+.low2 .small{height:71mm}
+.end3{display:grid;grid-template-columns:1fr 30mm;gap:0 8mm;align-items:end;border-top:.25mm solid var(--rule);padding-top:2mm;margin-top:2mm}
+.end3 b{font-family:"Pretendard",sans-serif;font-size:9pt;font-weight:800;letter-spacing:.1em}
+.end3 .wr{height:10.5mm}
+.end3 .stk3{margin:0}
+.end3 .stk3 i{width:28mm;height:28mm}
+/* 덧붙임이 없는 날(paper 없음): 옆 단은 오늘의 낱말, 3면 글쓰기는 한 칸 */
+.side.nobrief{justify-content:flex-start;gap:4mm}
+.side.nobrief .w{display:block}
+.side.nobrief .w .g{font-size:24pt;margin-bottom:1.6mm}
+.side.nobrief .w .hj{margin-bottom:1.2mm}
+.side.nobrief .w .m{font-size:11pt;line-height:1.5}
+.side.nobrief .w+.w{border-left:0;padding-left:0}
+.side.nobrief .idx{margin-top:auto}
+.think3.solo{grid-template-columns:1fr}
+.think3.solo .wr{margin-top:9mm}
 </style>
 </head>
 <body>
@@ -67,34 +343,714 @@ body.ink{filter:grayscale(1)}
 (async () => {
   const q = new URLSearchParams(location.search), want = /^\d{4}-\d{2}-\d{2}$/.test(q.get('d') || '') ? q.get('d') : '';
   const d = await (await fetch('news/' + (want || 'latest') + '.json', { cache: 'no-cache' })).json();
-  if (q.get('ink') === '1') document.body.classList.add('ink'); // 인쇄 파일 만들 때: 회색조
+  if (q.get('ink') === '1') document.body.classList.add('ink');
+  const X = d.paper || {};
   const esc = s => String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const body = t => esc(t).split(/\n+/).filter(Boolean).map(p => '<p>' + p.replace(/《(.+?)》/g, '<b>$1</b>') + '</p>').join('');
-  const dt = new Date(d.date + 'T12:00'); const days = '일월화수목금토';
+  const dt = new Date(d.date + 'T12:00'), days = '일월화수목금토';
   const dateTxt = `${dt.getFullYear()}년 ${dt.getMonth() + 1}월 ${dt.getDate()}일 ${days[dt.getDay()]}요일`;
   const fig = a => a.img ? `<figure><img src="${esc(a.img)}" alt=""><figcaption>그림 · ${esc(a.cap || '')}</figcaption></figure>` : '';
-  const [A, B, C] = d.articles;
-  const head = a => `<p class="tag">${esc(a.tag)}</p>`;
   const src = a => `<p class="src">출처 · ${esc(a.source)}</p>`;
-  const words = d.articles.filter(a => a.word).map(a => `<div class="w"><div class="g">${esc(a.word.w)}</div><div class="hj">${(a.word.hanja || []).map(h => `<span>${esc(h[0])}</span>${esc(h[1])}`).join(' &nbsp;')}</div><div class="m">${esc(a.word.mean)}</div></div>`).join('');
-  const sec = a => a ? `<section class="sec">${head(a)}<h2>${esc(a.title)}</h2><div class="top"><p class="lede">${esc(a.lede)}</p>${fig(a)}</div><div class="body">${body(a.body)}</div>${src(a)}</section>` : '';
+  const [A, B, C] = [...d.articles].sort((a, b) => !a.img - !b.img);   // 그림 없는 기사는 2면 아래로 보낸다
+
+  // ---- 놀이: 날짜를 씨앗으로 늘 같은 판이 나온다 ----
+  let seed = [...d.date].reduce((s, c) => (s * 31 + c.charCodeAt(0)) >>> 0, 7);
+  const rnd = () => { seed ^= seed << 13; seed >>>= 0; seed ^= seed >>> 17; seed ^= seed << 5; seed >>>= 0; return seed / 4294967296; };
+  const pick = a => a[Math.floor(rnd() * a.length)], shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  // 낱말 찾기 8×8: 가로(→)·세로(↓)로만. 빈칸은 흔한 글자로 채우되, 찾을 낱말이 우연히 한 번 더 생기지 않게 확인한다.
+  const N = 8, FILL = '가나다라마바사아자차카타파하고노도로모보소오조초코토포호구누두루무부수우주추기니디리미비시이지치강산들꽃빛숲물불달별눈비'.split('');
+  function wordSearch(words) {
+    words = [...new Set(words.filter(w => w && w.length >= 2 && w.length <= N))].sort((a, b) => b.length - a.length).slice(0, 6);
+    for (let tryN = 0; tryN < 2000; tryN++) {
+      const g = Array.from({ length: N }, () => Array(N).fill('')), placed = [];
+      let ok = true;
+      for (const w of words) { let done = false;
+        for (let t = 0; t < 300 && !done; t++) { const hz = rnd() < .5, r = Math.floor(rnd() * (hz ? N : N - w.length + 1)), c = Math.floor(rnd() * (hz ? N - w.length + 1 : N));
+          let fit = true; for (let k = 0; k < w.length; k++) { const ch = g[r + (hz ? 0 : k)][c + (hz ? k : 0)]; if (ch && ch !== w[k]) { fit = false; break; } }
+          if (fit) { for (let k = 0; k < w.length; k++) g[r + (hz ? 0 : k)][c + (hz ? k : 0)] = w[k]; placed.push({ w, r, c, hz }); done = true; } }
+        if (!done) { ok = false; break; } }
+      if (!ok) continue;
+      const used = new Set(words.join(''));
+      for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) if (!g[r][c]) g[r][c] = pick(FILL.filter(x => !used.has(x)));
+      const lines = []; for (let i = 0; i < N; i++) { lines.push(g[i].join('')); lines.push(g.map(row => row[i]).join('')); }
+      const BAD = ['보지', '자지', '바보', '고자', '사고', '시비', '조지', '자살', '바지', '보초', '도주', '사기', '치사', '추하', '비리', '마비', '구타', '고추', '토하', '초상', '무시', '도마', '가시', '누구', '마누라'], both = lines.concat(lines.map(l => [...l].reverse().join('')));
+      if (BAD.some(x => both.some(l => l.includes(x)))) continue;   // 채움 글자가 우연히 만든 어색한 말은 버리고 다시 짠다
+      if (words.every(w => both.reduce((n, l) => n + l.split(w).length - 1, 0) === 1)) return { g, placed, words };
+    }
+    return null;
+  }
+  // 미로: 가로 cols × 세로 rows, 왼쪽 위 → 오른쪽 아래. 벽을 허무는 방식이라 길은 꼭 하나 있다.
+  function maze(cols, rows) {
+    const R = Array.from({ length: rows }, () => Array(cols).fill(0)), D = Array.from({ length: rows }, () => Array(cols).fill(0)), seen = Array.from({ length: rows }, () => Array(cols).fill(false));
+    const st = [[0, 0]]; seen[0][0] = true;
+    while (st.length) { const [r, c] = st[st.length - 1]; const nb = shuffle([[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]]).filter(([a, b]) => a >= 0 && b >= 0 && a < rows && b < cols && !seen[a][b]);
+      if (!nb.length) { st.pop(); continue; } const [a, b] = nb[0]; if (a === r) R[r][Math.min(c, b)] = 1; else D[Math.min(r, a)][c] = 1; seen[a][b] = true; st.push([a, b]); }
+    const S = 10, W = cols * S, H = rows * S; let p = `M0 0H${W}V${H}H0Z`;
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) { if (c < cols - 1 && !R[r][c]) p += `M${(c + 1) * S} ${r * S}v${S}`; if (r < rows - 1 && !D[r][c]) p += `M${c * S} ${(r + 1) * S}h${S}`; }
+    return `<svg viewBox="-1 -1 ${W + 2} ${H + 2}" preserveAspectRatio="xMidYMid meet"><rect x="0" y="0" width="${W}" height="${H}" fill="#F6F0E2"/><rect x="0" y="0" width="${S}" height="${S}" fill="#F7D9A8"/><rect x="${W - S}" y="${H - S}" width="${S}" height="${S}" fill="#C9D3EF"/><path d="${p}" fill="none" stroke="#18254E" stroke-width="1.1" stroke-linecap="square"/><text x="${S / 2}" y="${S / 2 + 1.4}" font-size="3.6" font-family="Pretendard" font-weight="700" text-anchor="middle" fill="#8A4A10">출발</text><text x="${W - S / 2}" y="${H - S / 2 + 1.4}" font-size="3.6" font-family="Pretendard" font-weight="700" text-anchor="middle" fill="#18254E">도착</text></svg>`;
+  }
+  // 스도쿠 4×4: 답이 하나뿐인 판만 낸다.
+  function sudoku() {
+    const base = [[1, 2, 3, 4], [3, 4, 1, 2], [2, 1, 4, 3], [4, 3, 2, 1]], m = shuffle([1, 2, 3, 4]);
+    let g = base.map(r => r.map(v => m[v - 1])); if (rnd() < .5) g = [g[1], g[0], g[2], g[3]]; if (rnd() < .5) g = [g[0], g[1], g[3], g[2]]; if (rnd() < .5) g = g.map(r => [r[1], r[0], r[2], r[3]]); if (rnd() < .5) g = [g[2], g[3], g[0], g[1]];
+    const count = b => { for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) if (!b[r][c]) { let n = 0; for (let v = 1; v <= 4 && n < 2; v++) { let ok = true; for (let k = 0; k < 4; k++) if (b[r][k] === v || b[k][c] === v) ok = false; const br = r - r % 2, bc = c - c % 2; for (let i = 0; i < 2; i++) for (let j = 0; j < 2; j++) if (b[br + i][bc + j] === v) ok = false; if (ok) { b[r][c] = v; n += count(b); b[r][c] = 0; } } return n; } return 1; };
+    const p = g.map(r => [...r]);
+    for (const k of shuffle([...Array(16).keys()])) { const r = k >> 2, c = k & 3, v = p[r][c]; p[r][c] = 0; if (count(p.map(x => [...x])) !== 1 || p.flat().filter(Boolean).length < 6) p[r][c] = v; }
+    return p;
+  }
+
+  // ===== 다른 그림 찾기: 선 그림 장면 묶음. 장면마다 '바뀔 수 있는 곳' 10군데 안팎을 미리 정해 두고, 날짜로 다섯 군데를 고른다. =====
+  // 규칙: ① 차이는 색이 아니라 모양으로만 낸다(흑백으로 찍혀도 풀 수 있게) ② 고른 다섯 곳은 서로 SPOT_GAP 넘게 떨어진다 ③ 그린 뒤 두 그림을 실제로 비교해 확인한다(checkSpot).
+  const K = '#18254E', st = w => `stroke="#18254E" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`, stt = w => st(w) + ' fill="none"', SW = st(1), SWT = stt(.6);
+  const f1 = n => Math.round(n * 10) / 10;
+  const tube = (d, w, col) => `<path d="${d}" fill="none" stroke="${K}" stroke-width="${w + 1.8}" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const sparkle = (x, y, r, c = '#E9A23B') => `<path d="M${x} ${y - r}Q${x} ${y} ${x + r} ${y}Q${x} ${y} ${x} ${y + r}Q${x} ${y} ${x - r} ${y}Q${x} ${y} ${x} ${y - r}Z" fill="${c}"/>`;
+  const bubble = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" fill-opacity=".7" ${st(.7)}/><path d="M${f1(x - r * .45)} ${f1(y - r * .1)}A${f1(r * .5)} ${f1(r * .5)} 0 0 1 ${f1(x - r * .05)} ${f1(y - r * .5)}" ${stt(.5)}/>`;
+  const kelp = (x, y, h, ph, col) => { let a = '', b = ''; const n = 14; for (let i = 0; i <= n; i++) { const t = i / n, cx = x + Math.sin(t * 5.2 + ph) * (2.2 + t * 3.2), cy = y - h * t, w = 2.6 * (1 - t * .75) + .3; a += `${i ? 'L' : 'M'}${f1(cx - w)} ${f1(cy)}`; b = `L${f1(cx + w)} ${f1(cy)}` + b; }
+    let v = ''; for (let i = 0; i <= n; i++) { const t = i / n; v += `${i ? 'L' : 'M'}${f1(x + Math.sin(t * 5.2 + ph) * (2.2 + t * 3.2))} ${f1(y - h * t)}`; }
+    return `<path d="${a}${b}Z" fill="${col}" ${st(.8)}/><path d="${v}" ${stt(.4)}/>`; };
+  const fish = (x, y, s, dir, col) => `<g transform="translate(${x} ${y}) scale(${s * dir} ${s})"><path d="M5.500 0l4.500 -3.200q-1.200 3.200 0 6.400Z" fill="${col}" ${st(f1(.8 / s))}/><path d="M-6.500 0Q-1 -5 6 0Q-1 5 -6.500 0Z" fill="${col}" ${st(f1(.8 / s))}/><path d="M-2.500 -2.500q1.600 2.500 0 5M1 -1.200l2 1.200l-2 1.200" ${stt(f1(.5 / s))}/><circle cx="-4.200" cy="-.5" r=".6" fill="${K}"/></g>`;
+  const crater = (x, y, rx, ry) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="#C4C9D6" ${st(.8)}/><path d="M${f1(x - rx * .7)} ${f1(y + ry * .1)}Q${x} ${f1(y + ry * 1.1)} ${f1(x + rx * .7)} ${f1(y + ry * .1)}" ${stt(.5)}/>`;
+
+  const SCENES = {
+    // ---- 깊은 바다 ----
+    sea: { name: '깊은 바다', count: 30,
+      diffs: [[41, 46], [135, 17], [92, 24], [70, 59], [112, 71], [170, 79], [74, 113], [142, 109], [33, 107], [60, 88]],
+      draw(on) {
+        let o = `<rect x="0" y="0" width="200" height="124" fill="#E3EAF8"/><path d="M52 0L18 124H58L86 0Z" fill="#fff" opacity=".42"/><path d="M118 0L124 124H160L140 0Z" fill="#fff" opacity=".34"/>`;
+        // 먼 산등성이와 먼 고래
+        o += `<path d="M0 90Q26 70 52 84T104 80T156 72T200 82V110H0Z" fill="#D3DCF2"/>`;
+        // 바다눈(가라앉는 알갱이)
+        [[12, 12], [20, 58], [58, 26], [64, 8], [78, 74], [96, 44], [108, 60], [130, 38], [128, 80], [150, 12], [176, 60], [190, 34], [188, 8], [46, 70], [92, 6], [162, 4]].forEach(([x, y]) => o += `<circle cx="${x}" cy="${y}" r=".7" fill="#fff"/>`);
+        // 뒤쪽 미역
+        o += kelp(5, 100, 74, 0, '#B9C6EC') + kelp(36, 100, 50, 2, '#C9D3EF') + kelp(26, 98, 34, 4, '#B9C6EC') + kelp(196, 100, 44, 1, '#B9C6EC') + kelp(189, 98, 30, 3, '#C9D3EF');
+        // 왼쪽 바위와 산호
+        o += `<path d="M-2 106V83Q6 76 15 80Q23 77 30 86Q40 89 41 106Z" fill="#DADDE6" ${SW}/><path d="M8 84l3 5M22 86l-2 6l4 4M32 92l-3 4" ${SWT}/>`;
+        o += tube('M15 81V64M15 73Q9 71 8 63M15 69Q21 67 22 59M15 64Q13 58 16 54M8 63Q5 61 5 57M22 59Q25 57 24 53', 2, '#EDB38C');
+        // 오른쪽 바위
+        o += `<path d="M144 106Q146 91 158 90Q176 85 191 91Q202 96 202 106Z" fill="#DADDE6" ${SW}/><path d="M150 97l4 3M190 95l-3 4" ${SWT}/>`;
+        // 바닥
+        o += `<path d="M-2 102Q20 96 44 101T96 103T150 99T202 102V126H-2Z" fill="#F4E6C6" ${SW}/>`;
+        o += `<path d="M6 118q6 -2 12 0M40 120q7 -2 14 0M86 118q6 -2 12 0M112 112q5 -1.500 10 0M156 118q7 -2 14 0M178 110q5 -1.500 10 0M96 108q4 -1 8 0" ${SWT}/>`;
+        [[48, 114], [100, 121], [126, 119], [164, 112], [190, 119], [12, 111], [66, 121], [150, 121]].forEach(([x, y]) => o += `<circle cx="${x}" cy="${y}" r=".6" fill="${K}"/>`);
+        // 해파리 (0: 다리 넷 → 셋)
+        o += `<path d="M28 33q-3 6 0 11t0 10M34.500 33q3 7 0 13t1 11${on(0) ? '' : 'M41.500 33q-3 6 0 12t-1 12'}M48 33q3 5 0 10t1 9" ${stt(.8)}/>`;
+        o += `<path d="M24 32Q24 13 38 13Q52 13 52 32Q48.500 35.500 45 32Q41.500 35.500 38 32Q34.500 35.500 31 32Q27.500 35.500 24 32Z" fill="#fff" ${SW}/><path d="M31 31.500Q30 20 36 14.500M38 32V13.500M45 31.500Q46 20 40 14.500" ${stt(.5)}/>`;
+        // 아귀 (1: 초롱불이 사라짐)
+        o += `<path d="M152 26Q147 9 137 15" ${stt(.9)}/>`;
+        if (!on(1)) o += `<circle cx="135" cy="17" r="3.200" fill="#FBE7B5" ${st(.8)}/><path d="M129.500 17h-2.500M131 12.500l-1.800 -1.800M131 21.500l-1.800 1.800M135 11.500v-2.500M135 22.500v2.500" ${SWT}/>`;
+        o += `<path d="M180 38l10 -8q-2.500 8 0 16Z" fill="#B9C6EC" ${SW}/><path d="M157 25l2 -5l2.500 4.500l2 -5l2.500 4.800l2 -4.500l2 5.500" fill="#B9C6EC" ${st(.8)}/>`;
+        o += `<path d="M139 40Q141 24 160 24Q178 24 182 38Q178 53 160 53Q146 53 139 40Z" fill="#C9D3EF" ${SW}/>`;
+        o += `<path d="M139.500 40.500L156 39.500L143 47.500Z" fill="#fff" ${st(.8)}/><path d="M142.500 40.400l1.600 2.300l1.600 -2.500l1.700 2.300l1.600 -2.500l1.700 2.200l1.500 -2.300" ${SWT}/>`;
+        o += `<circle cx="153" cy="32" r="3.200" fill="#fff" ${st(.8)}/><circle cx="152.300" cy="32.300" r="1.300" fill="${K}"/><path d="M163 41q7 1.500 5 8.500q-6 -1 -5 -8.500Z" fill="#B9C6EC" ${st(.8)}/><path d="M168 30q4 1 6 4M170 44q3 -1 5 -3" ${SWT}/>`;
+        // 잠수정 (2: 둥근 창 셋 → 둘)
+        o += `<g transform="translate(-13 1)"><path d="M86 24L62 41L76 46Z" fill="#FBE7B5" opacity=".75"/>`;
+        o += `<path d="M103 10V5.500h4" ${stt(.9)}/><rect x="96" y="10" width="11" height="7" rx="2" fill="#F7D9A8" ${SW}/>`;
+        o += `<path d="M122 23h3.500" ${stt(1)}/><path d="M126 16q3.500 7 0 14q-3.500 -7 0 -14Z" fill="#fff" ${st(.8)}/>`;
+        o += `<ellipse cx="104" cy="23" rx="18" ry="8.500" fill="#FBE7B5" ${SW}/><path d="M88 27.500Q104 33 120 27.500" ${SWT}/><rect x="84.500" y="21" width="4" height="4.500" rx="1" fill="#fff" ${st(.8)}/>`;
+        (on(2) ? [96, 106] : [96, 105, 114]).forEach(x => o += `<circle cx="${x}" cy="22" r="2.700" fill="#B9C6EC" ${st(.8)}/>`);
+        o += `</g>` + bubble(117, 13, 1.5) + bubble(120.500, 7.500, 2.1);
+        // 물고기 떼 (3: 한 마리가 반대쪽을 봄)
+        o += fish(60, 54, 1, 1, '#F3C9A0') + fish(76, 51, .85, 1, '#fff') + fish(70, 60, 1.050, on(3) ? -1 : 1, '#F3C9A0') + fish(86, 62, .8, 1, '#fff') + fish(52, 64, .7, 1, '#fff');
+        // 바다돼지 (4: 등의 더듬이 둘 → 하나)
+        [92, 100, 108, 116, 122.500].forEach((x, i) => o += `<path d="M${x - 2.200} ${96 + (i % 2)}v6.500q2.200 2.600 4.400 0v-6.500Z" fill="#F2CDBB" ${st(.8)}/>`);
+        o += `<path d="M103 79Q101 70 96.500 65.500Q101 67 106 78.500Z" fill="#F6D9CC" ${st(.8)}/>`;
+        if (!on(4)) o += `<path d="M112 78.500Q113 69 118.500 65Q117 70 115.500 79Z" fill="#F6D9CC" ${st(.8)}/>`;
+        o += `<path d="M85 90Q85 78.500 100 77.500Q118 76.500 126 84Q130.500 92 124 97.500Q110 101.500 94 99.500Q85 97.500 85 90Z" fill="#F6D9CC" ${SW}/>`;
+        o += `<path d="M93 84.500Q108 80.500 121 86.500" ${stt(.5)}/><path d="M85.500 90q-4 -1.500 -5.500 1.500M85.500 92.500q-4.500 .5 -4.500 4M86.500 95q-2.500 2.500 -1.500 5" ${stt(.8)}/>`;
+        [[97, 92], [104, 95], [112, 93.500], [119, 95], [108, 87.500], [117, 90]].forEach(([x, y]) => o += `<circle cx="${x}" cy="${y}" r=".9" fill="#EDB9A4"/>`);
+        // 문어 (5: 한쪽 눈을 감음)
+        ['M161 85Q150 80 146.500 86Q145 90.500 148.500 91', 'M162 87Q150 89 149 97Q148.500 102 153 100.500', 'M165 88Q158 96 160.500 104Q162.500 108.500 166.500 105.500', 'M170 88Q170 98 174 104.500Q177.500 108.500 180.500 104.500', 'M175 87Q184 92 186 100.500Q187.500 105.500 191.500 102.500', 'M178 85Q190 84 194 90Q196 94.500 192.500 96'].forEach(d => o += tube(d, 3, '#F3C9A0'));
+        o += `<path d="M159.500 88Q153 65 170 63Q187 65 180.500 88Q170 91.500 159.500 88Z" fill="#F3C9A0" ${SW}/><circle cx="165" cy="80.500" r="2.500" fill="#fff" ${st(.8)}/><circle cx="165.300" cy="80.800" r="1" fill="${K}"/>`;
+        o += on(5) ? `<path d="M172.500 81q2.500 2 5 0" ${stt(.9)}/>` : `<circle cx="175" cy="80.500" r="2.500" fill="#fff" ${st(.8)}/><circle cx="175.300" cy="80.800" r="1" fill="${K}"/>`;
+        o += `<path d="M168 85.500q2 1.500 4 0" ${SWT}/><circle cx="165" cy="70" r="1.100" fill="none" ${st(.5)}/><circle cx="173" cy="68" r="1.500" fill="none" ${st(.5)}/><circle cx="177" cy="73" r=".9" fill="none" ${st(.5)}/>`;
+        // 불가사리 (6: 없어짐)
+        if (!on(6)) { let s = ''; for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5 + .25, r = i % 2 ? 2.300 : 6; s += `${i ? 'L' : 'M'}${f1(74 + Math.cos(a) * r)} ${f1(113 + Math.sin(a) * r)}`; } o += `<path d="${s}Z" fill="#EDB38C" ${st(.9)}/><circle cx="74" cy="113" r=".6" fill="${K}"/><circle cx="74.800" cy="110.300" r=".45" fill="${K}"/><circle cx="71.600" cy="112.300" r=".45" fill="${K}"/><circle cx="76.500" cy="113.600" r=".45" fill="${K}"/>`; }
+        // 성게 (7: 가시가 없음)
+        if (!on(7)) { let s = ''; for (let i = 0; i < 11; i++) { const a = Math.PI + i * Math.PI / 10; s += `M${f1(142 + Math.cos(a) * 4)} ${f1(111 + Math.sin(a) * 4)}L${f1(142 + Math.cos(a) * 8.500)} ${f1(111 + Math.sin(a) * 8.500)}`; } o += `<path d="${s}" ${stt(.8)}/>`; }
+        o += `<path d="M137.500 111.500A4.500 4.500 0 0 1 146.500 111.500Z" fill="#8D9BCB" ${st(.9)}/>`;
+        // 게 (8: 집게발 하나를 내림)
+        o += `<path d="M22 109.500l-4 -1.500l-1.500 2M22 111l-4.500 1l-.5 2.500M32 109.500l4 -1.500l1.500 2M32 111l4.500 1l.5 2.500M24.500 106.500v-2.500M29.500 106.500v-2.500" ${stt(.8)}/><circle cx="24.500" cy="103.500" r=".8" fill="${K}"/><circle cx="29.500" cy="103.500" r=".8" fill="${K}"/>`;
+        o += `<ellipse cx="27" cy="110" rx="5.500" ry="3.600" fill="#EDB38C" ${st(.9)}/><path d="M25 111.300q2 1.200 4 0" ${SWT}/>`;
+        o += `<path d="M22.500 107.500Q19 105 19.500 101" ${stt(.9)}/><path d="M19.500 101.500q-3 -2 -1.500 -5q1.200 2 2.200 2q.3 -2.500 2.500 -3q1 4 -3.200 6Z" fill="#EDB38C" ${st(.8)}/>`;
+        o += on(8) ? `<path d="M31.500 108Q36 108.500 37.500 112" ${stt(.9)}/><path d="M37 111.500q3.500 -.5 4.500 2.500q-2 -.5 -2.500 .5q1.500 1.500 .5 3.500q-4 -1.500 -2.500 -6.500Z" fill="#EDB38C" ${st(.8)}/>` : `<path d="M31.500 107.500Q35 105 34.500 101" ${stt(.9)}/><path d="M34.500 101.500q3 -2 1.500 -5q-1.200 2 -2.200 2q-.3 -2.500 -2.500 -3q-1 4 3.200 6Z" fill="#EDB38C" ${st(.8)}/>`;
+        // 옛 항아리 (9: 손잡이가 하나)
+        o += `<g transform="translate(56 97) rotate(-20)"><path d="M-3.500 -17.500Q-11 -17 -8.300 -8" ${stt(1.100)}/>${on(9) ? '' : `<path d="M3.500 -17.500Q11 -17 8.300 -8" ${stt(1.100)}/>`}<path d="M-3.500 -14v-5.500h7v5.500" fill="#EBC79A" ${SW}/><path d="M-5 -19.800h10" ${stt(1.300)}/><path d="M-3.500 -14Q-10 -7 -8 4Q-6 12 0 14.500Q6 12 8 4Q10 -7 3.500 -14Z" fill="#EBC79A" ${SW}/><path d="M-8.300 -3h16.600M-8.300 1.500h16.600M-7.500 -.8l1.900 -1.700l1.900 1.700l1.900 -1.700l1.900 1.700l1.900 -1.700l1.900 1.700l1.900 -1.700l1.800 1.700" ${stt(.5)}/></g>`;
+        o += `<path d="M41 111.500Q52 104.500 61 107.500T73 110.500Q58 115.500 41 111.500Z" fill="#F4E6C6"/><path d="M42 110.500Q52 104.500 61 107.500" ${SWT}/>`;
+        // 공기 방울
+        o += bubble(58, 80, 1.3) + bubble(61, 74, 1.9) + bubble(59, 67, 1.2) + bubble(14, 46, 1.6) + bubble(17, 39, 1.1) + bubble(182, 58, 1.4);
+        return o;
+      } },
+    // ---- 우주 ----
+    space: { name: '우주', count: 32,
+      diffs: [[30, 27], [120, 33], [86, 52], [178, 21], [171, 64], [57, 91], [97, 90], [123, 78], [99, 11], [181, 112], [22, 112]],
+      draw(on, uid) {
+        let o = `<rect x="0" y="0" width="200" height="124" fill="#ECEFF9"/><path d="M-10 70Q60 20 210 40V62Q70 50 -10 96Z" fill="#E1E7F6"/>`;
+        // 잔별
+        [[8, 8], [54, 6], [66, 30], [50, 44], [96, 26], [104, 68], [140, 10], [152, 28], [160, 82], [196, 44], [192, 78], [12, 52], [42, 84], [118, 76], [146, 62], [88, 76], [198, 6], [110, 8]].forEach(([x, y]) => o += `<circle cx="${x}" cy="${y}" r=".7" fill="${K}"/>`);
+        [[56, 36, 2.6], [104, 76, 2.2], [150, 76, 2.8], [194, 60, 2.2], [10, 86, 2.4], [136, 60, 2], [46, 12, 2], [190, 92, 1.8], [96, 40, 1.8]].forEach(p => o += sparkle(...p));
+        // 별자리(국자 모양)
+        o += `<path d="M9 58L18 54L27 58L34 65L31 73L41 76L44 67L34 65" ${stt(.5)} stroke-dasharray="1.5 1.2"/>`;
+        [[9, 58], [18, 54], [27, 58], [34, 65], [31, 73], [41, 76], [44, 67]].forEach(([x, y]) => o += `<circle cx="${x}" cy="${y}" r="1.300" fill="#fff" ${st(.7)}/>`);
+        // 지구 (0: 큰 땅덩이 하나가 없음)
+        o += `<clipPath id="e${uid}"><circle cx="30" cy="27" r="16"/></clipPath><circle cx="30" cy="27" r="16" fill="#B9C6EC" ${SW}/><g clip-path="url(#e${uid})">`;
+        if (!on(0)) o += `<path d="M22 14q6 -2 9 2q4 1 3 6q-3 2 -3 6q-2 5 -6 2q-1 -5 -5 -6q-2 -6 2 -10Z" fill="#F6F0E2" ${st(.7)}/>`;
+        o += `<path d="M38 26q5 -2 9 1v8q-5 3 -8 -1q-3 -4 -1 -8ZM20 36q5 -1 7 3q1 4 -2 6q-6 0 -8 -4q0 -4 3 -5ZM36 40q4 -1 6 2l-3 4q-4 -1 -3 -6Z" fill="#F6F0E2" ${st(.7)}/><path d="M14 22q6 2 10 0M30 33q6 2 12 -1M18 30q4 1.500 7 0" stroke="#fff" stroke-width="1.300" fill="none" stroke-linecap="round"/></g><circle cx="30" cy="27" r="16" fill="none" ${SW}/>`;
+        // 혜성 (8: 꼬리가 짧음)
+        o += on(8) ? `<path d="M88 11l7 -2.500M88.500 14l8 0" ${stt(.8)}/>` : `<path d="M88 10.500l20 -7M89 13.500l24 -2.500M88.500 16.500l19 3" ${stt(.8)}/>`;
+        o += `<circle cx="84" cy="14" r="4.200" fill="#fff" ${SW}/><path d="M82 12.500q1.500 -1.500 3.500 -.5" ${SWT}/>`;
+        // 소행성 한 쌍 (1: 큰 돌의 구덩이 넷 → 셋)
+        o += `<ellipse cx="124" cy="37" rx="34" ry="19" ${stt(.5)} stroke-dasharray="1.200 1.800" transform="rotate(14 124 37)"/>`;
+        o += `<path d="M104 30l5 -9l10 -5l11 1l8 7l2 10l-5 9l-10 5l-11 -1l-8 -6Z" fill="#DCD6C9" ${SW}/>`;
+        o += `<path d="M110 24l4 3l-1 5M131 21l-3 4M135 40l-5 1l-2 5M112 42l5 2" ${stt(.5)}/>`;
+        o += crater(116, 34, 3.200, 2.400) + crater(128, 29, 2.400, 1.800) + crater(125, 42, 2.800, 2);
+        if (!on(1)) o += crater(119.500, 22.500, 2.300, 1.600);
+        o += `<path d="M146 44l4 -4l6 0l4 4l-1 6l-5 3l-6 -2Z" fill="#DCD6C9" ${SW}/>` + crater(152, 46, 1.800, 1.300);
+        // 탐사선 (2: 해 날개가 한쪽뿐)
+        o += `<g transform="translate(70 56) rotate(-14)">`;
+        const wing = s => `<path d="M${s * 6} 0h${s * 3}" ${stt(1)}/><rect x="${s > 0 ? 9 : -25}" y="-4.500" width="16" height="9" fill="#B9C6EC" ${st(.8)}/><path d="M${s > 0 ? 13 : -21} -4.500v9M${s > 0 ? 17 : -17} -4.500v9M${s > 0 ? 21 : -13} -4.500v9M${s > 0 ? 9 : -25} 0h16" ${stt(.5)}/>`;
+        o += wing(-1) + (on(2) ? '' : wing(1));
+        o += `<rect x="-6" y="-6.500" width="12" height="13" rx="1.200" fill="#FBE7B5" ${SW}/><path d="M-6 -2h12M-2.500 2h5v3h-5Z" ${stt(.5)}/><path d="M0 -6.500v-3" ${stt(1)}/><path d="M-5.500 -12.500Q0 -7 5.500 -12.500Z" fill="#fff" ${st(.8)}/><path d="M0 -12.500v-2.500" ${SWT}/><circle cx="0" cy="-15.500" r=".8" fill="${K}"/><path d="M-2 6.500l-1.500 3.500h7l-1.500 -3.500" fill="#fff" ${st(.8)}/></g>`;
+        // 고리 행성 (3: 고리가 없음)
+        o += `<circle cx="178" cy="21" r="9.500" fill="#F3C9A0" ${SW}/><path d="M169.500 18q8.500 4 17 0M169 24q9 4.500 18 0" ${SWT}/>`;
+        if (!on(3)) o += `<path d="M168.800 25.500C160 29 161.500 24 170.300 20M186 17C195 13 194.500 18.500 185.800 22.500" ${stt(1)}/>`;
+        // 로켓 (4: 둥근 창 둘 → 하나)
+        o += `<g transform="translate(171 66) rotate(24)"><path d="M-3.500 12Q0 27 3.500 12Z" fill="#F7D9A8" ${st(.8)}/><path d="M-6 5L-12.500 15H-6ZM6 5L12.500 15H6Z" fill="#D9822B" ${SW}/><path d="M0 -21C7.500 -14 8.500 -2 6.500 12H-6.500C-8.500 -2 -7.500 -14 0 -21Z" fill="#fff" ${SW}/><path d="M-5.300 -11.500h10.600M-6.800 8h13.600" ${stt(.5)}/><circle cx="0" cy="-6" r="2.700" fill="#B9C6EC" ${st(.8)}/>${on(4) ? '' : `<circle cx="0" cy="2.500" r="2.200" fill="#B9C6EC" ${st(.8)}/>`}</g>`;
+        o += `<circle cx="160.500" cy="88" r="1.200" fill="#fff" ${st(.6)}/><circle cx="157.500" cy="93.500" r="1.800" fill="#fff" ${st(.6)}/>`;
+        // 달 바닥
+        o += `<path d="M-2 104Q40 91 92 98T202 93V126H-2Z" fill="#DADDE6" ${SW}/>`;
+        o += crater(110, 115, 8, 2.600) + crater(150, 104, 4.500, 1.500) + crater(74, 118, 4, 1.300);
+        if (!on(9)) o += crater(181, 112, 7, 2.400);
+        if (!on(10)) o += crater(22, 112, 7.500, 2.500);
+        o += `<path d="M162 116l3 -3l5 0l2 3.500l-4 2.500l-5 -1ZM40 119l2 -2.500l4 .5l1 2.500l-4 1.500ZM134 119.500l2.500 -2l3 1l-1 2.500l-3.500 .5Z" fill="#fff" ${st(.8)}/>`;
+        // 바퀴 자국
+        o += `<path d="M0 104.500Q22 101.500 45 104M0 108Q22 105 45 107.500" ${stt(.5)} stroke-dasharray="1 1.600"/>`;
+        // 탐사차 (5: 기둥 위 카메라가 없음)
+        o += `<path d="M62 96V86.500" ${stt(1.100)}/>`;
+        if (!on(5)) o += `<rect x="58.500" y="82" width="8" height="5" rx="1" fill="#fff" ${st(.8)}/><circle cx="64" cy="84.500" r="1.300" fill="#B9C6EC" ${st(.6)}/>`;
+        o += `<path d="M48 96L43 86" ${stt(.9)}/><path d="M39 88.500Q43 85 45 80.500Q39 81 39 88.500Z" fill="#fff" ${st(.8)}/>`;
+        o += `<path d="M47 92.500L60 90.500L61.500 93.500L48.500 95.500Z" fill="#B9C6EC" ${st(.8)}/><path d="M51.500 91.800l1.500 3M56 91.100l1.500 3" ${stt(.5)}/>`;
+        o += `<rect x="45" y="95.500" width="22" height="6.500" rx="1.500" fill="#FBE7B5" ${SW}/><path d="M48 105L56 101.500L64 105" ${stt(.9)}/>`;
+        [48, 56, 64].forEach(x => o += `<circle cx="${x}" cy="105" r="3.400" fill="#fff" ${SW}/><circle cx="${x}" cy="105" r="1" fill="${K}"/>`);
+        // 깃발 (6: 깃발이 반대쪽으로)
+        o += `<path d="M93 101.500q4 -2.500 8 0Z" fill="#C4C9D6" ${st(.8)}/><path d="M97 100.500V84" ${stt(1)}/><path d="M97 84.500l${on(6) ? -10 : 10} 3l${on(6) ? 10 : -10} 3Z" fill="#D9822B" ${st(.8)}/>`;
+        // 접시 안테나 (7: 전파 물결이 없음)
+        o += `<path d="M125 103L131 92L137 103M131 92V103" ${stt(1)}/><g transform="translate(131 90) rotate(-32)"><path d="M-9.500 0Q0 9 9.500 0Z" fill="#fff" ${SW}/><path d="M0 0V-5.500" ${stt(.9)}/><circle cx="0" cy="-6.500" r="1.200" fill="${K}"/>${on(7) ? '' : `<path d="M-3.500 -10.500Q0 -13.500 3.500 -10.500M-5.500 -13.500Q0 -18 5.500 -13.500M-7.500 -16.500Q0 -22.500 7.500 -16.500" ${stt(.8)}/>`}</g>`;
+        return o;
+      } }
+  };
+  const SPOT_GAP = 34;
+  function spot(key) {
+    const sc = SCENES[key], n = sc.diffs.length; let ids = null;
+    for (let t = 0; t < 60 && !ids; t++) { const got = []; for (const i of shuffle([...Array(n).keys()])) { if (got.every(j => Math.hypot(sc.diffs[i][0] - sc.diffs[j][0], sc.diffs[i][1] - sc.diffs[j][1]) >= SPOT_GAP)) got.push(i); if (got.length === 5) break; } if (got.length === 5) ids = got; }
+    if (!ids) ids = [0, 1, 2, 3, 4];
+    const fix = s => s.replace(/(\.\d)00(?=\D)/g, '$1');   // 숫자 끝의 '00' 꼬리(예: 1.500)를 걷어 낸다
+    const wrap = (v, uid) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 202 126"><clipPath id="c${uid}"><rect x="0" y="0" width="200" height="124" rx="3"/></clipPath><g clip-path="url(#c${uid})">${fix(sc.draw(i => v && ids.includes(i), uid))}</g><rect x="0" y="0" width="200" height="124" rx="3" fill="none" ${st(1.300)}/></svg>`;
+    return { svg: [wrap(false, 'a'), wrap(true, 'b')], ids, pts: ids.map(i => sc.diffs[i]), key };
+  }
+  // 두 그림을 실제로 찍어 견준다: 고른 다섯 곳마다 달라진 점이 충분한지, 그 밖에서 달라진 곳은 없는지.
+  async function checkSpot(S) {
+    const W = 404, H = 252, load = s => new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s); });
+    const px = async s => { const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.drawImage(await load(s), 0, 0, W, H); return x.getImageData(0, 0, W, H).data; };
+    const [a, b] = [await px(S.svg[0]), await px(S.svg[1])], hit = S.pts.map(() => 0); let stray = 0, far = '';
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const k = (y * W + x) * 4; if (Math.abs(a[k] - b[k]) + Math.abs(a[k + 1] - b[k + 1]) + Math.abs(a[k + 2] - b[k + 2]) < 60) continue;
+      const ux = x / 2 - 1, uy = y / 2 - 1; let near = -1, best = 1e9; S.pts.forEach((p, i) => { const dd = Math.hypot(p[0] - ux, p[1] - uy); if (dd < best) { best = dd; near = i; } }); if (best <= SPOT_GAP / 2) hit[near]++; else { stray++; far = `${Math.round(ux)},${Math.round(uy)}`; } }
+    const weak = hit.map((h, i) => h < 36 ? S.ids[i] : -1).filter(i => i >= 0);
+    return weak.length || stray ? `spot:${S.key} 약함[${weak}] 밖${stray}(${far})` : '';
+  }
+
+  // ===== 점 잇기: 좌표 묶음에서 그날 주제에 맞는 것을 고른다. 번호 자리는 코드가 정한다(점·선·다른 번호와 가장 먼 쪽). =====
+  const DOTS = {
+    rocket: { name: '로켓', say: '1부터 차례로 점을 이어요. 끝 점은 다시 1과 이어요. 무엇이 나타날까요?',
+      pts: [[90, 9], [98.500, 19], [104, 31], [107, 44], [108, 57], [108, 70], [107, 83], [117, 91], [125, 102], [128, 115], [117, 110], [105, 105], [102, 116], [90, 116], [78, 116], [75, 105], [63, 110], [52, 115], [55, 102], [63, 91], [73, 83], [72, 70], [72, 57], [73, 44], [76, 31], [81.500, 19]],
+      deco: () => `<circle cx="90" cy="45" r="8" fill="#E9EDF8" ${st(.9)}/><circle cx="90" cy="45" r="5" fill="#fff" ${st(.6)}/><path d="M86.500 43.500q2 -2.500 5 -1.500" ${stt(.5)}/><circle cx="90" cy="68" r="5" fill="#E9EDF8" ${st(.9)}/><path d="M77 28.500Q90 33 103 28.500M73.500 88Q90 92.500 106.500 88" ${stt(.7)}/><path d="M90 96v9" ${stt(.7)}/>`
+        + `<path d="M82 121Q84 132 90 139Q96 132 98 121Q94 126 90 121Q86 126 82 121Z" fill="#F7D9A8" ${st(.9)}/><path d="M87 125Q88 130 90 133Q92 130 93 125" ${stt(.6)}/>`
+        + `<circle cx="28" cy="34" r="12" fill="#FBE7B5" ${st(.9)}/><path d="M17 30q11 5 22 0M16.500 38q11.500 5.500 23 0" ${SWT}/><path d="M16.500 40.500C5 45.500 7 39 18.500 33.500M39.500 27.500C51 22.500 50.500 29 38.800 34.500" ${stt(.9)}/>`
+        + `<path d="M160 20A13 13 0 1 0 160 44A15.500 15.500 0 0 1 160 20Z" fill="#fff" ${st(.9)}/>`
+        + sparkle(54, 14, 3.200) + sparkle(142, 62, 3.600) + sparkle(22, 78, 3) + sparkle(166, 96, 2.600) + sparkle(130, 14, 2.400) + sparkle(40, 104, 2.200) + sparkle(152, 124, 2.400) + sparkle(14, 128, 2.600) + sparkle(124, 132, 2) + sparkle(62, 132, 2.200) + sparkle(170, 58, 2)
+        , avoid: [[90, 122], [86, 126], [94, 126], [90, 104], [90, 97]] },
+    whale: { name: '고래', say: '1부터 차례로 점을 이어요. 끝 점은 다시 1과 이어요. 무엇이 나타날까요?',
+      pts: [[18, 84], [21, 71], [29, 60], [41, 52], [55, 47], [70, 45], [85, 46], [99, 50], [112, 56], [124, 62], [134, 60], [141, 49], [144, 36], [154, 47], [167, 42], [163, 56], [152, 69], [141, 80], [128, 90], [113, 97], [97, 101], [90, 114], [78, 104], [62, 103], [46, 100], [30, 94]],
+      deco: () => `<circle cx="38" cy="74" r="2.200" fill="${K}"/><path d="M34.500 69.500q3 -2.500 6.500 -1" ${stt(.7)}/><path d="M19.500 86Q30 90.500 42 86.500" ${stt(.8)}/>`
+        + `<path d="M62 41Q60 28 52 22M64 40.500Q64 26 64 17M66 41Q68 28 76 22" ${stt(.9)}/><path d="M52 22q-4 -1 -5 3M64 17q-3 -3 -6 0M64 17q3 -3 6 0M76 22q4 -1 5 3" ${stt(.9)}/>`
+        + `<path d="M0 126q9 -6 18 0t18 0t18 0t18 0t18 0t18 0t18 0t18 0t18 0t18 0M8 134q9 -5 18 0t18 0M96 134q9 -5 18 0t18 0t18 0" ${stt(.8)}/>`
+        + fish(150, 110, 1.300, 1, '#FBE7B5') + fish(166, 118, 1, 1, '#fff') + fish(24, 114, 1.100, -1, '#fff')
+        + bubble(12, 62, 2) + bubble(9, 52, 1.400) + bubble(174, 92, 2.200) + bubble(177, 83, 1.300)
+        + `<path d="M118 14q5 -6 11 -2q6 -5 11 1q7 0 6 6h-30q-3 -3 2 -5Z" fill="#fff" ${st(.8)}/><path d="M8 20q4 -5 9 -1.500q5 -3.500 9 1.500q5 .5 4 5h-24q-2 -3 2 -5Z" fill="#fff" ${st(.8)}/>` }
+  };
+  function dots(key) {
+    const D = DOTS[key], P = D.pts, n = P.length, R = 6.2, lab = [], cx = P.reduce((s, p) => s + p[0], 0) / n, cy = P.reduce((s, p) => s + p[1], 0) / n;
+    const segD = (p, a, b) => { const vx = b[0] - a[0], vy = b[1] - a[1], t = Math.max(0, Math.min(1, ((p[0] - a[0]) * vx + (p[1] - a[1]) * vy) / (vx * vx + vy * vy || 1))); return Math.hypot(p[0] - a[0] - vx * t, p[1] - a[1] - vy * t); };
+    let worst = 99, gap = 99;
+    P.forEach((p, i) => { let best = null, bs = -1;
+      for (let k = 0; k < 16; k++) { const a = k * Math.PI / 8, q = [p[0] + Math.cos(a) * R, p[1] + Math.sin(a) * R * .85 + .4];
+        let s = 99; P.forEach((o, j) => { if (j !== i) s = Math.min(s, Math.hypot(q[0] - o[0], q[1] - o[1])); gap = j !== i ? Math.min(gap, Math.hypot(p[0] - o[0], p[1] - o[1])) : gap; });
+        lab.forEach(o => s = Math.min(s, Math.hypot(q[0] - o[0], q[1] - o[1]) * .8)); (D.avoid || []).forEach(o => s = Math.min(s, Math.hypot(q[0] - o[0], q[1] - o[1]) * .7));
+        for (let j = 0; j < n; j++) s = Math.min(s, segD(q, P[j], P[(j + 1) % n]) * 1.5);      // 이을 선 위에 번호가 놓이지 않게
+        s += Math.hypot(q[0] - cx, q[1] - cy) > Math.hypot(p[0] - cx, p[1] - cy) ? .8 : 0;      // 되도록 모양 바깥쪽
+        if (q[0] < 4 || q[0] > 176 || q[1] < 4 || q[1] > 137) s = -1;
+        if (s > bs) { bs = s; best = q; } }
+      lab.push(best); worst = Math.min(worst, bs); });
+    let o = D.deco();
+    P.forEach((p, i) => { o += i ? `<circle cx="${p[0]}" cy="${p[1]}" r="1.250" fill="${K}"/>` : `<circle cx="${p[0]}" cy="${p[1]}" r="2.600" fill="#F7D9A8" ${st(.8)}/><circle cx="${p[0]}" cy="${p[1]}" r="1" fill="${K}"/>`;
+      o += `<text x="${f1(lab[i][0])}" y="${f1(lab[i][1] + 1.7)}" font-size="${i ? 4.6 : 5.2}" font-family="Pretendard" font-weight="${i ? 600 : 800}" text-anchor="middle" fill="${K}">${i + 1}</text>`; });
+    const bad = gap < 9 ? `dots:${key} 점 사이 ${f1(gap)}` : worst < 3.2 ? `dots:${key} 번호 자리 ${f1(worst)}` : '';
+    return { svg: `<svg viewBox="0 0 180 141" preserveAspectRatio="xMidYMid meet">${o.replace(/(\.\d)00(?=\D)/g, '$1')}</svg>`, say: D.say, bad, n };
+  }
+
+  // 어느 장면·어느 모양을 쓸지: 발행 때 AI가 paper.spot / paper.dots 로 고를 수 있고, 없으면 기사 꼬리표와 날짜로 정한다.
+  const tags = d.articles.map(a => a.tag).join(' '), dayNo = Math.floor(dt.getTime() / 864e5);
+  const sceneKeys = Object.keys(SCENES), dotKeys = Object.keys(DOTS);
+  const byTag = (map, keys, off) => { const hit = Object.keys(map).filter(k => tags.includes(k)).map(k => map[k]); const pool = hit.length ? [...new Set(hit)] : keys; return pool[(dayNo + off) % pool.length]; };
+  const spotKey = SCENES[q.get('spot')] ? q.get('spot') : SCENES[X.spot] ? X.spot : byTag({ '우주': 'space', '동물': 'sea', '바다': 'sea', '옛것': 'sea' }, sceneKeys, 0);
+  const dotKey = DOTS[q.get('dots')] ? q.get('dots') : DOTS[X.dots] ? X.dots : (byTag({ '우주': 'rocket', '동물': 'whale', '바다': 'whale' }, dotKeys, 1));
+  const SP = spot(spotKey), sp = SP.svg, DT = dots(dotKey);
+  // ===== 3라운드: 그림 묶음 없이 코드만으로 날마다 새 판이 나오는 놀이 =====
+  // 결: 먹색 가는 선, 미색 바탕, 살구·남색 한두 가지. 놀이마다 { html, bad }를 돌려준다(bad가 비어야 발행).
+  const INK = '#16181F', AP = '#D9822B', NV = '#2C4287', CREAM = '#F6F0E2', HAIR = '#A89C80';
+  const starPts = (() => { let s = ''; for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? .38 : .92; s += `${i ? 'L' : 'M'}${f1(Math.cos(a) * r * 10) / 10} ${f1(Math.sin(a) * r * 10) / 10}`; } return s + 'Z'; })();
+  const hexPts = (() => { let s = ''; for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; s += `${i ? 'L' : 'M'}${f1(Math.cos(a) * 8.5) / 10} ${f1(Math.sin(a) * 8.5) / 10}`; } return s + 'Z'; })();
+  // 그림 글자 22가지(−1..1 칸 안). 색만 다른 짝은 두지 않는다: 속이 찬 것과 빈 것은 흑백에서도 갈린다.
+  const GL = [
+    `<circle r=".8"/>`, `<circle r=".8" fill="${NV}" stroke="none"/>`, `<path d="M0 -.85L.85 .7H-.85Z"/>`, `<path d="M0 .85L.85 -.7H-.85Z" fill="${AP}" stroke="none"/>`,
+    `<rect x="-.72" y="-.72" width="1.44" height="1.44"/>`, `<rect x="-.72" y="-.72" width="1.44" height="1.44" fill="${NV}" stroke="none"/>`, `<path d="M0 -.9L.8 0L0 .9L-.8 0Z"/>`, `<path d="${starPts}" fill="${AP}" stroke="none"/>`,
+    `<path d="M0 -.85V.85M-.85 0H.85" stroke-width=".24"/>`, `<path d="M-.7 -.7L.7 .7M.7 -.7L-.7 .7" stroke-width=".24"/>`, `<path d="M.35 -.85A.9 .9 0 1 0 .35 .85A1.1 1.1 0 0 1 .35 -.85Z" fill="${NV}" stroke="none"/>`, `<path d="M-.9 .15Q-.45 -.8 0 .15T.9 .15" stroke-width=".22"/>`,
+    `<path d="M0 .85V-.8M-.55 -.25L0 -.85L.55 -.25" stroke-width=".22"/>`, `<path d="M-.85 .45A.85 .85 0 0 1 .85 .45Z" fill="${AP}" stroke="none"/>`, `<path d="M-.8 -.35H.8M-.8 .35H.8" stroke-width=".24"/>`, `<path d="M-.9 .5L-.45 -.5L0 .5L.45 -.5L.9 .5" stroke-width=".2"/>`,
+    `<circle r=".8"/><circle r=".22" fill="${INK}" stroke="none"/>`, `<path d="M0 -.9C.9 .1 .6 .85 0 .85C-.6 .85 -.9 .1 0 -.9Z"/>`, `<path d="${hexPts}"/>`, `<circle cx="-.6" r=".2" fill="${INK}" stroke="none"/><circle r=".2" fill="${INK}" stroke="none"/><circle cx=".6" r=".2" fill="${INK}" stroke="none"/>`,
+    `<path d="M-.6 -.8V.7H.7" stroke-width=".24"/>`, `<path d="M-.8 .6L0 -.7L.8 .6" stroke-width=".24"/>`
+  ];
+  const glyph = (id, x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})" fill="none" stroke="${INK}" stroke-width=".17" stroke-linecap="round" stroke-linejoin="round">${GL[id]}</g>`;
+  const gsvg = (id, mm) => `<svg width="${mm}mm" height="${mm}mm" viewBox="-1.1 -1.1 2.2 2.2">${glyph(id, 0, 0, 1)}</svg>`;
+
+  // ---- 길 잇기: 칸을 길 여러 개로 빈틈없이 나눈 뒤 양 끝만 남긴다. 풀이가 하나뿐인 판만 낸다. ----
+  function flowCount(n, ends, nb) {
+    const g = new Int8Array(n * n).fill(-1), E = new Int8Array(n * n).fill(-1); ends.forEach((e, k) => { g[e[0]] = k; g[e[1]] = k; E[e[0]] = k; E[e[1]] = k; });
+    let count = 0, nodes = 0; const K = ends.length;
+    const open = (z, k, head) => g[z] === -1 || z === head || (E[z] > k) || (E[z] === k && z === ends[k][1]);
+    const go = (k, cur) => { if (count > 1 || ++nodes > 400000) return;
+      for (const x of nb[cur]) {
+        if (x === ends[k][1]) { if (k === K - 1) { if (!g.includes(-1)) count++; } else go(k + 1, ends[k + 1][0]); continue; }
+        if (g[x] !== -1) continue; g[x] = k; let dead = false;
+        for (const y of nb[cur]) if (g[y] === -1) { let f = 0; for (const z of nb[y]) if (open(z, k, x)) f++; if (f < 2) { dead = true; break; } }
+        if (!dead) go(k, x); g[x] = -1; } };
+    go(0, ends[0][0]); return nodes > 400000 ? 9 : count;
+  }
+  function flowMake(n, pmin, pmax) {
+    const nb = Array.from({ length: n * n }, (_, i) => { const r = Math.floor(i / n), c = i % n, o = []; if (r) o.push(i - n); if (r < n - 1) o.push(i + n); if (c) o.push(i - 1); if (c < n - 1) o.push(i + 1); return o; });
+    for (let t = 0; t < 4000; t++) {
+      const P = Array.from({ length: n }, (_, r) => Array.from({ length: n }, (_, c) => r * n + c));
+      for (let k = 0; k < n * n * 8; k++) { const a = P[Math.floor(rnd() * P.length)]; if (rnd() < .5) a.reverse(); const head = a[a.length - 1], cand = [];
+        P.forEach(b => { if (b === a) return; if (nb[head].includes(b[0])) cand.push([b, 0]); if (nb[head].includes(b[b.length - 1])) cand.push([b, 1]); });
+        if (!cand.length) continue; const [b, e] = cand[Math.floor(rnd() * cand.length)];
+        if (P.length > pmin && a.length + b.length <= n * 2 + 2 && rnd() < .15) { if (e) b.reverse(); a.push(...b); P.splice(P.indexOf(b), 1); }
+        else if (b.length > 3) { const x = e ? b[b.length - 1] : b[0]; if (nb[x].every(z => z === head || !a.includes(z))) a.push(e ? b.pop() : b.shift()); } }
+      if (P.length < pmin || P.length > pmax || P.some(p => p.length < 3)) continue;
+      if (P.some(p => p.some((c, i) => p.some((d, j) => j > i + 1 && nb[c].includes(d))))) continue;      // 제 몸에 닿는 길은 풀이가 여럿이 된다
+      const turns = p => p.reduce((s, c, i) => s + (i > 1 && (c - p[i - 1]) !== (p[i - 1] - p[i - 2]) ? 1 : 0), 0);
+      if (P.filter(p => turns(p) >= 1).length < 2) continue;                                              // 곧은 길뿐이면 싱겁다
+      shuffle(P); const ends = P.map(p => [p[0], p[p.length - 1]]);
+      if (flowCount(n, ends, nb) === 1) return { n, ends };
+    }
+    return null;
+  }
+  const FLOWC = [[NV, '#fff'], [AP, '#fff'], ['#fff', INK], [INK, '#fff'], ['#E9EDF8', INK], ['#F3C9A0', INK]];
+  function flowSvg(F, mm) { const n = F.n, S = 20, W = n * S; let o = `<rect x="0" y="0" width="${W}" height="${W}" fill="${CREAM}"/>`;
+    for (let i = 1; i < n; i++) o += `<path d="M${i * S} 0V${W}M0 ${i * S}H${W}" stroke="${HAIR}" stroke-width=".35"/>`;
+    o += `<rect x="0" y="0" width="${W}" height="${W}" fill="none" stroke="${INK}" stroke-width=".7"/>`;
+    F.ends.forEach((e, k) => e.forEach(c => { const x = (c % n) * S + S / 2, y = Math.floor(c / n) * S + S / 2, [bg, fg] = FLOWC[k % FLOWC.length];
+      o += `<circle cx="${x}" cy="${y}" r="6.2" fill="${bg}" stroke="${INK}" stroke-width=".5"/><text x="${x}" y="${y + 2.9}" font-size="8" font-family="Pretendard" font-weight="700" text-anchor="middle" fill="${fg}">${k + 1}</text>`; }));
+    return `<svg width="${mm}mm" height="${mm}mm" viewBox="-.5 -.5 ${W + 1} ${W + 1}">${o}</svg>`; }
+  function gameFlow() { const a = flowMake(5, 4, 5), b = flowMake(6, 5, 6);
+    const ex = `<svg width="21mm" height="21mm" viewBox="-.5 -.5 61 61"><rect width="60" height="60" fill="${CREAM}"/><path d="M20 0V60M40 0V60M0 20H60M0 40H60" stroke="${HAIR}" stroke-width=".5"/><rect width="60" height="60" fill="none" stroke="${INK}" stroke-width=".9"/><path d="M10 10V50" stroke="${NV}" stroke-width="3.2" stroke-linecap="round" fill="none"/><path d="M30 10H50V30H30V50H50" stroke="${AP}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>${[[10, 10, 0], [10, 50, 0], [30, 10, 1], [50, 50, 1]].map(([x, y, k]) => `<circle cx="${x}" cy="${y}" r="6.4" fill="${FLOWC[k][0]}" stroke="${INK}" stroke-width=".6"/><text x="${x}" y="${y + 2.9}" font-size="8" font-family="Pretendard" font-weight="700" text-anchor="middle" fill="#fff">${k + 1}</text>`).join('')}</svg>`;
+    return { title: '길 잇기', say: '같은 숫자끼리 선으로 이어요. 선은 서로 만나지 않고, 빈칸이 하나도 남지 않아요.', bad: a && b ? '' : '길 잇기 실패',
+      html: a && b ? `<div class="exb"><span>이렇게 이어요</span>${ex}</div><div class="cap"><span>첫째 판</span>${flowSvg(a, 66)}</div><div class="cap"><span>둘째 판</span>${flowSvg(b, 80)}</div>` : '' }; }
+
+  // ---- 대칭 그리기: 모눈 왼쪽 반에 코드가 그린 반쪽 모양. 위에서 아래로만 내려가는 선이라 엇갈리지 않는다. ----
+  function symMake(level) { const R = 12, H = 4;
+    for (let t = 0; t < 300; t++) { const pts = [[0, 1]]; let y = 1, w = 1 + Math.floor(rnd() * 2);
+      while (y < R - 1) { pts.push([w, y]); const dy = level === 0 ? 2 : (level === 1 ? (rnd() < .5 ? 1 : 2) : (rnd() < .75 ? 1 : 2)), lim = level === 0 ? 1 : 2; y += dy; let nw = w + Math.floor(rnd() * (lim * 2 + 1)) - lim; nw = Math.max(1, Math.min(H - 1, nw)); w = nw; }
+      const last = pts[pts.length - 1]; if (last[1] > R - 2) pts.pop(); pts.push([pts[pts.length - 1][0] > 2 ? 2 : pts[pts.length - 1][0], R - 1], [0, R - 1]);
+      const ws = pts.slice(1, -1).map(p => p[0]); if (Math.max(...ws) - Math.min(...ws) < 2) continue;
+      if (ws.some((v, i) => i > 1 && v === ws[i - 1] && v === ws[i - 2])) continue;                       // 같은 너비가 세 번 이어지면 밋밋하다
+      if (pts.some((p, i) => i && p[1] <= pts[i - 1][1] && !(i === 1 || i === pts.length - 1))) continue;
+      if (pts.some(p => p[0] < 0 || p[0] > H || p[1] < 1 || p[1] > R - 1 || p[0] % 1 || p[1] % 1)) continue;
+      const want = [6, 8, 10][level]; if (pts.length < want - 1 || pts.length > want + 3) continue;
+      return { pts, R, H, level };
+    }
+    return null;
+  }
+  function symSvg(Sm, mm) { const S = 10, H = Sm.H, R = Sm.R, W = H * 2 * S, HH = R * S, ax = H * S; let o = `<rect x="0" y="0" width="${W}" height="${HH}" fill="${CREAM}"/>`;
+    o += `<path d="${Sm.pts.map((p, i) => `${i ? 'L' : 'M'}${ax - p[0] * S} ${p[1] * S}`).join('')}Z" fill="#EBD9B4" stroke="none"/>`;
+    for (let r = 1; r < R; r++) for (let c = 0; c <= H * 2; c++) o += `<circle cx="${c * S}" cy="${r * S}" r=".75" fill="${HAIR}"/>`;
+    o += `<path d="M${ax} 3V${HH - 3}" stroke="${AP}" stroke-width=".8" stroke-dasharray="2.4 1.8"/>`;
+    o += `<path d="${Sm.pts.map((p, i) => `${i ? 'L' : 'M'}${ax - p[0] * S} ${p[1] * S}`).join('')}" fill="none" stroke="${INK}" stroke-width="1.15" stroke-linejoin="round" stroke-linecap="round"/>`;
+    Sm.pts.forEach(p => o += `<circle cx="${ax - p[0] * S}" cy="${p[1] * S}" r="1.25" fill="${INK}"/>`);
+    if (Sm.level === 2) { const m = Sm.pts[Math.floor(Sm.pts.length / 2)]; if (m[0] >= 2) o += `<circle cx="${ax - (m[0] - 1) * S}" cy="${m[1] * S}" r="2.6" fill="${AP}"/>`; }
+    return `<svg width="${mm}mm" height="${f1(mm * HH / W)}mm" viewBox="0 0 ${W} ${HH}">${o}<rect x=".3" y=".3" width="${W - .6}" height="${HH - .6}" fill="none" stroke="${INK}" stroke-width=".6"/></svg>`; }
+  function gameSym() { const a = [symMake(0), symMake(1), symMake(2)], ok = a.every(Boolean) && new Set(a.map(s => JSON.stringify(s.pts))).size === 3;
+    return { title: '반쪽 그리기', say: esc(X.sym || '반쪽만 남은 모양이에요. 살구색 금을 거울 삼아, 점을 세어 가며 나머지 반쪽을 그려요.'), bad: ok ? '' : '반쪽 그리기 실패',
+      html: ok ? a.map((s, i) => `<div class="cap"><span>${['하나', '둘', '셋'][i]}</span>${symSvg(s, 55)}</div>`).join('') : '' }; }
+
+  // ---- 암호 풀기: 그날 낱말을 자모로 풀고 자모마다 그림 글자를 준다. 표로 다시 조립해 원래 낱말이 되는지 확인한다. ----
+  const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ', JUNG = 'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ', JONG = ['', 'ㄱ', 'ㄲ', null, 'ㄴ', null, null, 'ㄷ', 'ㄹ', null, null, null, null, null, null, null, 'ㅁ', 'ㅂ', null, 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+  const jamo = w => { const out = []; for (const ch of w) { const c = ch.charCodeAt(0) - 0xAC00; if (c < 0 || c > 11171) return null; const j = JONG[c % 28]; if (j === null) return null; out.push([CHO[Math.floor(c / 588)], JUNG[Math.floor(c % 588 / 28)]].concat(j ? [j] : [])); } return out; };
+  const compose = s => String.fromCharCode(0xAC00 + CHO.indexOf(s[0]) * 588 + JUNG.indexOf(s[1]) * 28 + (s[2] ? JONG.indexOf(s[2]) : 0));
+  function gameCipher(words) { const say = '그림 글자표를 보고 오늘 신문의 낱말을 읽어요. 네모 칸에 한 글자씩 써요.';
+    const pool = shuffle([...new Set(words)].filter(w => w && w.length >= 2 && w.length <= 3 && jamo(w))), pickd = [], used = new Set();
+    for (const w of pool) { if (pickd.length === 4) break; const add = new Set([...used, ...jamo(w).flat()]); if (add.size <= 14) { pickd.push(w); add.forEach(j => used.add(j)); } }
+    if (pickd.length < 3) return { title: '암호 풀기', say, bad: '암호 풀기: 낱말 모자람', html: '' };
+    const extra = shuffle('ㄴㄹㅁㅂㅈㅎㅏㅓㅜㅣ'.split('').filter(j => !used.has(j))).slice(0, 2), all = [...used, ...extra];
+    const ord = j => CHO.includes(j) ? CHO.indexOf(j) : 100 + JUNG.indexOf(j); all.sort((a, b) => ord(a) - ord(b));
+    const ids = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21]).slice(0, all.length), map = {}, back = {}; all.forEach((j, i) => { map[j] = ids[i]; back[ids[i]] = j; });
+    const okk = new Set(ids).size === all.length && pickd.every(w => jamo(w).map(s => compose(s.map(j => back[map[j]]))).join('') === w);
+    const table = `<div class="ctab">${all.map(j => `<i>${gsvg(map[j], 7.6)}<b>${j}</b></i>`).join('')}</div>`;
+    const wd = w => `<div class="cw">${jamo(w).map(s => `<i><u>${s.map(j => gsvg(map[j], 7)).join('')}</u><s></s></i>`).join('')}</div>`;
+    return { title: '암호 풀기', say, bad: okk ? '' : '암호 풀기: 표가 낱말과 안 맞음', html: `<div class="cip">${table}<div class="crow">${pickd.slice(0, 2).map(wd).join('')}</div><div class="crow">${pickd.slice(2).map(wd).join('')}</div></div>`, n: pickd.length }; }
+
+  // ---- 큰 미로 ----
+  function gameMaze(cols, rows) {
+    const R = Array.from({ length: rows }, () => Array(cols).fill(0)), D = Array.from({ length: rows }, () => Array(cols).fill(0)), seen = Array.from({ length: rows }, () => Array(cols).fill(false));
+    const st = [[0, 0]]; seen[0][0] = true; let n = 1;
+    while (st.length) { const [r, c] = st[st.length - 1]; const nbs = shuffle([[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]]).filter(([a, b]) => a >= 0 && b >= 0 && a < rows && b < cols && !seen[a][b]);
+      if (!nbs.length) { st.pop(); continue; } const [a, b] = nbs[0]; if (a === r) R[r][Math.min(c, b)] = 1; else D[Math.min(r, a)][c] = 1; seen[a][b] = true; n++; st.push([a, b]); }
+    const S = 10, W = cols * S, H = rows * S; let p = '';
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) { if (c < cols - 1 && !R[r][c]) p += `M${(c + 1) * S} ${r * S}v${S}`; if (r < rows - 1 && !D[r][c]) p += `M${c * S} ${(r + 1) * S}h${S}`; }
+    const svg = `<svg width="186mm" height="${f1(186 * (H + 1) / (W + 1))}mm" viewBox="-.5 -.5 ${W + 1} ${H + 1}"><rect width="${W}" height="${H}" fill="${CREAM}"/><path d="${p}" fill="none" stroke="${INK}" stroke-width=".7" stroke-linecap="square"/><rect width="${W}" height="${H}" fill="none" stroke="${INK}" stroke-width=".9"/><circle cx="${S / 2}" cy="${S / 2}" r="2.6" fill="${AP}"/>${glyph(7, W - S / 2, H - S / 2, 3.4)}</svg>`;
+    return { title: '미로', say: esc(X.maze || '길을 찾아 줘요.') + ' 살구색 점에서 별까지 가요.', bad: n === cols * rows ? '' : '미로: 닿지 않는 칸', html: svg }; }
+
+  // ---- 사다리 타기 ----
+  function gameLadder(words) { const say = '사다리를 타고 내려가요. 닿은 칸에 그 낱말을 써요.';
+    const ws4 = shuffle([...new Set(words)].filter(w => w && w.length >= 2 && w.length <= 4)).slice(0, 4); if (ws4.length < 4) return { title: '사다리 타기', say, bad: '사다리: 낱말 모자람', html: '' };
+    const V = 4, L = 8; let rung = null, perm = null;
+    for (let t = 0; t < 200 && !rung; t++) { const r = []; for (let i = 0; i < L; i++) { let g; do g = Math.floor(rnd() * (V - 1)); while (i && g === r[i - 1]); r.push(g); }
+      const p = [0, 1, 2, 3].map(s => { let c = s; r.forEach(g => { if (g === c) c++; else if (g === c - 1) c--; }); return c; });
+      if ([0, 1, 2].every(g => r.filter(x => x === g).length >= 2) && p.filter((c, s) => c !== s).length >= 3) { rung = r; perm = p; } }
+    if (!rung) return { title: '사다리 타기', say, bad: '사다리 실패', html: '' };
+    const xs = [16, 46, 76, 106], y0 = 9, y1 = 45; let o = '';
+    xs.forEach((x, i) => { o += `<path d="M${x} ${y0}V${y1}" stroke="${INK}" stroke-width=".55"/><circle cx="${x}" cy="${y0}" r="1.3" fill="${AP}"/><text x="${x}" y="5.6" font-size="4.3" font-family="MaruBuri" font-weight="700" text-anchor="middle" fill="${INK}">${esc(ws4[i])}</text><path d="M${x - 12} 57.5H${x + 12}" stroke="${INK}" stroke-width=".35"/>`; });
+    rung.forEach((g, i) => { const y = y0 + 4 + i * ((y1 - y0 - 8) / (L - 1)); o += `<path d="M${xs[g]} ${f1(y)}H${xs[g + 1]}" stroke="${INK}" stroke-width=".55"/>`; });
+    return { title: '사다리 타기', say, bad: new Set(perm).size === 4 ? '' : '사다리: 길이 겹침', html: `<svg width="122mm" height="58mm" viewBox="0 0 122 58">${o}</svg>` }; }
+
+  // ---- 무늬 잇기 ----
+  function gamePattern() { const T = shuffle(['AB', 'AAB', 'ABB', 'ABC', 'ABAC']).slice(0, 3), gs = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 10, 12, 13, 17, 18]), rows = []; let bad = '';
+    T.forEach((tp, r) => { const m = { A: gs[r * 3], B: gs[r * 3 + 1], C: gs[r * 3 + 2] }, per = tp.length, show = per * 2 + (per === 2 ? 3 : per === 3 ? 1 : 0), blank = per === 4 ? 2 : 2, seq = Array.from({ length: show + blank }, (_, i) => m[tp[i % per]]);
+      if (show < per * 2 || new Set(seq).size < 2) bad = '무늬: 차례가 안 보임'; rows.push({ seq, show }); });
+    const C = 12.4, P = 17; let o = '';
+    rows.forEach((rw, r) => rw.seq.forEach((id, i) => { const x = 1 + i * C + C / 2, y = 8 + r * P; o += i < rw.show ? glyph(id, x, y, 4) : `<rect x="${f1(x - 5.2)}" y="${f1(y - 5.2)}" width="10.4" height="10.4" fill="#fff" stroke="${INK}" stroke-width=".3" stroke-dasharray="1.2 1"/>`; }));
+    rows.forEach((rw, r) => { if (r) o += `<path d="M0 ${f1(8 + r * P - P / 2)}H122" stroke="${HAIR}" stroke-width=".25"/>`; });
+    return { title: '무늬 잇기', say: '무늬가 차례를 지켜 줄을 섰어요. 점선 칸에 이어서 그려요.', bad, html: `<svg width="122mm" height="52mm" viewBox="0 0 122 52">${o}</svg>` }; }
+
+  // ---- 스도쿠 4×4 두 판(답이 하나뿐인 판만) ----
+  function gameSudoku() { const one = () => { const p = sudoku(), S = 12; let o = `<rect width="48" height="48" fill="${CREAM}"/>`;
+      p.forEach((row, r) => row.forEach((v, c) => { if (v) o += `<text x="${c * S + 6}" y="${r * S + 8.4}" font-size="6.6" font-family="MaruBuri" font-weight="700" text-anchor="middle" fill="${INK}">${v}</text>`; else o += `<rect x="${c * S}" y="${r * S}" width="${S}" height="${S}" fill="#fff"/>`; }));
+      o += `<path d="M12 0V48M36 0V48M0 12H48M0 36H48" stroke="${HAIR}" stroke-width=".3"/><path d="M24 0V48M0 24H48" stroke="${INK}" stroke-width=".45"/><rect width="48" height="48" fill="none" stroke="${INK}" stroke-width=".45"/>`;
+      return { svg: `<svg width="49mm" height="49mm" viewBox="-.5 -.5 49 49">${o}</svg>`, given: p.flat().filter(Boolean).length }; };
+    const a = one(), b = one();
+    return { title: '스도쿠', say: '가로줄, 세로줄, 굵은 금 안의 네 칸에 1·2·3·4가 한 번씩 들어가요.', bad: a.given >= 6 && b.given >= 6 ? '' : '스도쿠: 주어진 수 모자람', html: `<div class="two">${a.svg}${b.svg}</div>` }; }
+
+  // ---- 낱말 찾기 8×8·6개 ----
+  function gameWs() { return { title: '낱말 찾기', say: `오늘 신문의 낱말 ${ws ? ws.words.length : ''}개가 가로나 세로로 숨어 있어요.`, bad: ws ? '' : '낱말 찾기 실패',
+      html: ws ? `<div class="ws3">${ws.g.flat().map(c => `<i>${c}</i>`).join('')}</div><div class="wl3">${ws.words.map(w => `<span>${esc(w)}</span>`).join('')}</div>` : '' }; }
+
+  // ===== 4라운드: 놀이 22종. 큰 놀이 12 + 작은 놀이 10. 기사 그림을 그대로 쓰는 놀이(조각 맞추기·확대경)가 먼저다. =====
+  const ws = wordSearch([...(X.find || []), ...d.articles.map(a => a.word && a.word.w)]);
+  const wordPool = [...new Set([...(X.find || []), ...d.articles.map(a => a.word && a.word.w)].filter(Boolean))];
+  const WIDE = 134, NARROW = 88;
+
+  // ---- 기사 그림 살피기: 작게 줄여 놓고 조각마다 밝기·색을 잰다 ----
+  const CROP = { x: .13, y: .12, w: .74, h: .76 };                       // 그림 둘레의 종이 여백을 잘라 낸다
+  const loadImg = async src => { const im = new Image(); im.src = src; await im.decode(); const W = 240, H = Math.round(240 * im.naturalHeight / im.naturalWidth), c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); x.drawImage(im, 0, 0, W, H); return { d: x.getImageData(0, 0, W, H).data, W, H, ar: im.naturalWidth / im.naturalHeight, src }; };
+  const look = (I, x0, y0, x1, y1) => { const sig = [], lum = []; let paper = 0; for (let gy = 0; gy < 3; gy++) for (let gx = 0; gx < 3; gx++) { let r = 0, g = 0, b = 0, n = 0;
+      for (let y = Math.floor((y0 + (y1 - y0) * gy / 3) * I.H); y < Math.floor((y0 + (y1 - y0) * (gy + 1) / 3) * I.H); y++) for (let x = Math.floor((x0 + (x1 - x0) * gx / 3) * I.W); x < Math.floor((x0 + (x1 - x0) * (gx + 1) / 3) * I.W); x++) { const k = (y * I.W + x) * 4; r += I.d[k]; g += I.d[k + 1]; b += I.d[k + 2]; n++; const L = I.d[k] * .3 + I.d[k + 1] * .59 + I.d[k + 2] * .11; lum.push(L); if (L > 222) paper++; }
+      sig.push(r / n, g / n, b / n); }
+    const m = lum.reduce((s, v) => s + v, 0) / lum.length; return { sig, paper: paper / lum.length, sd: Math.sqrt(lum.reduce((s, v) => s + (v - m) * (v - m), 0) / lum.length) }; };
+  const sigDist = (a, b) => a.sig.reduce((s, v, i) => s + Math.abs(v - b.sig[i]), 0) / a.sig.length;
+  const artPics = d.articles.filter(a => a.img).map((a, i) => ({ a, i }));
+  const picOrder = () => artPics.map((p, k) => artPics[(k + dayNo) % artPics.length]);
+
+  // ---- 조각 맞추기: 기사 그림을 잘라 섞는다. 밋밋한 조각이 둘 넘거나 서로 닮은 조각이 있으면 다른 그림으로, 다 안 되면 다른 놀이로. ----
+  async function gameJigsaw(cols, rows) { let why = '';
+    for (const { a } of picOrder()) { const I = await loadImg(a.img), T = [];
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) T.push(look(I, CROP.x + CROP.w * c / cols, CROP.y + CROP.h * r / rows, CROP.x + CROP.w * (c + 1) / cols, CROP.y + CROP.h * (r + 1) / rows));
+      const flat = T.filter(t => t.sd < 9 || t.paper > .5).length; let close = 99; T.forEach((t, i) => T.forEach((u, j) => { if (j > i) close = Math.min(close, sigDist(t, u)); }));
+      if (flat > 1 || close < 7) { why += ` ${a.tag}(밋밋${flat} 닮음${f1(close)})`; continue; }
+      let ord; for (let t = 0; t < 50; t++) { ord = shuffle([...Array(cols * rows).keys()]); if (ord.filter((v, i) => v === i).length <= 1) break; }
+      const tw = cols === 3 ? 37 : 28, fullW = tw * cols / CROP.w, fullH = fullW / I.ar, th = fullH * CROP.h / rows, rw = cols === 3 ? 15 : 11.5;
+      const tiles = ord.map(k => { const c = k % cols, r = Math.floor(k / cols); return `<i style="width:${tw}mm;height:${f1(th)}mm;background-image:url('${esc(a.img)}');background-size:${f1(fullW)}mm ${f1(fullH)}mm;background-position:-${f1(CROP.x * fullW + c * tw)}mm -${f1(CROP.y * fullH + r * th)}mm"><b></b></i>`; }).join('');
+      const ref = Array.from({ length: cols * rows }, (_, k) => `<i style="width:${rw}mm;height:${f1(rw * th / tw)}mm">${k + 1}</i>`).join('');
+      return { title: '조각 맞추기', say: `「${esc(a.short || a.title)}」 그림이 ${cols * rows === 9 ? '아홉' : '열두'} 조각으로 흩어졌어요. 번호판을 보고, 조각마다 제자리 번호를 동그라미 안에 적어요.`, bad: '', note: why,
+        html: `<div class="jgref"><span>번호판</span><div class="jgr" style="grid-template-columns:repeat(${cols},auto)">${ref}</div></div><div class="jgt" style="grid-template-columns:repeat(${cols},auto)">${tiles}</div>` }; }
+    return { fallback: '조각 맞추기 대체:' + why };
+  }
+  // ---- 확대경: 그림의 네 곳을 크게 보여 주고 어느 칸인지 적는다. 무늬가 없는 곳·서로 닮은 곳은 고르지 않는다. ----
+  async function gameLoupe() { const cols = 4, rows = 3, RN = '가나다'; let why = '';
+    for (const { a } of picOrder()) { const I = await loadImg(a.img); let pick = null;
+      for (let t = 0; t < 120 && !pick; t++) { const cells = shuffle([...Array(12).keys()]).slice(0, 4), P = cells.map(k => { const c = k % cols, r = Math.floor(k / cols), u = (c + .32 + rnd() * .36) / cols, v = (r + .32 + rnd() * .36) / rows, ru = .2 / cols, rv = ru * I.ar * (CROP.w / CROP.h);
+          return { k, u, v, L: look(I, CROP.x + CROP.w * (u - ru), CROP.y + CROP.h * (v - rv), CROP.x + CROP.w * (u + ru), CROP.y + CROP.h * (v + rv)) }; });
+        let close = 99; P.forEach((p, i) => P.forEach((q2, j) => { if (j > i) close = Math.min(close, sigDist(p.L, q2.L)); }));
+        if (P.every(p => p.L.sd >= 13 && p.L.paper < .3) && close >= 9) pick = P; }
+      if (!pick) { why += ` ${a.tag}(무늬 모자람)`; continue; }
+      const PW = 104, fullW = PW / CROP.w, fullH = fullW / I.ar, PH = fullH * CROP.h, Z = 2.5, D = 31;
+      const grid = `<svg viewBox="0 0 ${PW} ${f1(PH)}" style="position:absolute;inset:0;width:100%;height:100%">${[1, 2, 3].map(c => `<path d="M${PW * c / cols} 0V${f1(PH)}" stroke="#fff" stroke-width=".5"/>`).join('')}${[1, 2].map(r => `<path d="M0 ${f1(PH * r / rows)}H${PW}" stroke="#fff" stroke-width=".5"/>`).join('')}</svg>`;
+      const pic = `<div class="lpw"><div class="lpc">${[1, 2, 3, 4].map(n => `<span>${n}</span>`).join('')}</div><div class="lpr" style="height:${f1(PH)}mm">${[...RN].map(n => `<span>${n}</span>`).join('')}</div><div class="lpi" style="width:${PW}mm;height:${f1(PH)}mm;background-image:url('${esc(a.img)}');background-size:${f1(fullW)}mm ${f1(fullH)}mm;background-position:-${f1(CROP.x * fullW)}mm -${f1(CROP.y * fullH)}mm">${grid}</div></div>`;
+      const lens = pick.map(p => { const fx = (CROP.x + CROP.w * p.u) * fullW * Z, fy = (CROP.y + CROP.h * p.v) * fullH * Z; return `<div class="ln"><i style="width:${D}mm;height:${D}mm;background-image:url('${esc(a.img)}');background-size:${f1(fullW * Z)}mm ${f1(fullH * Z)}mm;background-position:-${f1(fx - D / 2)}mm -${f1(fy - D / 2)}mm"></i><b></b></div>`; }).join('');
+      return { title: '확대경', say: `「${esc(a.short || a.title)}」 그림을 확대경으로 봤어요. 동그라미 속 모습이 큰 그림의 어느 칸인지 찾아, 아래 칸에 '나 3'처럼 적어요.`, bad: new Set(pick.map(p => p.k)).size === 4 ? '' : '확대경: 칸 겹침', note: why, html: `${pic}<div class="lns">${lens}</div>` }; }
+    return { fallback: '확대경 대체:' + why };
+  }
+
+  // ---- 반쪽 그리기: 알아볼 수 있는 모양 14가지(왼쪽 반의 꼭짓점: [가운데 금에서 떨어진 칸 수, 줄]) ----
+  const HALF = { 로켓: [[0, 1], [1, 2], [2, 4], [2, 8], [4, 10], [4, 11], [1, 10], [0, 10]], 집: [[0, 2], [4, 5], [3, 5], [3, 10], [1, 10], [1, 7], [0, 7]], 나무: [[0, 1], [2, 4], [1, 4], [3, 7], [2, 7], [4, 10], [1, 10], [1, 11], [0, 11]],
+    나비: [[0, 3], [1, 2], [3, 1], [4, 2], [4, 5], [2, 6], [4, 8], [3, 10], [1, 10], [0, 8]], 나뭇잎: [[0, 1], [1, 3], [3, 4], [2, 5], [4, 7], [2, 8], [2, 9], [0, 11]], 꽃병: [[0, 1], [2, 1], [1, 3], [3, 5], [3, 8], [2, 10], [0, 10]],
+    우승컵: [[0, 2], [3, 2], [3, 5], [1, 7], [1, 9], [2, 10], [2, 11], [0, 11]], 버섯: [[0, 2], [2, 2], [4, 4], [4, 6], [1, 6], [1, 10], [2, 11], [0, 11]], 튤립: [[0, 3], [1, 1], [2, 3], [3, 1], [3, 5], [2, 7], [1, 8], [1, 11], [0, 11]],
+    왕관: [[0, 2], [1, 5], [2, 3], [3, 5], [4, 2], [4, 9], [0, 9]], 별: [[0, 1], [1, 5], [4, 6], [1, 7], [0, 11]], 하트: [[0, 3], [1, 2], [3, 2], [4, 3], [4, 5], [0, 10]],
+    등대: [[0, 1], [1, 2], [1, 3], [2, 3], [2, 4], [1, 4], [2, 10], [3, 10], [3, 11], [0, 11]], 종: [[0, 1], [1, 2], [2, 4], [2, 8], [4, 10], [1, 10], [0, 11]] };
+  function gameSym4() { const names = shuffle(Object.keys(HALF)).slice(0, 2), S = 10, Hc = 5, R = 12, W = Hc * 2 * S, HH = R * S, ax = Hc * S; let bad = '';
+    const one = nm => { const P = HALF[nm]; if (P.some(p => p[0] < 0 || p[0] > 4 || p[1] < 1 || p[1] > 11 || p[0] % 1 || p[1] % 1) || P[0][0] !== 0 || P[P.length - 1][0] !== 0) bad = '반쪽 그리기: 좌표 벗어남 ' + nm;
+      const dd = P.map((p, i) => `${i ? 'L' : 'M'}${ax - p[0] * S} ${p[1] * S}`).join(''); let o = `<rect width="${W}" height="${HH}" fill="${CREAM}"/><path d="${dd}Z" fill="#EBD9B4"/>`;
+      for (let r = 1; r < R; r++) for (let c = 1; c < Hc * 2; c++) o += `<circle cx="${c * S}" cy="${r * S}" r=".7" fill="${HAIR}"/>`;
+      o += `<path d="M${ax} 3V${HH - 3}" stroke="${AP}" stroke-width=".8" stroke-dasharray="2.4 1.8"/><path d="${dd}" fill="none" stroke="${INK}" stroke-width="1.05" stroke-linejoin="round" stroke-linecap="round"/>`; P.forEach(p => o += `<circle cx="${ax - p[0] * S}" cy="${p[1] * S}" r="1.2" fill="${INK}"/>`);
+      return `<svg width="72mm" height="86.4mm" viewBox="0 0 ${W} ${HH}">${o}<rect x=".3" y=".3" width="${W - .6}" height="${HH - .6}" fill="none" stroke="${INK}" stroke-width=".5"/></svg>`; };
+    const html = names.map((n, i) => `<div class="cap"><span>${['하나', '둘'][i]}</span>${one(n)}</div>`).join('');
+    return { title: '반쪽 그리기', say: '반쪽만 남은 그림이에요. 살구색 금을 거울 삼아, 점을 세어 가며 나머지 반쪽을 그려요. 무엇이 나타날까요?', bad, html }; }
+
+  // ---- 별자리 만들기: 정해진 답이 없다. 별이 뭉치거나 한 줄로 서지 않게만 본다. ----
+  function gameStars() { const W = 184, H = 84, n = 14; let P = null;
+    for (let t = 0; t < 200 && !P; t++) { const a = []; let g = 0; while (a.length < n && g++ < 600) { const p = [8 + rnd() * (W - 16), 8 + rnd() * (H - 16)]; if (p[0] > 118 && p[1] > 62) continue; if (a.every(o => Math.hypot(o[0] - p[0], o[1] - p[1]) >= 17)) a.push(p); }
+      if (a.length < n) continue; const xs = a.map(p => p[0]), ys = a.map(p => p[1]); if (Math.max(...xs) - Math.min(...xs) > W * .75 && Math.max(...ys) - Math.min(...ys) > H * .7) P = a; }
+    if (!P) return { title: '별자리 만들기', say: '', bad: '별자리 실패', html: '' };
+    let o = `<rect width="${W}" height="${H}" fill="${CREAM}"/>`; for (let i = 0; i < 26; i++) o += `<circle cx="${f1(4 + rnd() * (W - 8))}" cy="${f1(4 + rnd() * (H - 8))}" r=".35" fill="${HAIR}"/>`;
+    P.forEach((p, i) => { const r = 2.2 + (i % 3) * .7; o += sparkle(f1(p[0]), f1(p[1]), r, i % 5 === 0 ? AP : INK); });
+    o += `<text x="122" y="${H - 7}" font-size="3.6" font-family="Pretendard" font-weight="700" fill="${INK}">별자리 이름</text><path d="M142 ${H - 6}H${W - 6}" stroke="${INK}" stroke-width=".3"/><rect x=".25" y=".25" width="${W - .5}" height="${H - .5}" fill="none" stroke="${INK}" stroke-width=".5"/>`;
+    return { title: '별자리 만들기', say: `${esc(X.stars || '밤하늘에 별이 열네 개 떠 있어요.')} 마음대로 선으로 이어 나만의 별자리를 만들고 이름을 붙여요.`, bad: '', html: `<svg width="${W}mm" height="${H}mm" viewBox="0 0 ${W} ${H}">${o}</svg>` }; }
+
+  // ---- 번호 색칠: 12×12 도안 9가지. 1 파랑 · 2 주황 · 3 연필 ----
+  const PIX = { 로켓: '.....33.....|....3333....|....3113....|...331133...|...333333...|...333333...|...331133...|..23333332..|.2233333322.|.22.3333.22.|.2...22...2.|.....22.....',
+    고래: '............|.........1.1|..........1.|...11111..1.|..1111111.1.|.11311111111|.1111111111.|.1111111111.|..33333311..|...333333...|............|2.2.2.2.2.2.',
+    별: '.....22.....|.....22.....|....2222....|.2222222222.|..22222222..|...222222...|...222222...|..22222222..|..222..222..|.222....222.|.22......22.|............',
+    나뭇잎: '.......22...|.....2222...|....222222..|...2223222..|..22232222..|..22322222..|.22322222...|.2322222....|.322222.....|3.2222......|3...........|............',
+    물고기: '............|............|...2222....2|..222222..22|.2232222222.|.2222222222.|.2222222222.|..222222..22|...2222....2|............|.1..1..1..1.|............',
+    집: '.....22.....|....2222....|...222222...|..22222222..|.2222222222.|..33333333..|..31133333..|..31133113..|..33333113..|..33333113..|..33333113..|............',
+    버섯: '....2222....|..22222222..|.2232222322.|.2222222222.|222322223222|222222222222|....3333....|....3333....|....3333....|...333333...|............|............',
+    돛단배: '......3.....|......32....|......322...|......3222..|......32222.|......3.....|.3333333333.|..33333333..|...333333...|1.1.1.1.1.1.|.1.1.1.1.1.1|............',
+    꽃: '....22.22...|...2222222..|...2233222..|....23332...|...2233222..|...2222222..|....22.22...|.....3......|..33.3......|...333.33...|.....333....|.....3......' };
+  function gameColor() { const names = shuffle(Object.keys(PIX)).slice(0, 2); let bad = '';
+    const one = nm => { const rows = PIX[nm].split('|'), S = 10; if (rows.length !== 12 || rows.some(r => r.length !== 12 || /[^.123]/.test(r))) bad = '번호 색칠: 도안 크기 ' + nm; const fill = rows.join('').replace(/\./g, '').length; if (fill < 30 || fill > 110 || new Set(rows.join('').replace(/\./g, '')).size < 2) bad = bad || '번호 색칠: 도안이 비었거나 한 색 ' + nm;
+      let o = `<rect width="120" height="120" fill="#fff"/>`; rows.forEach((r, y) => [...r].forEach((ch, x) => { if (ch !== '.') o += `<text x="${x * S + 5}" y="${y * S + 6.9}" font-size="5.2" font-family="Pretendard" font-weight="500" text-anchor="middle" fill="#7d7566">${ch}</text>`; }));
+      for (let i = 1; i < 12; i++) o += `<path d="M${i * S} 0V120M0 ${i * S}H120" stroke="${HAIR}" stroke-width=".25"/>`;
+      return `<svg width="84mm" height="84mm" viewBox="-.4 -.4 120.8 120.8">${o}<rect width="120" height="120" fill="none" stroke="${INK}" stroke-width=".5"/></svg>`; };
+    return { title: '번호 색칠', say: `숫자대로 칸을 칠해요. 1은 파랑 <i class="sw" style="background:${NV}"></i>, 2는 주황 <i class="sw" style="background:${AP}"></i>, 3은 연필 <i class="sw" style="background:#8a8f9c"></i>. 숫자가 없는 칸은 그대로 둬요. 무엇이 나타날까요?`, bad, html: names.map(one).join('') }; }
+
+  // ---- 다른 그림 찾기·점 잇기(1라운드)를 합의한 결로: 먹색 가는 선, 미색 바탕, 살구·남색 옅은 빛만 ----
+  const TONE = { '#18254E': INK, '#E3EAF8': CREAM, '#ECEFF9': CREAM, '#EEF1FA': CREAM, '#D3DCF2': '#EDE4CE', '#E1E7F6': '#EFE8D6', '#B9C6EC': '#CFD8F0', '#C9D3EF': '#DDE3F4', '#8D9BCB': NV, '#F3C9A0': '#F0CFA6', '#EDB38C': '#E9B27C', '#EBC79A': '#F0CFA6', '#F6D9CC': '#F6E0CF', '#F2CDBB': '#F0CFA6', '#FBE7B5': '#fff', '#F7D9A8': '#F0CFA6', '#F4E6C6': '#EBDFC6', '#DCD6C9': '#E6DCC6', '#DADDE6': '#E6DCC6', '#C4C9D6': '#C9BB98', '#E9A23B': AP, '#E9EDF8': '#fff', '#FBFAF5': CREAM };
+  const retone = s => s.replace(/#[0-9A-Fa-f]{6}/g, m => TONE[m] || TONE[m.toUpperCase()] || m).replace(/stroke-width="(\d*\.?\d+)"/g, (m, v) => `stroke-width="${f1(v * .72 * 10) / 10}"`);
+  SP.svg = SP.svg.map(retone);
+  function gameSpot() { return { title: '다른 그림 찾기', say: '두 그림에서 다른 곳 다섯 군데를 찾아 오른쪽 그림에 동그라미를 쳐요. 다 찾으면 색칠해도 좋아요.', bad: '', html: `<div class="spot4">${SP.svg[0]}${SP.svg[1]}</div>`, spot: true }; }
+  function gameDots() { return { title: '점 잇기', say: esc(DT.say), bad: DT.bad, html: `<div class="dots4">${retone(DT.svg)}</div>` }; }
+
+  // ---- 주말: 낱말 빙고, 주사위 길 놀이판 ----
+  function gameBingo() { const pool = shuffle([...new Set([...wordPool, ...d.articles.map(a => a.tag), ...(X.briefs || []).map(b => b.tag)])].filter(w => w.length <= 4)); if (pool.length < 9) return { fallback: '낱말 빙고 대체: 낱말 ' + pool.length + '개' };
+    const card = (nm, ws9) => `<div class="cap"><span>${nm}</span><div class="bg">${ws9.map(w => `<i>${esc(w)}</i>`).join('')}</div></div>`, a = pool.slice(0, 9), b = shuffle(pool.slice(0, 9).slice());
+    return { title: '낱말 빙고', say: '엄마 아빠와 판을 하나씩 골라요. 한 사람이 오늘 신문을 소리 내어 읽고, 내 판의 낱말이 들리면 그 칸을 칠해요. 한 줄이 다 차면 "빙고" 하고 말해요.', bad: a.join() === b.join() ? '빙고: 두 판이 같음' : '', html: card('첫째 판', a) + card('둘째 판', b) }; }
+  function gameBoard() { const cols = 8, rows = 3, n = cols * rows, CW = 23, CH = X.think ? 20 : 28, SPC = ['두 칸 앞으로', '한 칸 뒤로', '한 번 쉬어요', '한 번 더 던져요', '세 칸 앞으로', '두 칸 뒤로'], mv = { '두 칸 앞으로': 2, '한 칸 뒤로': -1, '세 칸 앞으로': 3, '두 칸 뒤로': -2 }; let sp = null;
+    for (let t = 0; t < 300 && !sp; t++) { const m = {}; shuffle([...Array(n - 4).keys()].map(i => i + 2)).slice(0, 6).forEach((c, i) => m[c] = SPC[i]); const ks = Object.keys(m).map(Number);
+      if (ks.some(k => ks.includes(k + 1)) || ks.some(k => mv[m[k]] && (m[k + mv[m[k]]] || k + mv[m[k]] >= n - 1 || k + mv[m[k]] < 1))) continue; sp = m; }
+    if (!sp) return { fallback: '놀이판 대체' };
+    let o = ''; for (let i = 0; i < n; i++) { const r = Math.floor(i / cols), c = r % 2 ? cols - 1 - (i % cols) : i % cols, x = c * CW, y = r * CH, txt = i === 0 ? '출발' : i === n - 1 ? '도착' : sp[i] || '';
+      o += `<rect x="${x}" y="${y}" width="${CW}" height="${CH}" fill="${i === 0 || i === n - 1 ? '#EBD9B4' : sp[i] ? '#fff' : CREAM}" stroke="${INK}" stroke-width=".3"/><text x="${x + 2}" y="${y + 4.6}" font-size="3" font-family="Pretendard" font-weight="600" fill="${HAIR}">${i + 1}</text>`;
+      if (txt) o += `<text x="${x + CW / 2}" y="${y + CH / 2 + 2.6}" font-size="${i === 0 || i === n - 1 ? 4.4 : 3.3}" font-family="${i === 0 || i === n - 1 ? 'MaruBuri' : 'Pretendard'}" font-weight="700" text-anchor="middle" fill="${INK}">${txt}</text>`; }
+    return { title: '주사위 길 놀이', say: '지우개나 단추를 말로 삼아요. 주사위를 던져 나온 수만큼 번호를 따라 가요. 주사위가 없으면 동전을 던져요. 앞면은 한 칸, 뒷면은 두 칸이에요.', bad: '', html: `<svg width="${cols * CW}mm" height="${rows * CH}mm" viewBox="-.3 -.3 ${cols * CW + .6} ${rows * CH + .6}">${o}</svg>` }; }
+
+  // ===== 작은 놀이(너비 W mm에 맞춘다) =====
+  function gameLadder4(W) { const V = W > 100 ? 5 : 4, say = '사다리를 타고 내려가요. 닿은 자리에 그 낱말을 써요.', wl = shuffle(wordPool.filter(w => w.length >= 2 && w.length <= 4)).slice(0, V); if (wl.length < V) return { fallback: '사다리 대체: 낱말 모자람' };
+    const L = 9; let rung = null, perm = null;
+    for (let t = 0; t < 300 && !rung; t++) { const r = []; for (let i = 0; i < L; i++) { let g; do g = Math.floor(rnd() * (V - 1)); while (i && g === r[i - 1]); r.push(g); }
+      const p = [...Array(V).keys()].map(s => { let c = s; r.forEach(g => { if (g === c) c++; else if (g === c - 1) c--; }); return c; });
+      if ([...Array(V - 1).keys()].every(g => r.includes(g)) && p.filter((c, s) => c !== s).length >= V - 1) { rung = r; perm = p; } }
+    if (!rung) return { title: '사다리 타기', say, bad: '사다리 실패', html: '' };
+    const xs = [...Array(V).keys()].map(i => 15 + i * (W - 30) / (V - 1)), y0 = 9, y1 = 46; let o = '';
+    xs.forEach((x, i) => o += `<path d="M${f1(x)} ${y0}V${y1}" stroke="${INK}" stroke-width=".5"/><circle cx="${f1(x)}" cy="${y0}" r="1.3" fill="${AP}"/><text x="${f1(x)}" y="5.6" font-size="4.3" font-family="MaruBuri" font-weight="700" text-anchor="middle" fill="${INK}">${esc(wl[i])}</text><path d="M${f1(x - 11)} 58.5H${f1(x + 11)}" stroke="${INK}" stroke-width=".3"/>`);
+    rung.forEach((g, i) => { const y = y0 + 3.5 + i * ((y1 - y0 - 7) / (L - 1)); o += `<path d="M${f1(xs[g])} ${f1(y)}H${f1(xs[g + 1])}" stroke="${INK}" stroke-width=".5"/>`; });
+    return { title: '사다리 타기', say, bad: new Set(perm).size === V ? '' : '사다리: 길이 겹침', html: `<svg width="${W}mm" height="59mm" viewBox="0 0 ${W} 59">${o}</svg>` }; }
+  function gamePattern4(W) { const T = shuffle(['AB', 'AAB', 'ABB', 'ABC', 'ABAC', 'AABB']).slice(0, 3), gs = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 10, 12, 13, 17, 18]), N = 10, C = W / N, P = 18; let o = '', bad = '';
+    T.forEach((tp, r) => { const m = { A: gs[r * 3], B: gs[r * 3 + 1], C: gs[r * 3 + 2] }, show = N - (tp.length === 2 ? 3 : 2); if (show < tp.length * 2) bad = '무늬: 차례가 안 보임';
+      for (let i = 0; i < N; i++) { const x = i * C + C / 2, y = 9 + r * P; o += i < show ? glyph(m[tp[i % tp.length]], f1(x), y, 4.1) : `<rect x="${f1(x - 5.4)}" y="${y - 5.4}" width="10.8" height="10.8" fill="#fff" stroke="${INK}" stroke-width=".3" stroke-dasharray="1.2 1"/>`; }
+      if (r) o += `<path d="M0 ${y0p(r, P)}H${W}" stroke="${HAIR}" stroke-width=".25"/>`; });
+    return { title: '무늬 잇기', say: '무늬가 차례를 지켜 줄을 섰어요. 점선 칸에 이어서 그려요.', bad, html: `<svg width="${W}mm" height="54mm" viewBox="0 0 ${W} 54">${o}</svg>` }; }
+  const y0p = (r, P) => f1(9 + r * P - P / 2);
+  function gameTangle(W) { const K = 4, M = W > 100 ? 7 : 5, ys = [7, 20, 33, 46], x0 = 15, x1 = W - 17, dx = (x1 - x0) / M; let sw = null, perm = null;
+    for (let t = 0; t < 200 && !sw; t++) { const s = []; for (let i = 0; i < M; i++) { let g; do g = Math.floor(rnd() * 3); while (i && g === s[i - 1]); s.push(g); }
+      const lane = [0, 1, 2, 3]; s.forEach(g => { const a = lane.indexOf(g), b = lane.indexOf(g + 1); lane[a] = g + 1; lane[b] = g; }); if (lane.filter((v, i) => v !== i).length >= 3) { sw = s; perm = lane; } }
+    if (!sw) return { title: '엉킨 줄', say: '', bad: '엉킨 줄 실패', html: '' };
+    const gl = shuffle([0, 2, 4, 6, 7, 10, 17, 18]).slice(0, K); let o = '';
+    for (let k = 0; k < K; k++) { let l = k, dd = `M${x0 - 4} ${ys[l]}H${x0}`; sw.forEach((g, i) => { const nl = l === g ? g + 1 : l === g + 1 ? g : l, xa = x0 + i * dx, xb = xa + dx; dd += `C${f1(xa + dx / 2)} ${ys[l]} ${f1(xa + dx / 2)} ${ys[nl]} ${f1(xb)} ${ys[nl]}`; l = nl; }); dd += `H${x1 + 4}`;
+      o += `<path d="${dd}" fill="none" stroke="#fff" stroke-width="2.2"/><path d="${dd}" fill="none" stroke="${INK}" stroke-width=".55" stroke-linecap="round"/>` + glyph(gl[k], 5.5, ys[k], 3.6) + `<rect x="${x1 + 6}" y="${ys[k] - 5}" width="10" height="10" fill="#fff" stroke="${INK}" stroke-width=".3" stroke-dasharray="1.2 1"/>`; }
+    return { title: '엉킨 줄', say: '줄 네 가닥이 엉켰어요. 손가락으로 따라가서, 줄 끝의 점선 칸에 그 줄의 무늬를 그려요.', bad: new Set(perm).size === 4 && sw.length >= 4 ? '' : '엉킨 줄: 길 겹침', html: `<svg width="${W}mm" height="53mm" viewBox="0 0 ${W} 53">${o}</svg>` }; }
+  function gameStroke(W) { const nfig = W > 100 ? 3 : 2, G = 3, S = 15, figs = [], seen = new Set();
+    for (let t = 0; t < 400 && figs.length < nfig; t++) { const E = []; const key = (a, b) => a < b ? a + '-' + b : b + '-' + a;
+      for (let r = 0; r < G; r++) for (let c = 0; c < G; c++) { const i = r * G + c; if (c < G - 1) E.push([i, i + 1]); if (r < G - 1) E.push([i, i + G]); if (r < G - 1 && c < G - 1) E.push(rnd() < .5 ? [i, i + G + 1] : [i + 1, i + G]); }
+      const start = Math.floor(rnd() * 9), used = new Set(), trail = [start], want = 8 + Math.floor(rnd() * 3); let cur = start;
+      while (used.size < want) { const opt = E.filter(e => (e[0] === cur || e[1] === cur) && !used.has(key(...e))); if (!opt.length) break; const e = opt[Math.floor(rnd() * opt.length)]; used.add(key(...e)); cur = e[0] === cur ? e[1] : e[0]; trail.push(cur); }
+      const deg = Array(9).fill(0); used.forEach(k => k.split('-').forEach(v => deg[+v]++)); const odd = deg.filter(v => v % 2).length, sig = [...used].sort().join();
+      if (used.size < 7 || deg.filter(v => v >= 3).length < 2 || (odd !== 0 && odd !== 2) || (odd === 2 && deg[start] % 2 === 0) || seen.has(sig)) continue; seen.add(sig); figs.push({ used, start }); }
+    if (figs.length < nfig) return { title: '한붓그리기', say: '', bad: '한붓그리기 실패', html: '' };
+    const one = F => { let o = `<rect x="-7" y="-7" width="${S * 2 + 14}" height="${S * 2 + 14}" fill="${CREAM}"/>`; F.used.forEach(k => { const [a, b] = k.split('-').map(Number); o += `<path d="M${(a % G) * S} ${Math.floor(a / G) * S}L${(b % G) * S} ${Math.floor(b / G) * S}" stroke="${INK}" stroke-width=".45" stroke-linecap="round"/>`; });
+      const pts = new Set(); F.used.forEach(k => k.split('-').forEach(v => pts.add(+v))); pts.forEach(v => o += `<circle cx="${(v % G) * S}" cy="${Math.floor(v / G) * S}" r="${v === F.start ? 1.9 : 1}" fill="${v === F.start ? AP : INK}"/>`);
+      return `<svg width="38mm" height="38mm" viewBox="-7 -7 ${S * 2 + 14} ${S * 2 + 14}">${o}<rect x="-6.8" y="-6.8" width="${S * 2 + 13.6}" height="${S * 2 + 13.6}" fill="none" stroke="${INK}" stroke-width=".35"/></svg>`; };
+    return { title: '한붓그리기', say: '연필을 떼지 않고, 같은 선을 두 번 지나지 않고 모두 따라 그려요. 살구색 점에서 떠나요.', bad: '', html: figs.map(one).join('') }; }
+  function gameNum(W) { const src = [...d.articles.map((a, i) => ({ t: a.body, pg: i ? 2 : 1 })), ...(X.briefs || []).map(b => ({ t: b.text, pg: 1 }))], all = src.map(s => s.t).join('\n'), found = [];
+    src.forEach((s, si) => { const re = /(\d[\d,.]*\d|\d)(km|m|시간|분|마리|배|년|호|개)/g; let m; while ((m = re.exec(s.t))) { const tok = m[0]; if (all.split(tok).length === 2 && !/\d$/.test(all[all.indexOf(tok) - 1] || '') && !found.some(f => f.tok === tok)) found.push({ tok, si, pg: s.pg }); } });
+    const n = W > 100 ? 6 : 4, pickd = []; shuffle(found).forEach(f => { if (pickd.length < n && pickd.filter(p => p.si === f.si).length < 2) pickd.push(f); });
+    if (pickd.length < n) return { fallback: '숫자 사냥 대체: 숫자 ' + pickd.length + '개' };
+    return { title: '숫자 사냥', say: '오늘 신문 어딘가에 나온 숫자예요. 기사에서 찾아 동그라미를 치고, 몇 면에 있었는지 네모에 적어요.', bad: new Set(pickd.map(p => p.tok)).size === n && new Set(pickd.map(p => p.si)).size >= 2 ? '' : '숫자 사냥: 겹침', html: `<div class="nh">${pickd.map(p => `<i><b>${esc(p.tok)}</b><u></u><span>면</span></i>`).join('')}</div>` }; }
+  function gameMirror(W) { const wl = shuffle(wordPool.filter(w => w.length >= 2 && w.length <= 4)).slice(0, 3); if (wl.length < 3) return { fallback: '거울 글자 대체' };
+    return { title: '거울 글자', say: '거울에 비친 낱말이에요. 바로 된 글자로 네모 칸에 써요.', bad: '', html: `<div class="mr">${wl.map(w => `<div><b>${esc(w)}</b><span>${'<u></u>'.repeat(w.length)}</span></div>`).join('')}</div>` }; }
+  function gameNim(W) { const n = 12 + Math.floor(rnd() * 4), per = Math.ceil(n / 2), gx = (W - 12) / per; let o = '';
+    for (let i = 0; i < n; i++) { const cx = 6 + gx * (i % per) + gx / 2 + (rnd() - .5) * gx * .3, cy = (i < per ? 12 : 31) + (rnd() - .5) * 6, R = 4.6 + rnd() * 1.6; let dd = ''; const k = 7 + Math.floor(rnd() * 3), ph = rnd() * 6; for (let j = 0; j < k; j++) { const a = ph + j * Math.PI * 2 / k, r = R * (.78 + rnd() * .3); dd += `${j ? 'L' : 'M'}${f1(cx + Math.cos(a) * r * 1.15)} ${f1(cy + Math.sin(a) * r * .9)}`; }
+      o += `<path d="${dd}Z" fill="${i % 3 ? '#E6DCC6' : '#fff'}" stroke="${INK}" stroke-width=".45" stroke-linejoin="round"/><path d="M${f1(cx - 1.5)} ${f1(cy - .8)}l1.2 .9" stroke="${INK}" stroke-width=".3" stroke-linecap="round"/>`; }
+    return { title: '돌 가져가기', say: `돌이 ${n}개 있어요. 엄마 아빠와 번갈아, 한 번에 한 개에서 세 개까지 줄을 그어 지워요. 마지막 돌을 지우는 사람이 이겨요.`, bad: n >= 12 && n <= 15 ? '' : '돌 개수', html: `<svg width="${W}mm" height="42mm" viewBox="0 0 ${W} 42">${o}</svg>` }; }
+  function gamePair(W) { const mk = () => ({ nb: 1 + Math.floor(rnd() * 3), bl: [2.2, 3, 3.8][Math.floor(rnd() * 3)], ang: [40, 60][Math.floor(rnd() * 2)], tip: Math.floor(rnd() * 3), core: Math.floor(rnd() * 3), bp: Math.floor(rnd() * 2) }), diff = (a, b) => Object.keys(a).filter(k => a[k] !== b[k]).length, F = [];
+    for (let t = 0; t < 400 && F.length < 7; t++) { const f = mk(); if (F.every(g => diff(f, g) >= 2)) F.push(f); }
+    if (F.length < 7) return { title: '짝 찾기', say: '', bad: '짝 찾기 실패', html: '' };
+    const all = shuffle([...F, F[Math.floor(rnd() * 7)]]), s = Math.min(28, W / 4), draw = (f, cx, cy) => { let arm = `M0 0V-10.5`; const pos = f.nb === 1 ? [6] : f.nb === 2 ? [4 + f.bp, 7.5] : [3.2, 5.6 + f.bp * .6, 8]; pos.forEach((p, i) => { const l = f.bl * (1 - i * .22), a = f.ang * Math.PI / 180; arm += `M0 ${-p}l${f1(Math.sin(a) * l)} ${f1(-Math.cos(a) * l)}M0 ${-p}l${f1(-Math.sin(a) * l)} ${f1(-Math.cos(a) * l)}`; });
+        let g = ''; for (let k = 0; k < 6; k++) g += `<g transform="rotate(${k * 60})"><path d="${arm}"/>${f.tip === 1 ? `<circle cy="-10.5" r=".9" fill="${INK}" stroke="none"/>` : f.tip === 2 ? `<path d="M-1.3 -11.8L0 -10.5L1.3 -11.8"/>` : ''}</g>`;
+        g += f.core === 1 ? `<path d="M0 -2.4L2.1 -1.2V1.2L0 2.4L-2.1 1.2V-1.2Z" fill="${CREAM}"/>` : f.core === 2 ? `<circle r="1.2" fill="${AP}" stroke="none"/>` : ''; return `<g transform="translate(${f1(cx)} ${f1(cy)}) scale(${f1(s / 29 * 10) / 10})" fill="none" stroke="${INK}" stroke-width=".5" stroke-linecap="round" stroke-linejoin="round">${g}</g>`; };
+    const pairs = all.reduce((c, f, i) => c + all.filter((g, j) => j > i && diff(f, g) === 0).length, 0);
+    return { title: '짝 찾기', say: '눈송이 여덟 개 가운데 똑같은 것이 꼭 두 개 있어요. 찾아서 둘 다 동그라미를 쳐요.', bad: pairs === 1 ? '' : '짝 찾기: 짝이 ' + pairs + '쌍', html: `<svg width="${f1(s * 4)}mm" height="${f1(s * 2)}mm" viewBox="0 0 ${f1(s * 4)} ${f1(s * 2)}">${all.map((f, i) => draw(f, s * (i % 4) + s / 2, s * Math.floor(i / 4) + s * .5)).join('')}</svg>` }; }
+  function gameWs4() { return { title: '낱말 찾기', say: `오늘 신문의 낱말 ${ws ? ws.words.length : ''}개가 가로나 세로로 숨어 있어요.`, bad: ws ? '' : '낱말 찾기 실패', html: ws ? `<div class="ws3">${ws.g.flat().map(c => `<i>${c}</i>`).join('')}</div><div class="wl3">${ws.words.map(w => `<span>${esc(w)}</span>`).join('')}</div>` : '' }; }
+
+  // ===== 편성: 정해 둔 첫 월요일부터 하루씩 짜 내려온다. 같은 놀이는 이틀 잇지 않고, 한 주(월~일)에 두 번까지. 주말은 놀이 셋. =====
+  const BIG = { jigsaw: () => gameJigsaw(3, 3), flow: gameFlow, sym: gameSym4, loupe: gameLoupe, spot: gameSpot, cipher: () => gameCipher(wordPool), stars: gameStars, dots: gameDots, color: gameColor, maze: () => gameMaze(22, 11), bingo: gameBingo, board: gameBoard };
+  const SMALL = { ladder: gameLadder4, stroke: gameStroke, ws: gameWs4, pair: gamePair, tangle: gameTangle, pattern: gamePattern4, mirror: gameMirror, nim: gameNim, sudoku: gameSudoku };
+  const BIGW = ['jigsaw', 'flow', 'sym', 'loupe', 'cipher', 'stars', 'spot', 'color', 'dots', 'maze'], BIGE = ['bingo', 'board'], SMW = ['ladder', 'stroke', 'ws', 'pair', 'tangle', 'pattern', 'mirror', 'nim', 'sudoku'], SME = ['nim', 'mirror', 'pair', 'stroke', 'tangle'];
+  const NAME = { jigsaw: '조각 맞추기', flow: '길 잇기', sym: '반쪽 그리기', loupe: '확대경', cipher: '암호 풀기', stars: '별자리 만들기', spot: '다른 그림 찾기', color: '번호 색칠', dots: '점 잇기', maze: '미로', bingo: '낱말 빙고', board: '주사위 길 놀이', ladder: '사다리 타기', numhunt: '숫자 사냥', stroke: '한붓그리기', ws: '낱말 찾기', pair: '짝 찾기', tangle: '엉킨 줄', pattern: '무늬 잇기', mirror: '거울 글자', nim: '돌 가져가기', sudoku: '스도쿠' };
+  function schedule(upto) { const E0 = 20500, E = E0 + ((7 - (E0 + 3) % 7) % 7), out = {}, ptr = { BIGW: 0, BIGE: 0, SMW: 0, SME: 0 }, L = { BIGW, BIGE, SMW, SME }; let prev = [], wk = {};
+    for (let day = E; day <= upto; day++) { if ((day - E) % 7 === 0) wk = {}; const dow = (day - E) % 7, we = dow >= 5, today = [];
+      const take = nm => { const l = L[nm]; for (let k = 0; k < l.length; k++) { const g = l[(ptr[nm] + k) % l.length]; if (!prev.includes(g) && !today.includes(g) && (wk[g] || 0) < 2) { ptr[nm] = (ptr[nm] + k + 1) % l.length; today.push(g); wk[g] = (wk[g] || 0) + 1; return g; } } return l[0]; };
+      out[day] = we ? { we, big: take('BIGE'), small: [take('SME'), take('SME')] } : { we, big: take('BIGW'), small: [take('SMW')] }; prev = today; }
+    return out; }
+  const SCH = schedule(dayNo + 14), today4 = SCH[dayNo], weekend = q.get('we') ? q.get('we') === '1' : today4.we;
+  window.__sched = Array.from({ length: 14 }, (_, i) => { const s = SCH[dayNo + i]; return [new Date((dayNo + i) * 864e5).toISOString().slice(5, 10), '월화수목금토일'[(dayNo + i + 3) % 7], NAME[s.big], s.small.map(k => NAME[k]).join(' · ')]; });
+  let bigKey = BIG[q.get('big')] ? q.get('big') : BIG[X.big] ? X.big : today4.big, smallKeys = q.get('small') ? q.get('small').split(',').filter(k => SMALL[k]) : today4.small.slice();
+  if (weekend && smallKeys.length < 2) smallKeys.push(SME.find(k => !smallKeys.includes(k))); if (!weekend) smallKeys = smallKeys.slice(0, 1);
+  const T0 = performance.now(), notes = [];
+  let GB = await BIG[bigKey](); if (GB.fallback) { notes.push(GB.fallback); bigKey = weekend ? (bigKey === 'board' ? 'bingo' : 'board') : (bigKey === 'sym' ? 'flow' : 'sym'); GB = await BIG[bigKey](); } if (GB.note) notes.push(bigKey + ' 그림 바꿈:' + GB.note);
+  const SW4 = weekend ? NARROW : WIDE, GSS = smallKeys.map((k, i) => { let g = SMALL[k](SW4); if (g.fallback) { notes.push(g.fallback); smallKeys[i] = k = ['nim', 'pair', 'stroke'].find(z => !smallKeys.includes(z)); g = SMALL[k](SW4); } return g; });
+  const genMs = Math.round(performance.now() - T0);
+  // 한 줄 기자: 요일마다 쓰는 틀이 바뀐다(쓰는 줄은 늘 하나).
+  const pic3 = d.articles[dayNo % d.articles.length], LINES = [
+    ['오늘 신문에서 가장 놀란 것을 한 줄로 써요.', '가장 놀란 것은'], [`내가 기자라면 「${pic3.short || pic3.title}」 기사에 어떤 제목을 달까요? 새 제목을 지어요.`, '내 제목'],
+    ['마음에 드는 그림을 하나 골라요. 그 그림 밑에 달 한 줄을 써요.', '이 그림은'], ['기사를 쓴 기자에게 묻고 싶은 것을 한 가지 써요.', '궁금한 것은'], ['오늘 기사 하나를 골라 동생에게 알려 주듯 한 줄로 써요.', '오늘은']];
+  const LINE = X.line ? [X.line, X.lineHead || ''] : LINES[dayNo % 5];
+  const schedBad = (() => { let bad = 0; for (let dd = dayNo - 45; dd <= dayNo + 14; dd++) { const a = SCH[dd], b = SCH[dd - 1]; if (!a || !b) continue; const A = [a.big, ...a.small], B = [b.big, ...b.small]; if (A.some(g => B.includes(g)) || new Set(A).size < A.length) bad++; } return bad ? '편성: 이틀 연속 ' + bad : ''; })();
+  const sd = sudoku();
+  const chain = X.chain || (d.articles.map(a => a.word && a.word.w).filter(Boolean).find(w => '도물리기자수이사고나'.includes(w[w.length - 1])) || '신문');
+  const answers = ws ? ws.placed.map(p => `${p.w}(${p.r + 1}째 줄 ${p.c + 1}째 칸 ${p.hz ? '→' : '↓'})`).join(' · ') : '';
+
+  const briefs = (X.briefs || []).map(b => `<div class="brief"><span class="k">${esc(b.tag)}</span><h4>${esc(b.title)}</h4>${b.img ? `<img class="bimg" src="${esc(b.img)}" alt="">` : ''}<p>${esc(b.text)}</p><div class="s">출처 · ${esc(b.source)}</div></div>`).join('');
+  const words = d.articles.filter(a => a.word).map(a => `<div class="w"><div class="g">${esc(a.word.w)}</div><div><div class="hj">${(a.word.hanja || []).map(h => `<span>${esc(h[0])}</span>${esc(h[1])}`).join(' &nbsp;')}</div><div class="m">${esc(a.word.mean)}</div></div></div>`).join('');
+
+  const T = X.think;
+  const lined = (pre, n = 1) => `<div class="wline">${esc(pre || '')}</div>` + '<div class="wline"></div>'.repeat(n - 1);
+  const pic = (a, cls, st) => `<figure class="fg ${cls || ''}" style="${st || ''}"><div class="crop"><img src="${esc(a.img)}" alt=""></div><figcaption>그림 · ${esc(a.cap || '')}</figcaption></figure>`;
+  const cell = (cls, st, extra) => `<div class="cell ${cls || ''}" style="${st || ''}"><div class="colv"></div>${extra || ''}</div>`;
+  const srcl = a => `<p class="srcl">출처 · ${esc(a.source)}</p>`;
+  const mh = (a, h) => `<div class="mh"><span class="tag">${esc(a.tag)}</span><${h}>${esc(a.title)}</${h}><p class="deck">${esc(a.lede)}</p></div>`;
+  const briefHtml = (X.briefs || []).map(b => `<div class="brief${b.img ? ' haspic' : ''}"><span class="k">${esc(b.tag)}</span><h4>${esc(b.title)}</h4>${b.img ? `<img class="bimg" src="${esc(b.img)}" alt="">` : ''}<p>${esc(b.text)}</p><div class="s">출처 · ${esc(b.source)}</div></div>`).join('<hr>');
   document.getElementById('sheet').innerHTML = `
    <div class="page">
     <header class="mast"><img src="rua-masthead-ink.svg" alt="루아 신문"></header>
     <div class="meta"><span><b>제${d.no}호</b></span><span>${dateTxt}</span><span>${esc(d.theme)}</span></div><div class="dbl"></div>
-    <section class="lead">${head(A)}<h1>${esc(A.title)}</h1><p class="lede">${esc(A.lede)}</p><div class="row"><div><div class="body">${body(A.body)}</div>${src(A)}</div><aside>${fig(A)}${A.num ? `<div class="num"><strong>${esc(A.num.n)}</strong><span>${esc(A.num.t)}</span></div>` : ''}</aside></div></section>
-    ${sec(B)}<div class="grow"></div>
-    <footer class="foot"><span>루아 신문 제${d.no}호 · 1면</span><span>뒷면에 이어요</span></footer>
+    <div class="p1">
+     <div class="main">
+      <section class="lead" id="mA">${mh(A, 'h1')}${pic(A)}
+       <div class="cols2">${cell()}${cell('r', '', srcl(A) + (A.num ? `<div class="num"><em>오늘의 숫자</em><div><strong>${esc(A.num.n)}</strong><span>${esc(A.num.t)}</span></div></div>` : ''))}</div>
+      </section>
+     </div>
+     <aside class="side${briefHtml ? '' : ' nobrief'}"><h3>${briefHtml ? '짧은 소식' : '오늘의 낱말'}</h3>${briefHtml || words.replace(/<\/div><div class="w">/g, '</div><hr><div class="w">')}<div class="idx"><b>오늘 신문에는</b><div><i>2면</i><span>${esc(B.short || B.title)}</span></div><div><i>2면</i><span>${esc(C.short || C.title)}</span></div><div><i>3면</i><span>생각과 놀이</span></div></div></aside>
+    </div>
+    <footer class="foot"><span>루아 신문 제${d.no}호 · 1면</span><span>다음 장에 이어요</span></footer>
    </div>
    <div class="page">
     <div class="run"><b>루아 신문</b><span>제${d.no}호 · ${dateTxt}</span></div>
-    ${sec(C)}
-    <section class="words"><h3>오늘의 낱말</h3><div class="wrow">${words}</div></section><div class="grow"></div>
-    <footer class="foot"><span>루아 신문 제${d.no}호 · 2면</span><span>${dateTxt}</span></footer>
+    <div class="p2">
+     <section class="mod" id="mB">${mh(B, 'h2')}
+      <div class="g3">${cell('', 'grid-column:1;grid-row:1/3')}${pic(B, 'r', 'grid-column:2/4;grid-row:1')}${cell('r u', 'grid-column:2;grid-row:2')}${cell('r u', 'grid-column:3;grid-row:2', srcl(B))}</div>
+     </section>
+     <div class="sep"></div>
+     <section class="mod sub" id="mC">${mh(C, 'h2')}
+      <div class="g3">${C.img ? pic(C, '', 'grid-column:1;grid-row:1') + cell('', 'grid-column:1;grid-row:2') : cell('', 'grid-column:1;grid-row:1/3')}${cell('r', 'grid-column:2;grid-row:1/3')}${cell('r', 'grid-column:3;grid-row:1/3', srcl(C))}</div>
+     </section>
+    </div>
+    ${briefHtml ? `<div class="p1b"><section class="words"><h3 class="hd">오늘의 낱말</h3><div class="wrow">${words}</div></section></div>` : ''}
+    <footer class="foot"><span>루아 신문 제${d.no}호 · 2면</span><span>다음 장은 생각과 놀이</span></footer>
+   </div>
+   <div class="page${weekend ? ' wkd' : ''}">
+    <div class="run"><b>생각과 놀이</b><span>제${d.no}호 · ${dateTxt}</span></div>
+    <section class="think3${T ? '' : ' solo'}">
+     <div><h4>한 줄 기자</h4><p>${esc(LINE[0])}</p><div class="wr">${esc(LINE[1])}</div></div>
+     ${T ? `<div><h4>두 생각 저울</h4><div class="q">${esc(T.q)}</div><div class="pair"><div><b>${esc(T.a.t)}</b><span>${esc(T.a.why)}</span></div><div><b>${esc(T.b.t)}</b><span>${esc(T.b.why)}</span></div></div><p>내 생각에 동그라미를 치고 까닭을 써요. 둘 다 좋은 생각이에요.</p><div class="wr">왜냐하면</div></div>` : ''}
+    </section>
+    <section class="big game"><h4>${GB.title}</h4><p>${GB.say}</p><div class="stage s-${bigKey}">${GB.html}</div></section>
+    ${weekend ? `<div class="low2">${GSS.map((G, i) => `<section class="small game"><h4>${G.title}</h4><p>${G.say}</p><div class="stage s-${smallKeys[i]}">${G.html}</div></section>`).join('')}</div>
+    <div class="end3"><div><b>엄마 아빠 한마디</b><div class="wr"></div></div><div class="stk3"><i></i>오늘의 스티커</div></div>` : `<div class="low">
+     <section class="small game"><h4>${GSS[0].title}</h4><p>${GSS[0].say}</p><div class="stage s-${smallKeys[0]}">${GSS[0].html}</div></section>
+     <div class="par"><div class="stk3"><i></i>오늘의 스티커</div><b>엄마 아빠 한마디</b><div class="wr"></div><div class="wr"></div></div>
+    </div>`}
+    <footer class="foot"><span>루아 신문 제${d.no}호 · 3면</span><span>${dateTxt}</span></footer>
    </div>`;
   await document.fonts.ready; await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
-  // 넘침 확인: 쪽 안의 내용이 꼬리줄을 넘으면 표시(인쇄 파일을 만들 때 실패시킨다)
-  document.body.dataset.over = [...document.querySelectorAll('.page')].map(p => { const f = p.querySelector('.foot').getBoundingClientRect(); return Math.max(0, ...[...p.querySelectorAll('section')].map(e => Math.round(e.getBoundingClientRect().bottom - f.top))); }).join(',');
+  // ---- 조판: 단마다 줄 수를 정해 글을 붓고, 남는 높이는 그림이 먹는다 ----
+  // 글은 줄 간격(u)의 배수 높이인 '창'(colv)에 통째로 넣고 위로 밀어 올려 이어 보여 준다. 그래서 모든 단의 글줄이 같은 높이에 선다.
+  const $ = (s, r) => (r || document).querySelector(s), $$ = (s, r) => [...(r || document).querySelectorAll(s)];
+  const mm = $('.page').getBoundingClientRect().width / 210, toMm = v => v / mm, bad = [], warn = [];   // bad: 못 찍음 · warn: 찍되 기록만
+  const CAP = 5, PT = 1.3;   // 그림 설명 줄 높이, 그림 윗선을 글자 윗선에 맞추는 값(mm)
+  const setCol = (el, html, start, n, u) => { el.style.height = (n * u).toFixed(3) + 'mm'; el.innerHTML = `<div class="flow" style="margin-top:${(-start * u).toFixed(3)}mm">${html}</div>`; };
+  const countLines = (el, html, u) => { el.style.height = 'auto'; el.innerHTML = `<div class="flow">${html}</div>`; return Math.round(toMm(el.firstChild.getBoundingClientRect().height) / u); };
+  const cropH = (m, h) => { $('.crop', m).style.height = h.toFixed(3) + 'mm'; };
+
+  { // 1면 머리기사: 그림(온 너비) 아래 두 단. 둘째 단 끝에 출처 한 줄과 '오늘의 숫자' 상자.
+    const m = $('#mA'), cols = $$('.colv', m), html = body(A.body), W = toMm(m.clientWidth), avail = toMm(m.clientHeight - $('.mh', m).offsetHeight) - CAP - PT;
+    let best = null;
+    for (const [fs, u] of [[11.5, 6.7], [11.8, 6.9], [12, 7.1], [12.3, 7.3], [12.6, 7.5]]) {
+      m.style.setProperty('--u', u + 'mm'); m.style.setProperty('--fs', fs + 'pt');
+      const Tn = countLines(cols[0], html, u), nb = A.num ? Math.ceil(25 / u) : 0, k = Math.ceil((Tn + nb + 1) / 2), ph = avail - k * u, sc = Math.abs(W / ph - 1.6);
+      if (ph > 30 && (!best || sc < best.sc)) best = { fs, u, Tn, nb, k, ph, sc };
+    }
+    if (!best) bad.push('1면 머리기사가 넘쳐요'); else { const { fs, u, Tn, nb, k, ph } = best;
+      m.style.setProperty('--u', u + 'mm'); m.style.setProperty('--fs', fs + 'pt'); cropH(m, ph);
+      const n2 = A.num ? Math.max(0, Tn - k) : k - 1; setCol(cols[0], html, 0, k, u); setCol(cols[1], html, k, n2, u);
+      if (A.num) $('.num', m).style.height = ((k - n2 - 1) * u) + 'mm';
+      if (W / ph > 2.05 || W / ph < 1.3) warn.push('1면 그림 비율 ' + (W / ph).toFixed(2));
+      document.body.dataset.fit1 = JSON.stringify({ fs, u, lines: Tn, k, pic: Math.round(ph), ratio: +(W / ph).toFixed(2) }); }
+  }
+  { // 2면: 위 기사는 그림이 오른쪽 두 단, 아래 기사는 그림이 왼쪽 한 단. 글자 크기·두 기사의 높이 나눔·그림 높이를 함께 고른다.
+    const box = $('.p2'), mB = $('#mB'), mC = $('#mC'), SEP = 7.5, H = toMm(box.clientHeight), hB = toMm($('.mh', mB).offsetHeight), hC = toMm($('.mh', mC).offsetHeight);
+    const cB = $$('.colv', mB), cC = $$('.colv', mC), hb = body(B.body), hc = body(C.body), W1 = toMm(cB[0].clientWidth), W2 = W1 * 2 + 5;
+    const font = (fs, u) => { box.style.setProperty('--u', u + 'mm'); box.style.setProperty('--fs', fs + 'pt'); };
+    let best = null;
+    for (const [fs, u] of [[11, 6.2], [11.5, 6.5], [12, 6.8], [12.4, 7.1], [12.8, 7.4], [13.2, 7.7]]) { font(fs, u);
+      const TB = countLines(cB[0], hb, u), TC = countLines(cC[0], hc, u);
+      for (let nB = 8; nB < TB; nB++) {
+        const nC = Math.floor((H - hB - hC - SEP - nB * u) / u); if (nC < 6) continue;
+        const kB = Math.max(0, Math.ceil((TB + 1 - nB) / 2)), pB = (nB - kB) * u - CAP - PT, kC = C.img ? TC - (2 * nC - 1) : nC, pC = C.img ? (nC - kC) * u - CAP - PT : W1 / 1.45;
+        if (!C.img && (3 * nC - 1 < TC || 3 * nC - 1 > TC + 2)) continue;   // 그림이 없으면 세 단이 글로 꼭 찬다
+        if (kB < 3 || kC < 0 || (kC > 0 && kC < 3) || pB < 30 || pC < 24) continue;
+        const rB = W2 / pB, rC = W1 / pC, sc = (rB - 1.62) ** 2 + (rC - 1.45) ** 2 + .04 * (nB + 2 * kB - 1 - TB);
+        if (!best || sc < best.sc) best = { fs, u, TB, TC, nB, nC, kB, kC, pB, pC, rB, rC, sc };
+      } }
+    if (!best) bad.push('2면 글이 격자에 맞지 않아요'); else { const { fs, u, nB, nC, kB, kC, pB, pC, rB, rC } = best; font(fs, u);
+      cropH(mB, pB); setCol(cB[0], hb, 0, nB, u); setCol(cB[1], hb, nB, kB, u); setCol(cB[2], hb, nB + kB, kB - 1, u);
+      if (C.img) cropH(mC, pC); setCol(cC[0], hc, 0, kC, u); setCol(cC[1], hc, kC, nC, u); setCol(cC[2], hc, kC + nC, nC - 1, u);
+      const left = H - hB - hC - SEP - (nB + nC) * u, sep = $('.sep', box); sep.style.margin = `${(3.2 + left * .45).toFixed(2)}mm 0 ${(SEP - 3.45 + left * .15).toFixed(2)}mm`; box.style.paddingBottom = (left * .4).toFixed(2) + 'mm';
+      if (rB > 2.1 || rB < 1.3 || rC > 2 || rC < 1.2) warn.push('2면 그림 비율 ' + rB.toFixed(2) + '/' + rC.toFixed(2));
+      document.body.dataset.fit2 = JSON.stringify({ ...best, H: Math.round(H) }); }
+  }
+  // 넘침 확인(인쇄 파일 만들 때 본다): 쪽 안의 내용이 종이 밖으로 나가면 표시. 조판이 실패하면 까닭도 붙인다.
+  document.body.dataset.over = [...document.querySelectorAll('.page')].map(p => { const f = p.querySelector('.foot').getBoundingClientRect(), r = p.getBoundingClientRect(); return Math.round(f.bottom - r.bottom); }).join(',') + (bad.length ? ' !' + bad.join(' / ') : '');
+  document.body.dataset.games = [GB.spot ? await checkSpot(SP).catch(e => 'spot 검사 실패 ' + e) : '', GB.bad, ...GSS.map(G => G.bad), schedBad, ...[...document.querySelectorAll('.big,.small,.stage')].filter(e => e.scrollHeight > e.clientHeight + 2 || e.scrollWidth > e.clientWidth + 2).map(e => '놀이 칸 넘침 ' + e.className), ...bad].filter(Boolean).join(' / ') || 'ok';
+  document.body.dataset.pick = `${bigKey}+${smallKeys.join(',')} ${genMs}ms`; document.body.dataset.notes = notes.join(' / ');
+  document.body.dataset.warn = warn.join(' / ');
   document.body.dataset.ready = '1';
 })();
 </script>

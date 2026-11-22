@@ -1,6 +1,6 @@
-// 루아 신문 종이판 → 인쇄용 파일 (v185)
+// 루아 신문 종이판(세 장: 1면·2면·생각과 놀이) → 인쇄용 파일
 // 쓰임: node tools/paper-render.js [YYYY-MM-DD]   (날짜를 빼면 news/latest.json)
-// 결과: news/paper/<날짜>-1.jpg, -2.jpg (A4 300dpi 컬러), <날짜>.pdf, latest.json(폴드4 자동 인쇄가 읽는 목록)
+// 결과: news/paper/<날짜>-1.jpg … -3.jpg (A4 300dpi 컬러), <날짜>.pdf, latest.json(폴드4 자동 인쇄가 읽는 목록)
 // 깃허브 Actions(.github/workflows/rua-paper.yml)가 새 신문이 올라올 때마다 돌린다. 14일 지난 파일은 지운다.
 const { chromium } = require('playwright');
 const fs = require('fs'), http = require('http'), path = require('path');
@@ -18,7 +18,10 @@ const want = process.argv[2] || '';
   await p.goto(`http://localhost:${port}/paper.html?d=${date}`);
   await p.waitForFunction(() => document.body.dataset.ready === '1', null, { timeout: 30000 });
   if (errs.length) throw new Error(errs.join(' / '));
-  const over = await p.evaluate(() => document.body.dataset.over || ''); if (over.split(',').some(v => +v > 0)) throw new Error('지면이 넘침(쪽별 px): ' + over);
+  const ds = await p.evaluate(() => ({ ...document.body.dataset })), over = ds.over || '';
+  if (over.includes('!') || over.split(',').some(v => parseInt(v) > 0)) throw new Error('지면이 넘치거나 조판 실패: ' + over);
+  if (ds.games && ds.games !== 'ok') throw new Error('놀이 판 검사 실패: ' + ds.games);
+  console.log('놀이', ds.pick, '| 대체', ds.notes || '없음', '| 조판 메모', ds.warn || '없음');
   fs.mkdirSync(OUT, { recursive: true });
   const pages = await p.$$('.page'); const files = [];
   for (let i = 0; i < pages.length; i++) { const f = `${date}-${i + 1}.jpg`; await pages[i].screenshot({ path: path.join(OUT, f), type: 'jpeg', quality: 88 }); files.push(f); }
