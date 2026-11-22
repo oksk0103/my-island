@@ -138,7 +138,7 @@ async function newsTests(b) {
   await p.context().close();
   { const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8'), i0 = html.indexOf('function renderNpFront'), i1 = html.indexOf('function renderPaper'), i2 = html.indexOf('function openPaper');
     ok('신문 지면 코드에 safePic·pic 필드가 없음', i0 > 0 && i1 > 0 && !/safePic|\.pic\b|wikiImage/.test(html.slice(i0, html.indexOf('function npFit')) + html.slice(i1, i2)) && !/safePic/.test(html)); 
-    ok('바깥 사진 스위치는 꺼진 채 그대로', /const WIKI_PICS = false;/.test(html)); }
+    ok('바깥 사진 코드가 아예 없음(v192: 스위치째 삭제 — 위키 주소·사진 검사 모델 불러오기 없음)', !/WIKI_PICS|wikiImage|wikipedia\.org|wikimedia|vendor\/nsfw/.test(html)); }
 
   // 옛 형식(img · num 없음)
   p = await openNews(b, { news: fakeNews({ old: true }) }); await p.front(); g = await p.pics();
