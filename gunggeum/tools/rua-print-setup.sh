@@ -19,7 +19,8 @@ echo "[4/4] 매일 ${HOUR}시 ${MIN}분부터 1시간 동안 10분마다 확인 
 M=$MIN; LIST=""; for i in 0 1 2 3 4 5; do LIST="$LIST $(( (HOUR*60+M+i*10) / 60 % 24 )):$(( (M+i*10) % 60 ))"; done
 # cron은 PATH가 비어 있을 수 있어서 python과 파일을 전체 경로로 적는다 (v186: 아침에 안 뽑힌 까닭 가운데 하나)
 PY="$PREFIX/bin/python"; H="$HOME"
-( crontab -l 2>/dev/null | grep -v rua-print
+# 주의: 걸러 낼 줄이 없으면 grep이 실패로 끝나고, set -e 때문에 아래 예약 줄이 하나도 안 들어갔었다(v186에서 고침)
+( { crontab -l 2>/dev/null | grep -v rua-print; } || true
   for t in $LIST; do echo "${t#*:} ${t%%:*} * * * $PY $H/rua-print.py >> $H/rua-cron.log 2>&1"; done
   echo "15 3 * * 0 $PREFIX/bin/curl -sfL $URL -o $H/rua-print.py.new && mv $H/rua-print.py.new $H/rua-print.py"
 ) | crontab -
