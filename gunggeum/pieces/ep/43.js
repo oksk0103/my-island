@@ -24,9 +24,9 @@ EPX[43]={day:'과학',topic:'그림자',cat:'빛과 그림자',field:'과학',fr
    draw(S){const LX=720,LY=400,WX=1460;el('circle',{cx:LX,cy:LY,r:28,fill:WO},S);tx(S,LX,LY+80,'전등','v28','middle');
     wl(S,WX,140,WX,660,W0);tx(S,WX,120,'벽','v28','middle');
     const g=rays(S);const Y=[];for(let i=0;i<9;i++)Y.push(170+i*57.5);Y.forEach(y=>el('path',{d:`M${LX+36},${LY+(y-LY)*36/(WX-LX)}L${WX},${y}`},g));
-    const D=Y.map(y=>({y,c:wdot(S,LX,LY,0,W0)}));const hit=Y.map(y=>wl(S,WX-16,y,WX,y,W0,{opacity:0}));
+    const LT='#F3D27A',D=Y.map(y=>({y,c:wl(S,LX+36,LY+(y-LY)*36/(WX-LX),LX+36,LY+(y-LY)*36/(WX-LX),LT,{'stroke-width':3})}));   // v188: 점 대신 자라나는 빛줄기const hit=Y.map(y=>wl(S,WX-16,y,WX,y,W0,{opacity:0}));
     const cap=grp(S,0);tx(cap,1100,700,'곧은 길로 쭉','v28','middle');
-    return ()=>play(1200,e=>D.forEach((d,k)=>{mv(d.c,lerp(LX,WX-8,e),lerp(LY,d.y,e));d.c.setAttribute('r',6);if(e>=1)hit[k].setAttribute('opacity',1);}),()=>{hit.forEach(h=>h.setAttribute('opacity',1));show(cap);});}},
+    return ()=>play(1400,e=>D.forEach((d,k)=>{d.c.setAttribute('x2',lerp(LX+36,WX,e).toFixed(1));d.c.setAttribute('y2',lerp(LY+(d.y-LY)*36/(WX-LX),d.y,e).toFixed(1));if(e>=1)hit[k].setAttribute('opacity',1);}),()=>{hit.forEach(h=>h.setAttribute('opacity',1));show(cap);});}},
   {k:'막힌 자리',h:'빛이 막힌 자리에<br>그림자가 생긴다',b:'빛이 못 지나가는 물건을 만나면 그 뒤로는 빛이 <em>못 가</em>. 빛이 안 닿은 자리가 그림자야.',steps:['물건 세우기'],
    draw(S){const LX=720,LY=400,WX=1460,BX0=1040,BX1=1100,BY0=330,BY1=470;el('circle',{cx:LX,cy:LY,r:28,fill:WO},S);
     wl(S,WX,140,WX,660,W0);tx(S,WX,120,'벽','v28','middle');

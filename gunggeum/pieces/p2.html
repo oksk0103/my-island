@@ -821,6 +821,7 @@ const EO=x=>x>=1?1:x<=0?0:x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;   // v187: 처음 0
 const play=(D,fn,end)=>anim(D,x=>fn(EO(x),x),end);
 const calm=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 const wl=(p,x1,y1,x2,y2,c=W0,o={})=>el('line',Object.assign({x1,y1,x2,y2,stroke:c,'stroke-width':2,'stroke-linecap':'round'},o),p);
+const tsp=(p,x,y,cls,parts,anc='start')=>{const t=el('text',{x,y,class:cls,'text-anchor':anc},p);parts.forEach(([s,c])=>{const sp=el('tspan',c?{style:`fill:${c}`}:{},t);sp.textContent=s;});return t;};   // v188: 한 줄 글자에 부분 색(편마다 따로 두던 것을 공용으로)
 const wdot=(p,x,y,r,c)=>el('circle',{cx:x.toFixed(1),cy:y.toFixed(1),r,fill:c},p);
 // 숨 흐름 안내선(보조색 점선) — 입(mx,my)에서 오른쪽으로 부채꼴
 function breathGuides(p,mx,my,x2,spread=[-60,-30,0,30,60],lift=60){const g=el('g',{fill:'none',stroke:WA,'stroke-width':2,'stroke-dasharray':'2 10','stroke-linecap':'round'},p);

@@ -30,10 +30,16 @@ EPX[21]={day:'과학 7',topic:'겨울 해',cat:'하늘',field:'과학',frame:'v2
     const N=6,W=140,B=[];
     {const R=[];for(let k=0;k<N;k++){const x=680+k*W/(N-1);R.push([x,240,x,GY]);}B.push({R,lab:'좁고 밝게'});}
     {const R=[],a=50*Math.PI/180,c=Math.cos(a),s=Math.sin(a),L=320/c;for(let k=0;k<N;k++){const xe=1250+k*(W/c)/(N-1);R.push([xe-L*s,GY-L*c,xe,GY]);}B.push({R,lab:'넓고 흐리게'});}
-    B.forEach((b,j)=>{b.R.forEach(r=>wl(S,...r,W0m,{'stroke-dasharray':'2 10'}));const x0=b.R[0][2],x1=b.R[N-1][2];
+    // v188: 점 대신 실제 빛다발. 같은 양의 빛이 똑바로면 좁은 곳을 밝게, 비스듬히면 넓은 곳을 흐리게 비춘다.
+    const LT='#F3D27A';
+    B.forEach((b,j)=>{const r0=b.R[0],r1=b.R[N-1],x0=r0[2],x1=r1[2];
+     el('line',{x1:r0[0],y1:r0[1],x2:r1[0],y2:r1[1],stroke:LT,'stroke-width':8,'stroke-linecap':'round'},S);   // 빛이 나오는 곳
+     b.beam=el('path',{d:'',fill:LT,opacity:.08},S);b.edge=b.R.map(r=>wl(S,r[0],r[1],r[0],r[1],LT,{'stroke-width':2.5,opacity:.85}));
+     b.patch=el('rect',{x:x0,y:GY-12,width:x1-x0,height:12,fill:LT,opacity:0},S);b.glow=el('rect',{x:x0,y:GY-40,width:x1-x0,height:28,fill:LT,opacity:0},S);
      b.fp=grp(S,0);el('path',{d:`M${x0},${GY+30}V${GY+42}H${x1}V${GY+30}`,fill:'none',stroke:j?WO:W0,'stroke-width':2},b.fp);tx(b.fp,(x0+x1)/2,GY+84,b.lab,'v28','middle');
-     b.D=[];b.R.forEach(r=>{for(let m=0;m<4;m++)b.D.push({c:wdot(S,r[0],r[1],0,W0),r,t:m*.12,m});});});
-    return i=>{const b=B[i];play(1300,e=>b.D.forEach(d=>{const s=Math.max(0,Math.min(1,(e-d.t)/.55)),[x1,y1,x2,y2]=d.r;d.c.setAttribute('r',s>0?6:0);d.c.setAttribute('cx',(x1+(x2-x1)*s).toFixed(1));d.c.setAttribute('cy',(y1+(y2-y1)*s-(s>=1?8+d.m*14:0)).toFixed(1));}),()=>show(b.fp));};}},
+     b.set=e=>{const P=(r,t)=>[r[0]+(r[2]-r[0])*t,r[1]+(r[3]-r[1])*t],a0=P(r0,e),a1=P(r1,e);b.beam.setAttribute('d',`M${r0[0]},${r0[1]}L${r1[0]},${r1[1]}L${a1[0].toFixed(1)},${a1[1].toFixed(1)}L${a0[0].toFixed(1)},${a0[1].toFixed(1)}Z`);
+       b.edge.forEach((l,k)=>{const q=P(b.R[k],e);l.setAttribute('x2',q[0].toFixed(1));l.setAttribute('y2',q[1].toFixed(1));});};b.set(0);});
+    return i=>{const b=B[i],top=i?.38:1;play(1300,e=>b.set(e),()=>play(900,e=>{b.patch.setAttribute('opacity',(e*top).toFixed(3));b.glow.setAttribute('opacity',(e*top*.18).toFixed(3));},()=>show(b.fp)));};}},
   {k:'낮의 길이',h:'겨울 낮은 여름보다<br>5시간쯤 짧다',b:'서울은 6월 21일에 낮이 <em>14시간 46분</em>이야. 12월 22일엔 <em>9시간 35분</em>뿐이야.',steps:['6월','12월'],
    draw(S){const X=hourRuler(S,700,1480,600,0,24,true);
     const R=[{y:250,d:'6월 21일',a:5+11/60,b:19+57/60,len:'14시간 46분'},{y:450,d:'12월 22일',a:7+43/60,b:17+18/60,len:'9시간 35분'}];

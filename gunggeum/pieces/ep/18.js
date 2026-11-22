@@ -39,14 +39,19 @@ EPX[18]={day:'과학 4',topic:'겨울잠',cat:'동물',field:'과학',frame:'v2'
    draw(S){const GY=600;wl(S,640,GY,1504,GY,W0);
     const B=bearStand(S,900,GY,1.05);
     // 먹이 줄(위)
-    const q=rnd(5),F=[...Array(18)].map((_,j)=>{const x=680+j*26,y=150+(q()-.5)*30;return {x,y,c:wdot(S,x,y,7,W0)};});tx(S,680,110,'가을 먹이','v22m');
+    // v188 시안: 먹이를 점이 아니라 도토리·열매·물고기로. 하나씩 입으로 들어간다.
+    const foodG=(k)=>{const g=el('g',{},S);if(k===0)acornG(g,0,-8,1.15,-14);
+      else if(k===1){el('path',{d:'M0,-12C2,-24 10,-28 18,-26',fill:'none',stroke:C3,'stroke-width':3,'stroke-linecap':'round'},g);[[-10,6],[10,6],[0,-9]].forEach(([x,y])=>{el('circle',{cx:x,cy:y,r:11,fill:WO},g);el('circle',{cx:x-3,cy:y-3,r:3,fill:'rgba(255,255,255,.55)'},g);});}
+      else{el('path',{d:'M-20,0L-36,-12L-36,12Z',fill:C2},g);el('path',{d:'M-24,0C-10,-15 12,-15 24,0C12,15 -10,15 -24,0Z',fill:C0},g);el('path',{d:'M-4,-11C2,-4 2,4 -4,11',fill:'none',stroke:C2,'stroke-width':2},g);el('circle',{cx:13,cy:-3,r:2.6,fill:NAVY},g);}
+      return g;};
+    const q=rnd(5),F=[...Array(9)].map((_,j)=>{const x=690+j*58,y=160+(q()-.5)*26,c=foodG(j%3);c.setAttribute('transform',`translate(${x},${y})`);return {x,y,c};});tx(S,680,110,'가을 먹이','v22m');
     // 몸 단면
     const X=1290,Y0=180,H=380;const T=section(S,X,Y0,180,H);T.set(24);
     tx(S,X-16,Y0+34,'털','v22','end');const fl=tx(S,X-16,Y0+100,'지방','v28','end');tx(S,X-16,Y0+H-20,'몸속','v22','end');
     
     const cap=grp(S,0);tx(cap,1504,GY+50,'하루에 1kg 넘게','v28','end');
     const mx=900-232*1.05,my=GY-174*1.05;
-    return ()=>play(1800,e=>{F.forEach((f,j)=>{const t=cl(e*1.6-j*.035),k=EO(t);f.c.setAttribute('cx',(f.x+(mx-f.x)*k).toFixed(1));f.c.setAttribute('cy',(f.y+(my-f.y)*k).toFixed(1));f.c.setAttribute('r',t>=1?0:7);});
+    return ()=>play(2600,(e,x)=>{F.forEach((f,j)=>{const t=cl(x*2.2-j*.14),k=t*t*(3-2*t),X=f.x+(mx-f.x)*k,Y=f.y+(my-f.y)*k-Math.sin(k*Math.PI)*46,sc=t>.82?Math.max(0,1-(t-.82)/.18):1;f.c.setAttribute('transform',`translate(${X.toFixed(1)},${Y.toFixed(1)}) scale(${sc.toFixed(2)})`);});
       B.fat(e);T.set(24+130*e);},()=>show(cap));}},
   {k:'느린 심장',h:'겨울잠을 자면<br>심장이 느리게 뛴다',b:'여름엔 1분에 <em>40~50번</em> 뛰던 곰의 심장이 겨울잠 땐 <em>8~19번</em>만 뛰어. 힘을 아끼는 거야.',steps:['깨어 있을 때','겨울잠 잘 때'],
    draw(S){const X0=660,X1=1480,RY=640;
