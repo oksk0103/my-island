@@ -872,6 +872,17 @@ async function newsTests(b) {
       ok(`단어 편 모든 쪽 글자 겹침 없음 (${w}×${h})`, bad.length === 0 && er.length === 0, [bad.slice(0, 5), er.slice(0, 2)]); await pg.context().close(); }
   }
 
+  // v190: 조각 장(p2) 모든 편을 처음부터 끝까지 눌러 본다 — 오류 0, 멈춤 0, '다 봤어'까지 도달.
+  // (v188에서 줄 끝 주석이 코드를 삼켜 그림자 편의 한 단계가 죽었는데, 겹침 점검만 있고 '눌러 보는' 점검이 없어 통과했다.)
+  { const EPN = fs.readdirSync(path.join(ROOT, 'pieces/ep')).map(f => parseInt(f)).filter(Boolean).sort((x, y) => x - y), bad = []; let qi = 0;
+    const work = async () => { while (qi < EPN.length) { const ep = EPN[qi++], pg = await b.newPage({ viewport: { width: 1600, height: 820 } }), er = []; pg.on('pageerror', e => er.push(e.message.slice(0, 80))); let stuck = 0, ended = false;
+      try { await pg.goto(`http://localhost:${PORT}/pieces/p2.html?ep=${ep}&v=2`); await pg.waitForTimeout(400);
+        const idle = () => pg.waitForFunction(() => typeof BUSY !== 'undefined' && BUSY === 0, null, { timeout: 12000, polling: 50 }).catch(() => stuck++);
+        await idle(); for (let i = 0; i < 60; i++) { if (await pg.evaluate(() => ORDER[cur] === 'end' && /다 봤어/.test(document.getElementById('next').textContent))) { ended = true; break; } await pg.click('#next', { timeout: 3000 }); await pg.waitForTimeout(100); await idle(); }
+      } catch (e) { er.push('X ' + e.message.slice(0, 60)); }
+      if (er.length || stuck || !ended) bad.push([ep, er[0] || (stuck ? '멈춤' : '끝 못 감')]); await pg.close(); } };
+    await Promise.all([...Array(5)].map(work)); ok(`조각 장 ${EPN.length}편 모두 끝까지 눌러도 오류·멈춤 없음`, EPN.length > 50 && bad.length === 0, bad.slice(0, 5)); }
+
   await newsTests(b);
   ok('페이지 오류 없음', errs.length === 0, errs.slice(0, 3));
   await b.close(); server.close();
