@@ -230,7 +230,7 @@ const SLOW=2,slowD=D=>D<=2500?D*SLOW:D<=5000?D*1.3:D*1.1;
 let BUSY=0,busyT=0;const busyOn=()=>{BUSY++;sync();},busyOff=()=>{BUSY=Math.max(0,BUSY-1);sync();};
 function sync(){const b=document.getElementById('next');if(b)b.classList.toggle('wait',BUSY>0);clearTimeout(busyT);if(BUSY>0)busyT=window.setTimeout(()=>{BUSY=0;sync();},6000);}
 const setTimeout=(f,ms,...a)=>{if(STILL())return window.setTimeout(f,ms,...a);const d=(ms||0)*SLOW;if(typeof f!=='function'||d<120||d>4000)return window.setTimeout(f,d,...a);busyOn();return window.setTimeout(()=>{busyOff();f(...a);},d);};
-const anim=(D,fn,end)=>{const st=STILL();if(!st)D=slowD(D);const hold=!st&&D<=5000;if(hold)busyOn();const t0=performance.now();const f=t=>{const x=Math.min(1,(t-t0)/D);fn(x);if(x<1)requestAnimationFrame(f);else{if(hold)busyOff();if(end)end();}};requestAnimationFrame(f);};
+const anim=(D,fn,end)=>{const st=STILL();if(!st)D=slowD(D);const hold=!st&&D<=5000;if(hold)busyOn();const t0=performance.now();const f=t=>{const x=Math.max(0,Math.min(1,(t-t0)/D)); /* v198: 첫 프레임 시각이 t0보다 이를 수 있다 → x가 음수가 되어 P[-1] 같은 오류(61편)가 났다 */ fn(x);if(x<1)requestAnimationFrame(f);else{if(hold)busyOff();if(end)end();}};requestAnimationFrame(f);};
 const pillR=(p,x,y,w,h,fill)=>el('rect',{x,y,width:w,height:h,rx:h/2,fill},p);
 const box=(p,x,y,w,h,fill='rgba(246,231,188,.08)',r=18)=>el('rect',{x,y,width:w,height:h,rx:r,fill},p);
 // 달
@@ -656,7 +656,7 @@ const RG=(S,stops,o={})=>{const id=gid('rg');const g=el('radialGradient',Object.
 const BLUR=(S,sd=8)=>{const id=gid('bl');const f=el('filter',{id,x:'-60%',y:'-60%',width:'220%',height:'220%'},DEF(S));el('feGaussianBlur',{stdDeviation:sd},f);return `url(#${id})`;};
 const CAP=(S,t='',y=500)=>tx(S,396,y,t,'t30','middle');
 const live=n=>n.isConnected&&n.closest('.scr.on');
-function loop(node,fn){let t0=performance.now();const f=t=>{if(!node.isConnected)return;if(live(node))fn((t-t0)/1000);requestAnimationFrame(f);};requestAnimationFrame(f);}
+function loop(node,fn){let t0=performance.now();const f=t=>{if(!node.isConnected)return;if(live(node))fn(Math.max(0,(t-t0)/1000));requestAnimationFrame(f);};requestAnimationFrame(f);}
 
 // ---------- 눈송이 ----------
 function iceFlake(p,cx,cy,R,o={}){const g=el('g',{transform:`translate(${cx},${cy})`},p),S=p.ownerSVGElement||p;
