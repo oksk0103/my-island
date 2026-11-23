@@ -262,3 +262,9 @@
 - 다음에는: 저장값은 LS.get(기본값과 모양이 다르면 기본값)·LS.rows·boxOf 로만 읽는다. 저장 모양을 바꾸면 옛 모양 값을 넣고 여는 점검('v198 옛 모양·깨진 저장값')에 한 묶음 보탠다.
 - 덧: 이 수정 중에도 한 줄 끝 `//` 주석이 뒤의 코드를 삼켜 앱 전체가 죽었다(네 번째). index.html 스크립트 안에서도 줄 중간 주석은 `/* */` 만 쓴다.
 - 관련: v198, LS, todoLoad, evLoad, loadDays, diag
+
+## 판 하나에만 걸린 clip-path가 테두리·그림자를 지운다
+- 무슨 일: 휴대폰 홈에서 신문 판만 테두리 줄이 없고 모서리 모양이 달라 보였다(사용자가 찾음). 판마다 둥글기도 32·28·24로 달랐다.
+- 진짜 원인: 예전에 달 사진이 삐져나와 `#fcFeat{clip-path:inset(0 round 32px)}`를 붙였는데, clip-path는 안쪽 테두리(inset box-shadow)와 바깥 그림자까지 자르고 superellipse 모서리 대신 원 모서리로 잘랐다.
+- 다음에는: 자식이 모서리 밖으로 나오면 clip-path 대신 `overflow:hidden`(+border-radius)을 쓴다. 같은 줄의 판들은 계산된 border-radius·box-shadow·clip-path가 같은지 점검으로 비교한다.
+- 관련: v199, index.html 휴대폰 홈(@media max-width:899px), tests/run.js 'v199 휴대폰 홈'

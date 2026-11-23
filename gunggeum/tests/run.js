@@ -868,6 +868,8 @@ async function newsTests(b) {
       ok('v176 3일차 시간 띠: 0시·24시 양 끝선이 다 있고(14줄), 子 반 칸이 양 끝에 둘', q.ends.join() === 'true,true' && q.n === 14 && q.zi.length === 2 && q.zi[0] < 700 && q.zi[1] > 1460, q); await pg.context().close(); }
     { const p = await open(b, { time: plus(newsDate, 1) + 'T07:30', w: 412, h: 891 }); await p.adv(2000); const q = await p.evaluate(() => ['svpUnread', 'fcNewsS', 'tdNewsS'].map(i => (document.getElementById(i) || {}).textContent || '').join(' | '));
       ok('v191 다음 날 아침(새 호 전): 지난 호를 \'오늘 새 소식\'이라 하지 않고 \'어제 신문\'이라 함', /어제 신문/.test(q) && !/오늘 새 소식/.test(q), q); await p.context().close(); }
+    { const p = await open(b, { time: newsDate + 'T10:25', w: 360, h: 780 }); await p.saver(); const q = await p.evaluate(() => [...document.querySelectorAll('#saver .fc-clock, #saver .fc-feat, #saver .fc-app[data-tile="ask"], #saver .fc-todo')].filter(e => e.getBoundingClientRect().height > 0).map(e => { const s = getComputedStyle(e); return [s.borderTopLeftRadius, s.boxShadow, s.clipPath].join('|'); }));
+      ok('v199 휴대폰 홈: 판 넷의 모서리·테두리가 같고 신문 판만 잘리지 않음(clip-path 없음)', q.length === 4 && new Set(q).size === 1 && /none$/.test(q[0]), q); await p.context().close(); }
     { const p = await open(b, { time: '2026-11-22T11:10', w: 412, h: 891 }); const q = await p.evaluate(() => { const h = document.getElementById('gkHome'), r = h.getBoundingClientRect(); return { saver: !document.getElementById('saver').hidden, shown: !h.hidden && r.width > 0 }; });
       ok('v189 휴대폰: 켜자마자 묻기 화면에서도 홈 단추가 바로 보임(15초 기다리지 않음)', q.saver || q.shown, q); await p.context().close(); }
     // 모든 편·모든 쪽: 글자 겹침 없음, 오류 없음 (1600×820, 전화 세로)
