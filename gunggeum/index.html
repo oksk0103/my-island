@@ -1111,7 +1111,7 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
   const GUIDE = `<svg viewBox="0 0 100 100" style="fill:none;stroke:rgba(243,236,221,.17);stroke-width:.6;stroke-dasharray:2 2.2;stroke-linecap:butt"><path d="M50 4v92M4 50h92M6 6l88 88M94 6L6 94"/></svg>`;
   window.B_word = function(W, news){
     const art = news.articles.find(x => x.word && x.word.w === W.w) || {}, idx = news.articles.indexOf(art);
-    const m = (art.body || '').split(/(?<=다\.)\s*/).find(s => s.includes('《' + W.w + '》')) || '';
+    const m = (art.body || '').replace(/다\.\s*/g, '다.\u0001').split('\u0001').find(s => s.includes('《' + W.w + '》')) || '';
     const use = e(m).replace('《' + e(W.w) + '》', `<mark>${e(W.w)}</mark>`), n4 = (W.hanja||[]).length > 2;
     return `<div class="wd${n4?' n4':''}"><div class="wd-l"><div class="wd-lab">오늘의 낱말<i>${idx+1} / ${news.articles.length}</i></div><div class="wd-w">${e(W.w)}</div><div class="wd-mean">${e(W.mean)}</div>
       ${use?`<div class="wd-use">${use}<small>${e(art.short||'')} 기사에서</small></div>`:''}</div>
@@ -1410,13 +1410,13 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v200</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v201</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v200</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v201</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2697,7 +2697,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function todoClean(said) {
     let t = ' ' + said.replace(/[.,!?~]/g, ' ') + ' ', when = '';
     t = t.replace(/((오전|오후|아침|저녁|밤)\s*)?([0-9]{1,2}|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열|열한|열두)\s*시(\s*반)?(에|까지)?(?=\s)/, m => { when = m.replace(/(에|까지)$/, '').trim(); return ' '; }); // "네 시에"는 뒤에 따로 붙임
-    t = t.replace(/((?<=^\s*)(?:숙제|준비물)|할\s*일)?(에|로|으로|을|를)?\s*(추가|적어|넣어|써)\s*(해\s*)?(줘|줄래|놔|둬|주세요)/g, ' '); // v145: '수학 숙제 추가해 줘'의 숙제는 남긴다(맨 앞의 '숙제 추가해 줘'만 지움)
+    t = t.replace(/(^\s*(?:숙제|준비물)|할\s*일)?(에|로|으로|을|를)?\s*(추가|적어|넣어|써)\s*(해\s*)?(줘|줄래|놔|둬|주세요)/g, ' '); // v145: '수학 숙제 추가해 줘'의 숙제는 남긴다(맨 앞의 '숙제 추가해 줘'만 지움)
     if (TD_INTO.test(said.replace(/[.,!?~]/g, ' ').trim())) t = t.replace(/(할\s*일|숙제|준비물)\s*(목록)?\s*(에다가|에다|에|으로|로)\s/, ' ').replace(/\s*(을|를)?\s*(추가|적어|넣어|기록|써)\s*(해|하자|할래|할게)?\s*$/, ' ');
     t = t.replace(/(다음\s*주\s*)?[월화수목금토일]요일(까지|에|날)?|오늘(까지|은)?|내일(까지|은)?|모레(까지)?/g, ' ');
     t = t.replace(/\s(나|나는|난|저|음|어|그|저기|근데|그리고|엄마가|선생님이)\s/g, ' ');
@@ -3065,7 +3065,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
   function faceWord() { const on = !!(news && newsFresh()), hr = new Date().getHours(), WS = on ? news.articles.map(x => x.word).filter(x => x && x.w) : []; return WS.length ? WS[Math.min(WS.length - 1, hr < 13 ? 0 : hr < 15 ? 1 : 2)] : null; }
   function wordNews(W, art) { // 신문 낱말: 아이가 그 기사를 펴거나 표지의 낱말을 누를 때 모은다
     if (!W || !W.w) return null; art = art || (news && news.articles.find(x => x.word && x.word.w === W.w)) || {};
-    const line = String(art.body || '').split(/(?<=[.!?])\s+/).find(s => s.includes('《' + W.w + '》')) || '';
+    const line = String(art.body || '').replace(/([.!?])\s+/g, '$1\u0001').split('\u0001').find(s => s.includes('《' + W.w + '》')) || '';
     const kd = W.hanja && W.hanja.length ? 'hz' : 'ko'; return wordAdd({ k: kd + ':' + W.w, w: W.w, kind: kd, mean: String(W.mean || '').slice(0, 30), hz: W.hanja && W.hanja.length ? W.hanja.slice(0, 4) : null, from: 'news', src: String(art.short || art.title || '').slice(0, 30), line: line.replace(/[《》]/g, '').slice(0, 90) });
   }
   window.__gkWords = { load: wordLoad, add: wordAdd }; // 자동 점검용
@@ -3608,7 +3608,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     try { // v138: 낱말 카드가 나오면 공부칸에 모은다(이 기기에만). 카드 아래 한 줄로 알려 준다
       const kind = hanja ? 'hz' : lat ? 'en' : 'ko', disp = kind === 'en' ? word.toLowerCase() : kind === 'ko' ? items[0].g.replace(/[·・]/g, '') : word;
       const mn = hanja ? mean : kind === 'en' ? (items[0].l.split('·').pop() || '').trim() : items[0].l;
-      const ss = String(current || '').split(/(?<=[.!?])\s+/).filter(s => s.toLowerCase().includes(disp.toLowerCase())), line = ss.find(s => !/[?？]$/.test(s.trim())) || ss[0] || ''; // 묻는 문장보다 풀이 문장
+      const ss = String(current || '').replace(/([.!?])\s+/g, '$1\u0001').split('\u0001').filter(s => s.toLowerCase().includes(disp.toLowerCase())), line = ss.find(s => !/[?？]$/.test(s.trim())) || ss[0] || ''; // 묻는 문장보다 풀이 문장
       if (disp && !quiz && !(kind === 'ko' && /[一-鿿㐀-䶿]/.test(disp + mn)) && graphemes(disp).length <= 20 && wordAdd({ k: kind + ':' + key, w: disp, syl: kind === 'en' ? items[0].g.toLowerCase() : '', kind, mean: String(mn || '').slice(0, 30), hz: hanja ? items.map(x => [x.g, x.l]).slice(0, 4) : null, q: String((LS.get('gk-lastqa', {}) || {}).q || '').slice(0, 40), from: 'ask', line: line.slice(0, 90) })) {
         const vc = figBox.querySelector('.vcard'); if (vc && !vc.querySelector('.vc-note')) { const n = document.createElement('div'); n.className = 'vc-note'; n.textContent = '공부칸에 모았어'; vc.append(n); } }
     } catch (e) { diag('err', '공부칸 모으기 실패: ' + (e.message || e)); }
@@ -3853,7 +3853,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v200';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v201';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -4118,7 +4118,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   window.B_sci = function(p){ return shell('오늘의 과학', 2, `<div class="cc-k">${e(p.tag)}</div><h2 class="cc-h pce">${e(p.f)}</h2>`, '', `보기 ${ARW}`, 1); };
   window.B_word = function(W, news){
     const art = news.articles.find(x => x.word && x.word.w === W.w) || {};
-    const m = (art.body || '').split(/(?<=다\.)\s*/).find(s => s.includes('《' + W.w + '》')) || '';
+    const m = (art.body || '').replace(/다\.\s*/g, '다.\u0001').split('\u0001').find(s => s.includes('《' + W.w + '》')) || '';
     const use = e(m).replace('《' + e(W.w) + '》', `<mark>${e(W.w)}</mark>`), n4 = (W.hanja || []).length > 2;
     return shell('오늘의 낱말', -1, `<div class="cc-big${W.w.length > 3 ? ' s' : ''}">${e(W.w)}</div><div class="cc-s1">${e(W.mean)}</div>${use ? `<div class="cc-s2">${use}</div>` : ''}`,
       `<div class="cc-r cc-hz${(W.hanja || []).length === 3 ? ' n3' : n4 ? ' n4' : ''}">${(W.hanja || []).map(h => { const p = h[1].lastIndexOf(' '); return `<div class="h"><span>${e(h[0])}</span><small>${e(h[1].slice(0, p))}<b>${e(h[1].slice(p + 1))}</b></small></div>`; }).join('')}</div>`,

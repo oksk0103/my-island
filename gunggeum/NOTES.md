@@ -268,3 +268,9 @@
 - 진짜 원인: 예전에 달 사진이 삐져나와 `#fcFeat{clip-path:inset(0 round 32px)}`를 붙였는데, clip-path는 안쪽 테두리(inset box-shadow)와 바깥 그림자까지 자르고 superellipse 모서리 대신 원 모서리로 잘랐다.
 - 다음에는: 자식이 모서리 밖으로 나오면 clip-path 대신 `overflow:hidden`(+border-radius)을 쓴다. 같은 줄의 판들은 계산된 border-radius·box-shadow·clip-path가 같은지 점검으로 비교한다.
 - 관련: v199, index.html 휴대폰 홈(@media max-width:899px), tests/run.js 'v199 휴대폰 홈'
+
+## 정규식 뒤보기 (?<= 하나가 옛 아이폰에서 앱 전체를 죽인다
+- 무슨 일: 아이폰 7(iOS 15)에서 열면 소리 단추와 '물어보기' 칸만 보이고 나머지가 텅 빈 화면이었다.
+- 진짜 원인: iOS 16.4 이전 사파리(아이폰의 크롬도 같은 엔진)는 정규식 뒤보기 `(?<=…)`를 몰라 스크립트를 읽는 단계에서 문법 오류를 낸다. 한 줄 때문에 스크립트 블록 전체가 실행되지 않는다.
+- 다음에는: 정규식에 뒤보기 대신 replace로 표시를 넣고 split한다(`s.replace(/([.!?])\s+/g,'$1\u0001').split('\u0001')`). 새 문법(뒤보기, static 블록 등)은 쓰기 전에 iOS 15에서 되는지 본다. 점검이 뒤보기를 찾는다.
+- 관련: v201, index.html 낱말 문장 찾기·할 일 말 다듬기

@@ -868,6 +868,9 @@ async function newsTests(b) {
       ok('v176 3일차 시간 띠: 0시·24시 양 끝선이 다 있고(14줄), 子 반 칸이 양 끝에 둘', q.ends.join() === 'true,true' && q.n === 14 && q.zi.length === 2 && q.zi[0] < 700 && q.zi[1] > 1460, q); await pg.context().close(); }
     { const p = await open(b, { time: plus(newsDate, 1) + 'T07:30', w: 412, h: 891 }); await p.adv(2000); const q = await p.evaluate(() => ['svpUnread', 'fcNewsS', 'tdNewsS'].map(i => (document.getElementById(i) || {}).textContent || '').join(' | '));
       ok('v191 다음 날 아침(새 호 전): 지난 호를 \'오늘 새 소식\'이라 하지 않고 \'어제 신문\'이라 함', /어제 신문/.test(q) && !/오늘 새 소식/.test(q), q); await p.context().close(); }
+    { const fs = require('fs'), pth = require('path'), D = pth.join(__dirname, '..'); const files = ['index.html', 'paper.html', 'pieces/p2.html', ...fs.readdirSync(pth.join(D, 'pieces/ep')).map(f => 'pieces/ep/' + f)];
+      const bad = files.filter(f => /\(\?<[=!]/.test(fs.readFileSync(pth.join(D, f), 'utf8')));
+      ok('v201 옛 아이폰(iOS 16.3 이하) — 정규식 뒤보기 (?<= (?<! 가 없음(있으면 스크립트 전체가 안 돎)', bad.length === 0, bad); }
     { const p = await open(b, { time: newsDate + 'T16:20', read: newsDate, w: 360, h: 780 }); await p.say('달은 왜 빛나', 9000); const q = await p.evaluate(() => ['gkHome', 'replayBtn', 'soundBtn'].map(id => { const e = document.getElementById(id), s = getComputedStyle(e), r = e.getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height), Math.round(r.top + r.height / 2), s.backgroundColor, s.boxShadow].join('|'); }));
       const f = await p.evaluate(() => Math.round(document.getElementById('soundBtn').getBoundingClientRect().right) === Math.round(document.getElementById('form').getBoundingClientRect().right));
       ok('v200 휴대폰 답 화면: 홈·다시 듣기·소리 단추가 같은 64 동그라미, 같은 높이·모양, 오른쪽 끝 맞춤', new Set(q).size === 1 && q[0].startsWith('64|64|') && f, q); await p.context().close(); }
