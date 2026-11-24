@@ -10,18 +10,10 @@ const arcD=(x,y,r)=>`M${x.toFixed(1)},${(y-r).toFixed(1)}A${(r*1.6).toFixed(1)},
 
 EPX[42]={day:'과학',topic:'소리와 떨림',cat:'소리',field:'과학',frame:'v2',
  cover:{h:'소리는<br>어떻게<br>들릴까?',draw(S){
-   const Y=400,X1=680,X2=1060;
-   // 공기(보조색 점 격자) — 떨림이 이 공기를 타고 퍼짐
-   for(let y=200;y<=600;y+=40)for(let x=1100;x<=1500;x+=40)wdot(S,x,y,3.5,WA);
-   wl(S,X1,Y-60,X2,Y-60,W0m,{'stroke-dasharray':'2 10'});wl(S,X1,Y+60,X2,Y+60,W0m,{'stroke-dasharray':'2 10'});tx(S,X2,Y+100,'떨리는 폭','v22m','end');
-   peg(S,X1,Y);peg(S,X2,Y);const st=el('path',{d:strD(X1,X2,Y,0),fill:'none',stroke:WO,'stroke-width':3},S);
-   tx(S,X1,Y-80,'튕긴 줄','v28');
-   const A=[0,1,2,3,4].map(()=>el('path',{d:'',fill:'none',stroke:W0,'stroke-width':2},S));
-   wl(S,640,620,1504,620,W0m);tx(S,640,664,'관측 · 줄을 튕긴 순간','v22m');tx(S,1504,664,'공기를 타고 →','v22m','end');
-   tx(S,1504,Y-150,'띵','v96','end');
-   const set=t=>{st.setAttribute('d',strD(X1,X2,Y,Math.sin(t*40)*26*Math.exp(-(t%2.5)*.6)));A.forEach((a,k)=>{const f=((t*.5+k/5)%1),x=1090+f*360,r=40+f*130;a.setAttribute('d',arcD(x,Y,r));a.setAttribute('opacity',(1-f).toFixed(2));});};
-   set(.31);let on=false;
-   return ()=>{if(on||calm())return;on=true;loop(S,t=>set(t));};}},
+   /* v206: 생성 일러스트 */
+   const P=el('g',{},S);el('image',{href:'art/42-drum.webp',x:860,y:150,width:500,height:500},P);
+   tx(S,1110,712,'둥 — 북이 떨린다','v22m','middle');
+   let on=false;return ()=>{if(on||calm())return;on=true;loop(S,t=>P.setAttribute('transform',`translate(0,${(4*Math.sin(t*.6)).toFixed(1)})`));};}},
  scenes:[
   {k:'떨리는 물건',h:'소리는<br>떨림에서 시작된다',b:'북을 치거나 줄을 튕기면 그 물건이 빠르게 <em>떨려</em>. 말할 때 목에 손을 대 보면 떨림이 느껴져.',steps:['줄 튕기기'],
    draw(S){const Y=380,X1=700,X2=1440;peg(S,X1,Y);peg(S,X2,Y);

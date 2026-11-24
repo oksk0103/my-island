@@ -26,12 +26,13 @@ const A_=A;
 
 EPX[10]={day:'10일차',topic:'날짐승과 길짐승',cat:'말의 뜻',field:'국어',frame:'v2',
  cover:{h:'날짐승과<br>길짐승,<br>뭐가 다를까?',draw(S){
+   /* v206: 생성 일러스트 까치(날짐승)·거북(길짐승) */
    T(S,640,300,'날짐승','v96');T(S,640,590,'길짐승','v96');L(S,640,430,1504,430,C);T(S,1504,400,'하늘','v22m','end');T(S,1504,470,'땅','v22m','end');
-   const up=el('path',{d:'M1000,370Q1200,330 1460,160',fill:'none',stroke:Cm,'stroke-width':2,'stroke-dasharray':'2 10'},S);
-   const dn=el('path',{d:'M1000,600C1080,570 1120,630 1200,600S1320,570 1460,600',fill:'none',stroke:Cm,'stroke-width':2,'stroke-dasharray':'2 10'},S);
-   const a=wdot(S,1000,370,10,A),b=wdot(S,1000,600,10,C);const LU=up.getTotalLength(),LD=dn.getTotalLength();let on=false;
-   const put=(d,p,L,e)=>{const q=p.getPointAtLength(L*e);d.setAttribute('cx',q.x.toFixed(1));d.setAttribute('cy',q.y.toFixed(1));};
-   return ()=>{if(on||calm())return;on=true;loop(S,t=>{const c=t%5,e=c<2.5?EO(c/2.5):1;put(a,up,LU,e);put(b,dn,LD,Math.min(1,c/4));});};}},
+   const M=el('g',{},S);el('image',{href:'art/10-magpie.webp',x:-170,y:-109,width:340,height:218},M);
+   const G=el('g',{},S);el('image',{href:'art/10-turtle.webp',x:-140,y:-140,width:280,height:140},G);
+   const pm=t=>at(M,1150+20*Math.sin(t*.5),255+14*Math.sin(t*1.1)),pg=t=>at(G,1210+30*Math.sin(t*.25),600);
+   pm(0);pg(0);let on=false;
+   return ()=>{if(on||calm())return;on=true;loop(S,t=>{pm(t);pg(t);});};}},
  scenes:[
   {k:'날짐승',h:'날아다니면<br>날짐승이다',b:'‘날다’가 ‘날’로 바뀌어 ‘짐승’ 앞에 붙었어. <em>나는 짐승</em>, 날아다니는 짐승을 두루 이르는 말이야.',steps:['날다 + 짐승'],
    draw(S){return joinW(S,'날','다',null,'날','나는 짐승',undefined,['날짐승 — 예',['참새','까치','독수리']]);}},

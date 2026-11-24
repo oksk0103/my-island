@@ -8,17 +8,10 @@ const tipX=(sx,sy,bx,ty,gy)=>sx+(bx-sx)*(gy-sy)/(ty-sy);
 
 EPX[43]={day:'과학',topic:'그림자',cat:'빛과 그림자',field:'과학',frame:'v2',
  cover:{h:'그림자는<br>왜 생길까?',draw(S){
-   const GY=600,BX=1100,TY=440,CX=1100,R=400;wl(S,640,GY,1504,GY,W0);hRuler(S,640,1504,640,54,'','');tx(S,640,GY+92,'관측 · 해와 막대 하나','v22m');
-   el('path',{d:`M${CX-R},${GY}A${R},${R} 0 0 1 ${CX+R},${GY}`,fill:'none',stroke:W0m,'stroke-width':2,'stroke-dasharray':'2 10'},S);
-   const sh=el('polygon',{points:'',fill:WA,stroke:W0,'stroke-width':2},S);
-   el('rect',{x:BX-7,y:TY,width:14,height:GY-TY,fill:W0},S);tx(S,BX+20,TY-14,'막대','v22');
-   const ray=wl(S,0,0,0,0,W0m,{'stroke-dasharray':'2 10'});const sun=el('circle',{cx:0,cy:0,r:30,fill:WO},S);
-   tx(S,CX-R+8,GY-20,'아침','v22m');tx(S,CX,GY-R-46,'한낮','v22m','middle');tx(S,CX+R-8,GY-20,'저녁','v22m','end');
-   tx(S,1504,GY+92,'보라 띠 = 그림자','v22','end');
-   const set=a=>{const sx=CX-Math.cos(a)*R,sy=GY-Math.sin(a)*R;mv(sun,sx,sy);let t=tipX(sx,sy,BX,TY,GY);t=Math.max(648,Math.min(1500,t));
-     sh.setAttribute('points',`${BX},${GY} ${t.toFixed(1)},${GY} ${t.toFixed(1)},${GY+18} ${BX},${GY+18}`);ray.setAttribute('x1',sx);ray.setAttribute('y1',sy);ray.setAttribute('x2',t);ray.setAttribute('y2',GY);};
-   set(.75);let on=false;
-   return ()=>{if(on||calm())return;on=true;loop(S,t=>{const c=(t%8)/8;set(.62+(Math.PI-1.24)*(c<.5?c*2:2-c*2));});};}},
+   /* v206: 생성 일러스트 */
+   const P=el('g',{},S);el('image',{href:'art/43-shadow.webp',x:860,y:150,width:500,height:500},P);
+   tx(S,1110,712,'해가 낮은 오후','v22m','middle');
+   let on=false;return ()=>{if(on||calm())return;on=true;loop(S,t=>P.setAttribute('transform',`translate(0,${(4*Math.sin(t*.6)).toFixed(1)})`));};}},
  scenes:[
   {k:'곧게 가는 빛',h:'빛은<br>곧게 나아간다',b:'빛은 휘지 않고 <em>곧은 길</em>로 가. 무언가에 부딪히기 전까지 쭉 나아가.',steps:['불 켜기'],
    draw(S){const LX=720,LY=400,WX=1460;el('circle',{cx:LX,cy:LY,r:28,fill:WO},S);tx(S,LX,LY+80,'전등','v28','middle');

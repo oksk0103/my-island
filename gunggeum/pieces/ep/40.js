@@ -9,19 +9,10 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 
 EPX[40]={day:'과학',topic:'노을',cat:'빛과 색',field:'과학',frame:'v2',
  cover:{h:'노을은 왜<br>빨갈까?',draw(S){
-   const GY=600;wl(S,648,GY,1504,GY,W0);tx(S,648,GY+44,'관측 · 해 질 녘','v22m');
-   [[2,270],[1,310],[0,350]].forEach(([k,y])=>el('rect',{x:860,y,width:644,height:40,fill:SW[k][1]},S));for(let y=150;y<=390;y+=40)wl(S,860,y,1504,y,W0m);tx(S,1504,120,'저녁 하늘','v22m','end');vapor(S,12,80,700,430,1500,580);
-   const SX=740,SY=520;el('circle',{cx:SX,cy:SY,r:44,fill:DUSK},S);tx(S,SX,SY-70,'저녁 해','v28','middle');
-   const OX=1440;tri(S,OX,GY,W0);tx(S,OX,GY+44,'여기서 봐','v22','end');
-   wl(S,SX+50,SY+4,OX-20,GY-34,W0m,{'stroke-dasharray':'2 10'});
-   // 색 점들이 해에서 눈 쪽으로 — 파랑 쪽 색은 가다가 튕겨 나감, 빨강·주황·노랑만 끝까지
-   const q=rnd(9),D=[];for(let i=0;i<84;i++){const k=i%7,out=k>=3?.15+q()*.55:2,t0=q();const ang=(q()<.5?-1:1)*(.6+q()*.9);D.push({k,out,t0,ang,c:wl(S,SX,SY,SX,SY,SW[k][1],{'stroke-width':4,opacity:0})});}
-   const ex=t=>lerp(SX+50,OX-20,t),ey=t=>lerp(SY+4,GY-34,t);
-   const pos=(d,t)=>{if(t<Math.min(1,d.out))return [ex(t),ey(t)];if(d.out<1){const s=t-d.out,x=ex(d.out)+Math.cos(d.ang)*s*500,y=ey(d.out)+Math.sin(d.ang)*s*500;return (y<160||y>590||x>1500)?null:[x,y];}return [ex(1),ey(1)];};
-   const set=c=>D.forEach(d=>{const t=(c-d.t0*.9);const a=t<0||t>1.6?null:pos(d,t),b=a?pos(d,Math.max(0,t-.035)):null;if(!a||!b||(a[0]===b[0]&&a[1]===b[1])){d.c.setAttribute('opacity',0);return;}
-     d.c.setAttribute('opacity',1);d.c.setAttribute('x1',b[0].toFixed(1));d.c.setAttribute('y1',b[1].toFixed(1));d.c.setAttribute('x2',a[0].toFixed(1));d.c.setAttribute('y2',a[1].toFixed(1));});
-   set(1.2);let on=false;
-   return ()=>{if(on||calm())return;on=true;loop(S,t=>set((t%3.6)/1.8+.0));};}},
+   /* v206: 생성 일러스트(해 질 녘 하늘). 아래에서 위로 빨강·주황·노랑·보라 순서(실제 노을 순서) */
+   const P=el('g',{},S);el('image',{href:'art/40-sunset.webp',x:860,y:150,width:500,height:500},P);
+   tx(S,1110,712,'해 질 녘 하늘','v22m','middle');
+   let on=false;return ()=>{if(on||calm())return;on=true;loop(S,t=>P.setAttribute('transform',`translate(0,${(4*Math.sin(t*.6)).toFixed(1)})`));};}},
  scenes:[
   {k:'낮과 저녁',h:'저녁 햇빛은<br>공기를 길게 지난다',b:'낮엔 해가 높아서 빛이 공기를 짧게 지나. 저녁엔 해가 낮아서 <em>훨씬 길게</em> 지나와.',steps:['낮 해','저녁 해'],
    draw(S){const GY=620,TOP=330,OX=1400;wl(S,640,GY,1504,GY,W0);wl(S,640,TOP,1504,TOP,W0m,{'stroke-dasharray':'2 10'});

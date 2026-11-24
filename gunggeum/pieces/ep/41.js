@@ -14,11 +14,11 @@ const rain=(p,seed,n,x1,y1,x2,y2,col=WA)=>{const q=rnd(seed),L=[];for(let i=0;i<
 
 EPX[41]={day:'과학',topic:'무지개',cat:'빛과 색',field:'과학',frame:'v2',
  cover:{h:'무지개는<br>어떻게<br>생길까?',draw(S){
-   const GY=620,CX=1080;rain(S,2,70,660,140,1500,600);wl(S,648,GY,1504,GY,W0);tx(S,648,GY+44,'관측 · 비 갠 오후','v22m');
-   const B=bow(S,CX,GY,400,22);tri(S,CX,GY,WO);tx(S,CX,GY+44,'여기서 봐','v22','middle');
-   el('path',{d:`M${CX+300},${GY-262}L${CX+340},${GY-400}H1504`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,1504,GY-414,'무지개','v28','end');
-   const set=th=>B.forEach((b,i)=>b.setAttribute('d',bandD(CX,GY,400-(i+1)*22,400-i*22,th)));let on=false;
-   return ()=>{if(on||calm())return;on=true;loop(S,t=>{const c=t%6;set(c<1.6?Math.PI*EO(c/1.6):c<5.4?Math.PI:Math.PI*(1-(c-5.4)/.6));});};}},
+   /* v206: 생성 일러스트(비 갠 들판의 무지개) */
+   const P=el('g',{},S);el('image',{href:'art/41-rainbow.webp',x:860,y:150,width:500,height:500},P);
+   el('circle',{cx:1110,cy:400,r:253,fill:'none',stroke:W0,'stroke-width':6},P);
+   tx(S,1110,712,'비 갠 오후','v22m','middle');
+   let on=false;return ()=>{if(on||calm())return;on=true;loop(S,t=>P.setAttribute('transform',`translate(0,${(4*Math.sin(t*.6)).toFixed(1)})`));};}},
  scenes:[
   {k:'해를 등지고',h:'무지개는<br>해를 등져야 보인다',b:'해는 <em>내 뒤</em>에, 빗방울은 내 앞에 있어야 해. 해가 너무 높이 뜨면 잘 안 보여.',steps:['햇빛 비추기','빗방울 보기'],
    draw(S){const GY=620,OX=980;wl(S,640,GY,1504,GY,W0);

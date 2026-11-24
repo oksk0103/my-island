@@ -19,19 +19,10 @@ const mv=(g,x,y,r=0)=>g.setAttribute('transform',`translate(${x},${y})${r?` rota
 
 EPX[44]={day:'과학 13',topic:'자석',cat:'끌어당기는 힘',field:'과학',frame:'v2',
  cover:{h:'자석은 왜<br>쇠에<br>붙을까?',draw(S){
-   const cx=1090,cy=360,w=480,h=100;
-   // 자석 둘레의 힘 줄(보조색 점선)
-   const fg=el('g',{fill:'none',stroke:WA,'stroke-width':2,'stroke-dasharray':'2 10','stroke-linecap':'round'},S);
-   [60,120,190,260].forEach(k=>{el('path',{d:`M${cx-w/2+20},${cy-h/2}C${cx-w/2+20-k*.3},${cy-h/2-k} ${cx+w/2-20+k*.3},${cy-h/2-k} ${cx+w/2-20},${cy-h/2}`},fg);
-     if(k<240)el('path',{d:`M${cx-w/2+20},${cy+h/2}C${cx-w/2+20-k*.3},${cy+h/2+k} ${cx+w/2-20+k*.3},${cy+h/2+k} ${cx+w/2-20},${cy+h/2}`},fg);});
-   bar(S,cx,cy,w,h,'S','N');
-   const GY=640;wl(S,648,GY,1504,GY,W0m);tx(S,648,GY+38,'관측 · 막대자석과 쇠 클립','v22m');
-   // 클립: 바닥에서 자석 양 끝으로 붙음(N 쪽 한 개만 산호)
-   const C=[[cx-w/2+30,-1],[cx-w/2+80,1],[cx+w/2-80,1],[cx+w/2-30,-1]].map(([x,d],k)=>{const g=clip(S,x+d*120,GY-36,1,k===3?WO:W0);return {g,x0:x+d*120,y0:GY-36,x1:x,y1:cy+h/2+34};});
-   el('path',{d:`M${cx+w/2-6},${cy+h/2+34}H1504`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,1504,cy+h/2+18,'쇠 클립','v28','end');
-   const set=e=>C.forEach((c,k)=>{const s=cl(e*1.3-k*.1);const q=EO(s);mv(c.g,c.x0+(c.x1-c.x0)*q,c.y0+(c.y1-c.y0)*q);});
-   let on=false;
-   return ()=>{if(on||calm()){set(1);return;}on=true;loop(S,t=>{const c=t%5;set(c<1.2?c/1.2:c<4.2?1:1-(c-4.2)/.8);});};}},
+   /* v206: 생성 일러스트(말굽자석과 클립) */
+   const P=el('g',{},S);el('image',{href:'art/44-magnet.webp',x:870,y:160,width:470,height:500},P);
+   tx(S,1110,712,'말굽자석과 클립','v22m','middle');
+   let on=false;return ()=>{if(on||calm())return;on=true;loop(S,t=>P.setAttribute('transform',`rotate(${(1.2*Math.sin(t*.7)).toFixed(2)} 1110 300)`));};}},
  scenes:[
   {k:'붙는 것',h:'자석은 쇠를<br>끌어당긴다',b:'자석은 <em>쇠</em>로 된 클립이나 못을 끌어당겨. 나무 막대는 자석을 대 봐도 꼼짝 안 해.',steps:['자석 내리기'],
    draw(S){const GY=600;wl(S,660,GY,1504,GY,W0);
