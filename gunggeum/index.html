@@ -1410,13 +1410,13 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v201</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v202</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v201</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v202</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2402,7 +2402,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
       else if (d.np === 'art') { exitSaver(true); if (saverEl.hidden) openPaper(d.npi); } // 신문은 쉬는 시간에도 읽는다
       return; }
     if (saverEl.classList.contains('pgx')) { svTaps = []; pgTap(d.el); return; }
-    if (d.cv) { const ft = $('fcFeat'), cur = ft.classList.contains('pair') ? 'pair' : ft.classList.contains('sci') || ft.classList.contains('moon') ? 'sci' : ['news', 'word', 'piece'].find(c => ft.classList.contains(c));
+    if (d.cv) { const ft = $('fcFeat'), cur = ft.classList.contains('pair') ? 'pair' : ft.classList.contains('moon') ? 'moon' : ft.classList.contains('sci') ? 'sci' : ['news', 'word', 'piece'].find(c => ft.classList.contains(c));
       if (d.cv !== cur) { svTaps = []; coverPick(d.cv); renderSaver(); return; }
       d.tile = ft.dataset.tile; d.cv = ''; diag('saver', '켜진 탭을 한 번 더 → 그 장 열기'); } // v126: 이미 켜진 탭(예: '신문')을 누르면 그 장의 내용으로 간다
     if (d.tile === 'study' || d.tile === 'studyw') { svTaps = []; // v138: 공부칸 앱을 크게 연다(예전 '공부 모드' 켜고 끄기는 없앰). 표지의 '오늘의 낱말'에서 오면 그 낱말을 펴서
@@ -2614,7 +2614,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     let auto = on && !read ? 'news' : hr >= 18 ? sciK : 'line'; // v147: 아침 신문 → 낮 이야기 → 저녁 과학 · v174: 오늘의 단어는 다시 설계할 때까지 내림(루아: 재미없음)
     if (faceAutoLast && auto !== faceAutoLast && auto !== 'news' && faceAutoLast !== 'news' && Date.now() - svTouchAt < 180e3) auto = faceAutoLast; else faceAutoLast = auto; // v173: 만진 지 3분 안에는 표지가 저절로 바뀌지 않는다
     const st = window.__gkStudyOn && window.__gkStudyOn(); saverEl.classList.toggle('study', !!st); if ($('fcStudyL')) $('fcStudyL').textContent = '공부칸';
-    const ft = $('fcFeat'), kind = st ? 'study' : cvf === 'news' && on ? 'news' : cvf === 'word' && W ? 'word' : cvf === 'sci' ? sciK : cvf === 'moon' && sk ? 'moon' : cvf === 'piece' ? 'line' : auto; // v174: 저장된 'pair'(단어) 고름은 무시하고 자동으로
+    const ft = $('fcFeat'), kind = st ? 'study' : cvf === 'news' && on ? 'news' : cvf === 'word' && W ? 'word' : cvf === 'sci' ? 'sci' : cvf === 'moon' && sk ? 'moon' : cvf === 'piece' ? 'line' : auto; // v174: 저장된 'pair'(단어) 고름은 무시하고 자동으로
     if (kind === 'study') {
       if (fcFeatKey !== 'study') { fcFeatKey = 'study'; ft.className = 'fc-t fc-feat study'; ft.dataset.tile = 'clock'; ft.innerHTML = `<div class="cc"><div class="cc-top"><div class="cc-lab">공부 모드</div></div><div class="cc-mid"><div class="cc-l"><div class="cc-big">공부 중</div><div class="cc-s2">다 하면 공부 끝을 눌러.</div></div></div></div>`; }
     } else if (kind === 'news') {
@@ -3853,7 +3853,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v201';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v202';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
@@ -4127,7 +4127,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   window.B_moon = function(sk){ const r = rnd(20261114); let st = '';
     for (let i = 0; i < 46; i++) { const x = r() * 1000, y = r() * 700, z = r(); st += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${z < .12 ? 1.8 : z < .4 ? 1.2 : .8}" fill="#fff" opacity="${(.2 + r() * .5).toFixed(2)}"/>`; }
     const nx = (sk.next || [])[0];
-    return `<svg class="cc-st" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">${st}</svg>` + shell('오늘의 달', 2, `<div class="cc-big${sk.moon.name.length > 3 ? ' s' : ''}">${e(sk.moon.name)}</div><div class="cc-s1">${e(sk.moon.lines[0] || '')}</div><div class="cc-s2">${e(sk.moon.lines.slice(1).join(' · '))}</div>`,
+    return `<svg class="cc-st" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">${st}</svg>` + shell(new Date().getHours() < 17 ? '오늘 밤 달' : '오늘의 달', -1, `<div class="cc-big${sk.moon.name.length > 3 ? ' s' : ''}">${e(sk.moon.name)}</div><div class="cc-s1">${e(sk.moon.lines[0] || '')}</div><div class="cc-s2">${e(sk.moon.lines.slice(1).join(' · '))}</div>`,
       `<div class="cc-moon"></div>`, nx ? `${e(nx[1])}은 ${e(nx[0])}` : '') + `<canvas class="big" width="2" height="2"></canvas>`; };
   window.B_moonAfter = function(){};
 })();
@@ -5809,7 +5809,7 @@ body{--X:20px;--T:20px}
 #saver.saver.face .cc-hz .h small{font-size:15px !important;line-height:20px !important}
 #saver.saver.face .cc-hz.n4{grid-template-columns:repeat(2,96px) !important}
 #saver.saver.face .cc-moon{width:auto !important;height:auto !important}
-#saver.saver.face .fc-feat.moon canvas.big{right:-70px !important;top:auto !important;bottom:-30px;width:300px !important;height:300px !important;margin-top:0 !important}
+#saver.saver.face .fc-feat.moon canvas.big{right:24px !important;top:auto !important;bottom:24px;width:120px !important;height:120px !important;margin-top:0 !important} /* v202: 큰 달(300)이 '보름달' 글자 위에 겹치고 판 오른쪽 테두리를 덮었다 — 오른쪽 아래 작은 달로 */
 #saver.saver.face .fc-todo .fc-empty,#saver.saver.face .fc-todo .fc-list{font-size:19px !important;line-height:28px !important}
 #saver.saver.face:not([hidden]){display:block !important;padding:0 !important}
 #saver.saver.face .fc-feat{height:auto !important;min-height:0 !important}
