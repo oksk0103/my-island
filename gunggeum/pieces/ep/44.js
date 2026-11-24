@@ -19,10 +19,10 @@ const mv=(g,x,y,r=0)=>g.setAttribute('transform',`translate(${x},${y})${r?` rota
 
 EPX[44]={day:'과학 13',topic:'자석',cat:'끌어당기는 힘',field:'과학',frame:'v2',
  cover:{h:'자석은 왜<br>쇠에<br>붙을까?',draw(S){
-   /* v206: 생성 일러스트(말굽자석과 클립) */
-   const P=el('g',{},S);el('image',{href:'art/44-magnet.webp',x:870,y:160,width:470,height:500},P);
-   tx(S,1110,712,'말굽자석과 클립','v22m','middle');
-   let on=false;return ()=>{if(on||calm())return;on=true;loop(S,t=>P.setAttribute('transform',`rotate(${(1.2*Math.sin(t*.7)).toFixed(2)} 1110 300)`));};}},
+   /* v206: 생성 일러스트(말굽자석과 못) */
+   const P=el('g',{},S);el('image',{href:'art/44-magnet.webp',x:860,y:150,width:500,height:500},P);
+   tx(S,1110,712,'말굽자석과 쇠못','v22m','middle');
+   let on=false;return ()=>{if(on||calm())return;on=true;loop(S,t=>P.setAttribute('transform',`translate(0,${(4*Math.sin(t*.6)).toFixed(1)})`));};}},
  scenes:[
   {k:'붙는 것',h:'자석은 쇠를<br>끌어당긴다',b:'자석은 <em>쇠</em>로 된 클립이나 못을 끌어당겨. 나무 막대는 자석을 대 봐도 꼼짝 안 해.',steps:['자석 내리기'],
    draw(S){const GY=600;wl(S,660,GY,1504,GY,W0);

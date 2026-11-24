@@ -13,18 +13,10 @@ const leafD=(L)=>`M0,0C${L*.35},${-L*.3} ${L*.75},${-L*.25} ${L},0C${L*.75},${L*
 
 EPX[47]={day:'과학 16',topic:'겨울눈',cat:'나무의 겨울',field:'과학',frame:'v2',
  cover:{h:'나무는<br>겨울을 어떻게<br>날까?',draw(S){
-   const GY=640;wl(S,648,GY,1504,GY,W0m);
-   // 잎 진 나무 가지(선) — 가지 끝마다 겨울눈
-   const T=[[[1060,GY],[1060,470],[1000,380],[930,300],[880,200]],[[1060,470],[1150,360],[1240,250],[1290,160]],[[1000,380],[860,330],[760,300]],[[1150,360],[1300,340],[1420,300]],[[930,300],[980,200],[1000,140]],[[1240,250],[1200,170]]];
-   twig(S,T[0],18);twig(S,T[1],12);T.slice(2).forEach(P=>twig(S,P,7));
-   const tips=T.map(P=>P[P.length-1]);const B=tips.map(([x,y],k)=>{const g=bud(S,x,y,0,{plain:true});return g;});
-   const BB=tips.map(([x,y],k)=>({x,y,b:bud(S,x,y-2,34,{col:k===1?WO:W0,plain:true})}));
-   el('path',{d:`M${tips[1][0]+14},${tips[1][1]-20}H1490V${tips[1][1]+40}`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,1490,tips[1][1]+76,'겨울눈','v28','end');
-   tx(S,648,GY+38,'관측 · 12월 잎 진 나무','v22m');
-   // 땅의 낙엽(크림 작은 잎)
-   const q=rnd(47);for(let i=0;i<14;i++)el('path',{d:leafD(30),fill:W0,transform:`translate(${700+q()*780},${GY-6-q()*8}) rotate(${(q()-.5)*40})`},S);
-   let on=false;
-   return ()=>{if(on||calm())return;on=true;loop(S,t=>{const c=t%5,e=c<1?EO(c):c<4?1:1-(c-4);BB.forEach(o=>o.b.g.setAttribute('transform',`translate(${o.x},${o.y-2}) scale(${.75+.25*e})`));});};}},
+   /* v206: 생성 일러스트 */
+   const P=el('g',{},S);el('image',{href:'art/47-tree.webp',x:860,y:150,width:500,height:500},P);
+   tx(S,1110,712,'잎 진 나무와 겨울눈','v22m','middle');
+   let on=false;return ()=>{if(on||calm())return;on=true;loop(S,t=>P.setAttribute('transform',`translate(0,${(4*Math.sin(t*.6)).toFixed(1)})`));};}},
  scenes:[
   {k:'잎 떨구기',h:'나무는 겨울 전에<br>잎을 떨군다',b:'잎을 달고 있으면 몸속 물이 자꾸 빠져나가. 그래서 나무는 잎을 떨궈 <em>물을 아껴</em>.',steps:['잎 떨구기'],
    draw(S){const GY=640;wl(S,640,GY,1504,GY,W0);

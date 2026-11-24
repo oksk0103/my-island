@@ -10,20 +10,10 @@ function tube(p,x,base,w,u,n){const g=el('g',{},p);const top=base-n*u;
 
 EPX[45]={day:'과학 14',topic:'얼음',cat:'물의 변신',field:'과학',frame:'v2',
  cover:{h:'얼음은 왜<br>물에<br>뜰까?',draw(S){
-   // 큰 물그릇 단면(보조색 물) + 떠 있는 얼음(크림). 얼음 10칸 중 9칸이 물속.
-   const X0=760,X1=1400,WY=300,BY=640;
-   const water=el('rect',{x:X0,y:WY,width:X1-X0,height:BY-WY,fill:WA},S);
-   el('path',{d:`M${X0},150V${BY}H${X1}V150`,fill:'none',stroke:W0,'stroke-width':2},S);
-   const H=300,u=H/10,ice=el('g',{},S);el('rect',{x:-110,y:0,width:220,height:H,fill:ICE},ice);
-   for(let i=1;i<10;i++)wl(ice,-110,i*u,-80,i*u,WA);
-   const ix=1080;const top0=WY-u;mv(ice,ix,top0);
-   wl(S,X0-40,WY,X1+40,WY,WO);tx(S,648,WY-16,'물 높이','v22');
-   // 오른쪽 이름표: 위 1칸, 아래 9칸
-   el('path',{d:`M${ix+120},${WY-u/2}H1500`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,1416,WY-u/2-16,'물 위 1','v28');
-   el('path',{d:`M${ix+120},${WY+160}H1500`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,1416,WY+144,'물속 9','v28');
-   tx(S,X0,BY+44,'관측 · 물에 띄운 얼음 한 덩이','v22m');
-   let on=false;
-   return ()=>{if(on||calm())return;on=true;loop(S,t=>{mv(ice,ix,top0+Math.sin(t*1.6)*6);});};}},
+   /* v206: 생성 일러스트 */
+   const P=el('g',{},S);el('image',{href:'art/45-iceberg.webp',x:860,y:150,width:500,height:500},P);
+   tx(S,1110,712,'바다에 뜬 얼음산','v22m','middle');
+   let on=false;return ()=>{if(on||calm())return;on=true;loop(S,t=>P.setAttribute('transform',`translate(0,${(4*Math.sin(t*.6)).toFixed(1)})`));};}},
  scenes:[
   {k:'얼면 커진다',h:'물은 얼면<br>몸집이 커진다',b:'물을 얼리면 <em>몸집</em>이 커져. 물이 10칸이면 얼음은 <em>11칸</em>쯤이 돼.',steps:['얼리기'],
    draw(S){const base=640,u=36;

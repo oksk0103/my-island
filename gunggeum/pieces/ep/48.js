@@ -17,16 +17,10 @@ function thermo(p,x,yTop,yBot,tTop,tBot,lab){wl(p,x,yTop,x,yBot,W0m);const Y=t=>
 
 EPX[48]={day:'과학 17',topic:'서리',cat:'날씨',field:'과학',frame:'v2',
  cover:{h:'서리는<br>어떻게<br>생길까?',draw(S){
-   const GY=620;wl(S,648,GY,1504,GY,W0);
-   const B=[[740,300,40],[850,380,-30],[960,260,60],[1080,420,-50],[1200,330,30],[1310,280,-40],[1420,360,40]].map(([x,h,b])=>blade(S,x,GY,h,b,44));
-   const F=B.map((bl,k)=>frost(S,bl.P,16,W0,k+3));
-   // 온도 눈금(가로): 0도 = 산호
-   const y0=130;wl(S,880,y0,1504,y0,W0m);for(let i=0;i<=12;i++){const x=880+i*52;wl(S,x,y0,x,y0+(i%4===0?18:10),i%4===0?W0:W0m);}
-   tx(S,880,y0-22,'따뜻함','v22m');tx(S,1504,y0-22,'추움','v22m','end');const zx=880+8*52;wl(S,zx,y0-8,zx,y0+26,WO);tx(S,zx,y0+60,'0도','v28','middle');
-   el('path',{d:`M1046,${GY-330}H700V${GY-380}`,fill:'none',stroke:W0m,'stroke-width':2},S);tx(S,700,GY-396,'서리','v28','middle');
-   tx(S,648,GY+40,'관측 · 맑은 겨울 아침, 풀밭','v22m');
-   let on=false;F.forEach(f=>f.grow(1));
-   return ()=>{if(on||calm())return;on=true;loop(S,t=>{const c=t%6,e=c<2?EO(c/2):c<4.8?1:1-(c-4.8)/1.2;F.forEach(f=>f.grow(e));});};}},
+   /* v206: 생성 일러스트 */
+   const P=el('g',{},S);el('image',{href:'art/48-frost.webp',x:860,y:150,width:500,height:500},P);
+   tx(S,1110,712,'서리 내린 아침','v22m','middle');
+   let on=false;return ()=>{if(on||calm())return;on=true;loop(S,t=>P.setAttribute('transform',`translate(0,${(4*Math.sin(t*.6)).toFixed(1)})`));};}},
  scenes:[
   {k:'맑은 밤',h:'맑은 밤에는<br>땅이 차갑게 식는다',b:'구름 없는 밤엔 땅의 열이 하늘로 술술 빠져나가. 그래서 아침엔 땅과 풀잎이 <em>공기보다 더</em> 차가워져.',steps:['밤이 깊어지면'],
    draw(S){const GY=600;wl(S,640,GY,1504,GY,W0);tx(S,640,160,'맑은 밤 · 구름 없음','v28');
