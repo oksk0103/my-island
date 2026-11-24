@@ -227,7 +227,7 @@ async function newsTests(b) {
   await p.click('#gkHome'); await p.adv(1500); ok('공부칸의 홈 단추 → 위젯 면 (공부 중 표지는 없음)', /^face/.test((await p.st()).saver) && await feat() !== 'study', await feat());
   { await p.mouse.click(20, 20); await p.adv(1000); await p.saver(); await tile('cv-sci');
     const moonNow = await feat() === 'moon';
-    if (!moonNow) { await tile('sci'); const src = await p.evaluate(() => (document.getElementById('pcFrame') || {}).src || ''); ok('과학 표지를 누르면 그날 과학 편이 열림 (v147)', /pieces\/p2\.html\?ep=(1[5-9]|2[01])/.test(src), src);
+    if (!moonNow) { await tile('sci'); const src = await p.evaluate(() => (document.getElementById('pcFrame') || {}).src || ''); const want = await p.evaluate(() => window.__gkSci().page.split('&')[0]); ok('과학 표지를 누르면 그날 과학 편이 열림 (v147; v202부터 날짜표의 그날 편과 견줌)', src.includes(want), [src, want]);
       await p.adv(2500); await p.evaluate(() => { const f = document.getElementById('pcFrame'); const l = f && f.contentDocument && f.contentDocument.getElementById('logo'); if (l) l.click(); }); await p.adv(1500);
       ok('과학 편을 닫으면 위젯 면으로', !(await p.evaluate(() => !!document.getElementById('pcFrame'))) && (await p.st()).saver.startsWith('face')); }
     else ok('과학 갈래: 달이 볼 만한 날이라 달 카드 (v147)', true);
