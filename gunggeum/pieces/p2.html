@@ -173,10 +173,10 @@ body.v2.story .k,body.v2.story .k b{color:#E9B872}
 body.v2.story h2{font-family:"Noto Serif KR","Noto Serif CJK KR",serif;font-weight:700;letter-spacing:-.02em}
 body.v2.story .sum li::before{color:#E9B872}
 body.v2.story #next.doit{color:#0C1630}
-/* v203: 세로 전화 무대(폭 820). 글은 위, 그림 마당(원래 x 640~1504)은 .94배로 줄여 아래에 */
+/* v203: 세로 전화 무대(폭 820). 글은 위, 그림 마당(원래 x 640~1504)은 .88배로 줄여 아래에 */
 body.v2.port .top{left:40px;right:40px;top:44px}
 body.v2.port .L,body.v2.port #cover .L{left:64px!important;top:150px!important;width:692px!important}
-body.v2.port .tile,body.v2.port #end .tile{left:-598px;top:var(--artY);width:1600px;height:820px;transform:scale(.94);transform-origin:0 0}
+body.v2.port .tile,body.v2.port #end .tile{left:-533px;top:var(--artY);width:1600px;height:820px;transform:scale(.88);transform-origin:0 0}
 body.v2.port .nav{left:64px;right:64px;bottom:64px;height:120px;gap:24px}
 body.v2.port .pill{height:120px;padding:0 48px;border-radius:60px;font-size:36px}
 body.v2.port #back{width:120px!important}
@@ -241,7 +241,7 @@ body.v2.port #end .main{top:auto;bottom:170px}
 const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg',SYN=29.530588853;
 /* v203: 세로로 긴 전화 화면에서는 1600×820을 통째로 줄이지 않고(글자가 4분의 1로 작아지고 위아래가 텅 빔) 폭 820짜리 세로 무대로 다시 짠다 — 글은 위, 그림 마당(x 640~1504)은 아래 */
 const fit=()=>{const st=$('stage'),port=innerHeight>innerWidth*1.15;document.body.classList.toggle('port',port);
- if(port){const H=Math.round(820*innerHeight/innerWidth);st.style.width='820px';st.style.height=H+'px';st.style.setProperty('--artY',Math.max(560,H-771-200)+'px');st.style.transform=`scale(${innerWidth/820})`;}
+ if(port){const H=Math.round(820*innerHeight/innerWidth);st.style.width='820px';st.style.height=H+'px';st.style.setProperty('--artY',Math.max(560,H-722-200)+'px');st.style.transform=`scale(${innerWidth/820})`;}
  else{st.style.width='';st.style.height='';st.style.transform=`scale(${Math.min(innerWidth/1600,innerHeight/820)})`;}};addEventListener('resize',fit);fit();
 const el=(t,a={},p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
 const tx=(p,x,y,s,cls,anc='start',extra={})=>{const e=el('text',Object.assign({x,y,class:cls,'text-anchor':anc},extra),p);e.textContent=s;return e;};
