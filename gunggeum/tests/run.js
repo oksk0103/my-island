@@ -907,6 +907,30 @@ async function newsTests(b) {
       } catch (e) { er.push('X ' + e.message.slice(0, 60)); }
       if (er.length || stuck || !ended) bad.push([ep, er[0] || (stuck ? '멈춤' : '끝 못 감')]); await pg.close(); } };
     await Promise.all([...Array(5)].map(work)); ok(`조각 장 ${EPN.length}편 모두 끝까지 눌러도 오류·멈춤 없음`, EPN.length > 50 && bad.length === 0, bad.slice(0, 5)); }
+  // v204: 같은 61편을 세로 전화(360×780)에서 처음부터 끝까지 넘기며 쪽마다 글(머리줄·본문·정리·마무리)·그림 글자·그림·단추가 서로 겹치거나 화면 밖으로 나가지 않는지 본다.
+  // (v203은 앞쪽 몇 쪽만 눈으로 보고 올려, 정리·마무리 쪽이 다 겹친 채 나갔다.)
+  { const EPN = fs.readdirSync(path.join(ROOT, 'pieces/ep')).map(f => parseInt(f)).filter(Boolean).sort((x, y) => x - y), bad = []; let qi = 0;
+    const probe=()=>{const W=innerWidth,H=innerHeight,ov=(a,c,m=2)=>a.left<c.right-m&&a.right>c.left+m&&a.top<c.bottom-m&&a.bottom>c.top+m;
+  const rng=e=>{const g=document.createRange();g.selectNodeContents(e);const rs=[...g.getClientRects()].filter(r=>r.width>1&&r.height>1);if(!rs.length)return null;return rs.reduce((u,r)=>({left:Math.min(u.left,r.left),top:Math.min(u.top,r.top),right:Math.max(u.right,r.right),bottom:Math.max(u.bottom,r.bottom)}),{left:1e9,top:1e9,right:-1e9,bottom:-1e9});};
+  const scr=document.querySelector('.scr.on');if(!scr)return[];const vis=e=>{let x=e;while(x&&x!==document.body){const s=getComputedStyle(x);if(s.display==='none'||s.visibility==='hidden'||+s.opacity<.08)return false;x=x.parentElement;}return true;};
+  const html=[...document.querySelectorAll('.top,.nav'),...scr.querySelectorAll('.L,.top30,.main,.words,.sum')].filter(vis)
+  .filter((e,i,a)=>!a.some(o=>o!==e&&o.contains(e))).map(e=>[e.className||e.id,e.classList.contains('nav')||e.classList.contains('top')?e.getBoundingClientRect():rng(e)]).filter(x=>x[1]);
+  const svgt=[...scr.querySelectorAll('svg text')].filter(t=>vis(t)&&t.textContent.trim()).map(t=>['svg:'+t.textContent.trim().slice(0,8),t.getBoundingClientRect()]);
+  const shapes=[...scr.querySelectorAll('svg path,svg rect,svg circle,svg ellipse,svg line,svg polygon,svg polyline,svg image')].filter(vis).map(e=>e.getBoundingClientRect()).filter(r=>r.width>0||r.height>0).filter(r=>r.width<W*1.5);
+  const out=[];
+  for(let i=0;i<html.length;i++)for(let j=i+1;j<html.length;j++)if(ov(html[i][1],html[j][1]))out.push('html '+html[i][0]+' × '+html[j][0]);
+  for(const [n,r] of svgt){for(const [hn,h] of html)if(ov(r,h))out.push(n+' × '+hn);if(r.left<-2||r.right>W+2)out.push(n+' 화면 밖');}
+  for(const [hn,h] of html){if(/nav|top/.test(hn))continue;const hit=shapes.filter(s=>ov(s,h,4)).length;if(hit)out.push('그림 '+hit+'개 × '+hn);}
+  for(const [hn,h] of html)if(h.right>W+1||h.left<-1||h.bottom>H+1)out.push(hn+' 화면 밖');
+  return out;};
+    const work = async () => { while (qi < EPN.length) { const ep = EPN[qi++], c = await b.newContext({ viewport: { width: 360, height: 780 } }), pg = await c.newPage(), er = []; pg.on('pageerror', e => er.push(e.message.slice(0, 80)));
+      try { await pg.goto(`http://localhost:${PORT}/pieces/p2.html?ep=${ep}&v=2`); await pg.waitForTimeout(500);
+        const idle = () => pg.waitForFunction(() => typeof BUSY !== 'undefined' && BUSY === 0, null, { timeout: 15000, polling: 50 }).catch(() => {});
+        await idle(); for (let i = 0; i < 40; i++) { await pg.waitForTimeout(700); const o = await pg.evaluate(probe); if (o.length) bad.push([ep, i, o[0]]);
+          if (await pg.evaluate(() => ORDER[cur] === 'end' && /다 봤어/.test(document.getElementById('next').textContent))) break; await pg.click('#next', { timeout: 3000 }); await idle(); }
+      } catch (e) { er.push('X ' + e.message.slice(0, 60)); }
+      if (er.length) bad.push([ep, 'err', er[0]]); await c.close(); } };
+    await Promise.all([...Array(5)].map(work)); ok(`v204 조각 장 ${EPN.length}편 세로 전화: 모든 쪽 글·그림·단추 겹침·화면 밖 없음`, EPN.length > 50 && bad.length === 0, bad.slice(0, 6)); }
 
   ok('v191 앱 코드에 바깥 사진(위키) 주소가 없음', !/wikipedia\.org|wikidata\.org|commons\.wikimedia/.test(fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8')));
   // v198: 기기에 남아 있는 옛 모양·깨진 저장값으로도 화면이 죽지 않는다(홈·달력·묻기·부모님 화면까지)

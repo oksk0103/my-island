@@ -191,9 +191,9 @@ body.v2.port #cover h2{font-size:108px}
 body.v2.port #cover .guess{font-size:36px}
 body.v2.port .L,body.v2.port #cover .L{top:220px!important}
 body.v2.port #sum .L{width:692px}
-body.v2.port .words{left:64px;right:64px;top:auto;bottom:170px}
+body.v2.port .words{left:64px;right:64px}
 body.v2.port #end .top30,body.v2.port #end .main{left:64px;width:692px}
-body.v2.port #end .main{top:auto;bottom:170px}
+body.v2.port #end .main .v96,body.v2.port #end .main h2{font-size:76px}
 @media (prefers-reduced-motion: reduce){body.v2 .scr .L{transform:none;transition:none}}
 </style>
 </head>
@@ -242,7 +242,26 @@ const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg',SYN=29.5
 /* v203: 세로로 긴 전화 화면에서는 1600×820을 통째로 줄이지 않고(글자가 4분의 1로 작아지고 위아래가 텅 빔) 폭 820짜리 세로 무대로 다시 짠다 — 글은 위, 그림 마당(x 640~1504)은 아래 */
 const fit=()=>{const st=$('stage'),port=innerHeight>innerWidth*1.15;document.body.classList.toggle('port',port);
  if(port){const H=Math.round(820*innerHeight/innerWidth);st.style.width='820px';st.style.height=H+'px';st.style.setProperty('--artY',Math.max(560,H-722-200)+'px');st.style.transform=`scale(${innerWidth/820})`;}
- else{st.style.width='';st.style.height='';st.style.transform=`scale(${Math.min(innerWidth/1600,innerHeight/820)})`;}};addEventListener('resize',fit);fit();
+ else{st.style.width='';st.style.height='';st.style.transform=`scale(${Math.min(innerWidth/1600,innerHeight/820)})`;}portLay();};
+/* v204: 세로 무대에서는 쪽마다 글이 끝나는 곳을 재서 그 아래 남은 자리(단추 위까지)에 그림 마당을 맞춰 줄인다 — 정리·마무리 쪽 글이 그림·단추와 겹치던 것 */
+function portLay(){const port=document.body.classList.contains('port');
+ document.querySelectorAll('.scr .top30,.scr .main,.scr .words,.scr .tile').forEach(e=>{if(!port){e.style.top='';e.style.bottom='';e.style.left='';e.style.transform='';delete e.dataset.pk;}});
+ if(!port)return;const H=$('stage').offsetHeight,s=document.querySelector('.scr.on');if(!s)return;const navTop=H-64-120;
+ const top30=s.querySelector('.top30'),main=s.querySelector('.main'),L=s.querySelector('.L'),words=s.querySelector('.words'),bot=e=>e.offsetTop+e.offsetHeight;let y=220;
+ if(top30){top30.style.top=y+'px';y=bot(top30)+48;if(main){main.style.top=y+'px';main.style.bottom='auto';y=bot(main)+40;}}
+ else if(L){y=bot(L)+40;if(words){words.style.top=y+'px';words.style.bottom='auto';y=bot(words)+40;}}
+ const t=s.querySelector('.tile'),sv=t&&t.querySelector('svg');if(!t||!sv)return;
+ /* 그림이 실제로 차지하는 범위(나중에 나타날 숨은 것까지)를 재서, 쪽마다 한 번만 맞춘다(단계마다 크기가 바뀌어 그림이 튀지 않게) */
+ const key=H+'|'+y;if(t.dataset.pk===key)return;t.style.transform='scale(1)';t.style.left='0px';t.style.top='0px';
+ const sr=sv.getBoundingClientRect(),u=1600/sr.width;let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+ sv.querySelectorAll('path,rect,circle,ellipse,line,polyline,polygon,text,image,use').forEach(e=>{if(e.closest('defs,clipPath,mask,pattern,marker'))return;const r=e.getBoundingClientRect();if(!r.width&&!r.height)return;
+  const a=(r.left-sr.left)*u,b=(r.top-sr.top)*u,c=(r.right-sr.left)*u,d=(r.bottom-sr.top)*u;if(c-a>1300||d-b>760||c<560||a>1600)return;x0=Math.min(x0,a);y0=Math.min(y0,b);x1=Math.max(x1,c);y1=Math.max(y1,d);});
+ if(x1<x0){x0=640;x1=1504;y0=150;y1=700;}x0=Math.min(x0,640);x1=Math.max(x1,1504);/* 오른쪽 끝(1504)에 붙는 글은 나중에 채워지기도 해서 그림 마당 폭은 늘 다 잡는다 */x0=Math.max(x0,560);x1=Math.min(x1,1600);y0=Math.max(y0,0);y1=Math.min(y1,820);
+ const av=navTop-24-y,k=Math.max(.3,Math.min(1,760/(x1-x0),av/(y1-y0)));
+ t.style.transform=`scale(${k})`;t.style.left=((820-(x1-x0)*k)/2-x0*k)+'px';t.style.top=(y+Math.max(0,(av-(y1-y0)*k)/2)-y0*k)+'px';t.dataset.pk=key;}
+addEventListener('resize',fit);fit();
+new MutationObserver(()=>portLay()).observe($('stage'),{subtree:true,attributes:true,attributeFilter:['class']});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(portLay);
 const el=(t,a={},p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
 const tx=(p,x,y,s,cls,anc='start',extra={})=>{const e=el('text',Object.assign({x,y,class:cls,'text-anchor':anc},extra),p);e.textContent=s;return e;};
 const grp=(p,o=1,extra={})=>el('g',Object.assign({opacity:o,style:'transition:opacity .8s ease'},extra),p);

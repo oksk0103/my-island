@@ -48,7 +48,7 @@ EPX[50]={day:'12월 5일',topic:'펭귄의 발',cat:'추위 버티기',field:'�
     tx(S,1060,330,'오는 피','v28');arrowHead(S,1100,350,'up');wl(S,1100,350,1100,380);
     // 열 건네는 화살(산호, 한 곳)
     const H=grp(S,0);[230,300,370,440,510].forEach(y=>{wl(H,A+14,y,V-24,y,WO);arrowHead(H,V-22,y,'right',WO);});
-    const res=[tx(S,1200,240,'','v60'),tx(S,1200,280,'','v22m'),tx(S,1200,440,'','v60'),tx(S,1200,480,'','v22m')];
+    const res=[tx(S,1504,240,'','v60','end'),tx(S,1504,280,'','v22m','end'),tx(S,1504,440,'','v60','end'),tx(S,1504,480,'','v22m','end')]; /* v204: 왼쪽 맞춤 1200에서 긴 말이 무대 밖(1600 넘어)으로 나가던 것 → 오른쪽 끝 맞춤 */
     const run=(down)=>{const N=10,D=[...Array(N)].map((_,i)=>({c:wdot(S,down?A+9:V-9,down?T:B+30,0,W0),o:i/N}));
      play(1800,e=>D.forEach(d=>{const s=Math.max(0,Math.min(1,e*1.6-d.o*.6));let y,x;
        if(down){x=A+9;y=T+s*(B+30-T);}else{x=V-9;y=B+30-s*(B+30-T);}
@@ -61,7 +61,7 @@ EPX[50]={day:'12월 5일',topic:'펭귄의 발',cat:'추위 버티기',field:'�
     // 얼음에 닿는 자리(산호 선) + 아래 눈금
     const touch=el('line',{x1:GX-38,y1:GY-2,x2:GX+84,y2:GY-2,stroke:WO,'stroke-width':6,'stroke-linecap':'round'},S);
     const RY=GY+80;wl(S,700,RY,1300,RY,W0m);for(let i=0;i<=30;i++){const x=700+i*20;wl(S,x,RY,x,RY+(i%5===0?16:9),i%5===0?W0:W0m);}tx(S,700,RY+44,'얼음에 닿는 길이','v22m');
-    const big=tx(S,1300,300,'발 전체','v60');tx(S,1300,346,'얼음에 닿아 있어','v22m');
+    const big=tx(S,1504,300,'발 전체','v60','end');tx(S,1504,346,'얼음에 닿아 있어','v22m','end');
     const tail=el('line',{x1:GX-130,y1:GY-2,x2:GX-130,y2:GY-2,stroke:WO,'stroke-width':6,'stroke-linecap':'round'},S);
     return ()=>play(1400,e=>{pg.setAttribute('transform',`translate(${GX},${GY}) rotate(${(-9*e).toFixed(2)},-20,0)`);touch.setAttribute('x2',(GX+84-104*e).toFixed(1));tail.setAttribute('x2',(GX-130+30*e).toFixed(1));},()=>{big.textContent='발꿈치·꼬리';big.nextSibling.textContent='만 얼음에 닿아';});}}],
  sum:{lines:['펭귄 발에는 깃털도<br>기름살도 거의 없다.','발로 가는 피와 돌아오는 피가<br>열을 주고받아 열을 덜 잃는다.','발꿈치와 꼬리로 버티며<br>발가락을 얼음에서 들기도 한다.'],
