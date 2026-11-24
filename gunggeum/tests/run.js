@@ -860,8 +860,9 @@ async function newsTests(b) {
     let p = await open(b, { time: newsDate + 'T23:30', settings: { hFrom: 7, hTo: 21, __mig: 1 } }); await p.saver();
     const st = await p.evaluate(() => JSON.parse(localStorage.getItem('gk-settings')));
     ok('예전 기기 설정(7~21시)이 하루 종일(0~24)로 옮겨짐', st.hFrom === 0 && st.hTo === 24, [st.hFrom, st.hTo]);
-    await p.mouse.click(800, 400); await p.adv(1200); let s = await p.st();
-    ok('밤 11시 반에 누르면 깨어남(쉬는 시간 안내 없음)', s.saver === '', s.saver);
+    let s = await p.st(); ok('밤 11시 반에도 어두운 쉬는 화면이 아님', !/night/.test(s.saver), s.saver);
+    { const bx = await p.locator('#rnFront [data-rn="art"][data-i="0"]').first().boundingBox(); await p.mouse.click(bx.x + Math.min(80, bx.width / 2), bx.y + Math.min(50, bx.height / 2)); } await p.adv(1800); s = await p.st();
+    ok('밤 11시 반에 1면 머리기사를 누르면 기사가 열림', !s.saver && s.paper, s);
     await p.context().close();
     p = await open(b, { time: newsDate + 'T23:30', settings: { hFrom: 7, hTo: 21 } }); await p.saver();
     const st2 = await p.evaluate(() => JSON.parse(localStorage.getItem('gk-settings')));
