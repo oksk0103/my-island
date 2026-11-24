@@ -1410,13 +1410,13 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v206</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v207</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v206</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v207</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -1539,6 +1539,7 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
   // ---------- settings (stored on this device) ----------
   const DEFAULTS = { bed: '22:00', nsky: 'on', len: 'normal', level: 'e3', hFrom: 0, hTo: 24, cap: 0, model: 'claude-haiku-5-5', apiKey: '', voice: '', rate: '1', pitch: '1', ttsKey: '', ttsVoice: '', ttsProvider: 'azure', ttsRegion: 'koreacentral', wxName: '영등포구', wxLat: 37.526, wxLon: 126.896, wxOn: 'on', pin: '1234', picOn: 'on', scaryNight: 'on', night10: 'off', nightScr: 'on', restDark: 'on', wxStill: 'off' };
   let settings = Object.assign({}, DEFAULTS, LS.get('gk-settings', {}));
+  if (!LS.get('gk-mig-open', 0)) { LS.set('gk-mig-open', 1); if (settings.hFrom !== 0 || settings.hTo !== 24) { settings.hFrom = 0; settings.hTo = 24; LS.set('gk-settings', settings); } } /* v207: 부모 요청 — 밤에도 신문·질문을 언제든 쓰게 '쓸 수 있는 시간'을 하루 종일로 한 번 옮김. 다시 막으려면 부모님 화면에서 시간을 고르면 그대로 남는다 */
   if (!LS.get('gk-mig-e3', 0)) { LS.set('gk-mig-e3', 1); if (settings.level === 'm1') { settings.level = 'e3'; LS.set('gk-settings', settings); } } // v145: 부모 결정 — 기본 수준을 초등 3학년으로(한 번만 옮김, 그 뒤 부모가 바꾸면 그대로)
   const LEN = { short: [80, 110], normal: [120, 160], long: [170, 220] };
   const LEVEL = {
@@ -3853,7 +3854,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v206';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v207';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {

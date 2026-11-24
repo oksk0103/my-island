@@ -21,7 +21,7 @@ async function open(b, { time, settings = {}, read, offline, apiErr, noSky, w = 
   await p.route(/api\.anthropic\.com/, r => { if (r.request().method() === 'OPTIONS') return r.fulfill({ status: 204, headers: CORS }); if (offline) return r.abort(); if (apiErr) return r.fulfill({ status: apiErr.status, headers: CORS, json: { type: 'error', error: { type: 'invalid_request_error', message: apiErr.msg } } }); const bd = JSON.parse(r.request().postData()); if (/시계 화면에 쓸 문장/.test(JSON.stringify(bd.messages || ''))) { p.quotes = (p.quotes || 0) + 1; } else if (/순우리말이면/.test(JSON.stringify(bd.messages || ''))) { p.gloss = (p.gloss || 0) + 1; } else { p.api++; p.lastBody = bd; (p.bodies = p.bodies || []).push(JSON.stringify(bd.messages || '').slice(-160)); } r.fulfill({ headers: CORS, json: { content: [{ type: 'text', text: ANSWER }], stop_reason: 'end_turn' } }); });
   p.wiki = 0; await p.route(/wttr|googleapis|gstatic|wikidata|wikimedia|wikipedia|tts\.speech/, r => { if (/wikidata|wikimedia|wikipedia/.test(r.request().url())) p.wiki++; return r.abort(); });
   if (noSky) await p.route(/vendor\/sky/, r => r.abort());
-  await p.addInitScript(([day, st, read]) => { localStorage.setItem('gk-settings', JSON.stringify(Object.assign({ apiKey: 'sk-test', hFrom: 0, hTo: 24, wxName: '영등포구', nightScr: 'off' }, st))); if (read) { localStorage.setItem('gk-news-read2', JSON.stringify(read)); localStorage.setItem('gk-news-done2', JSON.stringify([read])); } }, [day, settings, read]);
+  await p.addInitScript(([day, st, read]) => { localStorage.setItem('gk-settings', JSON.stringify(Object.assign({ apiKey: 'sk-test', hFrom: 0, hTo: 24, wxName: '영등포구', nightScr: 'off' }, st))); if (!st.__mig) localStorage.setItem('gk-mig-open', '1'); if (read) { localStorage.setItem('gk-news-read2', JSON.stringify(read)); localStorage.setItem('gk-news-done2', JSON.stringify([read])); } }, [day, settings, read]);
   if (pre) await pre(p);
   if (sr) await p.addInitScript(() => { window.SpeechRecognition = window.webkitSpeechRecognition = class { start() { window.__rec = this; setTimeout(() => this.onstart && this.onstart(), 0); } stop() { setTimeout(() => this.onend && this.onend(), 0); } abort() { this.stop(); } }; });
   if (time) await p.clock.install({ time: new Date(time + ':00+09:00') });
@@ -853,6 +853,19 @@ async function newsTests(b) {
     await p.context().close();
     p = await open(b, { time: newsDate + 'T21:30', read: newsDate, settings: { hFrom: 7, hTo: 21, restDark: 'off' } }); await p.saver(); s = await p.st();
     ok("'그대로'로 두면 쉬는 시간에도 밝은 홈", !/night/.test(s.saver), s.saver); await p.context().close();
+  }
+
+  { // 23b. v207 부모 요청 — 밤에도 언제든 신문·질문 (쓸 수 있는 시간을 하루 종일로 한 번 옮김)
+    console.log('23b. 밤에도 열림 (v207)');
+    let p = await open(b, { time: newsDate + 'T23:30', settings: { hFrom: 7, hTo: 21, __mig: 1 } }); await p.saver();
+    const st = await p.evaluate(() => JSON.parse(localStorage.getItem('gk-settings')));
+    ok('예전 기기 설정(7~21시)이 하루 종일(0~24)로 옮겨짐', st.hFrom === 0 && st.hTo === 24, [st.hFrom, st.hTo]);
+    await p.mouse.click(800, 400); await p.adv(1200); let s = await p.st();
+    ok('밤 11시 반에 누르면 깨어남(쉬는 시간 안내 없음)', s.saver === '', s.saver);
+    await p.context().close();
+    p = await open(b, { time: newsDate + 'T23:30', settings: { hFrom: 7, hTo: 21 } }); await p.saver();
+    const st2 = await p.evaluate(() => JSON.parse(localStorage.getItem('gk-settings')));
+    ok('옮긴 뒤 부모가 다시 고른 시간은 그대로 남음', st2.hFrom === 7 && st2.hTo === 21, [st2.hFrom, st2.hTo]); await p.context().close();
   }
 
   { // 24. v173 오늘의 단어 — 홈 넷째 갈래, 뿌리선 펼침면(데이터만), 공부칸에 짝으로
