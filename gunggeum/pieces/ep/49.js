@@ -9,10 +9,17 @@ function vTherm(S,x,y1,y2,y0,lab0){wl(S,x,y1,x,y2,W0m);for(let y=y1,i=0;y<=y2+1;
  wl(S,x-24,y0,x+10,y0,W0);tx(S,x+20,y0+8,lab0,'v22');}
 EPX[49]={day:'12월 4일',topic:'고드름',cat:'겨울 얼음',field:'과학',frame:'v2',
  cover:{h:'고드름은<br>어떻게<br>자랄까?',draw(S){
-   /* v206: 생성 일러스트 */
-   const P=el('g',{},S);el('image',{href:'art/49-icicle.webp',x:860,y:150,width:500,height:500},P);
-   tx(S,1110,712,'처마 끝 고드름','v22m','middle');
-   let on=false;return ()=>{if(on||calm())return;on=true;loop(S,t=>P.setAttribute('transform',`translate(0,${(4*Math.sin(t*.6)).toFixed(1)})`));};}},
+   const Y=170;eave(S,Y);tx(S,640,Y-58,'처마 끝 · 겨울 낮','v22m');
+   const L=[[720,150,36],[800,300,52],[900,210,40],[1010,420,64],[1110,250,44],[1200,340,54],[1300,180,38],[1390,270,46]];
+   L.forEach(([x,l,w])=>ice(S,x,Y+14,l,w));
+   // 길이 눈금(오른쪽)
+   const RX=1480;wl(S,RX,Y+14,RX,Y+14+440,W0m);for(let i=0;i<=22;i++){const y=Y+14+i*20;wl(S,RX,y,RX-(i%5===0?18:10),y,i%5===0?W0:W0m);}tx(S,RX,Y+14+480,'길이','v22m','end');
+   wl(S,640,690,1504,690,W0m);tx(S,640,660,'영하의 공기','v22m');
+   // 물방울 하나가 가장 긴 고드름 겉을 타고 내려가 끝에서 떨어짐(반복은 표지만)
+   const d=wdot(S,1010+30,Y+18,7,WO);let on=false;
+   return ()=>{if(on||calm())return;on=true;loop(S,t=>{const c=(t%3)/3;let y,x;
+     if(c<.75){const k=c/.75;y=Y+18+k*(420-6);x=1010+(32*(1-k*k*.95))*(1-k);}else{const k=(c-.75)/.25;y=Y+14+420+k*120;x=1010;}
+     d.setAttribute('cx',x.toFixed(1));d.setAttribute('cy',y.toFixed(1));d.setAttribute('opacity',c<.95?1:0);});};}},
  scenes:[
   {k:'녹은 물',h:'지붕 위 눈이<br>녹아 흘러내린다',b:'햇볕을 받으면 지붕 위 눈이 조금씩 녹아. 그런데 처마 밑 공기는 <em>0도보다 추워</em>.',steps:['햇볕 비추기'],
    draw(S){// 비스듬한 지붕 단면: 왼쪽 위 → 오른쪽 아래 처마 끝(1180,380)
