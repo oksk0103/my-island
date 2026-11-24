@@ -857,14 +857,13 @@ async function newsTests(b) {
 
   { // 23b. v207 부모 요청 — 밤에도 언제든 신문·질문 (쓸 수 있는 시간을 하루 종일로 한 번 옮김)
     console.log('23b. 밤에도 열림 (v207)');
-    let p = await open(b, { time: newsDate + 'T23:30', settings: { hFrom: 7, hTo: 21, __mig: 1 } }); await p.saver();
+    let p = await openNews(b, { time: BASE_NEWS.date + 'T23:30', settings: { hFrom: 7, hTo: 21, __mig: 1 } });
     const st = await p.evaluate(() => JSON.parse(localStorage.getItem('gk-settings')));
     ok('예전 기기 설정(7~21시)이 하루 종일(0~24)로 옮겨짐', st.hFrom === 0 && st.hTo === 24, [st.hFrom, st.hTo]);
-    let s = await p.st(); ok('밤 11시 반에도 어두운 쉬는 화면이 아님', !/night/.test(s.saver), s.saver);
-    { const bx = await p.locator('#rnFront [data-rn="art"][data-i="0"]').first().boundingBox(); await p.mouse.click(bx.x + Math.min(80, bx.width / 2), bx.y + Math.min(50, bx.height / 2)); } await p.adv(1800); s = await p.st();
-    ok('밤 11시 반에 1면 머리기사를 누르면 기사가 열림', !s.saver && s.paper, s);
-    await p.context().close();
-    p = await open(b, { time: newsDate + 'T23:30', settings: { hFrom: 7, hTo: 21 } }); await p.saver();
+    await p.front(); let s = await p.st(); ok('밤 11시 반에도 신문 1면이 열림', s.saver.includes('rnp'), s.saver);
+    await p.tap('#rnFront [data-rn="art"][data-i="0"]'); s = await p.st();
+    ok('밤 11시 반에 1면 머리기사를 누르면 기사가 열림', !s.saver && s.paper, s); await p.context().close();
+    p = await open(b, { time: BASE_NEWS.date + 'T23:30', settings: { hFrom: 7, hTo: 21 } }); await p.saver();
     const st2 = await p.evaluate(() => JSON.parse(localStorage.getItem('gk-settings')));
     ok('옮긴 뒤 부모가 다시 고른 시간은 그대로 남음', st2.hFrom === 7 && st2.hTo === 21, [st2.hFrom, st2.hTo]); await p.context().close();
   }
