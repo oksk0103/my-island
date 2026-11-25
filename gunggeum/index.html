@@ -1410,13 +1410,13 @@ body{ word-break: keep-all; overflow-wrap: break-word; }
       <div class="note" id="pinNote"></div>
     </form>
   </div>
-  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v207</span></div></footer>
+  <footer class="foot"><div class="inner"><i></i> 모르는 낱말은 눌러 보기 <b>·</b> 답은 소리로도 들려줘 <b>·</b> <span style="opacity:.6">v208</span></div></footer>
 </div>
 
 <section class="log" id="log" hidden>
   <div class="log-in">
     <div class="log-head">
-      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v207</small></h2>
+      <h2>부모님 화면 <small style="font-size:.6em;opacity:.55;font-weight:400">v208</small></h2>
       <div class="row"><button class="chip" id="fsBtn" type="button">전체 화면으로</button><button class="chip" id="logClose" type="button">닫기</button></div>
     </div>
     <div class="card" id="installCard">
@@ -2691,13 +2691,23 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     return dayKey(d);
   }
   const TD_NOUN = /숙제|준비물|할\s*일/, TD_CMD = /(추가|적어|넣어)\s*(해\s*)?(줘|줄래|놔|둬|주세요)/;
-  const TD_INTO = /(할\s*일|숙제|준비물)\s*(목록)?\s*(에|에다|에다가|로|으로)\s*.*(추가|적어|넣어|기록|써)\s*(해|하자|할래|할게|해\s*줘|해\s*줄래|줘|줄래|놔|둬|주세요)?\s*$/; // "오늘 할 일에 수학 문제 추가" (음성 인식은 끝말을 자주 떼어 먹는다)
+  const TD_INTO = /(할\s*일|숙제|준비물)\s*(목록|칸)?\s*(에|에다|에다가|로|으로)\s*.*(추가|적어|넣어|기록|메모|저장|등록|써|라고\s*해)\s*(해|하자|할래|할게|해\s*줘|해\s*줄래|줘|줄래|놔|둬|주세요)?\s*$/; // "오늘 할 일에 수학 문제 추가" (음성 인식은 끝말을 자주 떼어 먹는다)
+  const TD_HEAD = /^\s*(루아야\s*)?(오늘\s*)?할\s*일\s*(목록|칸)?\s*(에|에다|에다가)?\s*(추가|적어|넣어|메모)/; // v208: '할 일 추가 학습지 끝내기'처럼 명령이 앞에 오는 말
   const TD_DICT = /숙제|준비물|받아쓰기|일기|독서록|독후감|익힘책|학습지|문제집|알림장|피아노|태권도|학원|줄넘기|실내화|체육복|리코더|색종이|색연필|가위|풀|우산|물통|필통|신청서|가져가|챙겨|연습/;
   const TD_DUTY = /(해야|가야|내야|써야|풀어야|읽어야|외워야|챙겨야|가져가야|사야|빨아야|해\s*가야)\s*(돼|해|되|됨|한대|된대)|까지야|있어$|있대$/;
   const TD_ASKW = /왜|뭐|뭘|무슨|무엇|어떻게|어떡해|누가|누구|언제|어디|꼭|진짜|정말|몇|얼마|어느|인가$|일까$|을까$|니$|나요$|까$/;
   function todoClean(said) {
     let t = ' ' + said.replace(/[.,!?~]/g, ' ') + ' ', when = '';
     t = t.replace(/((오전|오후|아침|저녁|밤)\s*)?([0-9]{1,2}|한|두|세|네|다섯|여섯|일곱|여덟|아홉|열|열한|열두)\s*시(\s*반)?(에|까지)?(?=\s)/, m => { when = m.replace(/(에|까지)$/, '').trim(); return ' '; }); // "네 시에"는 뒤에 따로 붙임
+    // v208: 대충 말해도 알아듣게 — 부르는 말·'할 일(목록·칸)에'·'~라고/이렇게'·'적어 줘요/메모해 줘/라고 해 줘'를 어디에 있든 떼어 낸다
+    t = t.replace(/\s(루아야|루아|궁금칸아|궁금칸|있잖아|저기|음+)(?=\s)/g, ' ').replace(/할일/g, '할 일');
+    t = t.replace(/^\s*(숙제|준비물)\s*(을|를)?\s*(추가|적어|넣어)\s*(해\s*)?(줘요|줘|줄래|놔|둬|주세요|주라)?(?=\s)/, ' ');
+    t = t.replace(/\s(오늘\s*)?(해야\s*)?할\s*일\s*(목록|칸|리스트|판)?\s*(에다가|에다|에|으로|로)?(?=\s)/g, ' ');
+    t = t.replace(/(이)?라[고구]?\s*(해|적어|써|넣어|추가해)\s*(줘요|줘|줄래|놔|둬|주세요|주라)(?=\s)/g, ' ');
+    t = t.replace(/(을|를)?\s*(메모|기록|저장|등록)\s*(해\s*)?(줘요|줘|줄래|놔|둬|주세요|주라)?(?=\s)/g, ' ').replace(/(을|를)?\s(추가|적어|넣어)\s*(해\s*)?(줘요|줘|줄래|놔|둬|주세요|주라)?(?=\s)/g, ' ').replace(/(을|를)?\s*써\s*(줘요|줘|줄래|놔|둬|주세요|주라)(?=\s)/g, ' ');
+    t = t.replace(/(이)?라[고구]\s*$|(이)?라[고구](?=\s)|(이)?라는\s*(거|것|걸)(?=\s)|(이)?란\s*(거|것|걸)(?=\s)|\s(이렇게|그렇게|요렇게)(?=\s)|요\s*$/g, ' ');
+    t = ' ' + t.replace(/\s+/g, ' ').trim() + ' ';
+    t = t.replace(/(학습지|문제집|익힘책|받아쓰기|독서록|독후감|일기|숙제|알림장|줄넘기|피아노|태권도|리코더)(?=([가-힣]*(끝내기|하기|쓰기|풀기|읽기|가기|연습)))/g, '$1 ');
     t = t.replace(/(^\s*(?:숙제|준비물)|할\s*일)?(에|로|으로|을|를)?\s*(추가|적어|넣어|써)\s*(해\s*)?(줘|줄래|놔|둬|주세요)/g, ' '); // v145: '수학 숙제 추가해 줘'의 숙제는 남긴다(맨 앞의 '숙제 추가해 줘'만 지움)
     if (TD_INTO.test(said.replace(/[.,!?~]/g, ' ').trim())) t = t.replace(/(할\s*일|숙제|준비물)\s*(목록)?\s*(에다가|에다|에|으로|로)\s/, ' ').replace(/\s*(을|를)?\s*(추가|적어|넣어|기록|써)\s*(해|하자|할래|할게)?\s*$/, ' ');
     t = t.replace(/(다음\s*주\s*)?[월화수목금토일]요일(까지|에|날)?|오늘(까지|은)?|내일(까지|은)?|모레(까지)?/g, ' ');
@@ -2772,7 +2782,7 @@ ${items.join('\n')}` }], { maxTokens: 2500 });
     if (/^(아니야?,?)?(방금(거|것|꺼)?)?(지워줘?|취소해?줘?|되돌려줘?)$/.test(t) && L && now - L.at < 5 * 60e3) { todoUndo(s); return true; }
     if (s.length > 44) return false;
     if (/(할\s*일|숙제|준비물)\s*(이|은|는|가)?\s*(뭐\s*(있|남|야|지|더라)|읽어|알려|보여|말해)/.test(s) || /^(나|오늘|이제)?\s*뭐\s*(해야|남았)\s*(돼|해|되|어|지)?\??$/.test(s)) { todoList(s); return true; }
-    if ((TD_CMD.test(s) && (TD_NOUN.test(s) || /할\s*일|적어/.test(s))) || TD_INTO.test(s)) { // "숙제 추가해 줘, 수학 익힘책 34쪽"
+    if ((TD_CMD.test(s) && (TD_NOUN.test(s) || /할\s*일|적어/.test(s))) || TD_INTO.test(s) || TD_HEAD.test(s)) { // "숙제 추가해 줘, 수학 익힘책 34쪽"
       const tx = todoClean(s);
       if (!tx) { todoPend = { wait: true, until: now + 25e3 }; todoShow(s, '뭐라고 적을까?', []); return true; }
       todoAdd(s, tx, todoDue(s)); return true;
@@ -3854,7 +3864,7 @@ ${lines.slice(-120).join('\n')}` }], { maxTokens: 600 });
   new MutationObserver(() => { const st = document.querySelector('.app').dataset.state; $('loCap').textContent = st === 'listen' ? '듣고 있어' : st === 'think' ? '생각하는 중…' : ''; }).observe(document.querySelector('.app'), { attributes: true, attributeFilter: ['data-state'] });
   // ---------- 진단 기록 (v67) ----------
   // 배터리·화면켜짐·대기화면·오류·서버 응답을 시간순으로 이 기기에 저장 (최근 400개)
-  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v207';
+  const DIAG_KEY = 'gk-diag', BAT_KEY = 'gk-bat', APP_V = 'v208';
   const pad2 = n => String(n).padStart(2, '0');
   const stamp = (t = new Date()) => `${t.getMonth() + 1}/${t.getDate()} ${pad2(t.getHours())}:${pad2(t.getMinutes())}:${pad2(t.getSeconds())}`;
   function diag(kind, msg) {
