@@ -24,10 +24,10 @@ EPX[40]={day:'과학',topic:'노을',cat:'빛과 색',field:'과학',frame:'v2',
     p=P(97,517);tx(g2,p[0],p[1]+64,'저녁 해','v28','middle');p=P(380,420);tx(g2,p[0],p[1]-36,'길게','v60','middle');
     return i=>show(i?g2:g1);}},
   {k:'파랑은 흩어져',h:'긴 길에서<br>파란빛은 흩어진다',b:'파란빛은 공기에 잘 튕겨서 <em>가는 길에 흩어져.</em>',steps:['햇빛 보내기'],
-   draw(S){const X=640,Y=236,W=864,H=W*420/1110,k=W/1110,id='c40s1';
+   draw(S){const X=640,Y=236,W=864,H=W*420/1376,k=W/1376,id='c40s1';
     const cp=el('clipPath',{id},el('defs',{},S)),cr=el('rect',{x:X,y:Y-40,width:W*.14,height:H+80},cp);
     el('g',{'clip-path':`url(#${id})`},S).appendChild(el('image',{href:'art/40-scatter.webp',x:X,y:Y,width:W,height:H,mask:fea(S,'m40b',X,Y,W,H,22)},S));
-    const cap=grp(S,0);tx(cap,X+560*k,Y-24,'파랑은 흩어져','v28','middle');tx(cap,X+W,Y+H+48,'빨강·주황은 끝까지','v28','end');
+    const cap=grp(S,0);tx(cap,X+600*k,Y-24,'파랑은 흩어져','v28','middle');tx(cap,X+W,Y+H+48,'빨강·주황은 끝까지','v28','end');
     return ()=>play(1800,e=>cr.setAttribute('width',(W*(.14+.86*e)).toFixed(1)),()=>show(cap));}},
   {k:'남은 빛의 색',h:'남은 빨강·노랑이<br>노을을 칠한다',b:'그래서 저녁 하늘과 해가 <em>붉게</em> 보여.',steps:['저녁 하늘 보기'],
    draw(S){const X=640,Y=170,W=864,H=482;
