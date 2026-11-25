@@ -25,13 +25,23 @@ EPX[41]={day:'과학',topic:'무지개',cat:'빛과 색',field:'과학',frame:'v
  scenes:[
   /* v209: 매 수준 — 장면마다 생성 일러스트 한 장, 설명은 한 줄 */
   {k:'해를 등지고',h:'무지개는<br>해를 등져야 보인다',b:'해는 <em>내 뒤</em>에, 비는 내 앞에 있어야 해.',steps:['해와 비 보기'],
-   draw(S){const X=640,Y=230,W=864,H=W*580/1376,k=W/1376,im=pic41(S,'art/41-sun.webp',X,Y,W,H,'m41a');
+   draw(S){const X=640,Y=230,W=864,H=W*555/1376,k=W/1376,im=pic41(S,'art/41-sun.webp',X,Y,W,H,'m41a');
     const g=grp(S,0);tx(g,X+183*k,Y+H+44,'해는 뒤','v28','middle');tx(g,X+1010*k,Y-20,'비는 앞','v28','middle');
     return ()=>up41(im,()=>show(g));}},
   {k:'빗방울 속 길',h:'빗방울이<br>햇빛을 색깔별로 나눈다',b:'빗방울 속에서 꺾이고 튕기며 <em>색이 갈라져.</em>',steps:['햇빛 넣기'],
-   draw(S){const X=640,Y=176,W=864,H=W*768/1376,k=W/1376,im=pic41(S,'art/41-drop.webp',X,Y,W,H,'m41b');
-    const g=grp(S,0);tx(g,X+690*k,Y+H-20,'빗방울 하나','v28','middle');tx(g,X+20,Y+H+44,'색이 갈라져 나와','v28');
-    return ()=>up41(im,()=>show(g));}},
+   draw(S){const cx=1110,cy=400,r=190,d=el('defs',{},S); /* 물방울은 색 순서를 정확히 그리려고 코드로 그림(생성 그림은 색 순서가 자꾸 틀림) */
+    const g=el('radialGradient',{id:'g41d',cx:'38%',cy:'34%',r:'70%'},d);[['0%','#E8F6FF'],['55%','#9CC8E8'],['100%','#4F7FB0']].forEach(([o,c])=>el('stop',{offset:o,'stop-color':c},g));
+    const f=el('filter',{id:'f41d',x:'-50%',y:'-50%',width:'200%',height:'200%'},d);el('feGaussianBlur',{stdDeviation:10},f);
+    el('circle',{cx,cy,r:r+14,fill:'#7FB6E0',opacity:.35,filter:'url(#f41d)'},S);el('circle',{cx,cy,r,fill:'url(#g41d)',opacity:.92},S);
+    el('circle',{cx,cy,r,fill:'none',stroke:'#E6F4FF','stroke-width':3,opacity:.7},S);el('ellipse',{cx:cx-70,cy:cy-90,rx:46,ry:22,fill:'#fff',opacity:.45,transform:`rotate(-35 ${cx-70} ${cy-90})`},S);
+    const iy=cy-110,ix=cx-Math.sqrt(r*r-110*110),bx=cx+r-6,by=cy-40,ex=cx-150,ey=cy+116;
+    const W=(x1,y1,x2,y2)=>el('line',{x1,y1,x2:x1,y2:y1,stroke:'#FFFFFF','stroke-width':6,'stroke-linecap':'round',opacity:0},S);
+    const l1=W(640,iy,ix,iy),l2=W(ix,iy,bx,by),l3=W(bx,by,ex,ey);
+    const C=['#9A76C8','#5B8FD6','#7DBB8C','#EBD27A','#EE9A4D','#E2614F'],fan=el('g',{opacity:0},S);
+    C.forEach((c,i)=>{const a0=(196+i*3.2)*Math.PI/180,a1=a0+3.2*Math.PI/180,L=360;el('path',{d:`M${ex},${ey}L${ex+L*Math.cos(a0)},${ey-L*Math.sin(a0)}L${ex+L*Math.cos(a1)},${ey-L*Math.sin(a1)}Z`,fill:c,opacity:.95},fan);});
+        const lab=grp(S,0);tx(lab,cx,cy+r+56,'빗방울 하나','v28','middle');tx(lab,ex-190,ey-40,'색이 갈라져 나와','v28','middle');
+    const seg=(l,x1,y1,x2,y2,ms,done)=>play(ms,e=>{l.setAttribute('opacity',1);l.setAttribute('x2',x1+(x2-x1)*e);l.setAttribute('y2',y1+(y2-y1)*e);},done);
+    return ()=>seg(l1,640,iy,ix,iy,500,()=>seg(l2,ix,iy,bx,by,500,()=>seg(l3,bx,by,ex,ey,500,()=>play(700,e=>fan.setAttribute('opacity',e),()=>show(lab)))));}},
   {k:'일곱 색 차례',h:'바깥은 빨강,<br>안쪽은 보라다',b:'무지개 색은 늘 같은 차례야.',steps:['무지개 보기'],
    draw(S){const X=640,Y=190,W=864,H=W*610/1093,k=W/1093,im=pic41(S,'art/41-pano.webp',X,Y,W,H,'m41c');
     const g=grp(S,0);tx(g,X+548*k,Y-18,'바깥은 빨강 · 안쪽은 보라','v28','middle');
@@ -39,6 +49,6 @@ EPX[41]={day:'과학',topic:'무지개',cat:'빛과 색',field:'과학',frame:'v
  sum:{lines:['해를 등지고 앞에 빗방울이<br>있으면 무지개가 보인다.','빗방울이 햇빛을<br>색깔별로 나눈다.','바깥은 빨강, 안쪽은 보라<br>— 흔히 일곱 색.'],
   words:[['빗방울','비가 되어 떨어지는 물 알갱이'],['빨주노초파남보','무지개 일곱 색을 줄여 부르는 말'],['등지다','뒤에 두다']]},
  end:{q:'해가 머리 위 높이 뜬 한낮엔 무지개가 잘 보일까?',a:'잘 안 보여. 무지개는 해가 낮게 떠 있을 때 잘 보여.',h:'어른과 함께<br>해를 등지고<br>분무기를 뿌려 봐.',btn:'분무기 칙',
-  draw(S){const W=363,H=520,X=1080,Y=150,im=pic41(S,'art/41-spray.webp',X,Y,W,H,'m41d');
+  draw(S){const X=680,W=824,H=W*555/1376,Y=300,im=pic41(S,'art/41-sun.webp',X,Y,W,H,'m41d'); /* 마무리: 해를 등진 집(나) 그림을 다시 써서 '해를 등지고' 활동을 보여 줌 */
    return ()=>up41(im);}}};
 })();

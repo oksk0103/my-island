@@ -40,11 +40,11 @@ EPX[10]={day:'10일차',topic:'날짐승과 길짐승',cat:'말의 뜻',field:'�
   /* v209: 매 수준 — 장면마다 생성 일러스트 한 장, 낱말 셈은 그림 위에 한 줄 */
   {k:'날짐승',h:'날아다니면<br>날짐승이다',b:'‘날다’의 ‘날’ + 짐승 = <em>나는 짐승</em>.',steps:['날다 + 짐승'],
    draw(S){const X=640,Y=160,W=864,H=482,k=W/1376;pic10(S,'art/10-sky.webp',X,Y,W,H,'m10a');
-    const g=grp(S,0);eq10(g,X,Y+H+64,'날다 + 짐승 → ','날짐승');[[270,290,'까치'],[840,380,'독수리'],[960,600,'참새']].forEach(([x,y,n])=>tx(g,X+x*k,Y+y*k,n,'v28','middle'));
+    const g=grp(S,0);eq10(g,X,Y+H+64,'날다 + 짐승 → ','날짐승');[[320,450,'까치'],[840,370,'독수리'],[960,590,'참새']].forEach(([x,y,n])=>tx(g,X+x*k,Y+y*k,n,'v28','middle'));
     return ()=>show(g);}},
   {k:'길짐승',h:'기어 다니면<br>길짐승이다',b:'‘기다’에 ㄹ이 붙어 ‘길’ + 짐승 = <em>기는 짐승</em>.',steps:['기다 + 짐승'],
-   draw(S){const X=640,Y=176,W=864,H=482,k=W/1376;pic10(S,'art/10-ground.webp',X,Y,W,H,'m10b');
-    const g=grp(S,0);eq10(g,X+40,Y+90,'기다 + 짐승 → ','길짐승');[[450,690,'거북'],[700,300,'뱀'],[1050,670,'도마뱀']].forEach(([x,y,n])=>tx(g,X+x*k,Y+y*k,n,'v28','middle'));
+   draw(S){const X=640,W=864,H=W*388/1376,Y=300,k=W/1376;pic10(S,'art/10-ground.webp',X,Y,W,H,'m10b');
+    const g=grp(S,0);eq10(g,X,Y-40,'기다 + 짐승 → ','길짐승');[[450,330,'거북'],[1090,70,'뱀'],[1050,330,'도마뱀']].forEach(([x,y,n])=>tx(g,X+x*k,Y+y*k,n,'v28','middle'));
     return ()=>show(g);}},
   {k:'나눠 보기',h:'하늘이냐 땅이냐로<br>나눈다',b:'하늘은 날짐승, 땅은 길짐승.',steps:['나눠 보기'],
    draw(S){const X=640,Y=176,W=864,H=482,k=W/1376;pic10(S,'art/10-split.webp',X,Y,W,H,'m10c');
