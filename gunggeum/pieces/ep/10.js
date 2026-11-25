@@ -24,6 +24,9 @@ function joinW(S,a,drop,add,r,mean,sub='두루 이르는 말',ex=null,y1=250,y2=
    ()=>{A.remove();if(G)G.remove();Bz.remove();show(R);show(M);T(S,x0,y1,a+(drop||'')+' + 짐승','v96','start',B);}));};}
 const A_=A;
 
+const fea10=(S,id,x,y,w,h,b=28)=>{const d=el('defs',{},S),f=el('filter',{id:id+'f',x:'-20%',y:'-20%',width:'140%',height:'140%'},d);el('feGaussianBlur',{stdDeviation:b},f);const m=el('mask',{id,maskUnits:'userSpaceOnUse',x:x-60,y:y-60,width:w+120,height:h+120},d);el('rect',{x:x+b*1.3,y:y+b*1.3,width:w-b*2.6,height:h-b*2.6,fill:'#fff',filter:`url(#${id}f)`},m);return `url(#${id})`;};
+const pic10=(S,src,x,y,w,h,id)=>el('image',{href:src,x,y,width:w,height:h,mask:fea10(S,id,x,y,w,h)},S);
+const eq10=(p,x,y,pre,res,cls='v60',anc='start')=>{const t=tx(p,x,y,pre,cls,anc);const s=el('tspan',{fill:A},t);s.textContent=res;return t;};
 EPX[10]={day:'10일차',topic:'날짐승과 길짐승',cat:'말의 뜻',field:'국어',frame:'v2',
  cover:{h:'날짐승과<br>길짐승,<br>뭐가 다를까?',draw(S){
    /* v206: 생성 일러스트 까치(날짐승)·거북(길짐승) */
@@ -34,19 +37,23 @@ EPX[10]={day:'10일차',topic:'날짐승과 길짐승',cat:'말의 뜻',field:'�
    pm(0);pg(0);let on=false;
    return ()=>{if(on||calm())return;on=true;loop(S,t=>{pm(t);pg(t);});};}},
  scenes:[
-  {k:'날짐승',h:'날아다니면<br>날짐승이다',b:'‘날다’가 ‘날’로 바뀌어 ‘짐승’ 앞에 붙었어. <em>나는 짐승</em>, 날아다니는 짐승을 두루 이르는 말이야.',steps:['날다 + 짐승'],
-   draw(S){return joinW(S,'날','다',null,'날','나는 짐승',undefined,['날짐승 — 예',['참새','까치','독수리']]);}},
-  {k:'길짐승',h:'기어 다니면<br>길짐승이다',b:'‘기다’에 ‘ㄹ’이 붙어 ‘길’이 됐어. <em>기는 짐승</em>, 기어 다니는 짐승을 두루 이르는 말이야.',steps:['기다 + 짐승'],
-   draw(S){return joinW(S,'기','다','ㄹ','길','기는 짐승',undefined,['길짐승 — 예',['뱀','거북','도마뱀']]);}},
-  {k:'나눠 보기',h:'하늘이냐 땅이냐로<br>나눈다',b:'하늘을 날아다니면 날짐승, 땅에서 기어 다니면 길짐승이야.',steps:['나눠 보기'],
-   draw(S){L(S,640,440,1504,440,C);T(S,1504,190,'날짐승','v60','end',A);T(S,1504,226,'하늘','v22m','end');T(S,1504,640,'길짐승','v60','end');T(S,1504,676,'땅','v22m','end');
-    const W=[['참새',1],['뱀',0],['독수리',1],['거북',0],['까치',1],['도마뱀',0]],k=[0,0];
-    [0,1].forEach(s=>[0,1,2].forEach(j=>L(S,660+j*230,(s?300:580)+16,820+j*230,(s?300:580)+16,B,{'stroke-dasharray':'2 10'})));
-    const G=W.map(([w,s],i)=>{const g=el('g',{},S);T(g,0,0,w,'v60','middle');const j=k[s]++;const o={g,x0:700+i*130,y0:420,x1:740+j*230,y1:s?300:580,s0:28/60};
-     const set=(x,y,sc)=>g.setAttribute('transform',`translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${sc.toFixed(3)})`);o.set=set;set(o.x0,o.y0,o.s0);return o;});
-    return ()=>G.forEach((o,i)=>setTimeout(()=>run(900,e=>{const [x,y]=arc(o.x0,o.y0,o.x1,o.y1,o.y1<400?60:-10,e);o.set(x,y,o.s0+(1-o.s0)*e);}),calm()?0:i*150));}}],
+  /* v209: 매 수준 — 장면마다 생성 일러스트 한 장, 낱말 셈은 그림 위에 한 줄 */
+  {k:'날짐승',h:'날아다니면<br>날짐승이다',b:'‘날다’의 ‘날’ + 짐승 = <em>나는 짐승</em>.',steps:['날다 + 짐승'],
+   draw(S){const X=640,Y=160,W=864,H=482,k=W/1376;pic10(S,'art/10-sky.webp',X,Y,W,H,'m10a');
+    const g=grp(S,0);eq10(g,X,Y+H+64,'날다 + 짐승 → ','날짐승');[[270,290,'까치'],[840,380,'독수리'],[960,600,'참새']].forEach(([x,y,n])=>tx(g,X+x*k,Y+y*k,n,'v28','middle'));
+    return ()=>show(g);}},
+  {k:'길짐승',h:'기어 다니면<br>길짐승이다',b:'‘기다’에 ㄹ이 붙어 ‘길’ + 짐승 = <em>기는 짐승</em>.',steps:['기다 + 짐승'],
+   draw(S){const X=640,Y=176,W=864,H=482,k=W/1376;pic10(S,'art/10-ground.webp',X,Y,W,H,'m10b');
+    const g=grp(S,0);eq10(g,X+40,Y+90,'기다 + 짐승 → ','길짐승');[[450,690,'거북'],[700,300,'뱀'],[1050,670,'도마뱀']].forEach(([x,y,n])=>tx(g,X+x*k,Y+y*k,n,'v28','middle'));
+    return ()=>show(g);}},
+  {k:'나눠 보기',h:'하늘이냐 땅이냐로<br>나눈다',b:'하늘은 날짐승, 땅은 길짐승.',steps:['나눠 보기'],
+   draw(S){const X=640,Y=176,W=864,H=482,k=W/1376;pic10(S,'art/10-split.webp',X,Y,W,H,'m10c');
+    const g=grp(S,0);tx(g,X+W-36,Y+70,'날짐승','v60','end').style.fill=A;tx(g,X+W-36,Y+H-36,'길짐승','v60','end').style.fill=A;
+    return ()=>show(g);}}],
  sum:{lines:['날아다니는 짐승을<br>날짐승이라고 한다.','기어 다니는 짐승을<br>길짐승이라고 한다.','사는 곳에 따라 산짐승,<br>들짐승이라고도 한다.'],
   words:[['날짐승','날아다니는 짐승'],['길짐승','기어 다니는 짐승'],['산짐승','산에 사는 짐승']]},
  end:{q:'산에 사는 짐승은 뭐라고 할까?',a:'산짐승. 들에 사는 짐승은 들짐승이야.',h:'동네에서 본<br>날짐승을 말해 봐.',btn:'합쳐 보기',
-  draw(S){const go=joinW(S,'산','',null,'산','산에 사는 짐승','들에 살면 들짐승',['짐승을 나눠 부르는 말',['날짐승','길짐승','들짐승']]);return go;}}};
+  draw(S){const W=347,H=500,X=1110,Y=140,im=el('image',{href:'art/10-mountain.webp',x:X,y:Y,width:W,height:H,opacity:.35,mask:fea10(S,'m10d',X,Y,W,H)},S);
+   const g=grp(S,0);eq10(g,X+W/2,Y+H+56,'산 + 짐승 → ','산짐승','v28','middle');
+   return ()=>play(1200,e=>im.setAttribute('opacity',(.35+.65*e).toFixed(2)),()=>show(g));}}};
 })();
