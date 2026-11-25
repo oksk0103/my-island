@@ -12,6 +12,10 @@ function split(p,cx,y,ch,cls,gap){const id=gid('sp'),d=DEF(p.ownerSVGElement||p)
  const L=el('g',{},p),Rr=el('g',{},p);T(el('g',{'clip-path':`url(#${id}L)`},L),cx,y,ch,cls,'middle');T(el('g',{'clip-path':`url(#${id}R)`},Rr),cx,y,ch,cls,'middle');
  const set=g=>{L.setAttribute('transform',`translate(${-g},0)`);Rr.setAttribute('transform',`translate(${g},${g*.25})`);};set(gap);return set;}
 
+const fea12=(S,id,x,y,w,h,b=28)=>{const d=el('defs',{},S),f=el('filter',{id:id+'f',x:'-20%',y:'-20%',width:'140%',height:'140%'},d);el('feGaussianBlur',{stdDeviation:b},f);const m=el('mask',{id,maskUnits:'userSpaceOnUse',x:x-60,y:y-60,width:w+120,height:h+120},d);el('rect',{x:x+b*1.3,y:y+b*1.3,width:w-b*2.6,height:h-b*2.6,fill:'#fff',filter:`url(#${id}f)`},m);return `url(#${id})`;};
+const pic12=(S,src,x,y,w,h,id,op=1)=>el('image',{href:src,x,y,width:w,height:h,opacity:op,mask:fea12(S,id,x,y,w,h)},S);
+const eq12=(p,x,y,pre,res,cls='v60',anc='start')=>{const t=tx(p,x,y,pre,cls,anc);const s=el('tspan',{fill:'#E9B872'},t);s.textContent=res;return t;};
+const up12=(im,done)=>play(1200,e=>im.setAttribute('opacity',(.35+.65*e).toFixed(2)),done);
 EPX[12]={day:'12일차',topic:'맞히다와 맞추다',cat:'맞춤법',field:'국어',frame:'v2',
  cover:{h:'정답을 맞혔다?<br>맞췄다?',draw(S){
    T(S,660,320,'맞히다','vs96');T(S,660,580,'맞추다','vs96');wl(S,660,410,1504,410,Cm);
@@ -21,35 +25,19 @@ EPX[12]={day:'12일차',topic:'맞히다와 맞추다',cat:'맞춤법',field:'�
    const bull=wdot(S,cx,cy,0,A);
    return ()=>{mv(hit,1000,cy);set(70);bull.setAttribute('r',0);go(900,e=>{mv(hit,1000+(cx-1000)*e,cy-Math.sin(Math.PI*e)*50);set(70*(1-e));},()=>bull.setAttribute('r',14));};}},
  scenes:[
-  {k:'맞히다',h:'답을 알아내면<br>맞히다',b:'문제의 답을 틀리지 않게 알아내거나, 쏘아서 과녁에 닿게 하면 <em>맞히다</em>야.',steps:['정답','수수께끼','화살'],
-   draw(S){const cx=1290,cy=380,r=200;target(S,cx,cy,r,4);wdot(S,cx,cy,14,A);
-    const rows=[['정답을','몇 문제나 맞혔니?',230],['수수께끼를','내 수수께끼를 맞혀 봐',380],['여덟 발을','화살 열 발 중에',530]];
-    const G=rows.map(([w,sub,y])=>{const t=T(S,660,y,w,'v60',null,Cm);const s=T(S,660,y+40,sub,'v22m');return {t,y};});
-    T(S,cx,cy+r+60,'맞히다 = 가운데에 닿게','v28','middle');
-    const hits=[[-30,-24],[26,18],[-8,34]];
-    return i=>{const g=G[i],w=[300,330,300][i],d=wdot(S,660+w,g.y-20,9,C);const [hx,hy]=[cx+hits[i][0],cy+hits[i][1]];
-     go(900,e=>mv(d,660+w+(hx-660-w)*e,g.y-20+(hy-g.y+20)*e-Math.sin(Math.PI*e)*60),()=>g.t.setAttribute('style','fill:'+C));};}},
-  {k:'맞추다',h:'붙이거나 견주면<br>맞추다',b:'떨어진 것을 이어 붙이거나, 둘을 나란히 놓고 견주어 볼 때는 <em>맞추다</em>야.',steps:['이어 붙이기','견주어 보기'],
-   draw(S){wl(S,1060,140,1060,600,Cm);
-    const set=split(S,850,400,'맞','vs160',60);T(S,850,500,'깨진 항아리를 맞추다','v28','middle');T(S,850,540,'= 이어 붙이다','v22m','middle');
-    const cl=1170,cr=1420;T(S,cl,190,'내 답','v28','middle');T(S,cr,190,'정답','v28','middle');wl(S,1100,215,1490,215,Cm);
-    const Y=[300,390,480],a=[5,8,3],b=[5,8,4];
-    Y.forEach((y,k)=>{T(S,cl,y,a[k]+'','v60','middle');T(S,cr,y,b[k]+'','v60','middle');});
-    const marks=Y.map((y,k)=>{const g=grp(S,0);T(g,(cl+cr)/2,y,a[k]===b[k]?'=':'≠','v60','middle',a[k]===b[k]?C:A);return g;});
-    const mx=(cl+cr)/2,ln=Y.map(y=>wl(S,cl+40,y-20,cl+40,y-20,Cm,{'stroke-dasharray':'2 8'})),rn=Y.map(y=>wl(S,mx+26,y-20,mx+26,y-20,Cm,{'stroke-dasharray':'2 8'}));
-    T(S,1295,560,'내 답과 정답을 맞추어 보다','v28','middle');T(S,1295,600,'= 견주어 보다','v22m','middle');
-    return i=>{if(i===0)go(900,e=>set(60*(1-e)));
-     else Y.forEach((y,k)=>setTimeout(()=>go(500,e=>{ln[k].setAttribute('x2',(cl+40+(mx-26-cl-40)*e).toFixed(1));rn[k].setAttribute('x2',(mx+26+(cr-40-mx-26)*e).toFixed(1));},()=>show(marks[k])),calm()?0:k*420));};}},
-  {k:'둘 다',h:'한 문장에<br>둘 다 쓸 수 있다',b:'‘몇 문제나 <em>맞혔는지</em> 내 답과 정답을 <em>맞추어</em> 봤어.’ 둘이 한 문장에 같이 나와.',steps:['맞히다 찾기','맞추다 찾기'],
-   draw(S){const l1=R(S,660,230,[['몇 문제나 ','v60'],['맞혔는지','v60']]),l2=R(S,660,420,[['내 답과 정답을 ','v60'],['맞추어','v60'],[' 봤어.','v60']]);
-    wl(S,640,600,1504,600,Cm);T(S,640,640,'국립국어원 예문: 내가 몇 문제나 맞혔는지 내 답안과 모범 답안을 맞추어 보았다.','v22m');
-    const ic1=el('g',{opacity:.35,style:'transition:opacity .3s'},S);target(ic1,1420,215,64,3);wdot(ic1,1420,215,8,C);
-    const ic2=el('g',{opacity:.35,style:'transition:opacity .3s'},S);[0,1].forEach(j=>{wl(ic2,1366+j*70,350,1366+j*70,470,C);[0,1,2].forEach(k=>wl(ic2,1356+j*70,370+k*40,1376+j*70,370+k*40,C));});wl(ic2,1386,410,1426,410,Cm,{'stroke-dasharray':'2 6'});
-    const ICS=[ic1,ic2];
-    const ghost=[[l1.sp[1],230],[l2.sp[1],420]].map(([sp,y])=>({sp,y}));
-    const mk=(k,col,lab)=>{const {sp,y}=ghost[k];const x0=sp.getStartPositionOfChar(0).x,w=sp.getComputedTextLength();const u=wl(S,x0,y+18,x0,y+18,col,{'stroke-width':4,'stroke-linecap':'butt'});
-      const g=grp(S,0);T(g,x0,y+62,lab,'v28',null,col===A?A:C);go(700,e=>u.setAttribute('x2',(x0+w*e).toFixed(1)),()=>{show(g);ICS[k].setAttribute('opacity',1);});};
-    return i=>i===0?mk(0,A,'→ 답을 알아냈어'):mk(1,C,'→ 둘을 견주어 봤어');}}],
+  /* v212: 매 수준 — 장면마다 생성 일러스트 한 장, 설명은 한 줄 */
+  {k:'맞히다',h:'답을 알아내면<br>맞히다',b:'답을 알아내거나 과녁에 닿게 하면 <em>맞히다</em>야.',steps:['화살 쏘기'],
+   draw(S){const X=640,Y=176,W=864,H=482,im=pic12(S,'art/12-target.webp',X,Y,W,H,'m12a',.5);
+    const g=grp(S,0);eq12(g,X,Y+H+64,'정답을 ','맞혔다');
+    return ()=>up12(im,()=>show(g));}},
+  {k:'맞추다',h:'붙이거나 견주면<br>맞추다',b:'조각을 이어 붙이거나 둘을 견줄 땐 <em>맞추다</em>야.',steps:['조각 붙이기'],
+   draw(S){const X=640,Y=176,W=864,H=482,im=pic12(S,'art/12-pot.webp',X,Y,W,H,'m12b',.5);
+    const g=grp(S,0);eq12(g,X,Y+H+64,'조각을 ','맞추다');
+    return ()=>up12(im,()=>show(g));}},
+  {k:'둘 다',h:'한 문장에<br>둘 다 쓸 수 있다',b:'몇 문제 <em>맞혔는지</em> 정답과 <em>맞추어</em> 봐.',steps:['맞추어 보기'],
+   draw(S){const W=700,H=W*652/1080,X=1504-W,Y=150,im=pic12(S,'art/12-sheets.webp',X,Y,W,H,'m12c',.5);
+    const g=grp(S,0);eq12(g,640,Y+H+70,'몇 문제 ','맞혔지?');eq12(g,640,Y+H+146,'정답과 ','맞추어 봐');
+    return ()=>up12(im,()=>show(g));}}],
  sum:{lines:['답을 알아내거나 가운데에<br>닿게 하면 맞히다.','이어 붙이거나 견주어 보면<br>맞추다.','정답은 ‘맞히고’,<br>정답지와는 ‘맞춘다’.'],
   words:[['과녁','활을 쏠 때 겨누는 판'],['수수께끼','뜻을 알아맞히는 말놀이'],['견주다','둘을 나란히 놓고 살피다']]},
  end:{q:'퍼즐 조각을 제자리에 끼우는 건?',a:'맞추다. 떨어진 조각을 이어 붙이니까.',h:'오늘 퍼즐을 하며<br>‘맞춰 봐’라고<br>말해 봐.',btn:'끼워 보기',
