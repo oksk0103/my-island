@@ -352,7 +352,7 @@ async function newsTests(b) {
     await p.click('#ansPg button'); await p.adv(600); ok('쪽 화살 → 2쪽', await p.evaluate(() => /^2 \//.test(document.querySelector('#ansPg .pn').textContent) && document.getElementById('sheet').scrollTop > 0));
     ok('이 흐름에서 바깥 요청 0 · 콘솔 오류 0', p.ext.length === 0 && p.cerr.length === 0, [p.ext.slice(0, 3), p.cerr.slice(0, 3)]); await p.context().close();
     // 달력: 일정 말하기 (기기 규칙 — AI를 부르지 않고, 질문 수에 세지 않는다)
-    p = await open(b, { time: newsDate + 'T16:10', read: newsDate, sr: 1 }); const cal = () => p.evaluate(() => (JSON.parse(localStorage.getItem('gk-cal') || '{"items":[]}').items || []).map(x => x.date.slice(8) + ' ' + x.text));
+    p = await open(b, { time: '2026-11-16T16:10', read: '2026-11-16', sr: 1 }) /* 신문 날짜를 쓰면 28일 이후 '27일'이 지난 날이 돼 실패했다 (2026-11-28) */; const cal = () => p.evaluate(() => (JSON.parse(localStorage.getItem('gk-cal') || '{"items":[]}').items || []).map(x => x.date.slice(8) + ' ' + x.text));
     await p.say('27일에 치과 가', 5000); let c = await cal(); ok('평소에 한 말은 일정으로 들어가지 않음', c.length === 0, c);
     const a1 = p.api, n1 = (await p.st()).count; await p.go('cal'); await p.adv(2500); ok('일정이 없을 때: 조용한 한 줄', await p.evaluate(() => /일정이 없어/.test(document.getElementById('agList').textContent)));
     await box('[data-act="evadd"]'); await p.speak('27일에 치과 가', 5000); await p.adv(3000); c = await cal(); s = await p.st();
